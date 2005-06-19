@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.2 2005/06/19 08:07:25 lsces Exp $
+// $Id: BitSystem.php,v 1.3 2005/06/19 10:46:41 squareing Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +29,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.2 $
+* @version $Revision: 1.3 $
 * @access public
 */
 
@@ -55,15 +55,15 @@ class BitSystem extends BitBase
 	var $mInstallModules = array();
 	// Used by packages to register notification events that can be subscribed to.
 	var $mNotifyEvents = array();
-    /**
-    * Used to store contents of tiki_preferences
-    * @private
-    */
+	/**
+	* Used to store contents of tiki_preferences
+	* @private
+	*/
 	var $mPrefs;
-    /**
-    * Used to monitor if ::regiserPackage() was called. This is to prevent duplicate package registration for packages that have directory names different from their package name.
-    * @private
-    */
+	/**
+	* Used to monitor if ::regiserPackage() was called. This is to prevent duplicate package registration for packages that have directory names different from their package name.
+	* @private
+	*/
 	var $mRegisterCalled;
 	// >>>
 	// === BitSystem constructor
@@ -155,8 +155,8 @@ class BitSystem extends BitBase
 		return count( $this->mPrefs );
 	}
 
-    // <<< storePreference
-    /**
+	// <<< storePreference
+	/**
 	* Tiki needs lots of settings just to operate.
 	* loadPreferences assigns itself the default preferences, then loads just the differences from the database.
 	* In storePreference (and only when storePreference is called) we make a second copy of defaults to see if
@@ -211,8 +211,8 @@ class BitSystem extends BitBase
 		return( empty( $this->mPrefs[$name] ) ? $default : $this->mPrefs[$name] );
 	}
 
-    // <<< expungePackagePreferences
-    /**
+	// <<< expungePackagePreferences
+	/**
 	* Delete all prefences for the given package
 	*
 	* @access public
@@ -263,10 +263,10 @@ class BitSystem extends BitBase
 			$extraHeaders = "Reply-to: ".$pMailHash['Reply-to']."\r\n";
 		}
 
-       mail(	$pMailHash['email'],
-				$pMailHash['subject'].' '.$_SERVER["SERVER_NAME"],
-				$pMailHash['body'],
-		        "From: ".$this->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
+		mail($pMailHash['email'],
+			$pMailHash['subject'].' '.$_SERVER["SERVER_NAME"],
+			$pMailHash['body'],
+			"From: ".$this->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
 		);
 	}
 	// >>>
@@ -894,10 +894,10 @@ asort( $this->mAppMenu );
 						foreach( array_keys( $this->mPackages[$package]['tables'] ) as $table ) {
 							$fullTable = $prefix.$table;
 							$tablePresent = in_array( $fullTable, $dbTables );
-if( !$tablePresent ) {
-	// There is an incomplete table
-//	vd( "Missing Table: $fullTable" );
-}
+							if( !$tablePresent ) {
+								// There is an incomplete table
+								//	vd( "Missing Table: $fullTable" );
+							}
 							if( isset( $this->mPackages[$package]['installed'] ) ) {
 								$this->mPackages[$package]['installed'] &= $tablePresent;
 							} else {
@@ -2033,7 +2033,7 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 			@setlocale ($saved_locale);
 
 		return $rv;
-		}
+	}
 
 	function get_rfc2822_timezone_offset($time = false, $no_colon = false, $user = false) {
 		if ($time === false)
@@ -2053,24 +2053,69 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 		$mins = intval(($secs + 30) / 60);
 
 		return sprintf("%s%02d%s%02d", $sign, $mins / 60, $colon, $mins % 60);
-		}
+	}
 
 	function set_locale($user = false) {
 		static $locale = false;
 
 		if (!$locale) {
-	# breaks the RFC 2822 code
-		$locale = @setlocale(LC_TIME, $this->get_locale($user));
-	#print "<pre>set_locale(): locale=$locale\n</pre>";
+			# breaks the RFC 2822 code
+			$locale = @setlocale(LC_TIME, $this->get_locale($user));
+			#print "<pre>set_locale(): locale=$locale\n</pre>";
 		}
 
 		return $locale;
 	}
 
+	// Check for new version
+	// returns and array with information on bitweaver version
+	function checkBitVersion() {
+		$local= BIT_RELEASE.'.'.BIT_RELEASE_COUNT.'.'.BIT_RELEASE_SUB_COUNT;
+		$ret['local'] = $local;
 
+		$error['number'] = 0;
+		$error['string'] = $data = '';
 
+		if( $fsock = @fsockopen( 'www.bitweaver.org', 80, $error['number'], $error['string'], 30 ) ) {
+			@fwrite( $fsock, "GET /_bitversion/versions.txt HTTP/1.1\r\n" );
+			@fwrite( $fsock, "HOST: www.bitweaver.org\r\n" );
+			@fwrite( $fsock, "Connection: close\r\n\r\n" );
 
+			$get_info = FALSE;
+			while( !@feof( $fsock ) ) {
+				if( $get_info ) {
+					$data .= @fread( $fsock, 1024 );
+				} else {
+					if( @fgets( $fsock, 1024 ) == "\r\n" ) {
+						$get_info = TRUE;
+					}
+				}
+			}
+			@fclose( $fsock );
+
+			if( !empty( $data ) ) {
+				// nuke all blank lines and comments - '//'
+				$data = preg_replace( "/^\/\/.*\n/", "", $data );
+				$versions = explode( "\n", $data );
+				sort( $versions );
+				foreach( $versions as $version ) {
+					if( preg_match( "/^".BIT_RELEASE."/", $version ) ) {
+						$ret['compare'] = version_compare( $local, $version );
+						$ret['upgrade'] = $version;
+					}
+				}
+				// check if there have been any major releases
+				$release = explode( '.', array_pop( $versions ) );
+				if( $release[0] > BIT_RELEASE ) {
+					$ret['release'] = implode( '.', $release );
+				}
+			}
+		}
+		$ret['error'] = $error;
+		return $ret;
+	}
 }
+
 // === installError
 /**
 * If an unrecoverable error has occurred, this method should be invoked. script exist occurs

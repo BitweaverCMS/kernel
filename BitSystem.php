@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.5 2005/06/19 12:23:53 lsces Exp $
+// $Id: BitSystem.php,v 1.6 2005/06/19 21:07:50 squareing Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +29,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.5 $
+* @version $Revision: 1.6 $
 * @access public
 */
 
@@ -2071,7 +2071,7 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 	// Check for new version
 	// returns and array with information on bitweaver version
 	function checkBitVersion() {
-		$local= BIT_RELEASE.'.'.BIT_RELEASE_COUNT.'.'.BIT_RELEASE_SUB_COUNT;
+		$local= BIT_MAJOR_VERSION.'.'.BIT_MINOR_VERSION.'.'.BIT_SUB_VERSION;
 		$ret['local'] = $local;
 
 		$error['number'] = 0;
@@ -2100,14 +2100,14 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 			if( !empty( $versions ) ) {
 				sort( $versions );
 				foreach( $versions as $version ) {
-					if( preg_match( "/^".BIT_RELEASE."/", $version ) ) {
+					if( preg_match( "/^".BIT_MAJOR_VERSION."/", $version ) ) {
 						$ret['compare'] = version_compare( $local, $version );
 						$ret['upgrade'] = $version;
 					}
 				}
 				// check if there have been any major releases
 				$release = explode( '.', array_pop( $versions ) );
-				if( $release[0] > BIT_RELEASE ) {
+				if( $release[0] > BIT_MAJOR_VERSION ) {
 					$ret['release'] = implode( '.', $release );
 				}
 			} else {

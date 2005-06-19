@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.2 2005/06/19 11:25:02 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.3 2005/06/19 21:07:50 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -7,16 +7,12 @@ require_once(BIT_ROOT_PATH . 'kernel/config_defaults_inc.php');
 
 error_reporting( BIT_PHP_ERROR_REPORTING );
 
-// i propose we use: BIT_RELEASE.BIT_RELEASE_COUNT.BIT_RELEASE_SUB_COUNT
-// not sure what we should do with BIT_VERSION
-define('BIT_VERSION', 'Clyde');
-define('BIT_RELEASE', '1');
-define('BIT_RELEASE_COUNT', '0');
-define('BIT_RELEASE_SUB_COUNT', '0');
-define('BIT_RELEASE_LEVEL', 'BETA');
-$dbversion_tiki = BIT_VERSION;
+define( 'BIT_MAJOR_VERSION',	'1' );
+define( 'BIT_MINOR_VERSION',	'0' );
+define( 'BIT_SUB_VERSION',		'0' );
+define( 'BIT_LEVEL',			'beta' );
 
-define('BIT_PKG_PATH', BIT_ROOT_PATH);
+define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
 
 // These defines have to happen FIRST because core classes depend on them.
 // This means these packages *CANNOT* be renamed
@@ -70,14 +66,16 @@ require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 global $gBitLanguage;
 $gBitLanguage = new BitLanguage();
 
+// pass version information on to smarty
+$smarty->assign( 'bitMajorVersion',	BIT_MAJOR_VERSION );
+$smarty->assign( 'bitMinorVersion',	BIT_MINOR_VERSION  );
+$smarty->assign( 'bitSubVersion',	BIT_SUB_VERSION  );
+$smarty->assign( 'bitLevel',		BIT_LEVEL );
+
+$smarty->assign( 'PHP_SELF', $_SERVER['PHP_SELF'] );
 
 require_once(KERNEL_PKG_PATH . 'BitCache.php');
 global $gBitUser, $gTicket, $smarty, $userlib, $gBitDbType;
-$smarty->assign('tikiproMajorVersion', BITWEAVER_MAJOR_VERSION);
-$smarty->assign('tikiproMinorVersion', BITWEAVER_MINOR_VERSION);
-$smarty->assign('tikiproOrigination', BITWEAVER_ORIGINATION );
-$smarty->assign('tikiproBranch', BITWEAVER_BRANCH);
-$smarty->assign('PHP_SELF', $_SERVER['PHP_SELF']);
 
 // for PHP<4.2.0
 if (!function_exists('array_fill'))

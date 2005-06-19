@@ -1,7 +1,6 @@
-{bitmodule title="$moduleTitle" name="tiki_info"}
+{bitmodule title="$moduleTitle" name="bit_info"}
 	<ul>
-		<li>Powered By <a href="http://www.bitweaver.org">bitweaver</a></li>
-		<li>Version: {$tikiproMajorVersion}{$tikiproMinorVersion}</li>
-		<li>-{$tikiproBranch}- {$tikiproOrigination}</li>
+		<li>Powered By <a href="http://bitweaver.org">bitweaver</a></li>
+		<li>Version: {$bitMajorVersion}.{$bitMinorVersion}.{$bitSubVersion} {$bitLevel}</li>
 	</ul>
 {/bitmodule}

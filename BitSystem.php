@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.1 2005/06/19 04:52:52 bitweaver Exp $
+// $Id: BitSystem.php,v 1.2 2005/06/19 08:07:25 lsces Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +29,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.1 $
+* @version $Revision: 1.2 $
 * @access public
 */
 
@@ -1246,7 +1246,7 @@ if( !$tablePresent ) {
 		// This saves a count() query to see if the ACTIVE_PACKAGE has a layout, since it usually probably doesn't
 		// I don't know if it's better or not to save the count() query and retrieve more data - my gut says so,
 		// but i've done no research - spiderr
-		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->mDb->mType != 'firebird15') {
+		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->mDb->mType != 'firebird') {
 			// ORDER BY comparison is crucial so current layout modules come up first
 			$whereClause .= " (tl.`layout`=? OR tl.`layout`=? ) ORDER BY tl.`layout`=? DESC, ";
 			array_push($bindVars, $pLayout);

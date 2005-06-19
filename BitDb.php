@@ -1,6 +1,6 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.2 2005/06/19 08:07:25 lsces Exp $
 *
 * Copyright (c) 2004 bitweaver.org
 * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+* $Id: BitDb.php,v 1.2 2005/06/19 08:07:25 lsces Exp $
 */
 
 // ensure your AdoDB install is a subdirectory off your include path
@@ -27,7 +27,7 @@ define( 'BIT_QUERY_DEFAULT', -1 );
 *
 * @author spider <spider@steelsun.com>
 *
-* @version $Revision: 1.1 $ $Date: 2005/06/19 04:52:53 $ $Author: bitweaver $
+* @version $Revision: 1.2 $ $Date: 2005/06/19 08:07:25 $ $Author: lsces $
 *
 * @class BitDb
 */
@@ -557,7 +557,7 @@ class BitDb
 					}
 					$pQuery .= $qe[$i];
 					break;
-				case "firebird15":
+				case "firebird":
 				case "mssql":
 				case "pgsql":
 				case "sybase":
@@ -587,7 +587,7 @@ class BitDb
 												"mysql3" => "RAND()",
 												"mysql" => "RAND()",
 												"mssql" => "NEWID()",
-												"firebird15" => "1"));
+												"firebird" => "1"));
 												//"oci8" => "" STILL NEEDED
 												//"sqlite" => "" STILL NEEDED
 												//"sybase" => "" STILL NEEDED
@@ -604,7 +604,7 @@ class BitDb
 		if (!$bIsFunction) {
 			switch ($this->mType)
 			{
-				case "firebird15":
+				case "firebird":
 					if ( $pSortMode == 'page_name_asc' ) $pSortMode = 'title_asc';
 					if ( $pSortMode == 'page_name_desc' ) $pSortMode = 'title_desc';
 				case "oci8":
@@ -638,7 +638,7 @@ class BitDb
 		switch ($this->mType)
 		{
 			case "oci8":
-			case "firebird15":
+			case "firebird":
 			case "sqlite":
 			break;
 			case "mysql3":

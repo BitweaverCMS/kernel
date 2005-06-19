@@ -67,13 +67,9 @@
 	--></script>
 	<script type="text/javascript" src="{$gBitLoc.KERNEL_PKG_URL}bitweaver.js"></script>
 
-	{*if $gBitLoc.browser.client ne 'sf' and $gBitSystemPrefs.feature_jstabs eq 'y'*}
-	{*if $gBitLoc.browser.client ne 'sf'}
-		<script type="text/javascript" src="{$gBitLoc.THEMES_PKG_URL}tabs/listener.js"></script>
-		<script type="text/javascript" src="{$gBitLoc.THEMES_PKG_URL}tabs/tabs.js"></script>
-		<script type="text/javascript" src="{$gBitLoc.THEMES_PKG_URL}tabs/tabs_load.js"></script>
-	{/if*}
-	<script type="text/javascript" src="{$gBitLoc.THEMES_PKG_URL}tabs/tabpane.js"></script>
+	{if $gBitSystemPrefs.disable_jstabs ne 'y'}
+		<script type="text/javascript" src="{$gBitLoc.THEMES_PKG_URL}tabs/tabpane.js"></script>
+	{/if}
 
 	{if $gBitLoc.browser.client eq 'ie'}
 		<!-- this wierdness fixes png display and CSS driven dropdown menus in GUESS WHAT BROWSER -->

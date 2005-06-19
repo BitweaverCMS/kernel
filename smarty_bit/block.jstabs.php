@@ -14,8 +14,11 @@
  * Abstract:	Used to enclose a set of tabs
  */
 function smarty_block_jstabs($params, $content, &$smarty) {
+	global $gBitSystem;
 	$ret  = '<div class="tabpane">'.$content.'</div>';
-	$ret .= "<script type=\"text/javascript\">//<![CDATA[\nsetupAllTabs();\n//]]></script>";
+	if( $gBitSystem->mPrefs['disable_jstabs'] != 'y' ) {
+		$ret .= "<script type=\"text/javascript\">//<![CDATA[\nsetupAllTabs();\n//]]></script>";
+	}
 	return $ret;
 }
 ?>

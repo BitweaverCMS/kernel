@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.2 2005/06/19 11:25:02 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.3 2005/06/19 11:29:54 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -93,7 +93,6 @@ $smarty->assign('admin_panels', $admin_panels);
 
 if( !empty( $_REQUEST['version_check'] ) ) {
 	$smarty->assign( 'version_info', $gBitSystem->checkBitVersion() );
-	//vd($gBitSystem->checkBitVersion());
 }
 
 // Display the template

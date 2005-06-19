@@ -25,5 +25,6 @@
 	{if $gBitSystemPrefs.feature_debug_console eq 'y'}
 		<li><a class="item" href="javascript:toggle('debugconsole');">{tr}Debugger console{/tr}</a></li>
 	{/if}
+	<li><a class="item" href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?version_check=1">{tr}Version Check{/tr}</a></li>
 </ul>
 {/strip}

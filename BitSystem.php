@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.4 2005/06/19 11:25:02 squareing Exp $
+// $Id: BitSystem.php,v 1.5 2005/06/19 12:23:53 lsces Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +29,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.4 $
+* @version $Revision: 1.5 $
 * @access public
 */
 
@@ -888,7 +888,8 @@ asort( $this->mAppMenu );
 				$lastQuote++;
 			}
 			$prefix = substr( BIT_DB_PREFIX,  $lastQuote );
-			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $prefix.'%' ) ) {
+			if ( $prefix ) $prefix .= '%';
+			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $prefix ) ) {
 				foreach( array_keys( $this->mPackages ) as $package ) {
 					if( !empty( $this->mPackages[$package]['tables'] ) ) {
 						foreach( array_keys( $this->mPackages[$package]['tables'] ) as $table ) {

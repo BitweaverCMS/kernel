@@ -13,7 +13,7 @@
  */
 function smarty_block_forminput($params, $content, &$smarty) {
 	if( $content ) {
-		$ret = '<div class="forminput">'.$content.'</div>';
+		$ret = '<div class="forminput'.( isset( $params['class'] ) ? ' '.$params['class'] : '' ).'">'.$content.'</div>';
 		return $ret;
 	}
 }

@@ -1,0 +1,148 @@
+<?php
+// $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1 2005/06/19 04:52:52 bitweaver Exp $
+// Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+// All Rights Reserved. See copyright.txt for details and a complete list of authors.
+// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
+// let smarty define SMARTY_DIR so it's an absolute path :
+define('SMARTY_DIR', UTIL_PKG_PATH . 'smarty/libs/');
+if( file_exists( SMARTY_DIR.'Smarty.class.php' ) ) {
+	// If we have adodb in our kernel, use that.
+	$smartyIncFile = SMARTY_DIR . 'Smarty.class.php';
+} else {
+	// assume it is in php's global include_path
+	$smartyIncFile = 'Smarty.class.php';
+}
+require_once($smartyIncFile);
+
+class PermissionCheck {
+	function check( $perm ) {
+		global $gBitUser;
+		return $gBitUser->hasPermission( $perm );
+	}
+}
+
+class BitSmarty extends Smarty
+{
+	function BitSmarty()
+	{
+		global $smarty_force_compile;
+		Smarty::Smarty();
+		$this->mCompileRsrc = NULL;
+		$this->config_dir = "configs/";
+		// $this->caching = false;
+		$this->force_compile = $smarty_force_compile;
+		$this->assign('app_name', 'bitweaver');
+		array_push( $this->plugins_dir,
+			KERNEL_PKG_PATH . "smarty_bit"
+		);
+		$this->register_prefilter("add_link_ticket");
+
+		global $permCheck;
+		$permCheck = new PermissionCheck();
+		$this->register_object('perm', $permCheck, array(), true, array('autoComplete'));
+		$this->assign_by_ref( 'perm', $permCheck );
+	}
+
+	function _smarty_include ($pParams)
+	{
+		$this->includeSiblingPhp($pParams['smarty_include_tpl_file']);
+		return parent::_smarty_include ($pParams);
+	}
+
+	function _compile_resource($resource_name, $compile_path)
+	{
+		// this is used when auto-storing untranslated master strings
+		$this->mCompileRsrc = $resource_name;
+		return parent::_compile_resource($resource_name, $compile_path);
+	}
+
+	function fetch($_smarty_tpl_file, $_smarty_cache_id = null, $_smarty_compile_id = null, $_smarty_display = false)
+	{
+		$this->verifyCompileDir();
+		$_smarty_cache_id = $_smarty_cache_id;
+		$_smarty_compile_id = $_smarty_compile_id;
+		// the PHP sibling file needs to be included here, before the fetch so caching works properly
+		$this->includeSiblingPhp($_smarty_tpl_file);
+		return parent::fetch($_smarty_tpl_file, $_smarty_cache_id, $_smarty_compile_id, $_smarty_display);
+	}
+	// {{{ includeSiblingPhp
+	/**
+	* THE method to invoke if you want to be sure a tpl's sibling php file gets included if it exists. This
+	* should not need to be invoked from anywhere except within this class
+	*
+	* @param string $pRsrc resource of the template, should be of the form "bitpackage:<packagename>/<templatename>"
+	* @return TRUE if a sibling php file was included
+	* @access private
+	*/
+	function includeSiblingPhp($pRsrc)
+	{
+		$ret = false;
+		if (strpos($pRsrc, ':'))
+		{
+			list($resource, $location) = split(':', $pRsrc);
+			if ($resource == 'bitpackage')
+			{
+				list($package, $template) = split('/', $location);
+				// print "( $resource, $location )  ( $package, $template )<br/>";
+				$subdir = preg_match('/mod_/', $template) ? 'modules' : 'templates';
+				if (preg_match('/mod_/', $template) || preg_match('/center_/', $template))
+				{
+					global $gBitSystem;
+					$path = $gBitSystem->mPackages[$package]['path'];
+					$modPhpFile = str_replace('.tpl', '.php', "$path$subdir/$template");
+					if (file_exists($modPhpFile))
+					{
+						global $gBitSystem, $gBitSystem, $gBitUser, $user, $smarty, $gQueryUserId, $module_rows, $module_params, $module_column;
+						include_once($modPhpFile);
+						$ret = true;
+					}
+				}
+			}
+		}
+	}
+
+	function verifyCompileDir()
+	{
+		global $gBitSystem, $gBitLanguage, $bitdomain;
+		if (!defined("TEMP_PKG_PATH")) {
+			$temp = BIT_ROOT_PATH . "temp/";
+		} else {
+			$temp = TEMP_PKG_PATH;
+		}
+		$style = $gBitSystem->getStyle();
+		$endPath = "$bitdomain/$style/".$gBitLanguage->mLanguage;
+
+ 		// Compile directory
+		$compDir = $temp . "templates_c/$endPath";
+		$compDir = str_replace('//', '/', $compDir);
+		$compDir = clean_file_path($compDir);
+		mkdir_p($compDir);
+		$this->compile_dir = $compDir;
+
+		// Cache directory
+		$cacheDir = $temp . "cache/$endPath";
+		$cacheDir = str_replace('//', '/', $cacheDir);
+		$cacheDir = clean_file_path($cacheDir);;
+		mkdir_p($cacheDir);
+		$this->cache_dir = $cacheDir;
+
+	}
+}
+// This will insert a ticket on all template URL's that have GET parameters.
+function add_link_ticket($tpl_source, &$smarty)
+{
+	global $gBitUser;
+	require_once(USERS_PKG_PATH."BitUser.php");
+
+	if ( is_object( $gBitUser ) && $gBitUser->isValid() ) {
+		$from = '#href="(.*PKG_URL.*php)\?(.*)&(.*)"#i';
+		$to = 'href="\\1?\\2&amp;fTicket='.$gBitUser->mTicket.'&\\3"';
+		$ret = preg_replace($from, $to, $tpl_source);
+	} else {
+		$ret = $tpl_source;
+	}
+
+	return $ret;
+}
+
+?>

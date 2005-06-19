@@ -1,0 +1,38 @@
+This file describes how to set up tescases for (Smarty)filters.
+The 'TestBitSmartyFilter.php' is an input - output tester that feeds
+the contents of a file to the function to be tested  (in the first paramter)
+and compares what the function returns with another file.
+
+Right now the tester is only set up to test smarty filters in the ../kernel/smarty_tiki
+directory, but testing in other directories could be aded by refactoring the code.
+
+Follow these steps to set up a new test:
+
+1. Create a directory (if not allready present) that is named analogously
+   to the filter you want to test:
+   <filtertype>.<filtername>, e.g. prefilter.tr
+   in the 'smarty_filter_tests' directory
+
+1.5 'chmod' this directory so that it is writeable by your webserver,
+    otherwise creation of the error file, useful for debugging,
+    will not be possible.
+
+2. Create a file in the created directory that should be used as input for 
+   the test. Name it <arbitraryname>.input
+
+3. Run the tests by directing your browser to http://<tikiproroot>/kernel/test
+
+4. The test will fail, since there is no <arbitraryname>.output file.
+   Instead a file named <arbitraryname>.error will be generated.
+   <arbitraryname> is the same name as in point 2.
+
+5. Inspect the <arbitraryname>.error file. If the output is the expected,
+   you should rename the <arbitraryname>.error to <arbitraryname>.output.
+   Running the test again (reloading the browser, should now be succesful).
+   If the output is not the expected, correct the filter and continue from
+   step 3.
+
+You can add more test by creating more files in the directory created in 1.
+
+
+Happy testing.

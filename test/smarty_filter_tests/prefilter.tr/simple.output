@@ -1,0 +1,5 @@
+
+
+This is som text that should not be translted 
+ This is some text that should be translated, however it is not in the
+dictionary, so it will not be translated, but the enclosing tr tags will dissapear 

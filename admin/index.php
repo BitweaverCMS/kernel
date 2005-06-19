@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.2 2005/06/19 11:25:02 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -68,11 +68,11 @@ if (isset($_REQUEST["page"])) {
 
 		$adminPage =  constant( strtoupper( $package ).'_PKG_PATH' ).'/admin/admin_'.$file.'_inc.php';
 	}
-$smarty->assign('package', $package );
-$smarty->assign('file', $file );
+	$smarty->assign('package', $package );
+	$smarty->assign('file', $file );
 	include_once ( $adminPage );
 	// Spiderr - a bit hackish, but need to force preferences refresh
-$gBitSystem->loadPreferences();
+	$gBitSystem->loadPreferences();
 } else {
 //vd( $gBitSystem->mPackages );
 	$adminTemplates = array();
@@ -90,6 +90,11 @@ $gBitSystem->loadPreferences();
 
 $admin_panels = $gBitSystem->mAppMenu;
 $smarty->assign('admin_panels', $admin_panels);
+
+if( !empty( $_REQUEST['version_check'] ) ) {
+	$smarty->assign( 'version_info', $gBitSystem->checkBitVersion() );
+	//vd($gBitSystem->checkBitVersion());
+}
 
 // Display the template
 $gBitSystem->display( 'bitpackage:kernel/admin.tpl' );

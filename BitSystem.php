@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.3 2005/06/19 10:46:41 squareing Exp $
+// $Id: BitSystem.php,v 1.4 2005/06/19 11:25:02 squareing Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +29,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.3 $
+* @version $Revision: 1.4 $
 * @access public
 */
 
@@ -2093,10 +2093,10 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 			}
 			@fclose( $fsock );
 
-			if( !empty( $data ) ) {
-				// nuke all blank lines and comments - '//'
-				$data = preg_replace( "/^\/\/.*\n/", "", $data );
-				$versions = explode( "\n", $data );
+			// nuke all lines that don't start with a number
+			$data = preg_match_all( "/(\d.*)\n/", $data, $versions );
+			$versions = $versions[1];
+			if( !empty( $versions ) ) {
 				sort( $versions );
 				foreach( $versions as $version ) {
 					if( preg_match( "/^".BIT_RELEASE."/", $version ) ) {
@@ -2109,6 +2109,9 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 				if( $release[0] > BIT_RELEASE ) {
 					$ret['release'] = implode( '.', $release );
 				}
+			} else {
+				$error['number'] = 1;
+				$error['string'] = tra( 'No version information could be gathered. Perhaps there was a problem connecting to bitweaver.org.' );
 			}
 		}
 		$ret['error'] = $error;

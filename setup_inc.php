@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.2 2005/06/19 11:25:02 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -7,10 +7,13 @@ require_once(BIT_ROOT_PATH . 'kernel/config_defaults_inc.php');
 
 error_reporting( BIT_PHP_ERROR_REPORTING );
 
+// i propose we use: BIT_RELEASE.BIT_RELEASE_COUNT.BIT_RELEASE_SUB_COUNT
+// not sure what we should do with BIT_VERSION
 define('BIT_VERSION', 'Clyde');
-define('BIT_RELEASE', '3');
+define('BIT_RELEASE', '1');
+define('BIT_RELEASE_COUNT', '0');
+define('BIT_RELEASE_SUB_COUNT', '0');
 define('BIT_RELEASE_LEVEL', 'BETA');
-define('BIT_RELEASE_COUNT', '2');
 $dbversion_tiki = BIT_VERSION;
 
 define('BIT_PKG_PATH', BIT_ROOT_PATH);

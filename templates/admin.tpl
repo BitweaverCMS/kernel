@@ -23,6 +23,45 @@
 			{* SPIDERKILL FOR NOW include file="bitpackage:kernel/anchors.tpl" *}
 			{include file="bitpackage:$package/admin_`$file`.tpl"}
 		{else}
+			{if $version_info.error.number ne 0}
+				{formfeedback error=$version_info.error.string}
+			{elseif $version_info}
+				{legend legend="Version Check"}
+					{if $version_info.compare eq 0 and !$version_info.release}
+						{formfeedback success="{tr}Your version is up to date.{/tr}"}
+					{elseif $version_info.compare lt 0 or $version_info.release}
+						{formfeedback warning="{tr}Your version is not up to date.{/tr}"}
+					{/if}
+
+					<div class="row">
+						{formlabel label="Your Version"}
+						{forminput}
+							<strong>bitweaver {$version_info.local}</strong>
+						{/forminput}
+					</div>
+
+					{if $version_info.compare lt 0}
+						<div class="row">
+							{formlabel label="Upgrade"}
+							{forminput class=warning}
+								<strong>bitweaver {$version_info.upgrade}</strong>
+								{formhelp page="Release_`$version_info.upgrade`}
+							{/forminput}
+						</div>
+					{/if}
+
+					{if $version_info.release}
+						<div class="row">
+							{formlabel label="Latest Release"}
+							{forminput class=warning}
+								<strong>bitweaver {$version_info.release}</strong>
+								{formhelp page="Release_`$version_info.release`}
+							{/forminput}
+						</div>
+					{/if}
+				{/legend}
+			{/if}
+
 			<table width="100%" class="menutable">
 				<tr>
 					<td style="width:25%;vertical-align:top;" rowspan="10">

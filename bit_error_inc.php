@@ -96,7 +96,8 @@ function tiki_error_string( $iDBParms ) {
 		$acctStr = "User unknown";
     }
 
-    $info = "[ - ".BIT_VERSION." v".BIT_RELEASE."-".BIT_RELEASE_LEVEL." ".BIT_RELEASE_COUNT." - ] [ $date ]".$separator;
+	$info  = $indent."[ - ".BIT_MAJOR_VERSION.".".BIT_MINOR_VERSION.".".BIT_SUB_VERSION." ".BIT_LEVEL." - ] [ $date ]".$separator;
+	$info .= $indent."-----------------------------------------------------------------------------------------------".$separator;
     $info .= $indent."#### USER AGENT: ".$_SERVER['HTTP_USER_AGENT'].$separator;
     $info .= $indent."#### ACCT: ".$acctStr.$separator;
     $info .= $indent."#### URL: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$separator;

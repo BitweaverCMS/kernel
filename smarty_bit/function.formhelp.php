@@ -22,7 +22,7 @@
  *									passed in as an array:
  *										package => name of package to be installed
  *										file => path to installation file e.g.: admin/install.php
- *			- page		(optional)	page name on tikipro
+ *			- page		(optional)	page name on bitweaver
  *									only dispalyed if feature_help is enabled
  *			- force		(optional)	if set, it will always dipslay this entry regardless of the feature settings
  */

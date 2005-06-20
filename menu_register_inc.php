@@ -1,5 +1,5 @@
 <?php
-	// $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.1 2005/06/19 04:52:52 bitweaver Exp $
+	// $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.2 2005/06/20 07:27:14 lsces Exp $
 	// This file only needs to be called once, and only when you plan on rendering the app menu, or something similar.
 	// TODO: All of the following should be moved to package specific initialization files, however, for now,
 	// 		 they are all in this single place, and eventually this file totally will go away - spiderr
@@ -10,7 +10,7 @@
 
 	// =========================== My ===========================
 	if( $gBitUser->isValid() ) {
-		$gBitSystem->registerAppMenu( 'users', 'My '.$gBitSystem->getPreference('siteTitle', 'Tikipro'), ($gBitSystem->getPreference('feature_userPreferences') == 'y' ? USERS_PKG_URL.'my.php':''), 'bitpackage:users/menu_users.tpl' );
+		$gBitSystem->registerAppMenu( 'users', 'My '.$gBitSystem->getPreference('siteTitle', 'bitweaver'), ($gBitSystem->getPreference('feature_userPreferences') == 'y' ? USERS_PKG_URL.'my.php':''), 'bitpackage:users/menu_users.tpl' );
 	}
 	// =========================== Admin menu ===========================
 

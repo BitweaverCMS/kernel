@@ -20,7 +20,7 @@ Follow these steps to set up a new test:
 2. Create a file in the created directory that should be used as input for 
    the test. Name it <arbitraryname>.input
 
-3. Run the tests by directing your browser to http://<tikiproroot>/kernel/test
+3. Run the tests by directing your browser to http://<bitweaverroot>/kernel/test
 
 4. The test will fail, since there is no <arbitraryname>.output file.
    Instead a file named <arbitraryname>.error will be generated.

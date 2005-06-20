@@ -61,7 +61,7 @@ function tiki_error_handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnect
 
 	if( ( !defined('IS_LIVE') || !IS_LIVE) ) {
 	    print  '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>bitweaver - White Screen of Death</title></head><body>';
-		print "\n<p><a href='http://sourceforge.net/tracker/?func=add&amp;group_id=101599&amp;atid=630083'>Click here to log a bug</a>, if this appears to be an error with the application.</p>\n";
+		print "\n<p><a href='http://sourceforge.net/tracker/?func=add&amp;group_id=141358&amp;atid=749176'>Click here to log a bug</a>, if this appears to be an error with the application.</p>\n";
 		print "<p><a href='".BIT_ROOT_URL."install/install.php'>Go here to begin the installation process</a>, if you haven't done so already.</p>\n";
 // 		print "<h1>Upgrade Beta 1 to Beta 2</h1>If you are getting this error because you just upgraded your bitweaver from Beta 1 to Beta 2, please follow this link to the installer, which will guide you through the upgrade process: <a href='".BIT_ROOT_URL."install/install.php?step=4'>Upgrade Beta 1 to Beta 2</a>";
 		print "<pre>".$logString."</pre>";

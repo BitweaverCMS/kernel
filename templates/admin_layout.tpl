@@ -11,14 +11,22 @@
 					{section name=ix loop=$layout.$area}
 						<tr class="{cycle values="even,odd"}">
 							<td>
-								{tr}Position {$layout.$area[ix].ord}{/tr}<br />
-								{$layout.$area[ix].name}
+								<div class="highlight">{$layout.$area[ix].name}</div>
+								<strong>{tr}Position{/tr}</strong>: {$layout.$area[ix].ord}
 								<br />
 
-								{if $layout.$area[ix].title}{tr}Title{/tr}: {$layout.$area[ix].title}<br />{/if}
-								{if $layout.$area[ix].cache_time}{tr}Cache Time{/tr}: {$layout.$area[ix].cache_time}<br />{/if}
-								{if $layout.$area[ix].rows}{tr}Rows{/tr}: {$layout.$area[ix].rows}<br />{/if}
-								{if $layout.$area[ix].params}{tr}Parameters{/tr}: {$layout.$area[ix].params}<br />{/if}
+								{if $layout.$area[ix].title}
+									<strong>{tr}Title{/tr}</strong>: {$layout.$area[ix].title}<br />
+								{/if}
+								{if $layout.$area[ix].cache_time}
+									<strong>{tr}Cache Time{/tr}</strong>: {$layout.$area[ix].cache_time}<br />
+								{/if}
+								{if $layout.$area[ix].rows}
+									<strong>{tr}Rows{/tr}</strong>: {$layout.$area[ix].rows}<br />
+								{/if}
+								{if $layout.$area[ix].params}
+									<strong>{tr}Parameters{/tr}</strong>:<br />{$layout.$area[ix].params|replace:"&":"<br />"}
+								{/if}
 
 								<div style="text-align:center;">
 									{smartlink ititle="Up" ibiticon="liberty/move_up" page=layout fMove=up fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}

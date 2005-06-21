@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.6 2005/06/19 21:07:50 squareing Exp $
+// $Id: BitSystem.php,v 1.7 2005/06/21 16:45:47 spiderr Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +29,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.6 $
+* @version $Revision: 1.7 $
 * @access public
 */
 
@@ -881,6 +881,7 @@ asort( $this->mAppMenu );
 	* @access public
 	*/
 	function verifyInstalledPackages() {
+		global $gBitDbType;
 		$this->scanPackages( 'admin/schema_inc.php' );
 		if( $this->isDatabaseValid() ) {
 			$lastQuote = strrpos( BIT_DB_PREFIX, '`' );
@@ -888,8 +889,8 @@ asort( $this->mAppMenu );
 				$lastQuote++;
 			}
 			$prefix = substr( BIT_DB_PREFIX,  $lastQuote );
-			if ( $prefix ) $prefix .= '%';
-			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $prefix ) ) {
+ 			$showTables = ( $prefix ? $prefix.'%' : NULL );
+			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $showTables ) ) {
 				foreach( array_keys( $this->mPackages ) as $package ) {
 					if( !empty( $this->mPackages[$package]['tables'] ) ) {
 						foreach( array_keys( $this->mPackages[$package]['tables'] ) as $table ) {

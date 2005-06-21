@@ -12,7 +12,7 @@ class BackupLib extends BitBase {
 		$pwd = $this->getOne($query,array(ROOT_USER_ID));
 
 		switch ($gBitDbType) {
-			case "pgsql":
+			case "postgres":
 				$query = "select `tablename` from `pg_tables` where `tablename` not like 'pg_%' and `tablename` not like 'sql_%'";
 				break;
 			case "mysql":
@@ -116,7 +116,7 @@ class BackupLib extends BitBase {
 			return false;
 
 		switch ($gBitDbType) {
-			case "pgsql":
+			case "postgres":
 				$query = "select `tablename` from `pg_tables` where `tablename` not like 'pg_%' and `tablename` not like 'sql_%'";
 				break;
 			case "mysql":

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.4 2005/06/21 15:40:18 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5 2005/06/21 17:55:11 bitweaver Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -10,7 +10,7 @@ error_reporting( BIT_PHP_ERROR_REPORTING );
 define( 'BIT_MAJOR_VERSION',	'1' );
 define( 'BIT_MINOR_VERSION',	'0' );
 define( 'BIT_SUB_VERSION',		'0' );
-define( 'BIT_LEVEL',			'beta' );
+define( 'BIT_LEVEL',			'' ); // 'beta' or 'dev' or 'rc' etc..
 
 define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
 

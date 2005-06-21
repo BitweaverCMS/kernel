@@ -1,6 +1,6 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.2 2005/06/19 08:07:25 lsces Exp $
+* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.3 2005/06/21 10:21:26 wolff_borg Exp $
 *
 * Copyright (c) 2004 bitweaver.org
 * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.2 2005/06/19 08:07:25 lsces Exp $
+* $Id: BitDb.php,v 1.3 2005/06/21 10:21:26 wolff_borg Exp $
 */
 
 // ensure your AdoDB install is a subdirectory off your include path
@@ -27,7 +27,7 @@ define( 'BIT_QUERY_DEFAULT', -1 );
 *
 * @author spider <spider@steelsun.com>
 *
-* @version $Revision: 1.2 $ $Date: 2005/06/19 08:07:25 $ $Author: lsces $
+* @version $Revision: 1.3 $ $Date: 2005/06/21 10:21:26 $ $Author: wolff_borg $
 *
 * @class BitDb
 */
@@ -128,10 +128,6 @@ class BitDb
 			// we have a db we're gonna try to load
 			switch ($this->mType)
 			{
-				case "pgsql":
-				case "postgres7":
-				$this->mType = "pgsql";
-				break;
 				case "sybase":
 				// avoid database change messages
 				ini_set("sybct.min_server_severity", "11");
@@ -157,7 +153,7 @@ class BitDb
 			case "mssql":
 			$this->mDb->Execute("set quoted_identifier on");
 			break;
-			case "pgsql":
+			case "postgres":
 			// Do a little prep work for postgres, no break, cause we want default case too
 			if (defined("BIT_DB_PREFIX") && preg_match( "/\./", BIT_DB_PREFIX) )
 			{
@@ -559,7 +555,7 @@ class BitDb
 					break;
 				case "firebird":
 				case "mssql":
-				case "pgsql":
+				case "postgres":
 				case "sybase":
 					$pQuery = preg_replace("/`/", "\"", $pQuery);
 					break;
@@ -583,7 +579,7 @@ class BitDb
 		$pSortMode = preg_replace( '/^user_/', 'login_', $pSortMode );
 
 		$bIsFunction = FALSE;
-		$functionMap = array( 'random' => array("pgsql" => "RANDOM()",
+		$functionMap = array( 'random' => array("postgres" => "RANDOM()",
 												"mysql3" => "RAND()",
 												"mysql" => "RAND()",
 												"mssql" => "NEWID()",
@@ -612,7 +608,7 @@ class BitDb
 				case "mssql":
 				case "sqlite":
 				case "mysql3":
-				case "pgsql":
+				case "postgres":
 				case "mysql":
 				default:
 					$pSortMode = preg_replace("/_asc$/", "` ASC", $pSortMode);
@@ -719,8 +715,7 @@ class BitDb
 	function db_byte_encode( &$pData ) {
 		global $ADODB_LASTDB;
 		switch ($ADODB_LASTDB) {
-			case "postgres7":
-			case "pgsql":
+			case "postgres":
 				$search = array(chr(92), chr(0), chr(39));
 				$replace = array('\\\134', '\\\000', '\\\047');
 				$ret = str_replace($search, $replace, $pData);
@@ -742,8 +737,7 @@ class BitDb
 	function db_byte_decode( &$pData ) {
 		global $ADODB_LASTDB;
 		switch ($ADODB_LASTDB) {
-			case "postgres7":
-			case "pgsql":
+			case "postgres":
 				$ret = stripcslashes( $pData );
 				break;
 			default:

@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7 2005/06/21 16:45:47 spiderr Exp $
+// $Id: BitSystem.php,v 1.7.2.1 2005/06/21 22:15:39 squareing Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +29,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7 $
+* @version $Revision: 1.7.2.1 $
 * @access public
 */
 
@@ -2079,7 +2079,7 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 		$error['string'] = $data = '';
 
 		if( $fsock = @fsockopen( 'www.bitweaver.org', 80, $error['number'], $error['string'], 30 ) ) {
-			@fwrite( $fsock, "GET /_bitversion/versions.txt HTTP/1.1\r\n" );
+			@fwrite( $fsock, "GET /bitversion.txt HTTP/1.1\r\n" );
 			@fwrite( $fsock, "HOST: www.bitweaver.org\r\n" );
 			@fwrite( $fsock, "Connection: close\r\n\r\n" );
 

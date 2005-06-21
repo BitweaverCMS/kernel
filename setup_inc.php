@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.3 2005/06/19 21:07:50 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.4 2005/06/21 15:40:18 lsces Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -194,7 +194,7 @@ if( $gBitDb->isValid() ) {
 	$smarty->assign_by_ref("gBitLoc", $gBitLoc);
 	// check to see if admin has closed the site
 	$site_closed = $gBitSystem->getPreference('site_closed', 'n');
-	if ($site_closed == 'y' && !$gBitUser->hasPermission($user, 'bit_p_access_closed_site') && !isset($bypass_siteclose_check))
+	if ($site_closed == 'y' && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check))
 	{
 		$site_closed_msg = $gBitSystem->getPreference('site_closed_msg', 'Site is closed for maintainance; please come back later.');
 		$url = KERNEL_PKG_URL . 'error_simple.php?error=' . urlencode("$site_closed_msg");

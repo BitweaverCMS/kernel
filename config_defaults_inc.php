@@ -26,7 +26,7 @@ if (!defined('BIT_ROOT_URL' )) {
     define('BIT_ROOT_URL', $subpath );
 }
 if( !defined( 'BIT_SESSION_NAME' ) ) {
-	define( 'BIT_SESSION_NAME', 'TIKISESSION' );
+	define( 'BIT_SESSION_NAME', 'BWSESSION' );
 }
 if( !defined( 'BIT_PHP_ERROR_REPORTING' ) ) {
 	define( 'BIT_PHP_ERROR_REPORTING', E_ALL );

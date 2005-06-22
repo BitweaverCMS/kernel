@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.1 2005/06/21 22:15:39 squareing Exp $
+// $Id: BitSystem.php,v 1.7.2.2 2005/06/22 07:18:47 squareing Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +29,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.1 $
+* @version $Revision: 1.7.2.2 $
 * @access public
 */
 
@@ -2098,7 +2098,7 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 			// nuke all lines that don't start with a number
 			$data = preg_match_all( "/(\d.*)\n/", $data, $versions );
 			$versions = $versions[1];
-			if( !empty( $versions ) ) {
+			if( !empty( $versions ) && preg_match( "/\d+\.\d+\.\d+/", $versions[0] ) ) {
 				sort( $versions );
 				foreach( $versions as $version ) {
 					if( preg_match( "/^".BIT_MAJOR_VERSION."/", $version ) ) {

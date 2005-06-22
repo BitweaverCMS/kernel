@@ -101,6 +101,7 @@
 				theme		: "advanced",
 				plugins		: "table",
 				debug		: false,
+				cleanup		: false,
 				content_css : "{$gBitLoc.THEMES_STYLE_URL}tinymce/tinymce.css",
 				theme_advanced_buttons3_add_before : "tablecontrols,separator",
 				theme_advanced_styles : "Tiki Box=tikibox;Tiki Bar=tikibar;Tiki Table=tikitable;Odd table row=odd;Even table row=even"

@@ -261,7 +261,7 @@ class ModLib extends BitBase {
 			$query = "UPDATE `".BIT_DB_PREFIX."tiki_layouts` SET `rows` = ?  WHERE `module_id` = ? AND `user_id` = ?";
 			$result = $this->query($query, array($rows, $module_id, $user_id));
 		} else {
-			$query = "UPDATE ".BIT_DB_PREFIX."`tiki_layouts_modules` SET `rows = ? WHERE `module_id` = ?";
+			$query = "UPDATE ".BIT_DB_PREFIX."`tiki_layouts_modules` SET `rows` = ? WHERE `module_id` = ?";
 			$result = $this->query($query, array($rows, $module_id));
 		}
 

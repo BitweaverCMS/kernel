@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.2 2005/06/22 07:18:47 squareing Exp $
+// $Id: BitSystem.php,v 1.7.2.3 2005/06/24 13:29:59 wolff_borg Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +29,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.2 $
+* @version $Revision: 1.7.2.3 $
 * @access public
 */
 
@@ -988,7 +988,7 @@ asort( $this->mAppMenu );
 				$url = USERS_PKG_URL . 'login.php';
 			}
 		} elseif( !empty( $bitIndex ) ) {
-			$url = $bitIndex;
+			$url = BIT_ROOT_URL.$bitIndex;
 		}
 		// if no special case was matched above, default to users' my page
 		if( empty( $url ) ) {
@@ -1000,7 +1000,6 @@ asort( $this->mAppMenu );
 				$url = USERS_PKG_URL . 'my.php';
 			}
 		}
-
 		return $url;
 	}
 	// === getStyle

@@ -14,7 +14,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.3 2005/06/24 13:29:59 wolff_borg Exp $
+// $Id: BitSystem.php,v 1.7.2.4 2005/06/25 14:42:54 spiderr Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +29,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.3 $
+* @version $Revision: 1.7.2.4 $
 * @access public
 */
 
@@ -2118,6 +2118,23 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 		$ret['error'] = $error;
 		return $ret;
 	}
+
+	// should be moved somewhere else. unbreaking things for now - 25-JUN-2005 - spiderr
+	// \todo remove html hardcoded in diff2
+	function diff2($page1, $page2) {
+		$page1 = split("\n", $page1);
+		$page2 = split("\n", $page2);
+		$z = new WikiDiff($page1, $page2);
+		if ($z->isEmpty()) {
+		$html = '<hr /><br />[' . tra("Versions are identical"). ']<br /><br />';
+		} else {
+		//$fmt = new WikiDiffFormatter;
+		$fmt = new WikiUnifiedDiffFormatter;
+		$html = $fmt->format($z, $page1);
+		}
+		return $html;
+	}
+
 }
 
 // === installError

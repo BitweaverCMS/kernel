@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.3 2005/06/27 14:13:23 lsces Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.4 2005/06/27 18:59:20 lsces Exp $
 * @package Smarty
 */
 
@@ -12,7 +12,7 @@
  */
 define('SMARTY_DIR', UTIL_PKG_PATH . 'smarty/libs/');
 if( file_exists( SMARTY_DIR.'Smarty.class.php' ) ) {
-	// If we have adodb in our kernel, use that.
+	// If we have smarty in our kernel, use that.
 	$smartyIncFile = SMARTY_DIR . 'Smarty.class.php';
 } else {
 	// assume it is in php's global include_path

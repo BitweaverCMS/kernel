@@ -5,7 +5,7 @@
  * @subpackage plugins
  */
 
-/*
+/**
  * Smarty plugin
  * -------------------------------------------------------------
  * Type:     modifier

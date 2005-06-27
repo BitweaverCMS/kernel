@@ -5,6 +5,9 @@
  * @subpackage plugins
  */
 
+/**
+ * smarty_modifier_bit_long_date
+ */
 require_once $smarty->_get_plugin_filepath('modifier','bit_date_format');
 function smarty_modifier_bit_long_date($string)
 {

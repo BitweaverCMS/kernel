@@ -1,4 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+ * smarty_function_gallery
+ */
 function smarty_function_gallery($params, &$smarty)
 {
     global $gBitSystem;

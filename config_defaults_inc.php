@@ -1,4 +1,8 @@
 <?php
+/**
+* @package BitBase
+*/
+
 $config_file = empty($_SERVER['CONFIG_INC']) ? BIT_ROOT_PATH.'kernel/config_inc.php' : $_SERVER['CONFIG_INC'];
 
 if (file_exists($config_file ) ) {

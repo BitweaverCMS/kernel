@@ -1,6 +1,18 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+ * smarty_function_base
+ */
 require_once( KERNEL_PKG_PATH.'BitBase.php' );
 
+/**
+ * smarty_function_poll
+ */
 function smarty_function_poll($params, &$smarty) {
     global $polllib, $gBitSystem;
 

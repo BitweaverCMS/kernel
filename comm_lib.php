@@ -1,4 +1,7 @@
 <?php
+/**
+* @package BitBase
+*/
 
 class CommLib extends BitBase {
 	function CommLib() {					BitBase::BitBase();

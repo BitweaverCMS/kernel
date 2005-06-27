@@ -1,4 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+ * smarty_function_elapsed
+ */
 function smarty_function_elapsed($params, &$smarty)
 {
     global $gBitSystem;

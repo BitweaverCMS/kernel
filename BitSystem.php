@@ -1,4 +1,10 @@
 <?php
+/**
+* @package BitBase
+* @author spider <spider@steelsun.com>
+* @version $Revision: 1.7.2.5 $
+* @access public
+*/
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
 // +----------------------------------------------------------------------+
@@ -14,7 +20,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.4 2005/06/25 14:42:54 spiderr Exp $
+// $Id: BitSystem.php,v 1.7.2.5 2005/06/27 00:39:23 lsces Exp $
 /**
 * kernel::BitSystem
 *
@@ -29,7 +35,7 @@
 * 	is Package specific should be moved into that package
 *
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.4 $
+* @version $Revision: 1.7.2.5 $
 * @access public
 */
 
@@ -42,7 +48,9 @@ define('CENTER_COLUMN', 'c');
 define('HOMEPAGE_LAYOUT', 'home');
 
 class BitSystem extends BitBase
-{
+{	/**
+	* @package BitSystem
+	*/
 	// === properties
 	/**
 	* * Array of  *
@@ -423,7 +431,6 @@ class BitSystem extends BitBase
 	* It will verify that the given package is active or it will display the error template and die()
 	* @param $pPackageName the name of the package to test
 	* @return none
-	* @access public
 	*
 	* @param  $pKey hash key
 	* @return none
@@ -2164,7 +2171,9 @@ function installError($pMsg = null)
 }
 // >>>
 class TikiTimer
-{
+{	/**
+	* @package TikiTimer
+	*/
 	function parseMicro($micro)
 	{
 		list($micro, $sec) = explode(' ', microtime());

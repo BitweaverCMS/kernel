@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package BitBase
+ */
 
 class BanLib extends BitBase {
 	function BanLib() {				

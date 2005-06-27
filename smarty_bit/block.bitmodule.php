@@ -1,5 +1,10 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
 /**
  * \brief Smarty {bitmodule}{/bitmodule} block handler
  *

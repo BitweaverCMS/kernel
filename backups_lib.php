@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package BitBase
+ */
 
 class BackupLib extends BitBase {
 	function BackupLib() {

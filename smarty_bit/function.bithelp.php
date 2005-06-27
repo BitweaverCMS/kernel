@@ -1,5 +1,17 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+ * source elements
+ */
 require_once('function.biticon.php');
+/**
+* smarty_function_bithelp
+*/
 function smarty_function_bithelp($params, &$smarty) {
 	global $gBitSystem, $gBitUser;
 	$outstr = "";

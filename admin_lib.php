@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @package BitBase
+ */
+ 
 class AdminLib extends BitBase {
 	function AdminLib() {
 		BitBase::BitBase();

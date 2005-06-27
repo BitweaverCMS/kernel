@@ -1,4 +1,9 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
 /**** smarty_function_displayName
 	*	This is a smarty function which will allow different values to be

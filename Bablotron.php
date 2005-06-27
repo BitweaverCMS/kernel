@@ -1,6 +1,6 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/Bablotron.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/Bablotron.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
 *
 * Copyright (c) 2004 bitweaver.org
 * Copyright (c) 2003 tikwiki.org
@@ -8,19 +8,18 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: Bablotron.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
-*/
-/**
+* $Id: Bablotron.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
+*
 * A spell checking library.
 *
 * Currently used for BitBase.
 *
-* @date created 2002/11/14
+* @package Bablotron
+*
+* created 2002/11/14
 * @author lrargerich <lrargerich@yahoo.com>
 *
-* @version $Revision: 1.1 $ $Date: 2005/06/19 04:52:53 $ $Author: bitweaver $
-*
-* @class Bablotron
+* @version $Revision: 1.1.1.1.2.1 $ $Date: 2005/06/27 00:39:23 $ $Author: lsces $
 * @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
 * global variable.
 */

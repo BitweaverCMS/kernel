@@ -1,28 +1,34 @@
 <?php
-/*
-Experimental work not finished yet
-An attempt to componentize all tables showing query results
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
-Usage:
-{querytable
-	table =""   (Table or tables, example tiki_pages,users)
-	template = "" (Template to be used for table rows, put them in templates/tables)
+/**
+ * Experimental work not finished yet
+ * An attempt to componentize all tables showing query results
 
-	where = "" (Where condition for the query)
-	columns="col1,col2,col3" (Columns to be selected from the query, default = *)
-	colalign="left,center,right" (Alignement for columns you can also use the template for this)
-	sort_column = "col2" (Column to sort the data initially)
-	sort_order = "desc" (Sort order)
-	max_rows = "10" (Max number of rows to display per page)
-	height = "" (Height for the table area)
-	directpagination = "0" (Use directlinks to pages)
-	combopagination = "0" (Use a combo to directly jump to a page)
-	tableclass = "normal" (CSS class name for the table)
-	columnheadingclass = "normal" (CSS class name for the columnheadings)
-	oddrowclass = "odd"
-	evenrowclass = "even"
-}
-*/
+ * Usage:
+ * {querytable
+ *	table =""   (Table or tables, example tiki_pages,users)
+ *	template = "" (Template to be used for table rows, put them in templates/tables)
+ *
+ *	where = "" (Where condition for the query)
+ *	columns="col1,col2,col3" (Columns to be selected from the query, default = *)
+ *	colalign="left,center,right" (Alignement for columns you can also use the template for this)
+ *	sort_column = "col2" (Column to sort the data initially)
+ *	sort_order = "desc" (Sort order)
+ *	max_rows = "10" (Max number of rows to display per page)
+ *	height = "" (Height for the table area)
+ *	directpagination = "0" (Use directlinks to pages)
+ *	combopagination = "0" (Use a combo to directly jump to a page)
+ *	tableclass = "normal" (CSS class name for the table)
+ *	columnheadingclass = "normal" (CSS class name for the columnheadings)
+ *	oddrowclass = "odd"
+ *	evenrowclass = "even"
+ * }
+ */
 
 
 //SECURITY HERE!

@@ -1,4 +1,10 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
 function smarty_prefilter_tr($source) {
   // Now replace the matched language strings with the entry in the file
 //  $return = preg_replace_callback('/\{tr[^\{]*\}([^\{]+)\{\/tr\}/', '_translate_lang', $source);

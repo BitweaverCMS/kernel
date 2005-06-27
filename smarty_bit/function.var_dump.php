@@ -1,6 +1,12 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
 /** \file
- * $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/function.var_dump.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+ * $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/function.var_dump.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
  *
  * \author zaufi <zaufi@sendmail.ru>
  */

@@ -1,24 +1,23 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1 2005/06/19 04:52:52 bitweaver Exp $
+* $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
 *
 * Copyright (c) 2004 bitweaver.org
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitBase.php,v 1.1 2005/06/19 04:52:52 bitweaver Exp $
-*/
-/**
+* $Id: BitBase.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
+*
 * Virtual base class (as much as one can have such things in PHP) for all
 * derived tikiwiki classes that require database access.
 *
-* @date created 2004/8/15
+* @package bitweaver
+*
+* created 2004/8/15
 *
 * @author spider <spider@steelsun.com>
 *
-* @version $Revision: 1.1 $ $Date: 2005/06/19 04:52:52 $ $Author: bitweaver $
-*
-* @class BitBase
+* @version $Revision: 1.1.1.1.2.1 $ $Date: 2005/06/27 00:39:23 $ $Author: lsces $
 */
 
 require_once ( KERNEL_PKG_PATH.'BitDb.php' );
@@ -28,6 +27,11 @@ require_once( BIT_PKG_PATH.'util/pear/Date.php' );
 define( 'STORAGE_BINARY', 1 );
 define( 'STORAGE_IMAGE', 2 );
 
+/**
+* @package BitBase
+* Virtual base class (as much as one can have such things in PHP) for all
+* derived bitweaver classes that require database access.
+*/
 class BitBase
 {
     /**

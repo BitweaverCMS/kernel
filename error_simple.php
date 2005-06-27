@@ -1,6 +1,8 @@
 <?php
-
-// $Header: /cvsroot/bitweaver/_bit_kernel/error_simple.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+/**
+* @package BitBase
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/error_simple.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
+*/
 
 echo '<html><body><pre><p>';
 if (isset($_REQUEST['error']) and !is_null($_REQUEST['error'])) {

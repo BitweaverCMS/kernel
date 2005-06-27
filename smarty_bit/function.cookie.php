@@ -1,4 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+ * smarty_function_cookie
+ */
 function smarty_function_cookie($params, &$smarty)
 {
     global $taglinelib;

@@ -1,4 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+* get_first_match
+*/
 function get_first_match($dir,$filename)
 {
   if(!is_dir($dir)) {
@@ -27,6 +36,9 @@ function get_first_match($dir,$filename)
   return false;
 }
 
+/**
+* output_icon
+*/
 function output_icon($params, $file) {
 	global $gBitSystem;
 
@@ -62,6 +74,9 @@ function output_icon($params, $file) {
 	return $outstr;
 }
 
+/**
+* smarty_function_biticon
+*/
 function smarty_function_biticon($params, &$smarty) {
 	global $gBitSystem, $icon_style;
 	

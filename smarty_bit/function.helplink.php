@@ -1,6 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
-
+/**
+ * smarty_function_helplink
+ */
 function smarty_function_helplink($params, &$smarty)
 {
     extract($params);

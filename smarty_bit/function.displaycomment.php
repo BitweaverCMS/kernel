@@ -1,5 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
+/**
+ * smarty_function_displaycomment
+ */
 function smarty_function_displaycomment($params) {
 	global $smarty;
 	if (!empty($params['comment'])) {

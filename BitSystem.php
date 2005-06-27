@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.6 $
+* @version $Revision: 1.7.2.7 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.6 2005/06/27 12:49:49 lsces Exp $
+// $Id: BitSystem.php,v 1.7.2.7 2005/06/27 14:13:23 lsces Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.6 $
+ * @version $Revision: 1.7.2.7 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -2173,9 +2173,7 @@ function installError($pMsg = null)
  * @subpackage TikiTimer
  */
 class TikiTimer
-{	/**
-	* @package TikiTimer
-	*/
+{	
 	function parseMicro($micro)
 	{
 		list($micro, $sec) = explode(' ', microtime());
@@ -2211,6 +2209,9 @@ SPIDERKILL  - need to copy tra function out of setup_inc and put here
 * and it indicates how many bytes follow for this character.
 * All further bytes in a multibyte sequence are in the range 0x80 to 0xBF.
 */
+/**
+ * Check mb_substr availability
+ */
 if (function_exists('mb_substr'))
 {
 	mb_internal_encoding("UTF-8");

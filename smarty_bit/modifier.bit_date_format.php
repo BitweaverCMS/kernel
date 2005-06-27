@@ -6,6 +6,11 @@
  */
 
 /**
+ * required setup
+ */
+require_once $smarty->_get_plugin_filepath('shared','make_timestamp');
+
+/**
  * Smarty plugin
  * -------------------------------------------------------------
  * Type:     modifier
@@ -16,7 +21,6 @@
  *           default_date: default date if $string is empty
  * -------------------------------------------------------------
  */
-require_once $smarty->_get_plugin_filepath('shared','make_timestamp');
 function smarty_modifier_bit_date_format($string, $format = "%b %e, %Y", $default_date=null, $tra_format=null)
 {
 	global $gBitSystem, $user;

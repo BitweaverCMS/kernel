@@ -4,18 +4,19 @@
  * @package Smarty
  * @subpackage plugins
  */
-/* 
-* Smarty plugin 
-* ------------------------------------------------------------- 
-* File: block.repeat.php 
-* Type: block 
-* Name: repeat 
-* Purpose: repeat a template block a given number of times 
-* Parameters: count [required] - number of times to repeat 
-* assign [optional] - variable to collect output 
-* Author: Scott Matthewman <scott@matthewman.net> 
-* ------------------------------------------------------------- 
-*/ 
+
+/** 
+ * Smarty plugin 
+ * ------------------------------------------------------------- 
+ * File: block.repeat.php 
+ * Type: block 
+ * Name: repeat 
+ * Purpose: repeat a template block a given number of times 
+ * Parameters: count [required] - number of times to repeat 
+ * assign [optional] - variable to collect output 
+ * Author: Scott Matthewman <scott@matthewman.net> 
+ * ------------------------------------------------------------- 
+ */ 
 function smarty_block_sortlinks($params, $content, &$smarty) 
 { 
 if ($content) { 

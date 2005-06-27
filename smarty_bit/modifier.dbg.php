@@ -6,9 +6,9 @@
  */
 
 /** \file
- * $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/modifier.dbg.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
+ * $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/modifier.dbg.php,v 1.1.1.1.2.2 2005/06/27 14:13:13 lsces Exp $
  *
- * \author zaufi <zaufi@sendmail.ru>
+ * @author zaufi <zaufi@sendmail.ru>
  */
 
 /**

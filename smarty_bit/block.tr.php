@@ -4,7 +4,8 @@
  * @package Smarty
  * @subpackage plugins
  */
-/*
+
+/**
  * Smarty plugin
  * -------------------------------------------------------------
  * File:     block.translate.php

@@ -6,9 +6,13 @@
  */
 
 /**
- * smarty_modifier_bit_short_date
+ * required setup
  */
 require_once $smarty->_get_plugin_filepath('modifier','bit_date_format');
+
+/**
+ * smarty_modifier_bit_short_date
+ */
 function smarty_modifier_bit_short_date($string)
 {
 	global $gBitSystem;

@@ -1,13 +1,15 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.2 2005/06/27 12:49:49 lsces Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.3 2005/06/27 14:13:23 lsces Exp $
 * @package Smarty
 */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// let smarty define SMARTY_DIR so it's an absolute path :
+/**
+ * let smarty define SMARTY_DIR so it's an absolute path :
+ */
 define('SMARTY_DIR', UTIL_PKG_PATH . 'smarty/libs/');
 if( file_exists( SMARTY_DIR.'Smarty.class.php' ) ) {
 	// If we have adodb in our kernel, use that.

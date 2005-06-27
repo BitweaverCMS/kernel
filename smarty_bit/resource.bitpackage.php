@@ -5,15 +5,15 @@
  * @subpackage plugins
  */
 
-/*
-* Smarty plugin
-* -------------------------------------------------------------
-* File:     resource.bitpackage.php
-* Type:     resource
-* Name:     bitpackage
-* Purpose:  Fetches templates from the correct package
-* -------------------------------------------------------------
-*/
+/**
+ * Smarty plugin
+ * -------------------------------------------------------------
+ * File:     resource.bitpackage.php
+ * Type:     resource
+ * Name:     bitpackage
+ * Purpose:  Fetches templates from the correct package
+ * -------------------------------------------------------------
+ */
 function smarty_resource_bitpackage_source($tpl_name, &$tpl_source, &$smarty) {
 	global $gBitSystem, $gBitSystem; // gBitSystem is just for temporary backward compatibility
 	$ret = false;

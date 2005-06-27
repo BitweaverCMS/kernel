@@ -5,6 +5,9 @@
  * @subpackage plugins
  */
 
+/**
+ * smarty_prefilter_tr
+ */
 function smarty_prefilter_tr($source) {
   // Now replace the matched language strings with the entry in the file
 //  $return = preg_replace_callback('/\{tr[^\{]*\}([^\{]+)\{\/tr\}/', '_translate_lang', $source);
@@ -14,6 +17,9 @@ function smarty_prefilter_tr($source) {
   return $return;
 }
 
+/**
+ * _translate_lang
+ */
 function _translate_lang($key) {
 		global $gBitLanguage, $lang;
 		$trans = $gBitLanguage->translate( $key[2] );

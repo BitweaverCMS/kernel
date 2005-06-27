@@ -6,9 +6,13 @@
  */
 
 /**
- * smarty_modifier_bit_long_time
+ * required setup
  */
 require_once $smarty->_get_plugin_filepath('modifier','bit_date_format');
+
+/**
+ * smarty_modifier_bit_long_time
+ */
 function smarty_modifier_bit_long_time($string)
 {
 	global $gBitSystem;

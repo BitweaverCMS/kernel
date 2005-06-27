@@ -1,6 +1,15 @@
 <?php
 /**
- * class: BitDate
+ *
+ * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
+ * Created on: Sat Jul 26 11:51:31 CDT 2003
+ * 
+ * @package kernel
+ * @subpackage BitDate
+ */
+
+/**
+ * BitDate
  *
  * This class takes care of all time/date conversions for
  * storing dates in the DB and displaying dates to the user.
@@ -10,11 +19,11 @@
  *  - Display dates will be computed based on the preferred
  *    display offset specified in the constructor
  *
- * TODO: As of 1.7, dates are still stored in server local time.
+ * @todo As of 1.7, dates are still stored in server local time.
  * This should be changed for 1.7.1 (requires many module changes).
  *
- * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
- * Created on: Sat Jul 26 11:51:31 CDT 2003
+ * @package kernel
+ * @subpackage BitDate
  */
 class BitDate {
 	/**

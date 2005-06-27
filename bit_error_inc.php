@@ -1,6 +1,7 @@
 <?php
 /**
- * @package BitBase
+ * @package kernel
+ * @subpackage function
  * @version V3.94  13 Oct 2003  (c) 2000-2003 John Lim (jlim@natsoft.com.my). All rights reserved.
  * Released under both BSD license and Lesser GPL library license.
  * Whenever there is any discrepancy between the two licenses,
@@ -12,6 +13,9 @@
  *
  */
 
+/**
+ * set error handling
+ */
 if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
 	define( 'ADODB_ERROR_HANDLER', 'tiki_error_handler' );
 }

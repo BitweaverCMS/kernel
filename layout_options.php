@@ -1,12 +1,15 @@
 <?php
-
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/layout_options.php,v 1.1 2005/06/19 04:52:52 bitweaver Exp $
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/layout_options.php,v 1.1.1.1.2.1 2005/06/27 12:49:48 lsces Exp $
+ * @package kernel
+ * @subpackage functions
+ */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
-# $Header: /cvsroot/bitweaver/_bit_kernel/Attic/layout_options.php,v 1.1 2005/06/19 04:52:52 bitweaver Exp $
+# $Header: /cvsroot/bitweaver/_bit_kernel/Attic/layout_options.php,v 1.1.1.1.2.1 2005/06/27 12:49:48 lsces Exp $
 $section_top_bar = $section . '_top_bar';
 
 $section_bot_bar = $section . '_bot_bar';

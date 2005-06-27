@@ -1,8 +1,10 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.1 2005/06/27 00:39:23 lsces Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.2 2005/06/27 12:49:49 lsces Exp $
 *
-* @package BitDb
+* @package kernel
+*
+* @author spider <spider@steelsun.com>
 *
 * Copyright (c) 2004 bitweaver.org
 * Copyright (c) 2003 tikwiki.org
@@ -10,10 +12,12 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.4.2.1 2005/06/27 00:39:23 lsces Exp $
+* $Id: BitDb.php,v 1.4.2.2 2005/06/27 12:49:49 lsces Exp $
 */
 
-// ensure your AdoDB install is a subdirectory off your include path
+/**
+ * ensure your AdoDB install is a subdirectory off your include path
+ */
 require_once(UTIL_PKG_PATH."adodb/adodb.inc.php");
 require_once( KERNEL_PKG_PATH.'bit_error_inc.php' );
 define( 'BIT_QUERY_DEFAULT', -1 );
@@ -27,9 +31,8 @@ define( 'BIT_QUERY_DEFAULT', -1 );
 *
 * created
 *
-* @author spider <spider@steelsun.com>
-*
-* @version $Revision: 1.4.2.1 $ $Date: 2005/06/27 00:39:23 $ $Author: lsces $
+* @package kernel
+* @subpackage BitDb
 */
 class BitDb
 {

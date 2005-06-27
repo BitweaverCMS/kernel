@@ -1,8 +1,12 @@
 <?php
 /**
- * @package BitBase
+ * @package kernel
  */
 
+/**
+ * @package kernel
+ * @subpackage BackupLib
+ */
 class BackupLib extends BitBase {
 	function BackupLib() {
 		BitBase::BitBase();

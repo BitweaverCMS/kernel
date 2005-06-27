@@ -1,11 +1,20 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1.1.1.2.1 2005/06/27 12:49:49 lsces Exp $
+ * @package kernel
+ * @subpackage functions
+ */
+
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1.1.1.2.1 2005/06/27 12:49:49 lsces Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 global $smarty, $bit_p_configure_modules, $user_assigned_modules, $gBitSystem, $modlib, $gBitUser, $fHomepage, $gBitSystem, $modallgroups, $modseparateanon, $bitdomain, $bit_p_view_shoutbox;
 
+/**
+ * required setup
+ */
 include_once( KERNEL_PKG_PATH.'mod_lib.php' );
 // feature dead for now - spiderr - include_once( USERS_PKG_PATH.'module_controls_inc.php' );
 

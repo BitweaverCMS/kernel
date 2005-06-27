@@ -1,8 +1,16 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5 2005/06/21 17:55:11 bitweaver Exp $
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.1 2005/06/27 12:49:49 lsces Exp $
+ * @package kernel
+ * @subpackage functions
+ */
+
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
+/**
+ * required setup
+ */
 require_once(BIT_ROOT_PATH . 'kernel/config_defaults_inc.php');
 
 error_reporting( BIT_PHP_ERROR_REPORTING );

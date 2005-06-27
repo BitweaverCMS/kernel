@@ -1,4 +1,13 @@
 <?php
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.3 2005/06/27 12:49:48 lsces Exp $
+ * @package kernel
+ */
+
+/**
+ * @package kernel
+ * @subpackage ModLib
+ */
 class ModLib extends BitBase {
 	function ModLib() {
 		BitBase::BitBase();

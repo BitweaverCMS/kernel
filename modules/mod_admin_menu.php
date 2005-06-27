@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package kernel
+ * @subpackage modules
+ */
 	$adminMenu = array();
 	foreach( array_keys( $gBitSystem->mPackages ) as $package ) {
 		$package = strtolower( $package );

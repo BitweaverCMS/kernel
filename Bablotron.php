@@ -1,28 +1,32 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/Bablotron.php,v 1.1.1.1.2.2 2005/06/27 10:08:45 lsces Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* Copyright (c) 2003 tikwiki.org
-* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: Bablotron.php,v 1.1.1.1.2.2 2005/06/27 10:08:45 lsces Exp $
-*
-* A spell checking library.
-*
-* Currently used for BitBase.
-*
-* @package BitBase
-*
-* created 2002/11/14
-* @author lrargerich <lrargerich@yahoo.com>
-*
-* @version $Revision: 1.1.1.1.2.2 $ $Date: 2005/06/27 10:08:45 $ $Author: lsces $
-* @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
-* global variable.
-*/
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/Bablotron.php,v 1.1.1.1.2.3 2005/06/27 12:49:48 lsces Exp $
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * Copyright (c) 2003 tikwiki.org
+ * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * $Id: Bablotron.php,v 1.1.1.1.2.3 2005/06/27 12:49:48 lsces Exp $
+ *
+ * A spell checking library.
+ *
+ * Currently used for BitBase.
+ * @author lrargerich <lrargerich@yahoo.com>
+ *
+ * @package kernel
+ */
+
+/**
+ * @package kernel
+ * @subpackage Bablotron
+ *
+ * created 2002/11/14
+ *
+ * @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
+ * global variable.
+ */
 class Bablotron extends BitBase
 {
     /**

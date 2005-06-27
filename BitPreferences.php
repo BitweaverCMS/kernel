@@ -1,6 +1,6 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitPreferences.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
+* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitPreferences.php,v 1.1.1.1.2.2 2005/06/27 12:49:48 lsces Exp $
 *
 * Copyright (c) 2004 bitweaver.org
 * Copyright (c) 2003 tikwiki.org
@@ -8,22 +8,27 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitPreferences.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
+* $Id: BitPreferences.php,v 1.1.1.1.2.2 2005/06/27 12:49:48 lsces Exp $
 *
 * A class used to store and retrieve preferences. Defaults are set
 * programmatically. Storage can be with or without a database.
 *
 * Currently use to store sitewide preferences
 *
-* @package BitBase
+* @package kernel
 *
 * created 2004/8/15
 *
 * @author wolff_borg <wolff_borg@yahoo.com.au>
 *
-* @version $Revision: 1.1.1.1.2.1 $ $Date: 2005/06/27 00:39:23 $ $Author: lsces $
+* @version $Revision: 1.1.1.1.2.2 $ $Date: 2005/06/27 12:49:48 $ $Author: lsces $
 * @todo Could be subclassed to store user preferences.
 */
+
+/**
+ * @package kernel
+ * @subpackage BitPreferences
+ */
 class BitPreferences
 {
     /**

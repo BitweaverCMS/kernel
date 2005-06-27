@@ -1,8 +1,7 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.2 2005/06/27 12:49:49 lsces Exp $
 * @package Smarty
-* @category BitSmarty
 */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
@@ -17,8 +16,16 @@ if( file_exists( SMARTY_DIR.'Smarty.class.php' ) ) {
 	// assume it is in php's global include_path
 	$smartyIncFile = 'Smarty.class.php';
 }
+
+/**
+ * required setup
+ */
 require_once($smartyIncFile);
 
+/**
+* @package Smarty
+* @subpackage PermissionCheck
+*/
 class PermissionCheck {
 	function check( $perm ) {
 		global $gBitUser;
@@ -26,6 +33,10 @@ class PermissionCheck {
 	}
 }
 
+/**
+* @package Smarty
+* @subpackage BitSmarty
+*/
 class BitSmarty extends Smarty
 {
 	function BitSmarty()

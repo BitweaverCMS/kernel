@@ -1,9 +1,8 @@
 <?php
 /**
-* @package BitBase
+* @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.5 $
-* @access public
+* @version $Revision: 1.7.2.6 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -20,25 +19,11 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.5 2005/06/27 00:39:23 lsces Exp $
-/**
-* kernel::BitSystem
-*
-* Purpose:
-*
-*     This is the main system class that does the work of seeing Tiki has an
-* 	operable environment and has methods for modifying that environment.
-*
-* 	Currently gBitSystem derives from this class for backward compatibility sake.
-* 	Ultimate goal is to put system code from BitBase here, and base code from
-* 	gBitSystem (code that ALL features need) into BitBase and code gBitSystem that
-* 	is Package specific should be moved into that package
-*
-* @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.5 $
-* @access public
-*/
+// $Id: BitSystem.php,v 1.7.2.6 2005/06/27 12:49:49 lsces Exp $
 
+/**
+ * required setup
+ */
 require_once(KERNEL_PKG_PATH . 'BitBase.php');
 require_once(KERNEL_PKG_PATH . 'BitDate.php');
 require_once(KERNEL_PKG_PATH . 'BitSmarty.php');
@@ -47,6 +32,24 @@ define('DEFAULT_PACKAGE', 'kernel');
 define('CENTER_COLUMN', 'c');
 define('HOMEPAGE_LAYOUT', 'home');
 
+/**
+ * kernel::BitSystem
+ *
+ * Purpose:
+ *
+ *     This is the main system class that does the work of seeing Tiki has an
+ * 	operable environment and has methods for modifying that environment.
+ *
+ * 	Currently gBitSystem derives from this class for backward compatibility sake.
+ * 	Ultimate goal is to put system code from BitBase here, and base code from
+ * 	gBitSystem (code that ALL features need) into BitBase and code gBitSystem that
+ * 	is Package specific should be moved into that package
+ *
+ * @author spider <spider@steelsun.com>
+ * @version $Revision: 1.7.2.6 $
+ * @package kernel
+ * @subpackage BitSystem
+ */
 class BitSystem extends BitBase
 {	/**
 	* @package BitSystem
@@ -407,9 +410,7 @@ class BitSystem extends BitBase
 	* @return none
 	* @access public
 	*
-	* @param  $pKey hash key
-	* @return none
-	* @access public
+	* @param $pKey hash key
 	*/
 	function isPackageActive( $pPackageName )
 	{
@@ -433,7 +434,6 @@ class BitSystem extends BitBase
 	* @return none
 	*
 	* @param  $pKey hash key
-	* @return none
 	* @access public
 	*/
 	function verifyPackage( $pPackageName )
@@ -561,8 +561,6 @@ class BitSystem extends BitBase
 	* @access public
 	*
 	* @param  $pKey hash key
-	* @return none
-	* @access public
 	*/
 	function verifyFeature( $pFeatureName )
 	{
@@ -2169,7 +2167,11 @@ function installError($pMsg = null)
 	echo "</body></html>";*/
 	die;
 }
-// >>>
+
+/**
+ * @package kernel
+ * @subpackage TikiTimer
+ */
 class TikiTimer
 {	/**
 	* @package TikiTimer

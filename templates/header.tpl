@@ -81,7 +81,9 @@
 				<script type="text/javascript">
 					var nexusMenus = new Array(1)
 					nexusMenus[0] = 'nav'
-				{php}if( is_file( TEMP_PKG_PATH.'nexus/modules/hoverfix_array.js' ) ) { include_once( TEMP_PKG_PATH.'nexus/modules/hoverfix_array.js' ); }{/php}
+					{if $hoverfix}
+						{include file=$hoverfix}
+					{/if}
 			</script>
 			<script type="text/javascript" src="{$gBitLoc.THEMES_PKG_URL}js/hoverfix.js"></script>
 		<![endif]-->

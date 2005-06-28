@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_include_features.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_include_features.php,v 1.2 2005/06/28 07:45:46 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -19,7 +19,6 @@ $features_toggles = array(
 	"contact_anon",
 	"feature_custom_home",
 	"feature_debug_console",
-	"feature_edit_templates",
 	"feature_editcss",
 	"feature_featuredLinks",
 	"feature_html_pages",

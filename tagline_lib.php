@@ -1,29 +1,33 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/tagline_lib.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* Copyright (c) 2003 tikwiki.org
-* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: tagline_lib.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
-*/
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/tagline_lib.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ * @package kernel
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * Copyright (c) 2003 tikwiki.org
+ * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * $Id: tagline_lib.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ * 
+ */
+
 /**
-* A library used to store taglines used for Message of the day and other randomly select texts.
-*
-* Currently used for cookies.
-*
-* @date created 2003/06/19
-* @author awcolley
-*
-* @version $Revision: 1.1 $ $Date: 2005/06/19 04:52:53 $ $Author: bitweaver $
-*
-* @class TagLineLib
-* @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
-* global variable.
-*/
+ * A library used to store taglines used for Message of the day and other randomly select texts.
+ *
+ * Currently used for cookies.
+ *
+ * @package kernel
+ * @subpackage TagLineLib
+ *
+ * created 2003/06/19
+ *
+ * @author awcolley
+ *
+ * @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
+ * global variable.
+ */
 class TagLineLib extends BitBase
 {
     /**

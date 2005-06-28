@@ -1,6 +1,10 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4 2005/06/21 16:43:07 spiderr Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.5 2005/06/28 07:45:45 spiderr Exp $
+*
+* @package kernel
+*
+* @author spider <spider@steelsun.com>
 *
 * Copyright (c) 2004 bitweaver.org
 * Copyright (c) 2003 tikwiki.org
@@ -8,10 +12,12 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.4 2005/06/21 16:43:07 spiderr Exp $
+* $Id: BitDb.php,v 1.5 2005/06/28 07:45:45 spiderr Exp $
 */
 
-// ensure your AdoDB install is a subdirectory off your include path
+/**
+ * ensure your AdoDB install is a subdirectory off your include path
+ */
 require_once(UTIL_PKG_PATH."adodb/adodb.inc.php");
 require_once( KERNEL_PKG_PATH.'bit_error_inc.php' );
 define( 'BIT_QUERY_DEFAULT', -1 );
@@ -23,13 +29,10 @@ define( 'BIT_QUERY_DEFAULT', -1 );
 * Currently used as a base class, this class should be optional to ensure bitweaver
 * continues to function correctly, without a valid database connection.
 *
-* @date created
+* created
 *
-* @author spider <spider@steelsun.com>
-*
-* @version $Revision: 1.4 $ $Date: 2005/06/21 16:43:07 $ $Author: spiderr $
-*
-* @class BitDb
+* @package kernel
+* @subpackage BitDb
 */
 class BitDb
 {
@@ -179,8 +182,8 @@ class BitDb
 	* @param pTables an array of tables and creation information in DataDict
 	* style
 	* @param pOptions an array of options used while creating the tables
-	* @return true if created with no errors
-	* @return false if errors are stored in $this->mFailed
+	* @return true|false 
+	* true if created with no errors | false if errors are stored in $this->mFailed
 	*/
 	function createTables($pTables, $pOptions = array())
 	{
@@ -229,8 +232,9 @@ class BitDb
 	* Used to drop tables
 	* @todo remove references to BIT_DB_PREFIX, us a member function
 	* @param pTables an array of table names to drop
-	* @return true if dropped with no errors
-	* @return false if errors are stored in $this->mFailed
+	* @return true | false
+	* true if dropped with no errors |
+	* false if errors are stored in $this->mFailed
 	*/
 	function dropTables($pTables)
 	{

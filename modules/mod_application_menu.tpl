@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.1 2005/06/19 04:52:54 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.2 2005/06/28 07:45:46 spiderr Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -24,7 +24,7 @@
 				{else}
 					{if $menu.title}
 						{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
-							<a class="head" href="javascript:icntoggle('{$key}menu');">{biticon ipackage=liberty iname="folder" id="`$key`menuimg" iexplain="folder"}
+							<a class="head" href="javascript:icntoggle('{$key}menu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
 						{else}
 							<a class="head" href="javascript:toggle('{$key}menu');">
 						{/if}
@@ -59,7 +59,7 @@
 				{/if}
 			{else}
 				{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
-					<a class="head" href="javascript:icntoggle('usrmenu');">{biticon ipackage=liberty iname="folder" id="usrmenu" iexplain="folder"}
+					<a class="head" href="javascript:icntoggle('usrmenu');">{biticon ipackage=liberty iname="collapsed" id="usrmenu" iexplain="folder"}
 				{else}
 					<a class="head" href="javascript:toggle('usrmenu');">
 				{/if}

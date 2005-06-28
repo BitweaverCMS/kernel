@@ -1,4 +1,12 @@
 <?php
+/**
+ * @package kernel
+ * @subpackage functions
+ */
+
+/**
+ * required setup
+ */
 $config_file = empty($_SERVER['CONFIG_INC']) ? BIT_ROOT_PATH.'kernel/config_inc.php' : $_SERVER['CONFIG_INC'];
 
 if (file_exists($config_file ) ) {
@@ -26,7 +34,7 @@ if (!defined('BIT_ROOT_URL' )) {
     define('BIT_ROOT_URL', $subpath );
 }
 if( !defined( 'BIT_SESSION_NAME' ) ) {
-	define( 'BIT_SESSION_NAME', 'TIKISESSION' );
+	define( 'BIT_SESSION_NAME', 'BWSESSION' );
 }
 if( !defined( 'BIT_PHP_ERROR_REPORTING' ) ) {
 	define( 'BIT_PHP_ERROR_REPORTING', E_ALL );

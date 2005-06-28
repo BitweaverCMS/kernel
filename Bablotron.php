@@ -1,29 +1,32 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/Bablotron.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* Copyright (c) 2003 tikwiki.org
-* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: Bablotron.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
-*/
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/Bablotron.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * Copyright (c) 2003 tikwiki.org
+ * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * $Id: Bablotron.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ *
+ * A spell checking library.
+ *
+ * Currently used for BitBase.
+ * @author lrargerich <lrargerich@yahoo.com>
+ *
+ * @package kernel
+ */
+
 /**
-* A spell checking library.
-*
-* Currently used for BitBase.
-*
-* @date created 2002/11/14
-* @author lrargerich <lrargerich@yahoo.com>
-*
-* @version $Revision: 1.1 $ $Date: 2005/06/19 04:52:53 $ $Author: bitweaver $
-*
-* @class Bablotron
-* @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
-* global variable.
-*/
+ * @package kernel
+ * @subpackage Bablotron
+ *
+ * created 2002/11/14
+ *
+ * @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
+ * global variable.
+ */
 class Bablotron extends BitBase
 {
     /**

@@ -1,5 +1,11 @@
 <?php
-/*
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
  * Smarty plugin
  * -------------------------------------------------------------
  * File:     outputfilter.highlight.php

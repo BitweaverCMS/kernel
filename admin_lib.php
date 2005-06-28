@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * @package kernel
+ */
+ 
+/**
+ * @package kernel
+ * @subpackage AdminLib
+ */
 class AdminLib extends BitBase {
 	function AdminLib() {
 		BitBase::BitBase();

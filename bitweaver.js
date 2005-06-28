@@ -1,4 +1,4 @@
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.2 2005/06/28 07:45:45 spiderr Exp $
 
 //
 // Set client offset (in minutes) to a cookie to avoid server-side DST issues
@@ -171,9 +171,9 @@ function setfoldericonstate(foo) {
 	pic = new Image();
 
 	if (getCookie(foo) == "o") {
-		pic.src = tikiIconDir + "/folder_open.png";
+		pic.src = tikiIconDir + "/expanded.gif";
 	} else {
-		pic.src = tikiIconDir + "/folder.png";
+		pic.src = tikiIconDir + "/collapsed.gif";
 	}
 //alert(document.getElementById(foo+"img").src);
 //alert(pic.src);
@@ -372,7 +372,7 @@ function closeWin(){
 	}
 }
 
-function popUpWin(url, type, strWidth, strHeight){
+function popUpWin(url, type, strWidth, strHeight) {
 	closeWin();
 	if (type == "fullScreen"){
 		strWidth = screen.availWidth - 10;
@@ -385,28 +385,7 @@ function popUpWin(url, type, strWidth, strHeight){
 	newWindow.focus();
 }
 
-function toggleVisibility(item)
-{
-	if (document.layers)
-	{
-		vista = (document.layers[item].visibility == 'hide') ? 'show' : 'hide'
-		document.layers[item].visibility = vista;
-	}
-	else if (document.all)
-	{
-		vista = (document.all[item].style.visibility == 'hidden') ? 'visible'	: 'hidden';
-		document.all[item].style.visibility = vista;
-	}
-	else if (document.getElementById)
-	{
-		vista = (document.getElementById(item).style.visibility == 'hidden') ? 'visible' : 'hidden';
-		document.getElementById(item).style.visibility = vista;
-
-	}
-}
-
-function toggleBlockDisplay(item)
-{
+function toggleBlockDisplay(item) {
 	if (document.layers) {
 		current = (document.layers[item].display == 'none') ? 'block' : 'none';
 		document.layers[item].display = current;
@@ -419,8 +398,7 @@ function toggleBlockDisplay(item)
 	}
 }
 
-function setBlockDisplay(item,vizFlag)
-{
+function setBlockDisplay(item,vizFlag) {
 	current = (vizFlag) ? 'block' : 'none';
 	if (document.layers) {
 		document.layers[item].display = current;

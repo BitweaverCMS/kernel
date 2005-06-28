@@ -1,4 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+ * smarty_function_memusage
+ */
 function smarty_function_memusage($params, &$smarty)
 {
     if (function_exists('memory_get_usage')) {

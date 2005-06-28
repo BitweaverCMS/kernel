@@ -1,6 +1,14 @@
 <?php
-// Do NOT change this plugin under any circunstances!
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
+// Do NOT change this plugin under any circunstances!
+/**
+ * smarty_function_sameurl
+ */
 function smarty_function_sameurl($params, &$smarty)
 {
     global $sameurl_elements;

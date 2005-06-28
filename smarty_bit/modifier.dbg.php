@@ -1,8 +1,14 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
 /** \file
- * $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/modifier.dbg.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+ * $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/modifier.dbg.php,v 1.2 2005/06/28 07:45:47 spiderr Exp $
  *
- * \author zaufi <zaufi@sendmail.ru>
+ * @author zaufi <zaufi@sendmail.ru>
  */
 
 /**

@@ -1,10 +1,16 @@
 <?php
 /**
-* * Return system defined temporary directory.
-* In Unix, this is usually /tmp
-* In Windows, this is usually c:\windows\temp or c:\winnt\temp
-* \static
-*/
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ * @package kernel
+ * @subpackage functions
+ */
+
+/**
+ * * Return system defined temporary directory.
+ * In Unix, this is usually /tmp
+ * In Windows, this is usually c:\windows\temp or c:\winnt\temp
+ * \static
+ */
 function getTempDir()
 {
 	static $tempdir;
@@ -18,9 +24,9 @@ function getTempDir()
 }
 
 /**
-* * Return true if windows, otherwise false
-* \static
-*/
+ * * Return true if windows, otherwise false
+ * \static
+ */
 function isWindows()
 {
 	static $windows;
@@ -114,18 +120,18 @@ function mkdir_p($target, $perms = 0777)
 */
 
 /**
-* Check minimum PHP version
-* @param pVersion is the minimum PHP version required
-**/
+ * Check minimum PHP version
+ * @param pVersion is the minimum PHP version required
+ */
 function chkPhpVersion($pVersion)
 {
 	$this->chkPhpExtension("", $pVersion);
 }
 
 /**
-* Check minimum PHP extension version
-* @param pExtension is the extension name
-* @param pVersion is the minimum extension version required
+ * Check minimum PHP extension version
+ * @param pExtension is the extension name
+ * @param pVersion is the minimum extension version required
 **/
 function chkPhpExtension($pExtension, $pVersion)
 {
@@ -135,8 +141,8 @@ function chkPhpExtension($pExtension, $pVersion)
 }
 
 /**
-* Used to check if files are writeable by the webserver
-* @param pFile the name of the file to be checked
+ * Used to check if files are writeable by the webserver
+ * @param pFile the name of the file to be checked
 **/
 function isFileWriteable($pFile)
 {
@@ -156,8 +162,8 @@ function isFileWriteable($pFile)
 }
 
 /**
-* Used to check if directories are writeable by the webserver
-* @param pDir the name of the directory to be checked
+ * Used to check if directories are writeable by the webserver
+ * @param pDir the name of the directory to be checked
 **/
 function isDirectoryWriteable($pDir)
 {
@@ -177,10 +183,10 @@ function isDirectoryWriteable($pDir)
 }
 
 /**
-* Used to check php.ini settings
-* @param pName setting name
-* @param pValue setting value
-* @param pComp setting comparison
+ * Used to check php.ini settings
+ * @param pName setting name
+ * @param pValue setting value
+ * @param pComp setting comparison
 **/
 function chkPhpSetting($pName, $pValue, $pComp='')
 {

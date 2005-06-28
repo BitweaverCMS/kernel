@@ -1,8 +1,14 @@
 <?php
-	// $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.2 2005/06/20 07:27:14 lsces Exp $
-	// This file only needs to be called once, and only when you plan on rendering the app menu, or something similar.
-	// TODO: All of the following should be moved to package specific initialization files, however, for now,
-	// 		 they are all in this single place, and eventually this file totally will go away - spiderr
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.3 2005/06/28 07:45:45 spiderr Exp $
+ * @package kernel
+ * @subpackage functions
+ *
+ * This file only needs to be called once, and only when you plan on rendering the app menu, or something similar.
+ *
+ * @todo All of the following should be moved to package specific initialization files, however, for now,
+ * they are all in this single place, and eventually this file totally will go away - spiderr
+ */
     global $gBitUser, $gBitSystem, $smarty;
 
 	// =========================== Global ===========================

@@ -1,4 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+ * smarty_function_ed
+ */
 function smarty_function_ed($params, &$smarty)
 {
     global $gBitSystem;

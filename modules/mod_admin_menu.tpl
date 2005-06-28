@@ -3,7 +3,7 @@
 	{foreach key=key item=menu from=$adminMenu}
 		<div class="admenu {$key}menu">
 			{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
-				<a class="menuhead" href="javascript:icntoggle('{$key}admenu');">{biticon ipackage=liberty iname="folder" id="`$key`menuimg" iexplain="folder"}
+				<a class="menuhead" href="javascript:icntoggle('{$key}admenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
 			{else}
 				<a class="menuhead" href="javascript:toggle('{$key}admenu');">
 			{/if}
@@ -20,7 +20,7 @@
 	{/foreach}
 	<div class="admenu {$key}menu">
 		{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
-			<a class="menuhead" href="javascript:icntoggle('layoutadmenu');">{biticon ipackage=liberty iname="folder" id="`$key`menuimg" iexplain="folder"}
+			<a class="menuhead" href="javascript:icntoggle('layoutadmenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
 		{else}
 			<a class="menuhead" href="javascript:toggle('layoutadmenu');">
 		{/if}

@@ -1,5 +1,12 @@
 <?php
+/**
+ * @package kernel
+ */
 
+/**
+ * @package kernel
+ * @subpackage RankLib
+ */
 class CommLib extends BitBase {
 	function CommLib() {					BitBase::BitBase();
 	}

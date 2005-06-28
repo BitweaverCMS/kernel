@@ -1,4 +1,9 @@
 <?php
+/**
+* @package kernel
+* @author spider <spider@steelsun.com>
+* @version $Revision: 1.8 $
+*/
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
 // +----------------------------------------------------------------------+
@@ -14,25 +19,11 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7 2005/06/21 16:45:47 spiderr Exp $
-/**
-* kernel::BitSystem
-*
-* Purpose:
-*
-*     This is the main system class that does the work of seeing Tiki has an
-* 	operable environment and has methods for modifying that environment.
-*
-* 	Currently gBitSystem derives from this class for backward compatibility sake.
-* 	Ultimate goal is to put system code from BitBase here, and base code from
-* 	gBitSystem (code that ALL features need) into BitBase and code gBitSystem that
-* 	is Package specific should be moved into that package
-*
-* @author spider <spider@steelsun.com>
-* @version $Revision: 1.7 $
-* @access public
-*/
+// $Id: BitSystem.php,v 1.8 2005/06/28 07:45:45 spiderr Exp $
 
+/**
+ * required setup
+ */
 require_once(KERNEL_PKG_PATH . 'BitBase.php');
 require_once(KERNEL_PKG_PATH . 'BitDate.php');
 require_once(KERNEL_PKG_PATH . 'BitSmarty.php');
@@ -41,8 +32,28 @@ define('DEFAULT_PACKAGE', 'kernel');
 define('CENTER_COLUMN', 'c');
 define('HOMEPAGE_LAYOUT', 'home');
 
+/**
+ * kernel::BitSystem
+ *
+ * Purpose:
+ *
+ *     This is the main system class that does the work of seeing Tiki has an
+ * 	operable environment and has methods for modifying that environment.
+ *
+ * 	Currently gBitSystem derives from this class for backward compatibility sake.
+ * 	Ultimate goal is to put system code from BitBase here, and base code from
+ * 	gBitSystem (code that ALL features need) into BitBase and code gBitSystem that
+ * 	is Package specific should be moved into that package
+ *
+ * @author spider <spider@steelsun.com>
+ * @version $Revision: 1.8 $
+ * @package kernel
+ * @subpackage BitSystem
+ */
 class BitSystem extends BitBase
-{
+{	/**
+	* @package BitSystem
+	*/
 	// === properties
 	/**
 	* * Array of  *
@@ -399,9 +410,7 @@ class BitSystem extends BitBase
 	* @return none
 	* @access public
 	*
-	* @param  $pKey hash key
-	* @return none
-	* @access public
+	* @param $pKey hash key
 	*/
 	function isPackageActive( $pPackageName )
 	{
@@ -423,10 +432,8 @@ class BitSystem extends BitBase
 	* It will verify that the given package is active or it will display the error template and die()
 	* @param $pPackageName the name of the package to test
 	* @return none
-	* @access public
 	*
 	* @param  $pKey hash key
-	* @return none
 	* @access public
 	*/
 	function verifyPackage( $pPackageName )
@@ -554,8 +561,6 @@ class BitSystem extends BitBase
 	* @access public
 	*
 	* @param  $pKey hash key
-	* @return none
-	* @access public
 	*/
 	function verifyFeature( $pFeatureName )
 	{
@@ -988,7 +993,7 @@ asort( $this->mAppMenu );
 				$url = USERS_PKG_URL . 'login.php';
 			}
 		} elseif( !empty( $bitIndex ) ) {
-			$url = $bitIndex;
+			$url = BIT_ROOT_URL.$bitIndex;
 		}
 		// if no special case was matched above, default to users' my page
 		if( empty( $url ) ) {
@@ -1000,7 +1005,6 @@ asort( $this->mAppMenu );
 				$url = USERS_PKG_URL . 'my.php';
 			}
 		}
-
 		return $url;
 	}
 	// === getStyle
@@ -2079,7 +2083,7 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 		$error['string'] = $data = '';
 
 		if( $fsock = @fsockopen( 'www.bitweaver.org', 80, $error['number'], $error['string'], 30 ) ) {
-			@fwrite( $fsock, "GET /_bitversion/versions.txt HTTP/1.1\r\n" );
+			@fwrite( $fsock, "GET /bitversion.txt HTTP/1.1\r\n" );
 			@fwrite( $fsock, "HOST: www.bitweaver.org\r\n" );
 			@fwrite( $fsock, "Connection: close\r\n\r\n" );
 
@@ -2098,7 +2102,7 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 			// nuke all lines that don't start with a number
 			$data = preg_match_all( "/(\d.*)\n/", $data, $versions );
 			$versions = $versions[1];
-			if( !empty( $versions ) ) {
+			if( !empty( $versions ) && preg_match( "/\d+\.\d+\.\d+/", $versions[0] ) ) {
 				sort( $versions );
 				foreach( $versions as $version ) {
 					if( preg_match( "/^".BIT_MAJOR_VERSION."/", $version ) ) {
@@ -2119,6 +2123,23 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 		$ret['error'] = $error;
 		return $ret;
 	}
+
+	// should be moved somewhere else. unbreaking things for now - 25-JUN-2005 - spiderr
+	// \todo remove html hardcoded in diff2
+	function diff2($page1, $page2) {
+		$page1 = split("\n", $page1);
+		$page2 = split("\n", $page2);
+		$z = new WikiDiff($page1, $page2);
+		if ($z->isEmpty()) {
+		$html = '<hr /><br />[' . tra("Versions are identical"). ']<br /><br />';
+		} else {
+		//$fmt = new WikiDiffFormatter;
+		$fmt = new WikiUnifiedDiffFormatter;
+		$html = $fmt->format($z, $page1);
+		}
+		return $html;
+	}
+
 }
 
 // === installError
@@ -2146,9 +2167,13 @@ function installError($pMsg = null)
 	echo "</body></html>";*/
 	die;
 }
-// >>>
+
+/**
+ * @package kernel
+ * @subpackage TikiTimer
+ */
 class TikiTimer
-{
+{	
 	function parseMicro($micro)
 	{
 		list($micro, $sec) = explode(' ', microtime());
@@ -2184,6 +2209,9 @@ SPIDERKILL  - need to copy tra function out of setup_inc and put here
 * and it indicates how many bytes follow for this character.
 * All further bytes in a multibyte sequence are in the range 0x80 to 0xBF.
 */
+/**
+ * Check mb_substr availability
+ */
 if (function_exists('mb_substr'))
 {
 	mb_internal_encoding("UTF-8");

@@ -1,5 +1,12 @@
 <?php
+/**
+ * @package kernel
+ */
 
+/**
+ * @package kernel
+ * @subpackage BanLib
+ */
 class BanLib extends BitBase {
 	function BanLib() {				
 	BitBase::BitBase();

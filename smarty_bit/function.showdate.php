@@ -1,4 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+ * smarty_function_showdate
+ */
 function smarty_function_showdate($params, &$smarty)
 {
     

@@ -1,6 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
-
+/**
+ * smarty_modifier_act_icon
+ */
 function smarty_modifier_act_icon($type,$isInter='n')
 {
   $md = $isInter == 'y' ? "_blue" : "";

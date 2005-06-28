@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.1 2005/06/19 04:52:54 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.2 2005/06/28 07:45:46 spiderr Exp $ *}
 {strip}
 
 {if $packageMenu}
@@ -12,7 +12,7 @@
 		{foreach key=key item=menu from=$adminMenu}
 			<div class="menu {$key}menu">
 				{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
-					<a class="head" href="javascript:icntoggle('{$key}admenu');">{biticon ipackage=liberty iname="folder" id="`$key`admenuimg" iexplain="folder"}&nbsp;
+					<a class="head" href="javascript:icntoggle('{$key}admenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`admenuimg" iexplain="folder"}&nbsp;
 				{else}
 					<a class="head" href="javascript:toggle('{$key}admenu');">
 				{/if}
@@ -29,7 +29,7 @@
 		{/foreach}
 		<div class="menu layoutmenu">
 			{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
-				<a class="head" href="javascript:icntoggle('layoutadmenu');">{biticon ipackage=liberty iname="folder" id="layoutadmenuimg" iexplain="folder"}
+				<a class="head" href="javascript:icntoggle('layoutadmenu');">{biticon ipackage=liberty iname="collapsed" id="layoutadmenuimg" iexplain="folder"}
 			{else}
 				<a class="head" href="javascript:toggle('layoutadmenu');">
 			{/if}

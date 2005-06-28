@@ -1,6 +1,6 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
+* $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
 *
 * Copyright (c) 2004 bitweaver.org
 * Copyright (c) 2003 tikwiki.org
@@ -8,23 +8,28 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitCache.php,v 1.1 2005/06/19 04:52:53 bitweaver Exp $
-*/
-/**
+* $Id: BitCache.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+*
 * A basic library to handle caching of some Tiki Objects. Usage is simple and feel free to improve it.
 *
 * Currently used to cache user permissions only. Could be used to store blobs to files and other static
 * database intensive queries.
 *
-* @date created 2003/11/25
+* @package kernel
+*
+* created 2003/11/25
 *
 * @author lrargerich <lrargerich@yahoo.com>
 *
-* @version $Revision: 1.1 $ $Date: 2005/06/19 04:52:53 $ $Author: bitweaver $
+* @version $Revision: 1.2 $ $Date: 2005/06/28 07:45:45 $ $Author: spiderr $
 *
-* @class BitCache
 * @todo Need to implement in more places
 */
+
+/**
+ * @package kernel
+ * @subpackage BitCache
+ */
 class BitCache
 {
     /**

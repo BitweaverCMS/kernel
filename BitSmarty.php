@@ -1,19 +1,33 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1 2005/06/19 04:52:52 bitweaver Exp $
+/**
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+* @package Smarty
+*/
+
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-// let smarty define SMARTY_DIR so it's an absolute path :
+/**
+ * let smarty define SMARTY_DIR so it's an absolute path :
+ */
 define('SMARTY_DIR', UTIL_PKG_PATH . 'smarty/libs/');
 if( file_exists( SMARTY_DIR.'Smarty.class.php' ) ) {
-	// If we have adodb in our kernel, use that.
+	// If we have smarty in our kernel, use that.
 	$smartyIncFile = SMARTY_DIR . 'Smarty.class.php';
 } else {
 	// assume it is in php's global include_path
 	$smartyIncFile = 'Smarty.class.php';
 }
+
+/**
+ * required setup
+ */
 require_once($smartyIncFile);
 
+/**
+* @package Smarty
+* @subpackage PermissionCheck
+*/
 class PermissionCheck {
 	function check( $perm ) {
 		global $gBitUser;
@@ -21,6 +35,10 @@ class PermissionCheck {
 	}
 }
 
+/**
+* @package Smarty
+* @subpackage BitSmarty
+*/
 class BitSmarty extends Smarty
 {
 	function BitSmarty()

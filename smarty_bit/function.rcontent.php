@@ -1,5 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
+/**
+ * smarty_function_rcontent
+ */
 function smarty_function_rcontent($params, &$smarty)
 {
     global $gBitSystem;

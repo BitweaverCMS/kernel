@@ -1,6 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
-
+/**
+ * smarty_function_rss
+ */
 function smarty_function_rss($params, &$smarty)
 {
     global $gBitSystem;

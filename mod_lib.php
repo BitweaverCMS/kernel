@@ -1,4 +1,13 @@
 <?php
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ * @package kernel
+ */
+
+/**
+ * @package kernel
+ * @subpackage ModLib
+ */
 class ModLib extends BitBase {
 	function ModLib() {
 		BitBase::BitBase();
@@ -261,7 +270,7 @@ class ModLib extends BitBase {
 			$query = "UPDATE `".BIT_DB_PREFIX."tiki_layouts` SET `rows` = ?  WHERE `module_id` = ? AND `user_id` = ?";
 			$result = $this->query($query, array($rows, $module_id, $user_id));
 		} else {
-			$query = "UPDATE ".BIT_DB_PREFIX."`tiki_layouts_modules` SET `rows = ? WHERE `module_id` = ?";
+			$query = "UPDATE `".BIT_DB_PREFIX."tiki_layouts_modules` SET `rows` = ? WHERE `module_id` = ?";
 			$result = $this->query($query, array($rows, $module_id));
 		}
 

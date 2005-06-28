@@ -1,4 +1,8 @@
 <?php
+/**
+ * @package kernel
+ * @subpackage modules
+ */
 global $gBitSystem;
 if( ACTIVE_PACKAGE == 'messu' ) {
 	$active = 'users';

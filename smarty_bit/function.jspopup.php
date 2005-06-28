@@ -1,6 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
-
+/**
+ * smarty_function_jspopup
+ */
 function smarty_function_jspopup($params, &$smarty)
 {
     extract($params);

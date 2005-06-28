@@ -1,5 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
+/**
+* smarty_function_banner
+*/
 function smarty_function_banner($params, &$smarty)
 {
     global $gBitSystem;

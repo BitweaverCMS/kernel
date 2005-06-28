@@ -1,6 +1,12 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
 
-/*
+
+/**
  * Smarty plugin
  * -------------------------------------------------------------
  * Type:     modifier

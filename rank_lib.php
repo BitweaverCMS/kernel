@@ -1,5 +1,13 @@
 <?php
+/**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ * @package kernel
+ */
 
+/**
+ * @package kernel
+ * @subpackage RankLib
+ */
 class RankLib extends BitBase {
 	function RankLib() {				
 	BitBase::BitBase();

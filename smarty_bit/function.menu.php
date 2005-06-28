@@ -1,4 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+ * smarty_function_menu
+ */
 function smarty_function_menu($params, &$smarty)
 {
     global $menulib;

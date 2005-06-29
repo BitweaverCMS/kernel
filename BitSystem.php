@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.7 $
+* @version $Revision: 1.7.2.8 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.7 2005/06/27 14:13:23 lsces Exp $
+// $Id: BitSystem.php,v 1.7.2.8 2005/06/29 18:22:01 drewslater Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.7 $
+ * @version $Revision: 1.7.2.8 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -1707,6 +1707,8 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 
 		if (!$display_timezone) {
 			$server_time = $this->get_server_timezone();
+		} else {
+			$server_time = NULL;
 		}
 
 		if( $gBitUser->isValid() ) {

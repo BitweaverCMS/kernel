@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.3 2005/06/27 12:49:48 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.4 2005/06/29 18:22:01 drewslater Exp $
  * @package kernel
  */
 
@@ -180,16 +180,24 @@ class ModLib extends BitBase {
 		}
 	}
 
-	function assignModule( $pModuleId, $pUserId, $pLayout, $pPosition ) {
+	function assignModule( $pModuleId, $pUserId, $pLayout, $pPosition, $pOrder = 0, $securityOK = FALSE ) {
 		global $bit_p_admin, $gBitUser;
 		// security check
-		if( ($bit_p_admin || ( $gBitUser->mUserId==$pUserId )) && is_numeric( $pModuleId ) ) {
+		if( ($bit_p_admin || $securityOK || ( $gBitUser->mUserId==$pUserId )) && is_numeric( $pModuleId ) ) {
 			$this->unassignModule( $pModuleId, $pUserId, $pLayout );
-			$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_layouts` (`user_id`, `module_id`, `layout`, `position`) VALUES(?,?,?,?)";
-			$result = $this->query( $query, array( $pUserId, (int)$pModuleId, $pLayout, $pPosition ) );
+			$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_layouts` (`user_id`, `module_id`, `layout`, `position`, `ord`) VALUES(?,?,?,?,?)";
+			$result = $this->query( $query, array( $pUserId, (int)$pModuleId, $pLayout, $pPosition, $pOrder ) );
 		}
 	}
-
+	
+	function removeAllLayoutModules( $pUserId = NULL, $pLayout = NULL, $securityOK = FALSE) {
+		global $bit_p_admin, $gBitUser;
+		if ( ($bit_p_admin || $securityOK || ( $gBitUser->mUserId == $pUserId )) && ($pUserId && $pLayout)) {
+			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_layouts` WHERE `user_id` = ? AND `layout` = ?";
+			$result = $this->query( $query, array($pUserId, $pLayout));
+		}
+	}
+	
 	function unassignModule( $pModuleId, $pUserId = NULL, $pLayout = NULL ) {
 		global $gBitUser;
 
@@ -353,7 +361,7 @@ class ModLib extends BitBase {
 			if( !empty( $result->fields["groups"] ) ) {
 				$result->fields["groups"] = explode( $result->fields["groups"], ' ' );
 			}
-			if ( $gBitUser->isAdmin() || !empty( $result->fields['groups'] ) || in_array($gBitUser->mGroups, $result->fields['groups']) ) {
+			if ( $gBitUser->isAdmin() || !empty( $result->fields['groups'] ) || (is_array($result->fields['groups']) && in_array($gBitUser->mGroups, $result->fields['groups'])) ) {
 				array_push( $ret[$subArray], $result->fields );
 			}
 			$result->MoveNext();

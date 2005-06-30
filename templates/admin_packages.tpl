@@ -1,11 +1,11 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_packages.tpl,v 1.1 2005/06/19 04:52:54 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_packages.tpl,v 1.1.1.1.2.1 2005/06/30 00:52:53 jht001 Exp $ *}
 
 {strip}
 
 {form}
 	{jstabs}
 		{jstab title="Activate Packages"}
-			{legend legend="Tiki Packages that are ready for activation"}
+			{legend legend="bitweaver Packages that are ready for activation"}
 				<input type="hidden" name="page" value="{$page}" />
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed and !$package.required and $package.activatable}
@@ -25,13 +25,13 @@
 				{/foreach}
 
 				<div class="row submit">
-					<input type="submit" name="features" value="{tr}Activate Tiki Packages{/tr}"/>
+					<input type="submit" name="features" value="{tr}Activate bitweaver Packages{/tr}"/>
 				</div>
 			{/legend}
 		{/jstab}
 
 		{jstab title="Install Packages"}
-			{legend legend="Tiki Packages available for installation"}
+			{legend legend="bitweaver Packages available for installation"}
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.tables && !$package.required && !$package.installed}
 						<div class="row">
@@ -58,7 +58,7 @@
 
 			<br />
 
-			{box title="How to install Tiki Packages"}
+			{box title="How to install bitweaver Packages"}
 				{tr}To install more packages, please run the <a href='{$gBitLoc.INSTALL_PKG_URL}install.php?step=3'>installer</a> to choose your desired packages.{/tr}
 				<br />
 				<small><strong>{tr}Note{/tr}</strong> : {tr}you might have to rename your 'install/install.done' file back to 'install/install.php' to be able to install more packages{/tr}</small>
@@ -66,7 +66,7 @@
 		{/jstab}
 
 		{jstab title="Required Packages"}
-			{legend legend="Tiki Packages that are required on your system"}
+			{legend legend="bitweaver Packages that are required on your system"}
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if ( $package.required and $package.installed ) or ( !$package.activatable and $package.info )}
 						<div class="row">

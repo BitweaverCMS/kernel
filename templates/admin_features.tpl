@@ -1,10 +1,10 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.1 2005/06/19 04:52:54 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.1.1.1.2.1 2005/06/30 00:55:49 jht001 Exp $ *}
 {strip}
 {form}
 	{jstabs}
-		{jstab title="Tiki Settings"}
+		{jstab title="bitweaver Settings"}
 			<input type="hidden" name="page" value="{$page}" />
-			{legend legend="Tiki Settings"}
+			{legend legend="bitweaver Settings"}
 				{foreach from=$formFeaturesTiki key=feature item=output}
 					<div class="row">
 						{formlabel label=`$output.label` for=$feature}
@@ -20,8 +20,8 @@
 			{/legend}
 		{/jstab}
 
-		{jstab title="Tiki Help"}
-			{legend legend="Tiki Help Features"}
+		{jstab title="bitweaver Help"}
+			{legend legend="bitweaver Help Features"}
 				{foreach from=$formFeaturesHelp key=feature item=output}
 					<div class="row">
 						{formlabel label=`$output.label` for=$feature}

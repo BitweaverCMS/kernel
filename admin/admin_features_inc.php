@@ -1,13 +1,14 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.1 2005/06/30 03:29:34 jht001 Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
-$users_list = $gBitUser->get_users_names();
-$smarty->assign( 'users_list',$users_list );
+//This doen't scale very well when you have 1000's of users
+//$users_list = $gBitUser->get_users_names();
+//$smarty->assign( 'users_list',$users_list );
 
 $formFeaturesTiki = array(
 	'pretty_urls' => array(

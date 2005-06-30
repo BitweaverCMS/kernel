@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.1.1.1.2.2 2005/06/30 03:29:34 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.1.1.1.2.3 2005/06/30 07:23:50 squareing Exp $ *}
 {strip}
 {form}
 	{jstabs}
@@ -84,13 +84,12 @@
 				<div class="row">
 					{formlabel label="Contact user" for="contact_user"}
 					{forminput}
-						<input name="contact_user"  value="{$contact_user}"  id="contact_user"}
+						{if $users_list}
+							{html_options name="contact_user" output=$users_list values=$users_list selected=$contact_user id="contact_user"}
+						{else}
+							<input name="contact_user"  value="{$contact_user}"  id="contact_user" />
+						{/if}
 						{formhelp note="Pick the user who should recieve the meassages sent using the 'Contact Us' feature"}
-{*
-This is nice for a handful of users but doesn't scale to thousands.
-						{html_options name="contact_user" output=$users_list values=$users_list selected=$contact_user id="contact_user"}
-						{formhelp note="Pick the user who should recieve the meassages sent using the 'Contact Us' feature"}
-*}
 					{/forminput}
 				</div>
 				<div class="row submit">

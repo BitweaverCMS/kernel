@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.1 2005/06/30 03:29:34 jht001 Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.2 2005/06/30 07:23:49 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -108,8 +108,10 @@ if( $gBitSystem->isFeatureActive( 'debug' ) ) {
 			'page' => 'DebugConsole',
 		);
 }
-
 $smarty->assign( 'formFeaturesAdmin',$formFeaturesAdmin );
+
+$users_list = $gBitUser->get_users_names();
+$smarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list : NULL );
 
 $processForm = set_tab();
 

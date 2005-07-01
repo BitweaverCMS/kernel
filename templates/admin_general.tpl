@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.1 2005/06/19 04:52:54 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.1.1.1.2.1 2005/07/01 01:34:56 jht001 Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -10,7 +10,7 @@
 					{formlabel label="Home page" for="bitIndex"}
 					{forminput}
 						<select name="bitIndex" id="bitIndex">
-							<option value="my_page"{if $gBitSystemPrefs.bitIndex eq 'my_page'} selected="selected"{/if}>{tr}My Tiki Page{/tr}</option>
+							<option value="my_page"{if $gBitSystemPrefs.bitIndex eq 'my_page'} selected="selected"{/if}>{tr}My bitweaver Page{/tr}</option>
 							<option value="user_home"{if $gBitSystemPrefs.bitIndex eq 'user_home'} selected="selected"{/if}>{tr}User's homepage{/tr}</option>
 							<option value="group_home"{if $gBitSystemPrefs.bitIndex eq 'group_home'} selected="selected"{/if}>{tr}Group home{/tr}</option>
 							<option value="custom_home"{if $gBitSystemPrefs.bitIndex eq $gBitSystemPrefs.urlIndex} selected="selected"{/if}>{tr}Custom home{/tr}</option>
@@ -21,7 +21,7 @@
 							{/foreach}
 						</select>
 						{formhelp note="Pick your site's homepage. This is where they will be redirected, when they access a link to your homepage.
-							<dl><dt>My Tiki Page</dt><dd>This page contains all links the user can access with his/her current permissions.</dd>
+							<dl><dt>My bitweaver Page</dt><dd>This page contains all links the user can access with his/her current permissions.</dd>
 								<dt>User's Homepage</dt><dd>This is the user's public homepage</dd>
 								<dt>Group Home</dt><dd>You can define an individual home page for a group of users using this option. To define home pages, please access the <em>Groups and Permissions</em>.</dd>
 								<dt>Custom Home</dt><dd>You can define any url as your tp homepage. This could be an introductory page with links or a flash introduction...</dd>

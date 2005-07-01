@@ -90,7 +90,7 @@
 	{/if}
 
 	{* wysiwyg editor tinymce *}
-	{if $gBitSystem->isPackageActive( 'tinymce' ) and ( $gBitLoc.browser.client eq 'mz' or $gBitLoc.browser.client eq 'ie' ) and $gBitLoc.ACTIVE_PACKAGE ne 'phpbb'}
+	{if $gBitSystem->isPackageActive( 'tinymce' ) and ( $gBitLoc.browser.client eq 'mz' or $gBitLoc.browser.client eq 'ie' ) and $gContent->mInfo.format_guid == 'bithtml' }
 		<script type="text/javascript" src="{$gBitLoc.TINYMCE_PKG_URL}jscripts/tiny_mce.js"></script>
 		<script type="text/javascript">
 			//<![CDATA[
@@ -102,7 +102,12 @@
 				{/if}
 				theme		: "advanced",
 				plugins		: "table",
-				debug		: false,
+				{if $gBitSystemPrefs.tinymce_debug eq 'y'}
+					debug		: true,
+				{/if}
+				{if $gBitSystemPrefs.tinymce_cleanup eq 'n'}
+					cleanup         : false,
+				{/if}
 				content_css : "{$gBitLoc.THEMES_STYLE_URL}tinymce/tinymce.css",
 				theme_advanced_buttons3_add_before : "tablecontrols,separator",
 				theme_advanced_styles : "Tiki Box=tikibox;Tiki Bar=tikibar;Tiki Table=tikitable;Odd table row=odd;Even table row=even"

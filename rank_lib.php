@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.1.1.1.2.1 2005/06/27 12:49:48 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.1.1.1.2.2 2005/07/02 05:33:47 jht001 Exp $
  * @package kernel
  */
 
@@ -12,7 +12,6 @@ class RankLib extends BitBase {
 	function RankLib() {				
 	BitBase::BitBase();
 	}
-
 	function wiki_ranking_top_pages($limit) {
 		$query = "select tc.`title` as `page_name`, `hits` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `hits` desc";
 
@@ -56,6 +55,7 @@ class RankLib extends BitBase {
 	}
 
 	function wiki_ranking_last_pages($limit) {
+		global $gBitSystem;
 
 		$query = "select tc.`title` as `page_name`, `last_modified`, `hits` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `last_modified` desc";
 
@@ -65,7 +65,7 @@ class RankLib extends BitBase {
 		while ($res = $result->fetchRow()) {
 			$aux["name"] = $res["page_name"];
 
-			$aux["hits"] = $this->get_long_datetime($res["last_modified"]);
+			$aux["hits"] = $gBitSystem->get_long_datetime($res["last_modified"]);
 			$aux["href"] = WIKI_PKG_URL.'index.php?page=' . $res["page_name"];
 			$ret[] = $aux;
 		}
@@ -77,6 +77,7 @@ class RankLib extends BitBase {
 	}
 
 	function forums_ranking_last_topics($limit) {
+		global $gBitSystem;
 		$query = "select * from
 		`".BIT_DB_PREFIX."tiki_comments`,`".BIT_DB_PREFIX."tiki_forums` where
 		`object`=".$this->sql_cast("`forum_id`","string")." and `object_type` = 'forum' and
@@ -88,7 +89,7 @@ class RankLib extends BitBase {
 		while ($res = $result->fetchRow()) {
 			$aux["name"] = $res["name"] . ': ' . $res["title"];
 
-			$aux["hits"] = $this->get_long_datetime($res["comment_date"]);
+			$aux["hits"] = $gBitSystem->get_long_datetime($res["comment_date"]);
 			$aux["href"] = BITFORUMS_PKG_URL.'view_thread.php?forum_id=' . $res["forum_id"] . '&amp;comments_parent_id=' . $res["thread_id"];
 			$ret[] = $aux;
 		}
@@ -268,6 +269,7 @@ class RankLib extends BitBase {
 	}
 
 	function gal_ranking_last_images($limit) {
+		global $gBitSystem;
 		$query = "select `image_id`,`name`,`created` from `".BIT_DB_PREFIX."tiki_images` order by `created` desc";
 
 		$result = $this->query($query,array(),$limit,0);
@@ -276,7 +278,7 @@ class RankLib extends BitBase {
 		while ($res = $result->fetchRow()) {
 			$aux["name"] = $res["name"];
 
-			$aux["hits"] = $this->get_long_datetime($res["created"]);
+			$aux["hits"] = $gBitSystem->get_long_datetime($res["created"]);
 			$aux["href"] = IMAGEGALS_PKG_URL.'browse_image.php?image_id=' . $res["image_id"];
 			$ret[] = $aux;
 		}
@@ -288,6 +290,7 @@ class RankLib extends BitBase {
 	}
 
 	function filegal_ranking_last_files($limit) {
+		global $gBitSystem;
 		$query = "select `file_id`,`filename`,`created` from `".BIT_DB_PREFIX."tiki_files` order by `created` desc";
 
 		$result = $this->query($query,array(),$limit,0);
@@ -296,7 +299,7 @@ class RankLib extends BitBase {
 		while ($res = $result->fetchRow()) {
 			$aux["name"] = $res["filename"];
 
-			$aux["hits"] = $this->get_long_datetime($res["created"]);
+			$aux["hits"] = $gBitSystem->get_long_datetime($res["created"]);
 			$aux["href"] = FILEGALS_PKG_URL.'download_file.php?file_id=' . $res["file_id"];
 			$ret[] = $aux;
 		}
@@ -368,6 +371,7 @@ class RankLib extends BitBase {
 	}
 
 	function blog_ranking_last_posts($limit) {
+		global $gBitSystem;
 		$query = "select * from `".BIT_DB_PREFIX."tiki_blog_posts` order by `post_id` desc";
 
 		$result = $this->query($query,array(),$limit,0);
@@ -379,7 +383,7 @@ class RankLib extends BitBase {
 			$result2 = $this->query($q,array(),$limit,0);
 			$res2 = $result2->fetchRow();
 			$aux["name"] = $res2["title"];
-			$aux["hits"] = $this->get_long_datetime($res2["created"]);
+			$aux["hits"] = $gBitSystem->get_long_datetime($res2["created"]);
 			$aux["href"] = BLOGS_PKG_URL.'view.php?blog_id=' . $res["blog_id"];
 			$ret[] = $aux;
 		}

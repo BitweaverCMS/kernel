@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.8 $
+* @version $Revision: 1.7.2.9 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.8 2005/06/29 18:22:01 drewslater Exp $
+// $Id: BitSystem.php,v 1.7.2.9 2005/07/04 06:34:08 squareing Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.8 $
+ * @version $Revision: 1.7.2.9 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -290,8 +290,7 @@ class BitSystem extends BitBase
 	* @param  $mid the name of the template for the page content
 	* @access public
 	*/
-	function display($pMid, $pBrowserTitle=NULL)
-	{
+	function display( $pMid, $pBrowserTitle=NULL ) {
 		global $smarty;
 		$smarty->verifyCompileDir();
 
@@ -299,14 +298,15 @@ class BitSystem extends BitBase
 		if( !empty( $pBrowserTitle ) ) {
 			$this->setBrowserTitle( $pBrowserTitle );
 		}
-		if ($pMid == 'error.tpl')
-		{
+		if( $pMid == 'error.tpl' ) {
+			$this->setBrowserTitle( !empty( $pBrowserTitle ) ? $pBrowserTitle : tra( 'Error' ) );
 			$pMid = 'bitpackage:kernel/error.tpl';
 		}
-		$this->preDisplay($pMid);
-		$smarty->assign('mid', $pMid);
-		$smarty->display('bitpackage:kernel/bitweaver.tpl');
-		$this->postDisplay($pMid);
+		$this->preDisplay( $pMid );
+		$smarty->assign( 'mid', $pMid );
+		$smarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
+		$smarty->display( 'bitpackage:kernel/bitweaver.tpl' );
+		$this->postDisplay( $pMid );
 	}
 	// >>>
 	// === preDisplay

@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.9 $
+* @version $Revision: 1.7.2.10 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.9 2005/07/04 06:34:08 squareing Exp $
+// $Id: BitSystem.php,v 1.7.2.10 2005/07/04 18:26:58 spiderr Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.9 $
+ * @version $Revision: 1.7.2.10 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -253,6 +253,26 @@ class BitSystem extends BitBase
 			$pSenderEmail = $this->getPreference( 'sender_email' );
 		}
 		return( !empty( $pSenderEmail ) && !preg_match( '/.*localhost$/', $pSenderEmail ) );
+	}
+	// >>>
+
+	// >>>
+	// === getErrorEmail
+	/**
+	* Smartly determines where error emails should go
+	*
+	* @access public
+	*/
+	function getErrorEmail() {
+		if( defined('ERROR_EMAIL') ) {
+			$ret = ERROR_EMAIL;
+		} elseif( $this->getPreference( 'sender_email' ) ) {
+			$ret = $this->getPreference( 'sender_email' );
+		} elseif( !empty( $_SERVER['SERVER_ADMIN'] ) ) {
+			$ret = $_SERVER['SERVER_ADMIN'];
+		} else {
+			$ret = 'root@localhost';
+		}
 	}
 	// >>>
 
@@ -976,7 +996,9 @@ asort( $this->mAppMenu );
 				if( !$gBitUser->isRegistered() ) {
 					$url = USERS_PKG_URL.'login.php';
 				} else {
-					if( $bitIndex == 'user_home' ) {
+					if( $bitIndex == 'my_page' ) {
+						$url = USERS_PKG_URL . 'my.php';
+					} elseif( $bitIndex == 'user_home' ) {
 						$url = $gBitUser->getDisplayUrl();
 					} else {
 						$homePage = $gBitUser->getPreference( 'homePage' );
@@ -995,6 +1017,7 @@ asort( $this->mAppMenu );
 		} elseif( !empty( $bitIndex ) ) {
 			$url = BIT_ROOT_URL.$bitIndex;
 		}
+
 		// if no special case was matched above, default to users' my page
 		if( empty( $url ) ) {
 			if( $this->isPackageActive( 'wiki' ) ) {
@@ -2175,7 +2198,7 @@ function installError($pMsg = null)
  * @subpackage TikiTimer
  */
 class TikiTimer
-{	
+{
 	function parseMicro($micro)
 	{
 		list($micro, $sec) = explode(' ', microtime());

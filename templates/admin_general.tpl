@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.1.1.1.2.1 2005/07/01 01:34:56 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.1.1.1.2.2 2005/07/04 18:26:59 spiderr Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -10,7 +10,7 @@
 					{formlabel label="Home page" for="bitIndex"}
 					{forminput}
 						<select name="bitIndex" id="bitIndex">
-							<option value="my_page"{if $gBitSystemPrefs.bitIndex eq 'my_page'} selected="selected"{/if}>{tr}My bitweaver Page{/tr}</option>
+							<option value="my_page"{if $gBitSystemPrefs.bitIndex eq 'my_page'} selected="selected"{/if}>{tr}My {$siteTitle} Page{/tr}</option>
 							<option value="user_home"{if $gBitSystemPrefs.bitIndex eq 'user_home'} selected="selected"{/if}>{tr}User's homepage{/tr}</option>
 							<option value="group_home"{if $gBitSystemPrefs.bitIndex eq 'group_home'} selected="selected"{/if}>{tr}Group home{/tr}</option>
 							<option value="custom_home"{if $gBitSystemPrefs.bitIndex eq $gBitSystemPrefs.urlIndex} selected="selected"{/if}>{tr}Custom home{/tr}</option>

@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.10 $
+* @version $Revision: 1.7.2.11 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.10 2005/07/04 18:26:58 spiderr Exp $
+// $Id: BitSystem.php,v 1.7.2.11 2005/07/05 07:06:02 squareing Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.10 $
+ * @version $Revision: 1.7.2.11 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -2124,9 +2124,14 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 			}
 			@fclose( $fsock );
 
-			// nuke all lines that don't start with a number
-			$data = preg_match_all( "/(\d.*)\n/", $data, $versions );
-			$versions = $versions[1];
+			// nuke all lines that don't just contain a version number
+			$lines = explode( "\n", $data );
+			foreach( $lines as $line ) {
+				if( preg_match( "/^\d+\.\d+\.\d+$/", $line ) ) {
+					$versions[] = $line;
+				}
+			}
+
 			if( !empty( $versions ) && preg_match( "/\d+\.\d+\.\d+/", $versions[0] ) ) {
 				sort( $versions );
 				foreach( $versions as $version ) {

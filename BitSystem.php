@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.11 $
+* @version $Revision: 1.7.2.12 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.11 2005/07/05 07:06:02 squareing Exp $
+// $Id: BitSystem.php,v 1.7.2.12 2005/07/05 12:13:34 spiderr Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.11 $
+ * @version $Revision: 1.7.2.12 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -873,7 +873,7 @@ class BitSystem extends BitBase
 					}
 					// We auto-register and directory in the root as a package if it does not call registerPackage itself
 					if( $pScanFile == 'bit_setup_inc.php' ) {
-						if( (!$this->mRegisterCalled || $pkgName!='kernel') && empty( $this->mPackages[$pkgName] ) ) {
+						if( (!$this->mRegisterCalled || $pkgName!='kernel') && empty( $this->mPackages[$pkgName] ) && !file_exists( BIT_ROOT_PATH.$pkgName.'/bit_setup_inc.php' ) ) {
 							$this->registerPackage( $pkgName, BIT_ROOT_PATH . $pkgName . '/', FALSE );
 						}
 					}

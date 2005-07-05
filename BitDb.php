@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.2 2005/06/27 12:49:49 lsces Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.3 2005/07/05 20:07:34 spiderr Exp $
 *
 * @package kernel
 *
@@ -12,7 +12,7 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.4.2.2 2005/06/27 12:49:49 lsces Exp $
+* $Id: BitDb.php,v 1.4.2.3 2005/07/05 20:07:34 spiderr Exp $
 */
 
 /**
@@ -182,7 +182,7 @@ class BitDb
 	* @param pTables an array of tables and creation information in DataDict
 	* style
 	* @param pOptions an array of options used while creating the tables
-	* @return true|false 
+	* @return true|false
 	* true if created with no errors | false if errors are stored in $this->mFailed
 	*/
 	function createTables($pTables, $pOptions = array())
@@ -362,6 +362,15 @@ class BitDb
 		return $result;
 	}
 
+	// ADODB compatibility functions for bitcommerce
+	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=0) {
+		return $this->query( $pQuery, NULL, $pNumRows, BIT_QUERY_DEFAULT, $pCacheTime );
+	}
+	function MetaColumns($table,$normalize=true) {
+		return $this->mDb->MetaColumns( $table, $normalize );
+	}
+
+
 	/** Executes the SQL and returns all elements of the first column as a 1-dimensional array. The recordset is discarded for you automatically. If an error occurs, false is returned.
 	* See AdoDB GetCol() function for more detail.
 	* @param pQuery the SQL query. Use backticks (`) to quote all table
@@ -461,7 +470,7 @@ class BitDb
 	* @param pOffset the row number to begin returning rows from.
 	* @return the associative array, or false if an error occurs
 	*/
-	function getOne($pQuery, $pValues, $pNumRows, $pOffset, $pCacheTime = BIT_QUERY_DEFAULT )
+	function getOne($pQuery, $pValues=NULL, $pNumRows=NULL, $pOffset=NULL, $pCacheTime = BIT_QUERY_DEFAULT )
 	{
 		$result = $this->query($pQuery, $pValues, 1, $pOffset, $pCacheTime );
 		$res = ($result != NULL) ? $result->fetchRow() : false;

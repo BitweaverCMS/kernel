@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.1 2005/06/27 12:49:49 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.2 2005/07/05 15:27:07 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -66,7 +66,6 @@ $gBitSystem = new BitSystem();
 
 global $gPreviewStyle;
 $gPreviewStyle = FALSE;
-$gBitSystem = &$gBitSystem; // kept for (LOTS OF) backward compatibility.
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');
 

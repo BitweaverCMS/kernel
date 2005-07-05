@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.12 $
+* @version $Revision: 1.7.2.13 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.12 2005/07/05 12:13:34 spiderr Exp $
+// $Id: BitSystem.php,v 1.7.2.13 2005/07/05 15:27:07 spiderr Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.12 $
+ * @version $Revision: 1.7.2.13 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -831,7 +831,6 @@ class BitSystem extends BitBase
 	function scanPackages($pScanFile = 'bit_setup_inc.php', $pOnce=TRUE )
 	{
 		global $gBitLoc, $gPreScan;
-
 		if( empty( $gBitLoc ) ) {
 			$gBitLoc = array();
 		}
@@ -840,7 +839,7 @@ class BitSystem extends BitBase
 		if (!empty($gPreScan) && is_array($gPreScan)) {
 			foreach($gPreScan as $pkgName) {
 				$this->mRegisterCalled = FALSE;
-				$scanFile = BIT_ROOT_PATH.'/'.$pkgName.'/'.$pScanFile;
+				$scanFile = BIT_ROOT_PATH.$pkgName.'/'.$pScanFile;
 				if (file_exists( $scanFile )) {
 					if( $pOnce ) {
 						include_once( $scanFile );
@@ -860,10 +859,10 @@ class BitSystem extends BitBase
 		// load lib configs
 		if( $pkgDir = opendir(BIT_ROOT_PATH) ) {
 			// Make two passes through the root - 1. to define the DEFINES, and 2. to include the $pScanFile's
-			while (false !== ($pkgName = readdir($pkgDir))) {
-				if (is_dir(BIT_ROOT_PATH . '/' . $pkgName) && ($pkgName != 'CVS') && ( preg_match( '/^\w/', $pkgName)) ) {
+			while (false !== ($dirName = readdir($pkgDir))) {
+				if (is_dir(BIT_ROOT_PATH . '/' . $dirName) && ($dirName != 'CVS') && ( preg_match( '/^\w/', $dirName)) ) {
 					$this->mRegisterCalled = FALSE;
-					$scanFile = BIT_ROOT_PATH.'/'.$pkgName.'/'.$pScanFile;
+					$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
 					if (file_exists( $scanFile )) {
 						if( $pOnce ) {
 							include_once( $scanFile );
@@ -873,8 +872,8 @@ class BitSystem extends BitBase
 					}
 					// We auto-register and directory in the root as a package if it does not call registerPackage itself
 					if( $pScanFile == 'bit_setup_inc.php' ) {
-						if( (!$this->mRegisterCalled || $pkgName!='kernel') && empty( $this->mPackages[$pkgName] ) && !file_exists( BIT_ROOT_PATH.$pkgName.'/bit_setup_inc.php' ) ) {
-							$this->registerPackage( $pkgName, BIT_ROOT_PATH . $pkgName . '/', FALSE );
+						if( (!$this->mRegisterCalled || $dirName!='kernel') && empty( $this->mPackages[$dirName] ) && !file_exists( BIT_ROOT_PATH.$dirName.'/bit_setup_inc.php' ) ) {
+							$this->registerPackage( $dirName, BIT_ROOT_PATH . $dirName . '/', FALSE );
 						}
 					}
 				}

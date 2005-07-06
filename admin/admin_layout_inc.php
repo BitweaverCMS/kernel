@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.1.1.1.2.1 2005/07/06 21:18:08 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -51,12 +51,12 @@ $smarty->assign( 'formMiscFeatures',$formMiscFeatures );
 $processForm = set_tab();
 
 if( $processForm == 'Misc' ) {
-	
+
 	foreach( array_keys( $formMiscFeatures ) as $item ) {
 		simple_set_toggle( $item );
 	}
 } elseif( isset( $_REQUEST['fModule'] ) ) {
-	
+
 	if( isset( $_REQUEST['fMove'] ) && isset(  $_REQUEST['fModule'] ) ) {
 		switch( $_REQUEST['fMove'] ) {
 			case "unassign":

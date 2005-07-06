@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.3 2005/07/05 20:07:34 spiderr Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.4 2005/07/06 21:18:08 spiderr Exp $
 *
 * @package kernel
 *
@@ -12,7 +12,7 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.4.2.3 2005/07/05 20:07:34 spiderr Exp $
+* $Id: BitDb.php,v 1.4.2.4 2005/07/06 21:18:08 spiderr Exp $
 */
 
 /**
@@ -495,7 +495,11 @@ class BitDb
 		}
 		$valueSql .= '?';
 
-		$query = "INSERT INTO `$insertTable` ( $setSql ) VALUES ( $valueSql )";
+		if( $insertTable[0] != '`' ) {
+			$insertTable = '`'.$insertTable.'`';
+		}
+
+		$query = "INSERT INTO $insertTable ( $setSql ) VALUES ( $valueSql )";
 
 		$result = $this->query( $query, array_values( $insertData ) );
 	}

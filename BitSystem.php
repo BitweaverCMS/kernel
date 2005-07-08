@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.13 $
+* @version $Revision: 1.7.2.14 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.13 2005/07/05 15:27:07 spiderr Exp $
+// $Id: BitSystem.php,v 1.7.2.14 2005/07/08 15:30:53 wolff_borg Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.13 $
+ * @version $Revision: 1.7.2.14 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -1598,14 +1598,14 @@ $errors
 			if (!isWindows())
 			{
 				print "
-Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you run the command.
+Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you run the command.
 <br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
 </body></html>";
 			}
 			else
 			{
 				print "
-Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you have corrected the identified problems.
+Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you have corrected the identified problems.
 <br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
 </body></html>";
 			}

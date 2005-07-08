@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.4 2005/07/06 21:18:08 spiderr Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.5 2005/07/08 06:39:58 spiderr Exp $
 *
 * @package kernel
 *
@@ -12,7 +12,7 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.4.2.4 2005/07/06 21:18:08 spiderr Exp $
+* $Id: BitDb.php,v 1.4.2.5 2005/07/08 06:39:58 spiderr Exp $
 */
 
 /**
@@ -512,8 +512,11 @@ class BitDb
 		$setSql = ( '`'.implode( array_keys( $updateData ), '`=?, `' ).'`=?' );
 		$bindVars = array_values( $updateData );
 		array_push( $bindVars, $updateId["value"] );
+		if( $updateTable[0] != '`' ) {
+			$updateTable = '`'.$updateTable.'`';
+		}
 
-		$query = "UPDATE `$updateTable` SET $setSql WHERE `".$updateId["name"]."`=?";
+		$query = "UPDATE $updateTable SET $setSql WHERE `".$updateId["name"]."`=?";
 		$result = $this->query( $query, $bindVars );
 	}
 	function GenID( $pSequenceName ) {
@@ -546,6 +549,10 @@ class BitDb
 		//return preg_replace("/'/","", $this->mDb->DBTimeStamp($pDate));
 		return $this->mDb->DBTimeStamp($pDate);
 	}
+	function SQLDate($pDateFormat, $pBaseDate=false) {
+		return $this->mDb->SQLDate($pDateFormat, $pBaseDate) ;
+	}
+
 	/** Converts backtick (`) quotes to the appropriate quote for the
 	* database.
 	* @private

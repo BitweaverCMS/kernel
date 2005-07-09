@@ -1,4 +1,4 @@
-{* $Heade: /cvsoot/tikipo/_p_tp_themes/styles/forget/altenative/pint_peview.css,v 1.3 2005/04/10 20:37:29 squaeing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/header.tpl,v 1.4.2.3 2005/07/09 21:08:30 squareing Exp $ *}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>

@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.14 $
+* @version $Revision: 1.7.2.15 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.14 2005/07/08 15:30:53 wolff_borg Exp $
+// $Id: BitSystem.php,v 1.7.2.15 2005/07/10 08:06:35 squareing Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.14 $
+ * @version $Revision: 1.7.2.15 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -336,7 +336,7 @@ class BitSystem extends BitBase
 	* @param none $
 	* @access private
 	*/
-	function preDisplay($pMid)
+	function preDisplay($pMid) 
 	{
 		global $gCenterPieces, $fHomepage, $smarty, $gBitUser, $gBitLoc, $gPreviewStyle;
 		// setup our theme style and check if a preview theme has been picked
@@ -346,6 +346,7 @@ class BitSystem extends BitBase
 		if (empty($gBitLoc['styleSheet'])) {
 			$gBitLoc['styleSheet'] = $this->getStyleCss();
 		}
+		$gBitLoc['headerIncFiles'] = $this->getHeaderIncFiles();
 		$gBitLoc['browserStyleSheet'] = $this->getBrowserStyleCss();
 		$gBitLoc['customStyleSheet'] = $this->getCustomStyleCss();
 		$gBitLoc['altStyleSheets'] = $this->getAltStyleCss();
@@ -392,6 +393,26 @@ class BitSystem extends BitBase
 		*/
 		session_write_close();
 	}
+
+	// >>>
+	// === getHeaderIncFiles
+	/**
+	* scan packages for <pkg>/templates/header_inc.tpl files
+	*
+	* @param none $
+	* @access private
+	* @return array of paths to existing header_inc.tpl files
+	*/
+	function getHeaderIncFiles() {
+		global $gBitSystem, $gBitLoc;
+		foreach( $gBitSystem->mPackages as $package => $info ) {
+			if( is_file( $file = $info['path'].'templates/header_inc.tpl' ) ) {
+				$ret[] = $file;
+			}
+		}
+		return !empty( $ret ) ? $ret : '';
+	}
+
 	// >>>
 	// === postDisplay
 	/**

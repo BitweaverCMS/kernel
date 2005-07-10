@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.3 2005/07/05 22:26:59 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.4 2005/07/10 21:03:22 archuleta37 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -211,7 +211,7 @@ if( $gBitDb->isValid() ) {
 	// check to see if max server load threshold is enabled
 	$use_load_threshold = $gBitSystem->getPreference('use_load_threshold', 'n');
 	// get average server load in the last minute
-	if (file_exists('/proc/loadavg') && $load = file('/proc/loadavg'))
+	if (is_readable('/proc/loadavg') && $load = file('/proc/loadavg'))
 	{
 		list($server_load) = explode(' ', $load[0]);
 		$smarty->assign('server_load', $server_load);

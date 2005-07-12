@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.5 2005/07/08 06:39:58 spiderr Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.6 2005/07/12 11:54:34 spiderr Exp $
 *
 * @package kernel
 *
@@ -12,7 +12,7 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.4.2.5 2005/07/08 06:39:58 spiderr Exp $
+* $Id: BitDb.php,v 1.4.2.6 2005/07/12 11:54:34 spiderr Exp $
 */
 
 /**
@@ -551,6 +551,9 @@ class BitDb
 	}
 	function SQLDate($pDateFormat, $pBaseDate=false) {
 		return $this->mDb->SQLDate($pDateFormat, $pBaseDate) ;
+	}
+	function OffsetDate( $pDays, $pColumn=NULL ) {
+		return $this->mDb->OffsetDate( $pDays, $pColumn );
 	}
 
 	/** Converts backtick (`) quotes to the appropriate quote for the

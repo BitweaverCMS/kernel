@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/error_simple.php,v 1.1.1.1.2.2 2005/06/27 12:49:48 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/error_simple.php,v 1.1.1.1.2.3 2005/07/12 11:54:34 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -9,11 +9,11 @@ echo '<html><body><pre><p>';
 if (isset($_REQUEST['error']) and !is_null($_REQUEST['error'])) {
 	echo strip_tags($_REQUEST['error']);
 } else {
-	echo 'There was an unsepecified error.  Please go back and try again.';
+	echo 'There was an unspecified error.  Please go back and try again.';
 }
 ?>
 </p>
-<form name="loginbox" action="../users/validate.php" method="post">
+<form name="loginbox" action="<?=USERS_PKG_URL?>validate.php" method="post">
 user: <input type="text" name="user"  size="20" /><br />
 pass: <input type="password" name="pass" size="20" /><br />
 <input type="submit" name="login" value="login" /></form>

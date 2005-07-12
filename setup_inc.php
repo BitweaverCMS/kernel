@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.4 2005/07/10 21:03:22 archuleta37 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.5 2005/07/12 11:54:34 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -197,32 +197,24 @@ if( $gBitDb->isValid() ) {
 	$smarty->assign_by_ref("gBitSystemPackages", $gBitSystem->mPackages);
 
 	global $gBitLoc;
-
 	$smarty->assign_by_ref("gBitLoc", $gBitLoc);
 	// check to see if admin has closed the site
-	$site_closed = $gBitSystem->getPreference('site_closed', 'n');
-	if ($site_closed == 'y' && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check))
-	{
-		$site_closed_msg = $gBitSystem->getPreference('site_closed_msg', 'Site is closed for maintainance; please come back later.');
-		$url = KERNEL_PKG_URL . 'error_simple.php?error=' . urlencode("$site_closed_msg");
-		header('location: ' . $url);
+	if ( $gBitSystem->isFeatureActive('site_closed' ) && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check) && $_SERVER['SCRIPT_URL'] != USERS_PKG_URL.'validate.php' ) {
+		$_REQUEST['error'] = $gBitSystem->getPreference('site_closed_msg', 'Site is closed for maintainance; please come back later.');
+		include( KERNEL_PKG_PATH . 'error_simple.php' );
 		exit;
 	}
 	// check to see if max server load threshold is enabled
 	$use_load_threshold = $gBitSystem->getPreference('use_load_threshold', 'n');
 	// get average server load in the last minute
-	if (is_readable('/proc/loadavg') && $load = file('/proc/loadavg'))
-	{
+	if (is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
 		list($server_load) = explode(' ', $load[0]);
 		$smarty->assign('server_load', $server_load);
-		if ($use_load_threshold == 'y' and !$gBitUser->hasPermission( 'bit_p_access_closed_site' ) and !isset($bypass_siteclose_check))
-		{
+		if ($use_load_threshold == 'y' && !$gBitUser->hasPermission( 'bit_p_access_closed_site' ) && !isset($bypass_siteclose_check)) {
 			$load_threshold = $gBitSystem->getPreference('load_threshold', 3);
-			if ($server_load > $load_threshold)
-			{
-				$site_busy_msg = $gBitSystem->getPreference('site_busy_msg', 'Server is currently too busy; please come back later.');
-				$url = KERNEL_PKG_URL . 'error_simple.php?error=' . urlencode($site_busy_msg);
-				header('location: ' . $url);
+			if ($server_load > $load_threshold) {
+				$_REQUEST['error'] = $gBitSystem->getPreference('site_busy_msg', 'Server is currently too busy; please come back later.');
+				include( KERNEL_PKG_PATH . 'error_simple.php' );
 				exit;
 			}
 		}

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.1.1.1.2.2 2005/07/04 18:26:59 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.1.1.1.2.3 2005/07/15 21:26:21 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -33,7 +33,7 @@
 				<div class="row">
 					{formlabel label="URI for custom home" for="urlIndex"}
 					{forminput}
-						<input type="text" id="urlIndex" name="urlIndex" value="{$gBitSystemPrefs.urlIndex|escape}" size="54" />
+						<input type="text" id="urlIndex" name="urlIndex" value="{$gBitSystemPrefs.urlIndex|escape}" size="50" />
 						{formhelp note="Use a specific URI to direct users to a particular page when accessing your site. Can be used to have an introductory page.<br />To activate this, please select <em>Custom home</em> above."}
 					{/forminput}
 				</div>
@@ -49,28 +49,28 @@
 				<div class="row">
 					{formlabel label="Long date format" for="long_date_format"}
 					{forminput}
-						<input type="text" name="long_date_format" id="long_date_format" value="{$long_date_format|escape}" size="60"/>
+						<input type="text" name="long_date_format" id="long_date_format" value="{$long_date_format|escape}" size="50"/>
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Short date format" for="short_date_format"}
 					{forminput}
-						<input type="text" name="short_date_format" id="short_date_format" value="{$short_date_format|escape}" size="60"/>
+						<input type="text" name="short_date_format" id="short_date_format" value="{$short_date_format|escape}" size="50"/>
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Long time format" for="long_time_format"}
 					{forminput}
-						<input type="text" name="long_time_format" id="long_time_format" value="{$long_time_format|escape}" size="60"/>
+						<input type="text" name="long_time_format" id="long_time_format" value="{$long_time_format|escape}" size="50"/>
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Short time format" for="short_time_format"}
 					{forminput}
-						<input type="text" name="short_time_format" id="short_time_format" value="{$short_time_format|escape}" size="60"/>
+						<input type="text" name="short_time_format" id="short_time_format" value="{$short_time_format|escape}" size="50"/>
 						{formhelp note="<strong>Online Help</strong>: <a class=\"external\" href=\"http://www.php.net/manual/en/function.strftime.php\">Date and Time Format Help</a>"}
 					{/forminput}
 				</div>

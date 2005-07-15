@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.15 $
+* @version $Revision: 1.7.2.16 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.15 2005/07/10 08:06:35 squareing Exp $
+// $Id: BitSystem.php,v 1.7.2.16 2005/07/15 19:00:24 spiderr Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.15 $
+ * @version $Revision: 1.7.2.16 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -128,7 +128,7 @@ class BitSystem extends BitBase
 			$bitdomain = "";
 		}
 
-		global $smarty;
+		global $smarty, $gBitSmarty;
 		// make sure we only create one BitSmarty
 		if( !is_object( $smarty ) ) {
 			// $smarty = new BitSmarty($bitdomain);
@@ -140,6 +140,7 @@ class BitSystem extends BitBase
 			{
 				$smarty->load_filter('output', 'highlight');
 			}
+			$gBitSmarty = &$smarty;
 		}
 	}
 
@@ -336,7 +337,7 @@ class BitSystem extends BitBase
 	* @param none $
 	* @access private
 	*/
-	function preDisplay($pMid) 
+	function preDisplay($pMid)
 	{
 		global $gCenterPieces, $fHomepage, $smarty, $gBitUser, $gBitLoc, $gPreviewStyle;
 		// setup our theme style and check if a preview theme has been picked

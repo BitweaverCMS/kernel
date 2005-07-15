@@ -2,13 +2,13 @@
 {bitmodule title="$moduleTitle" name="admin_menu"}
 	{foreach key=key item=menu from=$adminMenu}
 		<div class="admenu {$key}menu">
-			{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
+			{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 				<a class="menuhead" href="javascript:icntoggle('{$key}admenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
 			{else}
 				<a class="menuhead" href="javascript:toggle('{$key}admenu');">
 			{/if}
 			{tr}{$key|capitalize}{/tr}</a>
-			{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
+			{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 				<script type="text/javascript">
 					setfoldericonstate('{$key}admenu');
 				</script>
@@ -19,13 +19,13 @@
 		</div>
 	{/foreach}
 	<div class="admenu {$key}menu">
-		{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
+		{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 			<a class="menuhead" href="javascript:icntoggle('layoutadmenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
 		{else}
 			<a class="menuhead" href="javascript:toggle('layoutadmenu');">
 		{/if}
 		{tr}Layout and Design{/tr}</a>
-		{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
+		{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 			<script type="text/javascript">
 				setfoldericonstate('layoutadmenu');
 			</script>

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/header.tpl,v 1.4.2.4 2005/07/10 08:06:35 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/header.tpl,v 1.4.2.5 2005/07/15 12:01:15 squareing Exp $ *}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -13,6 +13,6 @@
 {if $minical_reminders>100}
 	<iframe width="0" height="0" border="0" src="{$gBitLoc.CALENDAR_PKG_URL}minical_reminders.php" />
 {/if}
-{if $gBitSystemPrefs.feature_helppopup eq 'y'}
+{if $gBitSystem->isFeatureActive( 'feature_helppopup' )}
 	{popup_init src="`$gBitLoc.THEMES_PKG_URL`js/overlib.js"}
 {/if}

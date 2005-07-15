@@ -1,14 +1,14 @@
 {strip}
-<div class="navbar{if $gBitSystemPrefs.feature_dropdown_navbar eq 'y'} hor{/if}">
+<div class="navbar{if $gBitSystem->isFeatureActive( 'feature_dropdown_navbar' )} hor{/if}">
 	<ul>
-		{if $gBitSystemPrefs.feature_dropdown_navbar eq 'y'}
+		{if $gBitSystem->isFeatureActive( 'feature_dropdown_navbar' )}
 			<li>{tr}Page Menu{/tr}
 				<ul>
 		{/if}
 		{foreach from=$links item=link}
 			<li>{$link}</li>
 		{/foreach}
-		{if $gBitSystemPrefs.feature_dropdown_navbar eq 'y'}
+		{if $gBitSystem->isFeatureActive( 'feature_dropdown_navbar' )}
 				</ul>
 			</li>
 		{/if}

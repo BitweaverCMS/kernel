@@ -17,12 +17,12 @@
 <br />
 {/if}
 
-{if $gBitSystemPrefs.feature_calendar eq 'y' and $gBitUser->hasPermission( 'bit_p_view_calendar' )}
+{if $gBitSystem->isFeatureActive( 'feature_calendar' ) and $gBitUser->hasPermission( 'bit_p_view_calendar' )}
 	<a href="{$gBitLoc.CALENDAR_PKG_URL}index.php">{$smarty.now|bit_short_datetime}</a>
 {else}
 	{$smarty.now|bit_short_datetime}
 {/if}
-{if $gBitUser->isAdmin() and $gBitSystemPrefs.feature_debug_console eq 'y'}
+{if $gBitUser->isAdmin() and $gBitSystem->isFeatureActive( 'feature_debug_console' )}
 	&#160;//&#160;<a title="{tr}View Debugger{/tr}" href="javascript:toggle('debugconsole');">{tr}Debugger{/tr}</a>
 	{include file="bitpackage:debug/debug_console.tpl"}
 {/if}

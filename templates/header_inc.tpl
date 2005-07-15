@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/header_inc.tpl,v 1.1.2.1 2005/07/10 08:06:36 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/header_inc.tpl,v 1.1.2.2 2005/07/15 12:01:15 squareing Exp $ *}
 {strip}
 	<meta name="generator" content="bitweaver - http://www.bitweaver.org" />
 	<meta name="description" content="{$gBitSystemPrefs.site_description}" />
@@ -22,7 +22,7 @@
 {include file="bitpackage:kernel/bidi.tpl"}
 
 {* --- jscalendar block --- *}
-{if $gBitSystemPrefs.feature_jscalendar eq 'y'}
+{if $gBitSystem->isFeatureActive( 'feature_jscalendar' )}
 	<link rel="StyleSheet" type="text/css" media="all" href="{$gBitLoc.JSCALENDAR_PKG_URL}calendar-system.css" title="system" />
 	<script type="text/javascript" src="{$gBitLoc.JSCALENDAR_PKG_URL}calendar.js"></script>
 	<script type="text/javascript" src="{$gBitLoc.JSCALENDAR_PKG_URL}lang/calendar-en.js"></script>

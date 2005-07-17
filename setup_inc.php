@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.7 2005/07/10 19:09:32 archuleta37 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.8 2005/07/17 17:36:05 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -17,7 +17,7 @@ error_reporting( BIT_PHP_ERROR_REPORTING );
 
 define( 'BIT_MAJOR_VERSION',	'1' );
 define( 'BIT_MINOR_VERSION',	'0' );
-define( 'BIT_SUB_VERSION',		'0' );
+define( 'BIT_SUB_VERSION',		'1' );
 define( 'BIT_LEVEL',			'' ); // 'beta' or 'dev' or 'rc' etc..
 
 define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
@@ -66,7 +66,6 @@ $gBitSystem = new BitSystem();
 
 global $gPreviewStyle;
 $gPreviewStyle = FALSE;
-$gBitSystem = &$gBitSystem; // kept for (LOTS OF) backward compatibility.
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');
 
@@ -198,32 +197,24 @@ if( $gBitDb->isValid() ) {
 	$smarty->assign_by_ref("gBitSystemPackages", $gBitSystem->mPackages);
 
 	global $gBitLoc;
-
 	$smarty->assign_by_ref("gBitLoc", $gBitLoc);
 	// check to see if admin has closed the site
-	$site_closed = $gBitSystem->getPreference('site_closed', 'n');
-	if ($site_closed == 'y' && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check))
-	{
-		$site_closed_msg = $gBitSystem->getPreference('site_closed_msg', 'Site is closed for maintainance; please come back later.');
-		$url = KERNEL_PKG_URL . 'error_simple.php?error=' . urlencode("$site_closed_msg");
-		header('location: ' . $url);
+	if ( $gBitSystem->isFeatureActive('site_closed' ) && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check) && $_SERVER['SCRIPT_URL'] != USERS_PKG_URL.'validate.php' ) {
+		$_REQUEST['error'] = $gBitSystem->getPreference('site_closed_msg', 'Site is closed for maintainance; please come back later.');
+		include( KERNEL_PKG_PATH . 'error_simple.php' );
 		exit;
 	}
 	// check to see if max server load threshold is enabled
 	$use_load_threshold = $gBitSystem->getPreference('use_load_threshold', 'n');
 	// get average server load in the last minute
-	if (is_readable('/proc/loadavg') && $load = file('/proc/loadavg'))
-	{
+	if (is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
 		list($server_load) = explode(' ', $load[0]);
 		$smarty->assign('server_load', $server_load);
-		if ($use_load_threshold == 'y' and !$gBitUser->hasPermission( 'bit_p_access_closed_site' ) and !isset($bypass_siteclose_check))
-		{
+		if ($use_load_threshold == 'y' && !$gBitUser->hasPermission( 'bit_p_access_closed_site' ) && !isset($bypass_siteclose_check)) {
 			$load_threshold = $gBitSystem->getPreference('load_threshold', 3);
-			if ($server_load > $load_threshold)
-			{
-				$site_busy_msg = $gBitSystem->getPreference('site_busy_msg', 'Server is currently too busy; please come back later.');
-				$url = KERNEL_PKG_URL . 'error_simple.php?error=' . urlencode($site_busy_msg);
-				header('location: ' . $url);
+			if ($server_load > $load_threshold) {
+				$_REQUEST['error'] = $gBitSystem->getPreference('site_busy_msg', 'Server is currently too busy; please come back later.');
+				include( KERNEL_PKG_PATH . 'error_simple.php' );
 				exit;
 			}
 		}
@@ -282,8 +273,7 @@ if( $gBitDb->isValid() ) {
 	// Assign all prefs to smarty was we are done mucking about for a 1000 lines
 	$smarty->assign_by_ref('gBitSystemPrefs', $gBitSystem->mPrefs);
 	$prefs = &$gBitSystem->mPrefs; // TODO $prefs is only for backward compatibility, need to remove entirely
-	foreach ($prefs as $name => $val)
-	{
+	foreach ($prefs as $name => $val) {
 		$$name = $val;
 		$smarty->assign("$name", $val);
 	}

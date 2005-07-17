@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.2 2005/06/28 07:45:46 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.3 2005/07/17 17:36:06 squareing Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -12,24 +12,24 @@
 	</ul>
 </div>
 
-<ul id="nav2" class="{if $gBitSystemPrefs.feature_usecss eq 'y'}ver {/if}menu {$key}menu">
+<ul id="nav2" class="{if $gBitSystem->isFeatureActive( 'feature_usecss' )}ver {/if}menu {$key}menu">
 	{foreach key=key item=menu from=$appMenu}
 		{if $menu.template}
 			<li>
-				{if $gBitSystemPrefs.feature_cssmenus eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'feature_cssmenus' )}
 					{if $menu.title}
 						<a class="head" href="{$menu.titleUrl}">{tr}{$menu.title}{/tr}</a>
 					{/if}
 					{include file=$menu.template}
 				{else}
 					{if $menu.title}
-						{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
+						{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 							<a class="head" href="javascript:icntoggle('{$key}menu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
 						{else}
 							<a class="head" href="javascript:toggle('{$key}menu');">
 						{/if}
 						{tr}{$menu.title}{/tr}</a>
-						{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
+						{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 							<script type="text/javascript">
 								setfoldericonstate('{$key}menu');
 							</script>
@@ -44,9 +44,9 @@
 	{/foreach}
 
 {* =========================== User menu =========================== *}
-	{if $gBitSystemPrefs.feature_usermenu eq 'y'and $usr_user_menus}
+	{if $gBitSystem->isFeatureActive( 'feature_usermenu' )and $usr_user_menus}
 		<li>
-			{if $gBitSystemPrefs.feature_cssmenus eq 'y'}
+			{if $gBitSystem->isFeatureActive( 'feature_cssmenus' )}
 				{if $menu.title}
 					<a class="head" href="{$gBitLoc.USERS_PKG_URL}menu.php">{tr}User Menu{/tr}</a>
 				{/if}
@@ -58,7 +58,7 @@
 					</ul>
 				{/if}
 			{else}
-				{if $gBitSystemPrefs.feature_menusfolderstyle eq 'y'}
+				{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 					<a class="head" href="javascript:icntoggle('usrmenu');">{biticon ipackage=liberty iname="collapsed" id="usrmenu" iexplain="folder"}
 				{else}
 					<a class="head" href="javascript:toggle('usrmenu');">

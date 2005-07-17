@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.8 $
+* @version $Revision: 1.9 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.8 2005/06/28 07:45:45 spiderr Exp $
+// $Id: BitSystem.php,v 1.9 2005/07/17 17:36:05 squareing Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -128,7 +128,7 @@ class BitSystem extends BitBase
 			$bitdomain = "";
 		}
 
-		global $smarty;
+		global $smarty, $gBitSmarty;
 		// make sure we only create one BitSmarty
 		if( !is_object( $smarty ) ) {
 			// $smarty = new BitSmarty($bitdomain);
@@ -140,6 +140,7 @@ class BitSystem extends BitBase
 			{
 				$smarty->load_filter('output', 'highlight');
 			}
+			$gBitSmarty = &$smarty;
 		}
 	}
 
@@ -256,6 +257,26 @@ class BitSystem extends BitBase
 	}
 	// >>>
 
+	// >>>
+	// === getErrorEmail
+	/**
+	* Smartly determines where error emails should go
+	*
+	* @access public
+	*/
+	function getErrorEmail() {
+		if( defined('ERROR_EMAIL') ) {
+			$ret = ERROR_EMAIL;
+		} elseif( $this->getPreference( 'sender_email' ) ) {
+			$ret = $this->getPreference( 'sender_email' );
+		} elseif( !empty( $_SERVER['SERVER_ADMIN'] ) ) {
+			$ret = $_SERVER['SERVER_ADMIN'];
+		} else {
+			$ret = 'root@localhost';
+		}
+	}
+	// >>>
+
 
 	// >>>
 	// === sendEmail
@@ -290,8 +311,7 @@ class BitSystem extends BitBase
 	* @param  $mid the name of the template for the page content
 	* @access public
 	*/
-	function display($pMid, $pBrowserTitle=NULL)
-	{
+	function display( $pMid, $pBrowserTitle=NULL ) {
 		global $smarty;
 		$smarty->verifyCompileDir();
 
@@ -299,14 +319,15 @@ class BitSystem extends BitBase
 		if( !empty( $pBrowserTitle ) ) {
 			$this->setBrowserTitle( $pBrowserTitle );
 		}
-		if ($pMid == 'error.tpl')
-		{
+		if( $pMid == 'error.tpl' ) {
+			$this->setBrowserTitle( !empty( $pBrowserTitle ) ? $pBrowserTitle : tra( 'Error' ) );
 			$pMid = 'bitpackage:kernel/error.tpl';
 		}
-		$this->preDisplay($pMid);
-		$smarty->assign('mid', $pMid);
-		$smarty->display('bitpackage:kernel/bitweaver.tpl');
-		$this->postDisplay($pMid);
+		$this->preDisplay( $pMid );
+		$smarty->assign( 'mid', $pMid );
+		$smarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
+		$smarty->display( 'bitpackage:kernel/bitweaver.tpl' );
+		$this->postDisplay( $pMid );
 	}
 	// >>>
 	// === preDisplay
@@ -326,6 +347,7 @@ class BitSystem extends BitBase
 		if (empty($gBitLoc['styleSheet'])) {
 			$gBitLoc['styleSheet'] = $this->getStyleCss();
 		}
+		$gBitLoc['headerIncFiles'] = $this->getHeaderIncFiles();
 		$gBitLoc['browserStyleSheet'] = $this->getBrowserStyleCss();
 		$gBitLoc['customStyleSheet'] = $this->getCustomStyleCss();
 		$gBitLoc['altStyleSheets'] = $this->getAltStyleCss();
@@ -372,6 +394,26 @@ class BitSystem extends BitBase
 		*/
 		session_write_close();
 	}
+
+	// >>>
+	// === getHeaderIncFiles
+	/**
+	* scan packages for <pkg>/templates/header_inc.tpl files
+	*
+	* @param none $
+	* @access private
+	* @return array of paths to existing header_inc.tpl files
+	*/
+	function getHeaderIncFiles() {
+		global $gBitSystem, $gBitLoc;
+		foreach( $gBitSystem->mPackages as $package => $info ) {
+			if( is_file( $file = $info['path'].'templates/header_inc.tpl' ) ) {
+				$ret[] = $file;
+			}
+		}
+		return !empty( $ret ) ? $ret : '';
+	}
+
 	// >>>
 	// === postDisplay
 	/**
@@ -811,7 +853,6 @@ class BitSystem extends BitBase
 	function scanPackages($pScanFile = 'bit_setup_inc.php', $pOnce=TRUE )
 	{
 		global $gBitLoc, $gPreScan;
-
 		if( empty( $gBitLoc ) ) {
 			$gBitLoc = array();
 		}
@@ -820,7 +861,7 @@ class BitSystem extends BitBase
 		if (!empty($gPreScan) && is_array($gPreScan)) {
 			foreach($gPreScan as $pkgName) {
 				$this->mRegisterCalled = FALSE;
-				$scanFile = BIT_ROOT_PATH.'/'.$pkgName.'/'.$pScanFile;
+				$scanFile = BIT_ROOT_PATH.$pkgName.'/'.$pScanFile;
 				if (file_exists( $scanFile )) {
 					if( $pOnce ) {
 						include_once( $scanFile );
@@ -840,10 +881,10 @@ class BitSystem extends BitBase
 		// load lib configs
 		if( $pkgDir = opendir(BIT_ROOT_PATH) ) {
 			// Make two passes through the root - 1. to define the DEFINES, and 2. to include the $pScanFile's
-			while (false !== ($pkgName = readdir($pkgDir))) {
-				if (is_dir(BIT_ROOT_PATH . '/' . $pkgName) && ($pkgName != 'CVS') && ( preg_match( '/^\w/', $pkgName)) ) {
+			while (false !== ($dirName = readdir($pkgDir))) {
+				if (is_dir(BIT_ROOT_PATH . '/' . $dirName) && ($dirName != 'CVS') && ( preg_match( '/^\w/', $dirName)) ) {
 					$this->mRegisterCalled = FALSE;
-					$scanFile = BIT_ROOT_PATH.'/'.$pkgName.'/'.$pScanFile;
+					$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
 					if (file_exists( $scanFile )) {
 						if( $pOnce ) {
 							include_once( $scanFile );
@@ -853,8 +894,8 @@ class BitSystem extends BitBase
 					}
 					// We auto-register and directory in the root as a package if it does not call registerPackage itself
 					if( $pScanFile == 'bit_setup_inc.php' ) {
-						if( (!$this->mRegisterCalled || $pkgName!='kernel') && empty( $this->mPackages[$pkgName] ) ) {
-							$this->registerPackage( $pkgName, BIT_ROOT_PATH . $pkgName . '/', FALSE );
+						if( (!$this->mRegisterCalled || $dirName!='kernel') && empty( $this->mPackages[$dirName] ) && !file_exists( BIT_ROOT_PATH.$dirName.'/bit_setup_inc.php' ) ) {
+							$this->registerPackage( $dirName, BIT_ROOT_PATH . $dirName . '/', FALSE );
 						}
 					}
 				}
@@ -976,7 +1017,9 @@ asort( $this->mAppMenu );
 				if( !$gBitUser->isRegistered() ) {
 					$url = USERS_PKG_URL.'login.php';
 				} else {
-					if( $bitIndex == 'user_home' ) {
+					if( $bitIndex == 'my_page' ) {
+						$url = USERS_PKG_URL . 'my.php';
+					} elseif( $bitIndex == 'user_home' ) {
 						$url = $gBitUser->getDisplayUrl();
 					} else {
 						$homePage = $gBitUser->getPreference( 'homePage' );
@@ -995,6 +1038,7 @@ asort( $this->mAppMenu );
 		} elseif( !empty( $bitIndex ) ) {
 			$url = BIT_ROOT_URL.$bitIndex;
 		}
+
 		// if no special case was matched above, default to users' my page
 		if( empty( $url ) ) {
 			if( $this->isPackageActive( 'wiki' ) ) {
@@ -1576,14 +1620,14 @@ $errors
 			if (!isWindows())
 			{
 				print "
-Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you run the command.
+Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you run the command.
 <br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
 </body></html>";
 			}
 			else
 			{
 				print "
-Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you have corrected the identified problems.
+Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you have corrected the identified problems.
 <br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
 </body></html>";
 			}
@@ -1707,6 +1751,8 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 
 		if (!$display_timezone) {
 			$server_time = $this->get_server_timezone();
+		} else {
+			$server_time = NULL;
 		}
 
 		if( $gBitUser->isValid() ) {
@@ -2099,9 +2145,14 @@ Proceed to the Tiki installer <b>at <a href=\"".BIT_ROOT_URL."install/install.ph
 			}
 			@fclose( $fsock );
 
-			// nuke all lines that don't start with a number
-			$data = preg_match_all( "/(\d.*)\n/", $data, $versions );
-			$versions = $versions[1];
+			// nuke all lines that don't just contain a version number
+			$lines = explode( "\n", $data );
+			foreach( $lines as $line ) {
+				if( preg_match( "/^\d+\.\d+\.\d+$/", $line ) ) {
+					$versions[] = $line;
+				}
+			}
+
 			if( !empty( $versions ) && preg_match( "/\d+\.\d+\.\d+/", $versions[0] ) ) {
 				sort( $versions );
 				foreach( $versions as $version ) {
@@ -2173,7 +2224,7 @@ function installError($pMsg = null)
  * @subpackage TikiTimer
  */
 class TikiTimer
-{	
+{
 	function parseMicro($micro)
 	{
 		list($micro, $sec) = explode(' ', microtime());

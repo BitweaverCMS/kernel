@@ -1,13 +1,13 @@
 {include file="bitpackage:kernel/header.tpl"}
 {if $print_page ne "y"}
-	{if $gBitSystemPrefs.feature_bidi eq 'y'}
+	{if $gBitSystem->isFeatureActive( 'feature_bidi' )}
 		<table dir="rtl"><tr><td>
 	{/if}
 
 	<div id="tikibody">
 		{include file="bitpackage:kernel/top.tpl"}
 
-		{if $gBitSystemPrefs.feature_top_bar eq 'y'}
+		{if $gBitSystem->isFeatureActive( 'feature_top_bar' )}
 			{include file="bitpackage:kernel/top_bar.tpl"}
 		{/if}
 
@@ -27,14 +27,14 @@
 			</tr>
 		</table>
 
-		{if $gBitSystemPrefs.feature_bot_bar eq 'y'}
+		{if $gBitSystem->isFeatureActive( 'feature_bot_bar' )}
 			<div id="tikibottom">
 				{include file="bitpackage:kernel/bot_bar.tpl"}
 			</div> <!-- end #tikibottom -->
 		{/if}
 	</div> <!-- end #tikibody -->
 
-	{if $gBitSystemPrefs.feature_bidi eq 'y'}
+	{if $gBitSystem->isFeatureActive( 'feature_bidi' )}
 		</td></tr></table>
 	{/if}
 

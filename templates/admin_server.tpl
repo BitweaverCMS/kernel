@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.1 2005/06/19 04:52:54 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.2 2005/07/17 17:36:06 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -10,7 +10,7 @@
 					{formfeedback warning="After changing the browser title, you might have to login again."}
 					{formlabel label="Site title" for="siteTitle"}
 					{forminput}
-						<input size="60" type="text" name="siteTitle" id="siteTitle" value="{$siteTitle|escape}" />
+						<input size="50" type="text" name="siteTitle" id="siteTitle" value="{$siteTitle|escape}" />
 						{formhelp note="The title of your site. The title appears in the banner area and in the browsers top bar."}
 					{/forminput}
 				</div>
@@ -18,7 +18,7 @@
 				<div class="row">
 					{formlabel label="Site slogan" for="site_slogan"}
 					{forminput}
-						<input size="60" type="text" name="site_slogan" id="site_slogan" value="{$gBitSystemPrefs.site_slogan|escape}" />
+						<input size="50" type="text" name="site_slogan" id="site_slogan" value="{$gBitSystemPrefs.site_slogan|escape}" />
 						{formhelp note="This slogan is (usually) shown below the site title."}
 					{/forminput}
 				</div>
@@ -26,7 +26,7 @@
 				<div class="row">
 					{formlabel label="Site Description" for="site_description"}
 					{forminput}
-						<input size="60" type="text" name="site_description" id="site_description" maxlength="180" value="{$gBitSystemPrefs.site_description|escape}" />
+						<input size="50" type="text" name="site_description" id="site_description" maxlength="180" value="{$gBitSystemPrefs.site_description|escape}" />
 						{formhelp note="This text is used to describe your site to search engines. Some search engines use this information to create a summary of your site.<br />The text you enter here will not be visible anywhere.<br />The Limit for search engines is <strong>180</strong> characters."}
 					{/forminput}
 				</div>
@@ -51,7 +51,7 @@
 					{formfeedback warning="Please make sure you know what you are doing as setting this wrongly could prevent you from logging in again."}
 					{formlabel label="Server name" for="feature_server_name"}
 					{forminput}
-						<input size="60" type="text" name="feature_server_name" id="feature_server_name" value="{$gBitSystemPrefs.feature_server_name|escape}" />
+						<input size="50" type="text" name="feature_server_name" id="feature_server_name" value="{$gBitSystemPrefs.feature_server_name|escape}" />
 						{formhelp note="This value should be something like <strong>yourhome.com</strong> and is used for absolute URIs.<br />This setting does <strong>not</strong> require a trailing slash."}
 					{/forminput}
 				</div>
@@ -62,7 +62,7 @@
 					{/if}
 					{formlabel label="Site Emailer return address" for="sender_email"}
 					{forminput}
-						<input size="60" type="text" name="sender_email" id="sender_email" value="{$gBitSystemPrefs.sender_email|escape}" />
+						<input size="50" type="text" name="sender_email" id="sender_email" value="{$gBitSystemPrefs.sender_email|escape}" />
 						{formhelp note="When users recieve an automatically generated email, this is the email address that will be used as return address.<br />this should go in pkg_users???"}
 					{/forminput}
 				</div>
@@ -70,14 +70,14 @@
 				<div class="row">
 					{formlabel label="Centralized user upload directory" for="centralized_upload_dir"}
 					{forminput}
-						<input size="60" type="text" name="centralized_upload_dir" id="centralized_upload_dir" value="{$centralized_upload_dir|escape}" />
+						<input size="50" type="text" name="centralized_upload_dir" id="centralized_upload_dir" value="{$centralized_upload_dir|escape}" />
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Temporary directory" for="tmpDir"}
 					{forminput}
-						<input size="60" type="text" name="tmpDir" id="tmpDir" value="{$tmpDir|escape}" />
+						<input size="50" type="text" name="tmpDir" id="tmpDir" value="{$tmpDir|escape}" />
 					{/forminput}
 				</div>
 
@@ -116,7 +116,7 @@
 				<div class="row">
 					{formlabel label="Message to display when site is closed" for="site_closed_msg"}
 					{forminput}
-						<input type="text" name="site_closed_msg" id="site_closed_msg" value="{$gBitSystemPrefs.site_closed_msg}" size="60" />
+						<input type="text" name="site_closed_msg" id="site_closed_msg" value="{$gBitSystemPrefs.site_closed_msg}" size="50" />
 					{/forminput}
 				</div>
 
@@ -138,7 +138,7 @@
 				<div class="row">
 					{formlabel label="Message to display when server is too busy" for="site_busy_msg"}
 					{forminput}
-						<input type="text" name="site_busy_msg" id="site_busy_msg" value="{$gBitSystemPrefs.site_busy_msg}" size="60" />
+						<input type="text" name="site_busy_msg" id="site_busy_msg" value="{$gBitSystemPrefs.site_busy_msg}" size="50" />
 					{/forminput}
 				</div>
 
@@ -160,14 +160,14 @@
 				<div class="row">
 					{formlabel label="Proxy Host" for="proxy_host"}
 					{forminput}
-						<input type="text" name="proxy_host" id="proxy_host" value="{$proxy_host|escape}" size="60" />
+						<input type="text" name="proxy_host" id="proxy_host" value="{$proxy_host|escape}" size="50" />
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Proxy port" for="proxy_port"}
 					{forminput}
-						<input type="text" name="proxy_port" id="proxy_port" value="{$proxy_port|escape}" size="60" />
+						<input type="text" name="proxy_port" id="proxy_port" value="{$proxy_port|escape}" size="50" />
 					{/forminput}
 				</div>
 

@@ -7,8 +7,8 @@
 		{foreach key=key item=menu from=$appMenu}
 			{if $menu.title && $menu.titleUrl && $menu.template}
 				<li class="m-{$key}{if $gBitLoc.ACTIVE_PACKAGE eq $menu.adminPanel} current{/if}">
-					<a class="{if $gBitSystemPrefs.feature_top_bar_dropdown eq 'y'}head{else}item{/if}{if $gBitLoc.ACTIVE_PACKAGE eq $menu.adminPanel} selected{/if}" href="{$menu.titleUrl}">{tr}{$menu.title}{/tr}</a>
-					{if $gBitSystemPrefs.feature_top_bar_dropdown eq 'y'}
+					<a class="{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}head{else}item{/if}{if $gBitLoc.ACTIVE_PACKAGE eq $menu.adminPanel} selected{/if}" href="{$menu.titleUrl}">{tr}{$menu.title}{/tr}</a>
+					{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}
 						{include file="`$menu.template`"}
 					{/if}
 				</li>
@@ -16,8 +16,8 @@
 		{/foreach}
 		{if $gBitUser->isAdmin()}
 			<li class="m-admin{if $gBitLoc.ACTIVE_PACKAGE eq 'kernel'} current{/if}">
-				<a class="{if $gBitSystemPrefs.feature_top_bar_dropdown eq 'y'}head{else}item{/if}{if $gBitLoc.ACTIVE_PACKAGE eq 'kernel'} selected{/if}" href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php">{tr}Administration{/tr}</a>
-				{if $gBitSystemPrefs.feature_top_bar_dropdown eq 'y'}
+				<a class="{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}head{else}item{/if}{if $gBitLoc.ACTIVE_PACKAGE eq 'kernel'} selected{/if}" href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php">{tr}Administration{/tr}</a>
+				{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}
 					<ul>
 						{foreach key=key item=menu from=$adminMenu}
 							<li>

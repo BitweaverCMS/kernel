@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.5 2005/06/28 07:45:45 spiderr Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.6 2005/07/17 17:36:05 squareing Exp $
 *
 * @package kernel
 *
@@ -12,7 +12,7 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.5 2005/06/28 07:45:45 spiderr Exp $
+* $Id: BitDb.php,v 1.6 2005/07/17 17:36:05 squareing Exp $
 */
 
 /**
@@ -182,7 +182,7 @@ class BitDb
 	* @param pTables an array of tables and creation information in DataDict
 	* style
 	* @param pOptions an array of options used while creating the tables
-	* @return true|false 
+	* @return true|false
 	* true if created with no errors | false if errors are stored in $this->mFailed
 	*/
 	function createTables($pTables, $pOptions = array())
@@ -362,6 +362,15 @@ class BitDb
 		return $result;
 	}
 
+	// ADODB compatibility functions for bitcommerce
+	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=0) {
+		return $this->query( $pQuery, NULL, $pNumRows, BIT_QUERY_DEFAULT, $pCacheTime );
+	}
+	function MetaColumns($table,$normalize=true) {
+		return $this->mDb->MetaColumns( $table, $normalize );
+	}
+
+
 	/** Executes the SQL and returns all elements of the first column as a 1-dimensional array. The recordset is discarded for you automatically. If an error occurs, false is returned.
 	* See AdoDB GetCol() function for more detail.
 	* @param pQuery the SQL query. Use backticks (`) to quote all table
@@ -461,7 +470,7 @@ class BitDb
 	* @param pOffset the row number to begin returning rows from.
 	* @return the associative array, or false if an error occurs
 	*/
-	function getOne($pQuery, $pValues, $pNumRows, $pOffset, $pCacheTime = BIT_QUERY_DEFAULT )
+	function getOne($pQuery, $pValues=NULL, $pNumRows=NULL, $pOffset=NULL, $pCacheTime = BIT_QUERY_DEFAULT )
 	{
 		$result = $this->query($pQuery, $pValues, 1, $pOffset, $pCacheTime );
 		$res = ($result != NULL) ? $result->fetchRow() : false;
@@ -486,7 +495,11 @@ class BitDb
 		}
 		$valueSql .= '?';
 
-		$query = "INSERT INTO `$insertTable` ( $setSql ) VALUES ( $valueSql )";
+		if( $insertTable[0] != '`' ) {
+			$insertTable = '`'.$insertTable.'`';
+		}
+
+		$query = "INSERT INTO $insertTable ( $setSql ) VALUES ( $valueSql )";
 
 		$result = $this->query( $query, array_values( $insertData ) );
 	}
@@ -499,8 +512,11 @@ class BitDb
 		$setSql = ( '`'.implode( array_keys( $updateData ), '`=?, `' ).'`=?' );
 		$bindVars = array_values( $updateData );
 		array_push( $bindVars, $updateId["value"] );
+		if( $updateTable[0] != '`' ) {
+			$updateTable = '`'.$updateTable.'`';
+		}
 
-		$query = "UPDATE `$updateTable` SET $setSql WHERE `".$updateId["name"]."`=?";
+		$query = "UPDATE $updateTable SET $setSql WHERE `".$updateId["name"]."`=?";
 		$result = $this->query( $query, $bindVars );
 	}
 	function GenID( $pSequenceName ) {
@@ -533,6 +549,13 @@ class BitDb
 		//return preg_replace("/'/","", $this->mDb->DBTimeStamp($pDate));
 		return $this->mDb->DBTimeStamp($pDate);
 	}
+	function SQLDate($pDateFormat, $pBaseDate=false) {
+		return $this->mDb->SQLDate($pDateFormat, $pBaseDate) ;
+	}
+	function OffsetDate( $pDays, $pColumn=NULL ) {
+		return $this->mDb->OffsetDate( $pDays, $pColumn );
+	}
+
 	/** Converts backtick (`) quotes to the appropriate quote for the
 	* database.
 	* @private

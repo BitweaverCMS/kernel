@@ -1,9 +1,9 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.1 2005/06/19 04:52:54 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.2 2005/07/17 17:36:07 squareing Exp $ *}
 {strip}
 <div class="module box {$module_name|replace:"_":"-"}">
 	{if $module_title}
 		<div class="boxtitle">
-			{if $gBitSystemPrefs.feature_modulecontrols eq 'y'}
+			{if $gBitSystem->isFeatureActive( 'feature_modulecontrols' )}
 				<div class="control">
 					<a title="{tr}Move module up{/tr}" href="{$current_location|escape}{$mpchar}mc_up={$module_name|escape}">
 						{biticon ipackage=liberty iname="move_up" iexplain="up"}</a>
@@ -20,7 +20,7 @@
 			{if $feature_collapsible_modules eq 'y'}</a>{/if}
 		</div>
 	{/if}
-	<div class="boxcontent" id="{$module_name}"{if $gBitSystemPrefs.feature_collapsible_modules eq 'y'} style="display:{$toggle_state};"{/if}>
+	<div class="boxcontent" id="{$module_name}"{if $gBitSystem->isFeatureActive( 'feature_collapsible_modules' )} style="display:{$toggle_state};"{/if}>
 	    {$module_content}
 	</div>
 </div>

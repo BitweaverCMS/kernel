@@ -10,7 +10,7 @@
 	{/if}
 
 	<li><a class="item" href="{$gBitLoc.KERNEL_PKG_URL}admin/backup.php">{tr}Backups{/tr}</a></li>
-	{if $gBitSystemPrefs.feature_banning eq 'y' and ($gBitUser->hasPermission( 'bit_p_admin_banning' ))}
+	{if $gBitSystem->isFeatureActive( 'feature_banning' ) and ($gBitUser->hasPermission( 'bit_p_admin_banning' ))}
 		<li><a class="item" href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_banning.php">{tr}Banning{/tr}</a></li>
 	{/if}
 	<li><a class="item" href="{$gBitLoc.KERNEL_PKG_URL}admin/db_performance.php">{tr}Database Performance{/tr}</a></li>
@@ -22,7 +22,7 @@
 	{if $gBitUser->hasPermission( 'bit_p_edit_cookies' )}
 		<li><a class="item" href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_cookies.php">{tr}Cookies{/tr}</a></li>
 	{/if}
-	{if $gBitSystemPrefs.feature_debug_console eq 'y'}
+	{if $gBitSystem->isFeatureActive( 'feature_debug_console' )}
 		<li><a class="item" href="javascript:toggle('debugconsole');">{tr}Debugger console{/tr}</a></li>
 	{/if}
 	<li><a class="item" href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?version_check=1">{tr}Check Version{/tr}</a></li>

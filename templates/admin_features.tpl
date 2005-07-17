@@ -1,10 +1,10 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.1 2005/06/19 04:52:54 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.2 2005/07/17 17:36:06 squareing Exp $ *}
 {strip}
 {form}
 	{jstabs}
-		{jstab title="Tiki Settings"}
+		{jstab title="bitweaver Settings"}
 			<input type="hidden" name="page" value="{$page}" />
-			{legend legend="Tiki Settings"}
+			{legend legend="bitweaver Settings"}
 				{foreach from=$formFeaturesTiki key=feature item=output}
 					<div class="row">
 						{formlabel label=`$output.label` for=$feature}
@@ -20,8 +20,8 @@
 			{/legend}
 		{/jstab}
 
-		{jstab title="Tiki Help"}
-			{legend legend="Tiki Help Features"}
+		{jstab title="bitweaver Help"}
+			{legend legend="bitweaver Help Features"}
 				{foreach from=$formFeaturesHelp key=feature item=output}
 					<div class="row">
 						{formlabel label=`$output.label` for=$feature}
@@ -84,7 +84,11 @@
 				<div class="row">
 					{formlabel label="Contact user" for="contact_user"}
 					{forminput}
-						{html_options name="contact_user" output=$users_list values=$users_list selected=$contact_user id="contact_user"}
+						{if $users_list}
+							{html_options name="contact_user" output=$users_list values=$users_list selected=$contact_user id="contact_user"}
+						{else}
+							<input name="contact_user"  value="{$contact_user}"  id="contact_user" />
+						{/if}
 						{formhelp note="Pick the user who should recieve the meassages sent using the 'Contact Us' feature"}
 					{/forminput}
 				</div>

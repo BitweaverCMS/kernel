@@ -134,7 +134,7 @@ $tables = array(
 global $gBitInstaller;
 
 foreach( array_keys( $tables ) AS $tableName ) {
-	$gBitInstaller->registerSchemaTable( KERNEL_PKG_DIR, $tableName, $tables[$tableName], TRUE );
+	$gBitInstaller->registerSchemaTable( KERNEL_PKG_NAME, $tableName, $tables[$tableName], TRUE );
 }
 
 $indices = array (
@@ -143,7 +143,7 @@ $indices = array (
 	'tiki_module_map_rsrc_idx' => array( 'table' => 'tiki_module_map', 'cols' => 'module_rsrc', 'opts' => NULL )
 );
 
-$gBitInstaller->registerSchemaIndexes( KERNEL_PKG_DIR, $indices );
+$gBitInstaller->registerSchemaIndexes( KERNEL_PKG_NAME, $indices );
 
 $gBitInstaller->registerPackageInfo( KERNEL_PKG_NAME, array(
 	'description' => "This is the heart of the application. Without this --&gt; nothing.",

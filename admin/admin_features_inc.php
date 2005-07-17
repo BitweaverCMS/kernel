@@ -1,19 +1,25 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.2 2005/07/17 17:36:05 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
-$users_list = $gBitUser->get_users_names();
-$smarty->assign( 'users_list',$users_list );
+//This doen't scale very well when you have 1000's of users
+//$users_list = $gBitUser->get_users_names();
+//$smarty->assign( 'users_list',$users_list );
 
 $formFeaturesTiki = array(
 	'pretty_urls' => array(
 		'label' => 'Use Pretty URLs',
-		'note' => 'In addition to making the URL easier to read and remember it enhances search engine results. *requires <a href="http://httpd.apache.org/docs-2.0/mod/mod_rewrite.html">mod_rewrite</a>, which comes installed by default on with apache',
+		'note' => 'In addition to making the URL easier to read and remember it enhances search engine results. Using this feature requires Apache <a href="http://httpd.apache.org/docs-2.0/mod/mod_rewrite.html">mod_rewrite</a> support in the web server (usually installed by default), Depending on the Web server configuration, it may be necessary to modify the default .htaccess files when using this feature.',
 		'page' => 'PrettyUrls',
+	),
+	'feature_pretty_urls_extended' => array(
+		'label' => 'Use Extended Pretty URLs',
+		'note' => 'In addition to making the URL easier to read and remember it enhances search engine results. Using this feature requires Apache <a href="http://httpd.apache.org/docs-2.0/mod/mod_rewrite.html">mod_rewrite</a> support in the web server (usually installed by default), This extended version adds a /view tag to the URLs to make them unambigious for rewrites.  It will be necessary to modify the default .htaccess files when using this feature.',
+		'page' => 'PrettyUrlsExtended',
 	),
 	'feature_autolinks' => array(
 		'label' => 'AutoLinks',
@@ -107,8 +113,10 @@ if( $gBitSystem->isFeatureActive( 'debug' ) ) {
 			'page' => 'DebugConsole',
 		);
 }
-
 $smarty->assign( 'formFeaturesAdmin',$formFeaturesAdmin );
+
+$users_list = $gBitUser->get_users_names();
+$smarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list : NULL );
 
 $processForm = set_tab();
 

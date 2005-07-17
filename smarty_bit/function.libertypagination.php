@@ -13,6 +13,7 @@
  * Input:    numPages			Number of pages in total
  *           page				current page
  *           pgnName (optional)	parameter name used by script to find page you're on. defaults to page
+ *           ianchor (optional)	set an anchor
  * Output:   url of the form: $PHP_SELF?attribute1=value1&attribute2=value2
  */
 
@@ -28,13 +29,15 @@ function smarty_function_libertypagination($params, &$smarty) {
 	$pgnName = isset( $params['pgnName'] ) ? $params['pgnName'] : 'page';
 	$pgnVars = '';
 
-	$omitParams = array( 'numPages', 'url', 'page', 'pgnName' );
+	$omitParams = array( 'numPages', 'url', 'page', 'pgnName', 'ianchor' );
 	foreach( $params as $form_param => $form_val ) {
 		if ( !empty( $form_val ) && !in_array( $form_param, $omitParams ) ) {
 			$pgnVars .= "&amp;".$form_param."=".$form_val;
 			$pgnHidden[$form_param] = $form_val;
 		}
 	}
+
+	$pgnVars .= ( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' );
 
     for( $pageCount = 1; $pageCount < $params['numPages']+1; $pageCount++ ) {
 		if( $pageCount != $params['page'] ) {

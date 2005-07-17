@@ -24,7 +24,7 @@ function smarty_function_formfeedback( $params,&$smarty ) {
 	foreach( $hash as $key => $val ) {
 		if( $val ) {
 			require_once $smarty->_get_plugin_filepath('function','biticon');
-			if( $key == 'warning' || $key == 'success' || $key == 'error' ) {
+			if( $key === 'warning' || $key === 'success' || $key === 'error' ) {
 				$biticon = array(
 					'ipackage' => 'liberty',
 					'iname' => $key,

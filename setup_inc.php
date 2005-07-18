@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.7 2005/07/15 09:21:06 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.8 2005/07/18 18:52:57 drewslater Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -63,7 +63,7 @@ global $gRefreshSitePrefs;
 $gRefreshSitePrefs = FALSE;
 global $gBitSystem;
 $gBitSystem = new BitSystem();
-
+global $smarty;
 global $gPreviewStyle;
 $gPreviewStyle = FALSE;
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');

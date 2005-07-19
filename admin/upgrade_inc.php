@@ -96,6 +96,7 @@ array( 'ALTER' => array(
 // STEP 2
 array( 'QUERY' =>
 	array( 'SQL92' => array(
+		"UPDATE `".BIT_DB_PREFIX."tiki_module_map` SET `module_rsrc` = replace( `module_rsrc`, 'tikipackage', 'bitpackage' )",
 	)
 )),
 

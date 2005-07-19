@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.17 $
+* @version $Revision: 1.7.2.18 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.17 2005/07/19 15:48:19 spiderr Exp $
+// $Id: BitSystem.php,v 1.7.2.18 2005/07/19 19:22:34 damosoft Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.17 $
+ * @version $Revision: 1.7.2.18 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -1266,7 +1266,7 @@ asort( $this->mAppMenu );
 		if ($pForceReload || empty($this->mLayout) || !count($this->mLayout))
 		{
 			unset($this->mLayout);
-			$this->mLayout = &$this->getLayout($pUserMixed, $pLayout, $pLayout, $pFallbackLayout);
+			$this->mLayout = $this->getLayout($pUserMixed, $pLayout, $pLayout, $pFallbackLayout);
 		}
 	}
 

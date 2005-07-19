@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.5 2005/07/19 14:14:28 spiderr Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.6 2005/07/19 14:21:34 spiderr Exp $
 * @package Smarty
 */
 
@@ -80,11 +80,13 @@ class BitSmarty extends Smarty
 		$this->verifyCompileDir();
 		$_smarty_cache_id = $_smarty_cache_id;
 		$_smarty_compile_id = $_smarty_compile_id;
-		list($resource, $location) = split(':', $_smarty_tpl_file);
-		if ($resource == 'bitpackage') {
-			list($package, $template) = split('/', $location);
-			if( !$gBitSystem->isPackageActive( $package ) ) {
-				return '';
+		if( strpos( ':', $_smarty_tpl_file ) ) {
+			list($resource, $location) = split(':', $_smarty_tpl_file);
+			if ($resource == 'bitpackage') {
+				list($package, $template) = split('/', $location);
+				if( !$gBitSystem->isPackageActive( $package ) ) {
+					return '';
+				}
 			}
 		}
 

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.4 2005/06/27 18:59:20 lsces Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.5 2005/07/19 14:14:28 spiderr Exp $
 * @package Smarty
 */
 
@@ -76,9 +76,18 @@ class BitSmarty extends Smarty
 
 	function fetch($_smarty_tpl_file, $_smarty_cache_id = null, $_smarty_compile_id = null, $_smarty_display = false)
 	{
+		global $gBitSystem;
 		$this->verifyCompileDir();
 		$_smarty_cache_id = $_smarty_cache_id;
 		$_smarty_compile_id = $_smarty_compile_id;
+		list($resource, $location) = split(':', $_smarty_tpl_file);
+		if ($resource == 'bitpackage') {
+			list($package, $template) = split('/', $location);
+			if( !$gBitSystem->isPackageActive( $package ) ) {
+				return '';
+			}
+		}
+
 		// the PHP sibling file needs to be included here, before the fetch so caching works properly
 		$this->includeSiblingPhp($_smarty_tpl_file);
 		return parent::fetch($_smarty_tpl_file, $_smarty_cache_id, $_smarty_compile_id, $_smarty_display);

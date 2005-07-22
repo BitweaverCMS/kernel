@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.1.1.1.2.1 2005/06/27 12:49:49 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.1.1.1.2.2 2005/07/22 10:07:33 wolff_borg Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -40,7 +40,7 @@ function isWindows()
 function mkdir_p($target, $perms = 0777)
 {
 	global $gDebug;
-	$target;
+
 	if (file_exists($target) || is_dir($target))
 	{
 		if ($gDebug) echo "mkdir_p() - file already exists $target<br>";
@@ -153,7 +153,7 @@ function isFileWriteable($pFile)
 	} elseif (!@is_file($pFile)) {
 		$success = 0;
 		$data = "not file";
-	} elseif (!@is_writable($pFile)) {
+	} elseif (!@bw_is_writeable($pFile)) {
 		$success = 0;
 		$data = "not writeable";
 	}
@@ -174,7 +174,7 @@ function isDirectoryWriteable($pDir)
 	} elseif (!@is_dir($pDir)) {
 		$success = 0;
 		$data = "not directory";
-	} elseif (!@is_writable($pDir)) {
+	} elseif (!@bw_is_writeable($pDir)) {
 		$success = 0;
 		$data = "not writeable";
 	}
@@ -203,4 +203,30 @@ function chkPhpSetting($pName, $pValue, $pComp='')
 	return $success;
 	// redundant $data = serialize(array("check" => $pValue, "actual" => $actual));
 }
+
+// added check for Windows - wolff_borg - see http://bugs.php.net/bug.php?id=27609
+function bw_is_writeable($filename) {
+	if (!isWindows()) {
+		return is_writeable($filename);
+	} else {
+		$writeable = FALSE;
+		if (is_dir($filename)) {
+			$rnd = rand();
+			$writeable = @fopen($filename."/".$rnd,"a");
+			if ($writeable) {
+				fclose($writeable);
+				unlink($filename."/".$rnd);
+				$writeable = true;
+			}
+		} else {
+			$writeable = @fopen($filename,"a");
+			if ($writeable) {
+				fclose($writeable);
+				$writeable = true;
+			}
+		}
+		return $writeable;
+	}
+}
+
 ?>

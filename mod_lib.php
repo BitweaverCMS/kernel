@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.4 2005/06/29 18:22:01 drewslater Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.5 2005/07/23 04:43:23 wolff_borg Exp $
  * @package kernel
  */
 
@@ -88,7 +88,7 @@ class ModLib extends BitBase {
 			}
 			$result = $this->query( $query, $bindVars );
 
-			if( $pHash['layout'] == 'kernel' ) {
+			if( !isset($pHash['layout']) || $pHash['layout'] == 'kernel' ) {
 				$this->query( "UPDATE `".BIT_DB_PREFIX."tiki_layouts_modules` SET `params`=? WHERE `module_id`=?", array( $pHash['params'], $pHash['module_id'] ) );
 			}
 

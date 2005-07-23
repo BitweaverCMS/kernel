@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.19 $
+* @version $Revision: 1.7.2.20 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.19 2005/07/23 03:09:28 wolff_borg Exp $
+// $Id: BitSystem.php,v 1.7.2.20 2005/07/23 07:42:55 wolff_borg Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.19 $
+ * @version $Revision: 1.7.2.20 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -1512,9 +1512,13 @@ asort( $this->mAppMenu );
 
 		if (isWindows())
 		{
-			$wwwuser = 'IUSR_'.$_SERVER['COMPUTERNAME'];
-
-			$wwwgroup = 'IUSR_'.$_SERVER['COMPUTERNAME'];
+			if (strpos($_SERVER["SERVER_SOFTWARE"],"IIS") && isset($_SERVER['COMPUTERNAME']) {
+				$wwwuser = 'IUSR_'.$_SERVER['COMPUTERNAME'];
+				$wwwgroup = 'IUSR_'.$_SERVER['COMPUTERNAME'];
+			} else {
+				$wwwuser = 'SYSTEM';
+				$wwwgroup = 'SYSTEM';
+			}
 		}
 
 		if (function_exists('posix_getuid'))

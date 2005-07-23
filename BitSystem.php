@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.18 $
+* @version $Revision: 1.7.2.19 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.18 2005/07/19 19:22:34 damosoft Exp $
+// $Id: BitSystem.php,v 1.7.2.19 2005/07/23 03:09:28 wolff_borg Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.18 $
+ * @version $Revision: 1.7.2.19 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -549,7 +549,6 @@ class BitSystem extends BitBase
 		die;
 	}
 
-	// === verifyPermission
 	/**
 	* This code was duplicated _EVERYWHERE_ so here is an easy template to cut that down.
 	* It will verify if a given user has a given $permission and if not, it will display the error template and die()
@@ -964,7 +963,7 @@ asort( $this->mAppMenu );
 			}
 		}
 
-		foreach( array_keys( $this->mPackages ) as $package ) {
+		foreach( array_keys( $this->mPackages ) as $package ) {	
 			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getPreference("package_".strtolower($package)) != 'y') {
 				$this->storePreference('package_'.strtolower( $package ), 'n');
 			} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
@@ -1295,7 +1294,7 @@ asort( $this->mAppMenu );
 		// This saves a count() query to see if the ACTIVE_PACKAGE has a layout, since it usually probably doesn't
 		// I don't know if it's better or not to save the count() query and retrieve more data - my gut says so,
 		// but i've done no research - spiderr
-		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->mDb->mType != 'firebird') {
+		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->mDb->mType != 'firebird' && $this->mDb->mType != 'mssql') {
 			// ORDER BY comparison is crucial so current layout modules come up first
 			$whereClause .= " (tl.`layout`=? OR tl.`layout`=? ) ORDER BY tl.`layout`=? DESC, ";
 			array_push($bindVars, $pLayout);
@@ -1490,7 +1489,7 @@ asort( $this->mAppMenu );
 			{
 				$errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
 			}
-			else if (!is_writeable($save_path))
+			else if (!bw_is_writeable($save_path))
 			{
 				$errors .= "The directory '$save_path' is not writeable.\n";
 			}
@@ -1499,7 +1498,7 @@ asort( $this->mAppMenu );
 			{
 				$save_path = getTempDir();
 
-				if (is_dir($save_path) && is_writeable($save_path))
+				if (is_dir($save_path) && bw_is_writeable($save_path))
 				{
 					ini_set('session.save_path', $save_path);
 
@@ -1513,9 +1512,9 @@ asort( $this->mAppMenu );
 
 		if (isWindows())
 		{
-			$wwwuser = 'SYSTEM';
+			$wwwuser = 'IUSR_'.$_SERVER['COMPUTERNAME'];
 
-			$wwwgroup = 'SYSTEM';
+			$wwwgroup = 'IUSR_'.$_SERVER['COMPUTERNAME'];
 		}
 
 		if (function_exists('posix_getuid'))
@@ -1576,7 +1575,7 @@ $permFiles = array(
 			}
 
 			// chmod( $target, 02775 );
-			if( $present && !is_writeable($target) ) {
+			if( $present && (!bw_is_writeable($target))) {
 				if (!isWindows())
 				{ $errors .= "<p><b style='color:red;'>$target</b> is not writeable by $wwwuser. To give $wwwuser write permission, execute a command such as:<pre>
 	\$ chmod 777 $target
@@ -1589,7 +1588,7 @@ $permFiles = array(
 			// {
 			// $errors .= "The directory '$docroot$dir' does not exist.\n";
 			// }
-			// else if (!is_writeable("$docroot/$dir"))
+			// else if (!bw_is_writeable("$docroot/$dir"))
 			// {
 			// $errors .= "The directory '$docroot$dir' is not writeable by $wwwuser.\n";
 			// }
@@ -2209,7 +2208,8 @@ function installError($pMsg = null)
 	} else {
 		$step = 0;
 	}
-	header( "Location: ".BIT_ROOT_URL."install/install.php?step=".$step );
+
+	header( "Location: http://".$_SERVER['HTTP_HOST']."/".BIT_ROOT_URL."install/install.php?step=".$step );
 /*	// figure out our subdirectories, if any.
 	echo '<html><head><meta http-equiv="pragma" content="no-cache"><meta http-equiv="expires" content="1" /></head><body>';
 	echo "<p>$pMsg</p>";

@@ -15,7 +15,7 @@
  * -------------------------------------------------------------
  */
 function smarty_resource_bitpackage_source($tpl_name, &$tpl_source, &$smarty) {
-	global $gBitSystem, $gBitSystem; // gBitSystem is just for temporary backward compatibility
+	global $gBitSystem;
 	$ret = false;
 
 	$path = explode( '/', $tpl_name );

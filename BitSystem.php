@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.21 $
+* @version $Revision: 1.7.2.22 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.21 2005/07/23 07:47:57 wolff_borg Exp $
+// $Id: BitSystem.php,v 1.7.2.22 2005/07/23 07:53:25 wolff_borg Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.21 $
+ * @version $Revision: 1.7.2.22 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -2213,7 +2213,7 @@ function installError($pMsg = null)
 		$step = 0;
 	}
 
-	header( "Location: http://".$_SERVER['HTTP_HOST']."/".BIT_ROOT_URL."install/install.php?step=".$step );
+	header( "Location: http://".$_SERVER['HTTP_HOST'].BIT_ROOT_URL."install/install.php?step=".$step );
 /*	// figure out our subdirectories, if any.
 	echo '<html><head><meta http-equiv="pragma" content="no-cache"><meta http-equiv="expires" content="1" /></head><body>';
 	echo "<p>$pMsg</p>";

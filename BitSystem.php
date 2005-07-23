@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.20 $
+* @version $Revision: 1.7.2.21 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.20 2005/07/23 07:42:55 wolff_borg Exp $
+// $Id: BitSystem.php,v 1.7.2.21 2005/07/23 07:47:57 wolff_borg Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.20 $
+ * @version $Revision: 1.7.2.21 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -1512,7 +1512,7 @@ asort( $this->mAppMenu );
 
 		if (isWindows())
 		{
-			if (strpos($_SERVER["SERVER_SOFTWARE"],"IIS") && isset($_SERVER['COMPUTERNAME']) {
+			if ( strpos($_SERVER["SERVER_SOFTWARE"],"IIS") && isset($_SERVER['COMPUTERNAME']) ) {
 				$wwwuser = 'IUSR_'.$_SERVER['COMPUTERNAME'];
 				$wwwgroup = 'IUSR_'.$_SERVER['COMPUTERNAME'];
 			} else {

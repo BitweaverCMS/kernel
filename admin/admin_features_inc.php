@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.3 2005/07/09 02:51:39 jht001 Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.4 2005/07/24 12:05:48 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -79,12 +79,6 @@ $formFeaturesContent = array(
 		'note' => 'Enables you to edit CSS files - this setting is antiquated and will be removed soon. use the stylist package if you want to modify css files.',
 		'page' => 'EditCss',
 	),
-	/* in preparation of dill release
-	'feature_jstabs' => array(
-		'label' => 'Javascript Tabs',
-		'note' => 'If you should not like the Javascript Tabs that are used throughout bitweaver, or if you experience problems with them, you can desable them here.<br />We recommend that you add something like <strong>.tabsystem h4 {display: none;}</strong> to your css file to remove duplicate headings. Some pages might be disorienting if this feature is disabled.',
-	),
-	*/
 );
 $smarty->assign( 'formFeaturesContent',$formFeaturesContent );
 
@@ -121,9 +115,8 @@ $smarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list : NUL
 $processForm = set_tab();
 
 if( $processForm ) {
-	
-	$featureToggles = array_merge( $formFeaturesTiki,$formFeaturesContent,$formFeaturesAdmin,$formFeaturesHelp );
-	foreach( $featureToggles as $item => $data ) {
+	$featureToggles = array_merge( $formFeaturesTiki,$formFeaturesContent,$formFeaturesAdmin,$formFeaturesHelp,array( 'feature_contact' => 0 ) );
+	foreach( array_keys( $featureToggles ) as $item ) {
 		simple_set_toggle( $item );
 	}
 	simple_set_value( "contact_user" );

@@ -1,10 +1,27 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_modules.tpl,v 1.1 2005/06/19 04:52:54 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_modules.tpl,v 1.1.1.1.2.1 2005/07/24 17:04:32 squareing Exp $ *}
 
 {$moduleJavascript}
 
 {jstabs}
-	{jstab title="Edit Modules"}
+	{jstab title="Module Settings"}
+		{form legend="Global Module Settings"}
+			<input type="hidden" name="page" value="{$page}" />
+			{foreach from=$formModuleFeatures key=feature item=output}
+				<div class="row">
+					{formlabel label=`$output.label` for=$feature}
+					{forminput}
+						{html_checkboxes name="$feature" values="y" checked=`$gBitSystemPrefs.$feature` labels=false id=$feature}
+						{formhelp note=`$output.note` page=`$output.page`}
+					{/forminput}
+				</div>
+			{/foreach}
+			<div class="row submit">
+				<input type="submit" name="ModulesTabSubmit" value="{tr}Change preferences{/tr}" />
+			</div>
+		{/form}
+	{/jstab}
 
+	{jstab title="Module Accessibility"}
 		{form legend="Edit Modules" onsubmit="PostSubmitProcess()"}
 			<input type="hidden" name="page" value="{$page}" />
 			<input type="hidden" name="fPackage" value="{$fPackage}" />
@@ -97,24 +114,6 @@
 				{/foreach}
 			</ul>
 		{/if}
-	{/jstab}
-
-	{jstab title="Module Settings"}
-		{form legend="Global Module Settings"}
-			<input type="hidden" name="page" value="{$page}" />
-			{foreach from=$formModuleFeatures key=feature item=output}
-				<div class="row">
-					{formlabel label=`$output.label` for=$feature}
-					{forminput}
-						{html_checkboxes name="$feature" values="y" checked=`$gBitSystemPrefs.$feature` labels=false id=$feature}
-						{formhelp note=`$output.note` page=`$output.page`}
-					{/forminput}
-				</div>
-			{/foreach}
-			<div class="row submit">
-				<input type="submit" name="ModulesTabSubmit" value="{tr}Change preferences{/tr}" />
-			</div>
-		{/form}
 	{/jstab}
 {/jstabs}
 

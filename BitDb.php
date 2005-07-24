@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.6 2005/07/12 11:54:34 spiderr Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.7 2005/07/24 18:44:04 spiderr Exp $
 *
 * @package kernel
 *
@@ -12,7 +12,7 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.4.2.6 2005/07/12 11:54:34 spiderr Exp $
+* $Id: BitDb.php,v 1.4.2.7 2005/07/24 18:44:04 spiderr Exp $
 */
 
 /**
@@ -69,6 +69,11 @@ class BitDb
 	*/
 	var $mCacheFlag;
 	/**
+	* Determines if fatal query functions should terminate script execution. Defaults to TRUE. Can be deactived for things like expected duplicate inserts
+	* @private
+	*/
+	var $mFatalActive;
+	/**
 	* During initialisation, database parameters are passed to the class.
 	* If these parameters are not valid, class will not be initialised.
 	*/
@@ -77,6 +82,8 @@ class BitDb
 		global $gBitDbType, $gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName, $ADODB_FETCH_MODE;
 		$this->mCacheFlag = FALSE;
 		$this->mNumQueries = 0;
+		$this->setFatalActive();
+
 		global $ADODB_CACHE_DIR;
 		if( empty( $ADODB_CACHE_DIR ) ) {
 			$ADODB_CACHE_DIR = getTempDir().'/adodb/'.$_SERVER['HTTP_HOST'].'/';
@@ -175,6 +182,23 @@ class BitDb
 	function isValid() {
 		return( !empty( $this->mDb ) );
 	}
+
+	/**
+	* Determines if the database connection is valid
+	* @return true if DB connection is valid, false if not
+	*/
+	function isFatalActive() {
+		return( $this->mFatalActive );
+	}
+
+	/**
+	* Determines if the database connection is valid
+	* @return true if DB connection is valid, false if not
+	*/
+	function setFatalActive( $pActive=TRUE ) {
+		$this->mFatalActive = $pActive;
+	}
+
 
 	/**
 	* Used to create tables - most commonly from package/schema_inc.php files
@@ -777,6 +801,8 @@ class BitDb
 		return $ret;
 	}
 
+	/** Calls ADODB method to begin a transaction
+	*/
 	function StartTrans() {
 		 return $this->mDb->StartTrans();
 	}

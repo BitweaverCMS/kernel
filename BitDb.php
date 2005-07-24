@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.7 2005/07/24 18:44:04 spiderr Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.8 2005/07/24 20:33:12 spiderr Exp $
 *
 * @package kernel
 *
@@ -12,7 +12,7 @@
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitDb.php,v 1.4.2.7 2005/07/24 18:44:04 spiderr Exp $
+* $Id: BitDb.php,v 1.4.2.8 2005/07/24 20:33:12 spiderr Exp $
 */
 
 /**
@@ -467,7 +467,7 @@ class BitDb
 		if( $gDebug ) {
 			global $gBitSystem;
 			$this->mQueryLap = $gBitSystem->mTimer->elapsed();
-			$this->mDb->debug = 99;
+			$this->mDb->debug = $gDebug;
 		}
 	}
 
@@ -819,5 +819,10 @@ class BitDb
 		 return $this->mDb->MetaTables( $ttype, $showSchema, $mask );
 	}
 
+	function isAdvancedPostgresEnabled() {
+		// This code makes use of the badass /usr/share/pgsql/contrib/tablefunc.sql
+		// contribution that you have to install like: psql foo < /usr/share/pgsql/contrib/tablefunc.sql
+		return defined( 'ADVANCED_PGSQL' );
+	}
 }
 ?>

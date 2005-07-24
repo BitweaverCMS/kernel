@@ -1,9 +1,9 @@
-{if $gBitSystem->isFeatureActive( 'feature_calendar' ) and $gBitUser->hasPermission( 'bit_p_view_calendar' )}
-	<a class="menuoption" href="{$gBitLoc.CALENDAR_PKG_URL}index.php">{tr}Calendar{/tr}</a>
-{/if}
-{if $gBitSystem->isFeatureActive( 'feature_contact' )}
-	<a class="menuoption" href="{$gBitLoc.MESSU_PKG_URL}contact.php">{tr}Contact us{/tr}</a>
-{/if}
-{if $gBitSystem->isFeatureActive( 'feature_stats' ) and $gBitUser->hasPermission( 'bit_p_view_stats' )}
-	<a class="menuoption" href="{$gBitLoc.STATS_PKG_URL}index.php">{tr}Statistics{/tr}</a>
-{/if}
+{strip}
+<ul>
+	{if $gBitSystem->isFeatureActive( 'feature_contact' )}
+		<li><a class="item" href="{$gBitLoc.MESSU_PKG_URL}contact.php">{biticon ipackage=liberty iname=spacer iforce=icon} {tr}Contact us{/tr}</a></li>
+	{/if}
+	<li><a class="item" href="{$gBitLoc.LIBERTY_PKG_URL}list_content.php">{biticon ipackage=liberty iname=spacer iforce=icon} {tr}All available Content{/tr}</a></li>
+	<li><a class="item" href="{$gBitLoc.USERS_PKG_URL}index.php">{biticon ipackage=users iname=users iforce=icon} {tr}Users List{/tr}</a></li>
+</ul>
+{/strip}

@@ -4,7 +4,11 @@
 		{* this link is for textbrowsers *}
 		<a style="display:none;position:absolute;top:0px;left:0px;" href="#top">{tr}go to top{/tr}</a>
 		<ul id="nav" class="menu hor">
-			<li class="m-home"><a class="item" href="{$gBitLoc.BIT_ROOT_URL}">{tr}{$siteTitle|default:"Home"}{/tr}</a></li>
+			<li class="m-home">
+				<a class="head" href="{$gBitLoc.BIT_ROOT_URL}">{tr}{$siteTitle|default:"Home"}{/tr}</a>
+				{include file="bitpackage:kernel/menu_global.tpl"}
+			</li>
+
 			{foreach key=key item=menu from=$appMenu}
 				{if $menu.title && $menu.titleUrl && $menu.template}
 					<li class="m-{$key}{if $gBitLoc.ACTIVE_PACKAGE eq $menu.adminPanel} current{/if}">

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.2 2005/07/17 17:36:06 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.3 2005/07/25 20:02:11 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -63,7 +63,7 @@
 					{formlabel label="Site Emailer return address" for="sender_email"}
 					{forminput}
 						<input size="50" type="text" name="sender_email" id="sender_email" value="{$gBitSystemPrefs.sender_email|escape}" />
-						{formhelp note="When users recieve an automatically generated email, this is the email address that will be used as return address.<br />this should go in pkg_users???"}
+						{formhelp note="When users recieve an automatically generated email, this is the email address that will be used as return address."}
 					{/forminput}
 				</div>
 

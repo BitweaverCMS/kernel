@@ -28,6 +28,9 @@ if( !defined( 'BIT_QUERY_CACHE_TIME' ) ) {
 if( !defined( 'DISPLAY_ERRORS' ) ) {
 	define( 'DISPLAY_ERRORS', 0 );
 }
+
+// this is broken if the virtual directory under the webserver is
+// not the same name as the physical directory on the drive - wolff_borg
 if (!defined('BIT_ROOT_URL' )) {
     preg_match('/.*'.basename(dirname(dirname(__FILE__ ) ) ).'\//', $_SERVER['PHP_SELF'], $match  );
     $subpath = ( isset($match[0] ) ) ? $match[0] : '/';

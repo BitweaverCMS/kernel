@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.9 $
+* @version $Revision: 1.10 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.9 2005/07/17 17:36:05 squareing Exp $
+// $Id: BitSystem.php,v 1.10 2005/07/25 20:02:08 squareing Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -128,19 +128,17 @@ class BitSystem extends BitBase
 			$bitdomain = "";
 		}
 
-		global $smarty, $gBitSmarty;
+		global $gBitSmarty;
 		// make sure we only create one BitSmarty
-		if( !is_object( $smarty ) ) {
-			// $smarty = new BitSmarty($bitdomain);
-			$smarty = new BitSmarty();
+		if( !is_object( $gBitSmarty ) ) {
+			$gBitSmarty = new BitSmarty();
 			// set the default handler
-			$smarty->load_filter('pre', 'tr');
-			// $smarty->load_filter('output','trimwhitespace');
+			$gBitSmarty->load_filter('pre', 'tr');
+			// $gBitSmarty->load_filter('output','trimwhitespace');
 			if (isset($_REQUEST['highlight']))
 			{
-				$smarty->load_filter('output', 'highlight');
+				$gBitSmarty->load_filter('output', 'highlight');
 			}
-			$gBitSmarty = &$smarty;
 		}
 	}
 
@@ -312,8 +310,8 @@ class BitSystem extends BitBase
 	* @access public
 	*/
 	function display( $pMid, $pBrowserTitle=NULL ) {
-		global $smarty;
-		$smarty->verifyCompileDir();
+		global $gBitSmarty;
+		$gBitSmarty->verifyCompileDir();
 
 		header( 'Content-Type: text/html; charset=utf-8' );
 		if( !empty( $pBrowserTitle ) ) {
@@ -324,9 +322,9 @@ class BitSystem extends BitBase
 			$pMid = 'bitpackage:kernel/error.tpl';
 		}
 		$this->preDisplay( $pMid );
-		$smarty->assign( 'mid', $pMid );
-		$smarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
-		$smarty->display( 'bitpackage:kernel/bitweaver.tpl' );
+		$gBitSmarty->assign( 'mid', $pMid );
+		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
+		$gBitSmarty->display( 'bitpackage:kernel/bitweaver.tpl' );
 		$this->postDisplay( $pMid );
 	}
 	// >>>
@@ -339,7 +337,7 @@ class BitSystem extends BitBase
 	*/
 	function preDisplay($pMid)
 	{
-		global $gCenterPieces, $fHomepage, $smarty, $gBitUser, $gBitLoc, $gPreviewStyle;
+		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gBitLoc, $gPreviewStyle;
 		// setup our theme style and check if a preview theme has been picked
 		if( $gPreviewStyle !== FALSE ) {
 			$this->setStyle( $gPreviewStyle );
@@ -353,14 +351,14 @@ class BitSystem extends BitBase
 		$gBitLoc['altStyleSheets'] = $this->getAltStyleCss();
 		$gBitLoc['THEMES_STYLE_URL'] = $this->getStyleUrl();
 		$gBitLoc['JSCALENDAR_PKG_URL'] = UTIL_PKG_URL.'jscalendar/';
-		$smarty->assign_by_ref("gBitLoc", $gBitLoc);
+		$gBitSmarty->assign_by_ref("gBitLoc", $gBitLoc);
 		// dont forget to assign slideshow stylesheet if we are viewing page as slideshow
-//		$smarty->assign('slide_style', $this->getStyleCss("slide_style"));
+//		$gBitSmarty->assign('slide_style', $this->getStyleCss("slide_style"));
 
 		$this->loadLayout(($this->getPreference('feature_user_layout') == 'h' && !empty($fHomepage)) ? $fHomepage : ($this->getPreference('feature_user_layout') == 'y' ? $gBitUser->mUsername : null));
 		if ($pMid == 'bitpackage:kernel/dynamic.tpl')
 		{
-			$smarty->assign_by_ref('gCenterPieces', $gCenterPieces);
+			$gBitSmarty->assign_by_ref('gCenterPieces', $gCenterPieces);
 		}
 		else
 		{
@@ -407,7 +405,8 @@ class BitSystem extends BitBase
 	function getHeaderIncFiles() {
 		global $gBitSystem, $gBitLoc;
 		foreach( $gBitSystem->mPackages as $package => $info ) {
-			if( is_file( $file = $info['path'].'templates/header_inc.tpl' ) ) {
+			$file = $info['path'].'templates/header_inc.tpl';
+			if( is_readable( $file ) ) {
 				$ret[] = $file;
 			}
 		}
@@ -437,8 +436,8 @@ class BitSystem extends BitBase
 	*/
 	function setHelpInfo($package, $context, $desc)
 	{
-		global $smarty;
-		$smarty->assign('TikiHelpInfo', array('URL' => 'http://doc.bitweaver.org/wiki/index.php?page=' . $package . $context , 'Desc' => $desc));
+		global $gBitSmarty;
+		$gBitSmarty->assign('TikiHelpInfo', array('URL' => 'http://doc.bitweaver.org/wiki/index.php?page=' . $package . $context , 'Desc' => $desc));
 	}
 	// >>>
 
@@ -520,7 +519,7 @@ class BitSystem extends BitBase
 	*/
 	function verifyPermission( $pPermission, $pMsg = NULL )
 	{
-		global $smarty, $gBitUser, ${$pPermission};
+		global $gBitSmarty, $gBitUser, ${$pPermission};
 		if( $gBitUser->hasPermission($pPermission) ) {
 			return true;
 		} else {
@@ -529,7 +528,7 @@ class BitSystem extends BitBase
 	}
 
 	function fatalPermission( $pPermission, $pMsg=NULL ) {
-		global $gBitUser, $smarty;
+		global $gBitUser, $gBitSmarty;
 		if( empty( $pMsg ) ) {
 			$permDesc = $this->getPermissionInfo( $pPermission );
 			$pMsg = "You do not have the required permissions ";
@@ -543,14 +542,13 @@ class BitSystem extends BitBase
 		}
 		if( !$gBitUser->isRegistered() ) {
 			$pMsg .= '</p><p>You must be logged in. Please <a href="'.USERS_PKG_URL.'login.php">login</a> or <a href="'.USERS_PKG_URL.'register.php">register</a>.';
-			$smarty->assign( 'template', 'bitpackage:users/login_inc.tpl' );
+			$gBitSmarty->assign( 'template', 'bitpackage:users/login_inc.tpl' );
 		}
-		$smarty->assign( 'msg', tra( $pMsg ) );
+		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->display( "error.tpl" );
 		die;
 	}
 
-	// === verifyPermission
 	/**
 	* This code was duplicated _EVERYWHERE_ so here is an easy template to cut that down.
 	* It will verify if a given user has a given $permission and if not, it will display the error template and die()
@@ -560,17 +558,17 @@ class BitSystem extends BitBase
 	*/
 	function confirmDialog( $pFormHash, $pMsg )
 	{
-		global $smarty;
+		global $gBitSmarty;
 		if( !empty( $pMsg ) ) {
 			if( empty( $pParamHash['cancel_url'] ) ) {
-				$smarty->assign( 'backJavascript', 'onclick="history.back();"' );
+				$gBitSmarty->assign( 'backJavascript', 'onclick="history.back();"' );
 			}
 			if( !empty( $pFormHash['input'] ) ) {
-				$smarty->assign( 'inputFields', $pFormHash['input'] );
+				$gBitSmarty->assign( 'inputFields', $pFormHash['input'] );
 				unset( $pFormHash['input'] );
 			}
-			$smarty->assign( 'msgFields', $pMsg );
-			$smarty->assign_by_ref( 'hiddenFields', $pFormHash );
+			$gBitSmarty->assign( 'msgFields', $pMsg );
+			$gBitSmarty->assign_by_ref( 'hiddenFields', $pFormHash );
 			$this->display( 'bitpackage:kernel/confirm.tpl' );
 			die;
 		}
@@ -836,8 +834,8 @@ class BitSystem extends BitBase
 	*/
 	function fatalError($pMsg)
 	{
-		global $smarty;
-		$smarty->assign('msg', tra($pMsg) );
+		global $gBitSmarty;
+		$gBitSmarty->assign('msg', tra($pMsg) );
 		$this->display( 'error.tpl' );
 		die;
 	}
@@ -965,7 +963,7 @@ asort( $this->mAppMenu );
 			}
 		}
 
-		foreach( array_keys( $this->mPackages ) as $package ) {
+		foreach( array_keys( $this->mPackages ) as $package ) {	
 			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getPreference("package_".strtolower($package)) != 'y') {
 				$this->storePreference('package_'.strtolower( $package ), 'n');
 			} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
@@ -1077,9 +1075,9 @@ asort( $this->mAppMenu );
 	*/
 	function setStyle($pStyle)
 	{
-		global $smarty;
+		global $gBitSmarty;
 		$this->mStyle = $pStyle;
-		$smarty->assign( 'style', $pStyle );
+		$gBitSmarty->assign( 'style', $pStyle );
 	}
 	// === setBrowserTitle
 	/**
@@ -1104,10 +1102,10 @@ asort( $this->mAppMenu );
 	*/
 	function setBrowserTitle($pTitle)
 	{
-		global $smarty, $gPageTitle;
+		global $gBitSmarty, $gPageTitle;
 		$gPageTitle = $pTitle;
-		$smarty->assign('browserTitle', $pTitle);
-		$smarty->assign('gPageTitle', $pTitle);
+		$gBitSmarty->assign('browserTitle', $pTitle);
+		$gBitSmarty->assign('gPageTitle', $pTitle);
 	}
 	// === getStyleCss
 	/**
@@ -1267,7 +1265,7 @@ asort( $this->mAppMenu );
 		if ($pForceReload || empty($this->mLayout) || !count($this->mLayout))
 		{
 			unset($this->mLayout);
-			$this->mLayout = &$this->getLayout($pUserMixed, $pLayout, $pLayout, $pFallbackLayout);
+			$this->mLayout = $this->getLayout($pUserMixed, $pLayout, $pLayout, $pFallbackLayout);
 		}
 	}
 
@@ -1296,7 +1294,7 @@ asort( $this->mAppMenu );
 		// This saves a count() query to see if the ACTIVE_PACKAGE has a layout, since it usually probably doesn't
 		// I don't know if it's better or not to save the count() query and retrieve more data - my gut says so,
 		// but i've done no research - spiderr
-		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->mDb->mType != 'firebird') {
+		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->mDb->mType != 'firebird' && $this->mDb->mType != 'mssql') {
 			// ORDER BY comparison is crucial so current layout modules come up first
 			$whereClause .= " (tl.`layout`=? OR tl.`layout`=? ) ORDER BY tl.`layout`=? DESC, ";
 			array_push($bindVars, $pLayout);
@@ -1491,7 +1489,7 @@ asort( $this->mAppMenu );
 			{
 				$errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
 			}
-			else if (!is_writeable($save_path))
+			else if (!bw_is_writeable($save_path))
 			{
 				$errors .= "The directory '$save_path' is not writeable.\n";
 			}
@@ -1500,7 +1498,7 @@ asort( $this->mAppMenu );
 			{
 				$save_path = getTempDir();
 
-				if (is_dir($save_path) && is_writeable($save_path))
+				if (is_dir($save_path) && bw_is_writeable($save_path))
 				{
 					ini_set('session.save_path', $save_path);
 
@@ -1514,9 +1512,13 @@ asort( $this->mAppMenu );
 
 		if (isWindows())
 		{
-			$wwwuser = 'SYSTEM';
-
-			$wwwgroup = 'SYSTEM';
+			if ( strpos($_SERVER["SERVER_SOFTWARE"],"IIS") && isset($_SERVER['COMPUTERNAME']) ) {
+				$wwwuser = 'IUSR_'.$_SERVER['COMPUTERNAME'];
+				$wwwgroup = 'IUSR_'.$_SERVER['COMPUTERNAME'];
+			} else {
+				$wwwuser = 'SYSTEM';
+				$wwwgroup = 'SYSTEM';
+			}
 		}
 
 		if (function_exists('posix_getuid'))
@@ -1577,7 +1579,7 @@ $permFiles = array(
 			}
 
 			// chmod( $target, 02775 );
-			if( $present && !is_writeable($target) ) {
+			if( $present && (!bw_is_writeable($target))) {
 				if (!isWindows())
 				{ $errors .= "<p><b style='color:red;'>$target</b> is not writeable by $wwwuser. To give $wwwuser write permission, execute a command such as:<pre>
 	\$ chmod 777 $target
@@ -1590,7 +1592,7 @@ $permFiles = array(
 			// {
 			// $errors .= "The directory '$docroot$dir' does not exist.\n";
 			// }
-			// else if (!is_writeable("$docroot/$dir"))
+			// else if (!bw_is_writeable("$docroot/$dir"))
 			// {
 			// $errors .= "The directory '$docroot$dir' is not writeable by $wwwuser.\n";
 			// }
@@ -2210,7 +2212,8 @@ function installError($pMsg = null)
 	} else {
 		$step = 0;
 	}
-	header( "Location: ".BIT_ROOT_URL."install/install.php?step=".$step );
+
+	header( "Location: http://".$_SERVER['HTTP_HOST'].BIT_ROOT_URL."install/install.php?step=".$step );
 /*	// figure out our subdirectories, if any.
 	echo '<html><head><meta http-equiv="pragma" content="no-cache"><meta http-equiv="expires" content="1" /></head><body>';
 	echo "<p>$pMsg</p>";

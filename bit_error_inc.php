@@ -17,7 +17,7 @@
  * set error handling
  */
 if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
-	define( 'ADODB_ERROR_HANDLER', 'tiki_error_handler' );
+	define( 'ADODB_ERROR_HANDLER', 'bit_error_handler' );
 }
 
 /*
@@ -30,12 +30,12 @@ if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
  * @param $p1		$fn specific parameter - see below
  * @param $P2		$fn specific parameter - see below
  */
-function tiki_error_handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnection) {
-	global $gBitSystem;
+function bit_error_handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnection) {
+	global $gBitSystem, $gBitDb;
 	if (ini_get('error_reporting') == 0) return; // obey @ protocol
 
 	$dbParams = array('gDB'=>&$thisConnection, 'db_type'=>$dbms, 'call_func'=>$fn, 'errno'=>$errno, 'db_msg'=>$errmsg, 'sql'=>$p1, 'p2'=>$p2);
-	$logString = tiki_error_string( $dbParams );
+	$logString = bit_error_string( $dbParams );
 	/*
 	 * Log connection error somewhere
 	 *	0 message is sent to PHP's system logger, using the Operating System's system
@@ -54,7 +54,7 @@ function tiki_error_handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnect
 	$subject = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : 'BITWEAVER';
 
 	$fatal = FALSE;
-	if ( ($fn == 'EXECUTE') && ($thisConnection->MetaError() != -5)  ) {
+	if ( ($fn == 'EXECUTE') && ($thisConnection->MetaError() != -5) && $gBitDb->isFatalActive() ) {
 		$subject .= ' FATAL';
 		$fatal = TRUE;
 	} else {
@@ -85,7 +85,7 @@ function tiki_error_handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnect
 	}
 }
 
-function tiki_error_string( $iDBParms ) {
+function bit_error_string( $iDBParms ) {
 	global $gBitDb;
 	global $gBitUser;
 	global $_SERVER;

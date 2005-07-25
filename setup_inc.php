@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.8 2005/07/17 17:36:05 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.9 2005/07/25 20:02:08 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -17,8 +17,8 @@ error_reporting( BIT_PHP_ERROR_REPORTING );
 
 define( 'BIT_MAJOR_VERSION',	'1' );
 define( 'BIT_MINOR_VERSION',	'0' );
-define( 'BIT_SUB_VERSION',		'1' );
-define( 'BIT_LEVEL',			'' ); // 'beta' or 'dev' or 'rc' etc..
+define( 'BIT_SUB_VERSION',		'2' );
+define( 'BIT_LEVEL',			'beta' ); // 'beta' or 'dev' or 'rc' etc..
 
 define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
 
@@ -63,6 +63,10 @@ global $gRefreshSitePrefs;
 $gRefreshSitePrefs = FALSE;
 global $gBitSystem;
 $gBitSystem = new BitSystem();
+
+// deprecated referenced variable alias - will be nuked soon - spiderr
+global $smarty;
+$smarty = &$gBitSmarty;
 
 global $gPreviewStyle;
 $gPreviewStyle = FALSE;

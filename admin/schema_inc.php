@@ -20,8 +20,8 @@ $tables = array(
   ip3 C(3),
   ip4 C(3),
   `user` C(40),
-  date_from TIMESTAMP NOTNULL,
-  date_to TIMESTAMP NOTNULL,
+  date_from T NOTNULL,
+  date_to T NOTNULL,
   use_dates C(1),
   created I8,
   message X

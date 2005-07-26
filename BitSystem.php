@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.23 $
+* @version $Revision: 1.7.2.24 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.23 2005/07/26 01:29:38 spiderr Exp $
+// $Id: BitSystem.php,v 1.7.2.24 2005/07/26 15:07:55 spiderr Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.23 $
+ * @version $Revision: 1.7.2.24 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -323,7 +323,7 @@ class BitSystem extends BitBase
 		}
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
-		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
+//		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
 		$gBitSmarty->display( 'bitpackage:kernel/bitweaver.tpl' );
 		$this->postDisplay( $pMid );
 	}

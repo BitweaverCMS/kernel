@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.7 2005/07/19 15:29:31 spiderr Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.8 2005/07/26 19:19:00 squareing Exp $
 * @package Smarty
 */
 
@@ -121,7 +121,7 @@ class BitSmarty extends Smarty
 					$modPhpFile = str_replace('.tpl', '.php', "$path$subdir/$template");
 					if (file_exists($modPhpFile))
 					{
-						global $gBitSystem, $gBitSystem, $gBitUser, $user, $smarty, $gQueryUserId, $module_rows, $module_params, $module_column;
+						global $gBitSmarty, $gBitSystem, $gBitUser, $user, $smarty, $gQueryUserId, $module_rows, $module_params, $module_column;
 						include_once($modPhpFile);
 						$ret = true;
 					}

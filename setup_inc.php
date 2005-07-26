@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.10 2005/07/24 09:58:44 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.11 2005/07/26 01:29:38 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -72,6 +72,11 @@ global $gPreviewStyle;
 $gPreviewStyle = FALSE;
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');
+
+require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
+global $gSniffer;
+$gSniffer = new phpSniff;
+$gBitSmarty->assign_by_ref( 'browserInfo', $gSniffer->_browser_info );
 
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 global $gBitLanguage;

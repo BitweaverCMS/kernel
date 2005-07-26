@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.22 $
+* @version $Revision: 1.7.2.23 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.22 2005/07/23 07:53:25 wolff_borg Exp $
+// $Id: BitSystem.php,v 1.7.2.23 2005/07/26 01:29:38 spiderr Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.22 $
+ * @version $Revision: 1.7.2.23 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -1177,15 +1177,13 @@ asort( $this->mAppMenu );
 	*/
 	function getBrowserStyleCss()
 	{
-		global $gBitLoc;
-		require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
-		$phpsniff = new phpSniff;
-		$gBitLoc['browser']['client'] = $phpsniff->property( 'browser' );
-		$gBitLoc['browser']['version'] = $phpsniff->property( 'version' );
+		global $gBitLoc, $gSniffer;
+		$gBitLoc['browser']['client'] = $gSniffer->property( 'browser' );
+		$gBitLoc['browser']['version'] = $gSniffer->property( 'version' );
 		$style = $this->getStyle();
 		$ret = '';
-		if( file_exists( $this->getStylePath().$this->getStyle().'_'.$phpsniff->property( 'browser' ).'.css' ) ) {
-			$ret = $this->getStyleUrl().$this->getStyle().'_'.$phpsniff->property( 'browser' ).'.css';
+		if( file_exists( $this->getStylePath().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css' ) ) {
+			$ret = $this->getStyleUrl().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css';
 		}
 		return $ret;
 	}

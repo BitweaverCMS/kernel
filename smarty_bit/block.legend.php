@@ -13,7 +13,7 @@
  * Input:
  *           - legend      (optional) - text that appears in the legend
  */
-function smarty_block_legend($params, $content, &$smarty) {
+function smarty_block_legend($params, $content, &$gBitSmarty) {
 	if( $content ) {
 		$ret = '<fieldset><legend>'.$params['legend'].'</legend>';
 		$ret .= $content;

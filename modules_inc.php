@@ -1,16 +1,16 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1.1.1.2.1 2005/06/27 12:49:49 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1.1.1.2.2 2005/07/26 15:50:08 drewslater Exp $
  * @package kernel
  * @subpackage functions
  */
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1.1.1.2.1 2005/06/27 12:49:49 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1.1.1.2.2 2005/07/26 15:50:08 drewslater Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
-global $smarty, $bit_p_configure_modules, $user_assigned_modules, $gBitSystem, $modlib, $gBitUser, $fHomepage, $gBitSystem, $modallgroups, $modseparateanon, $bitdomain, $bit_p_view_shoutbox;
+global $gBitSmarty, $bit_p_configure_modules, $user_assigned_modules, $gBitSystem, $modlib, $gBitUser, $fHomepage, $gBitSystem, $modallgroups, $modseparateanon, $bitdomain, $bit_p_view_shoutbox;
 
 /**
  * required setup
@@ -63,10 +63,10 @@ if( $gBitSystem->mLayout && empty( $gHideModules ) ) {
 					} else {
 						if( $info = $modlib->get_user_module( $template ) ) {
 							// Ahora usar el template de user
-							$smarty->assign_by_ref('user_title', $info["title"]);
-							$smarty->assign_by_ref('user_data', $info["data"]);
-							$smarty->assign_by_ref('user_module_name', $info["name"]);
-							$data = $smarty->fetch( USERS_PKG_PATH.'modules/user_module.tpl' );
+							$gBitSmarty->assign_by_ref('user_title', $info["title"]);
+							$gBitSmarty->assign_by_ref('user_data', $info["data"]);
+							$gBitSmarty->assign_by_ref('user_module_name', $info["name"]);
+							$data = $gBitSmarty->fetch( USERS_PKG_PATH.'modules/user_module.tpl' );
 							$fp = fopen($cachefile, "w+");
 							fwrite($fp, $data, strlen($data));
 							fclose ($fp);
@@ -80,22 +80,22 @@ if( $gBitSystem->mLayout && empty( $gHideModules ) ) {
 						$r["rows"] = 10;
 					}
 					global $module_rows, $module_params, $module_title;
-					$smarty->assign_by_ref( 'module_rows', $module_rows = $r["rows"] );
+					$gBitSmarty->assign_by_ref( 'module_rows', $module_rows = $r["rows"] );
 					parse_str( $r["params"], $module_params );
 					$module_title = ( isset( $r['title'] ) ? tra( $r['title'] ) : ( isset( $module_params['title'] ) ? $module_params['title'] : NULL ) );
 					$pattern[0] = "/.*\/mod_(.*)\.tpl/";
 					$replace[0] = "$1";
 					$pattern[1] = "/_/";
 					$replace[1] = " ";
-					$smarty->assign( 'moduleTitle', ( isset( $module_title ) ? tra( $module_title ) : tra( ucfirst( preg_replace( $pattern, $replace, $r['module_rsrc'] ) ) ) ) );
-					$smarty->assign_by_ref( 'module_rows', $r["rows"] );
-					$r['data'] = $smarty->fetch( $r['module_rsrc'] );
+					$gBitSmarty->assign( 'moduleTitle', ( isset( $module_title ) ? tra( $module_title ) : tra( ucfirst( preg_replace( $pattern, $replace, $r['module_rsrc'] ) ) ) ) );
+					$gBitSmarty->assign_by_ref( 'module_rows', $r["rows"] );
+					$r['data'] = $gBitSmarty->fetch( $r['module_rsrc'] );
 					unset( $module_rows );
 				}
 			}
 			unset( $data );
 		}
-		$smarty->assign_by_ref( $column.'_modules', $gBitSystem->mLayout[$column] );
+		$gBitSmarty->assign_by_ref( $column.'_modules', $gBitSystem->mLayout[$column] );
 	}
 }
 ?>

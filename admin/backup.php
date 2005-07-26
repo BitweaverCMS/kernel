@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/backup.php,v 1.1.1.1.2.1 2005/07/03 09:11:11 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/backup.php,v 1.1.1.1.2.2 2005/07/26 15:50:08 drewslater Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -25,13 +25,13 @@ if (isset($_REQUEST["generate"])) {
 	$backuplib->backup_database( $backupPath.$filename );
 }
 
-$smarty->assign('restore', 'n');
+$gBitSmarty->assign('restore', 'n');
 
 if (isset($_REQUEST["restore"])) {
 	
-	$smarty->assign('restore', 'y');
+	$gBitSmarty->assign('restore', 'y');
 
-	$smarty->assign('restorefile', basename($_REQUEST["restore"]));
+	$gBitSmarty->assign('restorefile', basename($_REQUEST["restore"]));
 }
 
 if (isset($_REQUEST["rrestore"])) {
@@ -63,7 +63,7 @@ if (isset($_REQUEST["upload"])) {
 		fclose ($fw);
 		unlink ($_FILES['userfile1']['tmp_name']);
 	} else {
-		$smarty->assign('msg', tra("Upload failed"));
+		$gBitSmarty->assign('msg', tra("Upload failed"));
 
 		$gBitSystem->display( 'error.tpl' );
 		die;
@@ -87,8 +87,8 @@ while ($file = readdir($h)) {
 }
 
 closedir ($h);
-$smarty->assign_by_ref('backups', $backups);
-$smarty->assign('bitdomain', $bitdomain);
+$gBitSmarty->assign_by_ref('backups', $backups);
+$gBitSmarty->assign('bitdomain', $bitdomain);
 
 
 $gBitSystem->display( 'bitpackage:kernel/backup.tpl', tra( 'Backups') );

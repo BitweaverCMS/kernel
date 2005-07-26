@@ -4,7 +4,7 @@
  * @package Smarty
  * @subpackage plugins
  */
-// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.1.1.1.2.1 2005/06/27 00:39:23 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.1.1.1.2.2 2005/07/26 15:50:09 drewslater Exp $
 /**
  * \brief Smarty {bitmodule}{/bitmodule} block handler
  *
@@ -26,20 +26,20 @@ error was used only in case the name was not there.
 I fixed that error case. -- mose
  
  */
-function smarty_block_bitmodule($params, $content, &$smarty) {
+function smarty_block_bitmodule($params, $content, &$gBitSmarty) {
 	extract($params);
 	if (!isset($content))   return "";
 	if (!isset($title))     $title = substr($content,0,12)."...";
 	if (!isset($name))      $name  = ereg_replace("[^-_a-zA-Z0-9]","",$title);
-	$smarty->assign('module_title', $title);
-	$smarty->assign('module_name', $name);
-	$smarty->assign_by_ref('module_content', $content);
+	$gBitSmarty->assign('module_title', $title);
+	$gBitSmarty->assign('module_name', $name);
+	$gBitSmarty->assign_by_ref('module_content', $content);
 	if ($_COOKIE[$name] == 'c') {
 		$toggle_state = 'none';
 	} else {
 		$toggle_state = 'block';
 	}
-	$smarty->assign('toggle_state', $toggle_state);
-	return $smarty->fetch('bitpackage:kernel/module.tpl');
+	$gBitSmarty->assign('toggle_state', $toggle_state);
+	return $gBitSmarty->fetch('bitpackage:kernel/module.tpl');
 }
 ?>

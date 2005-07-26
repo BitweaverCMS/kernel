@@ -18,7 +18,7 @@
  * @uses smarty_function_escape_special_chars()
  * @todo somehow make the variable that is contained within $iselect global --> this will allow importing of outside variables not set in $_REQUEST
  */
-function smarty_block_form($params, $content, &$smarty) {
+function smarty_block_form($params, $content, &$gBitSmarty) {
 	if( $content ) {
 		if( !isset( $params['method'] ) ) {
 			$params['method'] = 'post';

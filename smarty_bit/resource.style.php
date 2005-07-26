@@ -11,7 +11,7 @@
  * 
  * -------------------------------------------------------------
  */
-function smarty_resource_style_source($tpl_name, &$tpl_source, &$smarty)
+function smarty_resource_style_source($tpl_name, &$tpl_source, &$gBitSmarty)
 {
 	// Check if file exists in the style directory if not
 	// check if file exists in the templates directory,
@@ -24,7 +24,7 @@ function smarty_resource_style_source($tpl_name, &$tpl_source, &$smarty)
  * 
  * -------------------------------------------------------------
  */
-function smarty_resource_style_timestamp($tpl_name, &$tpl_timestamp, &$smarty)
+function smarty_resource_style_timestamp($tpl_name, &$tpl_timestamp, &$gBitSmarty)
 {
     // do database call here to populate $tpl_timestamp.
     $sql = new SQL;
@@ -45,7 +45,7 @@ function smarty_resource_style_timestamp($tpl_name, &$tpl_timestamp, &$smarty)
  * 
  * -------------------------------------------------------------
  */
-function smarty_resource_style_secure($tpl_name, &$smarty)
+function smarty_resource_style_secure($tpl_name, &$gBitSmarty)
 {
     // assume all templates are secure
     return true;
@@ -57,7 +57,7 @@ function smarty_resource_style_secure($tpl_name, &$smarty)
  * 
  * -------------------------------------------------------------
  */
-function smarty_resource_style_trusted($tpl_name, &$smarty)
+function smarty_resource_style_trusted($tpl_name, &$gBitSmarty)
 {
     // not used for templates
 }

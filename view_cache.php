@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.1.1.1.2.1 2005/06/27 12:49:48 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.1.1.1.2.2 2005/07/26 15:50:08 drewslater Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -17,7 +17,7 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
 
 /*
 if($gBitSystem->getPreference('feature_listPages') != 'y') {
-  $smarty->assign('msg',tra("This feature is disabled"));
+  $gBitSmarty->assign('msg',tra("This feature is disabled"));
   $gBitSystem->display( 'error.tpl' );
   die;  
 }
@@ -26,7 +26,7 @@ if (isset($_REQUEST['url'])) {
 	$id = $wikilib->isCached($_REQUEST['url']);
 
 	if (!$id) {
-		$smarty->assign('msg', tra("No cache information available"));
+		$gBitSmarty->assign('msg', tra("No cache information available"));
 
 		$gBitSystem->display( 'error.tpl' );
 		die;
@@ -36,7 +36,7 @@ if (isset($_REQUEST['url'])) {
 }
 
 if (!isset($_REQUEST["cache_id"])) {
-	$smarty->assign('msg', tra("No page indicated"));
+	$gBitSmarty->assign('msg', tra("No page indicated"));
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
@@ -51,9 +51,9 @@ if (substr($info["url"], -4, 4) == ".txt") {
 	$info["data"] = "<pre>" . $info["data"] . "</pre>";
 }
 
-$smarty->assign('ggcacheurl', $ggcacheurl);
-$smarty->assign_by_ref('info', $info);
+$gBitSmarty->assign('ggcacheurl', $ggcacheurl);
+$gBitSmarty->assign_by_ref('info', $info);
 $gBitSystem->display( 'bitpackage:kernel/view_cache.tpl');
-$smarty->display('bitpackage:kernel/view_cache.tpl');
+$gBitSmarty->display('bitpackage:kernel/view_cache.tpl');
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.1.1.1.2.1 2005/07/26 15:50:08 drewslater Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -35,7 +35,7 @@ function du($path) {
 
 function cache_templates($path, $oldlang, $newlang) {
 	global $gBitLanguage;
-	global $smarty;
+	global $gBitSmarty;
 	if (!$path or !is_dir($path)) return 0;
 	if ($dir = opendir($path)) {
 		while (false !== ($file = readdir($dir))) {
@@ -47,12 +47,12 @@ function cache_templates($path, $oldlang, $newlang) {
 			} else {
 				if ($ext=="tpl") {
 					$file=$path."/".$file;
-					$smarty->_compile_id = $newlang;
-					$comppath=$smarty->_get_compile_path($file);
+					$gBitSmarty->_compile_id = $newlang;
+					$comppath=$gBitSmarty->_get_compile_path($file);
 					//rewrite the language thing, see setup_smarty.php
 					$comppath=preg_replace("#/".$oldlang."/#","/".$newlang."/",$comppath,1);
-					if(!$smarty->_is_compiled($file,$comppath)) {
-						$smarty->_compile_resource($file,$comppath);
+					if(!$gBitSmarty->_is_compiled($file,$comppath)) {
+						$gBitSmarty->_compile_resource($file,$comppath);
 					}
 				}
 			}
@@ -62,7 +62,7 @@ function cache_templates($path, $oldlang, $newlang) {
 }
 
 if (!$gBitUser->isAdmin()) {
-	$smarty->assign('msg', tra("You dont have permission to use this feature"));
+	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
@@ -94,11 +94,11 @@ ksort($languages);
 $du['templates_c'] = du(TEMP_PKG_PATH.'templates_c');
 $du['modules'] = du(TEMP_PKG_PATH.'modules/cache');
 $du['lang'] = du(TEMP_PKG_PATH.'lang');
-$smarty->assign('du', $du);
+$gBitSmarty->assign('du', $du);
 
 $templates=array();
 $langdir = TEMP_PKG_PATH."templates_c/".$gBitSystem->getPreference('style')."/";
-$smarty->assign('langdir', $langdir);
+$gBitSmarty->assign('langdir', $langdir);
 foreach(array_keys($languages) as $clang) {
 	if(is_dir($langdir.$clang)) {
 		$templates[$clang] = du($langdir.$clang);
@@ -106,7 +106,7 @@ foreach(array_keys($languages) as $clang) {
 		$templates[$clang] = array("cant"=>0,"total"=>0);
 	}
 }
-$smarty->assign_by_ref('templates', $templates);
+$gBitSmarty->assign_by_ref('templates', $templates);
 
 $gBitSystem->display( 'bitpackage:kernel/admin_system.tpl');
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.1.1.1.2.1 2005/07/06 21:18:08 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.1.1.1.2.2 2005/07/26 15:50:08 drewslater Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -24,7 +24,7 @@ $layout = $gBitSystem->getLayout( ROOT_USER_ID, $_REQUEST['fPackage'], FALSE );
 
 if( !empty( $_REQUEST['module_name'] ) ) {
 	$fAssign['name'] = $_REQUEST['module_name'];
-	$smarty->assign( 'fAssign', $fAssign );
+	$gBitSmarty->assign( 'fAssign', $fAssign );
 }
 
 $formMiscFeatures = array(
@@ -45,7 +45,7 @@ $formMiscFeatures = array(
 		'note' => 'Here you can disable the left column site-wide.',
 	),
 );
-$smarty->assign( 'formMiscFeatures',$formMiscFeatures );
+$gBitSmarty->assign( 'formMiscFeatures',$formMiscFeatures );
 
 // process form - check what tab was used and set it
 $processForm = set_tab();
@@ -98,14 +98,14 @@ if( $processForm == 'Misc' ) {
 		$info['rows'] = 0;
 	}
 
-	$smarty->assign('module_groups', $grps);
-	$smarty->assign_by_ref('assign_name', $info["name"]);
-	//$smarty->assign_by_ref('assign_title',$info["title"]);
-	$smarty->assign_by_ref('assign_position', $info["position"]);
-	$smarty->assign_by_ref('assign_cache', $info["cache_time"]);
-	$smarty->assign_by_ref('assign_rows', $info["rows"]);
-	$smarty->assign_by_ref('assign_params', $info["params"]);
-	$smarty->assign_by_ref('assign_type', $info["type"]);
+	$gBitSmarty->assign('module_groups', $grps);
+	$gBitSmarty->assign_by_ref('assign_name', $info["name"]);
+	//$gBitSmarty->assign_by_ref('assign_title',$info["title"]);
+	$gBitSmarty->assign_by_ref('assign_position', $info["position"]);
+	$gBitSmarty->assign_by_ref('assign_cache', $info["cache_time"]);
+	$gBitSmarty->assign_by_ref('assign_rows', $info["rows"]);
+	$gBitSmarty->assign_by_ref('assign_params', $info["params"]);
+	$gBitSmarty->assign_by_ref('assign_type', $info["type"]);
 
 	if (isset($info["ord"])) {
 		$cosa = "" . $info["ord"];
@@ -113,7 +113,7 @@ if( $processForm == 'Misc' ) {
 		$cosa = "";
 	}
 
-	$smarty->assign_by_ref('assign_order', $cosa);
+	$gBitSmarty->assign_by_ref('assign_order', $cosa);
 } elseif( $processForm == 'Center' || $processForm == 'Column' ) {
 	if( !empty( $_REQUEST['groups'] ) ) {
 		$_REQUEST['fAssign']['groups'] = '';
@@ -127,20 +127,20 @@ if( $processForm == 'Misc' ) {
 	$fAssign['user_id'] = ROOT_USER_ID;
 	$fAssign['layout'] = $_REQUEST['fPackage'];
 	$modlib->storeLayout( $fAssign );
-	$smarty->assign_by_ref( 'fAssign', $fAssign );
+	$gBitSmarty->assign_by_ref( 'fAssign', $fAssign );
 }
 
 $sortedPackages = $gBitSystem->mPackages;
 sort( $sortedPackages );
-$smarty->assign( 'sortedPackages', $sortedPackages );
-$smarty->assign( 'fPackage', $_REQUEST['fPackage'] );
+$gBitSmarty->assign( 'sortedPackages', $sortedPackages );
+$gBitSmarty->assign( 'fPackage', $_REQUEST['fPackage'] );
 
 $layout = $gBitSystem->getLayout( ROOT_USER_ID, (isset( $_REQUEST['fPackage'] ) ? $_REQUEST['fPackage'] : NULL), FALSE );
 $modlib->generateModuleNames( $layout );
-$smarty->assign_by_ref( 'layout', $layout );
+$gBitSmarty->assign_by_ref( 'layout', $layout );
 
 $layoutAreas = array( 'left'=>'l', 'center'=>'c', 'right'=>'r' );
-$smarty->assign_by_ref( 'layoutAreas', $layoutAreas );
+$gBitSmarty->assign_by_ref( 'layoutAreas', $layoutAreas );
 
 $packages = array();
 foreach( $gBitSystem->mPackages as $pkg ) {
@@ -156,15 +156,15 @@ $module_groups = array();
 
 $all_modules = &$modlib->getAllModules();
 ksort( $all_modules );
-$smarty->assign_by_ref( 'all_modules', $all_modules );
+$gBitSmarty->assign_by_ref( 'all_modules', $all_modules );
 
 $allModulesHelp = &$modlib->getAllModules( 'modules', 'help_mod_' );
 ksort( $allModulesHelp );
-$smarty->assign_by_ref( 'allModulesHelp', $allModulesHelp );
+$gBitSmarty->assign_by_ref( 'allModulesHelp', $allModulesHelp );
 
 $all_centers = &$modlib->getAllModules( 'templates', 'center_' );
 ksort( $all_centers );
-$smarty->assign_by_ref( 'all_centers', $all_centers );
+$gBitSmarty->assign_by_ref( 'all_centers', $all_centers );
 
 $orders = array();
 
@@ -172,7 +172,7 @@ for ($i = 1; $i < 50; $i++) {
 	$orders[] = $i;
 }
 
-$smarty->assign_by_ref('orders', $orders);
+$gBitSmarty->assign_by_ref('orders', $orders);
 $groups = $gBitUser->getAllUserGroups( ROOT_USER_ID );
 //vd($groups);
 
@@ -185,7 +185,7 @@ foreach( array_keys( $groups ) as $groupId) {
 	//vd($groups[$i]);
 }
 
-$smarty->assign_by_ref("groups", $groups);
+$gBitSmarty->assign_by_ref("groups", $groups);
 
 
 

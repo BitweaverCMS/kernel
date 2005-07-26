@@ -12,11 +12,11 @@
  * Name:	nexus
  * Input:	- id	(required) - id of the menu that should be displayed
  */
-function smarty_function_nexus( $params, &$smarty ) {
+function smarty_function_nexus( $params, &$gBitSmarty ) {
 	extract($params);
 
 	if( empty( $id ) ) {
-		$smarty->trigger_error("assign: missing id");
+		$gBitSmarty->trigger_error("assign: missing id");
 		return;
 	}
 
@@ -24,8 +24,8 @@ function smarty_function_nexus( $params, &$smarty ) {
 	$tmpNexus = new Nexus( $id );
 	$nexusMenu = $tmpNexus->mInfo;
 
-	$smarty->assign( 'nexusMenu', $nexusMenu );
-	$smarty->assign( 'nexusId', $id );
-	$smarty->display('bitpackage:nexus/nexus_module.tpl');
+	$gBitSmarty->assign( 'nexusMenu', $nexusMenu );
+	$gBitSmarty->assign( 'nexusId', $id );
+	$gBitSmarty->display('bitpackage:nexus/nexus_module.tpl');
 }
 ?>

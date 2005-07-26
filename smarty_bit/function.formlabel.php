@@ -13,7 +13,7 @@
  * Input:
  *           - label       (required) - words that are displayed
  */
-function smarty_function_formlabel( $params,&$smarty ) {
+function smarty_function_formlabel( $params,&$gBitSmarty ) {
 	$atts = '';
 	foreach($params as $key => $val) {
 		switch( $key ) {

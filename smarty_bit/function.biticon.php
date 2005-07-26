@@ -77,7 +77,7 @@ function output_icon($params, $file) {
 /**
 * smarty_function_biticon
 */
-function smarty_function_biticon($params, &$smarty) {
+function smarty_function_biticon($params, &$gBitSmarty) {
 	global $gBitSystem, $icon_style;
 	
 	if (!isset($params['ipath']))

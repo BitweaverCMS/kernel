@@ -16,7 +16,7 @@
  */
 //global $lang;
 //include_once('lang/language.php');
-function smarty_block_tr($params, $content, &$smarty)
+function smarty_block_tr($params, $content, &$gBitSmarty)
 {
 	global $gBitLanguage, $gBitSystem;
 	echo( tra( $content ) );

@@ -33,7 +33,7 @@
 
 //SECURITY HERE!
 
-function smarty_function_querytable($params, &$smarty) {
+function smarty_function_querytable($params, &$gBitSmarty) {
 	global $gBitSystem;
 	extract($params);
 	//Security here

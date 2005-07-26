@@ -13,7 +13,7 @@ require_once( KERNEL_PKG_PATH.'BitBase.php' );
 /**
  * smarty_function_poll
  */
-function smarty_function_poll($params, &$smarty) {
+function smarty_function_poll($params, &$gBitSmarty) {
     global $polllib, $gBitSystem;
 
     extract($params);
@@ -31,11 +31,11 @@ function smarty_function_poll($params, &$smarty) {
 				$comments = new LibertyComment();
 				$comments_count = $comments->count_comments("poll:".$menu_info["poll_id"]);
 			}
-			$smarty->assign('comments', $comments_count);
-      $smarty->assign('ownurl',POLLS_PKG_URL.'results.php?poll_id='.$id);
-      $smarty->assign('menu_info',$menu_info);
-      $smarty->assign('channels',$channels["data"]);
-      $smarty->display('bitpackage:polls/poll.tpl');
+			$gBitSmarty->assign('comments', $comments_count);
+      $gBitSmarty->assign('ownurl',POLLS_PKG_URL.'results.php?poll_id='.$id);
+      $gBitSmarty->assign('menu_info',$menu_info);
+      $gBitSmarty->assign('channels',$channels["data"]);
+      $gBitSmarty->display('bitpackage:polls/poll.tpl');
     }
 }
 

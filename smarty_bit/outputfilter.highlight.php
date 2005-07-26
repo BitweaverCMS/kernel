@@ -20,13 +20,13 @@
  *           easily integrated with the wiki search functionality
  *           to provide highlighted search terms.
  * Install:  Drop into the plugin directory, call 
- *           $smarty->load_filter('output','highlight');
+ *           $gBitSmarty->load_filter('output','highlight');
  *           from application.
  * Author:   Greg Hinkle <ghinkl@users.sourceforge.net>
  *           patched by mose <mose@feu.org>
  * -------------------------------------------------------------
  */
- function smarty_outputfilter_highlight($source, &$smarty) {
+ function smarty_outputfilter_highlight($source, &$gBitSmarty) {
  	
     $highlight = $_REQUEST['highlight']; 
     $words = $highlight;

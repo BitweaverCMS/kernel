@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/error.php,v 1.1.1.1.2.2 2005/06/27 12:49:49 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/error.php,v 1.1.1.1.2.3 2005/07/26 15:50:08 drewslater Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -17,7 +17,7 @@ require_once( '../bit_setup_inc.php' );
 
 
 // Display the template
-$smarty->assign('msg', strip_tags($_REQUEST["error"]));
+$gBitSmarty->assign('msg', strip_tags($_REQUEST["error"]));
 $gBitSystem->display( 'error.tpl' );
 
 ?>

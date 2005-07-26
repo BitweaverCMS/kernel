@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.1.1.1.2.1 2005/07/26 15:50:08 drewslater Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -12,7 +12,7 @@ global $userlib;
 
 $gBitSystem->verifyPermission( 'bit_p_admin' );
 
-$smarty->assign('PHP_SELF',$_SERVER['PHP_SELF']);
+$gBitSmarty->assign('PHP_SELF',$_SERVER['PHP_SELF']);
 
 // module features
 $formModuleFeatures = array(
@@ -29,13 +29,13 @@ $formModuleFeatures = array(
 		'note' => 'Displays module control buttons at the top of modules for easy placement by users.',
 	),
 );
-$smarty->assign( 'formModuleFeatures',$formModuleFeatures );
+$gBitSmarty->assign( 'formModuleFeatures',$formModuleFeatures );
 
 $all_mods = &$modlib->getAllModules();                           // Get all column modules (e.g. left & right)
-$smarty->assign_by_ref( 'all_modules', $all_mods );
+$gBitSmarty->assign_by_ref( 'all_modules', $all_mods );
 
 $all_centers = &$modlib->getAllModules( 'templates', 'center_' );   // Get all center templates
-$smarty->assign_by_ref( 'all_centers', $all_centers );              
+$gBitSmarty->assign_by_ref( 'all_centers', $all_centers );              
 
 $all_mods = $all_mods + $all_centers;                         // Merge them all back into one array
 
@@ -82,8 +82,8 @@ if( $processForm == 'Modules' ) {
             $modCount++;
     }
 }
-$smarty->assign_by_ref('actionSummary',$actionSummary);
-$smarty->assign_by_ref('actionsTaken',$actionsTaken);
+$gBitSmarty->assign_by_ref('actionSummary',$actionSummary);
+$gBitSmarty->assign_by_ref('actionsTaken',$actionsTaken);
 
 
 $all_avail_modules = $modlib->getAssignableModules();
@@ -93,10 +93,10 @@ $avail_modules = array_merge($avail_columns , $avail_centers);
 //pvd($avail_centers);
 //pvd($avail_modules);
 $availHash = array(count($all_modules));            // availHash is an array with enough room to store the settings for all modules/templates. 
-$smarty->assign_by_ref('availHash',$availHash);
+$gBitSmarty->assign_by_ref('availHash',$availHash);
 
 $groups = $gBitUser->getAllUserGroups( ROOT_USER_ID );
-$smarty->assign_by_ref('groups',$groups);
+$gBitSmarty->assign_by_ref('groups',$groups);
 
 $modCount = 0;
 foreach ($all_modules as $name=>$module) {
@@ -277,7 +277,7 @@ $javascript .= "    return true;\n";
 $javascript .= "}\n";
 $javascript .= '--></script>';
 
-$smarty->assign( 'moduleJavascript', $javascript ); 
+$gBitSmarty->assign( 'moduleJavascript', $javascript ); 
 
 
 

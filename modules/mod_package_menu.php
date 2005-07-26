@@ -11,6 +11,6 @@ if( ACTIVE_PACKAGE == 'messu' ) {
 }
 
 if( !empty( $gBitSystem->mAppMenu[$active]['template'] ) ) {
-	$smarty->assign( 'packageMenu', $gBitSystem->mAppMenu[$active] );
+	$gBitSmarty->assign( 'packageMenu', $gBitSystem->mAppMenu[$active] );
 }
 ?>

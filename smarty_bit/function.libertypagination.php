@@ -17,7 +17,7 @@
  * Output:   url of the form: $PHP_SELF?attribute1=value1&attribute2=value2
  */
 
-function smarty_function_libertypagination($params, &$smarty) {
+function smarty_function_libertypagination($params, &$gBitSmarty) {
 	if( isset( $params['hash'] ) && is_array( $params['hash'] ) ) {
 		$params = $params['hash'];
 	}
@@ -48,13 +48,13 @@ function smarty_function_libertypagination($params, &$smarty) {
 	}
 
 	if( $params['numPages'] > 1 ) {
-		$smarty->assign( 'page', $params['page'] );
-		$smarty->assign( 'pgnName', $pgnName );
-		$smarty->assign( 'pgnVars', $pgnVars );
-		$smarty->assign( 'pgnHidden', $pgnHidden );
-	    $smarty->assign( 'pgnPages', $pages );
-	    $smarty->assign( 'numPages', $params['numPages'] );
-	    $smarty->display( 'bitpackage:liberty/libertypagination.tpl' );
+		$gBitSmarty->assign( 'page', $params['page'] );
+		$gBitSmarty->assign( 'pgnName', $pgnName );
+		$gBitSmarty->assign( 'pgnVars', $pgnVars );
+		$gBitSmarty->assign( 'pgnHidden', $pgnHidden );
+	    $gBitSmarty->assign( 'pgnPages', $pages );
+	    $gBitSmarty->assign( 'numPages', $params['numPages'] );
+	    $gBitSmarty->display( 'bitpackage:liberty/libertypagination.tpl' );
 	}
 }
 ?>

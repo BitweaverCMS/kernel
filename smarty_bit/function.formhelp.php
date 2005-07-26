@@ -26,7 +26,7 @@
  *									only dispalyed if feature_help is enabled
  *			- force		(optional)	if set, it will always dipslay this entry regardless of the feature settings
  */
-function smarty_function_formhelp( $params, &$smarty ) {
+function smarty_function_formhelp( $params, &$gBitSmarty ) {
 	if( !empty( $params['hash'] ) ) {
 		$hash = &$params['hash'];
 	} else {
@@ -108,13 +108,13 @@ function smarty_function_formhelp( $params, &$smarty ) {
 
 			// using the overlib popup system
 			if( $gBitSystem->getPreference('feature_helppopup') == 'y') {
-				require_once $smarty->_get_plugin_filepath('function','popup');
-				require_once $smarty->_get_plugin_filepath('function','biticon');
+				require_once $gBitSmarty->_get_plugin_filepath('function','popup');
+				require_once $gBitSmarty->_get_plugin_filepath('function','biticon');
 
-				$smarty->assign( 'title',tra('Extended Help') );
+				$gBitSmarty->assign( 'title',tra('Extended Help') );
 
-				$smarty->assign( 'content',$content );
-				$text = $smarty->fetch('bitpackage:kernel/popup_box.tpl');
+				$gBitSmarty->assign( 'content',$content );
+				$text = $gBitSmarty->fetch('bitpackage:kernel/popup_box.tpl');
 				$text = ereg_replace( '"',"'",$text );
 
 				$popup = array(
@@ -132,8 +132,8 @@ function smarty_function_formhelp( $params, &$smarty ) {
 				);
 
 				$html = '<div class="formhelppopup" '.$atts.'>&nbsp;';
-				$html .= '<a '.smarty_function_popup( $popup, $smarty ).'>';
-				$html .= smarty_function_biticon( $biticon, $smarty );
+				$html .= '<a '.smarty_function_popup( $popup, $gBitSmarty ).'>';
+				$html .= smarty_function_biticon( $biticon, $gBitSmarty );
 				$html .= '</a>';
 				$html .= '</div>';
 			} else {

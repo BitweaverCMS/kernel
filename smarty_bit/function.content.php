@@ -8,7 +8,7 @@
 /**
  * smarty_function_content
  */
-function smarty_function_content($params, &$smarty)
+function smarty_function_content($params, &$gBitSmarty)
 {
     global $gBitSystem;
     global $dcslib;
@@ -17,7 +17,7 @@ function smarty_function_content($params, &$smarty)
     // Param = zone
 
     if (empty($id)) {
-        $smarty->trigger_error("assign: missing 'zone' parameter");
+        $gBitSmarty->trigger_error("assign: missing 'zone' parameter");
         return;
     }
     $data = $dcslib->get_actual_content($id);

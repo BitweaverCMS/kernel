@@ -14,7 +14,7 @@
  * Purpose:  Fetches templates from the correct package
  * -------------------------------------------------------------
  */
-function smarty_resource_bitpackage_source($tpl_name, &$tpl_source, &$smarty) {
+function smarty_resource_bitpackage_source($tpl_name, &$tpl_source, &$gBitSmarty) {
 	global $gBitSystem;
 	$ret = false;
 
@@ -63,7 +63,7 @@ function smarty_resource_bitpackage_source($tpl_name, &$tpl_source, &$smarty) {
 }
 
 // the PHP sibling file needs to be included in modules_inc before this fetch so caching works properly
-function smarty_resource_bitpackage_timestamp($tpl_name, &$tpl_timestamp, &$smarty) {
+function smarty_resource_bitpackage_timestamp($tpl_name, &$tpl_timestamp, &$gBitSmarty) {
 	//$tpl_timestamp = time();
 	//return true;
 	global $gBitSystem;
@@ -113,12 +113,12 @@ function smarty_resource_bitpackage_timestamp($tpl_name, &$tpl_timestamp, &$smar
 	return $ret;
 }
 
-function smarty_resource_bitpackage_secure($tpl_name, &$smarty) {
+function smarty_resource_bitpackage_secure($tpl_name, &$gBitSmarty) {
 	// assume all templates are secure
 	return TRUE;
 }
 
-function smarty_resource_bitpackage_trusted($tpl_name, &$smarty) {
+function smarty_resource_bitpackage_trusted($tpl_name, &$gBitSmarty) {
 	// not used for templates
 }
 ?>

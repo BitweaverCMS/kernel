@@ -8,7 +8,7 @@
 /**
  * smarty_function_rcontent
  */
-function smarty_function_rcontent($params, &$smarty)
+function smarty_function_rcontent($params, &$gBitSmarty)
 {
     global $gBitSystem;
     include_once( DCS_PKG_PATH.'dcs_lib.php' );
@@ -16,7 +16,7 @@ function smarty_function_rcontent($params, &$smarty)
     // Param = zone
 
     if (empty($id)) {
-        $smarty->trigger_error("assign: missing 'zone' parameter");
+        $gBitSmarty->trigger_error("assign: missing 'zone' parameter");
         return;
     }
     $data = $dcslib->get_random_content($id);

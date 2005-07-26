@@ -18,7 +18,7 @@
  * @param Smarty
  * @return string
  */
-function smarty_function_popup($params, &$smarty)
+function smarty_function_popup($params, &$gBitSmarty)
 {
     $append = '';
     foreach ($params as $_key=>$_value) {
@@ -87,12 +87,12 @@ function smarty_function_popup($params, &$smarty)
                 break;
 
             default:
-                $smarty->trigger_error("[popup] unknown parameter $_key", E_USER_WARNING);
+                $gBitSmarty->trigger_error("[popup] unknown parameter $_key", E_USER_WARNING);
         }
     }
 
     if (empty($text) && !isset($inarray) && empty($function)) {
-        $smarty->trigger_error("overlib: attribute 'text' or 'inarray' or 'function' required");
+        $gBitSmarty->trigger_error("overlib: attribute 'text' or 'inarray' or 'function' required");
         return false;
     }
 

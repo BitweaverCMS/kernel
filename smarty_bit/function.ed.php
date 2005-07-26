@@ -8,14 +8,14 @@
 /**
  * smarty_function_ed
  */
-function smarty_function_ed($params, &$smarty)
+function smarty_function_ed($params, &$gBitSmarty)
 {
     global $gBitSystem;
     extract($params);
     // Param = zone
 
     if (empty($id)) {
-        $smarty->trigger_error("ed: missing 'id' parameter");
+        $gBitSmarty->trigger_error("ed: missing 'id' parameter");
         return;
     }
     

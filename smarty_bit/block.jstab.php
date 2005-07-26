@@ -13,7 +13,7 @@
  * Input:		
  * Abstract:	Used to enclose a set of tabs
  */
-function smarty_block_jstab($params, $content, &$smarty) {
+function smarty_block_jstab($params, $content, &$gBitSmarty) {
 	$ret  = '<div class="tabpage">';
 	$ret .= '<h4 class="tab">'.tra( isset( $params['title'] ) ? $params['title'] : 'No Title' ).'</h4>';
 	$ret .= $content;

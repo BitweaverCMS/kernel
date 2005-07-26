@@ -8,7 +8,7 @@
 /**
 * smarty_function_banner
 */
-function smarty_function_banner($params, &$smarty)
+function smarty_function_banner($params, &$gBitSmarty)
 {
     global $gBitSystem;
     include_once( BANNERS_PKG_PATH.'banner_lib.php' );
@@ -20,7 +20,7 @@ function smarty_function_banner($params, &$smarty)
     // Param = zone
 
     if (empty($zone)) {
-        $smarty->trigger_error("assign: missing 'zone' parameter");
+        $gBitSmarty->trigger_error("assign: missing 'zone' parameter");
         return;
     }
     $banner = $bannerlib->select_banner($zone);

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/menu_lib.php,v 1.1.1.1.2.1 2005/06/27 12:49:48 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/menu_lib.php,v 1.1.1.1.2.2 2005/07/26 15:50:08 drewslater Exp $
  * @package kernel
  */
 
@@ -115,7 +115,7 @@ class MenuLib extends BitBase {
 	}
 
 	function list_menu_options($menu_id, $offset, $maxRecords, $sort_mode, $find, $full=false) {
-		global $smarty,$gBitUser;
+		global $gBitSmarty,$gBitUser;
 		$ret = array();
 		$retval = array();
 		$bindvars = array((int)$menu_id);
@@ -137,7 +137,7 @@ class MenuLib extends BitBase {
 				if (isset($res['section']) and $res['section']) {
 					$sections = split(",",$res['section']);
 					foreach ($sections as $sec) {
-						if (!isset($smarty->_tpl_vars["$sec"]) or $smarty->_tpl_vars["$sec"] != 'y') {
+						if (!isset($gBitSmarty->_tpl_vars["$sec"]) or $gBitSmarty->_tpl_vars["$sec"] != 'y') {
 							$display = false;
 							break;
 						}
@@ -147,7 +147,7 @@ class MenuLib extends BitBase {
 					if (isset($res['perm']) and $res['perm']) {
 						$sections = split(",",$res['perm']);
 						foreach ($sections as $sec) {
-							if (!isset($smarty->_tpl_vars["$sec"]) or $smarty->_tpl_vars["$sec"] != 'y') {
+							if (!isset($gBitSmarty->_tpl_vars["$sec"]) or $gBitSmarty->_tpl_vars["$sec"] != 'y') {
 								$display = false;
 								break;
 							}

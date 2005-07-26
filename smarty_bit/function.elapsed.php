@@ -8,7 +8,7 @@
 /**
  * smarty_function_elapsed
  */
-function smarty_function_elapsed($params, &$smarty)
+function smarty_function_elapsed($params, &$gBitSmarty)
 {
     global $gBitSystem;
     

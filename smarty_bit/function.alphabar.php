@@ -19,7 +19,7 @@
  *			- *			(optional)	anything else that gets added to the pile of items is appended using &amp;$key=$val
  * Example	- {alphabar}
  */
-function smarty_function_alphabar( $params, &$smarty ) {
+function smarty_function_alphabar( $params, &$gBitSmarty ) {
 	extract( $params );
 
 	// work out what the url is

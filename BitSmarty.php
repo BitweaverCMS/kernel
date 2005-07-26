@@ -1,6 +1,6 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.8 2005/07/26 19:19:00 squareing Exp $
+* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.9 2005/07/26 22:58:00 squareing Exp $
 * @package Smarty
 */
 
@@ -84,7 +84,8 @@ class BitSmarty extends Smarty
 			list($resource, $location) = split(':', $_smarty_tpl_file);
 			if ($resource == 'bitpackage') {
 				list($package, $template) = split('/', $location);
-				if( !$gBitSystem->isPackageActive( $package ) ) {
+				// exclude temp, as it contains nexus menus
+				if( !$gBitSystem->isPackageActive( $package ) && $package != 'temp' ) {
 					return '';
 				}
 			}

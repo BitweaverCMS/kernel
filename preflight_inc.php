@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.1.1.1.2.2 2005/07/22 10:07:33 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.1.1.1.2.3 2005/07/27 13:21:04 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -14,11 +14,15 @@
 function getTempDir()
 {
 	static $tempdir;
-	if (!$tempdir)
-	{
-		$tempfile = tempnam(false, 'foo');
-		$tempdir = dirname($tempfile);
-		@unlink($tempfile);
+	if (!$tempdir) {
+		global $gTempDir;
+		if( !empty( $gTempDir ) ) {
+			$tempdir = $gTempDir;
+		} else {
+			$tempfile = tempnam(false, 'foo');
+			$tempdir = dirname($tempfile);
+			@unlink($tempfile);
+		}
 	}
 	return $tempdir;
 }

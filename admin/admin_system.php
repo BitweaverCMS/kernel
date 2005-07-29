@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.1.1.1.2.1 2005/07/26 15:50:08 drewslater Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.1.1.1.2.2 2005/07/29 07:23:48 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -84,7 +84,7 @@ if (isset($_GET['do'])) {
 }
 
 if (isset($_GET['compiletemplates'])) {
-	cache_templates(BIT_ROOT_PATH, $gBitLanguage->mLanguage, $_GET['compiletemplates']);
+	cache_templates(BIT_TEMP_PATH.'templates_c', $gBitLanguage->mLanguage, $_GET['compiletemplates']);
 }
 
 $languages = array();

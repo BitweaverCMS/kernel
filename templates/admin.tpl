@@ -31,6 +31,8 @@
 						{formfeedback success="{tr}Your version is up to date.{/tr}"}
 					{elseif $version_info.compare lt 0 or $version_info.release}
 						{formfeedback warning="{tr}Your version is not up to date.{/tr}"}
+					{elseif $version_info.compare gt 0 or $version_info.release}
+						{formfeedback warning="{tr}Seems you are using a test version.{/tr}"}
 					{/if}
 
 					<div class="row">
@@ -45,7 +47,15 @@
 							{formlabel label="Upgrade"}
 							{forminput class=warning}
 								<strong>bitweaver {$version_info.upgrade}</strong>
-								{formhelp page="Release_`$version_info.upgrade`}
+								{formhelp page="Release_`$version_info.page`}
+							{/forminput}
+						</div>
+					{elseif $version_info.compare gt 0}
+						<div class="row">
+							{formlabel label="Latest Version"}
+							{forminput}
+								<strong>bitweaver {$version_info.upgrade}</strong>
+								{formhelp page="Release_`$version_info.page`}
 							{/forminput}
 						</div>
 					{/if}
@@ -55,7 +65,7 @@
 							{formlabel label="Latest Release"}
 							{forminput class=warning}
 								<strong>bitweaver {$version_info.release}</strong>
-								{formhelp page="Release_`$version_info.release`}
+								{formhelp page="Release_`$version_info.page`}
 							{/forminput}
 						</div>
 					{/if}

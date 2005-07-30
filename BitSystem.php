@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.24 $
+* @version $Revision: 1.7.2.25 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.24 2005/07/26 15:07:55 spiderr Exp $
+// $Id: BitSystem.php,v 1.7.2.25 2005/07/30 10:24:55 squareing Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.24 $
+ * @version $Revision: 1.7.2.25 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -2159,18 +2159,22 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 					if( preg_match( "/^".BIT_MAJOR_VERSION."/", $version ) ) {
 						$ret['compare'] = version_compare( $local, $version );
 						$ret['upgrade'] = $version;
+						$ret['page'] = preg_replace( "/\.\d+$/", "", $version );
 					}
 				}
 				// check if there have been any major releases
 				$release = explode( '.', array_pop( $versions ) );
 				if( $release[0] > BIT_MAJOR_VERSION ) {
 					$ret['release'] = implode( '.', $release );
+					$ret['page'] = $release[0].'.'.$release[1];
 				}
 			} else {
 				$error['number'] = 1;
 				$error['string'] = tra( 'No version information could be gathered. Perhaps there was a problem connecting to bitweaver.org.' );
 			}
 		}
+		// append any release level
+		$ret['local'] .= ' '.BIT_LEVEL;
 		$ret['error'] = $error;
 		return $ret;
 	}

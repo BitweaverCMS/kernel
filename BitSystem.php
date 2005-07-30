@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.25 $
+* @version $Revision: 1.7.2.26 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.25 2005/07/30 10:24:55 squareing Exp $
+// $Id: BitSystem.php,v 1.7.2.26 2005/07/30 10:35:03 squareing Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.25 $
+ * @version $Revision: 1.7.2.26 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -2156,7 +2156,7 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 			if( !empty( $versions ) && preg_match( "/\d+\.\d+\.\d+/", $versions[0] ) ) {
 				sort( $versions );
 				foreach( $versions as $version ) {
-					if( preg_match( "/^".BIT_MAJOR_VERSION."/", $version ) ) {
+					if( preg_match( "/^".BIT_MAJOR_VERSION."\./", $version ) ) {
 						$ret['compare'] = version_compare( $local, $version );
 						$ret['upgrade'] = $version;
 						$ret['page'] = preg_replace( "/\.\d+$/", "", $version );

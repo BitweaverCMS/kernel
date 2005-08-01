@@ -2,7 +2,7 @@
 /**
 * @package kernel
 * @author spider <spider@steelsun.com>
-* @version $Revision: 1.10 $
+* @version $Revision: 1.11 $
 */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
@@ -19,7 +19,7 @@
 // +----------------------------------------------------------------------+
 // | Authors: spider <spider@steelsun.com>
 // +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.10 2005/07/25 20:02:08 squareing Exp $
+// $Id: BitSystem.php,v 1.11 2005/08/01 18:40:32 squareing Exp $
 
 /**
  * required setup
@@ -46,7 +46,7 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  * @package kernel
  * @subpackage BitSystem
  */
@@ -323,7 +323,7 @@ class BitSystem extends BitBase
 		}
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
-		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
+//		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
 		$gBitSmarty->display( 'bitpackage:kernel/bitweaver.tpl' );
 		$this->postDisplay( $pMid );
 	}
@@ -1177,15 +1177,13 @@ asort( $this->mAppMenu );
 	*/
 	function getBrowserStyleCss()
 	{
-		global $gBitLoc;
-		require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
-		$phpsniff = new phpSniff;
-		$gBitLoc['browser']['client'] = $phpsniff->property( 'browser' );
-		$gBitLoc['browser']['version'] = $phpsniff->property( 'version' );
+		global $gBitLoc, $gSniffer;
+		$gBitLoc['browser']['client'] = $gSniffer->property( 'browser' );
+		$gBitLoc['browser']['version'] = $gSniffer->property( 'version' );
 		$style = $this->getStyle();
 		$ret = '';
-		if( file_exists( $this->getStylePath().$this->getStyle().'_'.$phpsniff->property( 'browser' ).'.css' ) ) {
-			$ret = $this->getStyleUrl().$this->getStyle().'_'.$phpsniff->property( 'browser' ).'.css';
+		if( file_exists( $this->getStylePath().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css' ) ) {
+			$ret = $this->getStyleUrl().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css';
 		}
 		return $ret;
 	}
@@ -2158,21 +2156,25 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 			if( !empty( $versions ) && preg_match( "/\d+\.\d+\.\d+/", $versions[0] ) ) {
 				sort( $versions );
 				foreach( $versions as $version ) {
-					if( preg_match( "/^".BIT_MAJOR_VERSION."/", $version ) ) {
+					if( preg_match( "/^".BIT_MAJOR_VERSION."\./", $version ) ) {
 						$ret['compare'] = version_compare( $local, $version );
 						$ret['upgrade'] = $version;
+						$ret['page'] = preg_replace( "/\.\d+$/", "", $version );
 					}
 				}
 				// check if there have been any major releases
 				$release = explode( '.', array_pop( $versions ) );
 				if( $release[0] > BIT_MAJOR_VERSION ) {
 					$ret['release'] = implode( '.', $release );
+					$ret['page'] = $release[0].'.'.$release[1];
 				}
 			} else {
 				$error['number'] = 1;
 				$error['string'] = tra( 'No version information could be gathered. Perhaps there was a problem connecting to bitweaver.org.' );
 			}
 		}
+		// append any release level
+		$ret['local'] .= ' '.BIT_LEVEL;
 		$ret['error'] = $error;
 		return $ret;
 	}

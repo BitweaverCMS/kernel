@@ -1,9 +1,15 @@
 {strip}
 <div id="bittopbar">
-	{if $gBitUser->isAdmin() or !$use_custom_top_bar}
-		{* this link is for textbrowsers *}
-		<a style="display:none;position:absolute;top:0px;left:0px;" href="#top">{tr}go to top{/tr}</a>
-		<ul id="nav" class="menu hor">
+	{* this link is for textbrowsers *}
+	<a style="display:none;position:absolute;top:0px;left:0px;" href="#top">{tr}go to top{/tr}</a>
+	<ul id="nav" class="menu hor">
+		{if $use_custom_top_bar and $gBitSystemPrefs.top_bar_position eq 'replace'}
+			{include file="`$gBitLoc.TEMP_PKG_PATH`nexus/modules/top_bar_inc.tpl"}
+		{else}
+			{if $use_custom_top_bar and $gBitSystemPrefs.top_bar_position eq 'left'}
+				{include file="`$gBitLoc.TEMP_PKG_PATH`nexus/modules/top_bar_inc.tpl"}
+			{/if}
+
 			<li class="m-home">
 				<a class="head" href="{$gBitLoc.BIT_ROOT_URL}">{tr}{$siteTitle|default:"Home"}{/tr}</a>
 				{include file="bitpackage:kernel/menu_global.tpl"}
@@ -39,11 +45,13 @@
 					{/if}
 				</li>
 			{/if}
-		</ul>
-		<div class="clear"></div>
-		<a style="padding:0;margin:0;border:0;" name="top"></a>
-	{else}
-		{include file="`$gBitLoc.TEMP_PKG_PATH`nexus/modules/top_bar_inc.tpl"}
-	{/if}
+
+			{if $use_custom_top_bar and ( !$gBitSystemPrefs.top_bar_position or $gBitSystemPrefs.top_bar_position eq 'right' )}
+				{include file="`$gBitLoc.TEMP_PKG_PATH`nexus/modules/top_bar_inc.tpl"}
+			{/if}
+		{/if}
+	</ul>
+	<div class="clear"></div>
+	<a style="padding:0;margin:0;border:0;" name="top"></a>
 </div>
 {/strip}

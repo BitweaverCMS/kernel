@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/object_permissions.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/object_permissions.php,v 1.3 2005/08/01 18:40:33 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -14,7 +14,7 @@
 include_once( '../bit_setup_inc.php' );
 
 if (!$gBitUser->isAdmin()) {
-	$smarty->assign('msg', tra("Permission denied you cannot assign permissions for this page"));
+	$gBitSmarty->assign('msg', tra("Permission denied you cannot assign permissions for this page"));
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
@@ -27,19 +27,19 @@ if (!isset($_REQUEST["referer"])) {
 }
 
 if (isset($_REQUEST["referer"])) {
-	$smarty->assign('referer', $_REQUEST["referer"]);
+	$gBitSmarty->assign('referer', $_REQUEST["referer"]);
 }
 
 if (!isset(
 	$_REQUEST["objectName"]) || !isset($_REQUEST["object_type"]) || !isset($_REQUEST["object_id"]) || !isset($_REQUEST["permType"])) {
-	$smarty->assign('msg', tra("Not enough information to display this page"));
+	$gBitSmarty->assign('msg', tra("Not enough information to display this page"));
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
 
 if ($_REQUEST["object_id"] < 1) {
-	$smarty->assign('msg', tra("Fatal error"));
+	$gBitSmarty->assign('msg', tra("Fatal error"));
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
@@ -49,10 +49,10 @@ $_REQUEST["object_id"] = urldecode($_REQUEST["object_id"]);
 $_REQUEST["object_type"] = urldecode($_REQUEST["object_type"]);
 $_REQUEST["permType"] = urldecode($_REQUEST["permType"]);
 
-$smarty->assign('objectName', $_REQUEST["objectName"]);
-$smarty->assign('object_id', $_REQUEST["object_id"]);
-$smarty->assign('object_type', $_REQUEST["object_type"]);
-$smarty->assign('permType', $_REQUEST["permType"]);
+$gBitSmarty->assign('objectName', $_REQUEST["objectName"]);
+$gBitSmarty->assign('object_id', $_REQUEST["object_id"]);
+$gBitSmarty->assign('object_type', $_REQUEST["object_type"]);
+$gBitSmarty->assign('permType', $_REQUEST["permType"]);
 
 // Process the form to assign a new permission to this page
 if (isset($_REQUEST["assign"])) {
@@ -70,14 +70,14 @@ if (isset($_REQUEST["action"])) {
 
 // Now we have to get the individual page permissions if any
 $page_perms = $gBitUser->get_object_permissions($_REQUEST["object_id"], $_REQUEST["object_type"]);
-$smarty->assign_by_ref('page_perms', $page_perms);
+$gBitSmarty->assign_by_ref('page_perms', $page_perms);
 
 // Get a list of groups
 $groups = $gBitUser->getAllUserGroups();
-$smarty->assign_by_ref('groups', $groups["data"]);
+$gBitSmarty->assign_by_ref('groups', $groups["data"]);
 
 // Get a list of permissions
-$smarty->assign_by_ref('perms', array_keys( $gBitUser->mPerms ) );
+$gBitSmarty->assign_by_ref('perms', array_keys( $gBitUser->mPerms ) );
 
 
 

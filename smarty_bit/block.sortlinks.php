@@ -17,7 +17,7 @@
  * Author: Scott Matthewman <scott@matthewman.net> 
  * ------------------------------------------------------------- 
  */ 
-function smarty_block_sortlinks($params, $content, &$smarty) 
+function smarty_block_sortlinks($params, $content, &$gBitSmarty) 
 { 
 if ($content) { 
   $links=spliti("\n",$content);

@@ -8,7 +8,7 @@
 /**
  * smarty_function_gallery
  */
-function smarty_function_gallery($params, &$smarty)
+function smarty_function_gallery($params, &$gBitSmarty)
 {
     global $gBitSystem;
     include_once( IMAGEGALS_PKG_PATH.'imagegal_lib.php' );
@@ -16,7 +16,7 @@ function smarty_function_gallery($params, &$smarty)
     // Param = id
 
     if (empty($id)) {
-        $smarty->trigger_error("assign: missing 'id' parameter");
+        $gBitSmarty->trigger_error("assign: missing 'id' parameter");
         return;
     }
     $img = $gBitSystem->get_random_image($id);

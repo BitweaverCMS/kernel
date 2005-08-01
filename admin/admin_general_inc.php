@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.2 2005/08/01 18:40:34 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -25,7 +25,7 @@ $formGeneralMisc = array(
 		'label' => 'Count admin pageviews',
 	),
 );
-$smarty->assign( 'formGeneralMisc',$formGeneralMisc );
+$gBitSmarty->assign( 'formGeneralMisc',$formGeneralMisc );
 
 // Handle Update
 $processForm = set_tab();

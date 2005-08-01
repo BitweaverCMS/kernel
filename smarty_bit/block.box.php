@@ -18,27 +18,27 @@
  * @uses smarty_function_escape_special_chars()
  * @todo somehow make the variable that is contained within $iselect global --> this will allow importing of outside variables not set in $_REQUEST
  */
-function smarty_block_box($params, $content, &$smarty) {
+function smarty_block_box($params, $content, &$gBitSmarty) {
 	$atts = '';
 	foreach( $params as $key => $val ) {
 		switch( $key ) {
 			case 'title':
-				$smarty->assign( $key, tra( $val ) );
+				$gBitSmarty->assign( $key, tra( $val ) );
 				break;
 			case 'class':
 			case 'ipackage':
 			case 'iname':
 			case 'iexplain':
 			case 'idiv':
-				$smarty->assign( $key,$val );
+				$gBitSmarty->assign( $key,$val );
 				break;
 			default:
 				$atts .= $key.'="'.$val.'" ';
 				break;
 		}			
 	}
-	$smarty->assign( 'content',$content );
-	$smarty->assign( 'atts',$atts );
-	return $smarty->fetch( 'bitpackage:kernel/box.tpl' );
+	$gBitSmarty->assign( 'content',$content );
+	$gBitSmarty->assign( 'atts',$atts );
+	return $gBitSmarty->fetch( 'bitpackage:kernel/box.tpl' );
 }
 ?>

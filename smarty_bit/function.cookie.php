@@ -8,7 +8,7 @@
 /**
  * smarty_function_cookie
  */
-function smarty_function_cookie($params, &$smarty)
+function smarty_function_cookie($params, &$gBitSmarty)
 {
     global $taglinelib;
     include_once( KERNEL_PKG_PATH.'tagline_lib.php' );

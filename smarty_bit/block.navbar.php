@@ -12,10 +12,10 @@
  * Name:	navbar
  * Input:	set of links that are used for navigation purposes
  */
-function smarty_block_navbar($params, $content, &$smarty) {
+function smarty_block_navbar($params, $content, &$gBitSmarty) {
 	$links = smarty_block_navbar_get_links( $content );
-	$smarty->assign( 'links',$links );
-	return $smarty->fetch( 'bitpackage:kernel/navbar.tpl' );
+	$gBitSmarty->assign( 'links',$links );
+	return $gBitSmarty->fetch( 'bitpackage:kernel/navbar.tpl' );
 }
 function smarty_block_navbar_get_links( $content ) {
 	$links = array();

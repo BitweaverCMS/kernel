@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.3 2005/06/19 11:29:54 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.4 2005/08/01 18:40:35 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -12,7 +12,7 @@ require_once( KERNEL_PKG_PATH.'admin_lib.php' );
 
 if( isset( $_REQUEST["page"] ) ) {
 	$gBitSystem->setBrowserTitle( $_REQUEST["page"].' settings' );
-	$smarty->assign( 'page',$_REQUEST["page"] );
+	$gBitSmarty->assign( 'page',$_REQUEST["page"] );
 } else {
 	$gBitSystem->setBrowserTitle( 'Administration' );
 }
@@ -25,19 +25,19 @@ $gBitInstaller = &$gBitSystem;
 $gBitSystem->verifyInstalledPackages();
 //vd($gBitSystem->mPackages);
 $home_blog = $gBitSystem->getPreference("home_blog", 0);
-$smarty->assign('home_blog', $home_blog);
+$gBitSmarty->assign('home_blog', $home_blog);
 
 $home_forum = $gBitSystem->getPreference("home_forum", 0);
-$smarty->assign('home_forum', $home_forum);
+$gBitSmarty->assign('home_forum', $home_forum);
 
 $home_gallery = $gBitSystem->getPreference("home_gallery", 0);
-$smarty->assign('home_gallery', $home_gallery);
+$gBitSmarty->assign('home_gallery', $home_gallery);
 if( isset( $page ) ) {
-	$smarty->assign('page', $page);
+	$gBitSmarty->assign('page', $page);
 }
 
 $home_file_gallery = $gBitSystem->getPreference("home_file_gallery", 0);
-$smarty->assign('home_file_gallery', $home_file_gallery);
+$gBitSmarty->assign('home_file_gallery', $home_file_gallery);
 
 if (isset($_REQUEST["page"])) {
 	if( preg_match('/\.php/', $_REQUEST["page"] ) ) {
@@ -68,8 +68,8 @@ if (isset($_REQUEST["page"])) {
 
 		$adminPage =  constant( strtoupper( $package ).'_PKG_PATH' ).'/admin/admin_'.$file.'_inc.php';
 	}
-	$smarty->assign('package', $package );
-	$smarty->assign('file', $file );
+	$gBitSmarty->assign('package', $package );
+	$gBitSmarty->assign('file', $file );
 	include_once ( $adminPage );
 	// Spiderr - a bit hackish, but need to force preferences refresh
 	$gBitSystem->loadPreferences();
@@ -80,19 +80,19 @@ if (isset($_REQUEST["page"])) {
 		$lowerPackage = strtolower( $package );
 		$upperPackage = strtoupper( $package );
 		$tpl = "bitpackage:$lowerPackage/menu_".$lowerPackage."_admin.tpl";
-		if( ($gBitSystem->isPackageActive( $package ) || $lowerPackage == 'kernel') && @$smarty->template_exists( $tpl ) ) {
+		if( ($gBitSystem->isPackageActive( $package ) || $lowerPackage == 'kernel') && @$gBitSmarty->template_exists( $tpl ) ) {
 			$adminTemplates[$package] = $tpl;
 		}
 	}
-	$smarty->assign_by_ref( 'kernelTemplate', $adminTemplates["kernel"] );
-	$smarty->assign_by_ref( 'adminTemplates', $adminTemplates );
+	$gBitSmarty->assign_by_ref( 'kernelTemplate', $adminTemplates["kernel"] );
+	$gBitSmarty->assign_by_ref( 'adminTemplates', $adminTemplates );
 }
 
 $admin_panels = $gBitSystem->mAppMenu;
-$smarty->assign('admin_panels', $admin_panels);
+$gBitSmarty->assign('admin_panels', $admin_panels);
 
 if( !empty( $_REQUEST['version_check'] ) ) {
-	$smarty->assign( 'version_info', $gBitSystem->checkBitVersion() );
+	$gBitSmarty->assign( 'version_info', $gBitSystem->checkBitVersion() );
 }
 
 // Display the template

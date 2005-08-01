@@ -8,7 +8,8 @@
 /**
  * required setup
  */
-require_once $smarty->_get_plugin_filepath('modifier','bit_date_format');
+global $gBitSmarty;
+require_once $gBitSmarty->_get_plugin_filepath('modifier','bit_date_format');
 
 /**
  * smarty_modifier_bit_long_date

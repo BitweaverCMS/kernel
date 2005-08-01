@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_menus_inc.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_menus_inc.php,v 1.2 2005/08/01 18:40:34 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -12,7 +12,7 @@ require_once( '../../bit_setup_inc.php' );
 include_once( KERNEL_PKG_PATH.'menu_lib.php' );
 
 if (!$gBitUser->isAdmin()) {
-	$smarty->assign('msg', tra("You dont have permission to use this feature"));
+	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
@@ -22,7 +22,7 @@ if (!isset($_REQUEST["menu_id"])) {
 	$_REQUEST["menu_id"] = 0;
 }
 
-$smarty->assign('menu_id', $_REQUEST["menu_id"]);
+$gBitSmarty->assign('menu_id', $_REQUEST["menu_id"]);
 
 if ($_REQUEST["menu_id"]) {
 	$info = $menulib->get_menu($_REQUEST["menu_id"]);
@@ -34,9 +34,9 @@ if ($_REQUEST["menu_id"]) {
 	$info["type"] = 'd';
 }
 
-$smarty->assign('name', $info["name"]);
-$smarty->assign('description', $info["description"]);
-$smarty->assign('type', $info["type"]);
+$gBitSmarty->assign('name', $info["name"]);
+$gBitSmarty->assign('description', $info["description"]);
+$gBitSmarty->assign('type', $info["type"]);
 
 if (isset($_REQUEST["remove"])) {
 	
@@ -47,11 +47,11 @@ if (isset($_REQUEST["save"])) {
 	
 	$menulib->replace_menu($_REQUEST["menu_id"], $_REQUEST["name"], $_REQUEST["description"], $_REQUEST["type"]);
 
-	$smarty->assign('name', '');
-	$smarty->assign('description', '');
-	$smarty->assign('type', '');
+	$gBitSmarty->assign('name', '');
+	$gBitSmarty->assign('description', '');
+	$gBitSmarty->assign('type', '');
 	$_REQUEST["menu_id"] = 0;
-	$smarty->assign('menu_id', 0);
+	$gBitSmarty->assign('menu_id', 0);
 }
 
 $formMenuFeatures = array(
@@ -60,7 +60,7 @@ $formMenuFeatures = array(
 		'note' => 'Show a folder icon in front of collapsable menus, to indicate that they can be opended and shut.',
 	),
 );
-$smarty->assign( 'formMenuFeatures',$formMenuFeatures );
+$gBitSmarty->assign( 'formMenuFeatures',$formMenuFeatures );
 // process form
 if (isset($_REQUEST["menu_features"])) {
 	
@@ -81,7 +81,7 @@ if (!isset($_REQUEST["offset"])) {
 	$offset = $_REQUEST["offset"];
 }
 
-$smarty->assign_by_ref('offset', $offset);
+$gBitSmarty->assign_by_ref('offset', $offset);
 
 if (isset($_REQUEST["find"])) {
 	$find = $_REQUEST["find"];
@@ -89,29 +89,29 @@ if (isset($_REQUEST["find"])) {
 	$find = '';
 }
 
-$smarty->assign('find', $find);
+$gBitSmarty->assign('find', $find);
 
-$smarty->assign_by_ref('sort_mode', $sort_mode);
+$gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
 $channels = $menulib->list_menus($offset, $maxRecords, $sort_mode, $find);
 
 $cant_pages = ceil($channels["cant"] / $maxRecords);
-$smarty->assign_by_ref('cant_pages', $cant_pages);
-$smarty->assign('actual_page', 1 + ($offset / $maxRecords));
+$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
+$gBitSmarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
 if ($channels["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
+	$gBitSmarty->assign('next_offset', $offset + $maxRecords);
 } else {
-	$smarty->assign('next_offset', -1);
+	$gBitSmarty->assign('next_offset', -1);
 }
 
 // If offset is > 0 then prev_offset
 if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
+	$gBitSmarty->assign('prev_offset', $offset - $maxRecords);
 } else {
-	$smarty->assign('prev_offset', -1);
+	$gBitSmarty->assign('prev_offset', -1);
 }
 
-$smarty->assign_by_ref('channels', $channels["data"]);
+$gBitSmarty->assign_by_ref('channels', $channels["data"]);
 
 
 

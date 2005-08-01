@@ -8,7 +8,7 @@
 /**
  * smarty_function_rss
  */
-function smarty_function_rss($params, &$smarty)
+function smarty_function_rss($params, &$gBitSmarty)
 {
     global $gBitSystem;
     global $rsslib;
@@ -16,7 +16,7 @@ function smarty_function_rss($params, &$smarty)
     extract($params);
     // Param = zone
     if(empty($id)) {
-        $smarty->trigger_error("assign: missing id parameter");
+        $gBitSmarty->trigger_error("assign: missing id parameter");
         return;
     }
     if(empty($max)) {

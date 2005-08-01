@@ -9,7 +9,7 @@
 /**
  * smarty_function_sameurl
  */
-function smarty_function_sameurl($params, &$smarty)
+function smarty_function_sameurl($params, &$gBitSmarty)
 {
     global $sameurl_elements;
     $data = $_SERVER['SCRIPT_NAME'];

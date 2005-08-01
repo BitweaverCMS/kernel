@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_banning.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_banning.php,v 1.2 2005/08/01 18:40:33 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -10,14 +10,14 @@ require_once( '../../bit_setup_inc.php' );
 include_once (KERNEL_PKG_PATH.'ban_lib.php');
 
 if ($gBitSystem->getPreference('feature_banning') != 'y') {
-	$smarty->assign('msg', tra("This feature is disabled").": feature_banning");
+	$gBitSmarty->assign('msg', tra("This feature is disabled").": feature_banning");
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
 }
 
 if (!$gBitUser->hasPermission( 'bit_p_admin_banning' )) {
-	$smarty->assign('msg', tra("Permission denied"));
+	$gBitSmarty->assign('msg', tra("Permission denied"));
 
 	$gBitSystem->display( 'error.tpl' );
 	die;
@@ -41,8 +41,8 @@ if (isset($_REQUEST['ban_id'])) {
 	$info['message'] = '';
 }
 
-$smarty->assign('ban_id', $_REQUEST['ban_id']);
-$smarty->assign_by_ref('info', $info);
+$gBitSmarty->assign('ban_id', $_REQUEST['ban_id']);
+$gBitSmarty->assign_by_ref('info', $info);
 
 if (isset($_REQUEST['remove'])) {
 	
@@ -78,7 +78,7 @@ if (isset($_REQUEST['save'])) {
 	$info['date_from'] = date("U");
 	$info['date_to'] = date("U") + 7 * 24 * 3600;
 	$info['message'] = '';
-	$smarty->assign_by_ref('info', $info);
+	$gBitSmarty->assign_by_ref('info', $info);
 }
 
 $where = '';
@@ -110,7 +110,7 @@ if (!isset($_REQUEST["offset"])) {
 	$offset = $_REQUEST["offset"];
 }
 
-$smarty->assign_by_ref('offset', $offset);
+$gBitSmarty->assign_by_ref('offset', $offset);
 
 if (isset($_REQUEST["find"])) {
 	$find = $_REQUEST["find"];
@@ -118,29 +118,29 @@ if (isset($_REQUEST["find"])) {
 	$find = '';
 }
 
-$smarty->assign('find', $find);
-$smarty->assign('where', $where);
-$smarty->assign_by_ref('sort_mode', $sort_mode);
+$gBitSmarty->assign('find', $find);
+$gBitSmarty->assign('where', $where);
+$gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
 $items = $banlib->list_rules($offset, $maxRecords, $sort_mode, $find, $where);
-$smarty->assign('cant', $items['cant']);
+$gBitSmarty->assign('cant', $items['cant']);
 
 $cant_pages = ceil($items["cant"] / $maxRecords);
-$smarty->assign_by_ref('cant_pages', $cant_pages);
-$smarty->assign('actual_page', 1 + ($offset / $maxRecords));
+$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
+$gBitSmarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
 if ($items["cant"] > ($offset + $maxRecords)) {
-	$smarty->assign('next_offset', $offset + $maxRecords);
+	$gBitSmarty->assign('next_offset', $offset + $maxRecords);
 } else {
-	$smarty->assign('next_offset', -1);
+	$gBitSmarty->assign('next_offset', -1);
 }
 
 if ($offset > 0) {
-	$smarty->assign('prev_offset', $offset - $maxRecords);
+	$gBitSmarty->assign('prev_offset', $offset - $maxRecords);
 } else {
-	$smarty->assign('prev_offset', -1);
+	$gBitSmarty->assign('prev_offset', -1);
 }
 
-$smarty->assign_by_ref('items', $items["data"]);
+$gBitSmarty->assign_by_ref('items', $items["data"]);
 
 $sections = array(
 	'wiki',
@@ -167,7 +167,7 @@ $sections = array(
 	'charts'
 );
 
-$smarty->assign('sections', $sections);
+$gBitSmarty->assign('sections', $sections);
 
 
 $gBitSystem->display( 'bitpackage:kernel/admin_banning.tpl');

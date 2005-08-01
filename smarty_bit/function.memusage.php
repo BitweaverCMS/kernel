@@ -8,7 +8,7 @@
 /**
  * smarty_function_memusage
  */
-function smarty_function_memusage($params, &$smarty)
+function smarty_function_memusage($params, &$gBitSmarty)
 {
     if (function_exists('memory_get_usage')) {
       $memusage=memory_get_usage();

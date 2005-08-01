@@ -1,5 +1,6 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.3 2005/07/25 20:02:09 squareing Exp $
+
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.4 2005/08/01 18:40:34 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -7,7 +8,7 @@
 
 //This doen't scale very well when you have 1000's of users
 //$users_list = $gBitUser->get_users_names();
-//$smarty->assign( 'users_list',$users_list );
+//$gBitSmarty->assign( 'users_list',$users_list );
 
 $formFeaturesTiki = array(
 	'pretty_urls' => array(
@@ -41,7 +42,7 @@ $formFeaturesTiki = array(
 		'page' => 'ShowCategoryPath',
 	),
 );
-$smarty->assign( 'formFeaturesTiki',$formFeaturesTiki );
+$gBitSmarty->assign( 'formFeaturesTiki',$formFeaturesTiki );
 
 $formFeaturesHelp = array(
 	'feature_helpnotes' => array(
@@ -65,7 +66,7 @@ $formFeaturesHelp = array(
 		'page' => 'HelpSystem',
 	),
 );
-$smarty->assign( 'formFeaturesHelp',$formFeaturesHelp );
+$gBitSmarty->assign( 'formFeaturesHelp',$formFeaturesHelp );
 
 $formFeaturesContent = array(
 	'feature_dynamic_content' => array(
@@ -79,7 +80,7 @@ $formFeaturesContent = array(
 		'page' => 'EditCss',
 	),
 );
-$smarty->assign( 'formFeaturesContent',$formFeaturesContent );
+$gBitSmarty->assign( 'formFeaturesContent',$formFeaturesContent );
 
 $formFeaturesAdmin = array(
 	'feature_banning' => array(
@@ -106,10 +107,10 @@ if( $gBitSystem->isFeatureActive( 'debug' ) ) {
 			'page' => 'DebugConsole',
 		);
 }
-$smarty->assign( 'formFeaturesAdmin',$formFeaturesAdmin );
+$gBitSmarty->assign( 'formFeaturesAdmin',$formFeaturesAdmin );
 
 $users_list = $gBitUser->get_users_names();
-$smarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list : NULL );
+$gBitSmarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list : NULL );
 
 $processForm = set_tab();
 

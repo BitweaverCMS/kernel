@@ -8,12 +8,12 @@
 /**
  * smarty_function_jspopup
  */
-function smarty_function_jspopup($params, &$smarty)
+function smarty_function_jspopup($params, &$gBitSmarty)
 {
     extract($params);
     // Param = zone
     if(empty($href)) {
-        $smarty->trigger_error("assign: missing href parameter");
+        $gBitSmarty->trigger_error("assign: missing href parameter");
         return;
     }
     $attrs = array();

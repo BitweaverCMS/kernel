@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.3 2005/08/01 18:40:33 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -20,7 +20,7 @@ function simple_set_toggle($feature, $pPackageName=NULL) {
  * toggle_preference
  */
 function toggle_preference( $pName, $pValue, $pPackageName=NULL ) {
-	global $_REQUEST, $gBitSystem, $smarty;
+	global $_REQUEST, $gBitSystem, $gBitSmarty;
 
 	if (isset($pValue) && $pValue == "on") {
 		$prefValue='y';
@@ -36,10 +36,10 @@ function toggle_preference( $pName, $pValue, $pPackageName=NULL ) {
  * simple_set_value
  */
 function simple_set_value($feature) {
-	global $_REQUEST, $gBitSystem, $smarty;
+	global $_REQUEST, $gBitSystem, $gBitSmarty;
 	if (isset($_REQUEST[$feature])) {
 		$gBitSystem->storePreference($feature, $_REQUEST[$feature]);
-		$smarty->assign($feature, $_REQUEST[$feature]);
+		$gBitSmarty->assign($feature, $_REQUEST[$feature]);
 	}
 }
 
@@ -47,10 +47,10 @@ function simple_set_value($feature) {
  * simple_set_int
  */
 function simple_set_int($feature) {
-	global $_REQUEST, $gBitSystem, $smarty;
+	global $_REQUEST, $gBitSystem, $gBitSmarty;
 	if (isset($_REQUEST[$feature]) && is_numeric($_REQUEST[$feature])) {
 		$gBitSystem->storePreference($feature, $_REQUEST[$feature]);
-		$smarty->assign($feature, $_REQUEST[$feature]);
+		$gBitSmarty->assign($feature, $_REQUEST[$feature]);
 	}
 }
 
@@ -58,17 +58,17 @@ function simple_set_int($feature) {
  * byref_set_value
  */
 function byref_set_value($feature, $pref = "", $pPackageName=NULL) {
-	global $_REQUEST, $gBitSystem, $smarty;
+	global $_REQUEST, $gBitSystem, $gBitSmarty;
 	if (isset($_REQUEST[$feature])) {
 		if (strlen($pref) > 0) {
 			$gBitSystem->storePreference($pref, $_REQUEST[$feature], $pPackageName);
 			// also assign the ref appareantly --gongo
-			$smarty->assign_by_ref($pref, $_REQUEST[$feature]);
+			$gBitSmarty->assign_by_ref($pref, $_REQUEST[$feature]);
 		} else {
 			$gBitSystem->storePreference($feature, $_REQUEST[$feature], $pPackageName);
 		}
 
-		$smarty->assign_by_ref($feature, $_REQUEST[$feature]);
+		$gBitSmarty->assign_by_ref($feature, $_REQUEST[$feature]);
 	}
 }
 
@@ -81,13 +81,13 @@ function byref_set_value($feature, $pref = "", $pPackageName=NULL) {
  * @returns <tabname> that was submitted
  */
 function set_tab() {
-	global $_REQUEST,$smarty;
+	global $_REQUEST,$gBitSmarty;
 	$ret = FALSE;
 	if( !empty( $_REQUEST ) ) {
 		foreach( array_keys( $_REQUEST ) as $item ) {
 			if( preg_match( "/TabSubmit/",$item ) ) {
 				$tab = preg_replace( "/TabSubmit/","",$item );
-				$smarty->assign( $tab.'TabSelect','tdefault' );
+				$gBitSmarty->assign( $tab.'TabSelect','tdefault' );
 				$ret = $tab;
 			}
 		}

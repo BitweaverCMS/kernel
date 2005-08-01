@@ -3,7 +3,7 @@
 	require_once( '../../bit_setup_inc.php' );
 
 	if (!$gBitUser->isAdmin()) {
-		$smarty->assign('msg', tra("You dont have permission to use this feature"));
+		$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
 		$gBitSystem->display( 'error.tpl' );
 		die;
 	}

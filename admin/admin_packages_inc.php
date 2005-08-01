@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.2 2005/08/01 18:40:34 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -12,7 +12,7 @@ $fPackage = &$_REQUEST['fPackage'];   // emulate register_globals
 ksort($gBitSystem->mPackages);	// So packages will be listed in alphabetical order
 
 // make a copy of mPackages - expensive, but this is low use code
-$smarty->assign_by_ref('pkgArray' , $pkgArray);
+$gBitSmarty->assign_by_ref('pkgArray' , $pkgArray);
 if( !empty( $_REQUEST['features'] ) ) {
 	$pkgArray = $gBitSystem->mPackages;
 	foreach( array_keys( $pkgArray ) as $pkgKey ) {
@@ -41,7 +41,7 @@ $gBitInstaller = &$gBitSystem;
 $gBitSystem->verifyInstalledPackages();
 
 if( isset( $_REQUEST['fSubmitDbCreate'] ) && isset( $_REQUEST['PACKAGE'] ) && count( $_REQUEST['PACKAGE'] ) > 0 ) {
-	$smarty->assign( 'installTabSelect', 'tdefault' );
+	$gBitSmarty->assign( 'installTabSelect', 'tdefault' );
 	include_once( INSTALL_PKG_PATH.'install_packages.php' );
 	header( 'Location: '.KERNEL_PKG_URL.'admin/index.php?page=packages' );
 }

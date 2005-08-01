@@ -11,7 +11,7 @@
 	*	only allowing the 'login' to be output.
 	*   hash=fooHash is a short cut to specifying each parameter by hand
 */
-function smarty_function_displayname($params, &$smarty) {
+function smarty_function_displayname($params, &$gBitSmarty) {
 	if( !empty( $params['hash'] ) ) {
 		$hash = $params['hash'];
 	} elseif( !empty( $params ) ) {

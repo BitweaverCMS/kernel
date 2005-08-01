@@ -1,12 +1,12 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.3 2005/07/25 20:02:07 squareing Exp $
+* $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.4 2005/08/01 18:40:32 squareing Exp $
 *
 * Copyright (c) 2004 bitweaver.org
 * All Rights Reserved. See copyright.txt for details and a complete list of authors.
 * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
 *
-* $Id: BitBase.php,v 1.3 2005/07/25 20:02:07 squareing Exp $
+* $Id: BitBase.php,v 1.4 2005/08/01 18:40:32 squareing Exp $
 *
 * Virtual base class (as much as one can have such things in PHP) for all
 * derived tikiwiki classes that require database access.
@@ -17,7 +17,7 @@
 *
 * @author spider <spider@steelsun.com>
 *
-* @version $Revision: 1.3 $ $Date: 2005/07/25 20:02:07 $ $Author: squareing $
+* @version $Revision: 1.4 $ $Date: 2005/08/01 18:40:32 $ $Author: squareing $
 */
 
 /**
@@ -114,14 +114,14 @@ class BitBase
     // {{{ display
     /**
 	* This method should be THE method used to display a template. php files should not
-	* access $smarty directly.
+	* access $gBitSmarty directly.
 	*
 	* @param string pMsg error message to be displayed
 	* @return none this function will DIE DIE DIE!!!
 	* @access public
 	**/
 	function display( $pPackage, $pTemplate ) {
-		global $smarty, $gBitLanguage, $style, $style_base;
+		global $gBitSmarty, $gBitLanguage, $style, $style_base;
 		if (isset($style) && isset($style_base)) {
 			if (file_exists(BIT_THEME_PATH."styles/$style_base/$pTemplate")) {
 				// Theme has overriden template
@@ -139,8 +139,8 @@ class BitBase
 			}
 		}
 */
-		$smarty->display( $_smarty_tpl_file );
-//		$smarty->display( 'bitpackage:'.$pPackage.$pTemplate );
+		$gBitSmarty->display( $_smarty_tpl_file );
+//		$gBitSmarty->display( 'bitpackage:'.$pPackage.$pTemplate );
 	}
     // }}}
 
@@ -258,7 +258,7 @@ class BitBase
     * @return the link to display the page.
     */
 	function prepGetList( &$pListHash ) {
-		global $smarty;
+		global $gBitSmarty;
 
 		// If offset is set use it if not then use offset =0
 		// use the maxRecords php variable to set the limit
@@ -293,7 +293,7 @@ class BitBase
 		} else {
 			$pListHash['find'] = NULL;
 		}
-		$smarty->assign( 'find', $pListHash['find'] );
+		$gBitSmarty->assign( 'find', $pListHash['find'] );
 
 		if( isset( $_REQUEST['date'] ) ) {
 			$pListHash['date']= $_REQUEST['date'];

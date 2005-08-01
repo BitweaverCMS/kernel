@@ -83,7 +83,7 @@ class TestBitSmartyFilter extends Test {
 	    $input = file_get_contents($inputFile);
 	    // $filterOutput = call_user_func ($filterName, $input, &$smarty);
 	    $filterOutput = call_user_func_array ($filterName, 
-						  array($input, &$smarty));
+						  array($input, &$gBitSmarty));
 	    
 	    if (!file_exists($outputFile)) {
 	      // Output file does not exist - Create error file

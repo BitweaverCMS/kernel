@@ -13,7 +13,7 @@
  * Input:
  *           - warning, error or success are defined css styles, but you can feed it anything
  */
-function smarty_function_formfeedback( $params,&$smarty ) {
+function smarty_function_formfeedback( $params,&$gBitSmarty ) {
 	if( !empty( $params['hash'] ) ) {
 		$hash = &$params['hash'];
 	} else {
@@ -23,7 +23,7 @@ function smarty_function_formfeedback( $params,&$smarty ) {
 	$feedback = '';
 	foreach( $hash as $key => $val ) {
 		if( $val ) {
-			require_once $smarty->_get_plugin_filepath('function','biticon');
+			require_once $gBitSmarty->_get_plugin_filepath('function','biticon');
 			if( $key === 'warning' || $key === 'success' || $key === 'error' ) {
 				$biticon = array(
 					'ipackage' => 'liberty',
@@ -36,7 +36,7 @@ function smarty_function_formfeedback( $params,&$smarty ) {
 				}
 				$feedback .= '<ul>';
 				foreach( $val as $valText ) {
-					$feedback .= '<li class="'.$key.'">'.smarty_function_biticon( $biticon,$smarty ).' '.$valText.'</li>';
+					$feedback .= '<li class="'.$key.'">'.smarty_function_biticon( $biticon,$gBitSmarty ).' '.$valText.'</li>';
 				}
 				$feedback .= '</ul>';
 			} else {

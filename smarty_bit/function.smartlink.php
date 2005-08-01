@@ -41,7 +41,7 @@
  *				and it is highlighted when $isort_mode ( or $_REQUEST['sort_mode'] ) is not set (idefault)
  * @Note Don't use this plugin if ititle is generated dynamically since it is passed through tra()
  */
-function smarty_function_smartlink( $params, &$smarty ) {
+function smarty_function_smartlink( $params, &$gBitSmarty ) {
 	if( !empty( $params['ihash'] ) ) {
 		$hash = &$params['ihash'];
 	} else {
@@ -127,7 +127,7 @@ function smarty_function_smartlink( $params, &$smarty ) {
 		}
 	}
 
-	require_once $smarty->_get_plugin_filepath( 'function','biticon' );
+	require_once $gBitSmarty->_get_plugin_filepath( 'function','biticon' );
 
 	if( isset( $hash['itype'] ) && $hash['itype'] == 'url' ) {
 		$ret = $url.$url_params;
@@ -142,13 +142,13 @@ function smarty_function_smartlink( $params, &$smarty ) {
 				'iname' => $tmp[1],
 				'iexplain' => $hash['ititle'],
 			);
-			$ret .= smarty_function_biticon( $ibiticon, $smarty );
+			$ret .= smarty_function_biticon( $ibiticon, $gBitSmarty );
 		} else {
 			$ret .= tra( $hash['ititle'] );
 		}
 
 		if( isset( $sorticon ) ) {
-			$ret .= '&nbsp;'.smarty_function_biticon( $sorticon, $smarty );
+			$ret .= '&nbsp;'.smarty_function_biticon( $sorticon, $gBitSmarty );
 		}
 		$ret .= '</a>';
 	}

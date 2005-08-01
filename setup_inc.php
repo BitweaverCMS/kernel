@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.9 2005/07/25 20:02:08 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.10 2005/08/01 18:40:33 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -17,7 +17,7 @@ error_reporting( BIT_PHP_ERROR_REPORTING );
 
 define( 'BIT_MAJOR_VERSION',	'1' );
 define( 'BIT_MINOR_VERSION',	'0' );
-define( 'BIT_SUB_VERSION',		'2' );
+define( 'BIT_SUB_VERSION',		'3' );
 define( 'BIT_LEVEL',			'beta' ); // 'beta' or 'dev' or 'rc' etc..
 
 define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
@@ -65,7 +65,7 @@ global $gBitSystem;
 $gBitSystem = new BitSystem();
 
 // deprecated referenced variable alias - will be nuked soon - spiderr
-global $smarty;
+global $smarty, $gBitSmarty;
 $smarty = &$gBitSmarty;
 
 global $gPreviewStyle;
@@ -73,20 +73,25 @@ $gPreviewStyle = FALSE;
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');
 
+require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
+global $gSniffer;
+$gSniffer = new phpSniff;
+$gBitSmarty->assign_by_ref( 'browserInfo', $gSniffer->_browser_info );
+
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 global $gBitLanguage;
 $gBitLanguage = new BitLanguage();
 
 // pass version information on to smarty
-$smarty->assign( 'bitMajorVersion',	BIT_MAJOR_VERSION );
-$smarty->assign( 'bitMinorVersion',	BIT_MINOR_VERSION  );
-$smarty->assign( 'bitSubVersion',	BIT_SUB_VERSION  );
-$smarty->assign( 'bitLevel',		BIT_LEVEL );
+$gBitSmarty->assign( 'bitMajorVersion',	BIT_MAJOR_VERSION );
+$gBitSmarty->assign( 'bitMinorVersion',	BIT_MINOR_VERSION  );
+$gBitSmarty->assign( 'bitSubVersion',	BIT_SUB_VERSION  );
+$gBitSmarty->assign( 'bitLevel',		BIT_LEVEL );
 
-$smarty->assign( 'PHP_SELF', $_SERVER['PHP_SELF'] );
+$gBitSmarty->assign( 'PHP_SELF', $_SERVER['PHP_SELF'] );
 
 require_once(KERNEL_PKG_PATH . 'BitCache.php');
-global $gBitUser, $gTicket, $smarty, $userlib, $gBitDbType;
+global $gBitUser, $gTicket, $gBitSmarty, $userlib, $gBitDbType;
 
 // for PHP<4.2.0
 if (!function_exists('array_fill'))
@@ -138,7 +143,7 @@ if( $gBitDb->isValid() ) {
 	}
 	$gBitSystem->storePreference('bitdomain', $bitdomain);
 
-	$smarty->assign("bitdomain", $bitdomain);
+	$gBitSmarty->assign("bitdomain", $bitdomain);
 	// The votes array stores the votes the user has made
 	if (!isset($_SESSION["votes"]))
 	{
@@ -160,7 +165,7 @@ if( $gBitDb->isValid() ) {
 		$_REQUEST['page'] = strip_tags($_REQUEST['page']);
 	}
 	global $gHideModules;
-	$smarty->assign_by_ref( 'gHideModules', $gHideModules );
+	$gBitSmarty->assign_by_ref( 'gHideModules', $gHideModules );
 
 	$ownurl = httpPrefix() . $_SERVER["REQUEST_URI"];
 	$parsed = parse_url($_SERVER["REQUEST_URI"]);
@@ -195,13 +200,13 @@ if( $gBitDb->isValid() ) {
 		$father .= '?';
 	}
 	$ownurl_father = $father;
-	$smarty->assign('ownurl', httpPrefix() . $_SERVER["REQUEST_URI"]);
+	$gBitSmarty->assign('ownurl', httpPrefix() . $_SERVER["REQUEST_URI"]);
 	// **********  KERNEL  ************
-	$smarty->assign_by_ref("gBitSystem", $gBitSystem);
-	$smarty->assign_by_ref("gBitSystemPackages", $gBitSystem->mPackages);
+	$gBitSmarty->assign_by_ref("gBitSystem", $gBitSystem);
+	$gBitSmarty->assign_by_ref("gBitSystemPackages", $gBitSystem->mPackages);
 
 	global $gBitLoc;
-	$smarty->assign_by_ref("gBitLoc", $gBitLoc);
+	$gBitSmarty->assign_by_ref("gBitLoc", $gBitLoc);
 	// check to see if admin has closed the site
 	if ( $gBitSystem->isFeatureActive('site_closed' ) && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check) && $_SERVER['SCRIPT_URL'] != USERS_PKG_URL.'validate.php' ) {
 		$_REQUEST['error'] = $gBitSystem->getPreference('site_closed_msg', 'Site is closed for maintainance; please come back later.');
@@ -213,7 +218,7 @@ if( $gBitDb->isValid() ) {
 	// get average server load in the last minute
 	if (is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
 		list($server_load) = explode(' ', $load[0]);
-		$smarty->assign('server_load', $server_load);
+		$gBitSmarty->assign('server_load', $server_load);
 		if ($use_load_threshold == 'y' && !$gBitUser->hasPermission( 'bit_p_access_closed_site' ) && !isset($bypass_siteclose_check)) {
 			$load_threshold = $gBitSystem->getPreference('load_threshold', 3);
 			if ($server_load > $load_threshold) {
@@ -248,48 +253,48 @@ if( $gBitDb->isValid() ) {
 	$modseparateanon = $gBitSystem->getPreference("modseparateanon", 'n');
 	$maxRecords = $gBitSystem->getPreference("maxRecords", 10);
 
-	$smarty->assign('http_domain', $http_domain);
-	$smarty->assign('http_port', $http_port);
-	$smarty->assign('http_prefix', $http_prefix);
-	$smarty->assign('https_domain', $https_domain);
-	$smarty->assign('https_port', $https_port);
-	$smarty->assign('https_prefix', $https_prefix);
+	$gBitSmarty->assign('http_domain', $http_domain);
+	$gBitSmarty->assign('http_port', $http_port);
+	$gBitSmarty->assign('http_prefix', $http_prefix);
+	$gBitSmarty->assign('https_domain', $https_domain);
+	$gBitSmarty->assign('https_port', $https_port);
+	$gBitSmarty->assign('https_prefix', $https_prefix);
 
-	$smarty->assign('title', $title);
-	$smarty->assign('feature_server_name', $gBitSystem->getPreference( 'feature_server_name', $_SERVER["SERVER_NAME"] ));
-	$smarty->assign('tmpDir', getTempDir());
-	$smarty->assign('contact_user', $contact_user);
-	$smarty->assign('count_admin_pvs', 'y');
-	$smarty->assign('modallgroups', $modallgroups);
-	$smarty->assign('modseparateanon', $modseparateanon);
-	$smarty->assign('maxRecords', $maxRecords);
-	$smarty->assign('direct_pagination', 'n');
+	$gBitSmarty->assign('title', $title);
+	$gBitSmarty->assign('feature_server_name', $gBitSystem->getPreference( 'feature_server_name', $_SERVER["SERVER_NAME"] ));
+	$gBitSmarty->assign('tmpDir', getTempDir());
+	$gBitSmarty->assign('contact_user', $contact_user);
+	$gBitSmarty->assign('count_admin_pvs', 'y');
+	$gBitSmarty->assign('modallgroups', $modallgroups);
+	$gBitSmarty->assign('modseparateanon', $modseparateanon);
+	$gBitSmarty->assign('maxRecords', $maxRecords);
+	$gBitSmarty->assign('direct_pagination', 'n');
 
 	if (ini_get('zlib.output_compression') == 1) {
-		$smarty->assign('gzip', 'Enabled');
+		$gBitSmarty->assign('gzip', 'Enabled');
 	} elseif ($gBitSystem->getPreference('feature_obzip') == 'y') {
-		$smarty->assign('gzip', 'Enabled');
+		$gBitSmarty->assign('gzip', 'Enabled');
 	} else {
-		$smarty->assign('gzip', 'Disabled');
+		$gBitSmarty->assign('gzip', 'Disabled');
 	}
 
-	$smarty->assign_by_ref('num_queries', $num_queries);
+	$gBitSmarty->assign_by_ref('num_queries', $num_queries);
 	// Assign all prefs to smarty was we are done mucking about for a 1000 lines
-	$smarty->assign_by_ref('gBitSystemPrefs', $gBitSystem->mPrefs);
+	$gBitSmarty->assign_by_ref('gBitSystemPrefs', $gBitSystem->mPrefs);
 	$prefs = &$gBitSystem->mPrefs; // TODO $prefs is only for backward compatibility, need to remove entirely
 	foreach ($prefs as $name => $val) {
 		$$name = $val;
-		$smarty->assign("$name", $val);
+		$gBitSmarty->assign("$name", $val);
 	}
 	/* # not implemented
 		$http_basic_auth = $gBitSystem->getPreference('http_basic_auth', '/');
-		$smarty->assign('http_basic_auth',$http_basic_auth);
+		$gBitSmarty->assign('http_basic_auth',$http_basic_auth);
 		*/
-	$smarty->assign('https_login', $gBitSystem->getPreference( 'https_login' ) );
-	$smarty->assign('https_login_required', $gBitSystem->getPreference( 'https_login_required' ) );
+	$gBitSmarty->assign('https_login', $gBitSystem->getPreference( 'https_login' ) );
+	$gBitSmarty->assign('https_login_required', $gBitSystem->getPreference( 'https_login_required' ) );
 
 	$login_url = USERS_PKG_URL . 'validate.php';
-	$smarty->assign('login_url', $login_url);
+	$gBitSmarty->assign('login_url', $login_url);
 
 	if( $gBitSystem->isFeatureActive( 'https_login' ) || $gBitSystem->isFeatureActive( 'https_login_required' ) )	{
 		$http_login_url = 'http://' . $http_domain;
@@ -319,7 +324,7 @@ if( $gBitDb->isValid() ) {
 		if ($https_login_required == 'y') {
 			// only show "Stay in SSL checkbox if we're not already in HTTPS mode"
 			$show_stay_in_ssl_mode = !$https_mode ? 'y' : 'n';
-			$smarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
+			$gBitSmarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
 			if (!$https_mode) {
 				$https_login_url = 'https://' . $https_domain;
 				if ($https_port != 443)
@@ -331,19 +336,19 @@ if( $gBitDb->isValid() ) {
 					$https_login_url .= '?' . SID;
 				}
 
-				$smarty->assign('login_url', $https_login_url);
+				$gBitSmarty->assign('login_url', $https_login_url);
 			} else {
 				// We're already in HTTPS mode, so let's stay there
 				$stay_in_ssl_mode = 'on';
 			}
 		} else {
-			$smarty->assign('http_login_url', $http_login_url);
-			$smarty->assign('https_login_url', $https_login_url);
+			$gBitSmarty->assign('http_login_url', $http_login_url);
+			$gBitSmarty->assign('https_login_url', $https_login_url);
 			// only show "Stay in SSL checkbox if we're not already in HTTPS mode"
 			$show_stay_in_ssl_mode = $https_mode ? 'y' : 'n';
 		}
-		$smarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
-		$smarty->assign('stay_in_ssl_mode', $stay_in_ssl_mode);
+		$gBitSmarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
+		$gBitSmarty->assign('stay_in_ssl_mode', $stay_in_ssl_mode);
 	}
 
 	if( $gBitSystem->isFeatureActive( 'feature_userPreferences' ) && $gBitUser->isRegistered() ) {
@@ -378,7 +383,7 @@ if( $gBitDb->isValid() ) {
 		}
 
 		$popupLinks = $gBitSystem->getPreference("popupLinks", 'n');
-		$smarty->assign('popupLinks', $popupLinks);
+		$gBitSmarty->assign('popupLinks', $popupLinks);
 */
 
 }

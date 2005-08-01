@@ -19,10 +19,10 @@
  * @return string
  * @uses smarty_make_timestamp()
  */
-function smarty_function_html_select_time($params, &$smarty)
+function smarty_function_html_select_time($params, &$gBitSmarty)
 {
-    require_once $smarty->_get_plugin_filepath('shared','make_timestamp');
-    require_once $smarty->_get_plugin_filepath('function','html_options');
+    require_once $gBitSmarty->_get_plugin_filepath('shared','make_timestamp');
+    require_once $gBitSmarty->_get_plugin_filepath('function','html_options');
     /* Default values. */
     $prefix             = "Time_";
     $time               = time();
@@ -72,7 +72,7 @@ function smarty_function_html_select_time($params, &$smarty)
                                                            'values'          => $hours,
                                                            'selected'      => strftime($hour_fmt, $time),
                                                            'print_result' => false),
-                                                     $smarty);
+                                                     $gBitSmarty);
         $html_result .= "</select>\n";
     }
 
@@ -99,7 +99,7 @@ function smarty_function_html_select_time($params, &$smarty)
                                                            'values'          => $minutes,
                                                            'selected'      => $selected,
                                                            'print_result' => false),
-                                                     $smarty);
+                                                     $gBitSmarty);
         $html_result .= "</select>\n";
     }
 
@@ -127,7 +127,7 @@ function smarty_function_html_select_time($params, &$smarty)
                                                            'values'          => $seconds,
                                                            'selected'      => $selected,
                                                            'print_result' => false),
-                                                     $smarty);
+                                                     $gBitSmarty);
         $html_result .= "</select>\n";
     }
 
@@ -151,7 +151,7 @@ function smarty_function_html_select_time($params, &$smarty)
                                                            'values'          => array('am', 'pm'),
                                                            'selected'      => strtolower(strftime('%p', $time)),
                                                            'print_result' => false),
-                                                     $smarty);
+                                                     $gBitSmarty);
         $html_result .= "</select>\n";
     }
 

@@ -1,11 +1,13 @@
 <?php
 /**
+ * Administration Library
+ *
  * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/admin_lib.php,v 1.1.1.1.2.3 2005/08/02 08:33:30 lsces Exp $
  */
  
 /**
- * @package kernel
- * @subpackage AdminLib
+ * Administration Library
  */
 class AdminLib extends BitBase {
 	function AdminLib() {

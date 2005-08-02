@@ -1,8 +1,10 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.9 2005/07/26 22:58:00 squareing Exp $
-* @package Smarty
-*/
+ * Smarty Library Inteface Class
+ *
+ * @package Smarty
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.10 2005/08/02 08:33:30 lsces Exp $
+ */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -25,9 +27,8 @@ if( file_exists( SMARTY_DIR.'Smarty.class.php' ) ) {
 require_once($smartyIncFile);
 
 /**
-* @package Smarty
-* @subpackage PermissionCheck
-*/
+ * PermissionCheck
+ */
 class PermissionCheck {
 	function check( $perm ) {
 		global $gBitUser;
@@ -36,8 +37,7 @@ class PermissionCheck {
 }
 
 /**
-* @package Smarty
-* @subpackage BitSmarty
+* BitSmarty
 */
 class BitSmarty extends Smarty
 {

@@ -1,16 +1,16 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/tagline_lib.php,v 1.1.1.1.2.2 2005/06/27 12:49:48 lsces Exp $
+ * Tagline Management Library
+ *
  * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/tagline_lib.php,v 1.1.1.1.2.3 2005/08/02 08:33:30 lsces Exp $
+ * @author awcolley
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
- *
- * $Id: tagline_lib.php,v 1.1.1.1.2.2 2005/06/27 12:49:48 lsces Exp $
- * 
  */
 
 /**
@@ -18,15 +18,10 @@
  *
  * Currently used for cookies.
  *
- * @package kernel
- * @subpackage TagLineLib
- *
  * created 2003/06/19
  *
- * @author awcolley
- *
  * @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
- * global variable.
+ * global variable. 
  */
 class TagLineLib extends BitBase
 {
@@ -144,6 +139,10 @@ class TagLineLib extends BitBase
 	}
 
 }
+
+/**
+ * @global $taglinelib - Module library
+ */
 global $taglinelib;
 $taglinelib = new TagLineLib();
 ?>

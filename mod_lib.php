@@ -1,12 +1,13 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.5 2005/07/23 04:43:23 wolff_borg Exp $
+ * Modules Management Library 
+ *
  * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.6 2005/08/02 08:33:30 lsces Exp $
  */
 
 /**
- * @package kernel
- * @subpackage ModLib
+ * Modules Management Library 
  */
 class ModLib extends BitBase {
 	function ModLib() {
@@ -590,6 +591,9 @@ class ModLib extends BitBase {
 
 }
 
+/**
+ * @global $modlib - Module library
+ */
 global $modlib;
 $modlib = new ModLib();
 

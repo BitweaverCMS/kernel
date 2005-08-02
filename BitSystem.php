@@ -1,9 +1,11 @@
 <?php
 /**
-* @package kernel
-* @author spider <spider@steelsun.com>
-* @version $Revision: 1.7.2.26 $
-*/
+ * Main bitweaver systems functions
+ *
+ * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.27 2005/08/02 08:33:30 lsces Exp $
+ * @author spider <spider@steelsun.com>
+ */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
 // +----------------------------------------------------------------------+
@@ -17,9 +19,6 @@
 // | -> see http://pear.php.net/manual/en/standards.comments.php
 // |    and http://www.phpdoc.org/
 // +----------------------------------------------------------------------+
-// | Authors: spider <spider@steelsun.com>
-// +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.7.2.26 2005/07/30 10:35:03 squareing Exp $
 
 /**
  * required setup
@@ -46,9 +45,6 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.7.2.26 $
- * @package kernel
- * @subpackage BitSystem
  */
 class BitSystem extends BitBase
 {	/**
@@ -92,7 +88,7 @@ class BitSystem extends BitBase
 		$this->checkEnvironment();
 
 		$this->mAppMenu = array();
-		$this->mTimer = new TikiTimer();
+		$this->mTimer = new BitTimer();
 		$this->mTimer->start();
 
 		$this->initSmarty();
@@ -2225,10 +2221,9 @@ function installError($pMsg = null)
 }
 
 /**
- * @package kernel
- * @subpackage TikiTimer
+ * Basic processes timer
  */
-class TikiTimer
+class BitTimer
 {
 	function parseMicro($micro)
 	{

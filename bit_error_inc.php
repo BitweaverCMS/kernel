@@ -1,7 +1,9 @@
 <?php
 /**
+ * Custom ADODB Error Handler. This will be called with the following params
+ *
  * @package kernel
- * @subpackage function
+ * @subpackage functions
  * @version V3.94  13 Oct 2003  (c) 2000-2003 John Lim (jlim@natsoft.com.my). All rights reserved.
  * Released under both BSD license and Lesser GPL library license.
  * Whenever there is any discrepancy between the two licenses,

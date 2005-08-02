@@ -1,11 +1,14 @@
 <?php
 /**
+ * Communications Library
+ *
  * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/comm_lib.php,v 1.1.1.1.2.3 2005/08/02 08:33:30 lsces Exp $
  */
 
 /**
- * @package kernel
- * @subpackage RankLib
+ * Communications Library
+ * Send and receive article content 
  */
 class CommLib extends BitBase {
 	function CommLib() {					BitBase::BitBase();

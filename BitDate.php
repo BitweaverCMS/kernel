@@ -1,11 +1,12 @@
 <?php
 /**
+ * Date Handling Class
+ *
+ * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.2 2005/08/02 08:33:30 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
- * 
- * @package kernel
- * @subpackage BitDate
  */
 
 /**
@@ -21,9 +22,6 @@
  *
  * @todo As of 1.7, dates are still stored in server local time.
  * This should be changed for 1.7.1 (requires many module changes).
- *
- * @package kernel
- * @subpackage BitDate
  */
 class BitDate {
 	/**

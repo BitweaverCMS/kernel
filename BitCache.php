@@ -1,34 +1,30 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.1.1.1.2.2 2005/06/27 12:49:49 lsces Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* Copyright (c) 2003 tikwiki.org
-* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: BitCache.php,v 1.1.1.1.2.2 2005/06/27 12:49:49 lsces Exp $
-*
-* A basic library to handle caching of some Tiki Objects. Usage is simple and feel free to improve it.
-*
-* Currently used to cache user permissions only. Could be used to store blobs to files and other static
-* database intensive queries.
-*
-* @package kernel
-*
-* created 2003/11/25
-*
-* @author lrargerich <lrargerich@yahoo.com>
-*
-* @version $Revision: 1.1.1.1.2.2 $ $Date: 2005/06/27 12:49:49 $ $Author: lsces $
-*
-* @todo Need to implement in more places
-*/
+ * Basic cache handling
+ *
+ * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.1.1.1.2.3 2005/08/02 08:33:30 lsces Exp $
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * Copyright (c) 2003 tikwiki.org
+ * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * A basic library to handle caching of some Tiki Objects. Usage is simple and feel free to improve it.
+ *
+ * Currently used to cache user permissions only. Could be used to store blobs to files and other static
+ * database intensive queries.
+ *
+ * created 2003/11/25
+ *
+ * @author lrargerich <lrargerich@yahoo.com>
+ *
+ * @todo Need to implement in more places
+ */
 
 /**
- * @package kernel
- * @subpackage BitCache
+ * A basic library to handle caching of some Tiki Objects. Usage is simple and feel free to improve it.
  */
 class BitCache
 {

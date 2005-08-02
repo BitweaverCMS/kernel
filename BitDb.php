@@ -1,19 +1,18 @@
 <?php
 /**
-* @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.8 2005/07/24 20:33:12 spiderr Exp $
-*
-* @package kernel
-*
-* @author spider <spider@steelsun.com>
-*
-* Copyright (c) 2004 bitweaver.org
-* Copyright (c) 2003 tikwiki.org
-* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: BitDb.php,v 1.4.2.8 2005/07/24 20:33:12 spiderr Exp $
-*/
+ * ADOdb Library interface Class
+ *
+ * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.9 2005/08/02 08:33:30 lsces Exp $
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * Copyright (c) 2003 tikwiki.org
+ * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * @author spider <spider@steelsun.com>
+ */
 
 /**
  * ensure your AdoDB install is a subdirectory off your include path
@@ -23,17 +22,13 @@ require_once( KERNEL_PKG_PATH.'bit_error_inc.php' );
 define( 'BIT_QUERY_DEFAULT', -1 );
 
 /**
-* This class is used for database access and provides a number of functions to help
-* with database portability.
-*
-* Currently used as a base class, this class should be optional to ensure bitweaver
-* continues to function correctly, without a valid database connection.
-*
-* created
-*
-* @package kernel
-* @subpackage BitDb
-*/
+ * This class is used for database access and provides a number of functions to help
+ * with database portability.
+ *
+ * Currently used as a base class, this class should be optional to ensure bitweaver
+ * continues to function correctly, without a valid database connection.
+ *
+ */
 class BitDb
 {
 	/**

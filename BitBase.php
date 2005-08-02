@@ -1,24 +1,21 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.5 2005/07/26 15:50:07 drewslater Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: BitBase.php,v 1.1.1.1.2.5 2005/07/26 15:50:07 drewslater Exp $
-*
-* Virtual base class (as much as one can have such things in PHP) for all
-* derived tikiwiki classes that require database access.
-*
-* @package kernel
-*
-* created 2004/8/15
-*
-* @author spider <spider@steelsun.com>
-*
-* @version $Revision: 1.1.1.1.2.5 $ $Date: 2005/07/26 15:50:07 $ $Author: drewslater $
-*/
+ * Virtual bitweaver base class
+ *
+ * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.6 2005/08/02 08:33:30 lsces Exp $
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * Virtual base class (as much as one can have such things in PHP) for all
+ * derived tikiwiki classes that require database access.
+ *
+ * created 2004/8/15
+ *
+ * @author spider <spider@steelsun.com>
+ */
 
 /**
  * required setup
@@ -31,11 +28,9 @@ define( 'STORAGE_BINARY', 1 );
 define( 'STORAGE_IMAGE', 2 );
 
 /**
-* @package kernel
-* @subpackage BitBase
-* Virtual base class (as much as one can have such things in PHP) for all
-* derived bitweaver classes that require database access.
-*/
+ * Virtual base class (as much as one can have such things in PHP) for all
+ * derived bitweaver classes that require database access.
+ */
 class BitBase
 {
     /**

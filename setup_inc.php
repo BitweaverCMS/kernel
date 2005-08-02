@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.16 2005/08/02 07:22:06 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.17 2005/08/02 09:09:44 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -17,8 +17,8 @@ error_reporting( BIT_PHP_ERROR_REPORTING );
 
 define( 'BIT_MAJOR_VERSION',	'1' );
 define( 'BIT_MINOR_VERSION',	'0' );
-define( 'BIT_SUB_VERSION',		'3' );
-define( 'BIT_LEVEL',			'' ); // 'beta' or 'dev' or 'rc' etc..
+define( 'BIT_SUB_VERSION',		'4' );
+define( 'BIT_LEVEL',			'beta' ); // 'beta' or 'dev' or 'rc' etc..
 
 define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
 

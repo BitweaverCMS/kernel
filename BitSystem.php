@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.28 2005/08/03 16:53:54 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.29 2005/08/03 21:44:05 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -922,11 +922,15 @@ asort( $this->mAppMenu );
 		global $gBitDbType;
 		$this->scanPackages( 'admin/schema_inc.php' );
 		if( $this->isDatabaseValid() ) {
-			$lastQuote = strrpos( BIT_DB_PREFIX, '`' );
-			if( $lastQuote != FALSE ) {
-				$lastQuote++;
+			if (strlen(BIT_DB_PREFIX) > 0) {
+				$lastQuote = strrpos( BIT_DB_PREFIX, '`' );
+				if( $lastQuote != FALSE ) {
+					$lastQuote++;
+				}
+				$prefix = substr( BIT_DB_PREFIX,  $lastQuote );
+			} else {
+				$prefix = '';
 			}
-			$prefix = substr( BIT_DB_PREFIX,  $lastQuote );
  			$showTables = ( $prefix ? $prefix.'%' : NULL );
 			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $showTables ) ) {
 				foreach( array_keys( $this->mPackages ) as $package ) {

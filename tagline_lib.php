@@ -3,7 +3,7 @@
  * Tagline Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/tagline_lib.php,v 1.1.1.1.2.3 2005/08/02 08:33:30 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/tagline_lib.php,v 1.1.1.1.2.4 2005/08/03 16:53:53 lsces Exp $
  * @author awcolley
  *
  * Copyright (c) 2004 bitweaver.org
@@ -20,6 +20,7 @@
  *
  * created 2003/06/19
  *
+ * @package kernel
  * @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
  * global variable. 
  */
@@ -141,7 +142,7 @@ class TagLineLib extends BitBase
 }
 
 /**
- * @global $taglinelib - Module library
+ * @global TagLineLib Cookie manangement library
  */
 global $taglinelib;
 $taglinelib = new TagLineLib();

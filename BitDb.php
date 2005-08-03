@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.10 2005/08/03 12:43:58 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.11 2005/08/03 16:53:49 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -28,6 +28,7 @@ define( 'BIT_QUERY_DEFAULT', -1 );
  * Currently used as a base class, this class should be optional to ensure bitweaver
  * continues to function correctly, without a valid database connection.
  *
+ * @package kernel
  */
 class BitDb
 {
@@ -394,7 +395,7 @@ class BitDb
 	 *
 	 * @param table	table name to query
 	 * @param upper	uppercase table name (required by some databases)
-	 * @schema is optional database schema to use - not supported by all databases.
+	 * schema is optional database schema to use - not supported by all databases.
 	 *
 	 * @return  array of ADOFieldObjects for current table.
 	 */

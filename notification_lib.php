@@ -3,7 +3,7 @@
  * eMail Notification Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.1.1.1.2.4 2005/08/02 08:33:30 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.1.1.1.2.5 2005/08/03 16:53:47 lsces Exp $
  * @author awcolley
  *
  * created 2003/06/03
@@ -20,6 +20,7 @@
  *
  * Currently used in articles, trackers, users register and wiki.
  *
+ * @package kernel
  * @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
  * global variable.
  */
@@ -110,7 +111,7 @@ class NotificationLib extends BitBase
 }
 
 /**
- * @global $notificationlib - Notification library
+ * @global NotificationLib Notification library
  */
 global $notificationlib;
 $notificationlib = new NotificationLib(); 

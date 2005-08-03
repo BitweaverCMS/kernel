@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.10 2005/08/02 08:33:30 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.11 2005/08/03 16:53:55 lsces Exp $
  */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
@@ -28,6 +28,8 @@ require_once($smartyIncFile);
 
 /**
  * PermissionCheck
+ *
+ * @package kernel
  */
 class PermissionCheck {
 	function check( $perm ) {
@@ -37,8 +39,10 @@ class PermissionCheck {
 }
 
 /**
-* BitSmarty
-*/
+ * BitSmarty
+ *
+ * @package kernel
+ */
 class BitSmarty extends Smarty
 {
 	function BitSmarty()

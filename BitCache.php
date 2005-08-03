@@ -3,7 +3,7 @@
  * Basic cache handling
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.1.1.1.2.3 2005/08/02 08:33:30 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.1.1.1.2.4 2005/08/03 16:53:48 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -25,6 +25,8 @@
 
 /**
  * A basic library to handle caching of some Tiki Objects. Usage is simple and feel free to improve it.
+ *
+ * @package kernel
  */
 class BitCache
 {

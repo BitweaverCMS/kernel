@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.27 2005/08/02 08:33:30 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.28 2005/08/03 16:53:54 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -45,13 +45,11 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
+ *
+ * @package kernel
  */
 class BitSystem extends BitBase
 {	/**
-	* @package BitSystem
-	*/
-	// === properties
-	/**
 	* * Array of  *
 	*/
 	var $mAppMenu;
@@ -2222,6 +2220,8 @@ function installError($pMsg = null)
 
 /**
  * Basic processes timer
+ *
+ * @package kernel
  */
 class BitTimer
 {

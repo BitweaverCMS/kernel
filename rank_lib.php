@@ -2,13 +2,14 @@
 /**
  * Content Ranking Library
  * 
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.1.1.1.2.3 2005/08/02 08:33:30 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.1.1.1.2.4 2005/08/03 16:53:54 lsces Exp $
  * @package kernel
  */
 
 /**
  * Content Ranking Library
  * 
+ * @package kernel
  * @todo This needs reviewing and the legacy dependencies removed - still using tiki specific tables 
  */
 class RankLib extends BitBase {

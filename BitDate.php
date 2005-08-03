@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.2 2005/08/02 08:33:30 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.3 2005/08/03 16:53:55 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -19,6 +19,8 @@
  *  - Dates will always stored in UTC in the database
  *  - Display dates will be computed based on the preferred
  *    display offset specified in the constructor
+ *
+ * @package kernel
  *
  * @todo As of 1.7, dates are still stored in server local time.
  * This should be changed for 1.7.1 (requires many module changes).

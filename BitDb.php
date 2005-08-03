@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.9 2005/08/02 08:33:30 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.10 2005/08/03 12:43:58 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -381,10 +381,23 @@ class BitDb
 		return $result;
 	}
 
-	// ADODB compatibility functions for bitcommerce
+	/**
+	* ADODB compatibility functions for bitcommerce
+	*/
 	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=0) {
 		return $this->query( $pQuery, NULL, $pNumRows, BIT_QUERY_DEFAULT, $pCacheTime );
 	}
+
+	/**
+	 * List columns in a database as an array of ADOFieldObjects. 
+	 * See top of file for definition of object.
+	 *
+	 * @param table	table name to query
+	 * @param upper	uppercase table name (required by some databases)
+	 * @schema is optional database schema to use - not supported by all databases.
+	 *
+	 * @return  array of ADOFieldObjects for current table.
+	 */
 	function MetaColumns($table,$normalize=true) {
 		return $this->mDb->MetaColumns( $table, $normalize );
 	}
@@ -457,6 +470,9 @@ class BitDb
 		return $result;
 	}
 
+	/**
+	* Used to start query timer if in debug mode 
+	*/
 	function queryStart() {
 		global $gDebug;
 		if( $gDebug ) {
@@ -466,6 +482,9 @@ class BitDb
 		}
 	}
 
+	/**
+	* Used to stop query tracking and output results if in debug mode
+	*/
 	function queryComplete() {
 		global $num_queries;
 		//count the number of queries made
@@ -502,9 +521,14 @@ class BitDb
 		list($key, $value) = each($res);
 		return $value;
 	}
-	// This function will take a set of fields identified by an associative array - $insertData
-	// generate a suitable SQL script
-	// and insert the data into the specified table - $insertTable
+	/**
+	* This function will take a set of fields identified by an associative array - $insertData
+	* generate a suitable SQL script
+	* and insert the data into the specified table - $insertTable
+	* @param insertTable Name of the table to be inserted into
+	* @param insertData Array of data to be inserted. Array keys provide the field names
+	* @return Error status of the insert
+	*/
 	function associateInsert( $insertTable, $insertData ) {
 		$setSql = ( '`'.implode( array_keys( $insertData ), '`, `' ).'`' );
 		//stupid little loop to generate question marks. Start at one, and tack at the end to ease dealing with comma
@@ -523,10 +547,17 @@ class BitDb
 		$result = $this->query( $query, array_values( $insertData ) );
 	}
 
-	// This function will take a set of fields identified by an associative array - $updateData
-	// generate a suitable SQL script
-	// update the data into the specified table - $insertTable
-	// at the location identified in updateId which holds a name and value entry
+	/**
+	* This function will take a set of fields identified by an associative array - $updateData
+	* generate a suitable SQL script
+	* update the data into the specified table
+	* at the location identified in updateId which holds a name and value entry
+	* @param updateTable Name of the table to be updated
+	* @param updateData Array of data to be changed. Array keys provide the field names
+	* @param updateId Array identifying the record to update. 
+	*		Array key 'name' provide the field name, and 'value' the record key
+	* @return Error status of the insert
+	*/
 	function associateUpdate( $updateTable, $updateData, $updateId ) {
 		$setSql = ( '`'.implode( array_keys( $updateData ), '`=?, `' ).'`=?' );
 		$bindVars = array_values( $updateData );
@@ -538,6 +569,14 @@ class BitDb
 		$query = "UPDATE $updateTable SET $setSql WHERE `".$updateId["name"]."`=?";
 		$result = $this->query( $query, $bindVars );
 	}
+
+	/**
+	* A database portable Sequence management function.
+	*
+	* @param pSequenceName Name of the sequence to be used
+	*		It will be created if it does not already exist
+	* @return		0 if not supported, otherwise a sequence id
+	*/
 	function GenID( $pSequenceName ) {
 		if( empty( $this->mDb ) ) {
 			return FALSE;
@@ -545,7 +584,9 @@ class BitDb
 		return $this->mDb->GenID( str_replace("`","",BIT_DB_PREFIX).$pSequenceName );
 	}
 
-	/** A database portable IFNULL function.
+	/** 
+	* A database portable IFNULL function.
+	*
 	* @param pField argument to compare to NULL
 	* @param pNullRepl the NULL replacement value
 	* @return a string that represents the function that checks whether
@@ -556,6 +597,7 @@ class BitDb
 	{
 		return $this->mDb->ifNull($pField, $pNullRepl);
 	}
+
 	/** Format the timestamp in the format the database accepts.
 	* @param pDate a Unix integer timestamp or an ISO format Y-m-d H:i:s
 	* @return the timestamp as a quoted string.
@@ -568,9 +610,27 @@ class BitDb
 		//return preg_replace("/'/","", $this->mDb->DBTimeStamp($pDate));
 		return $this->mDb->DBTimeStamp($pDate);
 	}
+
+	/**
+	 * Format date column in sql string given an input format that understands Y M D
+	 */
 	function SQLDate($pDateFormat, $pBaseDate=false) {
 		return $this->mDb->SQLDate($pDateFormat, $pBaseDate) ;
 	}
+
+	/**
+	 * Calculate the offset of a date for a particular database and generate
+	 * appropriate SQL. Useful for calculating future/past dates and storing
+	 * in a database.
+	 * @param pDays Number of days to offset by
+	 *		If dayFraction=1.5 means 1.5 days from now, 1.0/24 for 1 hour.
+	 * @param pColumn Value to be offset
+	 *		If NULL an offset from the current time is supplied
+	 * @return New number of days
+	 *
+	 * @todo Not currently used - this is database specific and uses TIMESTAMP 
+	 * rather than unix seconds
+	 */
 	function OffsetDate( $pDays, $pColumn=NULL ) {
 		return $this->mDb->OffsetDate( $pDays, $pColumn );
 	}
@@ -796,24 +856,61 @@ class BitDb
 		return $ret;
 	}
 
-	/** Calls ADODB method to begin a transaction
-	*/
+	/**
+	 *	Improved method of initiating a transaction. Used together with CompleteTrans().
+	 *	Advantages include:
+	 *	
+	 *	a. StartTrans/CompleteTrans is nestable, unlike BeginTrans/CommitTrans/RollbackTrans.
+	 *	   Only the outermost block is treated as a transaction.<br>
+	 *	b. CompleteTrans auto-detects SQL errors, and will rollback on errors, commit otherwise.<br>
+	 *	c. All BeginTrans/CommitTrans/RollbackTrans inside a StartTrans/CompleteTrans block
+	 *	   are disabled, making it backward compatible.
+	 */
 	function StartTrans() {
 		 return $this->mDb->StartTrans();
 	}
 
+	/**
+	 *	Used together with StartTrans() to end a transaction. Monitors connection
+	 *	for sql errors, and will commit or rollback as appropriate.
+	 *	
+	 *	autoComplete if true, monitor sql errors and commit and rollback as appropriate, 
+	 *	and if set to false force rollback even if no SQL error detected.
+	 *	@returns true on commit, false on rollback.
+	 */
 	function CompleteTrans() {
 		 return $this->mDb->CompleteTrans();
 	}
 
+	/**
+	 * If database does not support transactions, rollbacks always fail, so return false
+	 * otherwise returns true if the Rollback was successful
+	 *
+	 * @return true/false.
+	 */
 	function RollbackTrans() {
 		 return $this->mDb->RollbackTrans();
 	}
 
+	/**
+	 * Create a list of tables available in the current database
+	 *
+	 * @param ttype can either be 'VIEW' or 'TABLE' or false. 
+	 * 		If false, both views and tables are returned.
+	 *		"VIEW" returns only views
+	 *		"TABLE" returns only tables
+	 * @param showSchema returns the schema/user with the table name, eg. USER.TABLE
+	 * @param mask  is the input mask - only supported by oci8 and postgresql
+	 *
+	 * @return  array of tables for current database.
+	 */ 
 	function MetaTables( $ttype = false, $showSchema = false, $mask=false ) {
 		 return $this->mDb->MetaTables( $ttype, $showSchema, $mask );
 	}
 
+	/** 
+	 * Check for Postgres specific extensions 
+	 */
 	function isAdvancedPostgresEnabled() {
 		// This code makes use of the badass /usr/share/pgsql/contrib/tablefunc.sql
 		// contribution that you have to install like: psql foo < /usr/share/pgsql/contrib/tablefunc.sql

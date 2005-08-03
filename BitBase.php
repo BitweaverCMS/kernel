@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.6 2005/08/02 08:33:30 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.7 2005/08/03 15:28:52 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -30,6 +30,8 @@ define( 'STORAGE_IMAGE', 2 );
 /**
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived bitweaver classes that require database access.
+ *
+ * @package kernel
  */
 class BitBase
 {
@@ -145,43 +147,6 @@ class BitBase
 		return $gBitSystem->getPreference( $pName, $pDefault );
 	}
 
-/*
-	function get_user_preference($pUserId, $name, $default = '') {
-		global $user_preferences;
-
-		if (!$pUserId)
-			return NULL;
-
-		/ **** Quick Hack ****
-		  We need to convert all calls to get_user_preference so they pass the id and not the username
-		  This will handle legacy calls until they are all changed
-		********************* /
-		if (!is_numeric($pUserId)) {
-			$query = "SELECT `user_id` FROM `".BIT_DB_PREFIX."users_users` where `login` = ?";
-			$result = $this->query($query, array($pUserId));
-			$pUserId = $result->fields['user_id'];
-			if (!$pUserId) return NULL;
-		}
-		/ **** End quick hack *** /
-
-		if (!isset($user_preferences[$pUserId][$name])) {
-			$query = "select `value`
-					  FROM `".BIT_DB_PREFIX."tiki_user_preferences` tup where `pref_name`=? AND tup.`user_id`= ?";
-
-			$result = $this->query($query, array( "$name", $pUserId));
-
-			if ($result->numRows()) {
-				$res = $result->fetchRow();
-
-				$user_preferences[$pUserId][$name] = $res["value"];
-			} else {
-				$user_preferences[$pUserId][$name] = $default;
-			}
-		}
-
-		return $user_preferences[$pUserId][$name];
-	}
-*/
 	function debug( $pLevel = 99 ) {
 		if( is_object( $this->mDb ) ) {
 			$this->mDb->debug( $pLevel );
@@ -224,26 +189,6 @@ class BitBase
     function GenID( $seqTitle ) {
 		return $this->mDb->GenID( $seqTitle );
     }
-
-	/** Calls ADODB method to begin a transaction, calls can be nested
-	*/
-	function StartTrans() {
-		 return $this->mDb->StartTrans();
-	}
-
-	/** Calls ADODB method to finalize a transaction, calls can be nested
-	*/
-	function CompleteTrans() {
-		 return $this->mDb->CompleteTrans();
-	}
-
-	function RollbackTrans() {
-		 return $this->mDb->RollbackTrans();
-	}
-
-	function MetaTables( $ttype = false, $showSchema = false, $mask=false ) {
-		 return $this->mDb->MetaTables( $ttype, $showSchema, $mask );
-	}
 
 	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=
 

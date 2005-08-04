@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.1.1.1.2.1 2005/07/26 15:50:08 drewslater Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.1.1.1.2.2 2005/08/04 14:50:53 drewslater Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -37,7 +37,7 @@ $gBitSmarty->assign_by_ref( 'all_modules', $all_mods );
 $all_centers = &$modlib->getAllModules( 'templates', 'center_' );   // Get all center templates
 $gBitSmarty->assign_by_ref( 'all_centers', $all_centers );              
 
-$all_mods = $all_mods + $all_centers;                         // Merge them all back into one array
+$all_mods = array_merge_recursive($all_mods,$all_centers);                         // Merge them all back into one array
 
 // this wierdness is due to changes in getAllModules() to create a nicer layout. it's needed to keep the js working...
 $all_modules = array();

@@ -77,8 +77,8 @@
 			{/form}
 
 			<div class="navbar">
-				<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=menus">{tr}List menus{/tr}</a>
-				<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=menus&menu_id={$menu_id}">{tr}Edit this menu{/tr}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=menus">{tr}List menus{/tr}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=menus&menu_id={$menu_id}">{tr}Edit this menu{/tr}</a>
 			</div>
 		</td>
 	</tr>
@@ -87,14 +87,14 @@
 <h2>{tr}Menu options{/tr}</h2>
 <table class="data">
 	<tr>
-		<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'option_id_desc'}option_id_asc{else}option_id_desc{/if}">{tr}ID{/tr}</a></th>
-		<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'position_desc'}position_asc{else}position_desc{/if}">{tr}Position{/tr}</a></th>
-		<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'name_desc'}name_asc{else}name_desc{/if}">{tr}Name{/tr}</a></th>
-		<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'url_desc'}url_asc{else}url_desc{/if}">{tr}URL{/tr}</a></th>
-		<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'type_desc'}type_asc{else}type_desc{/if}">{tr}Type{/tr}</a></th>
-		<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'section_desc'}section_asc{else}section_desc{/if}">{tr}Sections{/tr}</a></th>
-		<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'perm_desc'}perm_asc{else}perm_desc{/if}">{tr}Permissions{/tr}</a></th>
-		<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'groupnam_desc'}groupname_asc{else}groupname_desc{/if}">{tr}Group{/tr}</a></th>
+		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'option_id_desc'}option_id_asc{else}option_id_desc{/if}">{tr}ID{/tr}</a></th>
+		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'position_desc'}position_asc{else}position_desc{/if}">{tr}Position{/tr}</a></th>
+		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'name_desc'}name_asc{else}name_desc{/if}">{tr}Name{/tr}</a></th>
+		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'url_desc'}url_asc{else}url_desc{/if}">{tr}URL{/tr}</a></th>
+		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'type_desc'}type_asc{else}type_desc{/if}">{tr}Type{/tr}</a></th>
+		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'section_desc'}section_asc{else}section_desc{/if}">{tr}Sections{/tr}</a></th>
+		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'perm_desc'}perm_asc{else}perm_desc{/if}">{tr}Permissions{/tr}</a></th>
+		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'groupnam_desc'}groupname_asc{else}groupname_desc{/if}">{tr}Group{/tr}</a></th>
 		<th>{tr}Action{/tr}</th>
 	</tr>
 	{cycle values="even,odd" print=false}
@@ -109,8 +109,8 @@
 			<td>{$channels[user].perm}</td>
 			<td>{$channels[user].groupname}</td>
 			<td align="right">
-				<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].option_id}" onclick="return confirmTheLink(this,'{tr}Are you sure you want to delete this menu item?{/tr}')" title="{tr}Delete this menu{/tr}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
-				<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;option_id={$channels[user].option_id}" title="Edit this menu">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].option_id}" onclick="return confirmTheLink(this,'{tr}Are you sure you want to delete this menu item?{/tr}')" title="{tr}Delete this menu{/tr}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;option_id={$channels[user].option_id}" title="Edit this menu">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
 			</td>
 		</tr>
 	{sectionelse}

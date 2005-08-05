@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_packages.tpl,v 1.1.1.1.2.1 2005/06/30 00:52:53 jht001 Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_packages.tpl,v 1.1.1.1.2.2 2005/08/05 22:59:57 squareing Exp $ *}
 
 {strip}
 
@@ -59,7 +59,7 @@
 			<br />
 
 			{box title="How to install bitweaver Packages"}
-				{tr}To install more packages, please run the <a href='{$gBitLoc.INSTALL_PKG_URL}install.php?step=3'>installer</a> to choose your desired packages.{/tr}
+				{tr}To install more packages, please run the <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>installer</a> to choose your desired packages.{/tr}
 				<br />
 				<small><strong>{tr}Note{/tr}</strong> : {tr}you might have to rename your 'install/install.done' file back to 'install/install.php' to be able to install more packages{/tr}</small>
 			{/box}

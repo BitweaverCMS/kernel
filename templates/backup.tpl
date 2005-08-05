@@ -7,7 +7,7 @@
 
 	<div class="body">
 		{if $restore eq 'y'}
-			{formfeedback warning="Restoring a backup will erase all existing data before populating it with the data in the restore file. If something goes wrong you might loose all your data. We recommend that you first back up your existing database using an external tool.<br /><a href=\"`$gBitLoc.KERNEL_PKG_URL`admin/backup.php?rrestore=`$restorefile`\">Click here to restore the selected database</a>"}
+			{formfeedback warning="Restoring a backup will erase all existing data before populating it with the data in the restore file. If something goes wrong you might loose all your data. We recommend that you first back up your existing database using an external tool.<br /><a href=\"`$smarty.const.KERNEL_PKG_URL`admin/backup.php?rrestore=`$restorefile`\">Click here to restore the selected database</a>"}
 		{/if}
 
 		{jstabs}
@@ -51,12 +51,12 @@
 			{cycle values="even,odd" print=false}
 			{section name=user loop=$backups}
 				<tr class="{cycle}">
-					<td><a href="{$gBitLoc.STORAGE_PKG_URL}backups/{$backups[user].filename}" title="{$backups[user].filename}">{$backups[user].filename|truncate:20:"...":true}</a></td>
+					<td><a href="{$smarty.const.STORAGE_PKG_URL}backups/{$backups[user].filename}" title="{$backups[user].filename}">{$backups[user].filename|truncate:20:"...":true}</a></td>
 					<td>{$backups[user].created|bit_short_datetime}</td>
 					<td>{$backups[user].size|string_format:"%.2f"} Mb</td>
 					<td class="actionicon">
-						<a href="{$gBitLoc.KERNEL_PKG_URL}admin/backup.php?remove={$backups[user].filename}">{tr}remove{/tr}</a>
-						<a href="{$gBitLoc.KERNEL_PKG_URL}admin/backup.php?restore={$backups[user].filename}">{tr}restore{/tr}</a>
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/backup.php?remove={$backups[user].filename}">{tr}remove{/tr}</a>
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/backup.php?restore={$backups[user].filename}">{tr}restore{/tr}</a>
 					</td>
 				</tr>
 			{sectionelse}

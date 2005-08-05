@@ -7,7 +7,7 @@
 		{jstab title="Create new Menu"}
 		{/if}
 		{if $menu_id > 0}
-			<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}">{tr}Create new Menu{/tr}</a>
+			<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}">{tr}Create new Menu{/tr}</a>
 		{/if}
 		{form legend="Edit/Create new Menu"}
 			<input type="hidden" name="page" value="{$page}" />
@@ -49,10 +49,10 @@
 
 		<table class="data">
 			<tr>
-				<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'menu_id_asc'}menu_id_desc{else}menu_id_asc{/if}">{tr}ID{/tr}</a></th>
-				<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'name_asc'}name_desc{else}name_asc{/if}">{tr}Name{/tr}</a></th>
-				<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'description_asc'}description_desc{else}description_asc{/if}">{tr}Description{/tr}</a></th>
-				<th><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'type_asc'}type_desc{else}type_asc{/if}">{tr}Type{/tr}</a></th>
+				<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'menu_id_asc'}menu_id_desc{else}menu_id_asc{/if}">{tr}ID{/tr}</a></th>
+				<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'name_asc'}name_desc{else}name_asc{/if}">{tr}Name{/tr}</a></th>
+				<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'description_asc'}description_desc{else}description_asc{/if}">{tr}Description{/tr}</a></th>
+				<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'type_asc'}type_desc{else}type_asc{/if}">{tr}Type{/tr}</a></th>
 				<th>{tr}Options{/tr}</th>
 				<th>{tr}Action{/tr}</th>
 			</tr>
@@ -66,9 +66,9 @@
 					<td>{$channels[user].type}</td>
 					<td>{$channels[user].options}</td>
 					<td class="actionicon">
-						<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;menu_id={$channels[user].menu_id}" title="{tr}Edit this menu{/tr}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
-						<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=menu_options&amp;menu_id={$channels[user].menu_id}" title="{tr}Configure this menu{/tr}">{biticon ipackage=liberty iname="config" iexplain="configure"}</a>
-						<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].menu_id}" 
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;menu_id={$channels[user].menu_id}" title="{tr}Edit this menu{/tr}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=menu_options&amp;menu_id={$channels[user].menu_id}" title="{tr}Configure this menu{/tr}">{biticon ipackage=liberty iname="config" iexplain="configure"}</a>
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].menu_id}" 
 							onclick="return confirm('{tr}Are you sure you want to delete this menu?{/tr}')" title="{tr}Delete this menu{/tr}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
 					</td>
 				</tr>

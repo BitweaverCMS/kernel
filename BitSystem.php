@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.29 2005/08/03 21:44:05 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.30 2005/08/05 22:59:55 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -171,7 +171,6 @@ class BitSystem extends BitBase
 	* @access public
 	**/
 	function storePreference( $name, $value, $pPackageName=NULL ) {
-		global $gBitSystem;
 		global $gMultisites;
 		global $gRefreshSitePrefs;
 		global $bitdomain;
@@ -331,21 +330,20 @@ class BitSystem extends BitBase
 	*/
 	function preDisplay($pMid)
 	{
-		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gBitLoc, $gPreviewStyle;
+		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gPreviewStyle;
 		// setup our theme style and check if a preview theme has been picked
 		if( $gPreviewStyle !== FALSE ) {
 			$this->setStyle( $gPreviewStyle );
 		}
-		if (empty($gBitLoc['styleSheet'])) {
-			$gBitLoc['styleSheet'] = $this->getStyleCss();
+		if (empty($this->mStyles['styleSheet'])) {
+			$this->mStyles['styleSheet'] = $this->getStyleCss();
 		}
-		$gBitLoc['headerIncFiles'] = $this->getHeaderIncFiles();
-		$gBitLoc['browserStyleSheet'] = $this->getBrowserStyleCss();
-		$gBitLoc['customStyleSheet'] = $this->getCustomStyleCss();
-		$gBitLoc['altStyleSheets'] = $this->getAltStyleCss();
-		$gBitLoc['THEMES_STYLE_URL'] = $this->getStyleUrl();
-		$gBitLoc['JSCALENDAR_PKG_URL'] = UTIL_PKG_URL.'jscalendar/';
-		$gBitSmarty->assign_by_ref("gBitLoc", $gBitLoc);
+		$this->mStyles['headerIncFiles'] = $this->getHeaderIncFiles();
+		$this->mStyles['browserStyleSheet'] = $this->getBrowserStyleCss();
+		$this->mStyles['customStyleSheet'] = $this->getCustomStyleCss();
+		$this->mStyles['altStyleSheets'] = $this->getAltStyleCss();
+		define( 'THEMES_STYLE_URL', $this->getStyleUrl() );
+		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'jscalendar/' );
 		// dont forget to assign slideshow stylesheet if we are viewing page as slideshow
 //		$gBitSmarty->assign('slide_style', $this->getStyleCss("slide_style"));
 
@@ -397,8 +395,7 @@ class BitSystem extends BitBase
 	* @return array of paths to existing header_inc.tpl files
 	*/
 	function getHeaderIncFiles() {
-		global $gBitSystem, $gBitLoc;
-		foreach( $gBitSystem->mPackages as $package => $info ) {
+		foreach( $this->mPackages as $package => $info ) {
 			$file = $info['path'].'templates/header_inc.tpl';
 			if( is_readable( $file ) ) {
 				$ret[] = $file;
@@ -620,27 +617,22 @@ class BitSystem extends BitBase
 		if( empty( $this->mPackages ) ) {
 			$this->mPackages = array();
 		}
-		global $gBitLoc;
 		$pkgName = str_replace( ' ', '_', strtoupper( $pPackageName ) );
 		$pkgNameKey = strtolower( $pkgName );
 
 		// Define <PACKAGE>_PKG_PATH
 		$pkgDefine = $pkgName.'_PKG_PATH';
-		if (!defined($pkgDefine))
-		{
+		if (!defined($pkgDefine)) {
 			define($pkgDefine, $pPackagePath);
 		}
-		$gBitLoc[$pkgDefine] = $pPackagePath;
 		$this->mPackages[$pkgNameKey]['url']  = BIT_ROOT_URL . basename( $pPackagePath ) . '/';
 		$this->mPackages[$pkgNameKey]['path']  = BIT_ROOT_PATH . basename( $pPackagePath ) . '/';
 
 		// Define <PACKAGE>_PKG_URL
 		$pkgDefine = $pkgName.'_PKG_URL';
-		if (!defined($pkgDefine))
-		{
+		if (!defined($pkgDefine)) {
 			define($pkgDefine, BIT_ROOT_URL . basename( $pPackagePath ) . '/');
 		}
-		$gBitLoc[$pkgDefine] = BIT_ROOT_URL . basename( $pPackagePath ) . '/';
 
 		// Define <PACKAGE>_PKG_NAME
 		$pkgDefine = $pkgName.'_PKG_NAME';
@@ -668,7 +660,6 @@ class BitSystem extends BitBase
 				$pPackageName = $_SERVER['ACTIVE_PACKAGE'];
 			}
 			define('ACTIVE_PACKAGE', $pPackageName);
-			$gBitLoc['ACTIVE_PACKAGE'] = $pPackageName;
 			$this->mActivePackage = $pPackageName;
 		}
 	}
@@ -844,12 +835,7 @@ class BitSystem extends BitBase
 	*/
 	function scanPackages($pScanFile = 'bit_setup_inc.php', $pOnce=TRUE )
 	{
-		global $gBitLoc, $gPreScan;
-		if( empty( $gBitLoc ) ) {
-			$gBitLoc = array();
-		}
-		$gBitLoc['BIT_ROOT_URL'] = BIT_ROOT_URL;
-
+		global $gPreScan;
 		if (!empty($gPreScan) && is_array($gPreScan)) {
 			foreach($gPreScan as $pkgName) {
 				$this->mRegisterCalled = FALSE;
@@ -896,9 +882,6 @@ class BitSystem extends BitBase
 			if (!defined('ACTIVE_PACKAGE')) {
 				define('ACTIVE_PACKAGE', 'kernel'); // when in doubt, assume the kernel
 			}
-
-			$gBitLoc['kernel_url'] = KERNEL_PKG_URL;
-			$gBitLoc['kernel_path'] = KERNEL_PKG_PATH;
 
 			if( !defined( 'BIT_STYLES_PATH' ) && defined( 'THEMES_PKG_PATH' ) ) {
 				define('BIT_STYLES_PATH', THEMES_PKG_PATH . 'styles/');
@@ -1113,7 +1096,7 @@ asort( $this->mAppMenu );
 	* @return none
 	* @access public
 	*/
-	function getStyleCss($pStyle = null, $pUserId = NULL)
+	function getStyleCss($pStyle = NULL, $pUserId = NULL)
 	{
 		global $gBitUser;
 		if (empty($pStyle))
@@ -1127,9 +1110,9 @@ asort( $this->mAppMenu );
 			$homepageUser = new BitUser($pUserId);
 			$homepageUser->load();
 			// Path to the user-customized css file
-			$cssPath = $homepageUser->getStoragePath('theme',$homepageUser->mUserId,null).'custom.css';
+			$cssPath = $homepageUser->getStoragePath('theme',$homepageUser->mUserId,NULL).'custom.css';
 			if (file_exists($cssPath)) {
-				$ret = $homepageUser->getStorageURL('theme',$homepageUser->mUserId,null).'custom.css';
+				$ret = $homepageUser->getStorageURL('theme',$homepageUser->mUserId,NULL).'custom.css';
 			}
 		} else {
 			if( $gBitUser->verifyStorageFile( $pStyle.'.css',$pStyle,$gBitUser->mUserId,'stylist' ) ) {
@@ -1173,13 +1156,12 @@ asort( $this->mAppMenu );
 	* @return path to browser specific css file
 	* @access public
 	*/
-	function getBrowserStyleCss()
-	{
-		global $gBitLoc, $gSniffer;
-		$gBitLoc['browser']['client'] = $gSniffer->property( 'browser' );
-		$gBitLoc['browser']['version'] = $gSniffer->property( 'version' );
+	function getBrowserStyleCss() {
+		global $gSniffer;
+		$gSniffer->mBrowserInfo['client'] = $gSniffer->property( 'browser' );
+		$gSniffer->mBrowserInfo['version'] = $gSniffer->property( 'version' );
 		$style = $this->getStyle();
-		$ret = '';
+		$ret = NULL;
 		if( file_exists( $this->getStylePath().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css' ) ) {
 			$ret = $this->getStyleUrl().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css';
 		}

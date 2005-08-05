@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.1.1.1.2.2 2005/07/15 12:01:14 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.1.1.1.2.3 2005/08/05 22:59:56 squareing Exp $ *}
 {strip}
 
 {if $packageMenu}
@@ -7,7 +7,7 @@
 			{include file=$packageMenu.template}
 		</div>
 	{/bitmodule}
-{elseif $gBitLoc.ACTIVE_PACKAGE and $gBitUser->isAdmin()}
+{elseif $smarty.const.ACTIVE_PACKAGE and $gBitUser->isAdmin()}
 	{bitmodule title="$moduleTitle" name="package_menu"}
 		{foreach key=key item=menu from=$adminMenu}
 			<div class="menu {$key}menu">

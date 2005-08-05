@@ -12,22 +12,22 @@
 				<th colspan="4">{tr}Exterminator{/tr}</th>
 			</tr>
 			<tr class="odd">
-				<td style="width:55%;"><strong>{$gBitLoc.TEMP_PKG_PATH}lang/</strong></td>
+				<td style="width:55%;"><strong>{$smarty.const.TEMP_PKG_PATH}lang/</strong></td>
 				<td style="width:15%; text-align:right;">{tr}{$du.lang.cant} files{/tr}</td>
 				<td style="width:15%; text-align:right;">{$du.lang.total|kbsize}</td>
-				<td style="width:15%; text-align:right;"><a href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_system.php?do=lang_cache">{tr}Empty{/tr}</a></td>
+				<td style="width:15%; text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=lang_cache">{tr}Empty{/tr}</a></td>
 			</tr>
 			<tr class="even">
-				<td><strong>{$gBitLoc.TEMP_PKG_PATH}templates_c/</strong></td>
+				<td><strong>{$smarty.const.TEMP_PKG_PATH}templates_c/</strong></td>
 				<td style="text-align:right;">{tr}{$du.templates_c.cant} files{/tr}</td>
 				<td style="text-align:right;">{$du.templates_c.total|kbsize}</td>
-				<td style="text-align:right;"><a href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_system.php?do=templates_c">{tr}Empty{/tr}</a></td>
+				<td style="text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=templates_c">{tr}Empty{/tr}</a></td>
 			</tr>
 			<tr class="odd">
-				<td><strong>{$gBitLoc.TEMP_PKG_PATH}modules/cache/</strong></td>
+				<td><strong>{$smarty.const.TEMP_PKG_PATH}modules/cache/</strong></td>
 				<td style="text-align:right;">{tr}{$du.modules.cant} files{/tr}</td>
 				<td style="text-align:right;">{$du.modules.total|kbsize}</td>
-				<td style="text-align:right;"><a href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_system.php?do=modules_cache">{tr}Empty{/tr}</a></td>
+				<td style="text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=modules_cache">{tr}Empty{/tr}</a></td>
 			</tr>
 		</table>
 
@@ -40,7 +40,7 @@
 					<td style="width:55%;"><strong>{$key}</strong></td>
 					<td style="width:15%; text-align:right;">{tr}{$item.cant} files{/tr}</td>
 					<td style="width:15%; text-align:right;">{$item.total|kbsize}</td>
-					<td style="width:15%; text-align:right;"><a href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_system.php?compiletemplates={$key}">{tr}Compile{/tr}</a></td>
+					<td style="width:15%; text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?compiletemplates={$key}">{tr}Compile{/tr}</a></td>
 				</tr>
 			{/foreach}
 		</table>

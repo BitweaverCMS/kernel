@@ -3,7 +3,7 @@
  * eMail Notification Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.1.1.1.2.5 2005/08/03 16:53:47 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.1.1.1.2.6 2005/08/06 08:08:31 lsces Exp $
  * @author awcolley
  *
  * created 2003/06/03
@@ -91,6 +91,7 @@ class NotificationLib extends BitBase
         $query = "delete from `".BIT_DB_PREFIX."tiki_mail_events` where `event`=? and `object`=? and `email`=?";
         $result = $this->query($query,array($event,$object,$email));
     }
+
     /**
     * Retrieves the email addresses for a specific event
     * @param event the specified event
@@ -108,6 +109,39 @@ class NotificationLib extends BitBase
         }
         return $ret;
     }
+
+    /**
+    * Retrieves the email addresses for a specific event
+    * @param object number of the content item being updated
+    * @param object content_type of the item
+    * @param object the package that is being updated
+    * @param object the name of the object
+    * @param object the name of user making the change
+    * @param object any comment added to the change
+    * @param object the content of the change
+    */
+    function post_content_event($contentid, $type, $package, $name, $user, $comment, $data)
+    { global $gBitSystem;
+			
+		$emails = $this->get_mail_events($package.'_page_changes', $type . $contentid);
+
+		foreach ($emails as $email) {
+			global $gBitSmarty;
+			$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
+			$gBitSmarty->assign('mail_page', $name );
+			$gBitSmarty->assign('mail_date', date("U"));
+			$gBitSmarty->assign('mail_user', $user );
+			$gBitSmarty->assign('mail_comment', $comment );
+			$gBitSmarty->assign('mail_last_version', 1);
+			$gBitSmarty->assign('mail_data', $data );
+			$gBitSmarty->assign('mail_machine', httpPrefix());
+			$gBitSmarty->assign('mail_pagedata', $data );
+			$mail_data = $gBitSmarty->fetch('bitpackage:'.$package.'/'.$package.'_change_notification.tpl');
+
+			@mail($email, $package . tra(' page'). ' ' . $name . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n" );
+		}
+	}
+
 }
 
 /**

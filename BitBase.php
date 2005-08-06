@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.8 2005/08/06 18:31:26 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.9 2005/08/06 19:53:51 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -61,6 +61,11 @@ class BitBase
     */
     var $mDb;
     /**
+    * Used to store database type
+    * @private
+    */
+    var $dType;
+    /**
     * Standard Query Cache Time. Variable can be set to 0 to flush particular queries
     * @private
     */
@@ -83,8 +88,9 @@ class BitBase
 		if(is_object($gBitDb)) {
 			$this->setDatabase($gBitDb);
 		}
-		$this->mErrors = array();
+ 		$this->mErrors = array();
     }
+
     /**
     * Sets database mechanism for the instance
     * @param pDB the instance of the database mechanism
@@ -93,7 +99,9 @@ class BitBase
     {
         // set internal db and retrieve values
         $this->mDb = &$pDB;
+		$this->dType = $this->mDb->mType;
     }
+
     /**
     * Determines if there is a valide database connection
     **/
@@ -102,90 +110,127 @@ class BitBase
 	}
 
     /**
-    * Determines if any given variable exists and is a number
+    * Switch debug level in database
     **/
-	function verifyId( $pId ) {
-		return( !empty( $pId ) && is_numeric( $pId ) );
-	}
-
-    // {{{ display
-    /**
-	* This method should be THE method used to display a template. php files should not
-	* access $gBitSmarty directly.
-	*
-	* @param string pMsg error message to be displayed
-	* @return none this function will DIE DIE DIE!!!
-	* @access public
-	**/
-	function display( $pPackage, $pTemplate ) {
-		global $gBitSmarty, $gBitLanguage, $style, $style_base;
-		if (isset($style) && isset($style_base)) {
-			if (file_exists(BIT_THEME_PATH."styles/$style_base/$pTemplate")) {
-				// Theme has overriden template
-				$_smarty_tpl_file = 'file:'.BIT_STYLES_PATH."/$style_base/$pTemplate";
-			} else {
-				// Use default
-				$_smarty_tpl_file = 'file:'.BIT_PKG_PATH."$pPackage/templates/$pTemplate";
-			}
-		}
-/*
-		global $gBitLanguage, $style, $style_base;
-		if (isset($style) && isset($style_base)) {
-			if (file_exists(BIT_STYLES_PATH."/$style_base/$_smarty_tpl_file")) {
-				$_smarty_tpl_file = BIT_STYLES_PATH."/$style_base/$_smarty_tpl_file";
-			}
-		}
-*/
-		$gBitSmarty->display( $_smarty_tpl_file );
-//		$gBitSmarty->display( 'bitpackage:'.$pPackage.$pTemplate );
-	}
-    // }}}
-
-
-	function getPreference($pName, $pDefault = '') {
-		global $gBitSystem;
-		return $gBitSystem->getPreference( $pName, $pDefault );
-	}
-
 	function debug( $pLevel = 99 ) {
 		if( is_object( $this->mDb ) ) {
 			$this->mDb->debug( $pLevel );
 		}
 	}
 
+	/** Queries the database reporting an error if detected
+	* than exiting while printing the error. -rlpowell
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pValues an array of values used in a parameterised query
+	* @param pNumRows the number of rows (LIMIT) to return in this query
+	* @param pOffset the row number to begin returning rows from. Used in
+	* conjunction with $pNumRows
+	* @return an AdoDB RecordSet object
+	*/
 	function query($pQuery, $pValues = NULL, $pNumRows =BIT_QUERY_DEFAULT, $pOffset=BIT_QUERY_DEFAULT, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		return $this->mDb->query($pQuery, $pValues, $pNumRows, $pOffset, $pCacheTime);
 	}
 
+	/** Returns an associative array for the given query.
+	* See AdoDB GetAssoc() function for more detail.
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pValues an array of values used in a parameterised query
+	* @param pForceArray if set to true, when an array is created for each value
+	* @param pFirst2Cols if set to true, only returns the first two columns
+	* @return the associative array, or false if an error occurs
+	*/
 	function getAssoc($pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT) {
 		return $this->mDb->getAssoc($pQuery, $pValues, $pForceArray, $pFirst2Cols,$pCacheTime);
 	}
 
+	/** Returns a single column value from the database.
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pValues an array of values used in a parameterised query
+	* @param pReportErrors report errors to STDOUT
+	* @param pOffset the row number to begin returning rows from.
+	* @return the associative array, or false if an error occurs
+	*/
 	function getOne($pQuery, $pValues = NULL, $pNumRows = 0, $pOffset = 0, $pCacheTime=BIT_QUERY_DEFAULT) {
 		return $this->mDb->getOne($pQuery, $pValues, $pNumRows, $pOffset,$pCacheTime);
 	}
 
+	/** Returns the keyword to force a column comparison to be case sensitive
+	* for none case-sensitive databases (eg MySQL)
+	* @return the SQL keyword
+	* @todo only used in gBitSystem and users_lib to compare login names
+	*/
 	function convert_binary() {
 		return $this->mDb->convert_binary();
 	}
 
+	/** Converts field sorting abbreviation to SQL
+	* @param pSortMode fieldname and sort order string (eg name_asc)
+	* @return the correctly quoted SQL ORDER statement
+	*/
 	function convert_sortmode($pSortMode) {
 		return $this->mDb->convert_sortmode($pSortMode);
 
 	}
+
+	/** Used to cast variable types for certain databases (ie SyBase & MSSQL)
+	* @param pVar the variable value to cast
+	* @param pType the current variable type
+	* @return the SQL casting statement
+	*/
     function sql_cast($pVar,$pType) {
 		return $this->mDb->sql_cast($pVar,$pType);
 
 	}
 
+	/**
+	* This function will take a set of fields identified by an associative array - $insertData
+	* generate a suitable SQL script
+	* and insert the data into the specified table - $insertTable
+	* @param insertTable Name of the table to be inserted into
+	* @param insertData Array of data to be inserted. Array keys provide the field names
+	* @return Error status of the insert
+	*/
 	function associateInsert($insertTable, $insertData) {
 		return $this->mDb->associateInsert($insertTable, $insertData);
 	}
 
+	/**
+	* This function will take a set of fields identified by an associative array - $updateData
+	* generate a suitable SQL script
+	* update the data into the specified table
+	* at the location identified in updateId which holds a name and value entry
+	* @param updateTable Name of the table to be updated
+	* @param updateData Array of data to be changed. Array keys provide the field names
+	* @param updateId Array identifying the record to update. 
+	*		Array key 'name' provide the field name, and 'value' the record key
+	* @return Error status of the insert
+	*/
 	function associateUpdate($updateTable, $updateData, $updateId) {
 		return $this->mDb->associateUpdate($updateTable, $updateData, $updateId);
 	}
 
+	/**
+	* Quotes a string to be sent to the database which is
+	* passed to function on to AdoDB->qstr().
+	* @todo not sure what its supposed to do
+	* @param pStr string to be quotes
+	* @return quoted string using AdoDB->qstr()
+	*/
+	function qstr($pStr)
+	{
+		return $this->mDb->qstr($pStr);
+	}
+
+	/**
+	* A database portable Sequence management function.
+	*
+	* @param pSequenceName Name of the sequence to be used
+	*		It will be created if it does not already exist
+	* @return		0 if not supported, otherwise a sequence id
+	*/
     function GenID( $seqTitle ) {
 		return $this->mDb->GenID( $seqTitle );
     }
@@ -235,6 +280,52 @@ class BitBase
 		return defined( 'ADVANCED_PGSQL' );
 	}
 	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=
+
+    /**
+    * Determines if any given variable exists and is a number
+    **/
+	function verifyId( $pId ) {
+		return( !empty( $pId ) && is_numeric( $pId ) );
+	}
+
+    // {{{ display
+    /**
+	* This method should be THE method used to display a template. php files should not
+	* access $gBitSmarty directly.
+	*
+	* @param string pMsg error message to be displayed
+	* @return none this function will DIE DIE DIE!!!
+	* @access public
+	**/
+	function display( $pPackage, $pTemplate ) {
+		global $gBitSmarty, $gBitLanguage, $style, $style_base;
+		if (isset($style) && isset($style_base)) {
+			if (file_exists(BIT_THEME_PATH."styles/$style_base/$pTemplate")) {
+				// Theme has overriden template
+				$_smarty_tpl_file = 'file:'.BIT_STYLES_PATH."/$style_base/$pTemplate";
+			} else {
+				// Use default
+				$_smarty_tpl_file = 'file:'.BIT_PKG_PATH."$pPackage/templates/$pTemplate";
+			}
+		}
+/*
+		global $gBitLanguage, $style, $style_base;
+		if (isset($style) && isset($style_base)) {
+			if (file_exists(BIT_STYLES_PATH."/$style_base/$_smarty_tpl_file")) {
+				$_smarty_tpl_file = BIT_STYLES_PATH."/$style_base/$_smarty_tpl_file";
+			}
+		}
+*/
+		$gBitSmarty->display( $_smarty_tpl_file );
+//		$gBitSmarty->display( 'bitpackage:'.$pPackage.$pTemplate );
+	}
+    // }}}
+
+
+	function getPreference($pName, $pDefault = '') {
+		global $gBitSystem;
+		return $gBitSystem->getPreference( $pName, $pDefault );
+	}
 
     /**
     * Prepares parameters with default values for any getList function

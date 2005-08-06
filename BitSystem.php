@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.31 2005/08/06 18:31:26 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.32 2005/08/06 19:53:50 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -277,7 +277,7 @@ class BitSystem extends BitBase
 	* @param  $mid the name of the template for the page content
 	* @access public
 	*/
-	function sendEmail( $pMailHash ) {
+	function sendEmail( pMailHash ) {
 		$extraHeaders = '';
 		if( $this->getPreference( 'bcc_email' ) ) {
 			$extraHeaders = "Bcc: ".$this->getPreference( 'bcc_email' )."\r\n";
@@ -1272,7 +1272,7 @@ asort( $this->mAppMenu );
 		// This saves a count() query to see if the ACTIVE_PACKAGE has a layout, since it usually probably doesn't
 		// I don't know if it's better or not to save the count() query and retrieve more data - my gut says so,
 		// but i've done no research - spiderr
-		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->mDb->mType != 'firebird' && $this->mType != 'mssql') {
+		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->dType != 'firebird' && $this->dType != 'mssql') {
 			// ORDER BY comparison is crucial so current layout modules come up first
 			$whereClause .= " (tl.`layout`=? OR tl.`layout`=? ) ORDER BY tl.`layout`=? DESC, ";
 			array_push($bindVars, $pLayout);

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.12 2005/08/06 05:36:27 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.13 2005/08/06 19:53:51 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -307,6 +307,7 @@ class BitDb
 	{
 		return $this->mDb->qstr($pStr);
 	}
+
 	/** Queries the database, returning an error if one occurs, rather
 	* than exiting while printing the error. -rlpowell
 	* @param pQuery the SQL query. Use backticks (`) to quote all table
@@ -337,6 +338,7 @@ class BitDb
 		//$this->debugger_log($pQuery, $pValues);
 		return $result;
 	}
+
 	/** Queries the database reporting an error if detected
 	* than exiting while printing the error. -rlpowell
 	* @param pQuery the SQL query. Use backticks (`) to quote all table
@@ -414,6 +416,7 @@ class BitDb
 	* @return the associative array, or false if an error occurs
 	* @todo not currently used anywhere
 	*/
+
 	function getCol( $pQuery, $pValues=FALSE, $pTrim=FALSE )
 	{
 		if( empty( $this->mDb ) ) {
@@ -448,6 +451,7 @@ class BitDb
 		$this->queryComplete();
 		return $result;
 	}
+
 	/** Executes the SQL and returns the first row as an array. The recordset and remaining rows are discarded for you automatically. If an error occurs, false is returned.
 	* See AdoDB GetRow() function for more detail.
 	* @param pQuery the SQL query. Use backticks (`) to quote all table
@@ -522,6 +526,7 @@ class BitDb
 		list($key, $value) = each($res);
 		return $value;
 	}
+
 	/**
 	* This function will take a set of fields identified by an associative array - $insertData
 	* generate a suitable SQL script
@@ -675,6 +680,7 @@ class BitDb
 			}
 		}
 	}
+
 	/** Converts field sorting abbreviation to SQL
 	* @param pSortMode fieldname and sort order string (eg name_asc)
 	* @return the correctly quoted SQL ORDER statement
@@ -739,6 +745,7 @@ class BitDb
 		}
 		return $pSortMode;
 	}
+
 	/** Returns the keyword to force a column comparison to be case sensitive
 	* for none case-sensitive databases (eg MySQL)
 	* @return the SQL keyword
@@ -758,6 +765,7 @@ class BitDb
 			break;
 		}
 	}
+
 	/** Used to cast variable types for certain databases (ie SyBase & MSSQL)
 	* @param pVar the variable value to cast
 	* @param pType the current variable type

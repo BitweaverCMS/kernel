@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.9 2005/08/06 19:53:51 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.10 2005/08/06 21:00:41 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -155,6 +155,17 @@ class BitBase
 	*/
 	function getOne($pQuery, $pValues = NULL, $pNumRows = 0, $pOffset = 0, $pCacheTime=BIT_QUERY_DEFAULT) {
 		return $this->mDb->getOne($pQuery, $pValues, $pNumRows, $pOffset,$pCacheTime);
+	}
+
+	/** Executes the SQL and returns the first row as an array. The recordset and remaining rows are discarded for you automatically. If an error occurs, false is returned.
+	* See AdoDB GetRow() function for more detail.
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pValues an array of values used in a parameterised query
+	* @return returns the first row as an array, or false if an error occurs
+	*/
+	function getRow( $pQuery, $pValues=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+		return $this->mDb->getRow($pQuery, $pValues, $pCacheTime);
 	}
 
 	/** Returns the keyword to force a column comparison to be case sensitive

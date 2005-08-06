@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.11 2005/08/03 16:53:49 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.12 2005/08/06 05:36:27 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -711,8 +711,13 @@ class BitDb
 			switch ($this->mType)
 			{
 				case "firebird":
+					// Use of alias in order by is not supported because of optimizer processing
 					if ( $pSortMode == 'page_name_asc' ) $pSortMode = 'title_asc';
 					if ( $pSortMode == 'page_name_desc' ) $pSortMode = 'title_desc';
+					if ( $pSortMode == 'creator_user_asc' ) $pSortMode = 'uuc.login_asc';
+					if ( $pSortMode == 'creator_user_desc' ) $pSortMode = 'uuc.login_desc';
+					if ( $pSortMode == 'modifier_user_asc' ) $pSortMode = 'uue.login_asc';
+					if ( $pSortMode == 'modifier_user_desc' ) $pSortMode = 'uue.login_desc';
 				case "oci8":
 				case "sybase":
 				case "mssql":

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.13 2005/08/06 19:53:51 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.14 2005/08/06 20:53:29 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -722,8 +722,12 @@ class BitDb
 					if ( $pSortMode == 'page_name_desc' ) $pSortMode = 'title_desc';
 					if ( $pSortMode == 'creator_user_asc' ) $pSortMode = 'uuc.login_asc';
 					if ( $pSortMode == 'creator_user_desc' ) $pSortMode = 'uuc.login_desc';
+					if ( $pSortMode == 'creator_real_name_asc' ) $pSortMode = 'uuc.real_name_asc';
+					if ( $pSortMode == 'creator_real_name_desc' ) $pSortMode = 'uuc.real_name_desc';
 					if ( $pSortMode == 'modifier_user_asc' ) $pSortMode = 'uue.login_asc';
 					if ( $pSortMode == 'modifier_user_desc' ) $pSortMode = 'uue.login_desc';
+					if ( $pSortMode == 'modifier_real_name_asc' ) $pSortMode = 'uue.real_name_asc';
+					if ( $pSortMode == 'modifier_real_name_desc' ) $pSortMode = 'uue.real_name_desc';
 				case "oci8":
 				case "sybase":
 				case "mssql":

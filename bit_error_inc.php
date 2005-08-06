@@ -56,7 +56,7 @@ function bit_error_handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnecti
 	$subject = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : 'BITWEAVER';
 
 	$fatal = FALSE;
-	if ( ($fn == 'EXECUTE') && ($thisConnection->MetaError() != -5) && $gBitSystem->isFatalActive() ) {
+	if ( ($fn == 'EXECUTE') && ($thisConnection->MetaError() != -5) && $gBitSystem->mDb->isFatalActive() ) {
 		$subject .= ' FATAL';
 		$fatal = TRUE;
 	} else {

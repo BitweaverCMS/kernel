@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.7 2005/08/03 15:28:52 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.8 2005/08/06 18:31:26 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -190,6 +190,50 @@ class BitBase
 		return $this->mDb->GenID( $seqTitle );
     }
 
+	/**
+	 *	Improved method of initiating a transaction. Used together with CompleteTrans().
+	 *	Advantages include:
+	 *	
+	 *	a. StartTrans/CompleteTrans is nestable, unlike BeginTrans/CommitTrans/RollbackTrans.
+	 *	   Only the outermost block is treated as a transaction.<br>
+	 *	b. CompleteTrans auto-detects SQL errors, and will rollback on errors, commit otherwise.<br>
+	 *	c. All BeginTrans/CommitTrans/RollbackTrans inside a StartTrans/CompleteTrans block
+	 *	   are disabled, making it backward compatible.
+	 */
+	function StartTrans() {
+		 return $this->mDb->StartTrans();
+	}
+
+	/**
+	 *	Used together with StartTrans() to end a transaction. Monitors connection
+	 *	for sql errors, and will commit or rollback as appropriate.
+	 *	
+	 *	autoComplete if true, monitor sql errors and commit and rollback as appropriate, 
+	 *	and if set to false force rollback even if no SQL error detected.
+	 *	@returns true on commit, false on rollback.
+	 */
+	function CompleteTrans() {
+		 return $this->mDb->CompleteTrans();
+	}
+
+	/**
+	 * If database does not support transactions, rollbacks always fail, so return false
+	 * otherwise returns true if the Rollback was successful
+	 *
+	 * @return true/false.
+	 */
+	function RollbackTrans() {
+		 return $this->mDb->RollbackTrans();
+	}
+
+	/** 
+	 * Check for Postgres specific extensions 
+	 */
+	function isAdvancedPostgresEnabled() {
+		// This code makes use of the badass /usr/share/pgsql/contrib/tablefunc.sql
+		// contribution that you have to install like: psql foo < /usr/share/pgsql/contrib/tablefunc.sql
+		return defined( 'ADVANCED_PGSQL' );
+	}
 	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=
 
     /**

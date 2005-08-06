@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.18 2005/08/05 22:59:56 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.19 2005/08/06 18:31:26 lsces Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -102,8 +102,7 @@ if (!function_exists('array_fill'))
 global $num_queries;
 $num_queries = 0;
 
-// a bit hackish for now, but works.
-if( $gBitDb->isValid() ) {
+if( $gBitSystem->isDatabaseValid() ) {
 
 	$gBitSystem->loadPreferences();
 	if ($gBitSystem->getPreference('feature_obzip') == 'y') {

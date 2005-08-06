@@ -3,7 +3,7 @@
  * Administration Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/admin_lib.php,v 1.1.1.1.2.4 2005/08/03 16:53:55 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/admin_lib.php,v 1.1.1.1.2.5 2005/08/06 18:31:27 lsces Exp $
  */
  
 /**
@@ -252,7 +252,7 @@ class AdminLib extends BitBase {
 	function remove_tag($tagname) {
 		global $wikiHomePage, $gBitUser;
 
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 		$query = "delete from `".BIT_DB_PREFIX."tiki_tags` where `tag_name`=?";
 		$result = $this->query($query,array($tagname));
 		$action = "removed tag: $tagname";
@@ -260,7 +260,7 @@ class AdminLib extends BitBase {
 		$homePageId = $this->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
 		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog` (`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values ( ?,?,?,?,?,?,? )";
 		$result = $this->query($query,array($homePageId, $action,$wikiHomePage,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		return true;
 	}
 
@@ -282,7 +282,7 @@ class AdminLib extends BitBase {
 	function create_tag($tagname, $comment = '') {
 		global $wikiHomePage, $gBitUser;
 
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 		$query = "select * from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON( tp.`content_id`=tc.`content_id` )";
 		$result = $this->query($query,array());
 
@@ -301,7 +301,7 @@ class AdminLib extends BitBase {
 		$t = date("U");
 		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`page_id`,`action`,`page_name`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?,?)";
 		$result = $this->query($query,array($homePageId,$action,$wikiHomePage,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],$comment));
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		return true;
 	}
 
@@ -311,7 +311,7 @@ class AdminLib extends BitBase {
 		global $wikiHomePage, $gBitUser;
 		require_once( WIKI_PKG_PATH.'BitPage.php' );
 
-		$this->mDb->StartTrans();
+		$this->StartTrans();
 		$query = "update `".BIT_DB_PREFIX."tiki_pages` set `cache_timestamp`=0";
 		$this->query($query,array());
 		$query = "select *, `data` AS `edit`, `page_name` AS `title` FROM `".BIT_DB_PREFIX."tiki_tags` where `tag_name`=?";
@@ -327,7 +327,7 @@ class AdminLib extends BitBase {
 		$t = date("U");
 		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values (?,?,?,?,?,?,?)";
 		$result = $this->query($query,array($homePageId,$action,$wikiHomePage,$t, $gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
-		$this->mDb->CompleteTrans();
+		$this->CompleteTrans();
 		return true;
 	}
 

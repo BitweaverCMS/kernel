@@ -3,7 +3,7 @@
  * eMail Notification Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.1.1.1.2.6 2005/08/06 08:08:31 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.1.1.1.2.7 2005/08/06 08:34:22 lsces Exp $
  * @author awcolley
  *
  * created 2003/06/03
@@ -111,7 +111,7 @@ class NotificationLib extends BitBase
     }
 
     /**
-    * Retrieves the email addresses for a specific event
+    * Post changes to registered email addresses related to a change event
     * @param object number of the content item being updated
     * @param object content_type of the item
     * @param object the package that is being updated
@@ -119,6 +119,9 @@ class NotificationLib extends BitBase
     * @param object the name of user making the change
     * @param object any comment added to the change
     * @param object the content of the change
+    *
+    * @todo Improve the generic handling of the messages
+    * Param information probably needs to be passed as an array, or accessed from Content directly
     */
     function post_content_event($contentid, $type, $package, $name, $user, $comment, $data)
     { global $gBitSystem;
@@ -139,6 +142,23 @@ class NotificationLib extends BitBase
 			$mail_data = $gBitSmarty->fetch('bitpackage:'.$package.'/'.$package.'_change_notification.tpl');
 
 			@mail($email, $package . tra(' page'). ' ' . $name . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n" );
+		}
+	}
+
+    /**
+    * Notifies registered list of eMail recipients of new user registrations
+    * @param object name of the new user
+    */
+    function post_new_user_event( $user )
+	{ global $gBitSystem, $gBitSmarty;
+		$emails = $this->get_mail_events('user_registers','*');
+		foreach($emails as $email) {
+			$gBitSmarty->assign('mail_user',$user);
+			$gBitSmarty->assign('mail_date',date("U"));
+			$gBitSmarty->assign('mail_site',$_SERVER["SERVER_NAME"]);
+			$mail_data = $gBitSmarty->fetch('bitpackage:users/new_user_notification.tpl');
+
+			mail( $email, tra('New user registration'),$mail_data,"From: ".$gBitSystem->getPreference('sender_email')."\r\nContent-type: text/plain;charset=utf-8\r\n");
 		}
 	}
 

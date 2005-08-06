@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.32 2005/08/06 19:53:50 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.33 2005/08/06 19:59:23 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -277,7 +277,7 @@ class BitSystem extends BitBase
 	* @param  $mid the name of the template for the page content
 	* @access public
 	*/
-	function sendEmail( pMailHash ) {
+	function sendEmail( $pMailHash ) {
 		$extraHeaders = '';
 		if( $this->getPreference( 'bcc_email' ) ) {
 			$extraHeaders = "Bcc: ".$this->getPreference( 'bcc_email' )."\r\n";

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.33 2005/08/06 19:59:23 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.34 2005/08/07 01:06:04 jht001 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -450,8 +450,15 @@ class BitSystem extends BitBase
 		if (defined( (strtoupper( $pPackageName ).'_PKG_NAME') ) ) {
 			$name = strtolower( @constant( (strtoupper( $pPackageName ).'_PKG_NAME') ) );
 			if( $name ) {
-				// we have migrated the old tikiwiki feature_<package> to package_<package> just for (de)activating packages
-				$ret = ($this->getPreference('package_'.$name) == 'y');
+                               // kernel always active
+                                if ($name == 'kernel') {
+                                        $ret = 1;
+                                        }
+                                else {
+                                        // we have migrated the old tikiwiki feature_<pac
+                                        $ret = ($this->getPreference('package_'.$name) == 'y');
+                                        }
+
 			}
 		}
 

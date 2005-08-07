@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.15 2005/08/07 13:27:38 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.16 2005/08/07 20:46:10 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -425,7 +425,7 @@ class BitDb
 		$this->queryStart();
 		$this->convertQuery($pQuery);
 		$execFunction = ( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ? 'GetAssoc' : 'CacheGetAssoc' );
-		$result = $this->mDb->GetCol( $pQuery, $pValues, $pTrim );
+		$result = $this->mDb->getCol( $pQuery, $pValues, $pTrim );
 		//count the number of queries made
 		$this->queryComplete();
 		return $result;

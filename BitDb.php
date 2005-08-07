@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.14 2005/08/06 20:53:29 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.15 2005/08/07 13:27:38 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -588,6 +588,21 @@ class BitDb
 			return FALSE;
 		}
 		return $this->mDb->GenID( str_replace("`","",BIT_DB_PREFIX).$pSequenceName );
+	}
+
+	/**
+	* A database portable Sequence management function.
+	*
+	* @param pSequenceName Name of the sequence to be used
+	*		It will be created if it does not already exist
+	* @param pStartID Allows setting the initial value of the sequence
+	* @return		0 if not supported, otherwise a sequence id
+	* @todo	To be combined with GenID
+	*/
+	function CreateSequence($seqname='adodbseq',$startID=1)
+	{
+		if (empty($this->_genSeqSQL)) return FALSE;
+		return $this->mDb->Execute(sprintf($this->_genSeqSQL,$seqname,$startID));
 	}
 
 	/** 

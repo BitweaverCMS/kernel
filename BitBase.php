@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.11 2005/08/07 10:17:49 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.12 2005/08/07 13:27:38 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -103,21 +103,22 @@ class BitBase
     }
 
     /**
-    * Determines if there is a valide database connection
-    **/
+     * Determines if there is a valide database connection
+     **/
 	function isDatabaseValid() {
 		return( !empty( $this->mDb->mDb ) && $this->mDb->mDb->_connectionID );
 	}
 
     /**
-    * Return pointer to current Database
-    **/
+     * Return pointer to current Database
+     **/
 	function getDb() {
 		return ( !empty( $this->mDb ) ? $this->mDb : NULL  );
 	}
 
     /**
-    * Switch debug level in database
+     * Switch debug level in database
+	 *
     **/
 	function debug( $pLevel = 99 ) {
 		if( is_object( $this->mDb ) ) {
@@ -125,178 +126,6 @@ class BitBase
 		}
 	}
 
-	/** Queries the database reporting an error if detected
-	* than exiting while printing the error. -rlpowell
-	* @param pQuery the SQL query. Use backticks (`) to quote all table
-	* and attribute names for AdoDB to quote appropriately.
-	* @param pValues an array of values used in a parameterised query
-	* @param pNumRows the number of rows (LIMIT) to return in this query
-	* @param pOffset the row number to begin returning rows from. Used in
-	* conjunction with $pNumRows
-	* @return an AdoDB RecordSet object
-	*/
-	function query($pQuery, $pValues = NULL, $pNumRows =BIT_QUERY_DEFAULT, $pOffset=BIT_QUERY_DEFAULT, $pCacheTime=BIT_QUERY_DEFAULT ) {
-		return $this->mDb->query($pQuery, $pValues, $pNumRows, $pOffset, $pCacheTime);
-	}
-
-	/** Returns an associative array for the given query.
-	* See AdoDB GetAssoc() function for more detail.
-	* @param pQuery the SQL query. Use backticks (`) to quote all table
-	* and attribute names for AdoDB to quote appropriately.
-	* @param pValues an array of values used in a parameterised query
-	* @param pForceArray if set to true, when an array is created for each value
-	* @param pFirst2Cols if set to true, only returns the first two columns
-	* @return the associative array, or false if an error occurs
-	*/
-	function getAssoc($pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT) {
-		return $this->mDb->getAssoc($pQuery, $pValues, $pForceArray, $pFirst2Cols,$pCacheTime);
-	}
-
-	/** Returns a single column value from the database.
-	* @param pQuery the SQL query. Use backticks (`) to quote all table
-	* and attribute names for AdoDB to quote appropriately.
-	* @param pValues an array of values used in a parameterised query
-	* @param pReportErrors report errors to STDOUT
-	* @param pOffset the row number to begin returning rows from.
-	* @return the associative array, or false if an error occurs
-	*/
-	function getOne($pQuery, $pValues = NULL, $pNumRows = 0, $pOffset = 0, $pCacheTime=BIT_QUERY_DEFAULT) {
-		return $this->mDb->getOne($pQuery, $pValues, $pNumRows, $pOffset,$pCacheTime);
-	}
-
-	/** Executes the SQL and returns the first row as an array. The recordset and remaining rows are discarded for you automatically. If an error occurs, false is returned.
-	* See AdoDB GetRow() function for more detail.
-	* @param pQuery the SQL query. Use backticks (`) to quote all table
-	* and attribute names for AdoDB to quote appropriately.
-	* @param pValues an array of values used in a parameterised query
-	* @return returns the first row as an array, or false if an error occurs
-	*/
-	function getRow( $pQuery, $pValues=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
-		return $this->mDb->getRow($pQuery, $pValues, $pCacheTime);
-	}
-
-	/** Returns the keyword to force a column comparison to be case sensitive
-	* for none case-sensitive databases (eg MySQL)
-	* @return the SQL keyword
-	* @todo only used in gBitSystem and users_lib to compare login names
-	*/
-	function convert_binary() {
-		return $this->mDb->convert_binary();
-	}
-
-	/** Converts field sorting abbreviation to SQL
-	* @param pSortMode fieldname and sort order string (eg name_asc)
-	* @return the correctly quoted SQL ORDER statement
-	*/
-	function convert_sortmode($pSortMode) {
-		return $this->mDb->convert_sortmode($pSortMode);
-
-	}
-
-	/** Used to cast variable types for certain databases (ie SyBase & MSSQL)
-	* @param pVar the variable value to cast
-	* @param pType the current variable type
-	* @return the SQL casting statement
-	*/
-    function sql_cast($pVar,$pType) {
-		return $this->mDb->sql_cast($pVar,$pType);
-
-	}
-
-	/**
-	* This function will take a set of fields identified by an associative array - $insertData
-	* generate a suitable SQL script
-	* and insert the data into the specified table - $insertTable
-	* @param insertTable Name of the table to be inserted into
-	* @param insertData Array of data to be inserted. Array keys provide the field names
-	* @return Error status of the insert
-	*/
-	function associateInsert($insertTable, $insertData) {
-		return $this->mDb->associateInsert($insertTable, $insertData);
-	}
-
-	/**
-	* This function will take a set of fields identified by an associative array - $updateData
-	* generate a suitable SQL script
-	* update the data into the specified table
-	* at the location identified in updateId which holds a name and value entry
-	* @param updateTable Name of the table to be updated
-	* @param updateData Array of data to be changed. Array keys provide the field names
-	* @param updateId Array identifying the record to update. 
-	*		Array key 'name' provide the field name, and 'value' the record key
-	* @return Error status of the insert
-	*/
-	function associateUpdate($updateTable, $updateData, $updateId) {
-		return $this->mDb->associateUpdate($updateTable, $updateData, $updateId);
-	}
-
-	/**
-	* Quotes a string to be sent to the database which is
-	* passed to function on to AdoDB->qstr().
-	* @todo not sure what its supposed to do
-	* @param pStr string to be quotes
-	* @return quoted string using AdoDB->qstr()
-	*/
-	function qstr($pStr)
-	{
-		return $this->mDb->qstr($pStr);
-	}
-
-	/**
-	* A database portable Sequence management function.
-	*
-	* @param pSequenceName Name of the sequence to be used
-	*		It will be created if it does not already exist
-	* @return		0 if not supported, otherwise a sequence id
-	*/
-    function GenID( $seqTitle ) {
-		return $this->mDb->GenID( $seqTitle );
-    }
-
-	/**
-	 *	Improved method of initiating a transaction. Used together with CompleteTrans().
-	 *	Advantages include:
-	 *	
-	 *	a. StartTrans/CompleteTrans is nestable, unlike BeginTrans/CommitTrans/RollbackTrans.
-	 *	   Only the outermost block is treated as a transaction.<br>
-	 *	b. CompleteTrans auto-detects SQL errors, and will rollback on errors, commit otherwise.<br>
-	 *	c. All BeginTrans/CommitTrans/RollbackTrans inside a StartTrans/CompleteTrans block
-	 *	   are disabled, making it backward compatible.
-	 */
-	function StartTrans() {
-		 return $this->mDb->StartTrans();
-	}
-
-	/**
-	 *	Used together with StartTrans() to end a transaction. Monitors connection
-	 *	for sql errors, and will commit or rollback as appropriate.
-	 *	
-	 *	autoComplete if true, monitor sql errors and commit and rollback as appropriate, 
-	 *	and if set to false force rollback even if no SQL error detected.
-	 *	@returns true on commit, false on rollback.
-	 */
-	function CompleteTrans() {
-		 return $this->mDb->CompleteTrans();
-	}
-
-	/**
-	 * If database does not support transactions, rollbacks always fail, so return false
-	 * otherwise returns true if the Rollback was successful
-	 *
-	 * @return true/false.
-	 */
-	function RollbackTrans() {
-		 return $this->mDb->RollbackTrans();
-	}
-
-	/** 
-	 * Check for Postgres specific extensions 
-	 */
-	function isAdvancedPostgresEnabled() {
-		// This code makes use of the badass /usr/share/pgsql/contrib/tablefunc.sql
-		// contribution that you have to install like: psql foo < /usr/share/pgsql/contrib/tablefunc.sql
-		return defined( 'ADVANCED_PGSQL' );
-	}
 	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=
 
     /**

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.34 2005/08/07 01:06:04 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.35 2005/08/07 13:27:38 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -148,7 +148,7 @@ class BitSystem extends BitBase
 
 		if ( empty( $this->mPrefs ) ) {
 			$query = "SELECT `name` ,`value` FROM `" . BIT_DB_PREFIX . "tiki_preferences` " . $whereClause;
-			$rs = $this->query($query, $queryVars, -1, -1 );
+			$rs = $this->getDb()->query($query, $queryVars, -1, -1 );
 			if ($rs) {
 				while (!$rs->EOF) {
 					$this->mPrefs[$rs->fields['name']] = $rs->fields['value'];
@@ -184,13 +184,13 @@ class BitSystem extends BitBase
 			// store the preference in multisites, if used
 			if( !empty( $gMultisites->mMultisiteId ) && isset( $gMultisites->mPrefs[$name] ) ) {
 				$query = "UPDATE `".BIT_DB_PREFIX."tiki_multisite_preferences` SET `value`=? WHERE `multisite_id`=? AND `name`=?";
-				$result = $this->query( $query, array( empty( $value ) ? '' : $value, $gMultisites->mMultisiteId, $name ) );
+				$result = $this->getDb()->query( $query, array( empty( $value ) ? '' : $value, $gMultisites->mMultisiteId, $name ) );
 			} else {
 				$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_preferences` WHERE `name`=?";
-				$result = $this->query( $query, array( $name ) );
+				$result = $this->getDb()->query( $query, array( $name ) );
 				if( isset( $value ) ) {
 					$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_preferences`(`name`,`value`,`package`) VALUES (?,?,?)";
-					$result = $this->query( $query, array( $name, $value, strtolower( $pPackageName ) ) );
+					$result = $this->getDb()->query( $query, array( $name, $value, strtolower( $pPackageName ) ) );
 				}
 			}
 
@@ -223,7 +223,7 @@ class BitSystem extends BitBase
 	function expungePackagePreferences( $pPackageName ) {
 		if( !empty( $pPackageName ) ) {
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_preferences` WHERE `package`=?";
-			$result = $this->query( $query, array( strtolower( $pPackageName ) ) );
+			$result = $this->getDb()->query( $query, array( strtolower( $pPackageName ) ) );
 			// let's force a reload of the prefs
 			unset( $this->mPrefs );
 			$this->loadPreferences();
@@ -503,7 +503,7 @@ class BitSystem extends BitBase
 			$sql .= ' WHERE `package` = ? ';
 			array_push( $bindVars, substr($pPackageName,0,100));
 		}
-		$ret = $this->getAssoc( $sql, $bindVars );
+		$ret = $this->getDb()->getAssoc( $sql, $bindVars );
 		return $ret;
 	}
 
@@ -922,7 +922,7 @@ asort( $this->mAppMenu );
 				$prefix = '';
 			}
  			$showTables = ( $prefix ? $prefix.'%' : NULL );
-			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $showTables ) ) {
+			if( $dbTables = $this->getDb()->MetaTables('TABLES', FALSE, $showTables ) ) {
 				foreach( array_keys( $this->mPackages ) as $package ) {
 					if( !empty( $this->mPackages[$package]['tables'] ) ) {
 						foreach( array_keys( $this->mPackages[$package]['tables'] ) as $table ) {
@@ -1268,7 +1268,7 @@ asort( $this->mAppMenu );
 			}
 			$query = "SELECT tl.`user_id` FROM `" . BIT_DB_PREFIX . "tiki_layouts` tl
 					$whereClause ";
-			$result = $this->query($query, array($pUserMixed));
+			$result = $this->getDb()->query($query, array($pUserMixed));
 			if ($result->fields['user_id']) {
 				$layoutUserId = $result->fields['user_id'];
 			}
@@ -1295,8 +1295,8 @@ asort( $this->mAppMenu );
 			array_push($bindVars, $pLayout);
 		}
 		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "tiki_layouts` tl, `" . BIT_DB_PREFIX . "tiki_layouts_modules` tlm, `" . BIT_DB_PREFIX . "tiki_module_map` tmm
-				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->convert_sortmode("ord_asc");
-		$result = $this->query($query, $bindVars);
+				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->getDb()->convert_sortmode("ord_asc");
+		$result = $this->getDb()->query($query, $bindVars);
 		// CHeck to see if we have ACTIVE_PACKAGE modules at the top of the results
 		if (isset($result->fields['layout']) && ($result->fields['layout'] != DEFAULT_PACKAGE) && (ACTIVE_PACKAGE != DEFAULT_PACKAGE)) {
 			$skipDefaults = true;
@@ -1647,10 +1647,10 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		$bindvars=array();
 		}
 
-		$query = "select `cache_id` ,`url`,`refresh` from `".BIT_DB_PREFIX."tiki_link_cache` $mid order by ".$this->convert_sortmode($sort_mode);
+		$query = "select `cache_id` ,`url`,`refresh` from `".BIT_DB_PREFIX."tiki_link_cache` $mid order by ".$this->getDb()->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_link_cache` $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
+		$result = $this->getDb()->query($query,$bindvars,$maxRecords,$offset);
+		$cant = $this->getDb()->getOne($query_cant,$bindvars);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -1667,20 +1667,20 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		$query = "select `url`  from `".BIT_DB_PREFIX."tiki_link_cache`
 		where `cache_id`=?";
 
-		$url = $this->getOne($query, array( $cache_id ) );
+		$url = $this->getDb()->getOne($query, array( $cache_id ) );
 		$data = tp_http_request($url);
 		$refresh = date("U");
 		$query = "update `".BIT_DB_PREFIX."tiki_link_cache`
 		set `data`=?, `refresh`=?
 		where `cache_id`=? ";
-		$result = $this->query($query, array( $data, $refresh, $cache_id) );
+		$result = $this->getDb()->query($query, array( $data, $refresh, $cache_id) );
 		return true;
 	}
 
 	function remove_cache($cache_id) {
 		$query = "delete from `".BIT_DB_PREFIX."tiki_link_cache` where `cache_id`=?";
 
-		$result = $this->query($query, array( $cache_id ) );
+		$result = $this->getDb()->query($query, array( $cache_id ) );
 		return true;
 	}
 
@@ -1688,7 +1688,7 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		$query = "select * from `".BIT_DB_PREFIX."tiki_link_cache`
 		where `cache_id`=?";
 
-		$result = $this->query($query, array( $cache_id ) );
+		$result = $this->getDb()->query($query, array( $cache_id ) );
 		$res = $result->fetchRow();
 		return $res;
 	}

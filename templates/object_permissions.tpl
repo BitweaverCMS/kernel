@@ -15,7 +15,7 @@
 <tr class="{cycle}"><td>
 {$page_perms[pg].group_name}</td><td>
 {$page_perms[pg].perm_name}</td><td align="right">
-<a href="{$gBitLoc.KERNEL_PKG_URL}object_permissions.php?referer={$referer}&amp;action=remove&amp;objectName={$objectName}&amp;object_id={$object_id}&amp;object_type={$object_type}&amp;permType={$permType}&amp;page_id={$pageInfo.page_id}&amp;perm={$page_perms[pg].perm_name}&amp;group={$page_perms[pg].group_name}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
+<a href="{$smarty.const.KERNEL_PKG_URL}object_permissions.php?referer={$referer}&amp;action=remove&amp;objectName={$objectName}&amp;object_id={$object_id}&amp;object_type={$object_type}&amp;permType={$permType}&amp;page_id={$pageInfo.page_id}&amp;perm={$page_perms[pg].perm_name}&amp;group={$page_perms[pg].group_name}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
 </td></tr>
 {sectionelse}
 <tr class="norecords"><td colspan="3">{tr}No individual permissions, global permissions apply{/tr}</td></tr>
@@ -25,7 +25,7 @@
 <br />
 
 <h2>{tr}Assign permissions to this object{/tr}</h2>
-<form method="post" action="{$gBitLoc.KERNEL_PKG_URL}object_permissions.php">
+<form method="post" action="{$smarty.const.KERNEL_PKG_URL}object_permissions.php">
 <input type="hidden" name="page" value="{$page|escape}" />
 <input type="hidden" name="referer" value="{$referer|escape}" />
 <input type="hidden" name="objectName" value="{$objectName|escape}" />

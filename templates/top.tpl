@@ -5,11 +5,11 @@
 
 {if $gBitUser->isRegistered()}
 	{tr}Welcome{/tr}, <b>{displayname hash=$gBitUser->mInfo}</b>
-	<a href="{$gBitLoc.USERS_PKG_URL}logout.php">{tr}logout{/tr}</a>
+	<a href="{$smarty.const.USERS_PKG_URL}logout.php">{tr}logout{/tr}</a>
 {else}
-	<a href="{$gBitLoc.USERS_PKG_URL}login.php">{tr}login{/tr}</a>
+	<a href="{$smarty.const.USERS_PKG_URL}login.php">{tr}login{/tr}</a>
 	{if $gBitSystem->isFeatureActive( 'allowRegister' )}
-		| <a href="{$gBitLoc.USERS_PKG_URL}register.php">{tr}register{/tr}</a> 
+		| <a href="{$smarty.const.USERS_PKG_URL}register.php">{tr}register{/tr}</a> 
 	{/if}
 {/if}
 
@@ -18,7 +18,7 @@
 {/if}
 
 {if $gBitSystem->isFeatureActive( 'feature_calendar' ) and $gBitUser->hasPermission( 'bit_p_view_calendar' )}
-	<a href="{$gBitLoc.CALENDAR_PKG_URL}index.php">{$smarty.now|bit_short_datetime}</a>
+	<a href="{$smarty.const.CALENDAR_PKG_URL}index.php">{$smarty.now|bit_short_datetime}</a>
 {else}
 	{$smarty.now|bit_short_datetime}
 {/if}

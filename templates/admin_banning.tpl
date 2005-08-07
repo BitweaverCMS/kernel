@@ -1,7 +1,7 @@
-<a class="pagetitle" href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_banning.php">{tr}Banning system{/tr}</a>
+<a class="pagetitle" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php">{tr}Banning system{/tr}</a>
 
 <h2>{tr}Add or edit a rule{/tr}</h2>
-<form action="{$gBitLoc.KERNEL_PKG_URL}admin/admin_banning.php" method="post">
+<form action="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php" method="post">
 <input type="hidden" name="ban_id" value="{$ban_id|escape}" />
 <table class="panel">
 <tr>
@@ -85,14 +85,14 @@
 </table>
 </form>
 
-<form method="post" action="{$gBitLoc.KERNEL_PKG_URL}admin/admin_banning.php">
+<form method="post" action="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php">
 <input type="hidden" name="offset" value="{$offset|escape}" />
 <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
 <label for="banning-find">{tr}Find{/tr}:</label><input type="text" name="find" id="banning-find" value="{$find|escape}" />
 </form>
 
 <h2>{tr}Rules{/tr}:</h2>
-<form method="post" action="{$gBitLoc.KERNEL_PKG_URL}admin/admin_banning.php">
+<form method="post" action="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php">
 <input type="hidden" name="offset" value="{$offset|escape}" />
 <input type="hidden" name="find" value="{$find|escape}" />
 <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
@@ -109,7 +109,7 @@
 {section name=user loop=$items}
 <tr class="{cycle}"><td>
 	<input type="checkbox" name="delsec[{$items[user].ban_id}]" /></td><td>
-	<a href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_banning.php?ban_id={$items[user].ban_id}">{$items[user].title}</a></td><td>
+	<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php?ban_id={$items[user].ban_id}">{$items[user].title}</a></td><td>
 	{if $items[user].mode eq 'user'}
 		{$items[user].user}
 	{else}
@@ -118,7 +118,7 @@
 		{section name=ix loop=$items[user].sections}
 			{$items[user].sections[ix].section}{if not $smarty.section.ix.last},{/if}
 		{/section}</td><td>
-&nbsp;&nbsp;<a href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_banning.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;find={$find}&amp;remove={$items[user].ban_id}" onclick="return confirmTheLink(this,'{tr}Are you sure you want to delete this rule?{/tr}')" title="Delete this rule">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>&nbsp;&nbsp;
+&nbsp;&nbsp;<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;find={$find}&amp;remove={$items[user].ban_id}" onclick="return confirmTheLink(this,'{tr}Are you sure you want to delete this rule?{/tr}')" title="Delete this rule">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>&nbsp;&nbsp;
 </td></tr>
 {sectionelse}
 	<tr class="norecords"><td colspan="5">{tr}No records found{/tr}</td></tr>
@@ -128,17 +128,17 @@
 
 <div class="pagination">
 {if $prev_offset >= 0}
-[<a href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_banning.php?offset={$prev_offset}&amp;find={$find}">{tr}prev{/tr}</a>] 
+[<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php?offset={$prev_offset}&amp;find={$find}">{tr}prev{/tr}</a>] 
 {/if}
 {tr}Page{/tr}: {$actual_page}/{$cant_pages}
 {if $next_offset >= 0}
- [<a href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_banning.php?offset={$next_offset}&amp;find={$find}">{tr}next{/tr}</a>]
+ [<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php?offset={$next_offset}&amp;find={$find}">{tr}next{/tr}</a>]
 {/if}
 {if $direct_pagination eq 'y'}
 <br />
 {section loop=$cant_pages name=foo}
 {assign var=selector_offset value=$smarty.section.foo.index|times:$maxRecords}
-<a href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_banning.php offset=$selector_offset">
+<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php offset=$selector_offset">
 {$smarty.section.foo.index_next}</a> 
 {/section}
 {/if}

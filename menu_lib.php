@@ -1,12 +1,15 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/menu_lib.php,v 1.3 2005/08/01 18:40:33 squareing Exp $
+ * Menu Management Library
+ *
  * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/menu_lib.php,v 1.4 2005/08/07 17:38:45 squareing Exp $
  */
 
 /**
+ * tiki format Menu Management Library
+ *
  * @package kernel
- * @subpackage MenuLib
  */
 class MenuLib extends BitBase {
 	function MenuLib() {
@@ -15,7 +18,7 @@ class MenuLib extends BitBase {
 
 	function get_menu($menu_id) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_menus` where `menu_id`=?";
-		$result = $this->query($query,array((int)$menu_id));
+		$result = $this->mDb->query($query,array((int)$menu_id));
 		if (!$result->numRows()) return false;
 		$res = $result->fetchRow();
 		return $res;
@@ -33,15 +36,15 @@ class MenuLib extends BitBase {
 			$bindvars=array();
 		}
 
-		$query = "select * from `".BIT_DB_PREFIX."tiki_menus` $mid order by ".$this->convert_sortmode($sort_mode);
+		$query = "select * from `".BIT_DB_PREFIX."tiki_menus` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_menus` $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
+		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
 			$query = "select count(*) from `".BIT_DB_PREFIX."tiki_menu_options` where `menu_id`=?";
-			$res["options"] = $this->getOne($query,array((int)$res["menu_id"]));
+			$res["options"] = $this->mDb->getOne($query,array((int)$res["menu_id"]));
 			$ret[] = $res;
 		}
 
@@ -62,14 +65,14 @@ class MenuLib extends BitBase {
 			$bindvars=array($name,$description,$type);
 		}
 
-		$result = $this->query($query,$bindvars);
+		$result = $this->mDb->query($query,$bindvars);
 		return true;
 	}
 
 	function get_max_option($menu_id) {
 		$query = "select max(`position`) from `".BIT_DB_PREFIX."tiki_menu_options` where `menu_id`=?";
 
-		$max = $this->getOne($query,array((int)$menu_id));
+		$max = $this->mDb->getOne($query,array((int)$menu_id));
 		return $max;
 	}
 
@@ -82,30 +85,30 @@ class MenuLib extends BitBase {
 			$bindvars=array((int)$menu_id,$name,$url,$type,(int)$position,$section,$perm,$groupname);
 		}
 
-		$result = $this->query($query, $bindvars);
+		$result = $this->mDb->query($query, $bindvars);
 		return true;
 	}
 
 	function remove_menu($menu_id) {
 		$query = "delete from `".BIT_DB_PREFIX."tiki_menus` where `menu_id`=?";
 
-		$result = $this->query($query,array((int)$menu_id));
+		$result = $this->mDb->query($query,array((int)$menu_id));
 		$query = "delete from `".BIT_DB_PREFIX."tiki_menu_options` where `menu_id`=?";
-		$result = $this->query($query,array((int)$menu_id));
+		$result = $this->mDb->query($query,array((int)$menu_id));
 		return true;
 	}
 
 	function remove_menu_option($option_id) {
 		$query = "delete from `".BIT_DB_PREFIX."tiki_menu_options` where `option_id`=?";
 
-		$result = $this->query($query,array((int)$option_id));
+		$result = $this->mDb->query($query,array((int)$option_id));
 		return true;
 	}
 
 	function get_menu_option($option_id) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_menu_options` where `option_id`=?";
 
-		$result = $this->query($query,array((int)$option_id));
+		$result = $this->mDb->query($query,array((int)$option_id));
 
 		if (!$result->numRows())
 			return false;
@@ -127,10 +130,10 @@ class MenuLib extends BitBase {
 		} else {
 			$mid = " where `menu_id`=? ";
 		}
-		$query = "select * from `".BIT_DB_PREFIX."tiki_menu_options` $mid order by ".$this->convert_sortmode($sort_mode);
+		$query = "select * from `".BIT_DB_PREFIX."tiki_menu_options` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_menu_options` $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
+		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		while ($res = $result->fetchRow()) {
 			if (!$full) {
 				$display = true;

@@ -1,24 +1,21 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.4 2005/08/01 18:40:32 squareing Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: BitBase.php,v 1.4 2005/08/01 18:40:32 squareing Exp $
-*
-* Virtual base class (as much as one can have such things in PHP) for all
-* derived tikiwiki classes that require database access.
-*
-* @package kernel
-*
-* created 2004/8/15
-*
-* @author spider <spider@steelsun.com>
-*
-* @version $Revision: 1.4 $ $Date: 2005/08/01 18:40:32 $ $Author: squareing $
-*/
+ * Virtual bitweaver base class
+ *
+ * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.5 2005/08/07 17:38:44 squareing Exp $
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * Virtual base class (as much as one can have such things in PHP) for all
+ * derived tikiwiki classes that require database access.
+ *
+ * created 2004/8/15
+ *
+ * @author spider <spider@steelsun.com>
+ */
 
 /**
  * required setup
@@ -31,11 +28,11 @@ define( 'STORAGE_BINARY', 1 );
 define( 'STORAGE_IMAGE', 2 );
 
 /**
-* @package kernel
-* @subpackage BitBase
-* Virtual base class (as much as one can have such things in PHP) for all
-* derived bitweaver classes that require database access.
-*/
+ * Virtual base class (as much as one can have such things in PHP) for all
+ * derived bitweaver classes that require database access.
+ *
+ * @package kernel
+ */
 class BitBase
 {
     /**
@@ -64,6 +61,11 @@ class BitBase
     */
     var $mDb;
     /**
+    * Used to store database type
+    * @private
+    */
+    var $dType;
+    /**
     * Standard Query Cache Time. Variable can be set to 0 to flush particular queries
     * @private
     */
@@ -86,8 +88,9 @@ class BitBase
 		if(is_object($gBitDb)) {
 			$this->setDatabase($gBitDb);
 		}
-		$this->mErrors = array();
+ 		$this->mErrors = array();
     }
+
     /**
     * Sets database mechanism for the instance
     * @param pDB the instance of the database mechanism
@@ -96,13 +99,34 @@ class BitBase
     {
         // set internal db and retrieve values
         $this->mDb = &$pDB;
+		$this->dType = $this->mDb->mType;
     }
+
     /**
-    * Determines if there is a valide database connection
-    **/
+     * Determines if there is a valide database connection
+     **/
 	function isDatabaseValid() {
 		return( !empty( $this->mDb->mDb ) && $this->mDb->mDb->_connectionID );
 	}
+
+    /**
+     * Return pointer to current Database
+     **/
+	function getDb() {
+		return ( !empty( $this->mDb ) ? $this->mDb : NULL  );
+	}
+
+    /**
+     * Switch debug level in database
+	 *
+    **/
+	function debug( $pLevel = 99 ) {
+		if( is_object( $this->mDb ) ) {
+			$this->mDb->debug( $pLevel );
+		}
+	}
+
+	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=
 
     /**
     * Determines if any given variable exists and is a number
@@ -149,108 +173,6 @@ class BitBase
 		global $gBitSystem;
 		return $gBitSystem->getPreference( $pName, $pDefault );
 	}
-
-/*
-	function get_user_preference($pUserId, $name, $default = '') {
-		global $user_preferences;
-
-		if (!$pUserId)
-			return NULL;
-
-		/ **** Quick Hack ****
-		  We need to convert all calls to get_user_preference so they pass the id and not the username
-		  This will handle legacy calls until they are all changed
-		********************* /
-		if (!is_numeric($pUserId)) {
-			$query = "SELECT `user_id` FROM `".BIT_DB_PREFIX."users_users` where `login` = ?";
-			$result = $this->query($query, array($pUserId));
-			$pUserId = $result->fields['user_id'];
-			if (!$pUserId) return NULL;
-		}
-		/ **** End quick hack *** /
-
-		if (!isset($user_preferences[$pUserId][$name])) {
-			$query = "select `value`
-					  FROM `".BIT_DB_PREFIX."tiki_user_preferences` tup where `pref_name`=? AND tup.`user_id`= ?";
-
-			$result = $this->query($query, array( "$name", $pUserId));
-
-			if ($result->numRows()) {
-				$res = $result->fetchRow();
-
-				$user_preferences[$pUserId][$name] = $res["value"];
-			} else {
-				$user_preferences[$pUserId][$name] = $default;
-			}
-		}
-
-		return $user_preferences[$pUserId][$name];
-	}
-*/
-	function debug( $pLevel = 99 ) {
-		if( is_object( $this->mDb ) ) {
-			$this->mDb->debug( $pLevel );
-		}
-	}
-
-	function query($pQuery, $pValues = NULL, $pNumRows =BIT_QUERY_DEFAULT, $pOffset=BIT_QUERY_DEFAULT, $pCacheTime=BIT_QUERY_DEFAULT ) {
-		return $this->mDb->query($pQuery, $pValues, $pNumRows, $pOffset, $pCacheTime);
-	}
-
-	function getAssoc($pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT) {
-		return $this->mDb->getAssoc($pQuery, $pValues, $pForceArray, $pFirst2Cols,$pCacheTime);
-	}
-
-	function getOne($pQuery, $pValues = NULL, $pNumRows = 0, $pOffset = 0, $pCacheTime=BIT_QUERY_DEFAULT) {
-		return $this->mDb->getOne($pQuery, $pValues, $pNumRows, $pOffset,$pCacheTime);
-	}
-
-	function convert_binary() {
-		return $this->mDb->convert_binary();
-	}
-
-	function convert_sortmode($pSortMode) {
-		return $this->mDb->convert_sortmode($pSortMode);
-
-	}
-    function sql_cast($pVar,$pType) {
-		return $this->mDb->sql_cast($pVar,$pType);
-
-	}
-
-	function associateInsert($insertTable, $insertData) {
-		return $this->mDb->associateInsert($insertTable, $insertData);
-	}
-
-	function associateUpdate($updateTable, $updateData, $updateId) {
-		return $this->mDb->associateUpdate($updateTable, $updateData, $updateId);
-	}
-
-    function GenID( $seqTitle ) {
-		return $this->mDb->GenID( $seqTitle );
-    }
-
-	/** Calls ADODB method to begin a transaction, calls can be nested
-	*/
-	function StartTrans() {
-		 return $this->mDb->StartTrans();
-	}
-
-	/** Calls ADODB method to finalize a transaction, calls can be nested
-	*/
-	function CompleteTrans() {
-		 return $this->mDb->CompleteTrans();
-	}
-
-	function RollbackTrans() {
-		 return $this->mDb->RollbackTrans();
-	}
-
-	function MetaTables( $ttype = false, $showSchema = false, $mask=false ) {
-		 return $this->mDb->MetaTables( $ttype, $showSchema, $mask );
-	}
-
-	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=
 
     /**
     * Prepares parameters with default values for any getList function

@@ -1,11 +1,15 @@
 <?php
 /**
+ * User access Banning Library
+ *
  * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/ban_lib.php,v 1.3 2005/08/07 17:38:45 squareing Exp $
  */
 
 /**
+ * User access Banning Library
+ *
  * @package kernel
- * @subpackage BanLib
  */
 class BanLib extends BitBase {
 	function BanLib() {				
@@ -15,11 +19,11 @@ class BanLib extends BitBase {
 	function get_rule($ban_id) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_banning` where `ban_id`=?";
 
-		$result = $this->query($query,array($ban_id));
+		$result = $this->mDb->query($query,array($ban_id));
 		$res = $result->fetchRow();
 		$aux = array();
 		$query2 = "select `section` from `".BIT_DB_PREFIX."tiki_banning_sections` where `ban_id`=?";
-		$result2 = $this->query($query2,array($ban_id));
+		$result2 = $this->mDb->query($query2,array($ban_id));
 		$aux = array();
 
 		while ($res2 = $result2->fetchRow()) {
@@ -33,9 +37,9 @@ class BanLib extends BitBase {
 	function remove_rule($ban_id) {
 		$query = "delete from `".BIT_DB_PREFIX."tiki_banning` where `ban_id`=?";
 
-		$this->query($query,array($ban_id));
+		$this->mDb->query($query,array($ban_id));
 		$query = "delete from `".BIT_DB_PREFIX."tiki_banning_sections` where `ban_id`=?";
-		$this->query($query,array($ban_id));
+		$this->mDb->query($query,array($ban_id));
 	}
 
 	function list_rules($offset, $maxRecords, $sort_mode, $find, $where = '') {
@@ -58,17 +62,17 @@ class BanLib extends BitBase {
 			}
 		}
 
-		$query = "select * from `".BIT_DB_PREFIX."tiki_banning` $mid order by ".$this->convert_sortmode($sort_mode);
+		$query = "select * from `".BIT_DB_PREFIX."tiki_banning` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_banning` $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
+		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
 			$aux = array();
 
 			$query2 = "select * from `".BIT_DB_PREFIX."tiki_banning_sections` where `ban_id`=?";
-			$result2 = $this->query($query2,array($res['ban_id']));
+			$result2 = $this->mDb->query($query2,array($res['ban_id']));
 
 			while ($res2 = $result2->fetchRow()) {
 				$aux[] = $res2;
@@ -83,7 +87,7 @@ class BanLib extends BitBase {
 		$retval["cant"] = $cant;
 		$now = date("U");
 		$query = "select `ban_id` from `".BIT_DB_PREFIX."tiki_banning` where `use_dates`=? and `date_to` < ?";
-		$result = $this->query($query,array('y',$now));
+		$result = $this->mDb->query($query,array('y',$now));
 
 		while ($res = $result->fetchRow()) {
 			$this->remove_rule($res['ban_id']);
@@ -125,23 +129,23 @@ class BanLib extends BitBase {
   			where `ban_id`=?
   		";
 
-			$this->query($query,array($title,$ip1,$ip2,$ip3,$ip4,$user,$date_from,$date_to,$use_dates,$message,$ban_id));
+			$this->mDb->query($query,array($title,$ip1,$ip2,$ip3,$ip4,$user,$date_from,$date_to,$use_dates,$message,$ban_id));
 		} else {
 			$now = date("U");
 
 			$query = "insert into `".BIT_DB_PREFIX."tiki_banning`(`mode`,`title`,`ip1`,`ip2`,`ip3`,`ip4`,`user`,`date_from`,`date_to`,`use_dates`,`message`,`created`)
 		values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			$this->query($query,array($mode,$title,$ip1,$ip2,$ip3,$ip4,$user,$date_from,$date_to,$use_dates,$message,$now));
-			$ban_id = $this->getOne("select max(`ban_id`) from `".BIT_DB_PREFIX."tiki_banning` where `created`=?",array($now));
+			$this->mDb->query($query,array($mode,$title,$ip1,$ip2,$ip3,$ip4,$user,$date_from,$date_to,$use_dates,$message,$now));
+			$ban_id = $this->mDb->getOne("select max(`ban_id`) from `".BIT_DB_PREFIX."tiki_banning` where `created`=?",array($now));
 		}
 
 		$query = "delete from `".BIT_DB_PREFIX."tiki_banning_sections` where `ban_id`=?";
-		$this->query($query,array($ban_id));
+		$this->mDb->query($query,array($ban_id));
 
 		foreach ($sections as $section) {
 			$query = "insert into `".BIT_DB_PREFIX."tiki_banning_sections`(`ban_id`,`section`) values(?,?)";
 
-			$this->query($query,array($ban_id,$section));
+			$this->mDb->query($query,array($ban_id,$section));
 		}
 	}
 }

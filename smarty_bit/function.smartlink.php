@@ -39,7 +39,7 @@
  *			- {smartlink ititle="Page Name" isort="title" iorder="desc" idefault=1}
  *				setting iorder and idefault here, makes this link sort in a descending order by default (iorder)
  *				and it is highlighted when $isort_mode ( or $_REQUEST['sort_mode'] ) is not set (idefault)
- * @Note Don't use this plugin if ititle is generated dynamically since it is passed through tra()
+ * Note Don't use this plugin if ititle is generated dynamically since it is passed through tra()
  */
 function smarty_function_smartlink( $params, &$gBitSmarty ) {
 	if( !empty( $params['ihash'] ) ) {

@@ -1,13 +1,13 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.3 2005/07/17 17:36:06 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.4 2005/08/07 17:38:45 squareing Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
 
 <div class="menu">
 	<ul>
-		<li><a class="item" href="{$gBitLoc.BIT_ROOT_URL}">{$siteTitle} {tr}Home{/tr}</a></li>
+		<li><a class="item" href="{$smarty.const.BIT_ROOT_URL}">{$siteTitle} {tr}Home{/tr}</a></li>
 		{if $gBitUser->isAdmin()}
-			<li><a class="item" href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php">{tr}Administration{/tr}</a></li>
+			<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">{tr}Administration{/tr}</a></li>
 		{/if}
 	</ul>
 </div>
@@ -48,7 +48,7 @@
 		<li>
 			{if $gBitSystem->isFeatureActive( 'feature_cssmenus' )}
 				{if $menu.title}
-					<a class="head" href="{$gBitLoc.USERS_PKG_URL}menu.php">{tr}User Menu{/tr}</a>
+					<a class="head" href="{$smarty.const.USERS_PKG_URL}menu.php">{tr}User Menu{/tr}</a>
 				{/if}
 				{if count($usr_user_menus) gt 0}
 					<ul>

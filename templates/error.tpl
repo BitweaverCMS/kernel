@@ -13,7 +13,7 @@
 			{/if}
 
 			{if $page and ( $gBitUser->isAdmin() or $gBitUser->hasPermission( 'bit_p_admin_wiki' ) )}
-				<p>{tr}Create the page{/tr}: <a href="{$gBitLoc.WIKI_PKG_URL}edit.php?page={$page}">{$page}</a></p>
+				<p>{tr}Create the page{/tr}: <a href="{$smarty.const.WIKI_PKG_URL}edit.php?page={$page}">{$page}</a></p>
 			{/if}
 
 			<p><a href="javascript:history.back()">{tr}Go back{/tr}</a></p>

@@ -1,33 +1,33 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitPreferences.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* Copyright (c) 2003 tikwiki.org
-* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: BitPreferences.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
-*
-* A class used to store and retrieve preferences. Defaults are set
-* programmatically. Storage can be with or without a database.
-*
-* Currently use to store sitewide preferences
-*
-* @package kernel
-*
-* created 2004/8/15
-*
-* @author wolff_borg <wolff_borg@yahoo.com.au>
-*
-* @version $Revision: 1.2 $ $Date: 2005/06/28 07:45:45 $ $Author: spiderr $
-* @todo Could be subclassed to store user preferences.
-*/
+ * Preferences Management Class
+ *
+ * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitPreferences.php,v 1.3 2005/08/07 17:38:44 squareing Exp $
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * Copyright (c) 2003 tikwiki.org
+ * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * A class used to store and retrieve preferences. Defaults are set
+ * programmatically. Storage can be with or without a database.
+ *
+ * Currently use to store sitewide preferences
+ *
+ * created 2004/8/15
+ *
+ * @author wolff_borg <wolff_borg@yahoo.com.au>
+ *
+ * @todo Could be subclassed to store user preferences.
+ */
 
 /**
+ * A class used to store and retrieve preferences. Defaults are set
+ * programmatically. Storage can be with or without a database.
+ *
  * @package kernel
- * @subpackage BitPreferences
  */
 class BitPreferences
 {

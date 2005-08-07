@@ -47,7 +47,7 @@ function smarty_function_formfeedback( $params,&$gBitSmarty ) {
 
 	$html = '';
 	if( !empty( $feedback ) ) {
-		$html = '<div class="formfeedback">';
+		$html = '<div class="clear formfeedback">';
 		$html .= $feedback;
 		$html .= '</div>';
 	}

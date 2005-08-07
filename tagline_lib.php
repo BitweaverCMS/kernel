@@ -1,16 +1,16 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/tagline_lib.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ * Tagline Management Library
+ *
  * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/tagline_lib.php,v 1.3 2005/08/07 17:38:45 squareing Exp $
+ * @author awcolley
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
- *
- * $Id: tagline_lib.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
- * 
  */
 
 /**
@@ -18,15 +18,11 @@
  *
  * Currently used for cookies.
  *
- * @package kernel
- * @subpackage TagLineLib
- *
  * created 2003/06/19
  *
- * @author awcolley
- *
+ * @package kernel
  * @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
- * global variable.
+ * global variable. 
  */
 class TagLineLib extends BitBase
 {
@@ -57,10 +53,10 @@ class TagLineLib extends BitBase
             $mid = "";
             $bindvars = array();
         }
-        $query = "select * from `".BIT_DB_PREFIX."tiki_cookies` $mid order by ".$this->convert_sortmode($sort_mode);
+        $query = "select * from `".BIT_DB_PREFIX."tiki_cookies` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
         $query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_cookies` $mid";
-        $result = $this->query($query,$bindvars,$maxRecords,$offset);
-        $cant = $this->getOne($query_cant,$bindvars);
+        $result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+        $cant = $this->mDb->getOne($query_cant,$bindvars);
         $ret = array();
         while ($res = $result->fetchRow())
         {
@@ -90,10 +86,10 @@ class TagLineLib extends BitBase
         {
             $bindvars = array($cookie);
             $query = "delete from `".BIT_DB_PREFIX."tiki_cookies` where `cookie`=?";
-            $result = $this->query($query,$bindvars);
+            $result = $this->mDb->query($query,$bindvars);
             $query = "insert into `".BIT_DB_PREFIX."tiki_cookies`(`cookie`) values(?)";
         }
-        $result = $this->query($query,$bindvars);
+        $result = $this->mDb->query($query,$bindvars);
         return true;
     }
     /**
@@ -103,7 +99,7 @@ class TagLineLib extends BitBase
     function remove_cookie($cookieId)
     {
         $query = "delete from `".BIT_DB_PREFIX."tiki_cookies` where `cookieId`=?";
-        $result = $this->query($query,array((int)$cookieId));
+        $result = $this->mDb->query($query,array((int)$cookieId));
         return true;
     }
     /**
@@ -114,7 +110,7 @@ class TagLineLib extends BitBase
     function get_cookie($cookieId)
     {
         $query = "select * from `".BIT_DB_PREFIX."tiki_cookies` where `cookieId`=?";
-        $result = $this->query($query,array((int)$cookieId));
+        $result = $this->mDb->query($query,array((int)$cookieId));
         if (!$result->numRows())   return false;
         $res = $result->fetchRow();
         return $res;
@@ -125,16 +121,16 @@ class TagLineLib extends BitBase
     function remove_all_cookies()
     {
         $query = "delete from `".BIT_DB_PREFIX."tiki_cookies`";
-        $result = $this->query($query,array());
+        $result = $this->mDb->query($query,array());
     }
 	/*shared*/
 	function pick_cookie() {
-		$cant = $this->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_cookies`",array());
+		$cant = $this->mDb->getOne("select count(*) from `".BIT_DB_PREFIX."tiki_cookies`",array());
 		if (!$cant) return '';
 
 		$bid = rand(0, $cant - 1);
-		//$cookie = $this->getOne("select `cookie`  from `".BIT_DB_PREFIX."tiki_cookies` limit $bid,1"); getOne seems not to work with limit
-		$result = $this->query("select `cookie`  from `".BIT_DB_PREFIX."tiki_cookies`",array(),1,$bid);
+		//$cookie = $this->mDb->getOne("select `cookie`  from `".BIT_DB_PREFIX."tiki_cookies` limit $bid,1"); getOne seems not to work with limit
+		$result = $this->mDb->query("select `cookie`  from `".BIT_DB_PREFIX."tiki_cookies`",array(),1,$bid);
 		if ($res = $result->fetchRow()) {
 		$cookie = str_replace("\n", "", $res['cookie']);
 		return '<i>"' . $cookie . '"</i>';
@@ -144,6 +140,10 @@ class TagLineLib extends BitBase
 	}
 
 }
+
+/**
+ * @global TagLineLib Cookie manangement library
+ */
 global $taglinelib;
 $taglinelib = new TagLineLib();
 ?>

@@ -1,6 +1,9 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/Bablotron.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ * Spellcheck Library
+ *
+ * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/Bablotron.php,v 1.3 2005/08/07 17:38:44 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,22 +11,19 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: Bablotron.php,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+ * $Id: Bablotron.php,v 1.3 2005/08/07 17:38:44 squareing Exp $
  *
  * A spell checking library.
  *
  * Currently used for BitBase.
  * @author lrargerich <lrargerich@yahoo.com>
- *
- * @package kernel
+ * created 2002/11/14
  */
 
 /**
+ * Spellcheck Library
+ *
  * @package kernel
- * @subpackage Bablotron
- *
- * created 2002/11/14
- *
  * @todo does not need to inherit BitBase class. Should hold a BitDb connection as a
  * global variable.
  */
@@ -124,7 +124,7 @@ class Bablotron extends BitBase
         $word = addslashes( ( trim( $word ) ) );
         $sndx = substr($word, 0, 2);
         $query = "select `word` AS word from `$tbl` where `di`=?";
-        @$result = $this->query($query, array($sndx));
+        @$result = $this->mDb->query($query, array($sndx));
         while ($res = $result->fetchRow() )
         {
             $tword = $res["word"];
@@ -159,7 +159,7 @@ class Bablotron extends BitBase
         $tbl = 'babl_words_' . $this->lan;
         $word = addslashes( ( trim( $word ) ) );
         $query = "select `word` AS word from `$tbl` where `word`=?";
-        $result = $this->query($query,array($word));
+        $result = $this->mDb->query($query,array($word));
         return $result->numRows();
     }
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.10 2005/08/01 18:40:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.11 2005/08/07 17:38:45 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -17,7 +17,7 @@ error_reporting( BIT_PHP_ERROR_REPORTING );
 
 define( 'BIT_MAJOR_VERSION',	'1' );
 define( 'BIT_MINOR_VERSION',	'0' );
-define( 'BIT_SUB_VERSION',		'3' );
+define( 'BIT_SUB_VERSION',		'4' );
 define( 'BIT_LEVEL',			'beta' ); // 'beta' or 'dev' or 'rc' etc..
 
 define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
@@ -102,8 +102,7 @@ if (!function_exists('array_fill'))
 global $num_queries;
 $num_queries = 0;
 
-// a bit hackish for now, but works.
-if( $gBitDb->isValid() ) {
+if( $gBitSystem->isDatabaseValid() ) {
 
 	$gBitSystem->loadPreferences();
 	if ($gBitSystem->getPreference('feature_obzip') == 'y') {
@@ -205,8 +204,6 @@ if( $gBitDb->isValid() ) {
 	$gBitSmarty->assign_by_ref("gBitSystem", $gBitSystem);
 	$gBitSmarty->assign_by_ref("gBitSystemPackages", $gBitSystem->mPackages);
 
-	global $gBitLoc;
-	$gBitSmarty->assign_by_ref("gBitLoc", $gBitLoc);
 	// check to see if admin has closed the site
 	if ( $gBitSystem->isFeatureActive('site_closed' ) && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check) && $_SERVER['SCRIPT_URL'] != USERS_PKG_URL.'validate.php' ) {
 		$_REQUEST['error'] = $gBitSystem->getPreference('site_closed_msg', 'Site is closed for maintainance; please come back later.');

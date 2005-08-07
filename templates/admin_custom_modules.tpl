@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.1 2005/06/19 04:52:54 bitweaver Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.2 2005/08/07 17:38:46 squareing Exp $ *}
 {strip}
 
 <a name="editcreate"></a>
@@ -32,7 +32,7 @@
 	<div class="row submit">
 		<input type="submit" name="um_update" value="{tr}Save{/tr}" />
 		{if $um_name ne ''}
-			<br /><a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=custom_modules#editcreate">{tr}Create new custom module{/tr}</a>
+			<br /><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=custom_modules#editcreate">{tr}Create new custom module{/tr}</a>
 		{/if}
 	</div>
 {/form}
@@ -83,9 +83,9 @@
 			<td>{$user_modules[user].name}</td>
 			<td>{$user_modules[user].title}</td>
 			<td style="text-align:right">
-				<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=layout&amp;module_name=_custom%3Acustom%2F{$user_modules[user].name}">{biticon ipackage=liberty iname=assign iexplain=assign}</a>
-				<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=custom_modules&amp;um_edit={$user_modules[user].name}#editcreate">{biticon ipackage=liberty iname=edit iexplain=edit}</a>
-				<a href="{$gBitLoc.KERNEL_PKG_URL}admin/index.php?page=custom_modules&amp;um_remove={$user_modules[user].name}">{biticon ipackage=liberty iname=delete iexplain=delete}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=layout&amp;module_name=_custom%3Acustom%2F{$user_modules[user].name}">{biticon ipackage=liberty iname=assign iexplain=assign}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=custom_modules&amp;um_edit={$user_modules[user].name}#editcreate">{biticon ipackage=liberty iname=edit iexplain=edit}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=custom_modules&amp;um_remove={$user_modules[user].name}">{biticon ipackage=liberty iname=delete iexplain=delete}</a>
 			</td>
 		</tr>
 	{sectionelse}
@@ -93,5 +93,5 @@
 	{/section}
 </table>
 
-<a href="{$gBitLoc.KERNEL_PKG_URL}admin/admin_system.php">{tr}Clear Modules Cache{/tr}</a>
+<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php">{tr}Clear Modules Cache{/tr}</a>
 {/strip}

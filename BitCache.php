@@ -1,34 +1,32 @@
 <?php
 /**
-* $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.3 2005/08/04 12:21:58 lsces Exp $
-*
-* Copyright (c) 2004 bitweaver.org
-* Copyright (c) 2003 tikwiki.org
-* Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-* All Rights Reserved. See copyright.txt for details and a complete list of authors.
-* Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
-*
-* $Id: BitCache.php,v 1.3 2005/08/04 12:21:58 lsces Exp $
-*
-* A basic library to handle caching of some Tiki Objects. Usage is simple and feel free to improve it.
-*
-* Currently used to cache user permissions only. Could be used to store blobs to files and other static
-* database intensive queries.
-*
-* @package kernel
-*
-* created 2003/11/25
-*
-* @author lrargerich <lrargerich@yahoo.com>
-*
-* @version $Revision: 1.3 $ $Date: 2005/08/04 12:21:58 $ $Author: lsces $
-*
-* @todo Need to implement in more places
-*/
+ * Basic cache handling
+ *
+ * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.4 2005/08/07 17:38:44 squareing Exp $
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * Copyright (c) 2003 tikwiki.org
+ * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ *
+ * A basic library to handle caching of some Tiki Objects. Usage is simple and feel free to improve it.
+ *
+ * Currently used to cache user permissions only. Could be used to store blobs to files and other static
+ * database intensive queries.
+ *
+ * created 2003/11/25
+ *
+ * @author lrargerich <lrargerich@yahoo.com>
+ *
+ * @todo Need to implement in more places
+ */
 
 /**
+ * A basic library to handle caching of some Tiki Objects. Usage is simple and feel free to improve it.
+ *
  * @package kernel
- * @subpackage BitCache
  */
 class BitCache
 {
@@ -77,7 +75,7 @@ class BitCache
             $file = "$cache_folder/$pKey";
             $x = serialize($pData);
             if(!function_exists("file_put_contents"))
-            require_once(UTIL_PKG_PATH."PHP_Compat/Compat/Function/file_put_contents.php");
+            require_once("PHP_Compat/Compat/Function/file_put_contents.php");
             file_put_contents($file,$x);
         }
         else

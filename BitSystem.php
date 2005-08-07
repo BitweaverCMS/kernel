@@ -1,9 +1,11 @@
 <?php
 /**
-* @package kernel
-* @author spider <spider@steelsun.com>
-* @version $Revision: 1.11 $
-*/
+ * Main bitweaver systems functions
+ *
+ * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.12 2005/08/07 17:38:44 squareing Exp $
+ * @author spider <spider@steelsun.com>
+ */
 // +----------------------------------------------------------------------+
 // | PHP version 4.??
 // +----------------------------------------------------------------------+
@@ -17,9 +19,6 @@
 // | -> see http://pear.php.net/manual/en/standards.comments.php
 // |    and http://www.phpdoc.org/
 // +----------------------------------------------------------------------+
-// | Authors: spider <spider@steelsun.com>
-// +----------------------------------------------------------------------+
-// $Id: BitSystem.php,v 1.11 2005/08/01 18:40:32 squareing Exp $
 
 /**
  * required setup
@@ -46,16 +45,11 @@ define('HOMEPAGE_LAYOUT', 'home');
  * 	is Package specific should be moved into that package
  *
  * @author spider <spider@steelsun.com>
- * @version $Revision: 1.11 $
+ *
  * @package kernel
- * @subpackage BitSystem
  */
 class BitSystem extends BitBase
 {	/**
-	* @package BitSystem
-	*/
-	// === properties
-	/**
 	* * Array of  *
 	*/
 	var $mAppMenu;
@@ -92,7 +86,7 @@ class BitSystem extends BitBase
 		$this->checkEnvironment();
 
 		$this->mAppMenu = array();
-		$this->mTimer = new TikiTimer();
+		$this->mTimer = new BitTimer();
 		$this->mTimer->start();
 
 		$this->initSmarty();
@@ -154,7 +148,7 @@ class BitSystem extends BitBase
 
 		if ( empty( $this->mPrefs ) ) {
 			$query = "SELECT `name` ,`value` FROM `" . BIT_DB_PREFIX . "tiki_preferences` " . $whereClause;
-			$rs = $this->query($query, $queryVars, -1, -1 );
+			$rs = $this->mDb->query($query, $queryVars, -1, -1 );
 			if ($rs) {
 				while (!$rs->EOF) {
 					$this->mPrefs[$rs->fields['name']] = $rs->fields['value'];
@@ -177,7 +171,6 @@ class BitSystem extends BitBase
 	* @access public
 	**/
 	function storePreference( $name, $value, $pPackageName=NULL ) {
-		global $gBitSystem;
 		global $gMultisites;
 		global $gRefreshSitePrefs;
 		global $bitdomain;
@@ -191,13 +184,13 @@ class BitSystem extends BitBase
 			// store the preference in multisites, if used
 			if( !empty( $gMultisites->mMultisiteId ) && isset( $gMultisites->mPrefs[$name] ) ) {
 				$query = "UPDATE `".BIT_DB_PREFIX."tiki_multisite_preferences` SET `value`=? WHERE `multisite_id`=? AND `name`=?";
-				$result = $this->query( $query, array( empty( $value ) ? '' : $value, $gMultisites->mMultisiteId, $name ) );
+				$result = $this->mDb->query( $query, array( empty( $value ) ? '' : $value, $gMultisites->mMultisiteId, $name ) );
 			} else {
 				$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_preferences` WHERE `name`=?";
-				$result = $this->query( $query, array( $name ) );
+				$result = $this->mDb->query( $query, array( $name ) );
 				if( isset( $value ) ) {
 					$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_preferences`(`name`,`value`,`package`) VALUES (?,?,?)";
-					$result = $this->query( $query, array( $name, $value, strtolower( $pPackageName ) ) );
+					$result = $this->mDb->query( $query, array( $name, $value, strtolower( $pPackageName ) ) );
 				}
 			}
 
@@ -230,7 +223,7 @@ class BitSystem extends BitBase
 	function expungePackagePreferences( $pPackageName ) {
 		if( !empty( $pPackageName ) ) {
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_preferences` WHERE `package`=?";
-			$result = $this->query( $query, array( strtolower( $pPackageName ) ) );
+			$result = $this->mDb->query( $query, array( strtolower( $pPackageName ) ) );
 			// let's force a reload of the prefs
 			unset( $this->mPrefs );
 			$this->loadPreferences();
@@ -337,21 +330,20 @@ class BitSystem extends BitBase
 	*/
 	function preDisplay($pMid)
 	{
-		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gBitLoc, $gPreviewStyle;
+		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gPreviewStyle;
 		// setup our theme style and check if a preview theme has been picked
 		if( $gPreviewStyle !== FALSE ) {
 			$this->setStyle( $gPreviewStyle );
 		}
-		if (empty($gBitLoc['styleSheet'])) {
-			$gBitLoc['styleSheet'] = $this->getStyleCss();
+		if (empty($this->mStyles['styleSheet'])) {
+			$this->mStyles['styleSheet'] = $this->getStyleCss();
 		}
-		$gBitLoc['headerIncFiles'] = $this->getHeaderIncFiles();
-		$gBitLoc['browserStyleSheet'] = $this->getBrowserStyleCss();
-		$gBitLoc['customStyleSheet'] = $this->getCustomStyleCss();
-		$gBitLoc['altStyleSheets'] = $this->getAltStyleCss();
-		$gBitLoc['THEMES_STYLE_URL'] = $this->getStyleUrl();
-		$gBitLoc['JSCALENDAR_PKG_URL'] = UTIL_PKG_URL.'jscalendar/';
-		$gBitSmarty->assign_by_ref("gBitLoc", $gBitLoc);
+		$this->mStyles['headerIncFiles'] = $this->getHeaderIncFiles();
+		$this->mStyles['browserStyleSheet'] = $this->getBrowserStyleCss();
+		$this->mStyles['customStyleSheet'] = $this->getCustomStyleCss();
+		$this->mStyles['altStyleSheets'] = $this->getAltStyleCss();
+		define( 'THEMES_STYLE_URL', $this->getStyleUrl() );
+		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'jscalendar/' );
 		// dont forget to assign slideshow stylesheet if we are viewing page as slideshow
 //		$gBitSmarty->assign('slide_style', $this->getStyleCss("slide_style"));
 
@@ -403,8 +395,7 @@ class BitSystem extends BitBase
 	* @return array of paths to existing header_inc.tpl files
 	*/
 	function getHeaderIncFiles() {
-		global $gBitSystem, $gBitLoc;
-		foreach( $gBitSystem->mPackages as $package => $info ) {
+		foreach( $this->mPackages as $package => $info ) {
 			$file = $info['path'].'templates/header_inc.tpl';
 			if( is_readable( $file ) ) {
 				$ret[] = $file;
@@ -459,8 +450,15 @@ class BitSystem extends BitBase
 		if (defined( (strtoupper( $pPackageName ).'_PKG_NAME') ) ) {
 			$name = strtolower( @constant( (strtoupper( $pPackageName ).'_PKG_NAME') ) );
 			if( $name ) {
-				// we have migrated the old tikiwiki feature_<package> to package_<package> just for (de)activating packages
-				$ret = ($this->getPreference('package_'.$name) == 'y');
+                               // kernel always active
+                                if ($name == 'kernel') {
+                                        $ret = 1;
+                                        }
+                                else {
+                                        // we have migrated the old tikiwiki feature_<pac
+                                        $ret = ($this->getPreference('package_'.$name) == 'y');
+                                        }
+
 			}
 		}
 
@@ -505,7 +503,7 @@ class BitSystem extends BitBase
 			$sql .= ' WHERE `package` = ? ';
 			array_push( $bindVars, substr($pPackageName,0,100));
 		}
-		$ret = $this->getAssoc( $sql, $bindVars );
+		$ret = $this->mDb->getAssoc( $sql, $bindVars );
 		return $ret;
 	}
 
@@ -626,27 +624,22 @@ class BitSystem extends BitBase
 		if( empty( $this->mPackages ) ) {
 			$this->mPackages = array();
 		}
-		global $gBitLoc;
 		$pkgName = str_replace( ' ', '_', strtoupper( $pPackageName ) );
 		$pkgNameKey = strtolower( $pkgName );
 
 		// Define <PACKAGE>_PKG_PATH
 		$pkgDefine = $pkgName.'_PKG_PATH';
-		if (!defined($pkgDefine))
-		{
+		if (!defined($pkgDefine)) {
 			define($pkgDefine, $pPackagePath);
 		}
-		$gBitLoc[$pkgDefine] = $pPackagePath;
 		$this->mPackages[$pkgNameKey]['url']  = BIT_ROOT_URL . basename( $pPackagePath ) . '/';
 		$this->mPackages[$pkgNameKey]['path']  = BIT_ROOT_PATH . basename( $pPackagePath ) . '/';
 
 		// Define <PACKAGE>_PKG_URL
 		$pkgDefine = $pkgName.'_PKG_URL';
-		if (!defined($pkgDefine))
-		{
+		if (!defined($pkgDefine)) {
 			define($pkgDefine, BIT_ROOT_URL . basename( $pPackagePath ) . '/');
 		}
-		$gBitLoc[$pkgDefine] = BIT_ROOT_URL . basename( $pPackagePath ) . '/';
 
 		// Define <PACKAGE>_PKG_NAME
 		$pkgDefine = $pkgName.'_PKG_NAME';
@@ -674,7 +667,6 @@ class BitSystem extends BitBase
 				$pPackageName = $_SERVER['ACTIVE_PACKAGE'];
 			}
 			define('ACTIVE_PACKAGE', $pPackageName);
-			$gBitLoc['ACTIVE_PACKAGE'] = $pPackageName;
 			$this->mActivePackage = $pPackageName;
 		}
 	}
@@ -850,12 +842,7 @@ class BitSystem extends BitBase
 	*/
 	function scanPackages($pScanFile = 'bit_setup_inc.php', $pOnce=TRUE )
 	{
-		global $gBitLoc, $gPreScan;
-		if( empty( $gBitLoc ) ) {
-			$gBitLoc = array();
-		}
-		$gBitLoc['BIT_ROOT_URL'] = BIT_ROOT_URL;
-
+		global $gPreScan;
 		if (!empty($gPreScan) && is_array($gPreScan)) {
 			foreach($gPreScan as $pkgName) {
 				$this->mRegisterCalled = FALSE;
@@ -903,9 +890,6 @@ class BitSystem extends BitBase
 				define('ACTIVE_PACKAGE', 'kernel'); // when in doubt, assume the kernel
 			}
 
-			$gBitLoc['kernel_url'] = KERNEL_PKG_URL;
-			$gBitLoc['kernel_path'] = KERNEL_PKG_PATH;
-
 			if( !defined( 'BIT_STYLES_PATH' ) && defined( 'THEMES_PKG_PATH' ) ) {
 				define('BIT_STYLES_PATH', THEMES_PKG_PATH . 'styles/');
 			}
@@ -928,11 +912,15 @@ asort( $this->mAppMenu );
 		global $gBitDbType;
 		$this->scanPackages( 'admin/schema_inc.php' );
 		if( $this->isDatabaseValid() ) {
-			$lastQuote = strrpos( BIT_DB_PREFIX, '`' );
-			if( $lastQuote != FALSE ) {
-				$lastQuote++;
+			if (strlen(BIT_DB_PREFIX) > 0) {
+				$lastQuote = strrpos( BIT_DB_PREFIX, '`' );
+				if( $lastQuote != FALSE ) {
+					$lastQuote++;
+				}
+				$prefix = substr( BIT_DB_PREFIX,  $lastQuote );
+			} else {
+				$prefix = '';
 			}
-			$prefix = substr( BIT_DB_PREFIX,  $lastQuote );
  			$showTables = ( $prefix ? $prefix.'%' : NULL );
 			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $showTables ) ) {
 				foreach( array_keys( $this->mPackages ) as $package ) {
@@ -1115,7 +1103,7 @@ asort( $this->mAppMenu );
 	* @return none
 	* @access public
 	*/
-	function getStyleCss($pStyle = null, $pUserId = NULL)
+	function getStyleCss($pStyle = NULL, $pUserId = NULL)
 	{
 		global $gBitUser;
 		if (empty($pStyle))
@@ -1129,9 +1117,9 @@ asort( $this->mAppMenu );
 			$homepageUser = new BitUser($pUserId);
 			$homepageUser->load();
 			// Path to the user-customized css file
-			$cssPath = $homepageUser->getStoragePath('theme',$homepageUser->mUserId,null).'custom.css';
+			$cssPath = $homepageUser->getStoragePath('theme',$homepageUser->mUserId,NULL).'custom.css';
 			if (file_exists($cssPath)) {
-				$ret = $homepageUser->getStorageURL('theme',$homepageUser->mUserId,null).'custom.css';
+				$ret = $homepageUser->getStorageURL('theme',$homepageUser->mUserId,NULL).'custom.css';
 			}
 		} else {
 			if( $gBitUser->verifyStorageFile( $pStyle.'.css',$pStyle,$gBitUser->mUserId,'stylist' ) ) {
@@ -1175,13 +1163,12 @@ asort( $this->mAppMenu );
 	* @return path to browser specific css file
 	* @access public
 	*/
-	function getBrowserStyleCss()
-	{
-		global $gBitLoc, $gSniffer;
-		$gBitLoc['browser']['client'] = $gSniffer->property( 'browser' );
-		$gBitLoc['browser']['version'] = $gSniffer->property( 'version' );
+	function getBrowserStyleCss() {
+		global $gSniffer;
+		$gSniffer->mBrowserInfo['client'] = $gSniffer->property( 'browser' );
+		$gSniffer->mBrowserInfo['version'] = $gSniffer->property( 'version' );
 		$style = $this->getStyle();
-		$ret = '';
+		$ret = NULL;
 		if( file_exists( $this->getStylePath().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css' ) ) {
 			$ret = $this->getStyleUrl().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css';
 		}
@@ -1281,7 +1268,7 @@ asort( $this->mAppMenu );
 			}
 			$query = "SELECT tl.`user_id` FROM `" . BIT_DB_PREFIX . "tiki_layouts` tl
 					$whereClause ";
-			$result = $this->query($query, array($pUserMixed));
+			$result = $this->mDb->query($query, array($pUserMixed));
 			if ($result->fields['user_id']) {
 				$layoutUserId = $result->fields['user_id'];
 			}
@@ -1292,7 +1279,7 @@ asort( $this->mAppMenu );
 		// This saves a count() query to see if the ACTIVE_PACKAGE has a layout, since it usually probably doesn't
 		// I don't know if it's better or not to save the count() query and retrieve more data - my gut says so,
 		// but i've done no research - spiderr
-		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->mDb->mType != 'firebird' && $this->mDb->mType != 'mssql') {
+		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->dType != 'firebird' && $this->dType != 'mssql') {
 			// ORDER BY comparison is crucial so current layout modules come up first
 			$whereClause .= " (tl.`layout`=? OR tl.`layout`=? ) ORDER BY tl.`layout`=? DESC, ";
 			array_push($bindVars, $pLayout);
@@ -1308,8 +1295,8 @@ asort( $this->mAppMenu );
 			array_push($bindVars, $pLayout);
 		}
 		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "tiki_layouts` tl, `" . BIT_DB_PREFIX . "tiki_layouts_modules` tlm, `" . BIT_DB_PREFIX . "tiki_module_map` tmm
-				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->convert_sortmode("ord_asc");
-		$result = $this->query($query, $bindVars);
+				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->mDb->convert_sortmode("ord_asc");
+		$result = $this->mDb->query($query, $bindVars);
 		// CHeck to see if we have ACTIVE_PACKAGE modules at the top of the results
 		if (isset($result->fields['layout']) && ($result->fields['layout'] != DEFAULT_PACKAGE) && (ACTIVE_PACKAGE != DEFAULT_PACKAGE)) {
 			$skipDefaults = true;
@@ -1660,10 +1647,10 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		$bindvars=array();
 		}
 
-		$query = "select `cache_id` ,`url`,`refresh` from `".BIT_DB_PREFIX."tiki_link_cache` $mid order by ".$this->convert_sortmode($sort_mode);
+		$query = "select `cache_id` ,`url`,`refresh` from `".BIT_DB_PREFIX."tiki_link_cache` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_link_cache` $mid";
-		$result = $this->query($query,$bindvars,$maxRecords,$offset);
-		$cant = $this->getOne($query_cant,$bindvars);
+		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -1680,20 +1667,20 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		$query = "select `url`  from `".BIT_DB_PREFIX."tiki_link_cache`
 		where `cache_id`=?";
 
-		$url = $this->getOne($query, array( $cache_id ) );
+		$url = $this->mDb->getOne($query, array( $cache_id ) );
 		$data = tp_http_request($url);
 		$refresh = date("U");
 		$query = "update `".BIT_DB_PREFIX."tiki_link_cache`
 		set `data`=?, `refresh`=?
 		where `cache_id`=? ";
-		$result = $this->query($query, array( $data, $refresh, $cache_id) );
+		$result = $this->mDb->query($query, array( $data, $refresh, $cache_id) );
 		return true;
 	}
 
 	function remove_cache($cache_id) {
 		$query = "delete from `".BIT_DB_PREFIX."tiki_link_cache` where `cache_id`=?";
 
-		$result = $this->query($query, array( $cache_id ) );
+		$result = $this->mDb->query($query, array( $cache_id ) );
 		return true;
 	}
 
@@ -1701,7 +1688,7 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		$query = "select * from `".BIT_DB_PREFIX."tiki_link_cache`
 		where `cache_id`=?";
 
-		$result = $this->query($query, array( $cache_id ) );
+		$result = $this->mDb->query($query, array( $cache_id ) );
 		$res = $result->fetchRow();
 		return $res;
 	}
@@ -2225,10 +2212,11 @@ function installError($pMsg = null)
 }
 
 /**
+ * Basic processes timer
+ *
  * @package kernel
- * @subpackage TikiTimer
  */
-class TikiTimer
+class BitTimer
 {
 	function parseMicro($micro)
 	{

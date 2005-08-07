@@ -1,11 +1,15 @@
 <?php
 /**
+ * Database Backup Library
+ *
  * @package kernel
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/backups_lib.php,v 1.6 2006/01/10 21:12:46 squareing Exp $
  */
 
 /**
+ * Database Backup Library
+ *
  * @package kernel
- * @subpackage BackupLib
  */
 class BackupLib extends BitBase {
 	function BackupLib() {
@@ -16,7 +20,7 @@ class BackupLib extends BitBase {
 		global $gBitDbType;
 		// Get the password before it's too late
 		$query = "select `hash` from `".BIT_DB_PREFIX."users_users` where `user_id`=?";
-		$pwd = $this->getOne($query,array(ROOT_USER_ID));
+		$pwd = $this->mDb->getOne($query,array(ROOT_USER_ID));
 
 		switch ($gBitDbType) {
 			case "postgres":
@@ -26,7 +30,7 @@ class BackupLib extends BitBase {
 				$query = "show tables";
 		}
 
-		$result = $this->query($query);
+		$result = $this->mDb->query($query);
 		$sql = '';
 		$part = '';
 
@@ -36,12 +40,12 @@ class BackupLib extends BitBase {
 			if (!strstr($val, 'babl')) {
 				// Now delete the table contents
 				$query2 = "delete from `$val`";
-				$result2 = $this->query($query2);
+				$result2 = $this->mDb->query($query2);
 			}
 		}
 
 //		$query = "update `".BIT_DB_PREFIX."users_users` set `hash`=? where `login`=?";
-//		$result = $this->query($query,array($pwd,'admin'));
+//		$result = $this->mDb->query($query,array($pwd,'admin'));
 		@$fp = fopen($filename, "rb");
 
 		if (!$fp) return false;
@@ -58,7 +62,7 @@ class BackupLib extends BitBase {
 //			$line = $this->RC4($pwd, $line);
 
 			// EXECUTE SQL SENTENCE HERE
-			$result = $this->query($line,array());
+			$result = $this->mDb->query($line,array());
 		}
 
 		fclose ($fp);
@@ -116,7 +120,7 @@ class BackupLib extends BitBase {
 		ini_set("max_execution_time", "3000");
 
 		$query = "select `hash` from `".BIT_DB_PREFIX."users_users` where `user_id`=?";
-		$pwd = $this->getOne($query,array(ROOT_USER_ID));
+		$pwd = $this->mDb->getOne($query,array(ROOT_USER_ID));
 		@$fp = fopen($filename, "w");
 
 		if (!$fp)
@@ -130,7 +134,7 @@ class BackupLib extends BitBase {
 				$query = "show tables";
 		}
 
-		$result = $this->query($query);
+		$result = $this->mDb->query($query);
 		$sql = '';
 		$part = '';
 
@@ -141,7 +145,7 @@ class BackupLib extends BitBase {
 				// Now dump the table
 				$query2 = "select * from `$val`";
 
-				$result2 = $this->query($query2);
+				$result2 = $this->mDb->query($query2);
 
 				while ($res2 = $result2->fetchRow()) {
 					$sentence = "values(";

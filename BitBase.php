@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.10 2005/08/06 21:00:41 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.11 2005/08/07 10:17:49 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -107,6 +107,13 @@ class BitBase
     **/
 	function isDatabaseValid() {
 		return( !empty( $this->mDb->mDb ) && $this->mDb->mDb->_connectionID );
+	}
+
+    /**
+    * Return pointer to current Database
+    **/
+	function getDb() {
+		return ( !empty( $this->mDb ) ? $this->mDb : NULL  );
 	}
 
     /**

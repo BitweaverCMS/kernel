@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.36 2005/08/07 16:29:53 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.37 2005/08/07 23:09:00 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2167,7 +2167,7 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 	}
 
 	// should be moved somewhere else. unbreaking things for now - 25-JUN-2005 - spiderr
-	// \todo remove html hardcoded in diff2
+	// \TODO remove html hardcoded in diff2
 	function diff2($page1, $page2) {
 		$page1 = split("\n", $page1);
 		$page2 = split("\n", $page2);
@@ -2182,6 +2182,18 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		return $html;
 	}
 
+	function getPackageIntegrationFiles() {
+		global $gBitSystem;
+		$ret = array();
+		foreach( $gBitSystem->mPackages as $package => $packageInfo ) {
+			if( $gBitSystem->isPackageActive( $package ) && is_file( $packageInfo['path'].'get_form_info_inc.php' ) && is_file( $packageInfo['path'].'templates/form_info_inc.tpl' ) && is_file( $packageInfo['path'].'form_processor_inc.php' ) ) {
+				$ret[$package]['form_info'] = $packageInfo['path'].'get_form_info_inc.php';
+				$ret[$package]['template'] = 'bitpackage:'.$package.'/form_info_inc.tpl';
+				$ret[$package]['processor'] = $packageInfo['path'].'form_processor_inc.php';
+			}
+		}
+		return $ret;
+	}
 }
 
 // === installError

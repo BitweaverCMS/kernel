@@ -3,7 +3,7 @@
  * Preferences Management Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitPreferences.php,v 1.1.1.1.2.5 2005/08/07 15:49:49 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitPreferences.php,v 1.1.1.1.2.6 2005/08/07 16:30:31 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -144,7 +144,7 @@ class BitPreferences
             {
                 $query = "SELECT * FROM `".$this->mName."` WHERE `name`=?";
                 $bindvars[] = $pName;
-                $result = $this->getDb()->getOne($query, $bindvars);
+                $result = $this->mDB->getOne($query, $bindvars);
                 if (!empty($result))
                 {
                     if ($this->mDebug) echo "setPreference db update $pName with $pValue<br>";

@@ -3,7 +3,7 @@
  * Spellcheck Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/Bablotron.php,v 1.1.1.1.2.6 2005/08/07 13:27:38 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/Bablotron.php,v 1.1.1.1.2.7 2005/08/07 16:29:59 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -11,7 +11,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: Bablotron.php,v 1.1.1.1.2.6 2005/08/07 13:27:38 lsces Exp $
+ * $Id: Bablotron.php,v 1.1.1.1.2.7 2005/08/07 16:29:59 lsces Exp $
  *
  * A spell checking library.
  *
@@ -124,7 +124,7 @@ class Bablotron extends BitBase
         $word = addslashes( ( trim( $word ) ) );
         $sndx = substr($word, 0, 2);
         $query = "select `word` AS word from `$tbl` where `di`=?";
-        @$result = $this->getDb()->query($query, array($sndx));
+        @$result = $this->mDb->query($query, array($sndx));
         while ($res = $result->fetchRow() )
         {
             $tword = $res["word"];
@@ -159,7 +159,7 @@ class Bablotron extends BitBase
         $tbl = 'babl_words_' . $this->lan;
         $word = addslashes( ( trim( $word ) ) );
         $query = "select `word` AS word from `$tbl` where `word`=?";
-        $result = $this->getDb()->query($query,array($word));
+        $result = $this->mDb->query($query,array($word));
         return $result->numRows();
     }
     /**

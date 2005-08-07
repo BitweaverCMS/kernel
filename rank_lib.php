@@ -2,7 +2,7 @@
 /**
  * Content Ranking Library
  * 
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.1.1.1.2.5 2005/08/07 13:27:38 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.1.1.1.2.6 2005/08/07 16:29:53 lsces Exp $
  * @package kernel
  */
 
@@ -19,7 +19,7 @@ class RankLib extends BitBase {
 	function wiki_ranking_top_pages($limit) {
 		$query = "select tc.`title` as `page_name`, `hits` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `hits` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -41,7 +41,7 @@ class RankLib extends BitBase {
 		// $this->page_rank();
 
 		$query = "select tc.`title` as `page_name`, `page_rank` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `page_rank` desc";
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -63,7 +63,7 @@ class RankLib extends BitBase {
 
 		$query = "select tc.`title` as `page_name`, `last_modified`, `hits` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `last_modified` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -84,10 +84,10 @@ class RankLib extends BitBase {
 		global $gBitSystem;
 		$query = "select * from
 		`".BIT_DB_PREFIX."tiki_comments`,`".BIT_DB_PREFIX."tiki_forums` where
-		`object`=".$this->getDb()->sql_cast("`forum_id`","string")." and `object_type` = 'forum' and
+		`object`=".$this->mDb->sql_cast("`forum_id`","string")." and `object_type` = 'forum' and
 		`parent_id`=0 order by `comment_date` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -111,7 +111,7 @@ class RankLib extends BitBase {
 		`object`=`forum_id` and `object_type` = 'forum' and
 		`parent_id`=0 order by tc.`hits` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -135,7 +135,7 @@ class RankLib extends BitBase {
 		`object`=`forum_id` and `object_type` = 'forum' and
 		`parent_id`=0 order by tc.`average` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -155,7 +155,7 @@ class RankLib extends BitBase {
 	function forums_ranking_most_visited_forums($limit) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_forums` order by `hits` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -175,7 +175,7 @@ class RankLib extends BitBase {
 	function forums_ranking_most_commented_forum($limit) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_forums` order by `comments` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -195,7 +195,7 @@ class RankLib extends BitBase {
 	function gal_ranking_top_galleries($limit) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_galleries` where `visible`=? order by `hits` desc";
 
-		$result = $this->getDb()->query($query,array('y'),$limit,0);
+		$result = $this->mDb->query($query,array('y'),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -215,7 +215,7 @@ class RankLib extends BitBase {
 	function filegal_ranking_top_galleries($limit) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_file_galleries` where `visible`=? order by `hits` desc";
 
-		$result = $this->getDb()->query($query,array('y'),$limit,0);
+		$result = $this->mDb->query($query,array('y'),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -235,7 +235,7 @@ class RankLib extends BitBase {
 	function gal_ranking_top_images($limit) {
 		$query = "select `image_id`,`name`,`hits` from `".BIT_DB_PREFIX."tiki_images` order by `hits` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -255,7 +255,7 @@ class RankLib extends BitBase {
 	function filegal_ranking_top_files($limit) {
 		$query = "select `file_id`,`filename`,`downloads` from `".BIT_DB_PREFIX."tiki_files` order by `downloads` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -276,7 +276,7 @@ class RankLib extends BitBase {
 		global $gBitSystem;
 		$query = "select `image_id`,`name`,`created` from `".BIT_DB_PREFIX."tiki_images` order by `created` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -297,7 +297,7 @@ class RankLib extends BitBase {
 		global $gBitSystem;
 		$query = "select `file_id`,`filename`,`created` from `".BIT_DB_PREFIX."tiki_files` order by `created` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -317,7 +317,7 @@ class RankLib extends BitBase {
 	function cms_ranking_top_articles($limit) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_articles` order by `reads` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -337,7 +337,7 @@ class RankLib extends BitBase {
 	function blog_ranking_top_blogs($limit) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_blogs` order by `hits` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -357,7 +357,7 @@ class RankLib extends BitBase {
 	function blog_ranking_top_active_blogs($limit) {
 		$query = "select * from `".BIT_DB_PREFIX."tiki_blogs` order by `activity` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
@@ -378,13 +378,13 @@ class RankLib extends BitBase {
 		global $gBitSystem;
 		$query = "select * from `".BIT_DB_PREFIX."tiki_blog_posts` order by `post_id` desc";
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
 		while ($res = $result->fetchRow()) {
 			$q = "select title, created from `".BIT_DB_PREFIX."tiki_blogs` where `blog_id`=";
 			$q.= $res["blog_id"];
-			$result2 = $this->getDb()->query($q,array(),$limit,0);
+			$result2 = $this->mDb->query($q,array(),$limit,0);
 			$res2 = $result2->fetchRow();
 			$aux["name"] = $res2["title"];
 			$aux["hits"] = $gBitSystem->get_long_datetime($res2["created"]);
@@ -400,9 +400,9 @@ class RankLib extends BitBase {
 
 	function wiki_ranking_top_authors($limit) {
 		
-		$query = "select distinct users.`login` as `user`, count(*) as `numb` from `".BIT_DB_PREFIX."users_users` users INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`user_id` =  users.`user_id`) where tc.`content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' group by `user` order by ".$this->getDb()->convert_sortmode("numb_desc");
+		$query = "select distinct users.`login` as `user`, count(*) as `numb` from `".BIT_DB_PREFIX."users_users` users INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`user_id` =  users.`user_id`) where tc.`content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' group by `user` order by ".$this->mDb->convert_sortmode("numb_desc");
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 		$retu = array();
 
@@ -419,9 +419,9 @@ class RankLib extends BitBase {
 	}
 
 	function cms_ranking_top_authors($limit) {
-		$query = "select distinct `author`, count(*) as `numb` from `".BIT_DB_PREFIX."tiki_articles` group by `author` order by ".$this->getDb()->convert_sortmode("numb_desc");
+		$query = "select distinct `author`, count(*) as `numb` from `".BIT_DB_PREFIX."tiki_articles` group by `author` order by ".$this->mDb->convert_sortmode("numb_desc");
 
-		$result = $this->getDb()->query($query,array(),$limit,0);
+		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 		$retu = array();
 

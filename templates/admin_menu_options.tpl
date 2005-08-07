@@ -84,8 +84,10 @@
 	</tr>
 </table>
 
-<h2>{tr}Menu options{/tr}</h2>
+{minifind menu_id=$menu_id sort_mode=$sort_mode page=$page}
+
 <table class="data">
+	<caption>{tr}Menu Options{/tr}</caption>
 	<tr>
 		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'option_id_desc'}option_id_asc{else}option_id_desc{/if}">{tr}ID{/tr}</a></th>
 		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'position_desc'}position_asc{else}position_desc{/if}">{tr}Position{/tr}</a></th>
@@ -119,7 +121,5 @@
 </table>
 
 {pagination menu_id=$menu_id page=$page}
-
-{minifind menu_id=$menu_id sort_mode=$sort_mode page=$page}
 
 {/strip}

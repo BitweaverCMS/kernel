@@ -45,9 +45,10 @@
 			</div>
 		{/form}
 
-		<h2>{tr}List of configured menus{/tr}</h2>
+		{minifind sort_mode=$sort_mode page=$page}
 
 		<table class="data">
+			<caption>{tr}List of configured menus{/tr}</caption>
 			<tr>
 				<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'menu_id_asc'}menu_id_desc{else}menu_id_asc{/if}">{tr}ID{/tr}</a></th>
 				<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'name_asc'}name_desc{else}name_asc{/if}">{tr}Name{/tr}</a></th>
@@ -78,8 +79,6 @@
 		</table>
 
 		{pagination page=$page}
-
-		{minifind sort_mode=$sort_mode page=$page}
 
 	{/jstab}
 

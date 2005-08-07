@@ -39,6 +39,8 @@
 			</div>
 		{/form}
 
+		{minifind sort_mode=$sort_mode find=$find}
+
 		<table class="data">
 			<caption>{tr}Active Notifications{/tr}</caption>
 			<tr>
@@ -59,8 +61,6 @@
 				<tr class="norecords"><td colspan="4">{tr}No records found{/tr}</td></tr>
 			{/section}
 		</table>
-
-		{minifind sort_mode=$sort_mode find=$find}
 
 		{pagination}
 	</div><!-- end .body -->

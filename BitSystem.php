@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.37 2005/08/07 23:09:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.38 2005/08/08 12:27:41 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2182,14 +2182,26 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		return $html;
 	}
 
-	function getPackageIntegrationFiles() {
+	// function to scan other package for files that need to be integrated
+	// @param $pFile path and filename in question. if the file is a template, no template/ needs to be prepended
+	// @param $pTrippleCheck (boolean) set to TRUE if you want to make sure all appropriate files are present for the integration
+	function getPackageIntegrationFiles( $pFile=NULL, $pTrippleCheck=FALSE ) {
 		global $gBitSystem;
 		$ret = array();
-		foreach( $gBitSystem->mPackages as $package => $packageInfo ) {
-			if( $gBitSystem->isPackageActive( $package ) && is_file( $packageInfo['path'].'get_form_info_inc.php' ) && is_file( $packageInfo['path'].'templates/form_info_inc.tpl' ) && is_file( $packageInfo['path'].'form_processor_inc.php' ) ) {
-				$ret[$package]['form_info'] = $packageInfo['path'].'get_form_info_inc.php';
-				$ret[$package]['template'] = 'bitpackage:'.$package.'/form_info_inc.tpl';
-				$ret[$package]['processor'] = $packageInfo['path'].'form_processor_inc.php';
+		if( !empty( $pFile ) ) {
+			foreach( $gBitSystem->mPackages as $package => $packageInfo ) {
+				if( is_file( $packageInfo['path'].$pFile ) ) {
+					if( preg_match( "/\.tpl$/", $pFile ) ) {
+						$ret[$package] = 'bitpackage:'.$package.'/'.preg_replace( "/templates\//", "", $pFile );
+					} else {
+						$ret[$package] = $packageInfo['path'].$pFile;
+					}
+				}
+
+				// if we are doing the tripple check and not all files are present, unset the info for that package
+				if( $pTrippleCheck && !( is_file( $packageInfo['path'].'get_form_info_inc.php' ) && is_file( $packageInfo['path'].'get_form_info_inc.php' ) && is_file( $packageInfo['path'].'get_form_info_inc.php' ) ) ) {
+					unset( $ret[$package] );
+				}
 			}
 		}
 		return $ret;

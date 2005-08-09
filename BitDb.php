@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.16 2005/08/07 20:46:10 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.17 2005/08/09 10:28:31 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -941,6 +941,12 @@ class BitDb
 		 return $this->mDb->MetaTables( $ttype, $showSchema, $mask );
 	}
 
+	/**
+	* @return # rows affected by UPDATE/DELETE
+	*/ 
+	function Affected_Rows() {
+		return $this->mDb->Affected_Rows();
+	}
 	/** 
 	 * Check for Postgres specific extensions 
 	 */

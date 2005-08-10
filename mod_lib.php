@@ -3,7 +3,7 @@
  * Modules Management Library 
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.9 2005/08/07 16:29:52 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.10 2005/08/10 17:45:36 drewslater Exp $
  */
 
 /**
@@ -203,6 +203,7 @@ class ModLib extends BitBase {
 	
 	function unassignModule( $pModuleId, $pUserId = NULL, $pLayout = NULL ) {
 		global $gBitUser;
+		global $gQueryUser;
 
 		if (!is_numeric($pModuleId)) {
 			$pModuleId = $this->get_module_id($pModuleId);
@@ -226,7 +227,7 @@ class ModLib extends BitBase {
 		}
 
 		// security check
-		if( ($gBitUser->isAdmin() || ( $pUserId && $gBitUser->mUserId==$pUserId )) && is_numeric( $pModuleId ) ) {
+		if( ($gBitUser->isAdmin() || ( $pUserId && $gBitUser->mUserId==$pUserId ) || $gBitUser->object_has_permission( $gBitUser->mUserId, $gQueryUser->mInfo['content_id'], 'bituser', 'bit_p_admin_user') ) && is_numeric( $pModuleId ) ) {
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_layouts` where `module_id`=? $userSql $layoutSql";
 			$result = $this->mDb->query( $query, $binds );
 /*

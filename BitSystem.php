@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.38 2005/08/08 12:27:41 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.39 2005/08/10 18:40:11 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1165,14 +1165,10 @@ asort( $this->mAppMenu );
 	*/
 	function getBrowserStyleCss() {
 		global $gSniffer;
-		$gSniffer->mBrowserInfo['client'] = $gSniffer->property( 'browser' );
-		$gSniffer->mBrowserInfo['version'] = $gSniffer->property( 'version' );
-		$style = $this->getStyle();
-		$ret = NULL;
 		if( file_exists( $this->getStylePath().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css' ) ) {
 			$ret = $this->getStyleUrl().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css';
 		}
-		return $ret;
+		return !empty( $ret ) ? $ret : NULL;
 	}
 	// >>>
 	// === getAltStyleCss

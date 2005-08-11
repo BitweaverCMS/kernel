@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.39 2005/08/10 18:40:11 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.40 2005/08/11 15:40:45 otherlanddk Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -759,7 +759,7 @@ class BitSystem extends BitBase
 			$this->mPackages[$pPackage]['defaults'] = array();
 		}
 		if( is_array( $pMixedDefaultSql ) ) {
-			foreach( $pMixedDefaultSql AS $def ) {
+			foreach( $pMixedDefaultSql as $def ) {
 				$this->mPackages[$pPackage]['defaults'][] = $def;
 			}
 		} elseif( is_string( $pMixedDefaultSql ) ) {

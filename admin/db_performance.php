@@ -28,6 +28,6 @@ For more information, see the <a href="http://phplens.com/lens/adodb/docs-perf.h
 </p>
 
 <?php
-	$perf =& NewPerfMonitor( $gBitSystem->getDb );
+	$perf =& NewPerfMonitor( $gBitSystem->mDb );
 	$perf->UI($pollsecs=5);
 ?>

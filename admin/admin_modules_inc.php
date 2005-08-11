@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.3 2005/08/07 17:38:45 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.4 2005/08/11 13:03:45 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -127,7 +127,7 @@ foreach ($all_modules as $name=>$module) {
 // Get a list of all modules currently used by the kernel for layouts
 $query = "SELECT tl.`module_id`, tl.`layout`, tmm.`module_rsrc` FROM `".BIT_DB_PREFIX."tiki_layouts` tl, `".BIT_DB_PREFIX."tiki_module_map` tmm
 	  WHERE tl.`module_id` = tmm.`module_id` AND tl.`user_id` = 1";
-$result = $modlib->query($query);
+$result = $modlib->mDb->query($query);
 $rows = $result->getRows();
 
 // Set up the javascript

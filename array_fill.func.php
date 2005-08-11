@@ -11,12 +11,14 @@
 /**
  * array_fill
  */
-function array_fill($iStart, $iLen, $vValue) {
-    $aResult = array();
-    for ($iCount = $iStart; $iCount < $iLen + $iStart; $iCount++) {
-        $aResult[$iCount] = $vValue;
-    }
-    return $aResult;
+if( !function_exists( 'array_fill' ) ) {
+	function array_fill($iStart, $iLen, $vValue) {
+		$aResult = array();
+		for ($iCount = $iStart; $iCount < $iLen + $iStart; $iCount++) {
+			$aResult[$iCount] = $vValue;
+		}
+		return $aResult;
+	}
 }
 
 ?>

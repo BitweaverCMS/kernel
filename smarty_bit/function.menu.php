@@ -5,6 +5,8 @@
  * @subpackage plugins
  */
 
+include_once( KERNEL_PKG_PATH . 'menu_lib.php' );
+
 /**
  * smarty_function_menu
  */

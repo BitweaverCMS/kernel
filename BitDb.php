@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.17 2005/08/09 10:28:31 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.18 2005/08/14 11:36:23 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -855,8 +855,7 @@ class BitDb
 	* @return escaped blob data
 	*/
 	function db_byte_encode( &$pData ) {
-		global $ADODB_LASTDB;
-		switch ($ADODB_LASTDB) {
+		switch ($this->mDb->mType) {
 			case "postgres":
 				$search = array(chr(92), chr(0), chr(39));
 				$replace = array('\\\134', '\\\000', '\\\047');
@@ -877,8 +876,7 @@ class BitDb
 	* @return a string of raw blob data
 	*/
 	function db_byte_decode( &$pData ) {
-		global $ADODB_LASTDB;
-		switch ($ADODB_LASTDB) {
+		switch ($this->mDb->mType) {
 			case "postgres":
 				$ret = stripcslashes( $pData );
 				break;

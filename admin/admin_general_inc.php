@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.1.1.1.2.1 2005/07/26 15:50:08 drewslater Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.1.1.1.2.2 2005/08/14 01:38:09 wolff_borg Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -21,6 +21,9 @@ $formGeneralMisc = array(
 	'feature_obzip' => array(
 		'label' => 'Use gzipped output',
 	),
+	'feature_menusfolderstyle' => array(
+		'label' => 'Display menus as folders',
+	),
 	'count_admin_pvs' => array(
 		'label' => 'Count admin pageviews',
 	),
@@ -38,6 +41,7 @@ if ($processForm) {
 		"count_admin_pvs",
 		"direct_pagination",
 		"feature_obzip",
+		"feature_menusfolderstyle",
 	);
 
 	foreach ($pref_toggles as $toggle) {

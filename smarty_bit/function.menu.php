@@ -21,9 +21,9 @@ function smarty_function_menu($params, &$gBitSmarty)
         return;
     }
     $menu_info = $menulib->get_menu($id);
-    $channels = $menulib->list_menu_options($id,0,-1,'position_asc','');
+    $moptions = $menulib->list_menu_options($id,0,-1,'position_asc','');
     $gBitSmarty->assign('menu_info',$menu_info);
-    $gBitSmarty->assign('channels',$channels["data"]);
+    $gBitSmarty->assign('moptions',$moptions["data"]);
     
     $gBitSmarty->display('bitpackage:users/user_menu.tpl');
 }

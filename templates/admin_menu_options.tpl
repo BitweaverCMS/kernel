@@ -3,8 +3,8 @@
 <table>
 	<tr>
 		<td style="vertical-align:top;">
-			{box title="`$menu_info.name`"}
-				{include file="bitpackage:users/user_menu.tpl" channels=$allchannels}
+			{box title="`$admmenu_info.name`"}
+				{include file="bitpackage:users/user_menu.tpl" moptions=$allmoptions menu_info=$admmenu_info}
 			{/box}
 		</td>
 		<td style="vertical-align:top;">
@@ -100,19 +100,19 @@
 		<th>{tr}Action{/tr}</th>
 	</tr>
 	{cycle values="even,odd" print=false}
-	{section name=user loop=$channels}
+	{section name=user loop=$admmoptions}
 		<tr class="{cycle}">
-			<td>{$channels[user].menu_id}</td>
-			<td>{$channels[user].position}</td>
-			<td>{$channels[user].name}</td>
-			<td>{$channels[user].url}</td>
-			<td>{$channels[user].type}</td>
-			<td>{$channels[user].section}</td>
-			<td>{$channels[user].perm}</td>
-			<td>{$channels[user].groupname}</td>
+			<td>{$admmoptions[user].menu_id}</td>
+			<td>{$admmoptions[user].position}</td>
+			<td>{$admmoptions[user].name}</td>
+			<td>{$admmoptions[user].url}</td>
+			<td>{$admmoptions[user].type}</td>
+			<td>{$admmoptions[user].section}</td>
+			<td>{$admmoptions[user].perm}</td>
+			<td>{$admmoptions[user].groupname}</td>
 			<td align="right">
-				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].option_id}" onclick="return confirmTheLink(this,'{tr}Are you sure you want to delete this menu item?{/tr}')" title="{tr}Delete this menu{/tr}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
-				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;option_id={$channels[user].option_id}" title="Edit this menu">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$admmoptions[user].option_id}" onclick="return confirmTheLink(this,'{tr}Are you sure you want to delete this menu item?{/tr}')" title="{tr}Delete this menu{/tr}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;option_id={$admmoptions[user].option_id}" title="Edit this menu">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
 			</td>
 		</tr>
 	{sectionelse}

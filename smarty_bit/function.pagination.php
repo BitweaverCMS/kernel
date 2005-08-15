@@ -25,7 +25,7 @@ function smarty_function_pagination( $params, &$gBitSmarty ) {
 		$pgnHidden[$form_param] = $form_val;
 	}
     $gBitSmarty->assign( 'pgnVars', $pgnVars );
-
+	$gBitSmarty->assign( 'pgnHidden', $pgnHidden );
     $gBitSmarty->display('bitpackage:kernel/pagination.tpl');
 }
 ?>

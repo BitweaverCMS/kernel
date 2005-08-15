@@ -153,7 +153,7 @@
 				{formlabel label="Parameters" for="params"}
 				{forminput}
 					<input type="text" name="fAssign[params]" id="params" value="{$fAssign.params|escape}" />
-					{formhelp note="Here you can enter any additional parameters the module might need. Use the http query string form, e.g. foo=123&bar=ABC (optional)"}
+					{formhelp note="Here you can enter any additional parameters the module might need. Use the http query string form, e.g. foo=123&amp;bar=ABC (optional)"}
 				{/forminput}
 			</div>
 
@@ -291,12 +291,15 @@
 
 <h1>{tr}Modules Help{/tr}</h1>
 {formhelp note="Below you can find information on what modules do and what parameters they take. If a module is not listed, the module probably doesn't take any special parameters." page="ModuleParameters"}
+<noscript>{smartlink ititle="Expand Help" page=$page expand_all=1}</noscript>
 {foreach from=$allModulesHelp key=package item=help}
-	<h2>{$package}</h2>
-	{foreach from=$help key=file item=title}
-		{box title=$title}
-			{include file=$file}
-		{/box}
-	{/foreach}
+	<h2><a href="javascript:flip('id{$package}')">{$package}</a></h2>
+	<div id="id{$package}" {if !$smarty.request.expand_all}style="display:none;"{/if}>
+		{foreach from=$help key=file item=title}
+			{box title=$title}
+				{include file=$file}
+			{/box}
+		{/foreach}
+	</div>
 {/foreach}
 {/strip}

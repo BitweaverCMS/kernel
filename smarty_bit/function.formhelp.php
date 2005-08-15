@@ -38,6 +38,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 		switch( $key ) {
 			case 'note':
 			case 'link':
+			case 'label':
 			case 'page':
 			case 'package':
 			case 'install':

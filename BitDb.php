@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.18 2005/08/14 11:36:23 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.19 2005/08/15 07:17:19 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -484,6 +484,7 @@ class BitDb
 			global $gBitSystem;
 			$this->mQueryLap = $gBitSystem->mTimer->elapsed();
 			$this->mDb->debug = $gDebug;
+			flush();
 		}
 	}
 
@@ -502,6 +503,7 @@ class BitDb
 			$style = ( $interval > .5 ) ? 'color:red;' : (( $interval > .15 ) ? 'color:orange;' : '');
 			print '<p style="'.$style.'">### Query: '.$num_queries.' Start time: '.$this->mQueryLap.' ### Query run time: '.$interval.'</p>';
 			$this->mQueryLap = 0;
+			flush();
 		}
 	}
 

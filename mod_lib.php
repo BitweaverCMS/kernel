@@ -3,7 +3,7 @@
  * Modules Management Library 
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.10 2005/08/10 17:45:36 drewslater Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.11 2005/08/15 07:17:19 spiderr Exp $
  */
 
 /**
@@ -184,23 +184,23 @@ class ModLib extends BitBase {
 	}
 
 	function assignModule( $pModuleId, $pUserId, $pLayout, $pPosition, $pOrder = 0, $securityOK = FALSE ) {
-		global $bit_p_admin, $gBitUser;
+		global $gBitUser;
 		// security check
-		if( ($bit_p_admin || $securityOK || ( $gBitUser->mUserId==$pUserId )) && is_numeric( $pModuleId ) ) {
+		if( ($gBitUser->isAdmin() || $securityOK || ( $gBitUser->mUserId==$pUserId )) && is_numeric( $pModuleId ) ) {
 			$this->unassignModule( $pModuleId, $pUserId, $pLayout );
 			$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_layouts` (`user_id`, `module_id`, `layout`, `position`, `ord`) VALUES(?,?,?,?,?)";
 			$result = $this->mDb->query( $query, array( $pUserId, (int)$pModuleId, $pLayout, $pPosition, $pOrder ) );
 		}
 	}
-	
+
 	function removeAllLayoutModules( $pUserId = NULL, $pLayout = NULL, $securityOK = FALSE) {
-		global $bit_p_admin, $gBitUser;
-		if ( ($bit_p_admin || $securityOK || ( $gBitUser->mUserId == $pUserId )) && ($pUserId && $pLayout)) {
+		global $gBitUser;
+		if ( ($gBitUser->isAdmin() || $securityOK || ( $gBitUser->mUserId == $pUserId )) && ($pUserId && $pLayout)) {
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_layouts` WHERE `user_id` = ? AND `layout` = ?";
 			$result = $this->mDb->query( $query, array($pUserId, $pLayout));
 		}
 	}
-	
+
 	function unassignModule( $pModuleId, $pUserId = NULL, $pLayout = NULL ) {
 		global $gBitUser;
 		global $gQueryUser;

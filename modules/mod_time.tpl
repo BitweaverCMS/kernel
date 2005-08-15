@@ -5,7 +5,8 @@
 		{elseif $modParams.src eq 'javascript'}
 			{literal}
 			<div id="js_clock" style="height:2.4em;font-family:monospace;">
-				<script language="javascript">
+				<script type="text/javascript">
+					//<![CDATA[
 					function js_clock(){
 						var clock_time = new Date();
 						var clock_hours = clock_time.getHours();
@@ -19,13 +20,15 @@
 						setTimeout("js_clock()", 1000);
 					}
 					js_clock();
+					//]]>
 				</script>
 			</div>
 			{/literal}
 		{elseif $modParams.src eq 'javascript12'}
 			{literal}
 			<div id="js_clock" style="font-family:monospace;">
-				<script language="javascript">
+				<script type="text/javascript">
+					//<![CDATA[
 					function js_clock(){
 						var clock_time = new Date();
 						var clock_hours = clock_time.getHours();
@@ -42,6 +45,7 @@
 						setTimeout("js_clock()", 1000);
 					}
 					js_clock();
+					//]]>
 				</script>
 			</div>
 			{/literal}

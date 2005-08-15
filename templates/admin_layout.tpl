@@ -291,7 +291,7 @@
 
 <h1>{tr}Modules Help{/tr}</h1>
 {formhelp note="Below you can find information on what modules do and what parameters they take. If a module is not listed, the module probably doesn't take any special parameters." page="ModuleParameters"}
-<noscript>{smartlink ititle="Expand Help" page=$page expand_all=1}</noscript>
+<noscript><div>{smartlink ititle="Expand Help" page=$page expand_all=1}</div></noscript>
 {foreach from=$allModulesHelp key=package item=help}
 	<h2><a href="javascript:flip('id{$package}')">{$package}</a></h2>
 	<div id="id{$package}" {if !$smarty.request.expand_all}style="display:none;"{/if}>

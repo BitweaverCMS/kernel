@@ -79,7 +79,7 @@ function output_icon($params, $file) {
 */
 function smarty_function_biticon($params, &$gBitSmarty) {
 	global $gBitSystem, $icon_style;
-	
+
 	if (!isset($params['ipath']))
 		$params['ipath'] = '';
 
@@ -107,7 +107,7 @@ function smarty_function_biticon($params, &$gBitSmarty) {
 		$ret = output_icon($params, BIT_ROOT_URL."themes/force/icons/".$params['ipackage'].'/'.$params['ipath'].$matchFile);
 		return $ret;
 	}
-	
+
 	//if we have site styles, look there
 	if (false !== ($matchFile = get_first_match( $gBitSystem->getStylePath().'/icons/'.$params['ipackage']."/".$params['ipath'],$params['iname']))) {
 		return output_icon($params, $gBitSystem->getStyleUrl().'/icons/'.$params['ipackage']."/".$params['ipath'].$matchFile);

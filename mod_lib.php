@@ -3,7 +3,7 @@
  * Modules Management Library 
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.11 2005/08/15 07:17:19 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.12 2005/08/16 13:04:27 wolff_borg Exp $
  */
 
 /**
@@ -350,7 +350,7 @@ class ModLib extends BitBase {
 				}
 				$allGroupNames = array();
 				foreach( array_keys( $allGroups ) as $groupId ) {
-					array_push( $allGroupNames, $allGroups[$groupId] );
+					$allGroupNames["$groupId"] = $allGroups[$groupId]["group_name"];
 				}
 				if( $modGroups = @unserialize( $result->fields["groups"] ) ) {
 					foreach( $modGroups as $groupName ) {
@@ -363,7 +363,7 @@ class ModLib extends BitBase {
 
 			$result->fields["groups"] = trim( $result->fields["groups"] );
 			if( !empty( $result->fields["groups"] ) ) {
-				$result->fields["groups"] = explode( $result->fields["groups"], ' ' );
+				$result->fields["groups"] = explode( ' ', $result->fields["groups"] );
 			}
 			if ( $gBitUser->isAdmin() || !empty( $result->fields['groups'] ) || (is_array($result->fields['groups']) && in_array($gBitUser->mGroups, $result->fields['groups'])) ) {
 				array_push( $ret[$subArray], $result->fields );

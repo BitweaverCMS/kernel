@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.1.1.1.2.3 2005/07/15 21:26:21 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.1.1.1.2.4 2005/08/17 23:41:42 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -83,6 +83,14 @@
 
 		{jstab title="Miscellaneous"}
 			{legend legend="Miscellaneous Settings"}
+				<div class="row">
+					{formlabel label="Menu Title" for="site_menu_title"}
+					{forminput}
+						<input size="40" type="text" name="site_menu_title" id="site_menu_title" value="{$gBitSystemPrefs.site_menu_title|escape}" />
+						{formhelp note="Override the default home page link name in the top menu bar."}
+					{/forminput}
+				</div>
+
 				<div class="row">
 					{formlabel label="Maximum number of records in listings" for="maxRecords"}
 					{forminput}

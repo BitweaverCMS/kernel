@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.1.1.1.2.3 2005/08/14 05:59:46 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.1.1.1.2.4 2005/08/17 23:41:42 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -45,6 +45,7 @@ if ($processForm) {
 	}
 
 	$pref_simple_values = array(
+		"site_menu_title",
 		"maxRecords",
 		"urlIndex",
 	);

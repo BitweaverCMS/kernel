@@ -42,17 +42,19 @@ function get_first_match($dir,$filename)
 function output_icon($params, $file) {
 	global $gBitSystem;
 
+	$iexplain = isset( $params["iexplain"] ) ? tra( $params["iexplain"] ) : 'please set iexplain';
+
 	if( isset( $params["url"] ) ) {
 		$outstr = $file;
 	} else {
 		if( $gBitSystem->getPreference( 'biticon_display' ) == 'text' && $params['iforce'] != 'icon' ) {
-			$outstr = isset( $params["iexplain"] ) ? tra($params["iexplain"]) : 'please set iexplain';
+			$outstr = $iexplain;
 		} else {
 			$outstr="<img src=\"".$file."\"";
-			if(isset($params["iexplain"])) {
-				$outstr=$outstr." alt=\"".tra($params["iexplain"])."\" title=\"".tra($params["iexplain"])."\"";
+			if( isset( $params["iexplain"] ) ) {
+				$outstr .= $outstr." alt=\"".tra( $params["iexplain"] )."\" title=\"".tra($params["iexplain"])."\"";
 			} else {
-				$outstr=$outstr." alt=\"\"";
+				$outstr .= " alt=\"\"";
 			}
 
 			foreach ($params as $name => $val) {
@@ -67,8 +69,9 @@ function output_icon($params, $file) {
 
 			$outstr = $outstr." />";
 		}
-		if( $gBitSystem->getPreference( 'biticon_display' ) == 'icon_text' && $params['iforce'] != 'icon' ) {
-			$outstr .= '&nbsp;'.isset( $params["iexplain"] ) ? tra($params["iexplain"]) : 'please set iexplain';
+
+		if( $gBitSystem->getPreference( 'biticon_display' ) == 'icon_text' && $params['iforce'] != 'icon' || $params['iforce'] == 'icon_text' ) {
+			$outstr .= '&nbsp;'.$iexplain;
 		}
 	}
 	return $outstr;

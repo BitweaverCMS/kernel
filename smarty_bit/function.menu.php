@@ -5,6 +5,9 @@
  * @subpackage plugins
  */
 
+/**
+ * required setup
+ */
 include_once( KERNEL_PKG_PATH . 'menu_lib.php' );
 
 /**

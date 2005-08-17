@@ -52,22 +52,22 @@ function output_icon($params, $file) {
 		} else {
 			$outstr="<img src=\"".$file."\"";
 			if( isset( $params["iexplain"] ) ) {
-				$outstr .= $outstr." alt=\"".tra( $params["iexplain"] )."\" title=\"".tra($params["iexplain"])."\"";
+				$outstr .= " alt=\"".tra( $params["iexplain"] )."\" title=\"".tra($params["iexplain"])."\"";
 			} else {
 				$outstr .= " alt=\"\"";
 			}
 
 			foreach ($params as $name => $val) {
 				if($name != "ipackage" && $name != "ipath" && $name != "iname" && $name != "iexplain" && $name != "iforce") {
-					$outstr = $outstr." ".$name."=\"".$val."\"";
+					$outstr .= " ".$name."=\"".$val."\"";
 				}
 			}
 
 			if(!isset($params["class"])) {
-				$outstr=$outstr." class=\"icon\"";
+				$outstr .= " class=\"icon\"";
 			}
 
-			$outstr = $outstr." />";
+			$outstr .= " />";
 		}
 
 		if( $gBitSystem->getPreference( 'biticon_display' ) == 'icon_text' && $params['iforce'] != 'icon' || $params['iforce'] == 'icon_text' ) {

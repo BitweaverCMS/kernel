@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.40 2005/08/11 15:40:45 otherlanddk Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.41 2005/08/17 18:37:11 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2176,31 +2176,6 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		$html = $fmt->format($z, $page1);
 		}
 		return $html;
-	}
-
-	// function to scan other package for files that need to be integrated
-	// @param $pFile path and filename in question. if the file is a template, no template/ needs to be prepended
-	// @param $pTrippleCheck (boolean) set to TRUE if you want to make sure all appropriate files are present for the integration
-	function getPackageIntegrationFiles( $pFile=NULL, $pTrippleCheck=FALSE ) {
-		global $gBitSystem;
-		$ret = array();
-		if( !empty( $pFile ) ) {
-			foreach( $gBitSystem->mPackages as $package => $packageInfo ) {
-				if( is_file( $packageInfo['path'].$pFile ) ) {
-					if( preg_match( "/\.tpl$/", $pFile ) ) {
-						$ret[$package] = 'bitpackage:'.$package.'/'.preg_replace( "/templates\//", "", $pFile );
-					} else {
-						$ret[$package] = $packageInfo['path'].$pFile;
-					}
-				}
-
-				// if we are doing the tripple check and not all files are present, unset the info for that package
-				if( $pTrippleCheck && !( is_file( $packageInfo['path'].'get_form_info_inc.php' ) && is_file( $packageInfo['path'].'get_form_info_inc.php' ) && is_file( $packageInfo['path'].'get_form_info_inc.php' ) ) ) {
-					unset( $ret[$package] );
-				}
-			}
-		}
-		return $ret;
 	}
 }
 

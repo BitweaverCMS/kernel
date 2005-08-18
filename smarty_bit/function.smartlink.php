@@ -4,6 +4,7 @@
  * @package Smarty
  * @subpackage plugins
  * @author xing <xing$synapse.plus.com>
+ * @link http://www.bitweaver.org/wiki/function_smartlink function.smartlink
  */
 
 /**

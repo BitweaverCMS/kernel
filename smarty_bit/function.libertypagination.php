@@ -1,6 +1,6 @@
 <?php
 /**
- * Smarty plugin
+ * Smarty {libertypagination} function plugin
  * @package Smarty
  * @subpackage plugins
  * @link http://www.bitweaver.org/wiki/function_libertypagination function.libertypagination
@@ -25,10 +25,12 @@
  */
 function smarty_function_libertypagination($params, &$gBitSmarty) {
 	if( isset( $params['ihash'] ) && is_array( $params['ihash'] ) ) {
-		$params = $params['ihash'];
+		$params = array_merge( $params['ihash'], $params );
+		$params['ihash'] = NULL;
 	}
 
 	if( isset( $params['url'] ) ) {
+		$urlParams = '';
 		parse_str( preg_replace( "/.*\?/", "", $params['url'] ), $urlParams );
 		$params = array_merge( $urlParams, $params );
 	}
@@ -42,7 +44,6 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 			$pgnHidden[$form_param] = $form_val;
 		}
 	}
-
 	$pgnVars .= ( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' );
 
     for( $pageCount = 1; $pageCount < $params['numPages']+1; $pageCount++ ) {

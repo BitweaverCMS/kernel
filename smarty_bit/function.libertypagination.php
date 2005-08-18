@@ -1,13 +1,6 @@
 <?php
 /**
  * Smarty {libertypagination} function plugin
- * @package Smarty
- * @subpackage plugins
- * @link http://www.bitweaver.org/wiki/function_libertypagination function.libertypagination
- */
-
-/**
- * Smarty {libertypagination} function plugin
  *
  * This provides a means of paging through longer lists of data using an up and down arrow.
  * In addition, if the 'direct_pagination' feature is enabled, then a direct page number can be entered jump directly to
@@ -22,6 +15,14 @@
  *			- ihash   (optional)	you can pass in all the above as an array called ihash or secondary * items common to all links<br>
  *			The ihash option allow the inclusion of additional link values as provided for smartlink navigation<br>
  * Output:   url of the form: $PHP_SELF?attribute1=value1&attribute2=value2
+ * 
+ * @package Smarty
+ * @subpackage plugins
+ * @link http://www.bitweaver.org/wiki/function_libertypagination function.libertypagination
+ */
+
+/**
+ * Smarty {libertypagination} function plugin
  */
 function smarty_function_libertypagination($params, &$gBitSmarty) {
 	if( isset( $params['ihash'] ) && is_array( $params['ihash'] ) ) {

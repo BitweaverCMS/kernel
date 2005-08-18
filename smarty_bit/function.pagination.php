@@ -1,17 +1,18 @@
 <?php
 /**
- * Smarty plugin
+ * Smarty {pagination} function plugin
  * @package Smarty
  * @subpackage plugins
+ * @link http://www.bitweaver.org/wiki/function_pagination function_pagination
  */
 
 /**
  * Smarty {pagination} function plugin
  *
- * Type:     function
- * Name:     pagination
- * Input:
- *           - <attribute>=<value>  (optional) - pass in any attributes and they will be added to the pagination string
+ * Type:     function<br>
+ * Name:     pagination<br>
+ * Input:<br>
+ *           - <attribute>=<value>  (optional) - pass in any attributes and they will be added to the pagination string<br>
  * Output:   url of the form: $PHP_SELF?attribute1=value1&attribute2=value2
  */
 function smarty_function_pagination( $params, &$gBitSmarty ) {

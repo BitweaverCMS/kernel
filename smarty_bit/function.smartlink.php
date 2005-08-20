@@ -29,6 +29,7 @@
  *			- ibiticon	(optional)	if you want to display an icon instead of text use ibiticon<br>
  *									format is:	'&lt;ipackage&gt;/&lt;iname&gt;'<br>
  *									e.g.:		'liberty/edit'<br>
+ *			- iforce	(optional)	pass iforce parameter through to biticon
  *			- iurl		(optional)	pass in a full url
  *			- ifile		(optional)	set the file where the link should point (default is the current file)<br>
  *			- ipackage	(optional)	set the package the link should point to (default is the current package)<br>
@@ -144,6 +145,9 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 				'iname' => $tmp[1],
 				'iexplain' => $hash['ititle'],
 			);
+			if( !empty( $hash['iforce'] ) ) {
+				$ibiticon['iforce'] = $hash['iforce'];
+			}
 			$ret .= smarty_function_biticon( $ibiticon, $gBitSmarty );
 		} else {
 			$ret .= tra( $hash['ititle'] );

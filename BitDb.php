@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.19 2005/08/15 07:17:19 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.20 2005/08/20 16:28:38 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -392,7 +392,7 @@ class BitDb
 	}
 
 	/**
-	 * List columns in a database as an array of ADOFieldObjects. 
+	 * List columns in a database as an array of ADOFieldObjects.
 	 * See top of file for definition of object.
 	 *
 	 * @param table	table name to query
@@ -476,7 +476,7 @@ class BitDb
 	}
 
 	/**
-	* Used to start query timer if in debug mode 
+	* Used to start query timer if in debug mode
 	*/
 	function queryStart() {
 		global $gDebug;
@@ -562,7 +562,7 @@ class BitDb
 	* at the location identified in updateId which holds a name and value entry
 	* @param updateTable Name of the table to be updated
 	* @param updateData Array of data to be changed. Array keys provide the field names
-	* @param updateId Array identifying the record to update. 
+	* @param updateId Array identifying the record to update.
 	*		Array key 'name' provide the field name, and 'value' the record key
 	* @return Error status of the insert
 	*/
@@ -607,7 +607,7 @@ class BitDb
 		return $this->mDb->Execute(sprintf($this->_genSeqSQL,$seqname,$startID));
 	}
 
-	/** 
+	/**
 	* A database portable IFNULL function.
 	*
 	* @param pField argument to compare to NULL
@@ -651,7 +651,7 @@ class BitDb
 	 *		If NULL an offset from the current time is supplied
 	 * @return New number of days
 	 *
-	 * @todo Not currently used - this is database specific and uses TIMESTAMP 
+	 * @todo Not currently used - this is database specific and uses TIMESTAMP
 	 * rather than unix seconds
 	 */
 	function OffsetDate( $pDays, $pColumn=NULL ) {
@@ -892,7 +892,7 @@ class BitDb
 	/**
 	 *	Improved method of initiating a transaction. Used together with CompleteTrans().
 	 *	Advantages include:
-	 *	
+	 *
 	 *	a. StartTrans/CompleteTrans is nestable, unlike BeginTrans/CommitTrans/RollbackTrans.
 	 *	   Only the outermost block is treated as a transaction.<br>
 	 *	b. CompleteTrans auto-detects SQL errors, and will rollback on errors, commit otherwise.<br>
@@ -906,8 +906,8 @@ class BitDb
 	/**
 	 *	Used together with StartTrans() to end a transaction. Monitors connection
 	 *	for sql errors, and will commit or rollback as appropriate.
-	 *	
-	 *	autoComplete if true, monitor sql errors and commit and rollback as appropriate, 
+	 *
+	 *	autoComplete if true, monitor sql errors and commit and rollback as appropriate,
 	 *	and if set to false force rollback even if no SQL error detected.
 	 *	@returns true on commit, false on rollback.
 	 */
@@ -928,7 +928,7 @@ class BitDb
 	/**
 	 * Create a list of tables available in the current database
 	 *
-	 * @param ttype can either be 'VIEW' or 'TABLE' or false. 
+	 * @param ttype can either be 'VIEW' or 'TABLE' or false.
 	 * 		If false, both views and tables are returned.
 	 *		"VIEW" returns only views
 	 *		"TABLE" returns only tables
@@ -936,19 +936,19 @@ class BitDb
 	 * @param mask  is the input mask - only supported by oci8 and postgresql
 	 *
 	 * @return  array of tables for current database.
-	 */ 
+	 */
 	function MetaTables( $ttype = false, $showSchema = false, $mask=false ) {
 		 return $this->mDb->MetaTables( $ttype, $showSchema, $mask );
 	}
 
 	/**
 	* @return # rows affected by UPDATE/DELETE
-	*/ 
+	*/
 	function Affected_Rows() {
 		return $this->mDb->Affected_Rows();
 	}
-	/** 
-	 * Check for Postgres specific extensions 
+	/**
+	 * Check for Postgres specific extensions
 	 */
 	function isAdvancedPostgresEnabled() {
 		// This code makes use of the badass /usr/share/pgsql/contrib/tablefunc.sql

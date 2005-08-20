@@ -29,16 +29,16 @@
 								{/if}
 
 								<div style="text-align:center;">
-									{smartlink ititle="Up" ibiticon="liberty/move_up" page=layout fMove=up fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
+									{smartlink ititle="Up" ibiticon="liberty/move_up" iforce="icon" page=layout fMove=up fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									&nbsp;&nbsp;
-									{smartlink ititle="Down" ibiticon="liberty/move_down" page=layout fMove=down fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
+									{smartlink ititle="Down" ibiticon="liberty/move_down" iforce="icon" page=layout fMove=down fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									&nbsp;&nbsp;
 									{if $colkey ne 'center'}
-										{smartlink ititle="Move to Right" ibiticon="liberty/move_$colkey" page=layout fMove=$colkey fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
+										{smartlink ititle="Move to Right" ibiticon="liberty/move_$colkey" iforce="icon" page=layout fMove=$colkey fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									{/if}
 									&nbsp;&nbsp;
 									{if $column[ix].type ne 'P'}
-										{smartlink ititle="Unassign" ibiticon="liberty/delete_small" ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout fMove=unassign fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
+										{smartlink ititle="Unassign" ibiticon="liberty/delete_small" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout fMove=unassign fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									{/if}
 								</div>
 							</td>

@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.3 2005/08/03 16:53:55 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.4 2005/08/22 11:25:09 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -52,7 +52,7 @@ class BitDate {
 	 * returns: Display-offset timestamp.
 	 */
 	function getDisplayDateFromUTC($_timestamp) {
-		return $_timestamp + $this->display_offset;
+		return $this->getTimestampFromISO($_timestamp) + $this->display_offset;
 	}
 
 	/**
@@ -61,7 +61,7 @@ class BitDate {
 	 * returns: UTC timestamp.
 	 */
 	function getUTCFromDisplayDate($_timestamp) {
-		return $_timestamp - $this->display_offset;
+		return $this->getTimestampFromISO($_timestamp) - $this->display_offset;
 	}
 
 	/**
@@ -70,7 +70,7 @@ class BitDate {
 	 * returns: Server timestamp.
 	 */
 	function getServerDateFromUTC($_timestamp) {
-		return $_timestamp + $this->server_offset;
+		return $this->getTimestampFromISO($_timestamp) + $this->server_offset;
 	}
 
 	/**
@@ -79,7 +79,7 @@ class BitDate {
 	 * returns: UTC timestamp.
 	 */
 	function getUTCFromServerDate($_timestamp) {
-		return $_timestamp - $this->server_offset;
+		return $this->getTimestampFromISO($_timestamp) - $this->server_offset;
 	}
 
 	/**
@@ -88,7 +88,8 @@ class BitDate {
 	 * returns: Server timestamp.
 	 */
 	function getServerDateFromDisplayDate($_timestamp) {
-		return $this->getServerDateFromUTC($this->getUTCFromDisplayDate($_timestamp));
+		return $this->getServerDateFromUTC($this->getUTCFromDisplayDate($this->getTimestampFromISO($_timestamp)));
+
 	}
 
 	/**
@@ -97,7 +98,7 @@ class BitDate {
 	 * returns: Display timestamp.
 	 */
 	function getDisplayDateFromServerDate($_timestamp) {
-		return $this->getDisplayDateFromUTC($this->getUTCFromServerDate($_timestamp));
+		return $this->getDisplayDateFromUTC($this->getUTCFromServerDate($this->getTimestampFromISO($_timestamp)));
 	}
 
 	/**
@@ -118,6 +119,28 @@ class BitDate {
 		else
 			return "";
 	}
+
+	/**
+	 * Convert ISO date to numberic timestamp.
+	 *
+	 * @param string ISO format date<br>
+	 *	yYYY-mM-dD hH:mM:sS.s ( Lower case letters optional, but should be 0 )
+	 * @return integer Seconds count based on 1st Jan 1970<br>
+	 * returns $iso_date if it is a number, or 0 if format invalid
+	 */
+	function getTimestampFromISO($iso_date) {
+		$ret = 0;
+		if ( is_numeric($iso_date) ) $ret = $iso_date;
+		else if (preg_match( 
+		"|^([0-9]{3,4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|", 
+			($iso_date), $rr)) {
+			// h-m-s-MM-DD-YY
+			if (!isset($rr[5])) $ret = adodb_mktime(0,0,0,$rr[2],$rr[3],$rr[1]);
+			else $ret = @adodb_mktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[3],$rr[1]);
+		}
+		return $ret;			
+	}
+	
 }
 
 ?>

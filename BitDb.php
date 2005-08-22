@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.20 2005/08/20 16:28:38 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.21 2005/08/22 19:43:35 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -850,14 +850,16 @@ class BitDb
 	}
 
 	/**
-	* Used to encode blob data (eg PostgreSQL)
+	* Used to encode blob data (eg PostgreSQL). Can be called statically
 	* @todo had a lot of trouble with AdoDB BlobEncode and BlobDecode
 	* the code works but will need work for dbs other than PgSQL
 	* @param pData a string of raw blob data
 	* @return escaped blob data
 	*/
 	function db_byte_encode( &$pData ) {
-		switch ($this->mDb->mType) {
+		// need to use this global so as not to break static calls
+		global $gBitDbType;
+		switch ( $gBitDbType ) {
 			case "postgres":
 				$search = array(chr(92), chr(0), chr(39));
 				$replace = array('\\\134', '\\\000', '\\\047');

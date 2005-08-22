@@ -56,7 +56,7 @@
 	</tr>
 </table>
 
-{form legend="Select Section"}
+{form action=$smarty.server.PHP_SELF legend="Select Section"}
 	<input type="hidden" name="page" value="{$page}" />
 	<div class="row">
 		{formlabel label="Create Customized layout for" for="fPackage"}
@@ -80,7 +80,7 @@
 
 {jstabs}
 	{jstab title="Assign column module"}
-		{form legend="Assign column module"}
+		{form action=$smarty.server.PHP_SELF legend="Assign column module"}
 			<input type="hidden" name="page" value="{$page}" />
 			<input type="hidden" name="fPackage" value="{$fPackage}" />
 			<div class="row">
@@ -183,7 +183,7 @@
 	{/jstab}
 
 	{jstab title="Assign center piece"}
-		{form legend="Assign center piece"}
+		{form action=$smarty.server.PHP_SELF legend="Assign center piece"}
 			<input type="hidden" name="page" value="{$page}" />
 			<input type="hidden" name="fPackage" value="{$fPackage}" />
 			<input type="hidden" name="fAssign[pos]" value="c" />
@@ -270,7 +270,7 @@
 	{/jstab}
 
 	{jstab title="Miscellaneous Settigns"}
-		{form legend="Miscellaneous Settigns"}
+		{form action=$smarty.server.PHP_SELF legend="Miscellaneous Settigns"}
 			<input type="hidden" name="page" value="{$page}" />
 			{foreach from=$formMiscFeatures key=feature item=output}
 				<div class="row">

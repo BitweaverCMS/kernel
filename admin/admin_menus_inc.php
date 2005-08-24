@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_menus_inc.php,v 1.2 2005/08/01 18:40:34 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_menus_inc.php,v 1.3 2005/08/24 20:52:15 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -92,13 +92,13 @@ if (isset($_REQUEST["find"])) {
 $gBitSmarty->assign('find', $find);
 
 $gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
-$channels = $menulib->list_menus($offset, $maxRecords, $sort_mode, $find);
+$menus = $menulib->list_menus($offset, $maxRecords, $sort_mode, $find);
 
-$cant_pages = ceil($channels["cant"] / $maxRecords);
+$cant_pages = ceil($menus["cant"] / $maxRecords);
 $gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
 $gBitSmarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($channels["cant"] > ($offset + $maxRecords)) {
+if ($menus["cant"] > ($offset + $maxRecords)) {
 	$gBitSmarty->assign('next_offset', $offset + $maxRecords);
 } else {
 	$gBitSmarty->assign('next_offset', -1);
@@ -111,7 +111,7 @@ if ($offset > 0) {
 	$gBitSmarty->assign('prev_offset', -1);
 }
 
-$gBitSmarty->assign_by_ref('channels', $channels["data"]);
+$gBitSmarty->assign_by_ref('menus', $menus["data"]);
 
 
 

@@ -3,6 +3,7 @@
  * Smarty plugin
  * @package Smarty
  * @subpackage plugins
+ * @link http://www.bitweaver.org/wiki/function_biticon function_biticon
  */
 
 /**
@@ -42,33 +43,36 @@ function get_first_match($dir,$filename)
 function output_icon($params, $file) {
 	global $gBitSystem;
 
+	$iexplain = isset( $params["iexplain"] ) ? tra( $params["iexplain"] ) : 'please set iexplain';
+
 	if( isset( $params["url"] ) ) {
 		$outstr = $file;
 	} else {
 		if( $gBitSystem->getPreference( 'biticon_display' ) == 'text' && $params['iforce'] != 'icon' ) {
-			$outstr = isset( $params["iexplain"] ) ? tra($params["iexplain"]) : 'please set iexplain';
+			$outstr = $iexplain;
 		} else {
 			$outstr="<img src=\"".$file."\"";
-			if(isset($params["iexplain"])) {
-				$outstr=$outstr." alt=\"".tra($params["iexplain"])."\" title=\"".tra($params["iexplain"])."\"";
+			if( isset( $params["iexplain"] ) ) {
+				$outstr .= " alt=\"".tra( $params["iexplain"] )."\" title=\"".tra($params["iexplain"])."\"";
 			} else {
-				$outstr=$outstr." alt=\"\"";
+				$outstr .= " alt=\"\"";
 			}
 
 			foreach ($params as $name => $val) {
 				if($name != "ipackage" && $name != "ipath" && $name != "iname" && $name != "iexplain" && $name != "iforce") {
-					$outstr = $outstr." ".$name."=\"".$val."\"";
+					$outstr .= " ".$name."=\"".$val."\"";
 				}
 			}
 
 			if(!isset($params["class"])) {
-				$outstr=$outstr." class=\"icon\"";
+				$outstr .= " class=\"icon\"";
 			}
 
-			$outstr = $outstr." />";
+			$outstr .= " />";
 		}
-		if( $gBitSystem->getPreference( 'biticon_display' ) == 'icon_text' && $params['iforce'] != 'icon' ) {
-			$outstr .= '&nbsp;'.isset( $params["iexplain"] ) ? tra($params["iexplain"]) : 'please set iexplain';
+
+		if( $gBitSystem->getPreference( 'biticon_display' ) == 'icon_text' && $params['iforce'] != 'icon' || $params['iforce'] == 'icon_text' ) {
+			$outstr .= '&nbsp;'.$iexplain;
 		}
 	}
 	return $outstr;
@@ -79,7 +83,7 @@ function output_icon($params, $file) {
 */
 function smarty_function_biticon($params, &$gBitSmarty) {
 	global $gBitSystem, $icon_style;
-	
+
 	if (!isset($params['ipath']))
 		$params['ipath'] = '';
 
@@ -107,7 +111,7 @@ function smarty_function_biticon($params, &$gBitSmarty) {
 		$ret = output_icon($params, BIT_ROOT_URL."themes/force/icons/".$params['ipackage'].'/'.$params['ipath'].$matchFile);
 		return $ret;
 	}
-	
+
 	//if we have site styles, look there
 	if (false !== ($matchFile = get_first_match( $gBitSystem->getStylePath().'/icons/'.$params['ipackage']."/".$params['ipath'],$params['iname']))) {
 		return output_icon($params, $gBitSystem->getStyleUrl().'/icons/'.$params['ipackage']."/".$params['ipath'].$matchFile);

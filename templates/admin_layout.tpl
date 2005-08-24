@@ -29,16 +29,16 @@
 								{/if}
 
 								<div style="text-align:center;">
-									{smartlink ititle="Up" ibiticon="liberty/move_up" page=layout fMove=up fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
+									{smartlink ititle="Up" ibiticon="liberty/move_up" iforce="icon" page=layout fMove=up fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									&nbsp;&nbsp;
-									{smartlink ititle="Down" ibiticon="liberty/move_down" page=layout fMove=down fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
+									{smartlink ititle="Down" ibiticon="liberty/move_down" iforce="icon" page=layout fMove=down fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									&nbsp;&nbsp;
 									{if $colkey ne 'center'}
-										{smartlink ititle="Move to Right" ibiticon="liberty/move_$colkey" page=layout fMove=$colkey fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
+										{smartlink ititle="Move to Right" ibiticon="liberty/move_$colkey" iforce="icon" page=layout fMove=$colkey fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									{/if}
 									&nbsp;&nbsp;
 									{if $column[ix].type ne 'P'}
-										{smartlink ititle="Unassign" ibiticon="liberty/delete_small" ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout fMove=unassign fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
+										{smartlink ititle="Unassign" ibiticon="liberty/delete_small" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout fMove=unassign fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									{/if}
 								</div>
 							</td>
@@ -56,7 +56,7 @@
 	</tr>
 </table>
 
-{form legend="Select Section"}
+{form action=$smarty.server.PHP_SELF legend="Select Section"}
 	<input type="hidden" name="page" value="{$page}" />
 	<div class="row">
 		{formlabel label="Create Customized layout for" for="fPackage"}
@@ -80,7 +80,7 @@
 
 {jstabs}
 	{jstab title="Assign column module"}
-		{form legend="Assign column module"}
+		{form action=$smarty.server.PHP_SELF legend="Assign column module"}
 			<input type="hidden" name="page" value="{$page}" />
 			<input type="hidden" name="fPackage" value="{$fPackage}" />
 			<div class="row">
@@ -153,7 +153,7 @@
 				{formlabel label="Parameters" for="params"}
 				{forminput}
 					<input type="text" name="fAssign[params]" id="params" value="{$fAssign.params|escape}" />
-					{formhelp note="Here you can enter any additional parameters the module might need. Use the http query string form, e.g. foo=123&bar=ABC (optional)"}
+					{formhelp note="Here you can enter any additional parameters the module might need. Use the http query string form, e.g. foo=123&amp;bar=ABC (optional)"}
 				{/forminput}
 			</div>
 
@@ -183,7 +183,7 @@
 	{/jstab}
 
 	{jstab title="Assign center piece"}
-		{form legend="Assign center piece"}
+		{form action=$smarty.server.PHP_SELF legend="Assign center piece"}
 			<input type="hidden" name="page" value="{$page}" />
 			<input type="hidden" name="fPackage" value="{$fPackage}" />
 			<input type="hidden" name="fAssign[pos]" value="c" />
@@ -270,7 +270,7 @@
 	{/jstab}
 
 	{jstab title="Miscellaneous Settigns"}
-		{form legend="Miscellaneous Settigns"}
+		{form action=$smarty.server.PHP_SELF legend="Miscellaneous Settigns"}
 			<input type="hidden" name="page" value="{$page}" />
 			{foreach from=$formMiscFeatures key=feature item=output}
 				<div class="row">
@@ -291,12 +291,15 @@
 
 <h1>{tr}Modules Help{/tr}</h1>
 {formhelp note="Below you can find information on what modules do and what parameters they take. If a module is not listed, the module probably doesn't take any special parameters." page="ModuleParameters"}
+<noscript><div>{smartlink ititle="Expand Help" page=$page expand_all=1}</div></noscript>
 {foreach from=$allModulesHelp key=package item=help}
-	<h2>{$package}</h2>
-	{foreach from=$help key=file item=title}
-		{box title=$title}
-			{include file=$file}
-		{/box}
-	{/foreach}
+	<h2><a href="javascript:flip('id{$package}')">{$package}</a></h2>
+	<div id="id{$package}" {if !$smarty.request.expand_all}style="display:none;"{/if}>
+		{foreach from=$help key=file item=title}
+			{box title=$title}
+				{include file=$file}
+			{/box}
+		{/foreach}
+	</div>
 {/foreach}
 {/strip}

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_menu_options_inc.php,v 1.2 2005/08/01 18:40:34 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_menu_options_inc.php,v 1.3 2005/08/24 20:52:15 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -28,8 +28,8 @@ if (!isset($_REQUEST["menu_id"])) {
 $maxPos = $menulib->get_max_option($_REQUEST["menu_id"]);
 
 $gBitSmarty->assign('menu_id', $_REQUEST["menu_id"]);
-$menu_info = $menulib->get_menu($_REQUEST["menu_id"]);
-$gBitSmarty->assign('menu_info', $menu_info);
+$admmenu_info = $menulib->get_menu($_REQUEST["menu_id"]);
+$gBitSmarty->assign('admmenu_info', $admmenu_info);
 
 if (!isset($_REQUEST["option_id"])) {
 	$_REQUEST["option_id"] = 0;
@@ -105,13 +105,13 @@ if (isset($_REQUEST["find"])) {
 $gBitSmarty->assign('find', $find);
 
 $gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
-$allchannels = $menulib->list_menu_options($_REQUEST["menu_id"], 0, -1, $sort_mode, $find);
-$channels = $menulib->list_menu_options($_REQUEST["menu_id"], $offset, $maxRecords, $sort_mode, $find, true);
-$cant_pages = ceil($channels["cant"] / $maxRecords);
+$allmoptions = $menulib->list_menu_options($_REQUEST["menu_id"], 0, -1, $sort_mode, $find);
+$admmoptions = $menulib->list_menu_options($_REQUEST["menu_id"], $offset, $maxRecords, $sort_mode, $find, true);
+$cant_pages = ceil($admmoptions["cant"] / $maxRecords);
 $gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
 $gBitSmarty->assign('actual_page', 1 + ($offset / $maxRecords));
 
-if ($channels["cant"] > ($offset + $maxRecords)) {
+if ($admmoptions["cant"] > ($offset + $maxRecords)) {
 	$gBitSmarty->assign('next_offset', $offset + $maxRecords);
 } else {
 	$gBitSmarty->assign('next_offset', -1);
@@ -124,8 +124,8 @@ if ($offset > 0) {
 	$gBitSmarty->assign('prev_offset', -1);
 }
 
-$gBitSmarty->assign_by_ref('channels', $channels["data"]);
-$gBitSmarty->assign_by_ref('allchannels', $allchannels["data"]);
+$gBitSmarty->assign_by_ref('admmoptions', $admmoptions["data"]);
+$gBitSmarty->assign_by_ref('allmoptions', $allmoptions["data"]);
 
 
 ?>

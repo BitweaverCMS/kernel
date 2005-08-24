@@ -4,46 +4,49 @@
  * @package Smarty
  * @subpackage plugins
  * @author xing <xing$synapse.plus.com>
+ * @link http://www.bitweaver.org/wiki/function_smartlink function.smartlink
  */
 
 /**
  * Smarty {smartlink} function plugin
  *
- * Type:	function
- * Name:	smartlink
- * Input:
- *			- ititle	(required)	words that are displayed
- *			- ianchor	(optional)	set the anchor where the link should point to
- *			- isort		(optional)	name of the sort column without the orientation (e.g.: title)
- *			- isort_mode(optional)	this can be used to manually pass the sort mode to smartlink
- *									overrides the value given in $_REQUEST['sort_mode'], which is the default
- *			- iorder	(optional)	if set to asc or desc, it sets the default sorting order of this particular column
- *									asc is default
- *			- idefault	(optional)	if set, it will highlight this link if no $isort_mode is given
- *									this should only be set once per sorting group since it represents the default sorting column
- *			- itype		(optional)	can be set to
- *									url		-->		outputs only url
- *									li		-->		outputs link as <li><a ... ></li>
- *			- ionclick	(optional)	pass in any actions that should occur onclick
- *			- ibiticon	(optional)	if you want to display an icon instead of text use ibiticon
- *									format is:	'<ipackage>/<iname>'
- *									e.g.:		'liberty/edit'
+ * Type:	function<br>
+ * Name:	smartlink<br>
+ * Input:<br>
+ *			- ititle	(required)	words that are displayed<br>
+ *			- ianchor	(optional)	set the anchor where the link should point to<br>
+ *			- isort		(optional)	name of the sort column without the orientation (e.g.: title)<br>
+ *			- isort_mode(optional)	this can be used to manually pass the sort mode to smartlink<br>
+ *									overrides the value given in $_REQUEST['sort_mode'], which is the default<br>
+ *			- iorder	(optional)	if set to asc or desc, it sets the default sorting order of this particular column<br>
+ *									asc is default<br>
+ *			- idefault	(optional)	if set, it will highlight this link if no $isort_mode is given<br>
+ *									this should only be set once per sorting group since it represents the default sorting column<br>
+ *			- itype		(optional)	can be set to<br>
+ *									url		-->		outputs only url<br>
+ *									li		-->		outputs link as &lt;li&gt;&lt;a ... &gt;&lt;/li&gt;<br>
+ *			- ionclick	(optional)	pass in any actions that should occur onclick<br>
+ *			- ibiticon	(optional)	if you want to display an icon instead of text use ibiticon<br>
+ *									format is:	'&lt;ipackage&gt;/&lt;iname&gt;'<br>
+ *									e.g.:		'liberty/edit'<br>
+ *			- iforce	(optional)	pass iforce parameter through to biticon
  *			- iurl		(optional)	pass in a full url
- *			- ifile		(optional)	set the file where the link should point (default is the current file)
- *			- ipackage	(optional)	set the package the link should point to (default is the current package)
- *			- *			(optional)	anything else that gets added to the pile of items is appended using &amp;$key=$val
- *			- ihash		(optional)	you can pass in all the above as an array called ihash
+ *			- ifile		(optional)	set the file where the link should point (default is the current file)<br>
+ *			- ipackage	(optional)	set the package the link should point to (default is the current package)<br>
+ *			- *			(optional)	anything else that gets added to the pile of items is appended using &amp;$key=$val<br>
+ *			- ihash		(optional)	you can pass in all the above as an array called ihash or secondary * items common to all links<br>
  * Output:	any kind of link. especially useful when it comes to links used to sort a table, due to the simplified syntax and loss of cumbersome if clauses
- *			also useful if the you want to display an icon as link since smartlink takes biticon parameters
- * Example	- {smartlink ititle="Page Name" isort="title"}
- *			- {smartlink ititle="Page Name" isort="title" iorder="desc" idefault=1}
- *				setting iorder and idefault here, makes this link sort in a descending order by default (iorder)
- *				and it is highlighted when $isort_mode ( or $_REQUEST['sort_mode'] ) is not set (idefault)
- * Note Don't use this plugin if ititle is generated dynamically since it is passed through tra()
+ *			also useful if the you want to display an icon as link since smartlink takes biticon parameters<br>
+ * Example	- {smartlink ititle="Page Name" isort="title"}<br>
+ *			- {smartlink ititle="Page Name" isort="title" iorder="desc" idefault=1}<br>
+ *				setting iorder and idefault here, makes this link sort in a descending order by default (iorder)<br>
+ *				and it is highlighted when $isort_mode ( or $_REQUEST['sort_mode'] ) is not set (idefault)<br>
+ * Note Don't use this plugin if ititle is generated dynamically since it is passed through tra()<br>
  */
 function smarty_function_smartlink( $params, &$gBitSmarty ) {
 	if( !empty( $params['ihash'] ) ) {
-		$hash = &$params['ihash'];
+		$hash = array_merge( $params['ihash'], $params );
+		$hash['ihash'] = NULL;
 	} else {
 		// maybe params were passed in separately
 		$hash = &$params;
@@ -142,6 +145,9 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 				'iname' => $tmp[1],
 				'iexplain' => $hash['ititle'],
 			);
+			if( !empty( $hash['iforce'] ) ) {
+				$ibiticon['iforce'] = $hash['iforce'];
+			}
 			$ret .= smarty_function_biticon( $ibiticon, $gBitSmarty );
 		} else {
 			$ret .= tra( $hash['ititle'] );

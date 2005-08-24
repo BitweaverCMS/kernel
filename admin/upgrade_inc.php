@@ -41,9 +41,7 @@ array( 'QUERY' =>
 "INSERT INTO `".BIT_DB_PREFIX."tiki_layouts_modules` ( `moduleId`, `availability`, `title`, `cache_time`, `rows`, `params`, `groups` ) VALUES ( 2, NULL, NULL, NULL, NULL, NULL, '-1' )",
 "INSERT INTO `".BIT_DB_PREFIX."tiki_layouts` (`userId`, `moduleId`, `position`, `ord`, `layout`) VALUES (1, 1, 'r', 1, 'kernel')",
 "INSERT INTO `".BIT_DB_PREFIX."tiki_layouts` (`userId`, `moduleId`, `position`, `ord`, `layout`) VALUES (1, 2, 'l', 1, 'kernel')",
-"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` ( `name`, `value` ) VALUES ( 'feature_top_bar_dropdown', 'y' )",
 "DELETE FROM `".BIT_DB_PREFIX."tiki_preferences` WHERE `value` LIKE 'tiki-%.php%'",
-"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `value`='native' WHERE `name`='style'",
 )),
 ),
 
@@ -80,7 +78,8 @@ array( 'RENAMECOLUMN' => array(
 	'tiki_programmed_content' => array(	'`pId`' => '`p_id` I4 AUTO',
 										'`contentId`' => '`content_id` I4',
 										'`publishDate`' => '`publish_date` I8' ),
-	'sessions' => array( '`data`' => '`session_data` X'	),
+// Appears to be giving errors - wolff_borg 20050812
+//	'sessions' => array( '`data`' => '`session_data` X'	),
 )),
 
 array( 'ALTER' => array(
@@ -97,6 +96,10 @@ array( 'ALTER' => array(
 array( 'QUERY' =>
 	array( 'SQL92' => array(
 		"UPDATE `".BIT_DB_PREFIX."tiki_module_map` SET `module_rsrc` = replace( `module_rsrc`, 'tikipackage', 'bitpackage' )",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `value`='native' WHERE `name`='style'",
+		"DELETE FROM `".BIT_DB_PREFIX."tiki_preferences` WHERE `name`='tikiIndex'",
+		"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` ( `name`, `value` ) VALUES ( 'bitIndex', 'wiki' )",
+		"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` ( `name`, `value` ) VALUES ( 'feature_top_bar_dropdown', 'y' )",
 	)
 )),
 

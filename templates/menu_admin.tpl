@@ -22,8 +22,6 @@
 	{/if}
 {/if}{if $gBitSystem->isFeatureActive( 'feature_chat' ) and $gBitUser->hasPermission( 'bit_p_admin_chat' )}
 	<li><a class="item" href="{$smarty.const.CHAT_PKG_URL}admin/index.php">{tr}Chat{/tr}</a></li>
-{/if}{if $gBitSystem->isPackageActive( 'categories' ) and $gBitUser->hasPermission( 'bit_p_admin_categories' )}
-	<li><a class="item" href="{$smarty.const.CATEGORIES_PKG_URL}admin/index.php">{tr}Categories{/tr}</a></li>
 {/if}{if $gBitSystem->isFeatureActive( 'feature_banners' ) and $gBitUser->hasPermission( 'bit_p_admin_banners' )}
 	<li><a class="item" href="{$smarty.const.BANNERS_PKG_URL}admin/index.php">{tr}Banners{/tr}</a></li>
 {/if}{if $gBitSystem->isFeatureActive( 'feature_drawings' ) and $gBitUser->hasPermission( 'bit_p_admin_drawings' )}
@@ -34,8 +32,6 @@
 	<li><a class="item" href="{$smarty.const.WEBMAIL_PKG_URL}admin/admin_mailin.php">{tr}Mail-in{/tr}</a></li>
 {/if}{if $gBitSystem->isFeatureActive( 'feature_html_pages' ) and $gBitUser->hasPermission( 'bit_p_edit_html_pages' )}
 	<li><a class="item" href="{$smarty.const.HTML_PKG_URL}admin/admin_html_pages.php">{tr}HTML pages{/tr}</a></li>
-{/if}{if $gBitSystem->isFeatureActive( 'feature_referer_stats' ) and $gBitUser->hasPermission( 'bit_p_view_referer_stats' )}
-	<li><a class="item" href="{$smarty.const.STATS_PKG_URL}referer_stats.php">{tr}Referer stats{/tr}</a></li>
 {/if}{if $gBitSystem->isFeatureActive( 'feature_integrator' ) and $gBitUser->hasPermission( 'bit_p_admin_integrator' )}
 	<li><a class="item" href="{$smarty.const.INTEGRATOR_PKG_URL}admin/index.php">{tr}Integrator{/tr}</a></li>
 {/if}

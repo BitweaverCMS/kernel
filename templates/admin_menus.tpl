@@ -1,14 +1,14 @@
 {strip}
-
 {jstabs}
-		{if $menu_id > 0}
-		{jstab title="Edit {$name} Menu"}
-		{else}
-		{jstab title="Create new Menu"}
-		{/if}
-		{if $menu_id > 0}
-			<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}">{tr}Create new Menu{/tr}</a>
-		{/if}
+	{if $menu_id > 0}
+	{assign var=title value="Edit Menu"}
+	{else}
+	{assign var=title value="Create Menu"}
+	{/if}
+	{jstab title=$title}
+	{if $menu_id > 0}
+		<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}">{tr}Create new Menu{/tr}</a>
+	{/if}
 		{form legend="Edit/Create new Menu"}
 			<input type="hidden" name="page" value="{$page}" />
 			<input type="hidden" name="menu_id" value="{$menu_id|escape}" />
@@ -59,17 +59,17 @@
 			</tr>
 
 			{cycle values="even,odd" print=false}
-			{section name=user loop=$channels}
+			{section name=user loop=$menus}
 				<tr class="{cycle}">
-					<td>{$channels[user].menu_id}</td>
-					<td>{$channels[user].name}</td>
-					<td>{$channels[user].description}</td>
-					<td>{$channels[user].type}</td>
-					<td>{$channels[user].options}</td>
+					<td>{$menus[user].menu_id}</td>
+					<td>{$menus[user].name}</td>
+					<td>{$menus[user].description}</td>
+					<td>{$menus[user].type}</td>
+					<td>{$menus[user].options}</td>
 					<td class="actionicon">
-						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;menu_id={$channels[user].menu_id}" title="{tr}Edit this menu{/tr}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
-						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=menu_options&amp;menu_id={$channels[user].menu_id}" title="{tr}Configure this menu{/tr}">{biticon ipackage=liberty iname="config" iexplain="configure"}</a>
-						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].menu_id}" 
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;menu_id={$menus[user].menu_id}" title="{tr}Edit this menu{/tr}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=menu_options&amp;menu_id={$menus[user].menu_id}" title="{tr}Configure this menu{/tr}">{biticon ipackage=liberty iname="config" iexplain="configure"}</a>
+						<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$menus[user].menu_id}" 
 							onclick="return confirm('{tr}Are you sure you want to delete this menu?{/tr}')" title="{tr}Delete this menu{/tr}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
 					</td>
 				</tr>

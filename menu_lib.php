@@ -3,7 +3,7 @@
  * Menu Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/menu_lib.php,v 1.4 2005/08/07 17:38:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/menu_lib.php,v 1.5 2005/08/24 20:52:14 squareing Exp $
  */
 
 /**
@@ -183,6 +183,7 @@ class MenuLib extends BitBase {
 
 }
 
+global $menulib;
 $menulib = new MenuLib();
 
 ?>

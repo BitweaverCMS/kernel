@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.4 2005/08/01 18:40:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.5 2005/08/24 20:52:14 squareing Exp $
  * @package kernel
  * @subpackage functions
  *
@@ -16,7 +16,8 @@
 
 	// =========================== My ===========================
 	if( $gBitUser->isValid() ) {
-		$gBitSystem->registerAppMenu( 'users', 'My '.$gBitSystem->getPreference('siteTitle', 'bitweaver'), ($gBitSystem->getPreference('feature_userPreferences') == 'y' ? USERS_PKG_URL.'my.php':''), 'bitpackage:users/menu_users.tpl' );
+		$displayTitle = !empty( $gBitSystem->mPrefs['site_menu_title'] ) ? $gBitSystem->mPrefs['site_menu_title'] : $gBitSystem->getPreference( 'siteTitle', 'Site' );
+		$gBitSystem->registerAppMenu( 'users', 'My '.$displayTitle, ($gBitSystem->getPreference('feature_userPreferences') == 'y' ? USERS_PKG_URL.'my.php':''), 'bitpackage:users/menu_users.tpl' );
 	}
 	// =========================== Admin menu ===========================
 

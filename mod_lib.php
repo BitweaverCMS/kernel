@@ -3,7 +3,7 @@
  * Modules Management Library 
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.6 2005/08/11 13:03:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.7 2005/08/24 20:52:14 squareing Exp $
  */
 
 /**
@@ -184,23 +184,23 @@ class ModLib extends BitBase {
 	}
 
 	function assignModule( $pModuleId, $pUserId, $pLayout, $pPosition, $pOrder = 0, $securityOK = FALSE ) {
-		global $bit_p_admin, $gBitUser;
+		global $gBitUser;
 		// security check
-		if( ($bit_p_admin || $securityOK || ( $gBitUser->mUserId==$pUserId )) && is_numeric( $pModuleId ) ) {
+		if( ($gBitUser->isAdmin() || $securityOK || ( $gBitUser->mUserId==$pUserId )) && is_numeric( $pModuleId ) ) {
 			$this->unassignModule( $pModuleId, $pUserId, $pLayout );
 			$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_layouts` (`user_id`, `module_id`, `layout`, `position`, `ord`) VALUES(?,?,?,?,?)";
 			$result = $this->mDb->query( $query, array( $pUserId, (int)$pModuleId, $pLayout, $pPosition, $pOrder ) );
 		}
 	}
-	
+
 	function removeAllLayoutModules( $pUserId = NULL, $pLayout = NULL, $securityOK = FALSE) {
-		global $bit_p_admin, $gBitUser;
-		if ( ($bit_p_admin || $securityOK || ( $gBitUser->mUserId == $pUserId )) && ($pUserId && $pLayout)) {
+		global $gBitUser;
+		if ( ($gBitUser->isAdmin() || $securityOK || ( $gBitUser->mUserId == $pUserId )) && ($pUserId && $pLayout)) {
 			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_layouts` WHERE `user_id` = ? AND `layout` = ?";
 			$result = $this->mDb->query( $query, array($pUserId, $pLayout));
 		}
 	}
-	
+
 	function unassignModule( $pModuleId, $pUserId = NULL, $pLayout = NULL ) {
 		global $gBitUser;
 		global $gQueryUser;
@@ -350,7 +350,7 @@ class ModLib extends BitBase {
 				}
 				$allGroupNames = array();
 				foreach( array_keys( $allGroups ) as $groupId ) {
-					array_push( $allGroupNames, $allGroups[$groupId] );
+					$allGroupNames["$groupId"] = $allGroups[$groupId]["group_name"];
 				}
 				if( $modGroups = @unserialize( $result->fields["groups"] ) ) {
 					foreach( $modGroups as $groupName ) {
@@ -363,7 +363,7 @@ class ModLib extends BitBase {
 
 			$result->fields["groups"] = trim( $result->fields["groups"] );
 			if( !empty( $result->fields["groups"] ) ) {
-				$result->fields["groups"] = explode( $result->fields["groups"], ' ' );
+				$result->fields["groups"] = explode( ' ', $result->fields["groups"] );
 			}
 			if ( $gBitUser->isAdmin() || !empty( $result->fields['groups'] ) || (is_array($result->fields['groups']) && in_array($gBitUser->mGroups, $result->fields['groups'])) ) {
 				array_push( $ret[$subArray], $result->fields );

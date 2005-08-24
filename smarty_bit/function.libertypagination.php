@@ -1,28 +1,37 @@
 <?php
 /**
- * Smarty plugin
+ * Smarty {libertypagination} function plugin
+ *
+ * This provides a means of paging through longer lists of data using an up and down arrow.
+ * In addition, if the 'direct_pagination' feature is enabled, then a direct page number can be entered jump directly to
+ *
+ * Type:     function<br>
+ * Name:     libertypagination<br>
+ * Input:<br>
+ *			- numPages				Number of pages in total<br>
+ *			- page					current page<br>
+ *			- pgnName (optional)	parameter name used by script to find page you're on. defaults to page<br>
+ *			- ianchor (optional)	set an anchor<br>
+ *			- ihash   (optional)	you can pass in all the above as an array called ihash or secondary * items common to all links<br>
+ *			The ihash option allow the inclusion of additional link values as provided for smartlink navigation<br>
+ * Output:   url of the form: $PHP_SELF?attribute1=value1&attribute2=value2
+ * 
  * @package Smarty
  * @subpackage plugins
+ * @link http://www.bitweaver.org/wiki/function_libertypagination function.libertypagination
  */
 
 /**
  * Smarty {libertypagination} function plugin
- *
- * Type:     function
- * Name:     libertypagination
- * Input:    numPages			Number of pages in total
- *           page				current page
- *           pgnName (optional)	parameter name used by script to find page you're on. defaults to page
- *           ianchor (optional)	set an anchor
- * Output:   url of the form: $PHP_SELF?attribute1=value1&attribute2=value2
  */
-
 function smarty_function_libertypagination($params, &$gBitSmarty) {
-	if( isset( $params['hash'] ) && is_array( $params['hash'] ) ) {
-		$params = $params['hash'];
+	if( isset( $params['ihash'] ) && is_array( $params['ihash'] ) ) {
+		$params = array_merge( $params['ihash'], $params );
+		$params['ihash'] = NULL;
 	}
 
 	if( isset( $params['url'] ) ) {
+		$urlParams = '';
 		parse_str( preg_replace( "/.*\?/", "", $params['url'] ), $urlParams );
 		$params = array_merge( $urlParams, $params );
 	}
@@ -36,7 +45,6 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 			$pgnHidden[$form_param] = $form_val;
 		}
 	}
-
 	$pgnVars .= ( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' );
 
     for( $pageCount = 1; $pageCount < $params['numPages']+1; $pageCount++ ) {

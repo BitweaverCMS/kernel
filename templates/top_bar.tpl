@@ -1,5 +1,4 @@
 {strip}
-<a class="skip" style="position:absolute;top:0;left:-999em;" href="#content">{tr}Skip Navigation{/tr}</a>
 <div id="bittopbar">
 	<ul id="nav" class="menu hor">
 		{if $use_custom_top_bar and $gBitSystemPrefs.top_bar_position eq 'replace'}
@@ -17,7 +16,7 @@
 			{foreach key=key item=menu from=$appMenu}
 				{if $menu.title && $menu.titleUrl && $menu.template}
 					<li class="m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.adminPanel} current{/if}">
-						<a accesskey="{$key|regex_replace:"/(.).*/":"\$1"}" class="{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.adminPanel} selected{/if}" href="{$menu.titleUrl}">{tr}{$menu.title}{/tr}</a>
+						<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.adminPanel} selected{/if}" href="{$menu.titleUrl}">{tr}{$menu.title}{/tr}</a>
 						{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}
 							{include file="`$menu.template`"}
 						{/if}

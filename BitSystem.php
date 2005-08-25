@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.42 2005/08/25 16:36:43 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.43 2005/08/25 16:41:11 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -88,7 +88,7 @@ class BitSystem extends BitBase
 		$this->mAppMenu = array();
 		$this->mTimer = new BitTimer();
 		$this->mTimer->start();
-		$this->mServerDatestamp = new BitDate();
+		$this->mServerTimestamp = new BitDate();
 
 		$this->initSmarty();
 		$this->mRegisterCalled = FALSE;

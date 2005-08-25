@@ -185,7 +185,7 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 	array('kernel','contact_user','admin'),
 	array('kernel','count_admin_pvs','y'),
 	array('kernel','direct_pagination','n'),
-	array('kernel','display_timezone','EST'),
+	array('kernel','display_timezone','UTC'),
 	array('kernel','long_date_format','%A %d of %B, %Y'),
 	array('kernel','long_time_format','%H:%M:%S %Z'),
 	array('kernel','feature_left_column','y'),

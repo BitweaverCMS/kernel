@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.41 2005/08/17 18:37:11 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.42 2005/08/25 16:36:43 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -88,6 +88,7 @@ class BitSystem extends BitBase
 		$this->mAppMenu = array();
 		$this->mTimer = new BitTimer();
 		$this->mTimer->start();
+		$this->mServerDatestamp = new BitDate();
 
 		$this->initSmarty();
 		$this->mRegisterCalled = FALSE;
@@ -1690,6 +1691,14 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 	}
 
 	//********************* DATE AND TIME METHODS **************************//
+
+	/**
+	 * Retrieve a current UTC timestamp
+	 * Simple map to BitDate object allowing tidy display elsewhere
+	 */
+	function getUTCTime() {
+		return	$this->mServerTimestamp->getUTCTime();
+	}
 
 	# TODO move all of these date/time functions to a static class: BitDate
 	function get_timezone_list($use_default = false) {

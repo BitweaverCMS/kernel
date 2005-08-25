@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_banning.php,v 1.1.1.1.2.1 2005/07/26 15:50:08 drewslater Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_banning.php,v 1.1.1.1.2.2 2005/08/25 21:21:21 lsces Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -36,8 +36,8 @@ if (isset($_REQUEST['ban_id'])) {
 	$info['ip3'] = 255;
 	$info['ip4'] = 255;
 	$info['use_dates'] = 'n';
-	$info['date_from'] = date("U");
-	$info['date_to'] = date("U") + 7 * 24 * 3600;
+	$info['date_from'] = $gBitSystem->getUTCTime();
+	$info['date_to'] = $info['date_from'] + 7 * 24 * 3600;
 	$info['message'] = '';
 }
 
@@ -75,8 +75,8 @@ if (isset($_REQUEST['save'])) {
 	$info['ip3'] = 255;
 	$info['ip4'] = 255;
 	$info['use_dates'] = 'n';
-	$info['date_from'] = date("U");
-	$info['date_to'] = date("U") + 7 * 24 * 3600;
+	$info['date_from'] = $gBitSystem->getUTCTime();
+	$info['date_to'] = $info['date_from'] + 7 * 24 * 3600;
 	$info['message'] = '';
 	$gBitSmarty->assign_by_ref('info', $info);
 }

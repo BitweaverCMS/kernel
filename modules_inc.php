@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1.1.1.2.3 2005/07/29 17:50:54 drewslater Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1.1.1.2.4 2005/08/25 21:21:21 lsces Exp $
  * @package kernel
  * @subpackage functions
  */
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1.1.1.2.3 2005/07/29 17:50:54 drewslater Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.1.1.1.2.4 2005/08/25 21:21:21 lsces Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -19,7 +19,7 @@ include_once( KERNEL_PKG_PATH.'mod_lib.php' );
 // feature dead for now - spiderr - include_once( USERS_PKG_PATH.'module_controls_inc.php' );
 
 clearstatcache();
-$now = date("U");
+$now = $gBitSystem->getUTCTime();
 
 if (!$gBitUser->isAdmin() ) {
     $user_groups = $gBitUser->getGroups();

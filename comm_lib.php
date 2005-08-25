@@ -3,7 +3,7 @@
  * Communications Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/comm_lib.php,v 1.1.1.1.2.6 2005/08/07 16:29:59 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/comm_lib.php,v 1.1.1.1.2.7 2005/08/25 21:21:21 lsces Exp $
  */
 
 /**
@@ -22,7 +22,8 @@ class CommLib extends BitBase {
 		if ($this->pageExists($info["page_name"]))
 			return false;
 
-		$now = date("U");
+		global $gBitSystem;
+		$now = $gBitSystem->getUTCTime();
 		$this->create_page($info["page_name"], 0, $info["data"], $now, $info["comment"], $info["received_from_user"], $info["received_from_site"], $info["description"]);
 		$query = "delete from `".BIT_DB_PREFIX."tiki_received_pages` where `received_page_id`=?";
 		$result = $this->mDb->query($query,array((int)$received_page_id));
@@ -114,7 +115,8 @@ class CommLib extends BitBase {
 
 	function receive_article($site, $user, $title, $author_name, $size, $use_image, $image_name, $image_type, $image_size, $image_x,
 		$image_y, $image_data, $publish_date, $expire_date, $created, $heading, $body, $hash, $author, $type, $rating) {
-		$now = date("U");
+		global $gBitSystem;
+		$now = $gBitSystem->getUTCTime();
 		$query = "delete from `".BIT_DB_PREFIX."tiki_received_articles` where `title`=? and `receivedFromSite`=? and `received_from_user`=?";
 		$result = $this->mDb->query($query,array($title,$site,$user));
 		$query = "insert into `".BIT_DB_PREFIX."tiki_received_articles`(`received_date`,`received_from_site`,`received_from_user`,`title`,`author_name`,`size`, ";
@@ -125,7 +127,8 @@ class CommLib extends BitBase {
 	}
 
 	function receive_page($page_name, $data, $comment, $site, $user, $description) {
-		$now = date("U");
+		global $gBitSystem;
+		$now = $gBitSystem->getUTCTime();
 		// Remove previous page sent from the same site-user (an update)
 		$query = "delete from `".BIT_DB_PREFIX."tiki_received_pages` where `page_name`=? and `receivedFromSite`=? and `received_from_user`=?";
 		$result = $this->mDb->query($query,array($page_name,$site,$user));

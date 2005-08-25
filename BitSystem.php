@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.43 2005/08/25 16:41:11 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.44 2005/08/25 21:21:21 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1661,12 +1661,13 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 	}
 
 	function refresh_cache($cache_id) {
+		global $gBitSystem;
 		$query = "select `url`  from `".BIT_DB_PREFIX."tiki_link_cache`
 		where `cache_id`=?";
 
 		$url = $this->mDb->getOne($query, array( $cache_id ) );
 		$data = tp_http_request($url);
-		$refresh = date("U");
+		$refresh = $gBitSystem->getUTCTime();
 		$query = "update `".BIT_DB_PREFIX."tiki_link_cache`
 		set `data`=?, `refresh`=?
 		where `cache_id`=? ";

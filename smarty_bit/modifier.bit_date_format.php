@@ -25,22 +25,18 @@ require_once $gBitSmarty->_get_plugin_filepath('shared','make_timestamp');
 function smarty_modifier_bit_date_format($string, $format = "%b %e, %Y", $default_date=null, $tra_format=null)
 {
 	global $gBitSystem, $user;
-    $dc =& $gBitSystem->get_date_converter($user);
 
-    $disptime = $dc->getDisplayDateFromServerDate($string);
-    if ($dc->getTzName() != "UTC") $format = preg_replace("/ ?%Z/","",$format);
+	if ( $gBitSystem->mServerTimestamp->get_display_offset()) $format = preg_replace("/ ?%Z/","",$format);
     else $format = preg_replace("/%Z/","UTC",$format);
 
-    // strftime doesn't do translations right
-	//return strftime($format, $disptime);
-
+	$disptime = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC($string);
+	
 	global $gBitLanguage; //$gBitLanguage->mLanguage= $gBitSystem->getPreference("language", "en");
 	if ($gBitSystem->getPreference("language", "en") != $gBitLanguage->mLanguage && $tra_format) {
 		$format = $tra_format;
 	}
 
-    $date = new Date($disptime);
-    return $date->format($format);
+	return $gBitSystem->mServerTimestamp->strftime($format, $disptime);
 }
 
 /* vim: set expandtab: */

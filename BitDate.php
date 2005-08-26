@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.6 2005/08/26 00:11:27 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.7 2005/08/26 00:35:35 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -272,9 +272,9 @@ class BitDate {
 		if ($d === false) return $this->getdate();
 		if ((abs($d) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
 			if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= 0) // if windows, must be +ve integer
-				return @$this->getdate($d);
+				return @$this->_getDate($d);
 		}
-		return $this->_getdate($d,$fast);
+		return $this->_getDate($d,$fast);
 	}
 
 	/*
@@ -303,7 +303,7 @@ class BitDate {
 	 * $fast flag, which if set to true, will return fewer array values,
 	 * and is much faster as it does not calculate dow, etc.
 	 */
-	function _getdate($origd=false,$fast=false,$is_gmt=false)
+	function _getDate($origd=false,$fast=false,$is_gmt=false)
 	{ 
 		static $YRS;
 
@@ -670,7 +670,7 @@ class BitDate {
 				}
 		}
 		
-		$gmt_different = ($is_gmt) ? 0 : $server_offset;
+		$gmt_different = ($is_gmt) ? 0 : $this->server_offset;
 	
 		/*
 		# disabled because some people place large values in $sec.

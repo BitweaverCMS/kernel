@@ -36,7 +36,7 @@ function smarty_modifier_bit_date_format($string, $format = "%b %e, %Y", $defaul
 		$format = $tra_format;
 	}
 
-	return $gBitSystem->mServerTimestamp->strftime($format, $disptime);
+	return $gBitSystem->mServerTimestamp->strftime($format, $disptime, true);
 }
 
 /* vim: set expandtab: */

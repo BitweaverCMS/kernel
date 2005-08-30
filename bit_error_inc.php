@@ -33,7 +33,7 @@ if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
  * @param $P2		$fn specific parameter - see below
  */
 function bit_error_handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnection) {
-	global $gBitSystem, $gBitDb;
+	global $gBitDb;
 	if (ini_get('error_reporting') == 0) return; // obey @ protocol
 
 	$dbParams = array('gDB'=>&$thisConnection, 'db_type'=>$dbms, 'call_func'=>$fn, 'errno'=>$errno, 'db_msg'=>$errmsg, 'sql'=>$p1, 'p2'=>$p2);
@@ -56,7 +56,7 @@ function bit_error_handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnecti
 	$subject = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : 'BITWEAVER';
 
 	$fatal = FALSE;
-	if ( ($fn == 'EXECUTE') && ($thisConnection->MetaError() != -5) && $gBitSystem->mDb->isFatalActive() ) {
+	if ( ($fn == 'EXECUTE') && ($thisConnection->MetaError() != -5) && $gBitDb->isFatalActive() ) {
 		$subject .= ' FATAL';
 		$fatal = TRUE;
 	} else {

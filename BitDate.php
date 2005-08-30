@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.7 2005/08/26 00:35:35 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.8 2005/08/30 08:37:27 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -882,7 +882,7 @@ class BitDate {
 		$g = $yy + intval($yy/4);
 		$jan1_weekday = 1 + intval((((($c / 100) % 4) * 5) + $g) % 7);
 		// weekday for year-month-day
-		$h = $day_of_year_number + ($jan1_weekday - 1);
+		$h = $day_of_year_number + ($jan1_weekday - 1) - 1;
 		$weekday = 1 + intval(($h - 1) % 7);
 		// find if Y M D falls in YearNumber Y-1, WeekNumber 52 or
 		if ($day_of_year_number <= (8 - $jan1_weekday) && $jan1_weekday > 4){

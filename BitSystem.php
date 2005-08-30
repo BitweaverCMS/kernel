@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.45 2005/08/25 23:58:25 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.46 2005/08/30 16:29:04 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -952,7 +952,7 @@ asort( $this->mAppMenu );
 			}
 		}
 
-		foreach( array_keys( $this->mPackages ) as $package ) {	
+		foreach( array_keys( $this->mPackages ) as $package ) {
 			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getPreference("package_".strtolower($package)) != 'y') {
 				$this->storePreference('package_'.strtolower( $package ), 'n');
 			} elseif( empty( $this->mPackages[$package]['installed'] ) ) {

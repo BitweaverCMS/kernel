@@ -3,7 +3,7 @@
  * Administration Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/admin_lib.php,v 1.3 2005/08/07 17:38:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/admin_lib.php,v 1.4 2005/08/30 22:23:18 squareing Exp $
  */
  
 /**
@@ -250,13 +250,13 @@ class AdminLib extends BitBase {
 	}
 
 	function remove_tag($tagname) {
-		global $wikiHomePage, $gBitUser;
+		global $wikiHomePage, $gBitUser, $gBitSystem;
 
 		$this->mDb->StartTrans();
 		$query = "delete from `".BIT_DB_PREFIX."tiki_tags` where `tag_name`=?";
 		$result = $this->mDb->query($query,array($tagname));
 		$action = "removed tag: $tagname";
-		$t = date("U");
+		$t = $gBitSystem->getUTCTime();
 		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
 		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog` (`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values ( ?,?,?,?,?,?,? )";
 		$result = $this->mDb->query($query,array($homePageId, $action,$wikiHomePage,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
@@ -280,7 +280,7 @@ class AdminLib extends BitBase {
 	// This function can be used to store the set of actual pages in the "tags"
 	// table preserving the state of the wiki under a tag name.
 	function create_tag($tagname, $comment = '') {
-		global $wikiHomePage, $gBitUser;
+		global $wikiHomePage, $gBitUser, $gBitSystem;
 
 		$this->mDb->StartTrans();
 		$query = "select * from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON( tp.`content_id`=tc.`content_id` )";
@@ -298,7 +298,7 @@ class AdminLib extends BitBase {
 
 		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
 		$action = "created tag: $tagname";
-		$t = date("U");
+		$t = $gBitSystem->getUTCTime();
 		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`page_id`,`action`,`page_name`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?,?)";
 		$result = $this->mDb->query($query,array($homePageId,$action,$wikiHomePage,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],$comment));
 		$this->mDb->CompleteTrans();
@@ -308,7 +308,7 @@ class AdminLib extends BitBase {
 	// This funcion recovers the state of the wiki using a tag_name from the
 	// tags table
 	function restore_tag($tagname) {
-		global $wikiHomePage, $gBitUser;
+		global $wikiHomePage, $gBitUser, $gBitSystem;
 		require_once( WIKI_PKG_PATH.'BitPage.php' );
 
 		$this->mDb->StartTrans();
@@ -324,7 +324,7 @@ class AdminLib extends BitBase {
 
 		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
 		$action = "recovered tag: $tagname";
-		$t = date("U");
+		$t = $gBitSystem->getUTCTime();
 		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values (?,?,?,?,?,?,?)";
 		$result = $this->mDb->query($query,array($homePageId,$action,$wikiHomePage,$t, $gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 		$this->mDb->CompleteTrans();

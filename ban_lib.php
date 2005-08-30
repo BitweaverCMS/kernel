@@ -3,7 +3,7 @@
  * User access Banning Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/ban_lib.php,v 1.3 2005/08/07 17:38:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/ban_lib.php,v 1.4 2005/08/30 22:23:18 squareing Exp $
  */
 
 /**
@@ -43,7 +43,7 @@ class BanLib extends BitBase {
 	}
 
 	function list_rules($offset, $maxRecords, $sort_mode, $find, $where = '') {
-
+		global $gBitSystem;
 		if ($find) {
 			$findesc = '%' . strtoupper( $find ) . '%';
 			$mid = " where ((UPPER(`message`) like ?) or (UPPER(`title`) like ?))";
@@ -85,7 +85,7 @@ class BanLib extends BitBase {
 		$retval = array();
 		$retval["data"] = $ret;
 		$retval["cant"] = $cant;
-		$now = date("U");
+		$now = $gBitSystem->getUTCTime();
 		$query = "select `ban_id` from `".BIT_DB_PREFIX."tiki_banning` where `use_dates`=? and `date_to` < ?";
 		$result = $this->mDb->query($query,array('y',$now));
 
@@ -131,7 +131,8 @@ class BanLib extends BitBase {
 
 			$this->mDb->query($query,array($title,$ip1,$ip2,$ip3,$ip4,$user,$date_from,$date_to,$use_dates,$message,$ban_id));
 		} else {
-			$now = date("U");
+			global $gBitSystem;
+			$now = $gBitSystem->getUTCTime();
 
 			$query = "insert into `".BIT_DB_PREFIX."tiki_banning`(`mode`,`title`,`ip1`,`ip2`,`ip3`,`ip4`,`user`,`date_from`,`date_to`,`use_dates`,`message`,`created`)
 		values(?,?,?,?,?,?,?,?,?,?,?,?)";

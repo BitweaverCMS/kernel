@@ -3,7 +3,7 @@
  * eMail Notification Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.3 2005/08/07 17:38:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.4 2005/08/30 22:23:18 squareing Exp $
  * @author awcolley
  *
  * created 2003/06/03
@@ -132,7 +132,7 @@ class NotificationLib extends BitBase
 			global $gBitSmarty;
 			$gBitSmarty->assign('mail_site', $_SERVER["SERVER_NAME"]);
 			$gBitSmarty->assign('mail_page', $name );
-			$gBitSmarty->assign('mail_date', date("U"));
+			$gBitSmarty->assign('mail_date', $gBitSystem->getUTCTime());
 			$gBitSmarty->assign('mail_user', $user );
 			$gBitSmarty->assign('mail_comment', $comment );
 			$gBitSmarty->assign('mail_last_version', 1);
@@ -154,7 +154,7 @@ class NotificationLib extends BitBase
 		$emails = $this->get_mail_events('user_registers','*');
 		foreach($emails as $email) {
 			$gBitSmarty->assign('mail_user',$user);
-			$gBitSmarty->assign('mail_date',date("U"));
+			$gBitSmarty->assign('mail_date',$gBitSystem->getUTCTime());
 			$gBitSmarty->assign('mail_site',$_SERVER["SERVER_NAME"]);
 			$mail_data = $gBitSmarty->fetch('bitpackage:users/new_user_notification.tpl');
 

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.14 2005/08/24 20:52:14 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.15 2005/08/30 22:23:18 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -88,6 +88,7 @@ class BitSystem extends BitBase
 		$this->mAppMenu = array();
 		$this->mTimer = new BitTimer();
 		$this->mTimer->start();
+		$this->mServerTimestamp = new BitDate();
 
 		$this->initSmarty();
 		$this->mRegisterCalled = FALSE;
@@ -951,7 +952,7 @@ asort( $this->mAppMenu );
 			}
 		}
 
-		foreach( array_keys( $this->mPackages ) as $package ) {	
+		foreach( array_keys( $this->mPackages ) as $package ) {
 			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getPreference("package_".strtolower($package)) != 'y') {
 				$this->storePreference('package_'.strtolower( $package ), 'n');
 			} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
@@ -1660,12 +1661,13 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 	}
 
 	function refresh_cache($cache_id) {
+		global $gBitSystem;
 		$query = "select `url`  from `".BIT_DB_PREFIX."tiki_link_cache`
 		where `cache_id`=?";
 
 		$url = $this->mDb->getOne($query, array( $cache_id ) );
 		$data = tp_http_request($url);
-		$refresh = date("U");
+		$refresh = $gBitSystem->getUTCTime();
 		$query = "update `".BIT_DB_PREFIX."tiki_link_cache`
 		set `data`=?, `refresh`=?
 		where `cache_id`=? ";
@@ -1691,107 +1693,24 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 
 	//********************* DATE AND TIME METHODS **************************//
 
-	# TODO move all of these date/time functions to a static class: BitDate
-	function get_timezone_list($use_default = false) {
-		static $timezone_options;
-
-		if (!$timezone_options) {
-			$timezone_options = array();
-
-			if ($use_default)
-				$timezone_options['default'] = '-- Use Default Time Zone --';
-
-			foreach ($GLOBALS['_DATE_TIMEZONE_DATA'] as $tz_key => $tz) {
-				$offset = $tz['offset'];
-
-				$absoffset = abs($offset /= 60000);
-				$plusminus = $offset < 0 ? '-' : '+';
-				$gmtoff = sprintf("GMT%1s%02d:%02d", $plusminus, $absoffset / 60, $absoffset - (intval($absoffset / 60) * 60));
-				$tzlongshort = $tz['longname'] . ' (' . $tz['shortname'] . ')';
-				$timezone_options[$tz_key] = sprintf('%-28.28s: %-36.36s %s', $tz_key, $tzlongshort, $gmtoff);
-			}
-		}
-
-		return $timezone_options;
-	}
-
-	function get_server_timezone() {
-		static $server_timezone;
-
-		if (!$server_timezone) {
-			$server_time = new Date();
-
-			$server_timezone = $server_time->tz->getID();
-		}
-
-		return $server_timezone;
-	}
-
-	# TODO rename get_site_timezone()
-	function get_display_timezone() {
-		static $display_timezone = false;
-		global $gBitUser;
-
-		if (!$display_timezone) {
-			$server_time = $this->get_server_timezone();
-		} else {
-			$server_time = NULL;
-		}
-
-		if( $gBitUser->isValid() ) {
-			$display_timezone = $gBitUser->getPreference('display_timezone');
-
-			if (!$display_timezone || $display_timezone == 'default') {
-				$display_timezone = $this->getPreference('display_timezone', $server_time);
-			}
-		} else {
-			$display_timezone = $this->getPreference('display_timezone', $server_time);
-		}
-
-		return $display_timezone;
+	/**
+	 * Retrieve a current UTC timestamp
+	 * Simple map to BitDate object allowing tidy display elsewhere
+	 */
+	function getUTCTime() {
+		return	$this->mServerTimestamp->getUTCTime();
 	}
 
 	/**
 	 * Retrieves the user's preferred offset for displaying dates.
-	 *
-	 * $user: the logged-in user.
-	 * returns: the preferred offset to UTC.
 	 */
 	function get_display_offset($_user = false) {
-
-		// Cache preference from DB
-		$display_tz = "UTC";
-
-		// Default to UTCget_display_offset
-		$display_offset = 0;
-
-		// Load pref from DB is cache is empty
-		$display_tz = $this->get_display_timezone($_user);
-
-		// Recompute offset each request in case DST kicked in
-		if ($display_tz != "UTC" && isset($_COOKIE["tz_offset"]))
-			$display_offset = intval($_COOKIE["tz_offset"]);
-
-		return $display_offset;
+		return $this->mServerTimestamp->get_display_offset();
 	}
 
 	/**
-	 * Retrieves a BitDate object for converting to/from display/UTC timezones
-	 *
-	 * $user: the logged-in user
-	 * returns: reference to a BitDate instance with the appropriate offsets
+	 * Retrieves the user's preferred long date format for displaying dates.
 	 */
-	function &get_date_converter($_user = false) {
-		static $date_converter;
-
-		if (!$date_converter) {
-			$display_offset = $this->get_display_offset($_user);
-			$date_converter = &new BitDate($display_offset);
-		}
-
-		return $date_converter;
-	}
-
 	function get_long_date_format() {
 		static $long_date_format = false;
 
@@ -1801,6 +1720,9 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		return $long_date_format;
 	}
 
+	/**
+	 * Retrieves the user's preferred short date format for displaying dates.
+	 */
 	function get_short_date_format() {
 		static $short_date_format = false;
 
@@ -1810,6 +1732,9 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		return $short_date_format;
 	}
 
+	/**
+	 * Retrieves the user's preferred long time format for displaying dates.
+	 */
 	function get_long_time_format() {
 		static $long_time_format = false;
 
@@ -1819,6 +1744,9 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		return $long_time_format;
 	}
 
+	/**
+	 * Retrieves the user's preferred short time format for displaying dates.
+	 */
 	function get_short_time_format() {
 		static $short_time_format = false;
 
@@ -1828,6 +1756,9 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		return $short_time_format;
 	}
 
+	/**
+	 * Retrieves the user's preferred long date/time format for displaying dates.
+	 */
 	function get_long_datetime_format() {
 		static $long_datetime_format = false;
 
@@ -1837,6 +1768,9 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		return $long_datetime_format;
 	}
 
+	/**
+	 * Retrieves the user's preferred short date/time format for displaying dates.
+	 */
 	function get_short_datetime_format() {
 		static $short_datetime_format = false;
 
@@ -1846,260 +1780,11 @@ Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">"
 		return $short_datetime_format;
 	}
 
-	function server_time_to_site_time($timestamp) {
-		$date = new Date($timestamp);
-
-		$date->setTZbyID($this->get_server_timezone());
-		$date->convertTZbyID($this->get_display_timezone());
-		return $date->getTime();
-	}
-
-	/**
-
+	/*
+	 * Only used in rang_lib.php which needs tidying up to use smarty templates
 	 */
-	function get_site_date($timestamp, $user = false) {
-		static $localed = false;
-
-		if (!$localed) {
-		$this->set_locale($user);
-
-		$localed = true;
-		}
-
-		$original_tz = date('T', $timestamp);
-
-		$format = '%b %e, %Y';
-		$rv = strftime($format, $timestamp);
-		$rv .= " =timestamp\n";
-		$rv .= strftime('%Z', $timestamp);
-		$rv .= " =strftime('%Z')\n";
-		$rv .= date('T', $timestamp);
-		$rv .= " =date('T')\n";
-
-		$date = &new Date($timestamp);
-
-	# Calling new Date() changes the timezone of the $timestamp var!
-	# so we only change the timezone to UTC if the original TZ wasn't UTC
-	# to begin with.
-	# This seems really buggy, but I don't have time to delve into right now.
-		$rv .= date('T', $timestamp);
-		$rv .= " =date('T')\n";
-
-		$rv .= $date->format($format);
-		$rv .= " =new Date()\n";
-
-		$rv .= date('T', $timestamp);
-		$rv .= " =date('T')\n";
-
-		if ($original_tz == 'UTC') {
-		$date->setTZbyID('UTC');
-
-		$rv .= $date->format($format);
-		$rv .= " =setTZbyID('UTC')\n";
-		}
-
-		$tz_id = $this->get_display_timezone($user);
-
-		if ($date->tz->getID() != $tz_id) {
-	# let's convert to the displayed timezone
-		$date->convertTZbyID($tz_id);
-
-		$rv .= $date->format($format);
-		$rv .= " =convertTZbyID($tz_id)\n";
-		}
-
-	#return $rv;
-
-	# if ($format == "%b %e, %Y")
-	#   $format = $gBitSystem->get_short_date_format();
-		return $date;
-	}
-
-	# TODO rename to server_time_to_site_time()
-	function get_site_time($timestamp, $user = false) {
-	#print "<pre>get_site_time()</pre>";
-		$date = $this->get_site_date($timestamp, $user);
-
-		return $date->getTime();
-	}
-
-	function date_format($format, $timestamp, $user = false) {
-		//$date = $this->get_site_date($timestamp, $user);
-		// JJ - ignore conversion - we have no idea what TZ they're using
-
-		// strftime doesn't do translations correctly
-		// return strftime($format,$timestamp);
-		$date = new Date($timestamp);
-
-		return $date->format($format);
-	}
-
-	function get_long_date($timestamp, $user = false) {
-		return $this->date_format($this->get_long_date_format(), $timestamp, $user);
-	}
-
-	function get_short_date($timestamp, $user = false) {
-		return $this->date_format($this->get_short_date_format(), $timestamp, $user);
-	}
-
-	function get_long_time($timestamp, $user = false) {
-		return $this->date_format($this->get_long_time_format(), $timestamp, $user);
-	}
-
-	function get_short_time($timestamp, $user = false) {
-		return $this->date_format($this->get_short_time_format(), $timestamp, $user);
-	}
-
 	function get_long_datetime($timestamp, $user = false) {
-		return $this->date_format($this->get_long_datetime_format(), $timestamp, $user);
-	}
-
-	function get_short_datetime($timestamp, $user = false) {
-		return $this->date_format($this->get_short_datetime_format(), $timestamp, $user);
-	}
-
-	function get_site_timezone_shortname($user = false) {
-		// UTC, or blank for local
-		$dc = &$this->get_date_converter($user);
-
-		return $dc->getTzName();
-	}
-
-	function get_server_timezone_shortname($user = false) {
-		// Site time is always UTC, from the user's perspective.
-		return "UTC";
-	}
-
-	/**
-	  get_site_time_difference - Return the number of seconds needed to add to a
-	  'system' time to return a 'site' time.
-	 */
-	function get_site_time_difference($user = false) {
-		$dc = &$this->get_date_converter($user);
-
-		$display_offset = $dc->display_offset;
-		$server_offset = $dc->server_offset;
-		return $display_offset - $server_offset;
-	}
-
-	/**
-	  Timezone saavy replacement for mktime()
-	 */
-	function make_time($hour, $minute, $second, $month, $day, $year, $timezone_id = false) {
-		global $user; # ugh!
-
-		if ($year <= 69)
-			$year += 2000;
-
-		if ($year <= 99)
-		$year += 1900;
-
-		$date = new Date();
-		$date->setHour($hour);
-		$date->setMinute($minute);
-		$date->setSecond($second);
-		$date->setMonth($month);
-		$date->setDay($day);
-		$date->setYear($year);
-
-	#$rv = sprintf("make_time(): $date->format(%D %T %Z)=%s<br/>\n", $date->format('%D %T %Z'));
-	#print "<pre> make_time() start";
-	#print_r($date);
-		if ($timezone_id)
-		$date->setTZbyID($timezone_id);
-
-	#print_r($date);
-	#$rv .= sprintf("make_time(): $date->format(%D %T %Z)=%s<br/>\n", $date->format('%D %T %Z'));
-	#print $rv;
-		return $date->getTime();
-	}
-
-	/**
-	  Timezone saavy replacement for mktime()
-	 */
-	function make_server_time($hour, $minute, $second, $month, $day, $year, $timezone_id = false) {
-		global $user; # ugh!
-
-		if ($year <= 69)
-			$year += 2000;
-
-		if ($year <= 99)
-		$year += 1900;
-
-		$date = new Date();
-		$date->setHour($hour);
-		$date->setMinute($minute);
-		$date->setSecond($second);
-		$date->setMonth($month);
-		$date->setDay($day);
-		$date->setYear($year);
-
-	#print "<pre> make_server_time() start\n";
-	#print_r($date);
-		if ($timezone_id)
-		$date->setTZbyID($timezone_id);
-
-	#print_r($date);
-		$date->convertTZbyID($this->get_server_timezone());
-	#print_r($date);
-	#print "make_server_time() end\n</pre>";
-		return $date->getTime();
-	}
-
-	/**
-	  Per http://www.w3.org/TR/NOTE-datetime
-	 */
-	function get_iso8601_datetime($timestamp, $user = false) {
-		return $this->date_format('%Y-%m-%dT%H:%M:%S%O', $timestamp, $user);
-	}
-
-	function get_rfc2822_datetime($timestamp = false, $user = false) {
-		if (!$timestamp)
-			$timestamp = time();
-
-	# rfc2822 requires dates to be en formatted
-		$saved_locale = @setlocale(0);
-		@setlocale ('en_US');
-	#was return date('D, j M Y H:i:s ', $time) . $this->timezone_offset($time, 'no colon');
-		$rv = $this->date_format('%a, %e %b %Y %H:%M:%S', $timestamp, $user). $this->get_rfc2822_timezone_offset($timestamp, $user);
-
-	# switch back to the 'saved' locale
-		if ($saved_locale)
-			@setlocale ($saved_locale);
-
-		return $rv;
-	}
-
-	function get_rfc2822_timezone_offset($time = false, $no_colon = false, $user = false) {
-		if ($time === false)
-			$time = time();
-
-		$secs = $this->date_format('%Z', $time, $user);
-
-		if ($secs < 0) {
-			$sign = '-';
-
-			$secs = -$secs;
-		} else {
-			$sign = '+';
-		}
-
-		$colon = $no_colon ? '' : ':';
-		$mins = intval(($secs + 30) / 60);
-
-		return sprintf("%s%02d%s%02d", $sign, $mins / 60, $colon, $mins % 60);
-	}
-
-	function set_locale($user = false) {
-		static $locale = false;
-
-		if (!$locale) {
-			# breaks the RFC 2822 code
-			$locale = @setlocale(LC_TIME, $this->get_locale($user));
-			#print "<pre>set_locale(): locale=$locale\n</pre>";
-		}
-
-		return $locale;
+		return $this->mServerTimestamp->strftime($this->get_long_datetime_format(), $timestamp, $user);
 	}
 
 	// Check for new version

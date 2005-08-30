@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.5 2005/08/07 17:38:44 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.6 2005/08/30 22:23:18 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -180,7 +180,7 @@ class BitBase
     * @return the link to display the page.
     */
 	function prepGetList( &$pListHash ) {
-		global $gBitSmarty;
+		global $gBitSmarty, $gBitSystem;
 
 		// If offset is set use it if not then use offset =0
 		// use the maxRecords php variable to set the limit
@@ -220,7 +220,7 @@ class BitBase
 		if( isset( $_REQUEST['date'] ) ) {
 			$pListHash['date']= $_REQUEST['date'];
 		} else {
-			$pListHash['date'] = $now = date("U");
+			$pListHash['date'] = $gBitSystem->getUTCTime();
 		}
 
 		if( empty( $pListHash['load_comments'] ) ) {

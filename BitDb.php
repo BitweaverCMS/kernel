@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.11 2005/08/24 20:52:14 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.12 2005/08/30 22:23:18 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -108,7 +108,7 @@ class BitDb
 			}
 			$this->preDBConnection();
 			$this->mDb = ADONewConnection($gBitDbType);
-		$this->mDb->Connect($gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName);
+			$this->mDb->Connect($gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName);
 
 			if(!$this->mDb)
 			{

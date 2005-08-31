@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.12 2005/08/21 21:03:38 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.1.1.1.2.13 2005/08/31 21:04:18 squareing Exp $
  */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
@@ -171,7 +171,7 @@ function add_link_ticket($tpl_source, &$smarty)
 	if ( is_object( $gBitUser ) && $gBitUser->isValid() ) {
 		$from = '#href="(.*PKG_URL.*php)\?(.*)&(.*)"#i';
 		$to = 'href="\\1?\\2&amp;tk={$gBitUser->mTicket}&\\3"';
-		$ret = preg_replace($from, $to, $tpl_source);
+		$ret = preg_replace( $from, $to, $tpl_source );
 	} else {
 		$ret = $tpl_source;
 	}

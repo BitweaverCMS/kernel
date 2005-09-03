@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_packages.tpl,v 1.3 2005/08/07 17:38:46 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_packages.tpl,v 1.4 2005/09/03 10:19:29 squareing Exp $ *}
 
 {strip}
 
@@ -21,6 +21,8 @@
 								{formhelp note=`$package.info` package=$name}
 							{/forminput}
 						</div>
+					{elseif $package.tables && !$package.required && !$package.installed}
+						{assign var=show_install_tab value=TRUE}
 					{/if}
 				{/foreach}
 
@@ -30,40 +32,33 @@
 			{/legend}
 		{/jstab}
 
-		{jstab title="Install Packages"}
-			{legend legend="bitweaver Packages available for installation"}
-				{foreach key=name item=package from=$gBitSystem->mPackages}
-					{if $package.tables && !$package.required && !$package.installed}
-						<div class="row">
-							<div class="formlabel">
-								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
+		{if $show_install_tab}
+			{jstab title="Install Packages"}
+				{legend legend="bitweaver Packages available for installation"}
+					{foreach key=name item=package from=$gBitSystem->mPackages}
+						{if $package.tables && !$package.required && !$package.installed}
+							<div class="row">
+								<div class="formlabel">
+									{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
+								</div>
+								{forminput}
+									{$name|capitalize}
+									{formhelp note=`$package.info` package=$name}
+								{/forminput}
 							</div>
-							{forminput}
-								<label>
-									<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if}/>
-									&nbsp;{$name|capitalize}
-								</label>
-								{formhelp note=`$package.info` package=$name}
-							{/forminput}
-						</div>
-					{/if}
-				{/foreach}
-			{/legend}
+						{/if}
+					{/foreach}
+				{/legend}
 
-			{* removing this for now
-			<div class="row submit">
-				<input type="submit" name="fSubmitDbCreate" value="Install Packages" />
-			</div>
-			*}
-
-			<br />
-
-			{box title="How to install bitweaver Packages"}
-				{tr}To install more packages, please run the <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>installer</a> to choose your desired packages.{/tr}
 				<br />
-				<small><strong>{tr}Note{/tr}</strong> : {tr}you might have to rename your 'install/install.done' file back to 'install/install.php' to be able to install more packages{/tr}</small>
-			{/box}
-		{/jstab}
+
+				{box title="How to install bitweaver Packages"}
+					{tr}To install more packages, please run the <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>installer</a> to choose your desired packages.{/tr}
+					<br />
+					<small><strong>{tr}Note{/tr}</strong> : {tr}you might have to rename your 'install/install.done' file back to 'install/install.php' to be able to install more packages{/tr}</small>
+				{/box}
+			{/jstab}
+		{/if}
 
 		{jstab title="Required Packages"}
 			{legend legend="bitweaver Packages that are required on your system"}

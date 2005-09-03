@@ -51,7 +51,7 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 			}
 		}
 		if( !isset( $url ) ) {
-			$url = $_SERVER['REQUEST_URI'];
+			$url = $_SERVER['PHP_SELF'];
 		}
 		$ret = '<form action="'.$url.'" '.$atts.'>';
 		$ret .= isset( $legend ) ? '<fieldset>'.$legend : '<div>';		// adding the div makes it easier to be xhtml compliant

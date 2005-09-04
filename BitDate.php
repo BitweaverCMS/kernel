@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.9 2005/09/04 11:35:29 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.10 2005/09/04 14:36:40 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -42,9 +42,7 @@ class BitDate {
 	 */
 	function BitDate($_display_offset = 0) {
 		$this->display_offset = $_display_offset;
-//		$this->server_offset = mktime(0,0,0,1,2,1970,0) - gmmktime(0,0,0,1,2,1970,0);
-//      commmented out calc has wrong result sign
-        $this->server_offset = date('Z');
+		$this->server_offset = mktime(0,0,0,1,2,1970,0) - gmmktime(0,0,0,1,2,1970,0);
 	}
 
 	/**
@@ -68,7 +66,6 @@ class BitDate {
 		// Recompute offset each request in case DST kicked in
 		if ($display_tz != "UTC" && isset($_COOKIE["tz_offset"]))
 			$this->display_offset = intval($_COOKIE["tz_offset"]);
-
 		return $this->display_offset;
 	}
 
@@ -112,21 +109,21 @@ class BitDate {
 	 * Retrieve a current UTC timestamp as Unix epoch.
 	 */
 	function getUTCTime() {
-		return time() - $this->server_offset;
+		return time();
 	}
 
 	/**
 	 * Retrieve a current UTC Timestamp as an ISO formated date/time.
 	 */
 	function getUTCTimestamp() {
-		return $this->date("Y-m-d H:i:s",time() - $this->server_offset,true);
+		return $this->date("Y-m-d H:i:s",time(),true);
 	}
 
 	/**
 	 * Retrieve a current UTC Date as an ISO formated date
 	 */
 	function getUTCDate() {
-		return $this->date("Y-m-d",time() - $this->server_offset,true);
+		return $this->date("Y-m-d",time(),true);
 	}
 
 	/**

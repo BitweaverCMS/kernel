@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.10 2005/09/04 14:36:40 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.11 2005/09/05 17:20:31 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -163,7 +163,7 @@ class BitDate {
 	 * Returns day of week, 0 = Sunday,... 6=Saturday. 
 	 * Algorithm from PEAR::Date_Calc
 	 */
-	function dow($year, $month, $day)
+	function dayOfWeek($year, $month, $day)
 	{
 	/*
 	Pope Gregory removed 10 days - October 5 to October 14 - from the year 1582 and 
@@ -201,7 +201,7 @@ class BitDate {
 	 *	Algorithm from PEAR::Date_Calc
 	 * This needs to be checked out for both start day and early date rules
 	 */
-	function woy($year, $month, $day)
+	function weekOfYear($year, $month, $day)
 	{
         $iso    = $this->gregorianToISO($year, $month, $day);
         $parts  = explode('-',$iso);
@@ -505,14 +505,13 @@ class BitDate {
 	function date($fmt,$d=false,$is_gmt=false)
 	{
 	static $daylight;
-
 		if ($d === false) return ($is_gmt)? @gmdate($fmt): @date($fmt);
 			if ((abs($d) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
 				if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= 0) // if windows, must be +ve integer
 					return ($is_gmt)? @gmdate($fmt,$d): @date($fmt,$d);
 		}
 		$_day_power = 86400;
-	
+
 		$arr = $this->_getdate($d,true,$is_gmt);
 	
 //		if (!isset($daylight)) $daylight = function_exists('adodb_daylight_sv');
@@ -1003,10 +1002,31 @@ class BitDate {
 		return $locale;
 	}
 
+	function daysInMonth( $month, $year ) {
+		switch( $month ) {
+			case 1:
+			case 3:
+			case 5:
+			case 7:
+			case 8:
+			case 10:
+			case 12:
+			case 0: // == 12
+				return 31;
+
+			case 4:
+			case 6:
+			case 9:
+			case 11:
+				return 30;
+
+			case 2:
+				return $this->is_leap_year( $year ) ? 29 : 28;
+
+			default:
+				assert( FALSE );
+		}
+	}
+
 }
-
-/*
- * Legacy functions still to be tidied up
- */
-
 ?>

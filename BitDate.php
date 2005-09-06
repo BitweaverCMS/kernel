@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.11 2005/09/05 17:20:31 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.12 2005/09/06 08:39:34 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -206,6 +206,7 @@ class BitDate {
         $iso    = $this->gregorianToISO($year, $month, $day);
         $parts  = explode('-',$iso);
         $week_number = intval($parts[1]);
+        if ( $week_number == 0 ) $week_number = 53;
         return $week_number;
     }
     

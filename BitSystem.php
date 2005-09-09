@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.46 2005/08/30 16:29:04 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.47 2005/09/09 23:50:00 jht001 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1022,6 +1022,8 @@ asort( $this->mAppMenu );
 			} else {
 				$url = USERS_PKG_URL . 'login.php';
 			}
+		} elseif( $bitIndex == 'wiki' ) {
+			$url = WIKI_PKG_URL;
 		} elseif( !empty( $bitIndex ) ) {
 			$url = BIT_ROOT_URL.$bitIndex;
 		}

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.47 2005/09/09 23:50:00 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.48 2005/09/10 07:15:01 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -48,8 +48,8 @@ define('HOMEPAGE_LAYOUT', 'home');
  *
  * @package kernel
  */
-class BitSystem extends BitBase
-{	/**
+class BitSystem extends BitBase {
+	/**
 	* * Array of  *
 	*/
 	var $mAppMenu;
@@ -981,8 +981,8 @@ asort( $this->mAppMenu );
 	}*/
 
 	function getDefaultPage() {
-		global $userlib, $gBitUser;
-		$bitIndex = $this->getPreference("bitIndex");
+		global $userlib, $gBitUser, $gBitSystem;
+		$bitIndex = $this->getPreference( "bitIndex" );
 		if ( $bitIndex == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
 			if( !empty( $gBitUser->mInfo['default_group_id'] ) && ($group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ) ) ) {
@@ -1022,8 +1022,8 @@ asort( $this->mAppMenu );
 			} else {
 				$url = USERS_PKG_URL . 'login.php';
 			}
-		} elseif( $bitIndex == 'wiki' ) {
-			$url = WIKI_PKG_URL;
+		} elseif( in_array( $bitIndex, array_keys( $gBitSystem->mPackages ) ) ) {
+			$url = constant( strtoupper( $bitIndex ).'_PKG_URL' );
 		} elseif( !empty( $bitIndex ) ) {
 			$url = BIT_ROOT_URL.$bitIndex;
 		}

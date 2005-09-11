@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.12 2005/08/30 22:23:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.13 2005/09/11 01:25:02 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -880,7 +880,8 @@ class BitDb
 	* @return a string of raw blob data
 	*/
 	function db_byte_decode( &$pData ) {
-		switch ($this->mDb->mType) {
+		global $gBitDbType;
+		switch ($gBitDbType) {
 			case "postgres":
 				$ret = stripcslashes( $pData );
 				break;

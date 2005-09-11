@@ -6,6 +6,12 @@ class TestBitPreferencesCacheDatabase extends Test {
 
     var $name = "TestBitPreferencesCacheDatabase";
 
+    function initBitPreferences()
+    {
+        $test = new BitPreferences($this->name, new BitCache(), new BitDb());
+	return $test;
+    }
+
     function TestBitPreferencesCacheDatabase()
     {
 	global $gBitDb, $gBitCache;
@@ -23,27 +29,27 @@ class TestBitPreferencesCacheDatabase extends Test {
 		");
             $gBitDb->createTables($tables);
         }
-        $test = new BitPreferences($this->name);
+        $test = $this->initBitPreferences();
         Assert::equalsTrue($test != NULL, 'Error during initialisation');
 	
     }
     
     function testGetNonexistentItem()
     {
-        $test = new BitPreferences($this->name);
+        $test = $this->initBitPreferences();
         Assert::equals($test->getPreference("test"), NULL);
     }
     
     function testSetNonexistentItem()
     {
-        $test = new BitPreferences($this->name);
+        $test = $this->initBitPreferences();
         $test->setPreference("test", "123");
         Assert::equals($test->getPreference("test"), "123");
     }
 
     function testSetDefaultItem()
     {
-	$test = new BitPreferences($this->name);
+        $test = $this->initBitPreferences();
 	//$test->mDebug = true;
         $test->setDefaultPreference("test", "456");
         Assert::equals($test->getPreference("test"), "123");
@@ -51,7 +57,7 @@ class TestBitPreferencesCacheDatabase extends Test {
 
     function testSetAsDefaultItem()
     {
-        $test = new BitPreferences($this->name);
+        $test = $this->initBitPreferences();
 	//$test->mDebug = true;
         $test->setDefaultPreference("test", "456");
         $test->setPreference("test", "456");
@@ -60,7 +66,7 @@ class TestBitPreferencesCacheDatabase extends Test {
 
     function testResetItem()
     {
-        $test = new BitPreferences($this->name);
+        $test = $this->initBitPreferences();
         $test->setDefaultPreference("test", "456");
         $test->setPreference("test", NULL);
         Assert::equals($test->getPreference("test"), "456");

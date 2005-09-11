@@ -8,14 +8,7 @@ class TestBitPreferences extends Test {
     
     function TestBitPreferences()
     {
-	global $gBitDb, $gCache;
-	$tmpDB = $gBitDb;
-	$tmpCache = $gCache;
-	$gBitDb = NULL;
-	$gCache = NULL;
-        $this->test = new BitPreferences("TestBitPreferences");
-	$gBitDb = $tmpDB;
-	$gCache = $tmpCache;
+        $this->test = new BitPreferences("TestBitPreferences", NULL, NULL);
         Assert::equalsTrue($this->test != NULL, 'Error during initialisation');
     }
     

@@ -8,7 +8,6 @@ class InputOutputTester {
 
 }
 
-
 class TestBitSmartyFilter extends Test {
 
   var $filterTestDir;
@@ -19,7 +18,7 @@ class TestBitSmartyFilter extends Test {
   {
     // directory that contains test directories
     $this->filterTestDir = 'smarty_filter_tests';
-    $this->smartyDir = KERNEL_PKG_PATH . 'smarty_tiki';
+    $this->smartyDir = KERNEL_PKG_PATH . 'smarty_bit';
   }
 
   function testPrePostFilters ()

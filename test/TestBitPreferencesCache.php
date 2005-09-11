@@ -8,23 +8,14 @@ class TestBitPreferencesCache extends Test {
 
     function initBitPreferences()
     {
-	global $gBitDb;
-	$tmpDB = $gBitDb;
-	$gBitDb = NULL;
-        $test = new BitPreferences($this->name);
-	$gBitDb = $tmpDB;
+        $test = new BitPreferences($this->name, new BitCache(), NULL);
 	return $test;
     }
 
     function TestBitPreferencesCache()
     {
-	global $gCache;
-	if (!is_object($gCache)) {
-		$this = NULL;
-		return;
-	}
         $test = $this->initBitPreferences();
-        Assert::equals($test != NULL, 'Error during initialisation');
+        Assert::equalsTrue($test != NULL, 'Error during initialisation');
 	
     }
     
@@ -40,14 +31,14 @@ class TestBitPreferencesCache extends Test {
         $test->setPreference("test", "123");
         Assert::equals($test->getPreference("test"), "123");
     }
-    
+
     function testSetDefaultItem()
     {
         $test = $this->initBitPreferences();
         $test->setDefaultPreference("test", "456");
         Assert::equals($test->getPreference("test"), "123");
     }
-    
+
     function testSetAsDefaultItem()
     {
         $test = $this->initBitPreferences();

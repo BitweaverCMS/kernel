@@ -8,11 +8,7 @@ class TestBitPreferencesDatabase extends Test {
 
     function initBitPreferences()
     {
-	global $gCache;
-	$tmpCache = $gCache;
-	$gCache = NULL;
-        $test = new BitPreferences($this->name);
-	$gCache = $tmpCache;
+        $test = new BitPreferences($this->name, NULL, new BitDb());
 	return $test;
     }
 

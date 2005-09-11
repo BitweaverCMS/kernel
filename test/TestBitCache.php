@@ -8,8 +8,7 @@ class TestBitCache extends Test {
 
     function TestBitCache()
     {
-      // global $gBitCache;
-      $this->test = new BitCache();
+	$this->test = new BitCache();
 	Assert::equals(is_object($this->test), 'Error during initialisation');
 	if (!is_object($this->test)) {
 		$this = NULL;	

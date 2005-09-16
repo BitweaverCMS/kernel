@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.48 2005/09/10 07:15:01 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.49 2005/09/16 19:03:11 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -619,8 +619,7 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function registerPackage($pPackageName, $pPackagePath, $pActivatable=TRUE )
-	{
+	function registerPackage( $pPackageName, $pPackagePath, $pActivatable=TRUE, $pService=FALSE ) {
 		$this->mRegisterCalled = TRUE;
 		if( empty( $this->mPackages ) ) {
 			$this->mPackages = array();
@@ -644,8 +643,7 @@ class BitSystem extends BitBase {
 
 		// Define <PACKAGE>_PKG_NAME
 		$pkgDefine = $pkgName.'_PKG_NAME';
-		if (!defined($pkgDefine))
-		{
+		if (!defined($pkgDefine)) {
 			define($pkgDefine, $pPackageName);
 			$this->mPackages[$pkgNameKey]['activatable'] = $pActivatable;
 		}
@@ -653,16 +651,14 @@ class BitSystem extends BitBase {
 
 		// Define <PACKAGE>_PKG_DIR
 		$pkgDefine = $pkgName.'_PKG_DIR';
-		if (!defined($pkgDefine))
-		{
+		if (!defined($pkgDefine)) {
 			define($pkgDefine, basename( $pPackagePath ));
 		}
 		$this->mPackages[$pkgNameKey]['dir'] = basename( $pPackagePath );
 
 		// Define the package we are currently in
 		// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
-		if( !defined('ACTIVE_PACKAGE') && (isset($_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '/\/'.$this->mPackages[$pkgNameKey]['dir'].'\//', $_SERVER['PHP_SELF'] ) || preg_match( '/\/' . $pPackageName . '\//', $_SERVER['PHP_SELF'] )) )
-		{
+		if( !defined('ACTIVE_PACKAGE') && (isset($_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '/\/'.$this->mPackages[$pkgNameKey]['dir'].'\//', $_SERVER['PHP_SELF'] ) || preg_match( '/\/' . $pPackageName . '\//', $_SERVER['PHP_SELF'] )) ) {
 			if( isset($_SERVER['ACTIVE_PACKAGE'] ) ) {
 				// perhaps the webserver told us the active package (probably because of mod_rewrites)
 				$pPackageName = $_SERVER['ACTIVE_PACKAGE'];
@@ -670,6 +666,9 @@ class BitSystem extends BitBase {
 			define('ACTIVE_PACKAGE', $pPackageName);
 			$this->mActivePackage = $pPackageName;
 		}
+
+		// indicate if this package is a service or not
+		$this->mPackages[$pkgNameKey]['service'] = $pService;
 	}
 	// >>>
 	// === registerAppMenu

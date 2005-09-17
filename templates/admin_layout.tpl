@@ -44,7 +44,7 @@
 							</td>
 						</tr>
 					{sectionelse}
-						<tr class="{cycle}" >
+						<tr class="{cycle values="even,odd"}" >
 							<td colspan="3" align="center">
 								{if $colkey eq 'center'}{tr}Default{/tr}{else}{tr}None{/tr}{/if}
 							</td>

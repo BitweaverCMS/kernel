@@ -179,8 +179,6 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 	array('kernel','feature_top_bar','y'),
 	array('kernel','feature_banning','n'),
 	array('kernel','feature_contact','n'),
-	array('kernel','feature_debug_console','n'),
-	array('kernel','feature_debugger_console','n'),
 	array('kernel','feature_jstabs','y' ),
 	array('kernel','contact_user','admin'),
 	array('kernel','count_admin_pvs','y'),

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.5 2005/07/26 15:50:08 drewslater Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.6 2005/09/18 12:14:09 wolff_borg Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -100,13 +100,6 @@ $formFeaturesAdmin = array(
 	),
 );
 
-if( $gBitSystem->isFeatureActive( 'debug' ) ) {
-	$formFeaturesAdmin['feature_debug_console'] = array(
-			'label' => 'Debug Console',
-			'note' => 'Helps you Debug bitweaver',
-			'page' => 'DebugConsole',
-		);
-}
 $gBitSmarty->assign( 'formFeaturesAdmin',$formFeaturesAdmin );
 
 $users_list = $gBitUser->get_users_names();

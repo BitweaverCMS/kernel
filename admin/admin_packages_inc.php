@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.1.1.1.2.3 2005/09/16 19:03:11 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.1.1.1.2.4 2005/09/18 02:38:51 wolff_borg Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -52,7 +52,9 @@ foreach( $gBitSystem->mPackages as $pkgName => $servicePkg ) {
 		$serviceList[$serviceType][$pkgName] = $gBitSystem->mPackages[$pkgName];
 	}
 }
-$gBitSmarty->assign( 'serviceList', $serviceList );
+if (isset($serviceList)) {
+	$gBitSmarty->assign( 'serviceList', $serviceList );
+}
 
 $gBitSystem->setHelpInfo('Features','Settings','Help with the features settings');
 ?>

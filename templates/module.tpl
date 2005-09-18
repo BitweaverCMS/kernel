@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.1.1.1.2.1 2005/07/15 12:01:15 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.1.1.1.2.2 2005/09/18 04:58:24 wolff_borg Exp $ *}
 {strip}
 <div class="module box {$module_name|replace:"_":"-"}">
 	{if $module_title}
@@ -15,9 +15,9 @@
 						{biticon ipackage=liberty iname="delete_small" iexplain="remove"}</a>
 				</div>
 			{/if}
-			{if $feature_collapsible_modules eq 'y'}<a href="javascript:toggle('{$module_name}');">{/if}
-				{$module_title}
-			{if $feature_collapsible_modules eq 'y'}</a>{/if}
+			{if $gBitSystem->isFeatureActive( 'feature_collapsible_modules' )}<a href="javascript:toggle('{$module_name}');">{/if}
+				{tr}{$module_title}{/tr}
+			{if $gBitSystem->isFeatureActive( 'feature_collapsible_modules' )}</a>{/if}
 		</div>
 	{/if}
 	<div class="boxcontent" id="{$module_name}"{if $gBitSystem->isFeatureActive( 'feature_collapsible_modules' )} style="display:{$toggle_state};"{/if}>

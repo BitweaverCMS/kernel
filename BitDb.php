@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.22 2005/08/30 16:29:04 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.23 2005/09/18 02:50:44 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -603,8 +603,8 @@ class BitDb
 	*/
 	function CreateSequence($seqname='adodbseq',$startID=1)
 	{
-		if (empty($this->_genSeqSQL)) return FALSE;
-		return $this->mDb->Execute(sprintf($this->_genSeqSQL,$seqname,$startID));
+		if (empty($this->mDb->_genSeqSQL)) return FALSE;
+		return $this->mDb->CreateSequence($seqname, $startID);
 	}
 
 	/**

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.49 2005/09/16 19:03:11 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.50 2005/09/18 08:28:29 wolff_borg Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1254,7 +1254,7 @@ asort( $this->mAppMenu );
 
 	function getLayout($pUserMixed = null, $pLayout = ACTIVE_PACKAGE, $pFallback = true, $pFallbackLayout = DEFAULT_PACKAGE)
 	{
-		global $user_assigned_modules, $bit_p_configure_modules, $usermoduleslib, $gCenterPieces, $gBitUser;
+		global $gCenterPieces, $gBitUser;
 		$ret = array( 'l' => NULL, 'c' => NULL, 'r' => NULL );
 		$layoutUserId = ROOT_USER_ID;
 

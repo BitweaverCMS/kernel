@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.1.1.1.2.3 2005/08/10 06:40:11 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.1.1.1.2.4 2005/09/19 12:02:37 wolff_borg Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -25,7 +25,7 @@ $formModuleFeatures = array(
 		'note' => 'If you activate this, any modules you assign will be visible to all users, regardless of the settings on the layout page.<br />Hint: If you lose your login module, use /users/login.php to login!',
 	),
 	'feature_modulecontrols' => array(
-		'label' => 'Show Module Controls<br />(not functional at present)',
+		'label' => 'Show Module Controls',
 		'note' => 'Displays module control buttons at the top of modules for easy placement by users.',
 	),
 );

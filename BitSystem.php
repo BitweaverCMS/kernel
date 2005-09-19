@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.50 2005/09/18 08:28:29 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.51 2005/09/19 03:39:45 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1921,12 +1921,6 @@ class BitTimer
 		return $this->parseMicro(microtime()) - $this->mTimer[$timer];
 	}
 }
-
-/*
-function tra($content) {
-SPIDERKILL  - need to copy tra function out of setup_inc and put here
-}
-*/
 
 /* \brief  substr with a utf8 string - works only with $start and $length positive or nuls
 * This function is the same as substr but works with multibyte

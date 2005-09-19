@@ -1,4 +1,4 @@
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.1.1.1.2.1 2005/06/26 07:59:36 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.1.1.1.2.2 2005/09/19 10:39:21 wolff_borg Exp $
 
 //
 // Set client offset (in minutes) to a cookie to avoid server-side DST issues
@@ -164,6 +164,14 @@ function toggle(foo) {
 		} else {
 			show(foo,1);
 		}
+	}
+}
+
+function settogglestate(foo) {
+	if (getCookie(foo) == "o") {
+		show(foo);
+	} else {
+		hide(foo);
 	}
 }
 

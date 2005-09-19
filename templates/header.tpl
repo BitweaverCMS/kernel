@@ -10,6 +10,9 @@
 	{/foreach}
 </head>
 <body>
+{if $gBitUser->hasPermission( 'bit_p_debug_console' ) and $gBitSystem->isPackageActive( 'debug' )}
+	{include file="bitpackage:debug/debug_console.tpl"}
+{/if}
 {if $gBitSystem->isFeatureActive( 'feature_helppopup' )}
 	{popup_init src="`$smarty.const.THEMES_PKG_URL`js/overlib.js"}
 {/if}

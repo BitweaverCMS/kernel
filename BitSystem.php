@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.51 2005/09/19 03:39:45 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.52 2005/09/19 10:38:54 wolff_borg Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -339,7 +339,8 @@ class BitSystem extends BitBase {
 		if (empty($this->mStyles['styleSheet'])) {
 			$this->mStyles['styleSheet'] = $this->getStyleCss();
 		}
-		$this->mStyles['headerIncFiles'] = $this->getHeaderIncFiles();
+		$this->mStyles['headerIncFiles'] = $this->getTplIncludeFiles("header_inc.tpl");
+		$this->mStyles['footerIncFiles'] = $this->getTplIncludeFiles("footer_inc.tpl");
 		$this->mStyles['browserStyleSheet'] = $this->getBrowserStyleCss();
 		$this->mStyles['customStyleSheet'] = $this->getCustomStyleCss();
 		$this->mStyles['altStyleSheets'] = $this->getAltStyleCss();
@@ -387,22 +388,22 @@ class BitSystem extends BitBase {
 	}
 
 	// >>>
-	// === getHeaderIncFiles
+	// === getTplIncludeFiles
 	/**
-	* scan packages for <pkg>/templates/header_inc.tpl files
+	* scan packages for <pkg>/templates/header_inc.tpl or footer_inc.tpl files
 	*
 	* @param none $
 	* @access private
 	* @return array of paths to existing header_inc.tpl files
 	*/
-	function getHeaderIncFiles() {
+	function getTplIncludeFiles($pFilename) {
 		foreach( $this->mPackages as $package => $info ) {
-			$file = $info['path'].'templates/header_inc.tpl';
+			$file = $info['path'].'templates/'.$pFilename;
 			if( is_readable( $file ) ) {
 				$ret[] = $file;
 			}
 		}
-		return !empty( $ret ) ? $ret : '';
+		return !empty( $ret ) ? $ret : array();
 	}
 
 	// >>>

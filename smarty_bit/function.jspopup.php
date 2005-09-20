@@ -8,24 +8,39 @@
 /**
  * smarty_function_jspopup
  */
-function smarty_function_jspopup($params, &$gBitSmarty)
-{
-    extract($params);
-    // Param = zone
-    if(empty($href)) {
-        $gBitSmarty->trigger_error("assign: missing href parameter");
-        return;
-    }
-    $attrs = array();
-    $attrs[] = "alwaysRaised=yes";
-    $attrs[] = (!isset($scrollbars)) ? "scrollbars=no" : "scrollbars=".$scrollbars."";
-    $attrs[] = (!isset($menubar)) ? "menubar=no" : "menubar=".$menubar."";
-    $attrs[] = (!isset($resizable)) ? "resizable=yes" : "resizable=".$resizable."";
-    if (isset($height)) $attrs[] = "height=".$height;
-    if (isset($width)) $attrs[] = "width=".$width;
-    print "href='#' onClick='javascript:window.open(\"$href\",\"\",\"" . join(",", $attrs) . "\");' ";
+function smarty_function_jspopup($params, &$gBitSmarty) {
+	$ret = '';
+	if( empty( $params['href'] ) ) {
+		$gBitSmarty->trigger_error( 'assign: missing "href" parameter' );
+	}
+
+	if( empty( $params['title'] ) ) {
+		$gBitSmarty->trigger_error( 'assign: missing "title" parameter' );
+	}
+
+	$optionHash = array( 'type', 'width', 'height', 'gutsonly' );
+	foreach( $params as $param => $val ) {
+		if( !in_array( $param, $optionHash ) ) {
+			if( $param != 'title' ) {
+				$guts .= ' '.$param.'="'.$val.'"';
+			} else {
+				$guts .= ' '.$param.'="'.tra( 'This will open a new window: ' ).tra( $params['title'] ).'"';
+			}
+		}
+	}
+
+	if( !empty( $params['type'] ) && $params['type'] == 'fullscreen' ) {
+		$js = 'popUpWin(this.href,\'fullScreen\');';
+	} else {
+		$js = 'popUpWin(this.href,\'standard\','.( !empty( $params['width'] ) ? $params['width'] : 600 ).','.( !empty( $params['height'] ) ? $params['height'] : 400 ).');';
+	}
+
+	$guts .= ' onkeypress="'.$js.'" onclick="'.$js.'return false;"';
+
+	if( !empty( $params['gutsonly'] ) ) {
+		return $guts;
+	} else {
+		return( '<a '.$guts.'>'.tra( $params['title'] ).'</a>' );
+	}
 }
-
-/* vim: set expandtab: */
-
 ?>

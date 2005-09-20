@@ -10,6 +10,7 @@
 	{/foreach}
 </head>
 <body>
+<div style="display:none;position:absolute;top:0;left:-999em;"><a class="skip" style="position:absolute;top:0;left:-999em;width:0;height:0;" href="#content">{tr}Skip Navigation{/tr}</a></div>
 {if $gBitSystem->isFeatureActive( 'feature_helppopup' )}
 	{popup_init src="`$smarty.const.THEMES_PKG_URL`js/overlib.js"}
 {/if}

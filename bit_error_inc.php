@@ -199,7 +199,7 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 // var dump variable in something nicely readable in web browser
 function vd( $iVar ) {
 	print '<pre>';
-	var_dump( $iVar );
+	var_dump( htmlentities( $iVar ) );
 	print "</pre>\n";
 }
 

@@ -1,4 +1,5 @@
 {strip}
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="generator" content="bitweaver - http://www.bitweaver.org" />
 	<meta name="description" content="{$gBitSystemPrefs.site_description}" />
 	<meta name="keywords" content="{$gBitSystemPrefs.site_keywords}" />

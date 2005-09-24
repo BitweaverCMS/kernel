@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.53 2005/09/24 12:37:59 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.54 2005/09/24 17:54:36 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -585,7 +585,7 @@ class BitSystem extends BitBase {
 	{
 		$ret = FALSE;
 		if( $pFeatureName ) {
-			$ret = ($this->getPreference($pFeatureName) == 'y');
+			$ret = ($this->getPreference($pFeatureName) != 'n');
 		}
 
 		return( $ret );

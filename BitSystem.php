@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.52 2005/09/19 10:38:54 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.53 2005/09/24 12:37:59 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -104,7 +104,7 @@ class BitSystem extends BitBase {
 	*/
 	function initSmarty()
 	{
-		global $bitdomain, $_SERVER;
+		global $bitdomain, $_SERVER, $gBitSmarty;
 
 		// Set the separator for PHP generated tags to be &amp; instead of &
 		// This is necessary for XHTML compliance
@@ -123,7 +123,6 @@ class BitSystem extends BitBase {
 			$bitdomain = "";
 		}
 
-		global $gBitSmarty;
 		// make sure we only create one BitSmarty
 		if( !is_object( $gBitSmarty ) ) {
 			$gBitSmarty = new BitSmarty();

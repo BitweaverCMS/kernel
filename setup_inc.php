@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.20 2005/09/15 12:41:15 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.21 2005/09/24 12:37:59 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -61,12 +61,8 @@ $gBitDb = new BitDb();
 require_once(KERNEL_PKG_PATH . 'BitSystem.php');
 global $gRefreshSitePrefs;
 $gRefreshSitePrefs = FALSE;
-global $gBitSystem;
+global $gBitSmarty, $gBitSystem;
 $gBitSystem = new BitSystem();
-
-// deprecated referenced variable alias - will be nuked soon - spiderr
-global $smarty, $gBitSmarty;
-$smarty = &$gBitSmarty;
 
 global $gPreviewStyle;
 $gPreviewStyle = FALSE;

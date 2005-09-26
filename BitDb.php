@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.24 2005/09/24 04:38:03 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.25 2005/09/26 09:42:54 wolff_borg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -397,12 +397,26 @@ class BitDb
 	 *
 	 * @param table	table name to query
 	 * @param upper	uppercase table name (required by some databases)
-	 * @schema is optional database schema to use - not supported by all databases.
+	 * @param schema is optional database schema to use - not supported by all databases.
 	 *
 	 * @return  array of ADOFieldObjects for current table.
 	 */
 	function MetaColumns($table,$normalize=true, $schema=false) {
 		return $this->mDb->MetaColumns( $table, $normalize, $schema );
+	}
+
+	/**
+	 * List indexes in a database as an array of ADOFieldObjects.
+	 * See top of file for definition of object.
+	 *
+	 * @param table	table name to query
+	 * @param primary list primary indexes
+	 * @param owner list owner of index
+	 *
+	 * @return  array of ADOFieldObjects for current table.
+	 */
+	function MetaIndexes($table,$primary=false, $owner=false) {
+		return $this->mDb->MetaIndexes( $table, $primary, $owner);
 	}
 
 

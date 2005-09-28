@@ -29,6 +29,10 @@ if( !defined( 'DISPLAY_ERRORS' ) ) {
 	define( 'DISPLAY_ERRORS', 0 );
 }
 
+// Empty PHP_SELF and incorrect SCRIPT_NAME due to php-cgiwrap - wolff_borg
+if (empty($_SERVER['PHP_SELF']))
+	$_SERVER['PHP_SELF'] = $_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_URL'];
+
 // this is broken if the virtual directory under the webserver is
 // not the same name as the physical directory on the drive - wolff_borg
 if (!defined('BIT_ROOT_URL' )) {

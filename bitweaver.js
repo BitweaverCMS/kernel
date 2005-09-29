@@ -1,4 +1,4 @@
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.1.1.1.2.2 2005/09/19 10:39:21 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.1.1.1.2.3 2005/09/29 07:47:15 squareing Exp $
 
 //
 // Set client offset (in minutes) to a cookie to avoid server-side DST issues
@@ -414,5 +414,47 @@ function setBlockDisplay(item,vizFlag) {
 		document.all[item].style.display = current;
 	} else if (document.getElementById) {
 		document.getElementById(item).style.display = current;
+	}
+}
+
+function one2two( id1, id2 ) {
+	var m1 = document.getElementById( id1 );
+	var m2 = document.getElementById( id2 );
+    m1len = m1.length;
+    for( i=0; i<m1len ; i++ ){
+        if( m1.options[i].selected == true ) {
+            m2len = m2.length;
+            m2.options[m2len]= new Option( m1.options[i].text );
+        }
+    }
+
+    for( i = ( m1len -1 ); i>=0; i-- ){
+        if (m1.options[i].selected == true ) {
+            m1.options[i] = null;
+        }
+    }
+}
+
+function two2one( id1, id2 ) {
+	var m1 = document.getElementById( id1 );
+	var m2 = document.getElementById( id2 );
+    m2len = m2.length ;
+	for( i=0; i<m2len ; i++ ){
+		if( m2.options[i].selected == true ) {
+			m1len = m1.length;
+			m1.options[m1len]= new Option( m2.options[i].text );
+		}
+	}
+	for( i=(m2len-1); i>=0; i-- ) {
+		if( m2.options[i].selected == true ) {
+			m2.options[i] = null;
+		}
+	}
+}
+
+function selectAll( id ) {
+	var m = document.getElementById( id );
+	for( i=0; i<m.length; i++ ) {
+		m.options[i].selected = true;
 	}
 }

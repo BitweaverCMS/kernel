@@ -36,18 +36,22 @@
 				{foreach item=servicePkgs key=service from=$serviceList}
 					<h2>{$service|capitalize|replace:"_":" "}</h2>
 					{foreach key=name item=package from=$servicePkgs}
-						<div class="row">
-							<div class="formlabel">
-								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
+							<div class="row">
+								<div class="formlabel">
+									<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
+								</div>
+								{forminput}
+									<label>
+										{if $package.installed and !$package.required and $package.activatable}
+											<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if}/>
+											&nbsp;{$name|capitalize}
+										{else}
+											{$name|capitalize} - {tr}not installed yet{/tr}
+										{/if}
+									</label>
+									{formhelp note=`$package.info` package=$name}
+								{/forminput}
 							</div>
-							{forminput}
-								<label>
-									<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if}/>
-									&nbsp;{$name|capitalize}
-								</label>
-								{formhelp note=`$package.info` package=$name}
-							{/forminput}
-						</div>
 					{/foreach}
 				{/foreach}
 			{/legend}

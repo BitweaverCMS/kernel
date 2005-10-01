@@ -1,13 +1,13 @@
 <?php
 /**
- * Modules Management Library 
+ * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.13 2005/09/18 08:29:01 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.1.1.1.2.14 2005/10/01 13:10:27 spiderr Exp $
  */
 
 /**
- * Modules Management Library 
+ * Modules Management Library
  *
  * @package kernel
  */

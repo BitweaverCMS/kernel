@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.55 2005/09/25 10:07:34 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.56 2005/10/01 13:10:27 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -330,7 +330,7 @@ class BitSystem extends BitBase {
 	*/
 	function preDisplay($pMid)
 	{
-		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gPreviewStyle;
+		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gPreviewStyle, $gQueryUser, $gQueryUserId;
 		// setup our theme style and check if a preview theme has been picked
 		if( $gPreviewStyle !== FALSE ) {
 			$this->setStyle( $gPreviewStyle );
@@ -348,7 +348,15 @@ class BitSystem extends BitBase {
 		// dont forget to assign slideshow stylesheet if we are viewing page as slideshow
 //		$gBitSmarty->assign('slide_style', $this->getStyleCss("slide_style"));
 
-		$this->loadLayout(($this->getPreference('feature_user_layout') == 'h' && !empty($fHomepage)) ? $fHomepage : ($this->getPreference('feature_user_layout') == 'y' ? $gBitUser->mUsername : null));
+		$customHome = NULL;
+		if( !empty( $gQueryUser ) && $gQueryUser->canCustomizeLayout() && !empty( $gQueryUserId ) ) {
+			$customHome = $gQueryUserId;
+		} elseif( $this->getPreference( 'feature_user_layout' ) == 'y' ) {
+			$customHome = $gBitUser->mUsername;
+		}
+
+		$this->loadLayout( $customHome );
+
 		if ($pMid == 'bitpackage:kernel/dynamic.tpl')
 		{
 			$gBitSmarty->assign_by_ref('gCenterPieces', $gCenterPieces);
@@ -1246,8 +1254,7 @@ asort( $this->mAppMenu );
 	*/
 	function loadLayout($pUserMixed = ROOT_USER_ID, $pLayout = ACTIVE_PACKAGE, $pFallbackLayout = DEFAULT_PACKAGE, $pForceReload = false)
 	{
-		if ($pForceReload || empty($this->mLayout) || !count($this->mLayout))
-		{
+		if( $pForceReload || empty($this->mLayout) || !count($this->mLayout) ){
 			unset($this->mLayout);
 			$this->mLayout = $this->getLayout($pUserMixed, $pLayout, $pLayout, $pFallbackLayout);
 		}
@@ -1259,7 +1266,7 @@ asort( $this->mAppMenu );
 		$ret = array( 'l' => NULL, 'c' => NULL, 'r' => NULL );
 		$layoutUserId = ROOT_USER_ID;
 
-		if (($this->getPreference('feature_user_layout') == 'h' || $this->getPreference('feature_user_layout') == 'y') && isset($pUserMixed)) {
+		if( isset($pUserMixed) ) {
 			if (is_numeric($pUserMixed)) {
 				$whereClause = " WHERE tl.`user_id`=?";
 			} else {

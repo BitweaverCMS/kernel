@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.22 2005/09/25 09:51:03 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.23 2005/10/01 13:10:27 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -118,13 +118,15 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// setStyle first, in case package decides it wants to reset the style in it's own <package>/bit_setup_inc.php
 	$theme = $gBitSystem->getStyle();
 	$theme = !empty($theme) ? $theme : 'basic';
-	if ($gBitSystem->getPreference('feature_user_theme') == 'y') {
+	// feature_user_theme='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
+	if( $gBitSystem->getPreference('feature_user_theme') == 'y' ) {
 		if (isset($_COOKIE['tiki-theme'])) {
 			$theme = $_COOKIE['tiki-theme'];
 		}
-		if ( $gBitUser->isValid() && $gBitSystem->getPreference('feature_userPreferences') == 'y') {
-			$userStyle = $gBitUser->getPreference('theme');
-			$theme = !empty($userStyle) ? $userStyle : $theme;
+		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'feature_userPreferences' ) ) {
+			if( $userStyle = $gBitUser->getPreference('theme') ) {
+				$theme = $userStyle;
+			}
 		}
 	}
 	$gBitSystem->setStyle($theme);
@@ -342,17 +344,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 		}
 		$gBitSmarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
 		$gBitSmarty->assign('stay_in_ssl_mode', $stay_in_ssl_mode);
-	}
-
-	if( $gBitSystem->isFeatureActive( 'feature_userPreferences' ) && $gBitUser->isRegistered() ) {
-		$user_dbl = $gBitUser->getPreference( 'user_dbl', 'y' );
-
-		if ($gBitSystem->isFeatureActive( 'feature_user_theme') ) {
-			$userTheme = $gBitUser->getPreference( 'theme' );
-			if ($userTheme) {
-				$gBitSystem->setStyle($userTheme);
-			}
-		}
 	}
 
 	/* SPIDERRKILL - i think everything below here is not fully implemented or deprecated

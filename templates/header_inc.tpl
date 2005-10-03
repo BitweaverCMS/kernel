@@ -9,8 +9,11 @@
 	<link rel="help" title="{tr}Help{/tr}" href="http://www.bitweaver.org/" />
 {/strip}
 <script type="text/javascript">//<![CDATA[
-	var tikiCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
+	{if $gBitSystem->isFeatureActive( 'feature_rememberme' )}var tikiCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
 	var tikiCookieDomain = "{$gBitSystem->mPrefs.cookie_domain}";
+	{else}var tikiCookiePath = "{$smarty.const.BIT_ROOT_URL}";
+	var tikiCookieDomain = "";
+	{/if}
 	var tikiIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons";
 	var tikiRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 //]]></script>

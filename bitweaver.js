@@ -1,4 +1,4 @@
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.1.1.1.2.5 2005/10/01 01:40:34 jht001 Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.1.1.1.2.6 2005/10/03 05:22:32 wolff_borg Exp $
 
 //
 // Set client offset (in minutes) to a cookie to avoid server-side DST issues
@@ -213,8 +213,8 @@ function icntoggle(foo) {
 // * an argument defaults when it is assigned null as a placeholder
 // * a null placeholder is not required for trailing omitted arguments
 function setCookie(name, value, expire, path, domain, secure) {
-	var cookie_path = ((tikiCookiePath) ? "; path=" + tikiCookiePath : tikiRootUrl);
-	var cookie_domain = ((tikiCookieDomain) ? "; domain=" + escape(tikiCookieDomain) : "");
+	var cookie_path = tikiCookiePath;
+	var cookie_domain = escape(tikiCookieDomain);
 	var curCookie = name + "=" + escape(value)
 		+ ((expire) ? "; expires=" + expire.toGMTString() : "; expires=" + expires.toGMTString())
 		+ ((path) ? "; path=" + path : cookie_path)
@@ -252,8 +252,8 @@ function getCookie(name) {
 // [domain] - domain of the cookie (must be same as domain used to create cookie)
 // * path and domain default if assigned null or omitted if no explicit argument proceeds
 function deleteCookie(name, path, domain) {
-	var cookie_path = ((tikiCookiePath) ? "; path=" + tikiCookiePath : tikiRootUrl);
-	var cookie_domain = ((tikiCookieDomain) ? "; domain=" + escape(tikiCookieDomain) : "");
+	var cookie_path = tikiCookiePath;
+	var cookie_domain = escape(tikiCookieDomain);
 	if (getCookie(name)) {
 		document.cookie = name + "="
 			+ ((path) ? "; path=" + path : cookie_path) + ((domain) ? "; domain=" + domain : cookie_domain) + "; expires=Thu, 01-Jan-70 00:00:01 GMT";

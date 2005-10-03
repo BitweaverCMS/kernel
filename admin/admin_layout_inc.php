@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.1.1.1.2.3 2005/09/09 08:19:06 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.1.1.1.2.4 2005/10/03 17:30:59 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -158,15 +158,15 @@ foreach( $gBitSystem->mPackages as $pkg ) {
 //****** Setup assign modules panel
 $module_groups = array();
 
-$all_modules = &$modlib->getAllModules();
+$all_modules = $modlib->getAllModules();
 ksort( $all_modules );
 $gBitSmarty->assign_by_ref( 'all_modules', $all_modules );
 
-$allModulesHelp = &$modlib->getAllModules( 'modules', 'help_mod_' );
+$allModulesHelp = $modlib->getAllModules( 'modules', 'help_mod_' );
 ksort( $allModulesHelp );
 $gBitSmarty->assign_by_ref( 'allModulesHelp', $allModulesHelp );
 
-$all_centers = &$modlib->getAllModules( 'templates', 'center_' );
+$all_centers = $modlib->getAllModules( 'templates', 'center_' );
 ksort( $all_centers );
 $gBitSmarty->assign_by_ref( 'all_centers', $all_centers );
 
@@ -190,7 +190,4 @@ foreach( array_keys( $groups ) as $groupId) {
 }
 
 $gBitSmarty->assign_by_ref("groups", $groups);
-
-
-
 ?>

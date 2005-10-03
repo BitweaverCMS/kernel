@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.1.1.1.2.4 2005/09/19 12:02:37 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.1.1.1.2.5 2005/10/03 19:22:36 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -31,10 +31,10 @@ $formModuleFeatures = array(
 );
 $gBitSmarty->assign( 'formModuleFeatures',$formModuleFeatures );
 
-$all_mods = &$modlib->getAllModules();                           // Get all column modules (e.g. left & right)
+$all_mods = $modlib->getAllModules();                           // Get all column modules (e.g. left & right)
 $gBitSmarty->assign_by_ref( 'all_modules', $all_mods );
 
-$all_centers = &$modlib->getAllModules( 'templates', 'center_' );   // Get all center templates
+$all_centers = $modlib->getAllModules( 'templates', 'center_' );   // Get all center templates
 $gBitSmarty->assign_by_ref( 'all_centers', $all_centers );              
 
 $all_mods = array_merge_recursive($all_mods,$all_centers);                         // Merge them all back into one array

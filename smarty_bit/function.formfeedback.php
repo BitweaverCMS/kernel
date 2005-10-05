@@ -21,6 +21,7 @@ function smarty_function_formfeedback( $params,&$gBitSmarty ) {
 		$hash = &$params;
 	}
 	$feedback = '';
+	$i = 0;
 	foreach( $hash as $key => $val ) {
 		if( $val ) {
 			require_once $gBitSmarty->_get_plugin_filepath('function','biticon');
@@ -36,7 +37,7 @@ function smarty_function_formfeedback( $params,&$gBitSmarty ) {
 				}
 				$feedback .= '<ul>';
 				foreach( $val as $valText ) {
-					$feedback .= '<li class="'.$key.'">'.smarty_function_biticon( $biticon,$gBitSmarty ).' '.$valText.'</li>';
+					$feedback .= '<li id="fat'.$i++.'" class="fade-000000 '.$key.'">'.smarty_function_biticon( $biticon,$gBitSmarty ).' '.$valText.'</li>';
 				}
 				$feedback .= '</ul>';
 			} else {

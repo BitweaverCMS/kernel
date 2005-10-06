@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.56 2005/10/01 13:10:27 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.57 2005/10/06 21:12:27 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -833,11 +833,11 @@ class BitSystem extends BitBase {
 	* @return none this function will DIE DIE DIE!!!
 	* @access public
 	*/
-	function fatalError($pMsg)
+	function fatalError( $pMsg, $pTemplate='error.tpl' )
 	{
 		global $gBitSmarty;
 		$gBitSmarty->assign('msg', tra($pMsg) );
-		$this->display( 'error.tpl' );
+		$this->display( $pTemplate );
 		die;
 	}
 	// >>>

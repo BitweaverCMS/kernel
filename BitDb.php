@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.25 2005/09/26 09:42:54 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.26 2005/10/09 05:14:12 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -938,7 +938,8 @@ class BitDb
 	 * @return true/false.
 	 */
 	function RollbackTrans() {
-		 return $this->mDb->RollbackTrans();
+		$this->mDb->FailTrans();
+		 return $this->mDb->CompleteTrans( FALSE );
 	}
 
 	/**

@@ -199,7 +199,16 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 // var dump variable in something nicely readable in web browser
 function vd( $iVar ) {
 	print '<pre>';
-	var_dump( $iVar );
+	if( is_object( $iVar ) ) {
+		if( isset( $iVar->mDb ) ) {
+			unset( 	$iVar->mDb );
+		}
+		var_dump( $iVar );
+	} elseif( is_string( $iVar ) ) {
+		var_dump( htmlentities( $iVar ) );
+	} else {
+		var_dump( $iVar );
+	}
 	print "</pre>\n";
 }
 

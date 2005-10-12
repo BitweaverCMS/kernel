@@ -50,7 +50,7 @@
 			</div>
 			{/literal}
 		{else}
-			<embed {if $modParams.width or $modParams.height}style="width:{$modParams.width}px;height:{$modParams.height}px;"{/if} src="{$modParams.src|default:"http://www.internettime.com/Learning/relog.swf"}" quality="high" wmode="transparent" bgcolor="{$modParams.color|default:"#ffffff"}" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+			<embed style="width:{$modParams.width|default:"120"}px;height:{$modParams.height|default:"120"}px;" src="{$modParams.src|default:"http://www.internettime.com/Learning/relog.swf"}" quality="high" wmode="transparent" bgcolor="{$modParams.color|default:"#ffffff"}" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 		{/if}
 	</div>
 {/bitmodule}

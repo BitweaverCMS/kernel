@@ -22,10 +22,6 @@
 {else}
 	{$smarty.now|bit_short_datetime}
 {/if}
-{if $gBitUser->isAdmin() and $gBitSystem->isFeatureActive( 'feature_debug_console' )}
-	&#160;//&#160;<a title="{tr}View Debugger{/tr}" href="javascript:toggle('debugconsole');">{tr}Debugger{/tr}</a>
-	{include file="bitpackage:debug/debug_console.tpl"}
-{/if}
 
 {if $siteTitle}
 </div>

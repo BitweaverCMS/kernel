@@ -1,5 +1,5 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/header_inc.tpl,v 1.3 2005/08/07 17:38:46 squareing Exp $ *}
 {strip}
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="generator" content="bitweaver - http://www.bitweaver.org" />
 	<meta name="description" content="{$gBitSystemPrefs.site_description}" />
 	<meta name="keywords" content="{$gBitSystemPrefs.site_keywords}" />
@@ -8,25 +8,26 @@
 	<link rel="start" title="{$siteTitle} {tr}Home Page{/tr}" href="{$smarty.const.BIT_ROOT_URL}" />
 	<link rel="help" title="{tr}Help{/tr}" href="http://www.bitweaver.org/" />
 {/strip}
-
-<script type="text/javascript"><!--
-	var tikiCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
+<script type="text/javascript">//<![CDATA[
+	{if $gBitSystem->isFeatureActive( 'feature_rememberme' )}var tikiCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
 	var tikiCookieDomain = "{$gBitSystem->mPrefs.cookie_domain}";
+	{else}var tikiCookiePath = "{$smarty.const.BIT_ROOT_URL}";
+	var tikiCookieDomain = "";
+	{/if}
 	var tikiIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons";
 	var tikiRootUrl = "{$smarty.const.BIT_ROOT_URL}";
-	//alert( tikiCookiePath );
-	//alert( tikiCookieDomain );
---></script>
+//]]></script>
 <script type="text/javascript" src="{$smarty.const.KERNEL_PKG_URL}bitweaver.js"></script>
+{strip}
+	{include file="bitpackage:kernel/bidi.tpl"}
 
-{include file="bitpackage:kernel/bidi.tpl"}
+	{* --- jscalendar block --- *}
+	{if $gBitSystem->isFeatureActive( 'feature_jscalendar' )}
+		<link rel="StyleSheet" type="text/css" media="all" href="{$smarty.const.JSCALENDAR_PKG_URL}calendar-system.css" title="system" />
+		<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}calendar.js"></script>
+		<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}lang/calendar-en.js"></script>
+		<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}calendar-setup.js"></script>
+	{/if}
 
-{* --- jscalendar block --- *}
-{if $gBitSystem->isFeatureActive( 'feature_jscalendar' )}
-	<link rel="StyleSheet" type="text/css" media="all" href="{$smarty.const.JSCALENDAR_PKG_URL}calendar-system.css" title="system" />
-	<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}calendar.js"></script>
-	<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}lang/calendar-en.js"></script>
-	<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}calendar-setup.js"></script>
-{/if}
-
-{$trl}
+	{$trl}
+{/strip}

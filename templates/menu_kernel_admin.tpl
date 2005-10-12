@@ -23,9 +23,6 @@
 	{if $gBitUser->hasPermission( 'bit_p_edit_cookies' )}
 		<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_cookies.php">{tr}Cookies{/tr}</a></li>
 	{/if}
-	{if $gBitSystem->isFeatureActive( 'feature_debug_console' )}
-		<li><a class="item" href="javascript:toggle('debugconsole');">{tr}Debugger console{/tr}</a></li>
-	{/if}
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?version_check=1">{tr}Check Version{/tr}</a></li>
 </ul>
 {/strip}

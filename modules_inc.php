@@ -1,22 +1,21 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.4 2005/08/30 22:23:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.5 2005/10/12 15:13:51 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.4 2005/08/30 22:23:18 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.5 2005/10/12 15:13:51 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
-global $gBitSmarty, $bit_p_configure_modules, $user_assigned_modules, $gBitSystem, $modlib, $gBitUser, $fHomepage, $gBitSystem, $modallgroups, $modseparateanon, $bitdomain, $bit_p_view_shoutbox;
+global $gBitSmarty, $gBitSystem, $modlib, $gBitUser;
 
 /**
  * required setup
  */
 include_once( KERNEL_PKG_PATH.'mod_lib.php' );
-// feature dead for now - spiderr - include_once( USERS_PKG_PATH.'module_controls_inc.php' );
 
 clearstatcache();
 $now = $gBitSystem->getUTCTime();
@@ -90,6 +89,10 @@ if( $gBitSystem->mLayout && empty( $gHideModules ) ) {
 						$replace[1] = " ";
 						$gBitSmarty->assign( 'moduleTitle', ( isset( $module_title ) ? tra( $module_title ) : tra( ucfirst( preg_replace( $pattern, $replace, $r['module_rsrc'] ) ) ) ) );
 						$gBitSmarty->assign_by_ref( 'module_rows', $r["rows"] );
+						$gBitSmarty->assign_by_ref( 'module_id', $r["module_id"] );
+						$gBitSmarty->assign_by_ref( 'module_layout', $r["layout"] );
+						$colkey = ($column == 'r') ? 'right' : 'left';
+						$gBitSmarty->assign_by_ref( 'colkey', $colkey);
 						$r['data'] = $gBitSmarty->fetch( $r['module_rsrc'] );
 						unset( $module_rows );
 					}

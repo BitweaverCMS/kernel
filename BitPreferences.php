@@ -3,7 +3,7 @@
  * Preferences Management Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitPreferences.php,v 1.3 2005/08/07 17:38:44 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitPreferences.php,v 1.4 2005/10/12 15:13:51 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -204,4 +204,3 @@ class BitPreferences
     }
 }
 ?>
-

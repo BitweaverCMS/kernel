@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.15 2005/08/30 22:23:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.16 2005/10/12 15:13:51 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -48,8 +48,8 @@ define('HOMEPAGE_LAYOUT', 'home');
  *
  * @package kernel
  */
-class BitSystem extends BitBase
-{	/**
+class BitSystem extends BitBase {
+	/**
 	* * Array of  *
 	*/
 	var $mAppMenu;
@@ -104,7 +104,7 @@ class BitSystem extends BitBase
 	*/
 	function initSmarty()
 	{
-		global $bitdomain, $_SERVER;
+		global $bitdomain, $_SERVER, $gBitSmarty;
 
 		// Set the separator for PHP generated tags to be &amp; instead of &
 		// This is necessary for XHTML compliance
@@ -123,7 +123,6 @@ class BitSystem extends BitBase
 			$bitdomain = "";
 		}
 
-		global $gBitSmarty;
 		// make sure we only create one BitSmarty
 		if( !is_object( $gBitSmarty ) ) {
 			$gBitSmarty = new BitSmarty();
@@ -331,7 +330,7 @@ class BitSystem extends BitBase
 	*/
 	function preDisplay($pMid)
 	{
-		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gPreviewStyle;
+		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gPreviewStyle, $gQueryUser, $gQueryUserId;
 		// setup our theme style and check if a preview theme has been picked
 		if( $gPreviewStyle !== FALSE ) {
 			$this->setStyle( $gPreviewStyle );
@@ -339,7 +338,8 @@ class BitSystem extends BitBase
 		if (empty($this->mStyles['styleSheet'])) {
 			$this->mStyles['styleSheet'] = $this->getStyleCss();
 		}
-		$this->mStyles['headerIncFiles'] = $this->getHeaderIncFiles();
+		$this->mStyles['headerIncFiles'] = $this->getTplIncludeFiles("header_inc.tpl");
+		$this->mStyles['footerIncFiles'] = $this->getTplIncludeFiles("footer_inc.tpl");
 		$this->mStyles['browserStyleSheet'] = $this->getBrowserStyleCss();
 		$this->mStyles['customStyleSheet'] = $this->getCustomStyleCss();
 		$this->mStyles['altStyleSheets'] = $this->getAltStyleCss();
@@ -348,7 +348,15 @@ class BitSystem extends BitBase
 		// dont forget to assign slideshow stylesheet if we are viewing page as slideshow
 //		$gBitSmarty->assign('slide_style', $this->getStyleCss("slide_style"));
 
-		$this->loadLayout(($this->getPreference('feature_user_layout') == 'h' && !empty($fHomepage)) ? $fHomepage : ($this->getPreference('feature_user_layout') == 'y' ? $gBitUser->mUsername : null));
+		$customHome = NULL;
+		if( !empty( $gQueryUser ) && $gQueryUser->canCustomizeLayout() && !empty( $gQueryUserId ) ) {
+			$customHome = $gQueryUserId;
+		} elseif( $this->getPreference( 'feature_user_layout' ) == 'y' ) {
+			$customHome = $gBitUser->mUsername;
+		}
+
+		$this->loadLayout( $customHome );
+
 		if ($pMid == 'bitpackage:kernel/dynamic.tpl')
 		{
 			$gBitSmarty->assign_by_ref('gCenterPieces', $gCenterPieces);
@@ -387,22 +395,22 @@ class BitSystem extends BitBase
 	}
 
 	// >>>
-	// === getHeaderIncFiles
+	// === getTplIncludeFiles
 	/**
-	* scan packages for <pkg>/templates/header_inc.tpl files
+	* scan packages for <pkg>/templates/header_inc.tpl or footer_inc.tpl files
 	*
 	* @param none $
 	* @access private
 	* @return array of paths to existing header_inc.tpl files
 	*/
-	function getHeaderIncFiles() {
+	function getTplIncludeFiles($pFilename) {
 		foreach( $this->mPackages as $package => $info ) {
-			$file = $info['path'].'templates/header_inc.tpl';
+			$file = $info['path'].'templates/'.$pFilename;
 			if( is_readable( $file ) ) {
 				$ret[] = $file;
 			}
 		}
-		return !empty( $ret ) ? $ret : '';
+		return !empty( $ret ) ? $ret : array();
 	}
 
 	// >>>
@@ -585,7 +593,8 @@ class BitSystem extends BitBase
 	{
 		$ret = FALSE;
 		if( $pFeatureName ) {
-			$ret = ($this->getPreference($pFeatureName) == 'y');
+			$featureValue = $this->getPreference($pFeatureName);
+			$ret = !empty( $featureValue ) && ( $featureValue != 'n' );
 		}
 
 		return( $ret );
@@ -619,8 +628,7 @@ class BitSystem extends BitBase
 	* @return none
 	* @access public
 	*/
-	function registerPackage($pPackageName, $pPackagePath, $pActivatable=TRUE )
-	{
+	function registerPackage( $pPackageName, $pPackagePath, $pActivatable=TRUE, $pService=FALSE ) {
 		$this->mRegisterCalled = TRUE;
 		if( empty( $this->mPackages ) ) {
 			$this->mPackages = array();
@@ -644,8 +652,7 @@ class BitSystem extends BitBase
 
 		// Define <PACKAGE>_PKG_NAME
 		$pkgDefine = $pkgName.'_PKG_NAME';
-		if (!defined($pkgDefine))
-		{
+		if (!defined($pkgDefine)) {
 			define($pkgDefine, $pPackageName);
 			$this->mPackages[$pkgNameKey]['activatable'] = $pActivatable;
 		}
@@ -653,16 +660,14 @@ class BitSystem extends BitBase
 
 		// Define <PACKAGE>_PKG_DIR
 		$pkgDefine = $pkgName.'_PKG_DIR';
-		if (!defined($pkgDefine))
-		{
+		if (!defined($pkgDefine)) {
 			define($pkgDefine, basename( $pPackagePath ));
 		}
 		$this->mPackages[$pkgNameKey]['dir'] = basename( $pPackagePath );
 
 		// Define the package we are currently in
 		// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
-		if( !defined('ACTIVE_PACKAGE') && (isset($_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '/\/'.$this->mPackages[$pkgNameKey]['dir'].'\//', $_SERVER['PHP_SELF'] ) || preg_match( '/\/' . $pPackageName . '\//', $_SERVER['PHP_SELF'] )) )
-		{
+		if( !defined('ACTIVE_PACKAGE') && (isset($_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '/\/'.$this->mPackages[$pkgNameKey]['dir'].'\//', $_SERVER['PHP_SELF'] ) || preg_match( '/\/' . $pPackageName . '\//', $_SERVER['PHP_SELF'] )) ) {
 			if( isset($_SERVER['ACTIVE_PACKAGE'] ) ) {
 				// perhaps the webserver told us the active package (probably because of mod_rewrites)
 				$pPackageName = $_SERVER['ACTIVE_PACKAGE'];
@@ -670,6 +675,9 @@ class BitSystem extends BitBase
 			define('ACTIVE_PACKAGE', $pPackageName);
 			$this->mActivePackage = $pPackageName;
 		}
+
+		// indicate if this package is a service or not
+		$this->mPackages[$pkgNameKey]['service'] = $pService;
 	}
 	// >>>
 	// === registerAppMenu
@@ -825,11 +833,11 @@ class BitSystem extends BitBase
 	* @return none this function will DIE DIE DIE!!!
 	* @access public
 	*/
-	function fatalError($pMsg)
+	function fatalError( $pMsg, $pTemplate='error.tpl' )
 	{
 		global $gBitSmarty;
 		$gBitSmarty->assign('msg', tra($pMsg) );
-		$this->display( 'error.tpl' );
+		$this->display( $pTemplate );
 		die;
 	}
 	// >>>
@@ -981,8 +989,8 @@ asort( $this->mAppMenu );
 	}*/
 
 	function getDefaultPage() {
-		global $userlib, $gBitUser;
-		$bitIndex = $this->getPreference("bitIndex");
+		global $userlib, $gBitUser, $gBitSystem;
+		$bitIndex = $this->getPreference( "bitIndex" );
 		if ( $bitIndex == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
 			if( !empty( $gBitUser->mInfo['default_group_id'] ) && ($group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ) ) ) {
@@ -1022,6 +1030,8 @@ asort( $this->mAppMenu );
 			} else {
 				$url = USERS_PKG_URL . 'login.php';
 			}
+		} elseif( in_array( $bitIndex, array_keys( $gBitSystem->mPackages ) ) ) {
+			$url = constant( strtoupper( $bitIndex ).'_PKG_URL' );
 		} elseif( !empty( $bitIndex ) ) {
 			$url = BIT_ROOT_URL.$bitIndex;
 		}
@@ -1244,8 +1254,7 @@ asort( $this->mAppMenu );
 	*/
 	function loadLayout($pUserMixed = ROOT_USER_ID, $pLayout = ACTIVE_PACKAGE, $pFallbackLayout = DEFAULT_PACKAGE, $pForceReload = false)
 	{
-		if ($pForceReload || empty($this->mLayout) || !count($this->mLayout))
-		{
+		if( $pForceReload || empty($this->mLayout) || !count($this->mLayout) ){
 			unset($this->mLayout);
 			$this->mLayout = $this->getLayout($pUserMixed, $pLayout, $pLayout, $pFallbackLayout);
 		}
@@ -1253,11 +1262,11 @@ asort( $this->mAppMenu );
 
 	function getLayout($pUserMixed = null, $pLayout = ACTIVE_PACKAGE, $pFallback = true, $pFallbackLayout = DEFAULT_PACKAGE)
 	{
-		global $user_assigned_modules, $bit_p_configure_modules, $usermoduleslib, $gCenterPieces, $gBitUser;
+		global $gCenterPieces, $gBitUser;
 		$ret = array( 'l' => NULL, 'c' => NULL, 'r' => NULL );
 		$layoutUserId = ROOT_USER_ID;
 
-		if (($this->getPreference('feature_user_layout') == 'h' || $this->getPreference('feature_user_layout') == 'y') && isset($pUserMixed)) {
+		if( isset($pUserMixed) ) {
 			if (is_numeric($pUserMixed)) {
 				$whereClause = " WHERE tl.`user_id`=?";
 			} else {
@@ -1920,12 +1929,6 @@ class BitTimer
 		return $this->parseMicro(microtime()) - $this->mTimer[$timer];
 	}
 }
-
-/*
-function tra($content) {
-SPIDERKILL  - need to copy tra function out of setup_inc and put here
-}
-*/
 
 /* \brief  substr with a utf8 string - works only with $start and $length positive or nuls
 * This function is the same as substr but works with multibyte

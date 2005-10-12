@@ -1,75 +1,92 @@
 <?php
-require_once('bit_setup_inc.php');
 require_once(KERNEL_PKG_PATH.'BitPreferences.php');
+#require_once(KERNEL_PKG_PATH.'test/TestBitPreferences.php');
 
-class TestBitPreferencesCacheDatabase extends Test {
+class TestBitPreferencesCacheDatabase extends UnitTestCase {
+    //class TestBitPreferencesCacheDatabase extends TestBitPreferences {
 
     var $name = "TestBitPreferencesCacheDatabase";
-
-    function initBitPreferences()
-    {
-        $test = new BitPreferences($this->name, new BitCache(), new BitDb());
-	return $test;
-    }
-
+    var $test;
+  
     function TestBitPreferencesCacheDatabase()
+    {
+    }
+  
+    function setUp ()
     {
 	global $gBitDb, $gBitCache;
 	$gBitCache = new BitCache();
 	if (!is_object($gBitDb) || !is_object($gBitCache)) {
-		$this = NULL;
-		return;
+	    $this = NULL;
+	    return;
 	}
 	$name = "`".$this->name."`";
 	if (!$gBitDb->tableExists($name)) {
-   	    $tables = array(
-		$name => "
+	    $tables = array(
+			    $name => "
 		  `name` C(50) PRIMARY,
 		  `value` C(255)
 		");
-            $gBitDb->createTables($tables);
-        }
-        $test = $this->initBitPreferences();
-        Assert::equalsTrue($test != NULL, 'Error during initialisation');
+	    $gBitDb->createTables($tables);
+	}
+	$this->test = new BitPreferences($this->name);
 	
+	// This test can not be performed in the constructor in simpleTest
+	$this->assertTrue($this->test != NULL, 'Error during initialisation');
     }
-    
+
+
+    function tearDown ()
+    {
+	global $gBitDb;
+	$name = "`".$this->name."`";
+	$tables = array ($name);
+	$gBitDb->dropTables($tables);
+	$this->test = NULL;
+    }
+
+
+    // Tests duplicated from TestBitPreferences
+    // Could not inherit them like in TestBitPreferencesCache for some reason.
     function testGetNonexistentItem()
     {
-        $test = $this->initBitPreferences();
-        Assert::equals($test->getPreference("test"), NULL);
+	$this->assertNull($this->test->getPreference("test"));
     }
     
     function testSetNonexistentItem()
     {
-        $test = $this->initBitPreferences();
-        $test->setPreference("test", "123");
-        Assert::equals($test->getPreference("test"), "123");
+        $this->test->setPreference("test", "123");
+        $this->assertEqual($this->test->getPreference("test"), "123", "");
     }
 
     function testSetDefaultItem()
     {
-        $test = $this->initBitPreferences();
-	//$test->mDebug = true;
-        $test->setDefaultPreference("test", "456");
-        Assert::equals($test->getPreference("test"), "123");
+        $this->test->setPreference("test", "123");
+        $this->test->setDefaultPreference("test", "456");
+        $this->assertEqual($this->test->getPreference("test"), "123");
     }
 
     function testSetAsDefaultItem()
     {
-        $test = $this->initBitPreferences();
-	//$test->mDebug = true;
-        $test->setDefaultPreference("test", "456");
-        $test->setPreference("test", "456");
-        Assert::equals($test->getPreference("test"), "456");
+        $this->test->setPreference("test", "123");
+        $this->test->setDefaultPreference("test", "456");
+        $this->test->setPreference("test", "456");
+        $this->assertEqual($this->test->getPreference("test"), "456");
     }
 
+    function testReadDefaultItem()
+    {
+        $this->test->setPreference("test", "123");
+        $this->test->setDefaultPreference("test", "456");
+        $this->test->setPreference("test", NULL);
+        $this->assertEqual($this->test->getPreference("test"), "456");
+    }
+    
     function testResetItem()
     {
-        $test = $this->initBitPreferences();
-        $test->setDefaultPreference("test", "456");
-        $test->setPreference("test", NULL);
-        Assert::equals($test->getPreference("test"), "456");
+        $this->test->setPreference("test", "123");
+        $this->test->setPreference("test", NULL);
+        $this->assertNull($this->test->getPreference("test"));
     }
 }
 ?>

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.13 2005/09/11 01:25:02 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.14 2005/10/12 15:13:51 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -397,12 +397,26 @@ class BitDb
 	 *
 	 * @param table	table name to query
 	 * @param upper	uppercase table name (required by some databases)
-	 * schema is optional database schema to use - not supported by all databases.
+	 * @param schema is optional database schema to use - not supported by all databases.
 	 *
 	 * @return  array of ADOFieldObjects for current table.
 	 */
-	function MetaColumns($table,$normalize=true) {
-		return $this->mDb->MetaColumns( $table, $normalize );
+	function MetaColumns($table,$normalize=true, $schema=false) {
+		return $this->mDb->MetaColumns( $table, $normalize, $schema );
+	}
+
+	/**
+	 * List indexes in a database as an array of ADOFieldObjects.
+	 * See top of file for definition of object.
+	 *
+	 * @param table	table name to query
+	 * @param primary list primary indexes
+	 * @param owner list owner of index
+	 *
+	 * @return  array of ADOFieldObjects for current table.
+	 */
+	function MetaIndexes($table,$primary=false, $owner=false) {
+		return $this->mDb->MetaIndexes( $table, $primary, $owner);
 	}
 
 
@@ -603,8 +617,8 @@ class BitDb
 	*/
 	function CreateSequence($seqname='adodbseq',$startID=1)
 	{
-		if (empty($this->_genSeqSQL)) return FALSE;
-		return $this->mDb->Execute(sprintf($this->_genSeqSQL,$seqname,$startID));
+		if (empty($this->mDb->_genSeqSQL)) return FALSE;
+		return $this->mDb->CreateSequence($seqname, $startID);
 	}
 
 	/**
@@ -880,8 +894,7 @@ class BitDb
 	* @return a string of raw blob data
 	*/
 	function db_byte_decode( &$pData ) {
-		global $gBitDbType;
-		switch ($gBitDbType) {
+		switch ($this->mDb->mType) {
 			case "postgres":
 				$ret = stripcslashes( $pData );
 				break;
@@ -925,7 +938,8 @@ class BitDb
 	 * @return true/false.
 	 */
 	function RollbackTrans() {
-		 return $this->mDb->RollbackTrans();
+		$this->mDb->FailTrans();
+		 return $this->mDb->CompleteTrans( FALSE );
 	}
 
 	/**

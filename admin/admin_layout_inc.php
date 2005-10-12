@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.3 2005/08/01 18:40:34 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.4 2005/10/12 15:13:51 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -31,6 +31,10 @@ $formMiscFeatures = array(
 	'feature_top_bar' => array(
 		'label' => 'Top bar menu',
 		'note' => 'Here you can enable or disable the menubar at the top of the page (available in most themes). Before you disable this bar, please make sure you have some means of navigation set up to access at least the administration page.',
+	),
+	'hide_my_top_bar_link' => array(
+		'label' => 'Hide "My" Link',
+		'note' => 'Hide the <strong>My &lt;sitename&gt;</strong> link from users that are not logged in.',
 	),
 	'feature_top_bar_dropdown' => array(
 		'label' => 'Dropdown menu',
@@ -154,15 +158,15 @@ foreach( $gBitSystem->mPackages as $pkg ) {
 //****** Setup assign modules panel
 $module_groups = array();
 
-$all_modules = &$modlib->getAllModules();
+$all_modules = $modlib->getAllModules();
 ksort( $all_modules );
 $gBitSmarty->assign_by_ref( 'all_modules', $all_modules );
 
-$allModulesHelp = &$modlib->getAllModules( 'modules', 'help_mod_' );
+$allModulesHelp = $modlib->getAllModules( 'modules', 'help_mod_' );
 ksort( $allModulesHelp );
 $gBitSmarty->assign_by_ref( 'allModulesHelp', $allModulesHelp );
 
-$all_centers = &$modlib->getAllModules( 'templates', 'center_' );
+$all_centers = $modlib->getAllModules( 'templates', 'center_' );
 ksort( $all_centers );
 $gBitSmarty->assign_by_ref( 'all_centers', $all_centers );
 
@@ -186,7 +190,4 @@ foreach( array_keys( $groups ) as $groupId) {
 }
 
 $gBitSmarty->assign_by_ref("groups", $groups);
-
-
-
 ?>

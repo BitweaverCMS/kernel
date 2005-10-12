@@ -13,6 +13,7 @@
  * Input:
  *           - ipackage    (optional) - package where we should direct the form after submission
  *           - ifile       (optional) - file that is targetted
+ *           - ianchor     (optional) - move to anchor after submitting
  *                         if neither are set, $PHP_SELF is used as url
  *           - legend      if set, it will generate a fieldset using the input as legend
  * @uses smarty_function_escape_special_chars()
@@ -45,6 +46,8 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 				case 'action':
 					$url = $val;
 					break;
+				case 'ianchor':
+					break;
 				default:
 					$atts .= $key.'="'.$val.'" ';
 					break;
@@ -53,7 +56,7 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 		if( !isset( $url ) ) {
 			$url = $_SERVER['PHP_SELF'];
 		}
-		$ret = '<form action="'.$url.'" '.$atts.'>';
+		$ret = '<form action="'.$url.( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' ).'" '.$atts.'>';
 		$ret .= isset( $legend ) ? '<fieldset>'.$legend : '<div>';		// adding the div makes it easier to be xhtml compliant
 		$ret .= $content;
 		$ret .= '<div class="clear"></div>';							// needed to avoid rendering issues

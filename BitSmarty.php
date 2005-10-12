@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.7 2005/09/03 10:19:29 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.8 2005/10/12 15:13:51 spiderr Exp $
  */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
@@ -163,8 +163,7 @@ class BitSmarty extends Smarty
 	}
 }
 // This will insert a ticket on all template URL's that have GET parameters.
-function add_link_ticket($tpl_source, &$smarty)
-{
+function add_link_ticket($tpl_source, &$smarty) {
 	global $gBitUser;
 
 	if ( is_object( $gBitUser ) && $gBitUser->isValid() ) {
@@ -172,13 +171,13 @@ function add_link_ticket($tpl_source, &$smarty)
 		$to = 'href="\\1?\\2&amp;tk={$gBitUser->mTicket}&\\3"';
 		$tpl_source = preg_replace( $from, $to, $tpl_source );
 		$from = '#<form([^>]*)>#i';
-		$to = '<form\\1><input type="hidden" name="tk" value="{$gBitUser->mTicket}">';
+		$to = '<form\\1><div><input type="hidden" name="tk" value="{$gBitUser->mTicket}" /></div>';
  		$tpl_source = preg_replace( $from, $to, $tpl_source );
 		if( strpos( $tpl_source, '{form}' ) ) {
-			$tpl_source = str_replace( '{form}', '{form}<input type="hidden" name="tk" value="{$gBitUser->mTicket}">', $tpl_source );
+			$tpl_source = str_replace( '{form}', '{form}<input type="hidden" name="tk" value="{$gBitUser->mTicket}" />', $tpl_source );
 		} elseif( strpos( $tpl_source, '{form ' ) ) {
 			$from = '#\{form(\}| [^\}]*)\}#i';
-			$to = '{form\\1}<input type="hidden" name="tk" value="{$gBitUser->mTicket}">';
+			$to = '{form\\1}<input type="hidden" name="tk" value="{$gBitUser->mTicket}" />';
 			$tpl_source = preg_replace( $from, $to, $tpl_source );
 		}
 	}

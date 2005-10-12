@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.15 2005/09/11 11:07:49 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.16 2005/10/12 15:13:51 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -61,12 +61,8 @@ $gBitDb = new BitDb();
 require_once(KERNEL_PKG_PATH . 'BitSystem.php');
 global $gRefreshSitePrefs;
 $gRefreshSitePrefs = FALSE;
-global $gBitSystem;
+global $gBitSmarty, $gBitSystem;
 $gBitSystem = new BitSystem();
-
-// deprecated referenced variable alias - will be nuked soon - spiderr
-global $smarty, $gBitSmarty;
-$smarty = &$gBitSmarty;
 
 global $gPreviewStyle;
 $gPreviewStyle = FALSE;
@@ -122,13 +118,15 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// setStyle first, in case package decides it wants to reset the style in it's own <package>/bit_setup_inc.php
 	$theme = $gBitSystem->getStyle();
 	$theme = !empty($theme) ? $theme : 'basic';
-	if ($gBitSystem->getPreference('feature_user_theme') == 'y') {
+	// feature_user_theme='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
+	if( $gBitSystem->getPreference('feature_user_theme') == 'y' ) {
 		if (isset($_COOKIE['tiki-theme'])) {
 			$theme = $_COOKIE['tiki-theme'];
 		}
-		if ( $gBitUser->isValid() && $gBitSystem->getPreference('feature_userPreferences') == 'y') {
-			$userStyle = $gBitUser->getPreference('theme');
-			$theme = !empty($userStyle) ? $userStyle : $theme;
+		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'feature_userPreferences' ) ) {
+			if( $userStyle = $gBitUser->getPreference('theme') ) {
+				$theme = $userStyle;
+			}
 		}
 	}
 	$gBitSystem->setStyle($theme);
@@ -205,7 +203,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign_by_ref("gBitSystemPackages", $gBitSystem->mPackages);
 
 	// check to see if admin has closed the site
-	if ( $gBitSystem->isFeatureActive('site_closed' ) && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check) && $_SERVER['SCRIPT_URL'] != USERS_PKG_URL.'validate.php' ) {
+	if ( $gBitSystem->isFeatureActive( 'site_closed' ) && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check) && (isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] != USERS_PKG_URL.'validate.php' )) {
 		$_REQUEST['error'] = $gBitSystem->getPreference('site_closed_msg', 'Site is closed for maintainance; please come back later.');
 		include( KERNEL_PKG_PATH . 'error_simple.php' );
 		exit;
@@ -346,17 +344,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 		}
 		$gBitSmarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
 		$gBitSmarty->assign('stay_in_ssl_mode', $stay_in_ssl_mode);
-	}
-
-	if( $gBitSystem->isFeatureActive( 'feature_userPreferences' ) && $gBitUser->isRegistered() ) {
-		$user_dbl = $gBitUser->getPreference( 'user_dbl', 'y' );
-
-		if ($gBitSystem->isFeatureActive( 'feature_user_theme') ) {
-			$userTheme = $gBitUser->getPreference( 'theme' );
-			if ($userTheme) {
-				$gBitSystem->setStyle($userTheme);
-			}
-		}
 	}
 
 	/* SPIDERRKILL - i think everything below here is not fully implemented or deprecated

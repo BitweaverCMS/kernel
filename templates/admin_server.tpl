@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.3 2005/07/25 20:02:11 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.4 2005/10/12 15:13:51 spiderr Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -92,8 +92,8 @@
 				<div class="row">
 					{formlabel label="Session lifetime in seconds" for="session_lifetime"}
 					{forminput}
-						<input size="5" type="text" name="session_lifetime" id="session_lifetime" value="{$gBitSystemPrefs.session_lifetime}" />
-						{formhelp note="well, i think it's in seconds - needs to be confirmed."}
+						<input size="5" type="text" name="session_lifetime" id="session_lifetime" value="{$gBitSystemPrefs.session_lifetime}" /> {tr}seconds{/tr}
+						{formhelp note=""}
 					{/forminput}
 				</div>
 

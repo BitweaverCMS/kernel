@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.2 2005/08/01 18:40:34 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.3 2005/10/12 15:13:51 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -25,6 +25,7 @@ if( !empty( $_REQUEST['features'] ) ) {
 			}
 		}
 	}
+
 	foreach( array_keys( $pkgArray ) as $pkgKey ) {
 		$pkg = $pkgArray[$pkgKey];
 		if( isset( $pkg['name'] ) ) {
@@ -41,12 +42,19 @@ $gBitInstaller = &$gBitSystem;
 $gBitSystem->verifyInstalledPackages();
 
 if( isset( $_REQUEST['fSubmitDbCreate'] ) && isset( $_REQUEST['PACKAGE'] ) && count( $_REQUEST['PACKAGE'] ) > 0 ) {
-	$gBitSmarty->assign( 'installTabSelect', 'tdefault' );
 	include_once( INSTALL_PKG_PATH.'install_packages.php' );
 	header( 'Location: '.KERNEL_PKG_URL.'admin/index.php?page=packages' );
 }
 
+// get all the services joined together for the listing
+foreach( $gBitSystem->mPackages as $pkgName => $servicePkg ) {
+	if( $serviceType = $gLibertySystem->getService( $pkgName ) ) {
+		$serviceList[$serviceType][$pkgName] = $gBitSystem->mPackages[$pkgName];
+	}
+}
+if (isset($serviceList)) {
+	$gBitSmarty->assign( 'serviceList', $serviceList );
+}
+
 $gBitSystem->setHelpInfo('Features','Settings','Help with the features settings');
-
-
 ?>

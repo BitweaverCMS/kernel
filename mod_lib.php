@@ -1,13 +1,13 @@
 <?php
 /**
- * Modules Management Library 
+ * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.7 2005/08/24 20:52:14 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.8 2005/10/12 15:13:51 spiderr Exp $
  */
 
 /**
- * Modules Management Library 
+ * Modules Management Library
  *
  * @package kernel
  */
@@ -94,13 +94,6 @@ class ModLib extends BitBase {
 			if( !isset($pHash['layout']) || $pHash['layout'] == 'kernel' ) {
 				$this->mDb->query( "UPDATE `".BIT_DB_PREFIX."tiki_layouts_modules` SET `params`=? WHERE `module_id`=?", array( $pHash['params'], $pHash['module_id'] ) );
 			}
-
-	// `cache_time`, `groups`, `params`, `rows`, `type`,
-	// (int)$cache_time, $params, (int)$rows, $groups, $type,
-//			if( isset( $pHash['availability'] ) && ($pHash['availability'] == "D" || $pHash['availability'] == "P") ) {
-//				global $usermoduleslib;
-//				$usermoduleslib->add_module_users($name,$position,$order,$groups,$params,$type);
-//			}
 		}
 
 	}

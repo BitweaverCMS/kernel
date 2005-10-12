@@ -7,6 +7,14 @@ $upgrades = array(
 // Step 1
 array( 'DATADICT' => array(
 array( 'CREATE' => array (
+'adodb_logsql' => "
+  created T NOT NULL,
+  sql0 C(250) NOTNULL,
+  sql1 X NOTNULL,
+  params X NOTNULL,
+  tracer X NOTNULL,
+  timer N(16.6) NOTNULL
+",
 'tiki_module_map' => "
   moduleId I4 AUTO PRIMARY,
   module_rsrc C(250) NOTNULL

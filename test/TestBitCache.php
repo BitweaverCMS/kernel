@@ -1,60 +1,61 @@
 <?php
 require_once('bit_setup_inc.php');
 
-class TestBitCache extends Test {
+class TestBitCache extends UnitTestCase {
     
     var $test;
     var $name ="TestBitCache";
 
     function TestBitCache()
     {
-	$this->test = new BitCache();
-	Assert::equals(is_object($this->test), 'Error during initialisation');
-	if (!is_object($this->test)) {
-		$this = NULL;	
-		return;
-	}
+      // global $gBitCache;
+      $this->test = new BitCache();
+      ## This test can not be performed in the constructor in simpleTest
+      # $this->assertTrue(is_object($this->test), 'Error during initialisation');
+      if (!is_object($this->test)) {
+	$this = NULL;	
+	return;
+      }
 	
     }
     
     function testGetNonexistentCachedItem()
     {
-      Assert::equals($this->test->getCached("TestBitCache"), NULL);
+      $this->assertNull($this->test->getCached("TestBitCache"));
     }
     
     function testIsNonexistentItemCached()
     {
-        Assert::equals($this->test->isCached("TestBitCache"), false);
+        $this->assertFalse($this->test->isCached("TestBitCache"));
     }
 
     function testRemoveNonexistentCachedItem()
     {
         $this->test->removeCached("TestBitCache");
-        Assert::equals($this->test->isCached("TestBitCache"), false);
+        $this->assertFalse($this->test->isCached("TestBitCache"));
     }
     
     function testSetCachedItem()
     {
         $this->test->setCached("TestBitCache", "123");
-        Assert::equals($this->test->isCached("TestBitCache"), true);
+        $this->assertTrue($this->test->isCached("TestBitCache"));
     }
     
     function testGetCachedItem()
     {
-        Assert::equals($this->test->getCached("TestBitCache"), "123");
+        $this->assertEqual($this->test->getCached("TestBitCache"), "123");
     }
     
     function testIsItemCached()
     {
-        Assert::equals($this->test->isCached("TestBitCache"), true);
+        $this->assertTrue($this->test->isCached("TestBitCache"));
     }
 
     function testRemoveCachedItem()
     {
         $this->test->removeCached("TestBitCache");
-        Assert::equals($this->test->isCached("TestBitCache") ||
-        $this->test->getCached("TestBitCache") != NULL, false);
+        $this->assertFalse($this->test->isCached("TestBitCache") ||
+			   $this->test->getCached("TestBitCache") != NULL);
     }
 }
 ?>
-

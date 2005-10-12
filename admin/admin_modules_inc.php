@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.4 2005/08/11 13:03:45 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.5 2005/10/12 15:13:51 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -25,16 +25,16 @@ $formModuleFeatures = array(
 		'note' => 'If you activate this, any modules you assign will be visible to all users, regardless of the settings on the layout page.<br />Hint: If you lose your login module, use /users/login.php to login!',
 	),
 	'feature_modulecontrols' => array(
-		'label' => 'Show Module Controls<br />(not functional at present)',
+		'label' => 'Show Module Controls',
 		'note' => 'Displays module control buttons at the top of modules for easy placement by users.',
 	),
 );
 $gBitSmarty->assign( 'formModuleFeatures',$formModuleFeatures );
 
-$all_mods = &$modlib->getAllModules();                           // Get all column modules (e.g. left & right)
+$all_mods = $modlib->getAllModules();                           // Get all column modules (e.g. left & right)
 $gBitSmarty->assign_by_ref( 'all_modules', $all_mods );
 
-$all_centers = &$modlib->getAllModules( 'templates', 'center_' );   // Get all center templates
+$all_centers = $modlib->getAllModules( 'templates', 'center_' );   // Get all center templates
 $gBitSmarty->assign_by_ref( 'all_centers', $all_centers );              
 
 $all_mods = array_merge_recursive($all_mods,$all_centers);                         // Merge them all back into one array

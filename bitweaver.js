@@ -1,4 +1,4 @@
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.2 2005/06/28 07:45:45 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.3 2005/10/12 15:13:51 spiderr Exp $
 
 //
 // Set client offset (in minutes) to a cookie to avoid server-side DST issues
@@ -167,14 +167,26 @@ function toggle(foo) {
 	}
 }
 
+function settogglestate(foo) {
+	if (getCookie(foo) == "o") {
+		show(foo);
+	} else {
+		hide(foo);
+	}
+}
+
 function setfoldericonstate(foo) {
 	pic = new Image();
 
-	if (getCookie(foo) == "o") {
+	cookie_value = getCookie(foo);
+	if (cookie_value == "o") {
 		pic.src = tikiIconDir + "/expanded.gif";
-	} else {
+	} else if (cookie_value == "c") {
 		pic.src = tikiIconDir + "/collapsed.gif";
+	} else {
+		return;
 	}
+	
 //alert(document.getElementById(foo+"img").src);
 //alert(pic.src);
 	document.getElementById(foo+"img").src = pic.src;
@@ -201,8 +213,8 @@ function icntoggle(foo) {
 // * an argument defaults when it is assigned null as a placeholder
 // * a null placeholder is not required for trailing omitted arguments
 function setCookie(name, value, expire, path, domain, secure) {
-	var cookie_path = ((tikiCookiePath) ? "; path=" + tikiCookiePath : tikiRootUrl);
-	var cookie_domain = ((tikiCookieDomain) ? "; domain=" + escape(tikiCookieDomain) : "");
+	var cookie_path = tikiCookiePath;
+	var cookie_domain = escape(tikiCookieDomain);
 	var curCookie = name + "=" + escape(value)
 		+ ((expire) ? "; expires=" + expire.toGMTString() : "; expires=" + expires.toGMTString())
 		+ ((path) ? "; path=" + path : cookie_path)
@@ -240,8 +252,8 @@ function getCookie(name) {
 // [domain] - domain of the cookie (must be same as domain used to create cookie)
 // * path and domain default if assigned null or omitted if no explicit argument proceeds
 function deleteCookie(name, path, domain) {
-	var cookie_path = ((tikiCookiePath) ? "; path=" + tikiCookiePath : tikiRootUrl);
-	var cookie_domain = ((tikiCookieDomain) ? "; domain=" + escape(tikiCookieDomain) : "");
+	var cookie_path = tikiCookiePath;
+	var cookie_domain = escape(tikiCookieDomain);
 	if (getCookie(name)) {
 		document.cookie = name + "="
 			+ ((path) ? "; path=" + path : cookie_path) + ((domain) ? "; domain=" + domain : cookie_domain) + "; expires=Thu, 01-Jan-70 00:00:01 GMT";
@@ -408,3 +420,4 @@ function setBlockDisplay(item,vizFlag) {
 		document.getElementById(item).style.display = current;
 	}
 }
+

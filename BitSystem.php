@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.57 2005/10/06 21:12:27 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.58 2005/10/14 08:18:09 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1610,19 +1610,21 @@ $permFiles = array(
 <ul>
 $errors
 </ul>";
-			if (!isWindows())
-			{
-				print "
-Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you run the command.
-<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
-</body></html>";
-			}
-			else
-			{
-				print "
-Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you have corrected the identified problems.
-<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
-</body></html>";
+			if( !defined( 'IS_LIVE' ) || !IS_LIVE ) {
+				if (!isWindows())
+				{
+					print "
+	Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you run the command.
+	<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
+	</body></html>";
+				}
+				else
+				{
+					print "
+	Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you have corrected the identified problems.
+	<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
+	</body></html>";
+				}
 			}
 
 			exit;

@@ -4,7 +4,7 @@
 	<div class='boxtitle'>
 		{$title}
 		<span class='closebutton'>
-			<a onclick='javascript:return cClick();'>{biticon ipackage='liberty' iname='close' iexplain='close'}</a>
+			<a onclick='javascript:return cClick();'>{biticon ipackage='liberty' iname='close' iexplain='close' iforce='icon'}</a>
 		</span>
 	</div>
 

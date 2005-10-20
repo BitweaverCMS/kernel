@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.27 2005/10/17 03:32:56 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.28 2005/10/20 15:14:41 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -659,6 +659,9 @@ class BitDb
 	function SQLIntToTimestamp( $pColumn ) {
 		global $gBitDbType;
 		switch( $gBitDbType ) {
+			case "firebird":
+				$ret = "(`$pColumn` / 86400.000000) + CAST ( '01/01/1970' AS TIMESTAMP )";
+				break;
 			case "mysql":
 			case "mysqli":
 				$ret = "CAST( `$pColumn` AS DATETIME )";

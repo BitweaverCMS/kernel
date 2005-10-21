@@ -27,7 +27,7 @@ function smarty_function_rss($params, &$gBitSmarty) {
 	print('<ul>');
     for($i=0;$i<count($items) && $i<$max;$i++) {
        if ($items[$i]["title"] <> '') print('<li><a href="'.$items[$i]["link"].'">'.$items[$i]["title"].'</a>');
-	   if ($items[$i]["pubdate"] <> '') print('<br /><small>'.$items[$i]["pubdate"].'</small>');
+	   if ($items[$i]["pubdate"] <> '') print('<span class="date"> - '.$items[$i]["pubdate"].'</span>');
        print('</li>');
     }
     print('</ul>');

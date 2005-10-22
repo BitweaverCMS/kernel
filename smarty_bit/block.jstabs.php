@@ -18,11 +18,14 @@ function smarty_block_jstabs( $params, $content, &$gBitSmarty ) {
 	extract( $params );
 
 	if( $gBitSystem->mPrefs['disable_jstabs'] == 'y' ) {
-		$ret .= '<div class="tabpane" id="tabby">'.$content.'</div>';
+		$ret .= '<div class="tabpane">'.$content.'</div>';
 	} else {
-		$js_before = "<script type=\"text/javascript\">//<![CDATA[\ntabPane = new WebFXTabPane( document.getElementById( 'tabby' ), true );\n//]]></script>";
-		$js_after .= "<script type=\"text/javascript\">//<![CDATA[\nsetupAllTabs();\nvar tabPane;".( !empty( $tab ) ? "\ntabPane.setSelectedIndex( $tab );" : '' )."\n//]]></script>";
-		$ret .= '<div class="tabpane" id="tabby">'.$js_before.$content.$js_after.'</div>';
+		$id = 1000000 * microtime();
+		$ret .= '<div class="tabpane" id="id_'.$id.'">';
+		$ret .= "<script type=\"text/javascript\">//<![CDATA[\ntabPane = new WebFXTabPane( document.getElementById( 'id_".$id."' ), true );\n//]]></script>";
+		$ret .= $content;
+		$ret .= "<script type=\"text/javascript\">//<![CDATA[\nsetupAllTabs();\nvar tabPane;".( !empty( $tab ) ? "\ntabPane.setSelectedIndex( $tab );" : '' )."\n//]]></script>";
+		$ret .= '</div>';
 	}
 
 	return $ret;

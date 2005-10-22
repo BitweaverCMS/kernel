@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.1.1.1.2.4 2005/09/18 02:38:51 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.1.1.1.2.5 2005/10/22 14:42:20 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -40,11 +40,6 @@ if( !empty( $_REQUEST['features'] ) ) {
 global $gBitInstaller;
 $gBitInstaller = &$gBitSystem;
 $gBitSystem->verifyInstalledPackages();
-
-if( isset( $_REQUEST['fSubmitDbCreate'] ) && isset( $_REQUEST['PACKAGE'] ) && count( $_REQUEST['PACKAGE'] ) > 0 ) {
-	include_once( INSTALL_PKG_PATH.'install_packages.php' );
-	header( 'Location: '.KERNEL_PKG_URL.'admin/index.php?page=packages' );
-}
 
 // get all the services joined together for the listing
 foreach( $gBitSystem->mPackages as $pkgName => $servicePkg ) {

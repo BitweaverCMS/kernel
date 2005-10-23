@@ -3,7 +3,7 @@
  * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.8 2005/10/12 15:13:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.9 2005/10/23 14:40:22 squareing Exp $
  */
 
 /**
@@ -414,30 +414,32 @@ class ModLib extends BitBase {
 
 		// iterate through all packages and look for all possible modules
 		foreach( array_keys( $gBitSystem->mPackages ) as $key ) {
-			$loc = BIT_ROOT_PATH.$gBitSystem->mPackages[$key]['dir'].'/'.$pDir;
-			if( @is_dir( $loc ) ) {
-				$h = opendir( $loc );
-				if( $h ) {
-					while (($file = readdir($h)) !== false) {
-						if ( preg_match( "/^$pPrefix(.*)\.tpl$/", $file, $match ) ) {
-							$all_modules[ucfirst( $key )]['bitpackage:'.$key.'/'.$file] = str_replace( '_', ' ', $match[1] );
-						}
-					}
-					closedir ($h);
-				}
-			}
-			// we scan temp/<pkg>/modules for module files as well for on the fly generated modules (e.g. nexus)
-			if( $pDir == 'modules' ) {
-				$loc = TEMP_PKG_PATH.$gBitSystem->mPackages[$key]['dir'].'/'.$pDir;
+			if( $gBitSystem->isPackageActive( $key ) ) {
+				$loc = BIT_ROOT_PATH.$gBitSystem->mPackages[$key]['dir'].'/'.$pDir;
 				if( @is_dir( $loc ) ) {
 					$h = opendir( $loc );
 					if( $h ) {
 						while (($file = readdir($h)) !== false) {
 							if ( preg_match( "/^$pPrefix(.*)\.tpl$/", $file, $match ) ) {
-								$all_modules[ucfirst( $key )]['bitpackage:temp/'.$key.'/'.$file] = str_replace( '_', ' ', $match[1] );
+								$all_modules[ucfirst( $key )]['bitpackage:'.$key.'/'.$file] = str_replace( '_', ' ', $match[1] );
 							}
 						}
 						closedir ($h);
+					}
+				}
+				// we scan temp/<pkg>/modules for module files as well for on the fly generated modules (e.g. nexus)
+				if( $pDir == 'modules' ) {
+					$loc = TEMP_PKG_PATH.$gBitSystem->mPackages[$key]['dir'].'/'.$pDir;
+					if( @is_dir( $loc ) ) {
+						$h = opendir( $loc );
+						if( $h ) {
+							while (($file = readdir($h)) !== false) {
+								if ( preg_match( "/^$pPrefix(.*)\.tpl$/", $file, $match ) ) {
+									$all_modules[ucfirst( $key )]['bitpackage:temp/'.$key.'/'.$file] = str_replace( '_', ' ', $match[1] );
+								}
+							}
+							closedir ($h);
+						}
 					}
 				}
 			}

@@ -129,14 +129,15 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 				$biticon = array(
 					'ipackage' => 'liberty',
 					'iname' => 'info',
+					'iforce' => 'icon',
 					'iexplain' => 'Extended Help',
 				);
 
-				$html = '<div class="formhelppopup" '.$atts.'>&nbsp;';
+				$html = ' <span class="formhelppopup" '.$atts.'>&nbsp;';
 				$html .= '<a '.smarty_function_popup( $popup, $gBitSmarty ).'>';
 				$html .= smarty_function_biticon( $biticon, $gBitSmarty );
 				$html .= '</a>';
-				$html .= '</div>';
+				$html .= '</span>';
 			} else {
 				$html = '<div class="formhelp" '.$atts.'>';
 				$html .= $content;

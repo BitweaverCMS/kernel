@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.16 2005/10/12 15:13:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.17 2005/10/23 14:40:22 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -328,14 +328,13 @@ class BitSystem extends BitBase {
 	* @param none $
 	* @access private
 	*/
-	function preDisplay($pMid)
-	{
+	function preDisplay( $pMid ) {
 		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gPreviewStyle, $gQueryUser, $gQueryUserId;
 		// setup our theme style and check if a preview theme has been picked
 		if( $gPreviewStyle !== FALSE ) {
 			$this->setStyle( $gPreviewStyle );
 		}
-		if (empty($this->mStyles['styleSheet'])) {
+		if( empty( $this->mStyles['styleSheet'] ) ) {
 			$this->mStyles['styleSheet'] = $this->getStyleCss();
 		}
 		$this->mStyles['headerIncFiles'] = $this->getTplIncludeFiles("header_inc.tpl");
@@ -357,18 +356,15 @@ class BitSystem extends BitBase {
 
 		$this->loadLayout( $customHome );
 
-		if ($pMid == 'bitpackage:kernel/dynamic.tpl')
-		{
+		if( $pMid == 'bitpackage:kernel/dynamic.tpl' ) {
 			$gBitSmarty->assign_by_ref('gCenterPieces', $gCenterPieces);
-		}
-		else
-		{
+		} else {
 			// we don't want to render the centers if we aren't on a dynamic page
 			unset($this->mLayout['c']);
 		}
 
-		require(KERNEL_PKG_PATH . 'menu_register_inc.php');
-		require_once(KERNEL_PKG_PATH . 'modules_inc.php');
+		require( KERNEL_PKG_PATH . 'menu_register_inc.php' );
+		require_once( KERNEL_PKG_PATH . 'modules_inc.php' );
 
 		/* force the session to close *before* displaying. Why? Note this very important comment from http://us4.php.net/exec
 			edwin at bit dot nl
@@ -403,13 +399,22 @@ class BitSystem extends BitBase {
 	* @access private
 	* @return array of paths to existing header_inc.tpl files
 	*/
-	function getTplIncludeFiles($pFilename) {
+	function getTplIncludeFiles( $pFilename ) {
+		// these package templates will be included last
+		$append = array( 'themes' );
+		$ret = array();
+		$app = array();
 		foreach( $this->mPackages as $package => $info ) {
 			$file = $info['path'].'templates/'.$pFilename;
 			if( is_readable( $file ) ) {
-				$ret[] = $file;
+				if( in_array( $package, $append ) ) {
+					$app[] = $file;
+				} else {
+					$ret[] = $file;
+				}
 			}
 		}
+		$ret = array_merge( $ret, $app );
 		return !empty( $ret ) ? $ret : array();
 	}
 
@@ -1610,19 +1615,21 @@ $permFiles = array(
 <ul>
 $errors
 </ul>";
-			if (!isWindows())
-			{
-				print "
-Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you run the command.
-<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
-</body></html>";
-			}
-			else
-			{
-				print "
-Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you have corrected the identified problems.
-<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
-</body></html>";
+			if( !defined( 'IS_LIVE' ) || !IS_LIVE ) {
+				if (!isWindows())
+				{
+					print "
+	Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you run the command.
+	<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
+	</body></html>";
+				}
+				else
+				{
+					print "
+	Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you have corrected the identified problems.
+	<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
+	</body></html>";
+				}
 			}
 
 			exit;

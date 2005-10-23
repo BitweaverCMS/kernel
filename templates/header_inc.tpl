@@ -5,14 +5,15 @@
 	<meta name="keywords" content="{$gBitSystemPrefs.site_keywords}" />
 
 	<link rel="shortcut icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
 	<link rel="start" title="{$siteTitle} {tr}Home Page{/tr}" href="{$smarty.const.BIT_ROOT_URL}" />
 	<link rel="help" title="{tr}Help{/tr}" href="http://www.bitweaver.org/" />
 {/strip}
 <script type="text/javascript">//<![CDATA[
 	{if $gBitSystem->isFeatureActive( 'feature_rememberme' )}var tikiCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
-	var tikiCookieDomain = "{$gBitSystem->mPrefs.cookie_domain}";
+		var tikiCookieDomain = "{$gBitSystem->mPrefs.cookie_domain}";
 	{else}var tikiCookiePath = "{$smarty.const.BIT_ROOT_URL}";
-	var tikiCookieDomain = "";
+		var tikiCookieDomain = "";
 	{/if}
 	var tikiIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons";
 	var tikiRootUrl = "{$smarty.const.BIT_ROOT_URL}";

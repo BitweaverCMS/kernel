@@ -8,8 +8,7 @@
 /**
  * smarty_function_rss
  */
-function smarty_function_rss($params, &$gBitSmarty)
-{
+function smarty_function_rss($params, &$gBitSmarty) {
     global $gBitSystem;
     global $rsslib;
 	include_once( RSS_PKG_PATH.'rss_lib.php' );
@@ -24,15 +23,13 @@ function smarty_function_rss($params, &$gBitSmarty)
     }
     $data = $rsslib->get_rss_module_content($id);
     $items = $rsslib->parse_rss_data($data, $id);
-		print('<ul class="rsslist">');
+
+	print('<ul>');
     for($i=0;$i<count($items) && $i<$max;$i++) {
        if ($items[$i]["title"] <> '') print('<li><a href="'.$items[$i]["link"].'">'.$items[$i]["title"].'</a>');
-       if ($items[$i]["pubdate"] <> '') print(' <small>'.$items[$i]["pubdate"].'</small>');
+	   if ($items[$i]["pubdate"] <> '') print('<span class="date"> - '.$items[$i]["pubdate"].'</span>');
        print('</li>');
     }
     print('</ul>');
 }
-
-/* vim: set expandtab: */
-
 ?>

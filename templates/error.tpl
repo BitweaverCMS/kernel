@@ -1,11 +1,11 @@
 {strip}
 <div class="display errorpage">
 	<div class="header">
-		<h1>{tr}Error{/tr}</h1>
+		<h1>{tr}Oops!{/tr}</h1>
 	</div>
 
 	<div class="body">
-		{box title="An error has occurred"}
+		{box title="Seems there's been a minor glitch somewhere."}
 			<p class="highlight">{$msg}</p>
 
 			{if $template}

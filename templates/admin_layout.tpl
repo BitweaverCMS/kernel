@@ -98,6 +98,7 @@
 					{formlabel label="Module" for="module_rsrc"}
 					{forminput}
 						{html_options name="fAssign[module_rsrc]" id="module_rsrc" options=$all_modules selected=`$fAssign.name`}
+						{formhelp note="Extended help can be found at the end of this page."}
 					{/forminput}
 				</div>
 			{/if}

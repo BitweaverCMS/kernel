@@ -40,6 +40,7 @@ if (!defined('BIT_ROOT_URL' )) {
     $subpath = ( isset($match[0] ) ) ? $match[0] : '/';
     define('BIT_ROOT_URL', $subpath );
 }
+
 if( !defined( 'BIT_SESSION_NAME' ) ) {
 	define( 'BIT_SESSION_NAME', 'BWSESSION' );
 }

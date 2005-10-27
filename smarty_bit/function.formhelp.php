@@ -50,7 +50,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 					$atts .= $key.'="'.$val.'" ';
 				}
 				break;
-		}			
+		}
 	}
 
 	if( !empty( $package ) ) {

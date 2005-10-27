@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Smarty plugin
  * @package Smarty
@@ -10,7 +10,7 @@
   *
  * Type:		block
  * Name:		jstab
- * Input:		
+ * Input:
  * Abstract:	Used to enclose a set of tabs
  */
 function smarty_block_jstab($params, $content, &$gBitSmarty) {

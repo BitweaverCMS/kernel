@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.24 2005/10/24 14:44:42 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.25 2005/10/27 22:31:52 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -114,10 +114,20 @@ if( $gBitSystem->isDatabaseValid() ) {
 		require_once( BIT_ROOT_PATH.'liberty/bit_setup_inc.php' );
 	}
 
+	$host = $gBitSystem->getPreference( 'feature_server_name', $_SERVER['HTTP_HOST'] );
+	if( !defined('BIT_BASE_URI' ) ) {
+		define( 'BIT_BASE_URI', 'http://'.$host );
+	}
+
 	$gBitSystem->scanPackages();
 	// some plugins check for active packages, so we do this *after* package scanning
 	global $gLibertySystem;
 	$gLibertySystem->scanPlugins();
+
+	// XSS security check
+	if( !empty( $_REQUEST['tk'] ) ) {
+		$gBitUser->verifyTicket();
+	}
 
 	// setStyle first, in case package decides it wants to reset the style in it's own <package>/bit_setup_inc.php
 	$theme = $gBitSystem->getStyle();

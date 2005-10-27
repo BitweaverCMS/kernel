@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.14 2005/10/27 19:46:59 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.15 2005/10/27 19:58:17 spiderr Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -1102,12 +1102,12 @@ class BitDate {
 			case 'US':
 			default:
 				// First off, the simple ones
-				$return[$year . '-01-01'] = 'New Year`s Day';
-				$return[$year . '-02-14'] = 'Valentine`s Day';
-				$return[$year . '-06-14'] = 'Flag Day';
-				$return[$year . '-07-04'] = 'Independence Day';
-				$return[$year . '-11-11'] = 'Veteran`s Day';
-				$return[$year . '-12-25'] = 'Christmas';
+				$return[$pYear . '-01-01'] = 'New Year`s Day';
+				$return[$pYear . '-02-14'] = 'Valentine`s Day';
+				$return[$pYear . '-06-14'] = 'Flag Day';
+				$return[$pYear . '-07-04'] = 'Independence Day';
+				$return[$pYear . '-11-11'] = 'Veteran`s Day';
+				$return[$pYear . '-12-25'] = 'Christmas';
 
 				// Martin Luther King, Jr. Day - third Monday in January
 				$return[date( 'Y-m-d', strtotime( '2 weeks monday', strtotime( "January 1, $pYear" ) ) + 43200 )] = 'Martin Luther King, Jr. Day';

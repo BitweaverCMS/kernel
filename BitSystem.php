@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.61 2005/10/27 22:31:52 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.62 2005/10/28 18:49:47 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -657,7 +657,7 @@ class BitSystem extends BitBase {
 
 		// Define <PACKAGE>_PKG_URI
 		$pkgDefine = $pkgName.'_PKG_URI';
-		if (!defined($pkgDefine)) {
+		if (!defined($pkgDefine) && defined( 'BIT_BASE_URI' ) ) {
 			define($pkgDefine, BIT_BASE_URI . basename( $pPackagePath ) . '/');
 		}
 

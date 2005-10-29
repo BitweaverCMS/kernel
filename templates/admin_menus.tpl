@@ -1,9 +1,9 @@
 {strip}
 {jstabs}
 	{if $menu_id > 0}
-	{assign var=title value="Edit Menu"}
+		{assign var=title value="Edit Menu"}
 	{else}
-	{assign var=title value="Create Menu"}
+		{assign var=title value="Create Menu"}
 	{/if}
 	{jstab title=$title}
 	{if $menu_id > 0}
@@ -23,7 +23,7 @@
 			<div class="row">
 				{formlabel label="Description" for="menus_desc"}
 				{forminput}
-					<textarea name="description" id="menus_desc" rows="4" cols="40">{$description|escape}</textarea>
+					<textarea name="description" id="menus_desc" rows="4" cols="50">{$description|escape}</textarea>
 					{formhelp note=""}
 				{/forminput}
 			</div>

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.1.1.1.2.1 2005/08/05 22:59:57 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.1.1.1.2.2 2005/10/29 11:44:06 squareing Exp $ *}
 {strip}
 
 <a name="editcreate"></a>
@@ -24,7 +24,7 @@
 	<div class="row">
 		{formlabel label="Data" for="usermoduledata"}
 		{forminput}
-			<textarea id="usermoduledata" name="um_data" rows="10" cols="40">{$um_data|escape}</textarea>
+			<textarea id="usermoduledata" name="um_data" rows="10" cols="50">{$um_data|escape}</textarea>
 			{formhelp note=""}
 		{/forminput}
 	</div>

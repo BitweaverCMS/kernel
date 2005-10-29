@@ -98,6 +98,7 @@
 					{formlabel label="Module" for="module_rsrc"}
 					{forminput}
 						{html_options name="fAssign[module_rsrc]" id="module_rsrc" options=$all_modules selected=`$fAssign.name`}
+						{formhelp note="Extended help can be found at the end of this page."}
 					{/forminput}
 				</div>
 			{/if}
@@ -116,7 +117,7 @@
 			<div class="row">
 				{formlabel label="Title" for="title"}
 				{forminput}
-					<input type="text" name="fAssign[title]" id="title" value="{$fAssign.title|escape}" />
+					<input type="text" size="48" name="fAssign[title]" id="title" value="{$fAssign.title|escape}" />
 					{formhelp note="Here you can override the default title used by the module. This is global for layouts in all sections. If you want to add a title just for one section, enter a module parameter below such as: title=My Title"}
 				{/forminput}
 			</div>
@@ -136,7 +137,7 @@
 			<div class="row">
 				{formlabel label="Cache Time" for="cache_time"}
 				{forminput}
-					<input type="text" name="fAssign[cache_time]" id="cache_time" size="5" value="{$fAssign.cache_time|escape}" /> seconds
+					<input type="text" size="5" name="fAssign[cache_time]" id="cache_time" value="{$fAssign.cache_time|escape}" /> seconds
 					{formhelp note="This is the number of seconds the module is cached before the content is refreshed. The higher the value, the less load there is on the server. (optional)"}
 				{/forminput}
 			</div>
@@ -144,7 +145,7 @@
 			<div class="row">
 				{formlabel label="Rows" for="rows"}
 				{forminput}
-					<input type="text" name="fAssign[rows]" id="rows" value="{$fAssign.rows|escape}" />
+					<input type="text" size="5" name="fAssign[rows]" id="rows" value="{$fAssign.rows|escape}" />
 					{formhelp note="Select what the maximum number of items are displayed. (optional - default is 10)"}
 				{/forminput}
 			</div>
@@ -152,7 +153,7 @@
 			<div class="row">
 				{formlabel label="Parameters" for="params"}
 				{forminput}
-					<input type="text" name="fAssign[params]" id="params" value="{$fAssign.params|escape}" />
+					<input type="text" size="48" name="fAssign[params]" id="params" value="{$fAssign.params|escape}" />
 					{formhelp note="Here you can enter any additional parameters the module might need. Use the http query string form, e.g. foo=123&amp;bar=ABC (optional)"}
 				{/forminput}
 			</div>
@@ -238,7 +239,7 @@
 			<div class="row">
 				{formlabel label="Rows" for="c_rows"}
 				{forminput}
-					<input type="text" name="fAssign[rows]" id="c_rows" value="{$fAssign.rows|escape}" />
+					<input type="text" size="5" name="fAssign[rows]" id="c_rows" value="{$fAssign.rows|escape}" />
 					{formhelp note="Select what the maximum number of items are displayed. (optional - default is 10)"}
 				{/forminput}
 			</div>
@@ -246,7 +247,7 @@
 			<div class="row">
 				{formlabel label="Parameters" for="c_params"}
 				{forminput}
-					<input type="text" name="fAssign[params]" id="c_params" value="{$fAssign.params|escape}" />
+					<input type="text" size="48" name="fAssign[params]" id="c_params" value="{$fAssign.params|escape}" />
 					{formhelp note="Here you can enter any additional parameters the module might need. (optional)"}
 				{/forminput}
 			</div>

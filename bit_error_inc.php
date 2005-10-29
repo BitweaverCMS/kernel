@@ -204,7 +204,7 @@ function vd( $iVar ) {
 			unset( 	$iVar->mDb );
 		}
 		var_dump( $iVar );
-	} elseif( is_string( $iVar ) ) {
+	} elseif( is_string( $iVar ) && !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' ) {
 		var_dump( htmlentities( $iVar ) );
 	} else {
 		var_dump( $iVar );

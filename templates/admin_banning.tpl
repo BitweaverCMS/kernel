@@ -74,7 +74,7 @@
 <tr>
 	<td><label for="banning-mess">{tr}Custom message to the user{/tr}</label></td>
 	<td>
-		<textarea rows="4" cols="40" name="message">{$info.message|escape}</textarea>
+		<textarea rows="4" cols="50" name="message">{$info.message|escape}</textarea>
 	</td>
 </tr>
 <tr>

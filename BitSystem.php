@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.17 2005/10/23 14:40:22 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.18 2005/10/29 17:53:54 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -653,6 +653,12 @@ class BitSystem extends BitBase {
 		$pkgDefine = $pkgName.'_PKG_URL';
 		if (!defined($pkgDefine)) {
 			define($pkgDefine, BIT_ROOT_URL . basename( $pPackagePath ) . '/');
+		}
+
+		// Define <PACKAGE>_PKG_URI
+		$pkgDefine = $pkgName.'_PKG_URI';
+		if (!defined($pkgDefine) && defined( 'BIT_BASE_URI' ) ) {
+			define($pkgDefine, BIT_BASE_URI . basename( $pPackagePath ) . '/');
 		}
 
 		// Define <PACKAGE>_PKG_NAME
@@ -1477,25 +1483,19 @@ asort( $this->mAppMenu );
 
 		$docroot = BIT_ROOT_PATH;
 
-		if (ini_get('session.save_handler') == 'files')
-		{
+		if (ini_get('session.save_handler') == 'files') {
 			$save_path = ini_get('session.save_path');
 
-			if (!is_dir($save_path))
-			{
+			if (!is_dir($save_path)) {
 				$errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
-			}
-			else if (!bw_is_writeable($save_path))
-			{
+			} else if (!bw_is_writeable($save_path)) {
 				$errors .= "The directory '$save_path' is not writeable.\n";
 			}
 
-			if ($errors)
-			{
+			if ($errors) {
 				$save_path = getTempDir();
 
-				if (is_dir($save_path) && bw_is_writeable($save_path))
-				{
+				if (is_dir($save_path) && bw_is_writeable($save_path)) {
 					ini_set('session.save_path', $save_path);
 
 					$errors = '';
@@ -1506,8 +1506,7 @@ asort( $this->mAppMenu );
 		$wwwuser = '';
 		$wwwgroup = '';
 
-		if (isWindows())
-		{
+		if (isWindows()) {
 			if ( strpos($_SERVER["SERVER_SOFTWARE"],"IIS") && isset($_SERVER['COMPUTERNAME']) ) {
 				$wwwuser = 'IUSR_'.$_SERVER['COMPUTERNAME'];
 				$wwwgroup = 'IUSR_'.$_SERVER['COMPUTERNAME'];
@@ -1517,8 +1516,7 @@ asort( $this->mAppMenu );
 			}
 		}
 
-		if (function_exists('posix_getuid'))
-		{
+		if (function_exists('posix_getuid')) {
 			$userhash = @posix_getpwuid(@posix_getuid());
 
 			$group = @posix_getpwuid(@posix_getgid());
@@ -1526,110 +1524,112 @@ asort( $this->mAppMenu );
 			$wwwgroup = $group ? $group['name'] : false;
 		}
 
-		if (!$wwwuser)
-		{
+		if (!$wwwuser) {
 			$wwwuser = 'nobody (or the user account the web server is running under)';
 		}
 
-		if (!$wwwgroup)
-		{
+		if (!$wwwgroup) {
 			$wwwgroup = 'nobody (or the group account the web server is running under)';
 		}
 
-$permFiles = array(
-	'temp/'
-);
+		$permFiles = array(
+			'temp/'
+		);
 
-		foreach($permFiles as $file) {
+		foreach( $permFiles as $file ) {
 			$present = FALSE;
 			// Create directories as needed
 			$target = BIT_ROOT_PATH . $file;
 			if( preg_match( '/.*\/$/', $target ) ) {
 				// we have a directory
-				if( !is_dir($target) ) {
-					mkdir_p($target, 02775);
+				if( !is_dir( $target ) ) {
+					mkdir_p( $target, 02775 );
 				}
 			// Check again and report problems
-				if (!is_dir($target)) {
-					if (!isWindows())
-					{ $errors .= "<p>The directory <b style='color:red;'>$target</b> does not exist. To create the directory, execute a command such as:<pre>
-	\$ mkdir -m 777 $target
-	</pre></p>";
-					} else { $errors .= "<p>The directory <b style='color:red;'>$target</b> does not exist. Create the directory $target before proceeding
-	</pre></p>";
+				if( !is_dir( $target ) ) {
+					if( !isWindows() ) {
+						$errors .= "
+							<p>The directory <strong style='color:red;'>$target</strong> does not exist. To create the directory, execute a command such as:</p>
+							<pre>\$ mkdir -m 777 $target</pre>
+						";
+					} else {
+						$errors .= "<p>The directory <strong style='color:red;'>$target</strong> does not exist. Create the directory $target before proceeding</p>";
 					}
 				} else {
 					$present = TRUE;
 				}
 			} elseif( !file_exists( $target ) ) {
-				if (!isWindows())
-				{ $errors .= "<p>The file <b style='color:red;'>$target</b> does not exist. To create the file, execute a command such as:<pre>
-		\$ touch $target
-		\$ chmod 777 $target
-	</pre></p>";
-				} else { $errors .= "<p>The file <b style='color:red;'>$target</b> does not exist. Create a blank file $target before proceeding
-	</pre></p>";
+				if( !isWindows()) {
+					$errors .= "<p>The file <b style='color:red;'>$target</b> does not exist. To create the file, execute a command such as:</p>
+						<pre>
+							\$ touch $target
+							\$ chmod 777 $target
+						</pre>
+					";
+				} else {
+					$errors .= "<p>The file <b style='color:red;'>$target</b> does not exist. Create a blank file $target before proceeding</p>";
 				}
 			} else {
 				$present = TRUE;
 			}
 
 			// chmod( $target, 02775 );
-			if( $present && (!bw_is_writeable($target))) {
+			if( $present && ( !bw_is_writeable( $target ) ) ) {
 				if (!isWindows())
-				{ $errors .= "<p><b style='color:red;'>$target</b> is not writeable by $wwwuser. To give $wwwuser write permission, execute a command such as:<pre>
-	\$ chmod 777 $target
-</pre></p>";
-				} else { $errors .= "<p><b style='color:red;'>$target</b> is not writeable by $wwwuser. Check the security of the file $target before proceeding
-	</pre></p>";
+				{ $errors .= "<p><strong style='color:red;'>$target</strong> is not writeable by $wwwuser. To give $wwwuser write permission, execute a command such as:</p>
+					<pre>\$ chmod 777 $target</pre>";
+				} else {
+					$errors .= "<p><b style='color:red;'>$target</b> is not writeable by $wwwuser. Check the security of the file $target before proceeding</p>";
 				}
 			}
-			// if (!is_dir("$docroot/$dir"))
-			// {
-			// $errors .= "The directory '$docroot$dir' does not exist.\n";
-			// }
-			// else if (!bw_is_writeable("$docroot/$dir"))
-			// {
-			// $errors .= "The directory '$docroot$dir' is not writeable by $wwwuser.\n";
-			// }
+			//if (!is_dir("$docroot/$dir")) {
+			//	$errors .= "The directory '$docroot$dir' does not exist.\n";
+			//} else if (!bw_is_writeable("$docroot/$dir")) {
+			//	$errors .= "The directory '$docroot$dir' is not writeable by $wwwuser.\n";
+			//}
 		}
 
-		if ($errors)
-		{
+		if( $errors ) {
 			$PHP_CONFIG_FILE_PATH = PHP_CONFIG_FILE_PATH;
 
 			ob_start();
 			phpinfo (INFO_MODULES);
 			$httpd_conf = 'httpd.conf';
 
-			if (preg_match('/Server Root<\/b><\/td><td\s+align="left">([^<]*)</', ob_get_contents(), $m))
-			{
+			if (preg_match('/Server Root<\/b><\/td><td\s+align="left">([^<]*)</', ob_get_contents(), $m)) {
 				$httpd_conf = $m[1] . '/' . $httpd_conf;
 			}
 
 			ob_end_clean();
 
 			print "
-<html><body>
-<h2><font color='red'>bitweaver is not properly set up:</font></h1>
-<ul>
-$errors
-</ul>";
+				<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"DTD/xhtml1-strict.dtd\">
+				<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">
+					<head>
+						<title>bitweaver setup problems</title>
+						<meta http-equiv=\"Pragma\" content=\"no-cache\" />
+						<meta http-equiv=\"Expires\" content=\"-1\" />
+					</head>
+					<body>
+						<h1 style=\"color:red;\">bitweaver is not properly set up:</h1>
+						<blockquote>
+							$errors
+						</blockquote>
+			";
+
 			if( !defined( 'IS_LIVE' ) || !IS_LIVE ) {
-				if (!isWindows())
-				{
+				if (!isWindows()) {
 					print "
-	Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you run the command.
-	<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
-	</body></html>";
-				}
-				else
-				{
+						<p>Proceed to the installer <strong>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></strong> after you run the command.
+						<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation'>Technical Documentation</a> if you need more help.</p>
+					";
+				} else {
 					print "
-	Proceed to the installer <b>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></b> after you have corrected the identified problems.
-	<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation' target='_blank'>Technical Documentation</a> if you need more help.
-	</body></html>";
+						<p>Proceed to the installer <strong>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></strong> after you have corrected the identified problems.
+						<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation'>Technical Documentation</a> if you need more help.</p>
+					";
 				}
+				print "</body></html>";
 			}
 
 			exit;

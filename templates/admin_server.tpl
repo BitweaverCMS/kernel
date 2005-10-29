@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.4 2005/10/12 15:13:51 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.5 2005/10/29 17:53:55 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -34,7 +34,7 @@
 				<div class="row">
 					{formlabel label="Site Keywords" for="site_keywords"}
 					{forminput}
-						<textarea cols="80" rows="5" name="site_keywords" id="site_keywords">{$gBitSystemPrefs.site_keywords|escape}</textarea>
+						<textarea cols="50" rows="5" name="site_keywords" id="site_keywords">{$gBitSystemPrefs.site_keywords|escape}</textarea>
 						{formhelp note="Keywords are used to tell search engines what your page is for. Based on these keywords, your site can be categorised better and searches will give you higher rankings.<br />The text you enter here will not be visible anywhere.<br />The Limit for search engines is <strong>900</strong> characters.<br />(due to db restrictions, this list of words will be cut off at 250 chars)."}
 					{/forminput}
 				</div>

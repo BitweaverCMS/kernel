@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.6 2005/10/12 15:13:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.7 2005/10/29 17:53:54 squareing Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -149,37 +149,37 @@ class BitDate {
 	function getTimestampFromISO($iso_date) {
 		$ret = 0;
 		if ( is_numeric($iso_date) ) $ret = $iso_date;
-		else if (preg_match( 
-		"|^([0-9]{3,4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|", 
+		else if (preg_match(
+		"|^([0-9]{3,4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|",
 			($iso_date), $rr)) {
 			// h-m-s-MM-DD-YY
 			if (!isset($rr[5])) $ret = $this->mktime(0,0,0,$rr[2],$rr[3],$rr[1]);
 			else $ret = @$this->mktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[3],$rr[1]);
 		}
-		return $ret;			
+		return $ret;
 	}
 
 	/**
-	 * Returns day of week, 0 = Sunday,... 6=Saturday. 
+	 * Returns day of week, 0 = Sunday,... 6=Saturday.
 	 * Algorithm from PEAR::Date_Calc
 	 */
 	function dayOfWeek($year, $month, $day)
 	{
 	/*
-	Pope Gregory removed 10 days - October 5 to October 14 - from the year 1582 and 
-	proclaimed that from that time onwards 3 days would be dropped from the calendar 
+	Pope Gregory removed 10 days - October 5 to October 14 - from the year 1582 and
+	proclaimed that from that time onwards 3 days would be dropped from the calendar
 	every 400 years.
 
-	Thursday, October 4, 1582 (Julian) was followed immediately by Friday, October 15, 1582 (Gregorian). 
+	Thursday, October 4, 1582 (Julian) was followed immediately by Friday, October 15, 1582 (Gregorian).
 	*/
 		if ($year <= 1582) {
-			if ($year < 1582 || 
+			if ($year < 1582 ||
 				($year == 1582 && ($month < 10 || ($month == 10 && $day < 15)))) $greg_correction = 3;
 		 	else
 				$greg_correction = 0;
 		} else
 			$greg_correction = 0;
-	
+
 		if($month > 2)
 			$month -= 2;
 		else {
@@ -192,12 +192,12 @@ class BitDate {
 			floor(($year % 100) / 4) +
 			floor(($year / 100) / 4) - 2 *
 			floor($year / 100) + 77 + $greg_correction;
-	
+
 		return $day - 7 * floor($day / 7);
 	}
 
 	/**
-	 *	Returns week of year, 1 = first week of year. 
+	 *	Returns week of year, 1 = first week of year.
 	 *	Algorithm from PEAR::Date_Calc
 	 * This needs to be checked out for both start day and early date rules
 	 */
@@ -209,29 +209,29 @@ class BitDate {
         if ( $week_number == 0 ) $week_number = 53;
         return $week_number;
     }
-    
+
 	/**
-	 * Checks for leap year, returns true if it is. No 2-digit year check. Also 
+	 * Checks for leap year, returns true if it is. No 2-digit year check. Also
 	 * handles julian calendar correctly.
 	 */
-	function _is_leap_year($year) 
+	function _is_leap_year($year)
 	{
 		if ($year % 4 != 0) return false;
-	
+
 		if ($year % 400 == 0) {
 			return true;
 		// if gregorian calendar (>1582), century not-divisible by 400 is not leap
 		} else if ($year > 1582 && $year % 100 == 0 ) {
 			return false;
-		} 
-	
+		}
+
 		return true;
 	}
 
 	/**
 	 * checks for leap year, returns true if it is. Has 2-digit year check
 	 */
-	function is_leap_year($year) 
+	function is_leap_year($year)
 	{
 		return  $this->_is_leap_year($this->year_digit_check($year));
 	}
@@ -241,13 +241,13 @@ class BitDate {
 	 * Assumes that if 2-digit is more than 30 years in future, then previous century.
 	 * @ToDo This needs to be disabled when dates prior to 100AD are required in ISO format
 	 */
-	function year_digit_check($y) 
+	function year_digit_check($y)
 	{
 		if ($y < 100) {
-	
+
 			$yr = (integer) date("Y");
 			$century = (integer) ($yr /100);
-		
+
 			if ($yr%100 > 50) {
 				$c1 = $century + 1;
 				$c0 = $century;
@@ -279,13 +279,13 @@ class BitDate {
 
 	/*
 	 * generate $YRS table for _adodb_getdate()
-	 * 
+	 *
 	function _date_gentable($out=true)
 	{
 
 		for ($i=1970; $i >= 1600; $i-=10) {
 			$s = adodb_gmmktime(0,0,0,1,1,$i);
-			echo "$i => $s,<br>";	
+			echo "$i => $s,<br>";
 		}
 	}
 	adodb_date_gentable();
@@ -304,25 +304,25 @@ class BitDate {
 	 * and is much faster as it does not calculate dow, etc.
 	 */
 	function _getDate($origd=false,$fast=false,$is_gmt=false)
-	{ 
+	{
 		static $YRS;
 
 		$d =  $origd - ($is_gmt ? 0 : adodb_get_gmt_diff());
-	
+
 		$_day_power = 86400;
 		$_hour_power = 3600;
 		$_min_power = 60;
-	
-		if ($d < -12219321600) $d -= 86400*10; // if 15 Oct 1582 or earlier, gregorian correction 
-	
+
+		if ($d < -12219321600) $d -= 86400*10; // if 15 Oct 1582 or earlier, gregorian correction
+
 		$_month_table_normal = array("",31,28,31,30,31,30,31,31,30,31,30,31);
 		$_month_table_leaf = array("",31,29,31,30,31,30,31,31,30,31,30,31);
-	
+
 		$d366 = $_day_power * 366;
 		$d365 = $_day_power * 365;
-	
+
 		if ($d < 0) {
-		
+
 			if (empty($YRS)) $YRS = array(
 				1970 => 0,
 				1960 => -315619200,
@@ -364,10 +364,10 @@ class BitDate {
 				1600 => -11676096000);
 
 			if ($is_gmt) $origd = $d;
-			// The valid range of a 32bit signed timestamp is typically from 
+			// The valid range of a 32bit signed timestamp is typically from
 			// Fri, 13 Dec 1901 20:45:54 GMT to Tue, 19 Jan 2038 03:14:07 GMT
 			//
-		
+
 			$lastsecs = 0;
 			$lastyear = 1970;
 			foreach($YRS as $year => $secs) {
@@ -378,24 +378,24 @@ class BitDate {
 				$lastsecs = $secs;
 				$lastyear = $year;
 			}
-		
+
 			$d -= $lastsecs;
 			if (!isset($a)) $a = $lastyear;
-		
+
 			for (; --$a >= 0;) {
 				$lastd = $d;
-			
+
 				if ($leaf = _adodb_is_leap_year($a)) $d += $d366;
 				else $d += $d365;
-			
+
 				if ($d >= 0) {
 					$year = $a;
 					break;
 				}
 			}
-		
+
 			$secsInYear = 86400 * ($leaf ? 366 : 365) + $lastd;
-		
+
 			$d = $lastd;
 			$mtab = ($leaf) ? $_month_table_leaf : $_month_table_normal;
 			for ($a = 13 ; --$a > 0;) {
@@ -407,17 +407,17 @@ class BitDate {
 					break;
 				}
 			}
-			
+
 			$d = $lastd;
-			$day = $ndays + ceil(($d+1) / ($_day_power));				
+			$day = $ndays + ceil(($d+1) / ($_day_power));
 
 			$d += ($ndays - $day+1)* $_day_power;
 			$hour = floor($d/$_hour_power);
-	
+
 		} else {
 			for ($a = 1970 ;; $a++) {
 				$lastd = $d;
-				
+
 				if ($leaf = _adodb_is_leap_year($a)) $d -= $d366;
 				else $d -= $d365;
 				if ($d < 0) {
@@ -442,7 +442,7 @@ class BitDate {
 			$d = $d - ($day-1) * $_day_power;
 			$hour = floor($d /$_hour_power);
 		}
-	
+
 		$d -= $hour * $_hour_power;
 		$min = floor($d/$_min_power);
 		$secs = $d - $min * $_min_power;
@@ -459,8 +459,8 @@ class BitDate {
 			'ndays' => $ndays
 			);
 		}
-	
-	
+
+
 		$dow = adodb_dow($year,$month,$day);
 
 		return array(
@@ -485,17 +485,17 @@ class BitDate {
 	{	if ( is_numeric($d) ) $this->date($fmt,$d,$is_gmt);
 
 		if ($d !== false) {
-			if (!preg_match( 
-				"|^([0-9]{3,4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|", 
+			if (!preg_match(
+				"|^([0-9]{3,4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|",
 				($d), $rr)) return $this->date($fmt,false,$is_gmt);
 
 			if ($rr[1] <= 100 && $rr[2]<= 1) return adodb_date($fmt,false,$is_gmt);
-	
+
 			// h-m-s-MM-DD-YY
 			if (!isset($rr[5])) $d = adodb_mktime(0,0,0,$rr[2],$rr[3],$rr[1]);
 			else $d = @adodb_mktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[3],$rr[1]);
 		}
-	
+
 		return $this->date($fmt,$d,$is_gmt);
 	}
 
@@ -514,20 +514,20 @@ class BitDate {
 		$_day_power = 86400;
 
 		$arr = $this->_getdate($d,true,$is_gmt);
-	
+
 //		if (!isset($daylight)) $daylight = function_exists('adodb_daylight_sv');
 //		if ($daylight) adodb_daylight_sv($arr, $is_gmt);
-	
+
 		$year = $arr['year'];
 		$month = $arr['mon'];
 		$day = $arr['mday'];
 		$hour = $arr['hours'];
 		$min = $arr['minutes'];
 		$secs = $arr['seconds'];
-	
+
 		$max = strlen($fmt);
 		$dates = '';
-	
+
 		/*
 			at this point, we have the following integer vars to manipulate:
 			$year, $month, $day, $hour, $min, $secs
@@ -538,21 +538,21 @@ class BitDate {
 			// YEAR
 			case 'L': $dates .= $arr['leap'] ? '1' : '0'; break;
 			case 'r': // Thu, 21 Dec 2000 16:01:07 +0200
-		
+
 				// 4.3.11 uses '04 Jun 2004'
 				// 4.3.8 uses  ' 4 Jun 2004'
-				$dates .= gmdate('D',$_day_power*(3+$this->dow($year,$month,$day))).', '		
+				$dates .= gmdate('D',$_day_power*(3+$this->dow($year,$month,$day))).', '
 					. ($day<10?'0'.$day:$day) . ' '.date('M',mktime(0,0,0,$month,2,1971)).' '.$year.' ';
-			
-				if ($hour < 10) $dates .= '0'.$hour; else $dates .= $hour; 
-			
+
+				if ($hour < 10) $dates .= '0'.$hour; else $dates .= $hour;
+
 				if ($min < 10) $dates .= ':0'.$min; else $dates .= ':'.$min;
-			
+
 				if ($secs < 10) $dates .= ':0'.$secs; else $dates .= ':'.$secs;
-			
+
 				$gmt = adodb_get_gmt_diff();
 				$dates .= sprintf(' %s%04d',($gmt<0)?'+':'-',abs($gmt)/36); break;
-				
+
 			case 'Y': $dates .= $year; break;
 			case 'y': $dates .= substr($year,strlen($year)-2,2); break;
 			// MONTH
@@ -569,45 +569,45 @@ class BitDate {
 			case 'D': $dates .= gmdate('D',$_day_power*(3+adodb_dow($year,$month,$day))); break;
 			case 'j': $dates .= $day; break;
 			case 'd': if ($day<10) $dates .= '0'.$day; else $dates .= $day; break;
-			case 'S': 
+			case 'S':
 				$d10 = $day % 10;
 				if ($d10 == 1) $dates .= 'st';
 				else if ($d10 == 2 && $day != 12) $dates .= 'nd';
 				else if ($d10 == 3) $dates .= 'rd';
 				else $dates .= 'th';
 				break;
-				
+
 			// HOUR
 			case 'Z':
 				$dates .= ($is_gmt) ? 0 : -adodb_get_gmt_diff(); break;
-			case 'O': 
+			case 'O':
 				$gmt = ($is_gmt) ? 0 : adodb_get_gmt_diff();
 				$dates .= sprintf('%s%04d',($gmt<0)?'+':'-',abs($gmt)/36); break;
-				
-			case 'H': 
-				if ($hour < 10) $dates .= '0'.$hour; 
-				else $dates .= $hour; 
+
+			case 'H':
+				if ($hour < 10) $dates .= '0'.$hour;
+				else $dates .= $hour;
 				break;
-			case 'h': 
-				if ($hour > 12) $hh = $hour - 12; 
+			case 'h':
+				if ($hour > 12) $hh = $hour - 12;
 				else {
-					if ($hour == 0) $hh = '12'; 
+					if ($hour == 0) $hh = '12';
 					else $hh = $hour;
 				}
-				
+
 				if ($hh < 10) $dates .= '0'.$hh;
 				else $dates .= $hh;
 				break;
-				
-			case 'G': 
+
+			case 'G':
 				$dates .= $hour;
 				break;
-				
+
 			case 'g':
-				if ($hour > 12) $hh = $hour - 12; 
+				if ($hour > 12) $hh = $hour - 12;
 				else {
-					if ($hour == 0) $hh = '12'; 
-					else $hh = $hour; 
+					if ($hour == 0) $hh = '12';
+					else $hh = $hour;
 				}
 				$dates .= $hh;
 				break;
@@ -629,7 +629,7 @@ class BitDate {
 			default:
 				$dates .= $fmt[$i]; break;
 			// ESCAPE
-			case "\\": 
+			case "\\":
 				$i++;
 				if ($i < $max) $dates .= $fmt[$i];
 				break;
@@ -637,28 +637,28 @@ class BitDate {
 		}
 		return $dates;
 	}
-	
+
 	/**
-	 * Returns a timestamp given a GMT/UTC time. 
+	 * Returns a timestamp given a GMT/UTC time.
 	 * Note that $is_dst is not implemented and is ignored.
 	 */
 	function gmmktime($hr,$min,$sec,$mon=false,$day=false,$year=false,$is_dst=false)
 	{
 		return $this->mktime($hr,$min,$sec,$mon,$day,$year,$is_dst,true);
 	}
-	
+
 	/**
 	 * Return a timestamp given a local time. Originally by jackbbs.
 	 * Note that $is_dst is not implemented and is ignored.
-		
+
 	 * Not a very fast algorithm - O(n) operation. Could be optimized to O(1).
 	 */
-	function mktime($hr,$min,$sec,$mon=false,$day=false,$year=false,$is_dst=false,$is_gmt=false) 
+	function mktime($hr,$min,$sec,$mon=false,$day=false,$year=false,$is_dst=false,$is_gmt=false)
 	{
 			if ($mon === false) {
 				return $is_gmt? @gmmktime($hr,$min,$sec): @mktime($hr,$min,$sec);
-			
-			// for windows, we don't check 1970 because with timezone differences, 
+
+			// for windows, we don't check 1970 because with timezone differences,
 			// 1 Jan 1970 could generate negative timestamp, which is illegal
 			if (1971 < $year && $year < 2038
 				|| !defined('ADODB_NO_NEGATIVE_TS') && (1901 < $year && $year < 2038)
@@ -668,9 +668,9 @@ class BitDate {
 						@mktime($hr,$min,$sec,$mon,$day,$year);
 				}
 		}
-		
+
 		$gmt_different = ($is_gmt) ? 0 : $this->server_offset;
-	
+
 		/*
 		# disabled because some people place large values in $sec.
 		# however we need it for $mon because we use an array...
@@ -681,23 +681,23 @@ class BitDate {
 		$mon = intval($mon);
 		$day = intval($day);
 		$year = intval($year);
-		
-		
+
+
 		$year = $this->year_digit_check($year);
-		
+
 		if ($mon > 12) {
 			$y = floor($mon / 12);
 			$year += $y;
 			$mon -= $y*12;
 		}
-		
+
 		$_day_power = 86400;
 		$_hour_power = 3600;
 		$_min_power = 60;
-		
+
 		$_month_table_normal = array("",31,28,31,30,31,30,31,31,30,31,30,31);
 		$_month_table_leaf = array("",31,29,31,30,31,30,31,31,30,31,30,31);
-		
+
 		$_total_date = 0;
 		if ($year >= 1970) {
 			for ($a = 1970 ; $a <= $year; $a++) {
@@ -709,7 +709,7 @@ class BitDate {
 					$loop_table = $_month_table_normal;
 					$_add_date = 365;
 				}
-				if ($a < $year) { 
+				if ($a < $year) {
 					$_total_date += $_add_date;
 				} else {
 					for($b=1;$b<$mon;$b++) {
@@ -719,7 +719,7 @@ class BitDate {
 			}
 			$_total_date +=$day-1;
 			$ret = $_total_date * $_day_power + $hr * $_hour_power + $min * $_min_power + $sec + $gmt_different;
-		
+
 		} else {
 			for ($a = 1969 ; $a >= $year; $a--) {
 				$leaf = _adodb_is_leap_year($a);
@@ -738,41 +738,41 @@ class BitDate {
 				}
 			}
 			$_total_date += $loop_table[$mon] - $day;
-			
+
 			$_day_time = $hr * $_hour_power + $min * $_min_power + $sec;
 			$_day_time = $_day_power - $_day_time;
 			$ret = -( $_total_date * $_day_power + $_day_time - $gmt_different);
 			if ($ret < -12220185600) $ret += 10*86400; // if earlier than 5 Oct 1582 - gregorian correction
 			else if ($ret < -12219321600) $ret = -12219321600; // if in limbo, reset to 15 Oct 1582.
-		} 
+		}
 		//print " dmy=$day/$mon/$year $hr:$min:$sec => " .$ret;
 		return $ret;
 	}
-	
+
 	function gmstrftime($fmt, $ts=false)
 	{
 		return strftime($fmt,$ts,true);
 	}
-	
+
 	// hack - convert to adodb_date
 	function strftime($fmt, $ts=false,$is_gmt=false)
 	{
 	global $ADODB_DATE_LOCALE;
-	
+
 		if ((abs($ts) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
 			if (!defined('ADODB_NO_NEGATIVE_TS') || $ts >= 0) // if windows, must be +ve integer
 				return ($is_gmt)? @gmstrftime($fmt,$ts): @strftime($fmt,$ts);
 		}
-		
+
 		if (empty($ADODB_DATE_LOCALE)) {
 			$tstr = strtoupper(gmstrftime('%c',31366800)); // 30 Dec 1970, 1 am
 			$sep = substr($tstr,2,1);
 			$hasAM = strrpos($tstr,'M') !== false;
-			
+
 			$ADODB_DATE_LOCALE = array();
-			$ADODB_DATE_LOCALE[] =  strncmp($tstr,'30',2) == 0 ? 'd'.$sep.'m'.$sep.'y' : 'm'.$sep.'d'.$sep.'y';	
+			$ADODB_DATE_LOCALE[] =  strncmp($tstr,'30',2) == 0 ? 'd'.$sep.'m'.$sep.'y' : 'm'.$sep.'d'.$sep.'y';
 			$ADODB_DATE_LOCALE[]  = ($hasAM) ? 'h:i:s a' : 'H:i:s';
-				
+
 		}
 		$inpct = false;
 		$fmtdate = '';
@@ -785,7 +785,7 @@ class BitDate {
 				} else
 					$inpct = true;
 			} else if ($inpct) {
-			
+
 				$inpct = false;
 				switch($ch) {
 				case '0':
@@ -801,9 +801,9 @@ class BitDate {
 				case 'E':
 				case 'O':
 					/* ignore format modifiers */
-					$inpct = true; 
+					$inpct = true;
 					break;
-					
+
 				case 'a': $fmtdate .= 'D'; break;
 				case 'A': $fmtdate .= 'l'; break;
 				case 'h':
@@ -848,7 +848,7 @@ class BitDate {
 		$ret = $this->date($fmtdate, $ts, $is_gmt);
 		return $ret;
 	}
-	
+
 	/**
 	 * Converts from Gregorian Year-Month-Day to ISO YearNumber-WeekNumber-WeekDay
 	 *
@@ -867,10 +867,10 @@ class BitDate {
 		if ($month == 0) {
 			$year--;
 			$month = 12;
-		}	
+		}
 		$y_isleap = $this->is_leap_year($year);
 		$y_1_isleap = $this->is_leap_year($year - 1);
-	
+
 		$day_of_year_number = $day + $mnth[$month - 1];
 		if ($y_isleap && $month > 2) {
 			$day_of_year_number++;
@@ -1029,5 +1029,119 @@ class BitDate {
 		}
 	}
 
+	/**
+	* Convert the time into managable chunks to display: ... hour(s) ... minute(s) ago
+	* @param $pTimeStamp timestamp that should be converted
+	* @param $pThreshold the threshold at which it should stop converting
+	* @return translated array with strings for each time unit
+	* @access public
+	**/
+	function calculateTimeDifference( $pTimeStart, $pTimeStop=NULL, $pThreshold=NULL ) {
+		global $gBitSystem;
+
+		$timeUnits = array(
+			// number of seconds for each tine unit
+			'always' => 315569260000, // 10000 years
+			'year'   => 31556926,     // taken from http://www.google.com/search?num=50&hs=i64&hl=en&lr=&client=opera&rls=en&q=seconds+in+year&btnG=Search
+			'month'  => 2629743,      // taken from http://www.google.com/search?num=50&hs=nkP&hl=en&lr=&client=opera&rls=en&q=seconds+in+month&btnG=Search
+			'week'   => 604800,
+			'day'    => 86400,
+			'hour'   => 3600,
+			'minute' => 60,
+			'second' => 1,
+		);
+
+		$timeDiff = ( !empty( $pTimeStop ) ? $pTimeStop : $gBitSystem->mServerTimestamp->getUTCTime() ) - $pTimeStart;
+
+		// work out if we're looking ahead or back in time
+		if( $timeDiff <= 0 ) {
+			$timeDiff = 0 - $timeDiff;
+			$ret['orientation'] = 'future';
+		} else {
+			$ret['orientation'] = 'past';
+		}
+
+		if( !empty( $pThreshold ) && in_array( $pThreshold, array_keys( $timeUnits ) ) ) {
+			if( $timeDiff >= $timeUnits[$pThreshold] ) {
+				return FALSE;
+			} elseif( $timeDiff == 0 ) {
+				$ret['strings'] = tra( 'now' );
+			} else {
+				foreach( $timeUnits as $name => $unit ) {
+					if( $name != 'always' ) {
+						// return array of units with count
+						$ret['units'][$name] = floor( $timeDiff / $unit );
+					}
+
+					if( $timeDiff >= $unit || !empty( $ret['strings'] ) ) {
+						// return translated string
+						$ret['strings'][] = floor( $timeDiff / $unit ).' '.tra( $name.'(s)' );
+						// set $timeDiff for next loop
+						$timeDiff = fmod( $timeDiff, $unit );
+					}
+				}
+			}
+		}
+		return $ret;
+	}
+
+	/**
+	* Get a hash of holidays for a given year
+	* @param $pYear the year in question
+	* @param $pCountryCode -- the country in question - only US is supported currently
+	* @return an associative array containing the holidays occuring in the given year they key is a date stamp of the form Y-m-d, the value is the name of the corresponding holiday
+	* @access public
+	**/
+	function getHolidays( $pYear, $pCountryCode='US' ) {
+		$return = array();
+
+		switch( $pCountryCode ) {
+			case 'UK':
+				$return[date( 'Y-m-d', strtotime("-1 week monday", strtotime("1 september $pYear")) + 43200)] = 'Bank Holiday';
+				break;
+			case 'US':
+			default:
+				// First off, the simple ones
+				$return[$pYear . '-01-01'] = 'New Year`s Day';
+				$return[$pYear . '-02-14'] = 'Valentine`s Day';
+				$return[$pYear . '-06-14'] = 'Flag Day';
+				$return[$pYear . '-07-04'] = 'Independence Day';
+				$return[$pYear . '-11-11'] = 'Veteran`s Day';
+				$return[$pYear . '-12-25'] = 'Christmas';
+
+				// Martin Luther King, Jr. Day - third Monday in January
+				$return[date( 'Y-m-d', strtotime( '2 weeks monday', strtotime( "January 1, $pYear" ) ) + 43200 )] = 'Martin Luther King, Jr. Day';
+
+				// Presidents` Day - third Monday in February
+				$return[date( 'Y-m-d', strtotime( '2 weeks monday', strtotime( "February 1, $pYear" ) ) + 43200 )] = 'Presidents` Day';
+
+				// Mardi Gras - Tuesday ~47 days before Easter
+				$return[date( 'Y-m-d', strtotime( 'last tuesday 46 days ago', easter_date( $pYear ) ) + 43200 )] = 'Mardi Gras';
+
+				// Memorial Day - last Monday in May
+				$return[date( 'Y-m-d', strtotime( '-1 week monday', strtotime( "June 1, $pYear" ) ) + 43200 )] = 'Memorial Day';
+
+				// Labor Day - first Monday in September
+				$return[date( 'Y-m-d', strtotime( 'monday', strtotime( "September 1, $pYear" ) ) + 43200 )] = 'Labor Day';
+
+				// Columbus Day - second Monday in October
+				$return[date( 'Y-m-d', strtotime( '1 week monday', strtotime( "October 1, $pYear" ) ) + 43200 )] = 'Columbus Day';
+
+				// Thanksgiving - fourth Thursday in November
+				$return[date( 'Y-m-d', strtotime( '3 weeks thursday', strtotime( "November 1, $pYear" ) ) + 43200 )] = 'Thanksgiving';
+
+				ksort( $return );
+				break;
+		}
+
+		// Common to all
+
+		// Easter - the Sunday after the first full moon which falls on or after the Spring Equinox
+		// thank god PHP has a function for that...
+		$return[date( 'Y-m-d', easter_date( $pYear ) + 43200 )] = 'Easter';
+
+		return $return;
+
+	}
 }
 ?>

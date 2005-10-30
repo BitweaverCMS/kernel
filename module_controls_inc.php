@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_kernel/module_controls_inc.php,v 1.1.2.1 2005/09/19 12:02:37 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/module_controls_inc.php,v 1.1.2.2 2005/10/30 21:03:50 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,9 +8,13 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: module_controls_inc.php,v 1.1.2.1 2005/09/19 12:02:37 wolff_borg Exp $
+ * $Id: module_controls_inc.php,v 1.1.2.2 2005/10/30 21:03:50 lsces Exp $
  * @package kernel
  * @subpackage functions
+ */
+
+/**
+ * Initialization
  */
 include_once( '../bit_setup_inc.php' );
 include_once( KERNEL_PKG_PATH.'mod_lib.php' );

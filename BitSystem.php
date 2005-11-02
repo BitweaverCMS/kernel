@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.62 2005/10/28 18:49:47 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.63 2005/11/02 21:25:46 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1396,6 +1396,37 @@ asort( $this->mAppMenu );
 		return $r;
 	}
 
+	// === lookupMimeType
+	/**
+	* given an extension, return the mime type
+	*
+	* @param string $ pMsg error message to be displayed
+	* @return hash of mime types
+	* @access public
+	*/
+	function lookupMimeType( $pExtension ) {
+		if( empty( $this->mMimeTypes ) ) {
+			// use the local mime.types files if it is available since it may be more current
+			$mimeFile = is_file( '/etc/mime.types' ) && is_readable( '/etc/mime.types' ) ? '/etc/mime.types' : KERNEL_PKG_PATH.'admin/mime.types';
+			$this->mMimeTypes = array();
+			if( $fp = fopen( $mimeFile,"r" ) ) {
+				while( false != ($line = fgets( $fp, 4096 ) ) ) {
+					if (!preg_match("/^\s*(?!#)\s*(\S+)\s+(?=\S)(.+)/",$line,$match)) {
+						continue;
+					}
+					$tmp = preg_split("/\s/",trim($match[2]));
+					foreach( $tmp as $type ) {
+						$this->mMimeTypes[strtolower($type)] = $match[1];
+					}
+				}
+				fclose ($fp);
+			}
+		}
+		$ret = !empty( $this->mMimeTypes[$pExtension] ) ? $this->mMimeTypes[$pExtension] : 'application/binary';
+
+		return $ret;
+	}
+
 	/**
 	* * Return 'windows' if windows, otherwise 'unix'
 	* \static
@@ -1879,6 +1910,7 @@ asort( $this->mAppMenu );
 		return $html;
 	}
 }
+
 
 // === installError
 /**

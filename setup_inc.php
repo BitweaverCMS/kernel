@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.26 2005/11/02 03:14:12 mej Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.27 2005/11/02 03:17:04 mej Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -123,7 +123,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// some plugins check for active packages, so we do this *after* package scanning
 	global $gLibertySystem;
 	$gLibertySystem->scanPlugins();
-    $gBitSmarty->assign_by_ref( 'gLibertySystem', $gLibertySystem );
+	$gBitSmarty->assign_by_ref( 'gLibertySystem', $gLibertySystem );
 
 	// XSS security check
 	if( !empty( $_REQUEST['tk'] ) ) {

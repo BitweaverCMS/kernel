@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.27 2005/11/02 03:17:04 mej Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.28 2005/11/03 15:31:08 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -125,6 +125,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gLibertySystem->scanPlugins();
 	$gBitSmarty->assign_by_ref( 'gLibertySystem', $gLibertySystem );
 
+	$gBitSmarty->assign_by_ref("gBitSystem", $gBitSystem);
 	// XSS security check
 	if( !empty( $_REQUEST['tk'] ) ) {
 		$gBitUser->verifyTicket();
@@ -214,7 +215,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$ownurl_father = $father;
 	$gBitSmarty->assign('ownurl', httpPrefix() . $_SERVER["REQUEST_URI"]);
 	// **********  KERNEL  ************
-	$gBitSmarty->assign_by_ref("gBitSystem", $gBitSystem);
 	$gBitSmarty->assign_by_ref("gBitSystemPackages", $gBitSystem->mPackages);
 
 	// check to see if admin has closed the site

@@ -18,7 +18,7 @@
 	var tikiIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons/";
 	var tikiRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 //]]></script>
-<script type="text/javascript" src="{$smarty.const.KERNEL_PKG_URL}bitweaver.js"></script>
+<script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/bitweaver.js"></script>
 <script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/ajax.js"></script>
 {strip}
 	{include file="bitpackage:kernel/bidi.tpl"}

@@ -10,13 +10,15 @@
 	<link rel="help" title="{tr}Help{/tr}" href="http://www.bitweaver.org/" />
 {/strip}
 <script type="text/javascript">//<![CDATA[
-	{if $gBitSystem->isFeatureActive( 'feature_rememberme' )}var tikiCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
-		var tikiCookieDomain = "{$gBitSystem->mPrefs.cookie_domain}";
-	{else}var tikiCookiePath = "{$smarty.const.BIT_ROOT_URL}";
-		var tikiCookieDomain = "";
+	{if $gBitSystem->isFeatureActive( 'feature_rememberme' )}
+		var bitCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
+		var bitCookieDomain = "{$gBitSystem->mPrefs.cookie_domain}";
+	{else}
+		var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";
+		var bitCookieDomain = "";
 	{/if}
-	var tikiIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons/";
-	var tikiRootUrl = "{$smarty.const.BIT_ROOT_URL}";
+	var bitIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons/";
+	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 //]]></script>
 <script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/bitweaver.js"></script>
 <script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/ajax.js"></script>

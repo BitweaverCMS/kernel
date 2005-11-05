@@ -38,7 +38,7 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 	$pgnName = isset( $params['pgnName'] ) ? $params['pgnName'] : 'page';
 	$pgnVars = '';
 
-	$omitParams = array( 'numPages', 'url', 'page', 'pgnName', 'ianchor' );
+	$omitParams = array( 'numPages', 'url', $pgnName, 'pgnName', 'ianchor' );
 	foreach( $params as $form_param => $form_val ) {
 		if ( !empty( $form_val ) && !in_array( $form_param, $omitParams ) ) {
 			$pgnVars .= "&amp;".$form_param."=".$form_val;
@@ -48,7 +48,7 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 	$pgnVars .= ( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' );
 
     for( $pageCount = 1; $pageCount < $params['numPages']+1; $pageCount++ ) {
-		if( $pageCount != $params['page'] ) {
+		if( $pageCount != $params[$pgnName] ) {
 			$pages[] = '<a href="'.$_SERVER['PHP_SELF'].'?'.$pgnName.'='.$pageCount.$pgnVars.'">'.( $pageCount ).'</a>';
 		} else {
 			$pages[] = '<strong>'.$pageCount.'</strong>';
@@ -56,7 +56,7 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 	}
 
 	if( $params['numPages'] > 1 ) {
-		$gBitSmarty->assign( 'page', $params['page'] );
+		$gBitSmarty->assign( 'pgnPage', $params[$pgnName] );
 		$gBitSmarty->assign( 'pgnName', $pgnName );
 		$gBitSmarty->assign( 'pgnVars', $pgnVars );
 		$gBitSmarty->assign( 'pgnHidden', $pgnHidden );

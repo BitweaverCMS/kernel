@@ -49,7 +49,11 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 
     for( $pageCount = 1; $pageCount < $params['numPages']+1; $pageCount++ ) {
 		if( $pageCount != $params[$pgnName] ) {
-			$pages[] = '<a href="'.$_SERVER['PHP_SELF'].'?'.$pgnName.'='.$pageCount.$pgnVars.'">'.( $pageCount ).'</a>';
+			if( $_REQUEST['ajaxid'] ) {
+				$pages[] = '<a href="javascript:sendRequest(\''.$_REQUEST['ajaxid']."','".$pgnName.'='.$pageCount.$pgnVars.'\')'.'">'.( $pageCount ).'</a>';
+			} else {
+				$pages[] = '<a href="'.$_SERVER['PHP_SELF'].'?'.$pgnName.'='.$pageCount.$pgnVars.'">'.( $pageCount ).'</a>';
+			}
 		} else {
 			$pages[] = '<strong>'.$pageCount.'</strong>';
 		}

@@ -15,7 +15,7 @@
 	{else}var tikiCookiePath = "{$smarty.const.BIT_ROOT_URL}";
 		var tikiCookieDomain = "";
 	{/if}
-	var tikiIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons";
+	var tikiIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons/";
 	var tikiRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 //]]></script>
 <script type="text/javascript" src="{$smarty.const.KERNEL_PKG_URL}bitweaver.js"></script>

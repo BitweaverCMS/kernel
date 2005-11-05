@@ -1,4 +1,4 @@
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.1.1.1.2.6 2005/10/03 05:22:32 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/bitweaver.js,v 1.1.1.1.2.7 2005/11/05 21:04:15 squareing Exp $
 
 //
 // Set client offset (in minutes) to a cookie to avoid server-side DST issues
@@ -180,9 +180,9 @@ function setfoldericonstate(foo) {
 
 	cookie_value = getCookie(foo);
 	if (cookie_value == "o") {
-		pic.src = tikiIconDir + "/expanded.gif";
+		pic.src = tikiIconDir + "expanded.gif";
 	} else if (cookie_value == "c") {
-		pic.src = tikiIconDir + "/collapsed.gif";
+		pic.src = tikiIconDir + "collapsed.gif";
 	} else {
 		return;
 	}

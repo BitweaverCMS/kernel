@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.63 2005/11/02 21:25:46 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.64 2005/11/06 19:56:31 mej Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -317,6 +317,8 @@ class BitSystem extends BitBase {
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
 //		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
+		// Make sure that the gBitSystem symbol available to templates is correct and up-to-date.
+		$gBitSmarty->assign_by_ref('gBitSystem', $this);
 		$gBitSmarty->display( 'bitpackage:kernel/bitweaver.tpl' );
 		$this->postDisplay( $pMid );
 	}

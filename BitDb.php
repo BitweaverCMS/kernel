@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.29 2005/10/31 16:41:04 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.30 2005/11/08 06:36:55 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -387,7 +387,7 @@ class BitDb
 	/**
 	* ADODB compatibility functions for bitcommerce
 	*/
-	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=0) {
+	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=BIT_QUERY_DEFAULT) {
 		return $this->query( $pQuery, NULL, $pNumRows, BIT_QUERY_DEFAULT, $pCacheTime );
 	}
 

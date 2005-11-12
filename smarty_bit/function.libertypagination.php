@@ -35,7 +35,7 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 		parse_str( preg_replace( "/.*\?/", "", $params['url'] ), $urlParams );
 		$params = array_merge( $urlParams, $params );
 	}
-	$pgnName = isset( $params['pgnName'] ) ? $params['pgnName'] : 'page';
+	$pgnName = isset( $params['pgnName'] ) ? $params['pgnName'] : ( isset( $params['curPage'] ) ? 'curPage' : 'page' );
 	$pgnVars = '';
 
 	$omitParams = array( 'numPages', 'url', $pgnName, 'pgnName', 'ianchor' );

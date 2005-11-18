@@ -1,7 +1,8 @@
 {include file="bitpackage:kernel/header.tpl"}
+{strip}
 {if $print_page ne "y"}
 	{if $gBitSystem->isFeatureActive( 'feature_bidi' )}
-		<table dir="rtl"><tr><td>
+		<div dir="rtl">
 	{/if}
 
 	<div id="tikibody">
@@ -36,8 +37,9 @@
 	</div> <!-- end #tikibody -->
 
 	{if $gBitSystem->isFeatureActive( 'feature_bidi' )}
-		</td></tr></table>
+		</div>
 	{/if}
 
 	{include file="bitpackage:kernel/footer.tpl"}
 {/if}
+{/strip}

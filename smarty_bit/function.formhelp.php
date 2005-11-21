@@ -114,7 +114,8 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 
 				$gBitSmarty->assign( 'title',tra('Extended Help') );
 
-				$gBitSmarty->assign( 'content',$content );
+				$gBitSmarty->assign( 'content', $content );
+				$gBitSmarty->assign( 'closebutton', TRUE );
 				$text = $gBitSmarty->fetch('bitpackage:kernel/popup_box.tpl');
 				$text = ereg_replace( '"',"'",$text );
 

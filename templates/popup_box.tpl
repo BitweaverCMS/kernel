@@ -3,9 +3,11 @@
 <div class='popup box'>
 	<div class='boxtitle'>
 		{$title}
-		<span class='closebutton'>
-			<a onclick='javascript:return cClick();'>{biticon ipackage='liberty' iname='close' iexplain='close' iforce='icon'}</a>
-		</span>
+		{if $closebutton}
+			<span class='closebutton'>
+				<a onclick='javascript:return cClick();'>{biticon ipackage='liberty' iname='close' iexplain='close' iforce='icon'}</a>
+			</span>
+		{/if}
 	</div>
 
 	<div class='boxcontent'>

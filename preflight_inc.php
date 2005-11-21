@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.1.1.1.2.3 2005/07/27 13:21:04 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.1.1.1.2.4 2005/11/21 23:41:14 mej Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -19,7 +19,9 @@ function getTempDir()
 		if( !empty( $gTempDir ) ) {
 			$tempdir = $gTempDir;
 		} else {
-			$tempfile = tempnam(false, 'foo');
+			$tempfile = tempnam(((@ini_get('safe_mode'))
+						? ($_SERVER['DOCUMENT_ROOT'] . '/temp/')
+						: (false)), 'foo');
 			$tempdir = dirname($tempfile);
 			@unlink($tempfile);
 		}
@@ -45,6 +47,10 @@ function mkdir_p($target, $perms = 0777)
 {
 	global $gDebug;
 
+	if (ini_get('safe_mode')) {
+		$target = preg_replace('/^\/tmp/', $_SERVER['DOCUMENT_ROOT'] . '/temp', $target);
+	}
+	//echo "mkdir_p($target, $perms)<br />\n";
 	if (file_exists($target) || is_dir($target))
 	{
 		if ($gDebug) echo "mkdir_p() - file already exists $target<br>";

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.28 2005/11/03 15:31:08 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.29 2005/11/21 23:41:14 mej Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -226,7 +226,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// check to see if max server load threshold is enabled
 	$use_load_threshold = $gBitSystem->getPreference('use_load_threshold', 'n');
 	// get average server load in the last minute
-	if (is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
+	if (@is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
 		list($server_load) = explode(' ', $load[0]);
 		$gBitSmarty->assign('server_load', $server_load);
 		if ($use_load_threshold == 'y' && !$gBitUser->hasPermission( 'bit_p_access_closed_site' ) && !isset($bypass_siteclose_check)) {

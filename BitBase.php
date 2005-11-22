@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.14 2005/11/08 06:37:43 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.15 2005/11/22 15:59:24 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -210,7 +210,9 @@ class BitBase
 			}
 		}
 
-		if( isset( $_REQUEST["find"] ) ) {
+		if( !empty( $pListHash["find"] ) ) {
+			$pListHash['find']= $pListHash["find"];
+		} elseif( isset( $_REQUEST["find"] ) ) {
 			$pListHash['find']= $_REQUEST["find"];
 		} else {
 			$pListHash['find'] = NULL;

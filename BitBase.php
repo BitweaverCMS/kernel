@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.6 2005/08/30 22:23:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.7 2005/11/22 07:26:46 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -314,6 +314,21 @@ function parse_xml_attributes($str) {
 	return $parameters;
 }
 
+
+// XML Entity Mandatory Escape Characters
+function xmlentities($string, $quote_style=ENT_QUOTES)
+{
+   static $trans;
+   if (!isset($trans)) {
+       $trans = get_html_translation_table(HTML_ENTITIES, $quote_style);
+       foreach ($trans as $key => $value)
+           $trans[$key] = '&#'.ord($key).';';
+       // dont translate the '&' in case it is part of &xxx;
+       $trans[chr(38)] = '&';
+   }
+   // after the initial translation, _do_ map standalone '&' into '&#38;'
+   return preg_replace("/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,5};)/","&#38;" , strtr($string, $trans));
+}
 
 function trim_array( &$pArray ) {
 	if( is_array( $pArray ) ) {

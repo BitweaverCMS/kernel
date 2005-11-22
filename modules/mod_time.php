@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_time.php,v 1.2 2005/08/24 20:52:15 squareing Exp $
+ * $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_time.php,v 1.4 2006/01/10 21:12:47 squareing Exp $
  *
  * Copyright ( c ) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.

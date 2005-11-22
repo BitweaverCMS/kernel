@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.18 2005/10/29 17:53:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.19 2005/11/22 07:26:47 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -317,6 +317,8 @@ class BitSystem extends BitBase {
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
 //		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
+		// Make sure that the gBitSystem symbol available to templates is correct and up-to-date.
+		$gBitSmarty->assign_by_ref('gBitSystem', $this);
 		$gBitSmarty->display( 'bitpackage:kernel/bitweaver.tpl' );
 		$this->postDisplay( $pMid );
 	}
@@ -1396,6 +1398,37 @@ asort( $this->mAppMenu );
 		return $r;
 	}
 
+	// === lookupMimeType
+	/**
+	* given an extension, return the mime type
+	*
+	* @param string $ pMsg error message to be displayed
+	* @return hash of mime types
+	* @access public
+	*/
+	function lookupMimeType( $pExtension ) {
+		if( empty( $this->mMimeTypes ) ) {
+			// use the local mime.types files if it is available since it may be more current
+			$mimeFile = is_file( '/etc/mime.types' ) && is_readable( '/etc/mime.types' ) ? '/etc/mime.types' : KERNEL_PKG_PATH.'admin/mime.types';
+			$this->mMimeTypes = array();
+			if( $fp = fopen( $mimeFile,"r" ) ) {
+				while( false != ($line = fgets( $fp, 4096 ) ) ) {
+					if (!preg_match("/^\s*(?!#)\s*(\S+)\s+(?=\S)(.+)/",$line,$match)) {
+						continue;
+					}
+					$tmp = preg_split("/\s/",trim($match[2]));
+					foreach( $tmp as $type ) {
+						$this->mMimeTypes[strtolower($type)] = $match[1];
+					}
+				}
+				fclose ($fp);
+			}
+		}
+		$ret = !empty( $this->mMimeTypes[$pExtension] ) ? $this->mMimeTypes[$pExtension] : 'application/binary';
+
+		return $ret;
+	}
+
 	/**
 	* * Return 'windows' if windows, otherwise 'unix'
 	* \static
@@ -1486,7 +1519,7 @@ asort( $this->mAppMenu );
 		if (ini_get('session.save_handler') == 'files') {
 			$save_path = ini_get('session.save_path');
 
-			if (!is_dir($save_path)) {
+			if (!@is_dir($save_path)) {
 				$errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
 			} else if (!bw_is_writeable($save_path)) {
 				$errors .= "The directory '$save_path' is not writeable.\n";
@@ -1879,6 +1912,7 @@ asort( $this->mAppMenu );
 		return $html;
 	}
 }
+
 
 // === installError
 /**

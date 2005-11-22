@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.7 2005/10/29 17:53:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.8 2005/11/22 07:26:47 squareing Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -239,7 +239,7 @@ class BitDate {
 	/**
 	 * Fix 2-digit years. Works for any century.
 	 * Assumes that if 2-digit is more than 30 years in future, then previous century.
-	 * @ToDo This needs to be disabled when dates prior to 100AD are required in ISO format
+	 * @todo This needs to be disabled when dates prior to 100AD are required in ISO format
 	 */
 	function year_digit_check($y)
 	{

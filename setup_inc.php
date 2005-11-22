@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.17 2005/10/29 17:53:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.18 2005/11/22 07:26:48 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -123,7 +123,9 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// some plugins check for active packages, so we do this *after* package scanning
 	global $gLibertySystem;
 	$gLibertySystem->scanPlugins();
+	$gBitSmarty->assign_by_ref( 'gLibertySystem', $gLibertySystem );
 
+	$gBitSmarty->assign_by_ref("gBitSystem", $gBitSystem);
 	// XSS security check
 	if( !empty( $_REQUEST['tk'] ) ) {
 		$gBitUser->verifyTicket();
@@ -213,7 +215,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$ownurl_father = $father;
 	$gBitSmarty->assign('ownurl', httpPrefix() . $_SERVER["REQUEST_URI"]);
 	// **********  KERNEL  ************
-	$gBitSmarty->assign_by_ref("gBitSystem", $gBitSystem);
 	$gBitSmarty->assign_by_ref("gBitSystemPackages", $gBitSystem->mPackages);
 
 	// check to see if admin has closed the site
@@ -225,7 +226,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// check to see if max server load threshold is enabled
 	$use_load_threshold = $gBitSystem->getPreference('use_load_threshold', 'n');
 	// get average server load in the last minute
-	if (is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
+	if (@is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
 		list($server_load) = explode(' ', $load[0]);
 		$gBitSmarty->assign('server_load', $server_load);
 		if ($use_load_threshold == 'y' && !$gBitUser->hasPermission( 'bit_p_access_closed_site' ) && !isset($bypass_siteclose_check)) {

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.15 2005/10/23 14:40:22 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.16 2005/11/22 07:26:47 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -387,7 +387,7 @@ class BitDb
 	/**
 	* ADODB compatibility functions for bitcommerce
 	*/
-	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=0) {
+	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=BIT_QUERY_DEFAULT) {
 		return $this->query( $pQuery, NULL, $pNumRows, BIT_QUERY_DEFAULT, $pCacheTime );
 	}
 
@@ -646,6 +646,23 @@ class BitDb
 		// not sure what this did - maybe someone can comment why its here
 		//return preg_replace("/'/","", $this->mDb->DBTimeStamp($pDate));
 		return $this->mDb->DBTimeStamp($pDate);
+	}
+
+	/**
+	 * Return the current timestamp literal relevent to the database type
+	 * @todo This needs extending to allow the use of GMT timestamp
+	 *		rather then the current server time
+	 */
+	function NOW() {
+		global $gBitDbType;
+		switch( $gBitDbType ) {
+			case "firebird":
+				$ret = 'NOW'; // SQL standard Literal
+				break;
+			default:
+				$ret = 'now()';
+		}
+		return $ret;
 	}
 
 	/** Return the sql to cast the given column from an long integer to a time stamp.

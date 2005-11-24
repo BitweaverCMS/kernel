@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.6 2005/09/18 12:14:09 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.7 2005/11/24 10:44:25 wolff_borg Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -40,6 +40,11 @@ $formFeaturesTiki = array(
 		'label' => 'Show Category Path',
 		'note' => 'Display the category path at the top of the page',
 		'page' => 'ShowCategoryPath',
+	),
+	'feature_jscalendar' => array(
+		'label' => 'Enable JSCalendar',
+		'note' => 'Enable use of the JSCalendar library',
+		'page' => 'JSCalendar',
 	),
 );
 $gBitSmarty->assign( 'formFeaturesTiki',$formFeaturesTiki );

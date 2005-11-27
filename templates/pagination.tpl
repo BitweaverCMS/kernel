@@ -33,28 +33,28 @@
 	<div class="pagination">
 	{tr}Displaying{/tr} <strong>{$listInfo.offset+1}</strong> {tr}to{/tr} <strong>{$listInfo.offset+$listInfo.max_records}</strong> ({tr}of{/tr} <strong>{$listInfo.total_records}</strong>)
 	<div class="pager">
-	{assign var=pageUrl value="`$smarty.server.PHP_SELF`?main_page=`$smarty.request.main_page`&sort_mode=`$listInfo.sort_mode`"}
+	{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`"}
 	{if $listInfo.current_page > 1}
 		{assign var=blockStart value=1}
-		{tr}<a href="{$pageUrl}&page={$listInfo.current_page-1}">&laquo; {tr}Prev{/tr}</a>{/tr}&nbsp;
+		{tr}<a href="{$pageUrl}&list_page={$listInfo.current_page-1}">&laquo; {tr}Prev{/tr}</a>{/tr}&nbsp;
 	{/if}
 	{if $listInfo.current_page-$listInfo.block_pages > 0}
 		{assign var=blockStart value=$listInfo.current_page-$listInfo.block_pages+1}
 	{else}
 		{assign var=blockStart value=1}
 	{/if}
-	{if $blockStart > 1} <a href="{$pageUrl}&page={$listInfo.current_page-1}">1</a>  <a href="{$pageUrl}&page={$listInfo.current_page-$listInfo.block_pages}">...</a> {/if}
+	{if $blockStart > 1} <a href="{$pageUrl}&list_page={$listInfo.current_page-1}">1</a>  <a href="{$pageUrl}&list_page={$listInfo.current_page-$listInfo.block_pages}">...</a> {/if}
 
 	{section name=pager start=$blockStart loop=$blockStart+$listInfo.block_pages*2}
 	{if $smarty.section.pager.index <= $listInfo.total_pages}
 		{if $smarty.section.pager.index != $listInfo.current_page}
-		<a href="{$pageUrl}&page={$smarty.section.pager.index}">{$smarty.section.pager.index}</a>
+		<a href="{$pageUrl}&list_page={$smarty.section.pager.index}">{$smarty.section.pager.index}</a>
 		{else}
 		<strong>{$listInfo.current_page}</strong>
 		{/if}&nbsp;
 	{/if}
 	{/section}
-	{if $blockStart+$listInfo.block_pages*2 < $listInfo.total_pages} <a href="{$pageUrl}&page={$listInfo.current_page+1}">...</a>  <a href="{$pageUrl}&page={$listInfo.total_pages}">{$listInfo.total_pages}</a>{/if}
+	{if $blockStart+$listInfo.block_pages*2 < $listInfo.total_pages} <a href="{$pageUrl}&list_page={$listInfo.current_page+1}">...</a>  <a href="{$pageUrl}&list_page={$listInfo.total_pages}">{$listInfo.total_pages}</a>{/if}
 
 	{if $listInfo.current_page < $listInfo.total_pages}
 	<a href="{$pageUrl}&list_page={$listInfo.current_page+1}">{tr}Next{/tr} &raquo;</a>

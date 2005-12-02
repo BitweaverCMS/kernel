@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.7 2005/11/24 10:44:25 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.1.1.1.2.8 2005/12/02 11:31:22 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -10,7 +10,7 @@
 //$users_list = $gBitUser->get_users_names();
 //$gBitSmarty->assign( 'users_list',$users_list );
 
-$formFeaturesTiki = array(
+$formFeaturesBit = array(
 	'pretty_urls' => array(
 		'label' => 'Use Pretty URLs',
 		'note' => 'In addition to making the URL easier to read and remember it enhances search engine results. Using this feature requires Apache <a href="http://httpd.apache.org/docs-2.0/mod/mod_rewrite.html">mod_rewrite</a> support in the web server (usually installed by default), Depending on the Web server configuration, it may be necessary to modify the default .htaccess files when using this feature.',
@@ -47,7 +47,7 @@ $formFeaturesTiki = array(
 		'page' => 'JSCalendar',
 	),
 );
-$gBitSmarty->assign( 'formFeaturesTiki',$formFeaturesTiki );
+$gBitSmarty->assign( 'formFeaturesBit',$formFeaturesBit );
 
 $formFeaturesHelp = array(
 	'feature_helpnotes' => array(
@@ -113,7 +113,7 @@ $gBitSmarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list :
 $processForm = set_tab();
 
 if( $processForm ) {
-	$featureToggles = array_merge( $formFeaturesTiki,$formFeaturesContent,$formFeaturesAdmin,$formFeaturesHelp,array( 'feature_contact' => 0 ) );
+	$featureToggles = array_merge( $formFeaturesBit,$formFeaturesContent,$formFeaturesAdmin,$formFeaturesHelp,array( 'feature_contact' => 0 ) );
 	foreach( array_keys( $featureToggles ) as $item ) {
 		simple_set_toggle( $item );
 	}

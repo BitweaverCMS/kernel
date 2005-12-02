@@ -4,7 +4,7 @@
 <table dir="rtl"><tr><td>
 {/if}
 
-<div id="tikibody">
+<div id="bitbody">
 
 {include file="bitpackage:kernel/top.tpl"}
 
@@ -21,8 +21,8 @@
     {/section}
   </td>
 {/if}
-  <td id="tikimain">
-    <div id="tikimainfx">
+  <td id="bitmain">
+    <div id="bitmainfx">
       <div class="error">
         <div class="admin box">
           <div class="boxtitle">{tr}Error{/tr}</div>
@@ -52,12 +52,12 @@
 </table>
 
 {if $gBitSystem->isFeatureActive( 'feature_bot_bar' )}
-  <div id="tikibottom">
+  <div id="bitbottom">
     {include file="bitpackage:kernel/bot_bar.tpl"}
   </div>
 {/if}
 
-</div> {* end #tikibody *}
+</div> {* end #bitbody *}
 
 {if $gBitSystem->isFeatureActive( 'feature_bidi' )}
 </td></tr></table>

@@ -1,11 +1,11 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.1.1.1.2.3 2005/06/30 07:23:50 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.1.1.1.2.4 2005/12/02 11:31:22 squareing Exp $ *}
 {strip}
 {form}
 	{jstabs}
 		{jstab title="bitweaver Settings"}
 			<input type="hidden" name="page" value="{$page}" />
 			{legend legend="bitweaver Settings"}
-				{foreach from=$formFeaturesTiki key=feature item=output}
+				{foreach from=$formFeaturesBit key=feature item=output}
 					<div class="row">
 						{formlabel label=`$output.label` for=$feature}
 						{forminput}
@@ -15,7 +15,7 @@
 					</div>
 				{/foreach}
 				<div class="row submit">
-					<input type="submit" name="tikiTabSubmit" value="{tr}Change preferences{/tr}" />
+					<input type="submit" name="bitTabSubmit" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/jstab}

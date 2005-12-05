@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.18 2005/11/22 07:26:48 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.19 2005/12/05 23:52:59 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -16,8 +16,8 @@ require_once(BIT_ROOT_PATH . 'kernel/config_defaults_inc.php');
 error_reporting( BIT_PHP_ERROR_REPORTING );
 
 define( 'BIT_MAJOR_VERSION',	'1' );
-define( 'BIT_MINOR_VERSION',	'0' );
-define( 'BIT_SUB_VERSION',		'5' );
+define( 'BIT_MINOR_VERSION',	'1' );
+define( 'BIT_SUB_VERSION',		'1' );
 define( 'BIT_LEVEL',			'beta' ); // 'beta' or 'dev' or 'rc' etc..
 
 define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
@@ -225,7 +225,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 	// check to see if max server load threshold is enabled
 	$use_load_threshold = $gBitSystem->getPreference('use_load_threshold', 'n');
-	// get average server load in the last minute
+	// get average server load in the last minute. Keep quiet cause virtual hosts can give perm denied
 	if (@is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
 		list($server_load) = explode(' ', $load[0]);
 		$gBitSmarty->assign('server_load', $server_load);

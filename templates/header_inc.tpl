@@ -10,9 +10,9 @@
 	<link rel="help" title="{tr}Help{/tr}" href="http://www.bitweaver.org/" />
 {/strip}
 <script type="text/javascript">//<![CDATA[
-	{if $gBitSystem->isFeatureActive( 'feature_rememberme' )}
+	{if $gBitSystem->isFeatureActive( 'rememberme' )}
 		var bitCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
-		var bitCookieDomain = "{$gBitSystem->mPrefs.cookie_domain}";
+		var bitCookieDomain = ".{$gBitSystem->mPrefs.cookie_domain}";
 	{else}
 		var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";
 		var bitCookieDomain = "";
@@ -27,7 +27,7 @@
 
 	{* --- jscalendar block --- *}
 	{if $gBitSystem->isFeatureActive( 'feature_jscalendar' )}
-		<link rel="StyleSheet" type="text/css" media="all" href="{$smarty.const.JSCALENDAR_PKG_URL}calendar-system.css" title="system" />
+		<link rel="stylesheet" title="{$style}" type="text/css" href="{$smarty.const.JSCALENDAR_PKG_URL}calendar-bitweaver.css" media="all" />
 		<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}calendar.js"></script>
 		<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}lang/calendar-en.js"></script>
 		<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}calendar-setup.js"></script>

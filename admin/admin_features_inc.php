@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.5 2005/10/12 15:13:51 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.6 2005/12/05 23:53:00 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -10,7 +10,7 @@
 //$users_list = $gBitUser->get_users_names();
 //$gBitSmarty->assign( 'users_list',$users_list );
 
-$formFeaturesTiki = array(
+$formFeaturesBit = array(
 	'pretty_urls' => array(
 		'label' => 'Use Pretty URLs',
 		'note' => 'In addition to making the URL easier to read and remember it enhances search engine results. Using this feature requires Apache <a href="http://httpd.apache.org/docs-2.0/mod/mod_rewrite.html">mod_rewrite</a> support in the web server (usually installed by default), Depending on the Web server configuration, it may be necessary to modify the default .htaccess files when using this feature.',
@@ -41,8 +41,13 @@ $formFeaturesTiki = array(
 		'note' => 'Display the category path at the top of the page',
 		'page' => 'ShowCategoryPath',
 	),
+	'feature_jscalendar' => array(
+		'label' => 'Enable JSCalendar',
+		'note' => 'Enable use of the JSCalendar library',
+		'page' => 'JSCalendar',
+	),
 );
-$gBitSmarty->assign( 'formFeaturesTiki',$formFeaturesTiki );
+$gBitSmarty->assign( 'formFeaturesBit',$formFeaturesBit );
 
 $formFeaturesHelp = array(
 	'feature_helpnotes' => array(
@@ -108,7 +113,7 @@ $gBitSmarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list :
 $processForm = set_tab();
 
 if( $processForm ) {
-	$featureToggles = array_merge( $formFeaturesTiki,$formFeaturesContent,$formFeaturesAdmin,$formFeaturesHelp,array( 'feature_contact' => 0 ) );
+	$featureToggles = array_merge( $formFeaturesBit,$formFeaturesContent,$formFeaturesAdmin,$formFeaturesHelp,array( 'feature_contact' => 0 ) );
 	foreach( array_keys( $featureToggles ) as $item ) {
 		simple_set_toggle( $item );
 	}

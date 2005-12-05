@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.8 2005/11/27 13:10:23 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.9 2005/12/05 23:52:59 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -199,17 +199,23 @@ class BitBase
 
 		if( empty( $pListHash['offset'] ) ) {
 			if (isset($pListHash['page'])) {
-				$pListHash['offset'] = ($page = $pListHash['page'] - 1) * $pListHash['max_records'];
+				$pListHash['offset'] = ($pListHash['page'] - 1) * $pListHash['max_records'];
 			} else {
 				if ( isset( $_REQUEST["offset"] ) ) {
 					$pListHash['offset'] = $_REQUEST['offset'];
+				} elseif( isset( $_REQUEST['page'] ) && is_numeric( $_REQUEST['page'] ) ) {
+					$pListHash['offset'] = ($_REQUEST['page'] - 1) * $pListHash['max_records'];
+				} elseif( isset($_REQUEST['list_page']) && is_numeric( $_REQUEST['list_page'] ) ) {
+					$pListHash['offset'] = ($_REQUEST['list_page'] - 1) * $pListHash['max_records'];
 				} else {
 					$pListHash['offset'] = 0;
 				}
 			}
 		}
 
-		if( isset( $_REQUEST["find"] ) ) {
+		if( !empty( $pListHash["find"] ) ) {
+			$pListHash['find']= $pListHash["find"];
+		} elseif( isset( $_REQUEST["find"] ) ) {
 			$pListHash['find']= $_REQUEST["find"];
 		} else {
 			$pListHash['find'] = NULL;

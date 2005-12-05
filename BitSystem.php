@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.65 2005/11/21 23:41:14 mej Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.66 2005/12/05 20:38:42 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1012,7 +1012,7 @@ asort( $this->mAppMenu );
 
 			if( !empty( $group_home ) ) {
 				if( is_numeric( $group_home ) ) {
-					$url = "index.php".( !empty( $group_home ) ? "?content_id=".$group_home : "" );
+					$url = BIT_ROOT_URL."index.php".( !empty( $group_home ) ? "?content_id=".$group_home : "" );
 				} elseif( strpos( $group_home, '/' ) === FALSE ) {
 					$url = BitPage::getDisplayUrl( !empty( $group_home ) ? "?page=".$group_home : "" );
 				} else {

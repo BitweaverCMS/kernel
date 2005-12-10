@@ -21,6 +21,7 @@
 	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 //]]></script>
 <script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/bitweaver.js"></script>
+<script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/prototype.js"></script>
 <script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/ajax.js"></script>
 {strip}
 	{include file="bitpackage:kernel/bidi.tpl"}

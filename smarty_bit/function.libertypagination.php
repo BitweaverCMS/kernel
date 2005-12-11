@@ -38,10 +38,10 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 	$pgnName = isset( $params['pgnName'] ) ? $params['pgnName'] : ( isset( $params['curPage'] ) ? 'curPage' : 'page' );
 	$pgnVars = '';
 
-	$omitParams = array( 'numPages', 'url', $pgnName, 'pgnName', 'ianchor' );
+	$omitParams = array( 'numPages', 'url', $pgnName, 'pgnName', 'ianchor', 'ajaxId' );
 	foreach( $params as $form_param => $form_val ) {
 		if ( !empty( $form_val ) && !in_array( $form_param, $omitParams ) ) {
-			$pgnVars .= "&amp;".$form_param."=".$form_val;
+			$pgnVars .= ( !empty( $params['ajaxId'] ) ? "&" : "&amp;" ).$form_param."=".$form_val;
 			$pgnHidden[$form_param] = $form_val;
 		}
 	}
@@ -49,8 +49,8 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 
     for( $pageCount = 1; $pageCount < $params['numPages']+1; $pageCount++ ) {
 		if( $pageCount != $params[$pgnName] ) {
-			if( $_REQUEST['ajaxid'] ) {
-				$pages[] = '<a href="javascript:sendRequest(\''.$_REQUEST['ajaxid']."','".$pgnName.'='.$pageCount.$pgnVars.'\')'.'">'.( $pageCount ).'</a>';
+			if( $params['ajaxId'] ) {
+				$pages[] = '<a href="javascript:ajax_updater(\''.$params['ajaxId']."','".$_SERVER['PHP_SELF']."','".$pgnName.'='.$pageCount.$pgnVars.'\')'.'">'.( $pageCount ).'</a>';
 			} else {
 				$pages[] = '<a href="'.$_SERVER['PHP_SELF'].'?'.$pgnName.'='.$pageCount.$pgnVars.'">'.( $pageCount ).'</a>';
 			}
@@ -66,6 +66,7 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 		$gBitSmarty->assign( 'pgnHidden', $pgnHidden );
 	    $gBitSmarty->assign( 'pgnPages', $pages );
 	    $gBitSmarty->assign( 'numPages', $params['numPages'] );
+	    $gBitSmarty->assign( 'ajaxId', $params['ajaxId'] );
 	    $gBitSmarty->display( 'bitpackage:liberty/libertypagination.tpl' );
 	}
 }

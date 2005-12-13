@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.18 2005/12/11 08:53:10 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.19 2005/12/13 18:08:38 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -342,6 +342,26 @@ function xmlentities($string, $quote_style=ENT_QUOTES)
    }
    // after the initial translation, _do_ map standalone '&' into '&#38;'
    return preg_replace("/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,5};)/","&#38;" , strtr($string, $trans));
+}
+
+function array_diff_keys()
+{
+   $args = func_get_args();
+
+   $res = $args[0];
+   if(!is_array($res)) {
+       return array();
+   }
+
+   for($i=1;$i<count($args);$i++) {
+       if(!is_array($args[$i])) {
+           continue;
+       }
+       foreach ($args[$i] as $key => $data) {
+           unset($res[$key]);
+       }
+   }
+   return $res;
 }
 
 function trim_array( &$pArray ) {

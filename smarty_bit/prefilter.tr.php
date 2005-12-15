@@ -15,7 +15,6 @@ function smarty_prefilter_tr($source) {
 	// take away the smarty comments {* *} in case they have tr tags
 	$return = preg_replace_callback('/(?s)(\{tr[^\}]*\})(.+?)\{\/tr\}/', '_translate_lang', preg_replace ('/(?s)\{\*.*?\*\}/', '', $source));
 	return $return;
-	tra():
 }
 
 /**

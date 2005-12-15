@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.34 2005/11/27 19:17:56 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.35 2005/12/15 20:38:00 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -359,6 +359,12 @@ if( $gBitSystem->isDatabaseValid() ) {
 		}
 		$gBitSmarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
 		$gBitSmarty->assign('stay_in_ssl_mode', $stay_in_ssl_mode);
+	}
+
+	// if we are interactively translating the website, we force template caching on every page load.
+	if( $gBitSystem->isFeatureActive( 'interactive_translation' ) && $gBitUser->hasPermission( 'bit_p_edit_languages' ) ) {
+		$smarty_force_compile = TRUE;
+		$gBitSmarty->assign_by_ref( "gBitTranslationHash", $gBitTranslationHash );
 	}
 
 	/* SPIDERRKILL - i think everything below here is not fully implemented or deprecated

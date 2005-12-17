@@ -2,7 +2,7 @@
 /**
  * Content Ranking Library
  * 
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.1.1.1.2.6 2005/08/07 16:29:53 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.1.1.1.2.7 2005/12/17 18:38:26 squareing Exp $
  * @package kernel
  */
 
@@ -14,8 +14,39 @@
  */
 class RankLib extends BitBase {
 	function RankLib() {				
-	BitBase::BitBase();
+		BitBase::BitBase();
 	}
+
+	function contentRanking( $pListHash ) {
+		$ret = array();
+		$bindVars = array();
+
+		$limit = !empty( $pListHash['limit'] ) ? $pListHash['limit'] : 10;
+		$sort_mode = !empty( $pListHash['sort_mode'] ) ? $pListHash['sort_mode'] : 'hits_desc';
+
+		if( !empty( $pListHash['content_type_guid'] ) ) {
+			$where = "WHERE tc.`content_type_guid`=?";
+			$bindVars[] = $pListHash['content_type_guid'];
+		}
+
+		$query = "SELECT tc.`content_id`, tc.`title`, tc.`hits` FROM `".BIT_DB_PREFIX."tiki_content` tc $where ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
+		$result = $this->mDb->query( $query, $bindVars, $limit, 0 );
+
+		$_ret = array();
+		while( $res = $result->fetchRow() ) {
+			$aux["name"] = $res["title"];
+			$aux["hits"] = $res["hits"];
+			$aux["href"] = BIT_ROOT_URL.'index.php?content_id='.$res["content_id"];
+			$_ret[] = $aux;
+		}
+
+		$ret["data"]  = $_ret;
+		$ret['title'] = !empty( $pListHash['title'] ) ? $pListHash['title'] : tra( "Content Ranking" );
+		$ret['y']     = !empty( $pListHash['attribute'] ) ? $pListHash['attribute'] : tra( "Hits" );
+
+		return $ret;
+	}
+
 	function wiki_ranking_top_pages($limit) {
 		$query = "select tc.`title` as `page_name`, `hits` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `hits` desc";
 
@@ -315,6 +346,24 @@ class RankLib extends BitBase {
 	}
 
 	function cms_ranking_top_articles($limit) {
+		$query = "select tc.`title`, tc.`hits` from `".BIT_DB_PREFIX."tiki_articles` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `hits` desc";
+
+		$result = $this->mDb->query($query,array(),$limit,0);
+		$ret = array();
+
+		while ($res = $result->fetchRow()) {
+			$aux["name"] = $res["page_name"];
+
+			$aux["hits"] = $res["hits"];
+			$aux["href"] = WIKI_PKG_URL.'index.php?page=' . $res["page_name"];
+			$ret[] = $aux;
+		}
+
+		$retval["data"] = $ret;
+		$retval["title"] = tra("Wiki top pages");
+		$retval["y"] = tra("Hits");
+		return $retval;
+
 		$query = "select * from `".BIT_DB_PREFIX."tiki_articles` order by `reads` desc";
 
 		$result = $this->mDb->query($query,array(),$limit,0);

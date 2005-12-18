@@ -1,6 +1,5 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.1.1.1.2.3 2005/08/05 22:59:56 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.1.1.1.2.4 2005/12/18 19:58:26 squareing Exp $ *}
 {strip}
-
 {if $packageMenu}
 	{bitmodule title="$moduleTitle" name="package_menu"}
 		<div class="menu">
@@ -22,28 +21,33 @@
 						setfoldericonstate('{$key}admenu');
 					</script>
 				{/if}
-				<div id="{$key}admenu" style="{$menu.style}">
+				<div id="{$key}admenu">
 					{include file=`$menu.tpl`}
 				</div>
+				<script type="text/javascript">
+					$({$key}admenu).style.display = '{$menu.display}';
+				</script>
 			</div>
 		{/foreach}
 		<div class="menu layoutmenu">
 			{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-				<a class="head" href="javascript:icntoggle('layoutadmenu');">{biticon ipackage=liberty iname="collapsed" id="layoutadmenuimg" iexplain="folder"}
+				<a class="head" href="javascript:icntoggle('layoutadmenu');">{biticon ipackage=liberty iname="collapsed" id="layoutadmenuimg" iexplain="folder"}&nbsp;
 			{else}
 				<a class="head" href="javascript:toggle('layoutadmenu');">
 			{/if}
-			&nbsp;{tr}Layout and Design{/tr}</a>
+			{tr}Layout and Design{/tr}</a>
 			{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 				<script type="text/javascript">
 					setfoldericonstate('layoutadmenu');
 				</script>
 			{/if}
-			<div id="layoutadmenu" style="{$layoutstyle}">
+			<div id="layoutadmenu">
 				{include file="bitpackage:kernel/menu_layout_admin.tpl"}
 			</div>
+			<script type="text/javascript">
+				$(layoutadmenu).style.display = '{$layoutdisplay}';
+			</script>
 		</div>
 	{/bitmodule}
 {/if}
-
 {/strip}

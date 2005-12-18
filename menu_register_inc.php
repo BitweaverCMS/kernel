@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.2.2.4 2005/09/08 12:57:28 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.2.2.5 2005/12/18 19:58:26 squareing Exp $
  * @package kernel
  * @subpackage functions
  *
@@ -25,12 +25,12 @@
 			$tpl = "bitpackage:$package/menu_".$package."_admin.tpl";
 			if( ($gBitSystem->isPackageActive( $package ) || $package == 'kernel') && @$gBitSmarty->template_exists( $tpl ) ) {
 				$adminMenu[$package]['tpl'] = $tpl;
-				$adminMenu[$package]['style'] = 'display:' . (empty($package) || (isset($_COOKIE[$package . 'admenu']) && ($_COOKIE[$package . 'admenu'] == 'o')) ? 'block;' : 'none;');
+				$adminMenu[$package]['display'] = (empty($package) || (isset($_COOKIE[$package . 'admenu']) && ($_COOKIE[$package . 'admenu'] == 'o')) ? 'block' : 'none');
 			}
 		}
 		array_multisort( $adminMenu );
 		$gBitSmarty->assign_by_ref( 'adminMenu', $adminMenu );
-		$layoutstyle = 'display:'.((isset($_COOKIE['layoutadmenu']) && ($_COOKIE['layoutadmenu'] == 'o')) ? 'block;' : 'none;');
-		$gBitSmarty->assign_by_ref( 'layoutstyle', $layoutstyle );
+		$layoutdisplay = ((isset($_COOKIE['layoutadmenu']) && ($_COOKIE['layoutadmenu'] == 'o')) ? 'block' : 'none');
+		$gBitSmarty->assign_by_ref( 'layoutdisplay', $layoutdisplay );
 	}
 ?>

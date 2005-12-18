@@ -12,7 +12,7 @@
 <script type="text/javascript">//<![CDATA[
 	{if $gBitSystem->isFeatureActive( 'rememberme' )}
 		var bitCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
-		var bitCookieDomain = ".{$gBitSystem->mPrefs.cookie_domain}";
+		var bitCookieDomain = "{$gBitSystem->mPrefs.cookie_domain|default:"`$smarty.server.HTTP_HOST`"}";
 	{else}
 		var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";
 		var bitCookieDomain = "";
@@ -21,7 +21,10 @@
 	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 //]]></script>
 <script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/bitweaver.js"></script>
-<script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/ajax.js"></script>
+{if $loadAjax}
+	<script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/prototype.js"></script>
+	<script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/ajax.js"></script>
+{/if}
 {strip}
 	{include file="bitpackage:kernel/bidi.tpl"}
 

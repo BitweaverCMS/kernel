@@ -54,7 +54,7 @@
 <td>{$channels[user].cookie_id}</td>
 <td>{$channels[user].cookie}</td>
 <td align="right">
-   <a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_cookies.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].cookie_id}" onclick="return confirmTheLink(this,'{tr}Are you sure you want to delete this cookie?{/tr}')" title="{tr}Delete this cookie{/tr}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
+   <a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_cookies.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].cookie_id}" onclick="return confirm('{tr}Are you sure you want to delete this cookie?{/tr}')" title="{tr}Delete this cookie{/tr}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
    <a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_cookies.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;cookie_id={$channels[user].cookie_id}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
 </td>
 </tr>

@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.8 2005/11/22 07:26:47 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.9 2005/12/18 22:29:51 squareing Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -1081,8 +1081,10 @@ class BitDate {
 					}
 				}
 			}
+			return $ret;
+		} else {
+			return NULL;
 		}
-		return $ret;
 	}
 
 	/**

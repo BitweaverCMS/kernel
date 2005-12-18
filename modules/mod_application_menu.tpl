@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.4 2005/08/07 17:38:45 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.5 2005/12/18 22:29:51 squareing Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -35,9 +35,12 @@
 							</script>
 						{/if}
 					{/if}
-					<div id="{$key}menu" style="{$menu.style}">
+					<div id="{$key}menu">
 						{include file=$menu.template}
 					</div>
+					<script type="text/javascript">
+						$({$key}menu).style.display = '{$menu.display}';
+					</script>
 				{/if}
 			</li>
 		{/if}
@@ -64,7 +67,7 @@
 					<a class="head" href="javascript:toggle('usrmenu');">
 				{/if}
 				{tr}User Menu{/tr}</a>
-				<div id="usrmenu" style="{$usrmenu.style}">
+				<div id="usrmenu">
 					{* Show user menu contents only if there is something to display *}
 					{if count($usr_user_menus) gt 0}
 						<ul>
@@ -74,6 +77,9 @@
 						</ul>
 					{/if}
 				</div>
+				<script type="text/javascript">
+					$(usrmenu).style.display = '{$usrmenu.display}';
+				</script>
 			{/if}
 		</li>
 	{/if}

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.3 2005/10/12 15:13:51 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.4 2005/12/18 22:29:52 squareing Exp $ *}
 {strip}
 <div class="module box {$module_name|replace:"_":"-"}">
 	{if $module_title}
@@ -11,7 +11,7 @@
 						{biticon ipackage=liberty iname="move_down" iexplain="down"}</a>
 					<a title="{tr}Move module to opposite side{/tr}" href="{$smarty.const.KERNEL_PKG_URL}module_controls_inc.php?fMove={$colkey}&fPackage={$module_layout}&fModule={$module_id}">
 						{biticon ipackage=liberty iname="move_left_right" iexplain="move left right"}</a>
-					<a title="{tr}Unassign this module{/tr}" href="{$smarty.const.KERNEL_PKG_URL}module_controls_inc.php?fMove=unassign&fPackage={$module_layout}&fModule={$module_id}" onclick="return confirmTheLink(this,'{tr}Are you sure you want to unassign this module?{/tr}')">
+					<a title="{tr}Unassign this module{/tr}" href="{$smarty.const.KERNEL_PKG_URL}module_controls_inc.php?fMove=unassign&fPackage={$module_layout}&fModule={$module_id}" onclick="return confirm('{tr}Are you sure you want to unassign this module?{/tr}')">
 						{biticon ipackage=liberty iname="delete_small" iexplain="remove"}</a>
 				</div>
 			{/if}

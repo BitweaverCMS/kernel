@@ -118,7 +118,7 @@
 		{section name=ix loop=$items[user].sections}
 			{$items[user].sections[ix].section}{if not $smarty.section.ix.last},{/if}
 		{/section}</td><td>
-&nbsp;&nbsp;<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;find={$find}&amp;remove={$items[user].ban_id}" onclick="return confirmTheLink(this,'{tr}Are you sure you want to delete this rule?{/tr}')" title="Delete this rule">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>&nbsp;&nbsp;
+&nbsp;&nbsp;<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;find={$find}&amp;remove={$items[user].ban_id}" onclick="return confirm('{tr}Are you sure you want to delete this rule?{/tr}')" title="Delete this rule">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>&nbsp;&nbsp;
 </td></tr>
 {sectionelse}
 	<tr class="norecords"><td colspan="5">{tr}No records found{/tr}</td></tr>

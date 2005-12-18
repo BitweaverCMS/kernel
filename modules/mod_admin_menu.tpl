@@ -13,9 +13,12 @@
 					setfoldericonstate('{$key}admenu');
 				</script>
 			{/if}
-			<div id="{$key}admenu" style="{$menu.style}">
+			<div id="{$key}admenu">
 				{include file=`$menu.tpl`}
 			</div>
+			<script type="text/javascript">
+				$({$key}admenu).style.display = '{$menu.display}';
+			</script>
 		</div>
 	{/foreach}
 	<div class="admenu {$key}menu">
@@ -30,9 +33,12 @@
 				setfoldericonstate('layoutadmenu');
 			</script>
 		{/if}
-		<div id="layoutadmenu" style="{$layoutstyle}">
+		<div id="layoutadmenu">
 			{include file="bitpackage:kernel/menu_layout_admin.tpl"}
 		</div>
+		<script type="text/javascript">
+			$(layoutadmenu).style.display = '{$layoutdisplay}';
+		</script>
 	</div>
 {/bitmodule}
 {/strip}

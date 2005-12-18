@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.16 2005/11/22 07:26:47 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.17 2005/12/18 22:29:51 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -444,6 +444,28 @@ class BitDb
 		$this->queryComplete();
 		return $result;
 	}
+	/** Returns an associative array for the given query.
+	* See AdoDB GetAssoc() function for more detail.
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pValues an array of values used in a parameterised query
+	* @param pForceArray if set to true, when an array is created for each value
+	* @param pFirst2Cols if set to true, only returns the first two columns
+	* @return the associative array, or false if an error occurs
+	*/
+	function getArray( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT )
+	{
+		if( empty( $this->mDb ) ) {
+			return FALSE;
+		}
+		$this->queryStart();
+		$this->convertQuery($pQuery);
+		$execFunction = ( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ? 'GetArray' : 'CacheGetArray' );
+		$result = $this->mDb->GetArray( $pQuery, $pValues, $pForceArray, $pFirst2Cols );
+		$this->queryComplete();
+		return $result;
+	}
+
 	/** Returns an associative array for the given query.
 	* See AdoDB GetAssoc() function for more detail.
 	* @param pQuery the SQL query. Use backticks (`) to quote all table

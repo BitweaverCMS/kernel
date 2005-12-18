@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.9 2005/12/05 23:52:59 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.10 2005/12/18 22:29:51 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -166,6 +166,15 @@ class BitBase
 //		$gBitSmarty->display( 'bitpackage:'.$pPackage.$pTemplate );
 	}
     // }}}
+
+    /**
+    * Returns entry from the mInfo hash if field exists
+    * @param pFieldName the instance of the database mechanism
+    **/
+    function getField( $pFieldName ) {
+    	return( !empty( $this->mInfo[$pFieldName] ) ? $this->mInfo[$pFieldName] : NULL );
+    }
+
 
 
 	function getPreference($pName, $pDefault = '') {
@@ -333,6 +342,26 @@ function xmlentities($string, $quote_style=ENT_QUOTES)
    }
    // after the initial translation, _do_ map standalone '&' into '&#38;'
    return preg_replace("/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,5};)/","&#38;" , strtr($string, $trans));
+}
+
+function array_diff_keys()
+{
+   $args = func_get_args();
+
+   $res = $args[0];
+   if(!is_array($res)) {
+       return array();
+   }
+
+   for($i=1;$i<count($args);$i++) {
+       if(!is_array($args[$i])) {
+           continue;
+       }
+       foreach ($args[$i] as $key => $data) {
+           unset($res[$key]);
+       }
+   }
+   return $res;
 }
 
 function trim_array( &$pArray ) {

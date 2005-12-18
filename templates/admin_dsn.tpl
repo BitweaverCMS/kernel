@@ -30,7 +30,7 @@
 <td>{$channels[user].name}</td>
 <td>{$channels[user].dsn}</td>
 <td align="right">
-   <a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_dsn.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].dsn_id}" onclick="return confirmTheLink(this,'{tr}Are you sure you want to delete this dsn?{/tr}')" title="Delete this DSN">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
+   <a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_dsn.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$channels[user].dsn_id}" onclick="return confirm('{tr}Are you sure you want to delete this dsn?{/tr}')" title="Delete this DSN">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
    <a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_dsn.php?offset={$offset}&amp;sort_mode={$sort_mode}&amp;dsn_id={$channels[user].dsn_id}">{biticon ipackage=liberty iname="edit" iexplain="edit"}</a>
 </td>
 </tr>

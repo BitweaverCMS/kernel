@@ -121,7 +121,7 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		}
 	}
 
-	$ignore = array( 'isort', 'ianchor', 'isort_mode', 'iorder', 'ititle', 'idefault', 'ifile', 'ipackage', 'itype', 'iurl', 'ionclick', 'ibiticon' );
+	$ignore = array( 'isort', 'ianchor', 'isort_mode', 'iorder', 'ititle', 'idefault', 'ifile', 'ipackage', 'itype', 'iurl', 'ionclick', 'ibiticon', 'iforce' );
 	// append any other paramters that were passed in
 	foreach( $hash as $key => $val ) {
 		if( !empty( $val ) && !in_array( $key, $ignore ) ) {

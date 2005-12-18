@@ -12,7 +12,7 @@
 <script type="text/javascript">//<![CDATA[
 	{if $gBitSystem->isFeatureActive( 'rememberme' )}
 		var bitCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
-		var bitCookieDomain = ".{$gBitSystem->mPrefs.cookie_domain}";
+		var bitCookieDomain = "{$gBitSystem->mPrefs.cookie_domain|default:"`$smarty.server.HTTP_HOST`"}";
 	{else}
 		var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";
 		var bitCookieDomain = "";

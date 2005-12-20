@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.66 2005/12/05 20:38:42 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.67 2005/12/20 18:55:35 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -182,7 +182,7 @@ class BitSystem extends BitBase {
 		// store the pref if we have a value _AND_ it is different from the default
 		if( ( empty( $this->mPrefs[$name] ) || ( $this->mPrefs[$name] != $value ) ) ) {
 			// store the preference in multisites, if used
-			if( !empty( $gMultisites->mMultisiteId ) && isset( $gMultisites->mPrefs[$name] ) ) {
+			if( @$this->verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mPrefs[$name] ) ) {
 				$query = "UPDATE `".BIT_DB_PREFIX."tiki_multisite_preferences` SET `value`=? WHERE `multisite_id`=? AND `name`=?";
 				$result = $this->mDb->query( $query, array( empty( $value ) ? '' : $value, $gMultisites->mMultisiteId, $name ) );
 			} else {
@@ -350,7 +350,7 @@ class BitSystem extends BitBase {
 //		$gBitSmarty->assign('slide_style', $this->getStyleCss("slide_style"));
 
 		$customHome = NULL;
-		if( !empty( $gQueryUser ) && $gQueryUser->canCustomizeLayout() && !empty( $gQueryUserId ) ) {
+		if( !empty( $gQueryUser ) && $gQueryUser->canCustomizeLayout() && @$this->verifyId( $gQueryUserId ) ) {
 			$customHome = $gQueryUserId;
 		} elseif( $this->getPreference( 'feature_user_layout' ) == 'y' ) {
 			$customHome = $gBitUser->mUsername;
@@ -1006,12 +1006,12 @@ asort( $this->mAppMenu );
 		$bitIndex = $this->getPreference( "bitIndex" );
 		if ( $bitIndex == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
-			if( !empty( $gBitUser->mInfo['default_group_id'] ) && ($group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ) ) ) {
-			} elseif( $this->getPreference( 'default_home_group' ) && ($group_home = $gBitUser->getGroupHome( $this->getPreference( 'default_home_group' ) ) ) ) {
+			if( @$this->verifyId( $gBitUser->mInfo['default_group_id'] ) && ( $group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ) ) ) {
+			} elseif( $this->getPreference( 'default_home_group' ) && ( $group_home = $gBitUser->getGroupHome( $this->getPreference( 'default_home_group' ) ) ) ) {
 			}
 
 			if( !empty( $group_home ) ) {
-				if( is_numeric( $group_home ) ) {
+				if( $this->verifyId( $group_home ) ) {
 					$url = BIT_ROOT_URL."index.php".( !empty( $group_home ) ? "?content_id=".$group_home : "" );
 				} elseif( strpos( $group_home, '/' ) === FALSE ) {
 					$url = BitPage::getDisplayUrl( !empty( $group_home ) ? "?page=".$group_home : "" );
@@ -1279,8 +1279,8 @@ asort( $this->mAppMenu );
 		$ret = array( 'l' => NULL, 'c' => NULL, 'r' => NULL );
 		$layoutUserId = ROOT_USER_ID;
 
-		if( isset($pUserMixed) ) {
-			if (is_numeric($pUserMixed)) {
+		if( !empty($pUserMixed) ) {
+			if( $this->verifyId( $pUserMixed ) ) {
 				$whereClause = " WHERE tl.`user_id`=?";
 			} else {
 				$whereClause = ", `" . BIT_DB_PREFIX . "users_users` uu WHERE tl.`user_id`=uu.`user_id` AND uu.`login`=?";
@@ -1349,7 +1349,7 @@ asort( $this->mAppMenu );
 									}
 								}
 
-								if( !empty( $groupId ) ) {
+								if( @$this->verifyId( $groupId ) ) {
 									$row["module_groups"][] = $groupId;
 								}
 							}

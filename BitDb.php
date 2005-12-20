@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.31 2005/12/11 08:53:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.32 2005/12/20 13:50:10 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -716,6 +716,28 @@ class BitDb
 		return $ret;
 	}
 
+	/** Return the sql to lock selected rows for updating.
+	* ADODB has no native support for this, see http://phplens.com/lens/lensforum/msgs.php?id=13661&x=1
+	* @param pColumn name of an integer, or long integer column
+	* @return the timestamp as a quoted string.
+	* @todo could be used to later convert all int timestamps into db
+	* timestamps. Currently not used anywhere.
+	*/
+	function SQLForUpdate() {
+		global $gBitDbType;
+		switch( $gBitDbType ) {
+			case "firebird":
+			case "pgsql":
+			case "postgres":
+			case "postgres7":
+				$ret = ' FOR UPDATE ';
+				break;
+			default:
+				$ret = '';
+		}
+		return $ret;
+	}
+
 	/**
 	 * Format date column in sql string given an input format that understands Y M D
 	 */
@@ -789,6 +811,16 @@ class BitDb
 			sortMode requested is 'random' it will insert the properly named
 			db-specific function to achieve this. - ATS
 		*/
+
+		// parse $sort_mode for evil stuff
+		$pSortMode = preg_replace('/[^.A-Za-z_,]/', '', $pSortMode);
+		$sep = strrpos($pSortMode, '_');
+		// force ending to either _asc or _desc
+		if ( substr($pSortMode, $sep)!=='_asc' ) {
+			$pSortMode = substr($pSortMode, 0, $sep) . '_desc';
+		}
+
+
 		$pSortMode = preg_replace( '/lastModif/', 'last_modified', $pSortMode );
 		$pSortMode = preg_replace( '/pageName/', 'title', $pSortMode );
 		$pSortMode = preg_replace( '/^user_/', 'login_', $pSortMode );

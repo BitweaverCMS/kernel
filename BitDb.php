@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.33 2005/12/20 15:19:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.4.2.34 2005/12/20 20:09:51 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -821,7 +821,7 @@ class BitDb
 			if ( $order !='_asc' && $order != '_desc' ) {
 				$pSortMode = substr($pSortMode, 0, $sep) . '_desc';
 			}
-		} else {
+		} elseif( $pSortMode != 'random' ) {
 			$pSortMode .= '_desc';
 		}
 

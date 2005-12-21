@@ -8,7 +8,7 @@
 <div class="admin {$package}">
 	{if $package}
 		<div class="header">
-			<h1>{tr}Configure {$page|capitalize}{/tr}</h1>
+			<h1>{tr}Configure {$pageName|default:$page|capitalize}{/tr}</h1>
 		</div>
 	{else}
 		<div class="header">

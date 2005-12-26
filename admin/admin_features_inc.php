@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.6 2005/12/05 23:53:00 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.7 2005/12/26 12:24:37 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -19,7 +19,7 @@ $formFeaturesBit = array(
 	'feature_pretty_urls_extended' => array(
 		'label' => 'Use Extended Pretty URLs',
 		'note' => 'In addition to making the URL easier to read and remember it enhances search engine results. Using this feature requires Apache <a href="http://httpd.apache.org/docs-2.0/mod/mod_rewrite.html">mod_rewrite</a> support in the web server (usually installed by default), This extended version adds a /view tag to the URLs to make them unambigious for rewrites.  It will be necessary to modify the default .htaccess files when using this feature.',
-		'page' => 'PrettyUrlsExtended',
+		'page' => 'FeaturePrettyUrlsExtended',
 	),
 	'feature_autolinks' => array(
 		'label' => 'AutoLinks',

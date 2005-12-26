@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.4 2005/08/01 18:40:35 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.5 2005/12/26 12:24:37 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -11,8 +11,9 @@ require_once( '../../bit_setup_inc.php' );
 require_once( KERNEL_PKG_PATH.'admin_lib.php' );
 
 if( isset( $_REQUEST["page"] ) ) {
-	$gBitSystem->setBrowserTitle( $_REQUEST["page"].' settings' );
-	$gBitSmarty->assign( 'page',$_REQUEST["page"] );
+	$page = $_REQUEST["page"];
+	$pageName = preg_replace('/_/', ' ', $page);
+	$gBitSystem->setBrowserTitle( "$pageName Settings" );
 } else {
 	$gBitSystem->setBrowserTitle( 'Administration' );
 }
@@ -35,16 +36,19 @@ $gBitSmarty->assign('home_gallery', $home_gallery);
 if( isset( $page ) ) {
 	$gBitSmarty->assign('page', $page);
 }
+if( isset( $pageName ) ) {
+	$gBitSmarty->assign( 'pageName', $pageName );
+}
 
 $home_file_gallery = $gBitSystem->getPreference("home_file_gallery", 0);
 $gBitSmarty->assign('home_file_gallery', $home_file_gallery);
 
-if (isset($_REQUEST["page"])) {
-	if( preg_match('/\.php/', $_REQUEST["page"] ) ) {
-		$adminPage = $_REQUEST["page"];
+if (isset($page)) {
+	if( preg_match('/\.php/', $page ) ) {
+		$adminPage = $page;
 	} else {
-		$file = $_REQUEST["page"]; // Default file name
-		switch( $_REQUEST["page"] ) {
+		$file = $page; // Default file name
+		switch( $page ) {
 			// handle a few special cases for page requests
 			case 'features':
 			case 'packages':
@@ -62,7 +66,7 @@ if (isset($_REQUEST["page"])) {
 				$package = 'users';
 				break;
 			default:
-				$package =$_REQUEST["page"];
+				$package =$page;
 				break;
 		}
 

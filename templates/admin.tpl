@@ -8,7 +8,7 @@
 <div class="admin {$package}">
 	{if $package}
 		<div class="header">
-			<h1>{tr}Configure {$page|capitalize}{/tr}</h1>
+			<h1>{tr}Configure {$pageName|default:$page|capitalize}{/tr}</h1>
 		</div>
 	{else}
 		<div class="header">
@@ -47,7 +47,7 @@
 							{formlabel label="Upgrade"}
 							{forminput class=warning}
 								<strong>bitweaver {$version_info.upgrade}</strong>
-								{formhelp page="Release_`$version_info.page`}
+								{formhelp page="ReleaseOneChangelog}
 							{/forminput}
 						</div>
 					{elseif $version_info.compare gt 0}
@@ -55,7 +55,7 @@
 							{formlabel label="Latest Version"}
 							{forminput}
 								<strong>bitweaver {$version_info.upgrade}</strong>
-								{formhelp page="Release_`$version_info.page`}
+								{formhelp page="ReleaseOneChangelog}
 							{/forminput}
 						</div>
 					{/if}
@@ -65,7 +65,7 @@
 							{formlabel label="Latest Release"}
 							{forminput class=warning}
 								<strong>bitweaver {$version_info.release}</strong>
-								{formhelp page="Release_`$version_info.page`}
+								{formhelp page="ReleaseOneChangelog}
 							{/forminput}
 						</div>
 					{/if}

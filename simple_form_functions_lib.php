@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.5 2005/12/18 22:29:51 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.6 2005/12/26 12:24:37 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -35,10 +35,10 @@ function toggle_preference( $pName, $pValue, $pPackageName=NULL ) {
 /**
  * simple_set_value
  */
-function simple_set_value($feature) {
+function simple_set_value($feature, $package = NULL) {
 	global $_REQUEST, $gBitSystem, $gBitSmarty;
 	if (isset($_REQUEST[$feature])) {
-		$gBitSystem->storePreference($feature, $_REQUEST[$feature]);
+		$gBitSystem->storePreference($feature, $_REQUEST[$feature], $package);
 		$gBitSmarty->assign($feature, $_REQUEST[$feature]);
 	}
 }
@@ -46,10 +46,10 @@ function simple_set_value($feature) {
 /**
  * simple_set_int
  */
-function simple_set_int($feature) {
+function simple_set_int($feature, $package = NULL) {
 	global $_REQUEST, $gBitSystem, $gBitSmarty;
 	if (isset($_REQUEST[$feature]) && is_numeric($_REQUEST[$feature])) {
-		$gBitSystem->storePreference($feature, $_REQUEST[$feature]);
+		$gBitSystem->storePreference($feature, $_REQUEST[$feature], $package);
 		$gBitSmarty->assign($feature, $_REQUEST[$feature]);
 	}
 }

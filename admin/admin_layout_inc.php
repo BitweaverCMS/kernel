@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.4 2005/10/12 15:13:51 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.5 2005/12/26 12:24:37 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -158,17 +158,22 @@ foreach( $gBitSystem->mPackages as $pkg ) {
 //****** Setup assign modules panel
 $module_groups = array();
 
-$all_modules = $modlib->getAllModules();
-ksort( $all_modules );
-$gBitSmarty->assign_by_ref( 'all_modules', $all_modules );
+$allModules = $modlib->getAllModules();
+ksort( $allModules );
+$gBitSmarty->assign_by_ref( 'allModules', $allModules );
 
 $allModulesHelp = $modlib->getAllModules( 'modules', 'help_mod_' );
 ksort( $allModulesHelp );
 $gBitSmarty->assign_by_ref( 'allModulesHelp', $allModulesHelp );
 
-$all_centers = $modlib->getAllModules( 'templates', 'center_' );
-ksort( $all_centers );
-$gBitSmarty->assign_by_ref( 'all_centers', $all_centers );
+$allCenters = $modlib->getAllModules( 'templates', 'center_' );
+ksort( $allCenters );
+$sections['kernel'] = tra( "Site Default" );
+foreach( array_keys( $allCenters ) as $pkg ) {
+	$sections[strtolower( $pkg )] = ucfirst( $pkg );
+}
+$gBitSmarty->assign_by_ref( 'allCenters', $allCenters );
+$gBitSmarty->assign_by_ref( 'sections', $sections );
 
 $orders = array();
 

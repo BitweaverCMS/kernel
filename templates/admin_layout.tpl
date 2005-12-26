@@ -61,21 +61,18 @@
 	<div class="row">
 		{formlabel label="Create Customized layout for" for="fPackage"}
 		{forminput}
-			<select name="fPackage" id="fPackage">
-				<option value="home" {if $fPackage == 'home'}selected="selected"{/if}>{tr}User Homepages{/tr}</option>
-				{foreach key=name item=package from=$gBitSystem->mPackages}
-					{if $package.installed and ($package.activatable or $package.tables)}
-						<option value="{$name}" {if $fPackage == $name}selected="selected"{/if}>{if $name eq 'kernel'}{tr}Site Default{/tr}{else}{tr}{$name|capitalize}{/tr}{/if}</option>
-					{/if}
-				{/foreach}
-			</select>
-			{formhelp note="Apply this setting before you customise and assign modules below."}
+			{html_options name="fPackage" id="fPackage" values=$sections options=$sections selected=`$fPackage` onchange="this.form.submit();"}
+			<noscript>
+				{formhelp note="Apply this setting before you customise and assign modules below."}
+			</noscript>
 		{/forminput}
 	</div>
 
-	<div class="row submit">
-		<input type="submit" name="fSubmitCustomize" value="{tr}Customize{/tr}" />
-	</div>
+	<noscript>
+		<div class="row submit">
+			<input type="submit" name="fSubmitCustomize" value="{tr}Customize{/tr}" />
+		</div>
+	</noscript>
 {/form}
 
 {jstabs}
@@ -86,7 +83,7 @@
 			<div class="row">
 				{formlabel label="Package"}
 				{forminput}
-					{tr}{if !$fPackage || $fPackage eq 'kernel'}Site Default{else}{$fPackage}{/if}{/tr}
+					<span class="highlight">{tr}{if !$fPackage || $fPackage eq 'kernel'}Site Default{else}{$fPackage|capitalize}{/if}{/tr}</span>
 					{formhelp note="This is the package you are currently editing."}
 				{/forminput}
 			</div>
@@ -97,7 +94,7 @@
 				<div class="row">
 					{formlabel label="Module" for="module_rsrc"}
 					{forminput}
-						{html_options name="fAssign[module_rsrc]" id="module_rsrc" options=$all_modules selected=`$fAssign.name`}
+						{html_options name="fAssign[module_rsrc]" id="module_rsrc" options=$allModules selected=`$fAssign.name`}
 						{formhelp note="Extended help can be found at the end of this page."}
 					{/forminput}
 				</div>
@@ -192,7 +189,7 @@
 			<div class="row">
 				{formlabel label="Package"}
 				{forminput}
-					{tr}{if !$fPackage || $fPackage eq 'kernel'}Site Default{else}{$fPackage}{/if}{/tr}
+					<span class="highlight">{tr}{if !$fPackage || $fPackage eq 'kernel'}Site Default{else}{$fPackage|capitalize}{/if}{/tr}</span>
 					{formhelp note="This is the package you are currently editing."}
 				{/forminput}
 			</div>
@@ -203,7 +200,7 @@
 					{if $fEdit && $fAssign.name}
 						<input type="hidden" name="fAssign[module]" value="{$fAssign.module}" id="module" />{$fAssign.module}
 					{else}
-						{html_options name="fAssign[module_rsrc]" id="module" values=$all_centers options=$all_centers selected=`$mod`}
+						{html_options name="fAssign[module_rsrc]" id="module" values=$allCenters options=$allCenters selected=`$mod`}
 					{/if}
 					{formhelp note="Pick the center bit you want to display when accessing this package."}
 				{/forminput}

@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.10 2005/12/18 22:29:51 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.11 2005/12/26 12:24:36 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -257,20 +257,20 @@ function tra($content) {
 	return( $gBitLanguage->translate( $content ) );
 }
 
-
-function unlink_r($path,$followLinks=false) {
-
-   $dir = opendir($path) ;
-   while ( $entry = readdir($dir) ) {
-
-       if ( is_file( "$path/$entry" ) || ((!$followLinks) && is_link("$path/$entry")) ) {
-			unlink( "$path/$entry" );
-       } elseif ( is_dir( "$path/$entry" ) && $entry!='.' && $entry!='..' ) {
-           unlink_r( "$path/$entry" ) ;
-       }
-   }
-   closedir($dir) ;
-   return rmdir($path);
+// recursively remove files and directories
+function unlink_r( $path,$followLinks = FALSE ) {
+	if( is_dir( $path ) ) {
+		$dir = opendir( $path ) ;
+		while( $entry = readdir( $dir ) ) {
+			if( is_file( "$path/$entry" ) || ( !$followLinks && is_link( "$path/$entry" ) ) ) {
+				unlink( "$path/$entry" );
+			} elseif( is_dir( "$path/$entry" ) && $entry != '.' && $entry != '..' ) {
+				unlink_r( "$path/$entry" ) ;
+			}
+		}
+		closedir( $dir ) ;
+		return rmdir( $path );
+	}
 }
 
 function tp_http_request($url, $reqmethod = NULL ) {
@@ -316,7 +316,7 @@ function tp_http_request($url, $reqmethod = NULL ) {
 // this function has a whopper of a RegEx.
 // I nabbed it from http://www.phpbuilder.com/annotate/message.php3?id=1000234 - XOXO spiderr
 function parse_xml_attributes($str) {
-    $parameters = array('', '');
+	$parameters = array('', '');
 	$regexp_str = "/([A-Za-z0-9_-]+)(?:\\s*=\\s*(?:(\"|\')((?:[\\\\].|[^\\\\]?)*?)(?:\\2)|([^=\\s]*)))?/";
 	preg_match_all($regexp_str,$str,$matches,PREG_SET_ORDER);
 	while (list($key,$match) = each($matches)) {

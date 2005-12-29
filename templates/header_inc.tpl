@@ -20,9 +20,15 @@
 	var bitIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons/";
 	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 //]]></script>
+{* the order of the js files is crucial *}
 <script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/bitweaver.js"></script>
 {if $loadAjax}
-	<script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/prototype.js"></script>
+	{if $jsDebug}
+		<script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/prototype_1.4.js"></script>
+		<script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/debugger.js"></script>
+	{else}
+		<script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/prototype.js"></script>
+	{/if}
 	<script type="text/javascript" src="{$smarty.const.THEMES_PKG_URL}js/ajax.js"></script>
 {/if}
 {strip}

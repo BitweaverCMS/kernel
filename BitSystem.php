@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.21 2005/12/26 12:24:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.22 2005/12/29 18:27:22 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -403,21 +403,23 @@ class BitSystem extends BitBase {
 	*/
 	function getTplIncludeFiles( $pFilename ) {
 		// these package templates will be included last
+		$prepend = array( 'kernel' );
 		$append = array( 'themes' );
-		$ret = array();
-		$app = array();
+		$anti = $mid = $post = array();
 		foreach( $this->mPackages as $package => $info ) {
 			$file = $info['path'].'templates/'.$pFilename;
 			if( is_readable( $file ) ) {
-				if( in_array( $package, $append ) ) {
-					$app[] = $file;
+				if( in_array( $package, $prepend ) ) {
+					$anti[] = $file;
+				} elseif( in_array( $package, $append ) ) {
+					$post[] = $file;
 				} else {
-					$ret[] = $file;
+					$mid[] = $file;
 				}
 			}
 		}
-		$ret = array_merge( $ret, $app );
-		return !empty( $ret ) ? $ret : array();
+		$ret = array_merge( $anti, $mid, $post );
+		return $ret;
 	}
 
 	// >>>

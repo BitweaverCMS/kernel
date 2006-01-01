@@ -26,8 +26,11 @@ function smarty_modifier_bit_date_format($string, $format = "%b %e, %Y", $defaul
 {
 	global $gBitSystem, $user;
 
-	if ( $gBitSystem->mServerTimestamp->get_display_offset()) $format = preg_replace("/ ?%Z/","",$format);
-    else $format = preg_replace("/%Z/","UTC",$format);
+	if ( $gBitSystem->mServerTimestamp->get_display_offset()) {
+                $format = preg_replace("/ ?%Z/","",$format);
+        } else {
+                $format = preg_replace("/%Z/","UTC",$format);
+        }
 
 	$disptime = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC($string);
 	

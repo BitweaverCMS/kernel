@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.68 2005/12/28 08:39:44 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.69 2006/01/01 21:55:50 wolff_borg Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1756,7 +1756,7 @@ asort( $this->mAppMenu );
 	 * Retrieves the user's preferred offset for displaying dates.
 	 */
 	function get_display_offset($_user = false) {
-		return $this->mServerTimestamp->get_display_offset();
+		return $this->mServerTimestamp->get_display_offset($_user);
 	}
 
 	/**

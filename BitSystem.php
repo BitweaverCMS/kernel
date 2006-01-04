@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.69 2006/01/01 21:55:50 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.70 2006/01/04 12:11:30 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -819,6 +819,8 @@ class BitSystem extends BitBase {
 
 	function registerUserPermissions( $packagedir, $userpermissions ) {
 		foreach( $userpermissions as $perm ) {
+			$this->mPermHash[$perm[0]] = $perm;
+			$this->mPermHash[$perm[0]]['sql'] = "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`, `perm_desc`, `level`, `package`) VALUES ('$perm[0]', '$perm[1]', '$perm[2]', '$perm[3]')";
 			$this->registerSchemaDefault( $packagedir,
 			"INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`, `perm_desc`, `level`, `package`) VALUES ('$perm[0]', '$perm[1]', '$perm[2]', '$perm[3]')");
 		}

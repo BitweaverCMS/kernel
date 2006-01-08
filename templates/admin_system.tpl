@@ -9,7 +9,7 @@
 	<div class="body">
 		<table class="data">
 			<tr>
-				<th colspan="4">{tr}Exterminator{/tr}</th>
+				<th colspan="4">{tr}Exterminator{/tr} - <a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=all">{tr}Empty All{/tr}</a></th>
 			</tr>
 			<tr class="odd">
 				<td style="width:55%;"><strong>{$smarty.const.TEMP_PKG_PATH}lang/</strong></td>
@@ -28,6 +28,12 @@
 				<td style="text-align:right;">{tr}{$du.modules.cant} files{/tr}</td>
 				<td style="text-align:right;">{$du.modules.total|kbsize}</td>
 				<td style="text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=modules_cache">{tr}Empty{/tr}</a></td>
+			</tr>
+			<tr class="even">
+				<td><strong>{$smarty.const.TEMP_PKG_PATH}cache/</strong></td>
+				<td style="text-align:right;">{tr}{$du.cache.cant} files{/tr}</td>
+				<td style="text-align:right;">{$du.cache.total|kbsize}</td>
+				<td style="text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=cache">{tr}Empty{/tr}</a></td>
 			</tr>
 		</table>
 

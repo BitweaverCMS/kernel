@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.70 2006/01/04 12:11:30 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.71 2006/01/09 04:40:08 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -314,6 +314,7 @@ class BitSystem extends BitBase {
 			$this->setBrowserTitle( !empty( $pBrowserTitle ) ? $pBrowserTitle : tra( 'Error' ) );
 			$pMid = 'bitpackage:kernel/error.tpl';
 		}
+
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
 //		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
@@ -662,7 +663,7 @@ class BitSystem extends BitBase {
 		// Define <PACKAGE>_PKG_URI
 		$pkgDefine = $pkgName.'_PKG_URI';
 		if (!defined($pkgDefine) && defined( 'BIT_BASE_URI' ) ) {
-			define($pkgDefine, BIT_BASE_URI . basename( $pPackagePath ) . '/');
+			define($pkgDefine, BIT_BASE_URI . '/' . basename( $pPackagePath ) . '/');
 		}
 
 		// Define <PACKAGE>_PKG_NAME

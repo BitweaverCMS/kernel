@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.20 2005/12/22 20:35:34 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.21 2006/01/09 04:40:08 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -171,8 +171,8 @@ class BitBase
     * Returns entry from the mInfo hash if field exists
     * @param pFieldName the instance of the database mechanism
     **/
-    function getField( $pFieldName ) {
-    	return( !empty( $this->mInfo[$pFieldName] ) ? $this->mInfo[$pFieldName] : NULL );
+    function getField( $pFieldName, $pDefault = NULL ) {
+    	return( !empty( $this->mInfo[$pFieldName] ) ? $this->mInfo[$pFieldName] : $pDefault );
     }
 
 

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.71 2006/01/09 04:40:08 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.72 2006/01/10 14:56:19 damosoft Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1523,8 +1523,10 @@ asort( $this->mAppMenu );
 
 		if (ini_get('session.save_handler') == 'files') {
 			$save_path = ini_get('session.save_path');
-
-			if (!@is_dir($save_path)) {
+			
+			if (empty($save_path)) {
+				$errors .= "The session.save_path variable is not setup correctly (its empty).\n";
+			} else if (!@is_dir($save_path)) {
 				$errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
 			} else if (!bw_is_writeable($save_path)) {
 				$errors .= "The directory '$save_path' is not writeable.\n";

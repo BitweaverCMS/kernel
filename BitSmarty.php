@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.8 2005/10/12 15:13:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.9 2006/01/10 21:12:46 squareing Exp $
  */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
@@ -67,7 +67,7 @@ class BitSmarty extends Smarty
 
 	function _smarty_include ($pParams)
 	{
-		$this->includeSiblingPhp($pParams['smarty_include_tpl_file']);
+		$this->includeSiblingPhp( $pParams['smarty_include_tpl_file'] );
 		return parent::_smarty_include ($pParams);
 	}
 
@@ -127,6 +127,16 @@ class BitSmarty extends Smarty
 					if (file_exists($modPhpFile))
 					{
 						global $gBitSmarty, $gBitSystem, $gBitUser, $user, $smarty, $gQueryUserId, $module_rows, $module_params, $module_column;
+						// Module Params were passed in from the template, like kernel/dynamic.tpl
+						if( $moduleParams = $this->get_template_vars('moduleParams') ) {
+							if( strpos( trim( $moduleParams['params'] ), ' ' ) ) {
+								$module_params = parse_xml_attributes( $moduleParams['params'] );
+							} else {
+								parse_str( $moduleParams["params"], $module_params );
+							}
+							$module_title = ( isset( $moduleParams['title'] ) ? tra( $moduleParams['title'] ) : ( isset( $module_params['title'] ) ? $module_params['title'] : NULL ) );
+							$module_rows = $moduleParams['rows'];
+						}
 						include_once($modPhpFile);
 						$ret = true;
 					}

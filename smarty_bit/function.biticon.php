@@ -40,7 +40,6 @@ function get_first_match( $dir,$filename ) {
 */
 function output_icon( $params, $file ) {
 	global $gBitSystem;
-
 	$iexplain = isset( $params["iexplain"] ) ? tra( $params["iexplain"] ) : 'please set iexplain';
 
 	if( isset( $params["url"] ) ) {
@@ -65,6 +64,12 @@ function output_icon( $params, $file ) {
 
 			if( !isset( $params["class"] ) ) {
 				$outstr .= ' class="icon"';
+			}
+
+			// insert image width and height
+			list( $width, $height, $type, $attr ) = @getimagesize( BIT_ROOT_PATH.$file );
+			if( !empty( $width ) && !empty( $height ) ) {
+				$outstr .= ' width="'.$width.'" height="'.$height.'"';
 			}
 
 			$outstr .= " />";

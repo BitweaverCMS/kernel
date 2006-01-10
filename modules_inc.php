@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.5 2005/10/12 15:13:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.6 2006/01/10 21:12:46 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.5 2005/10/12 15:13:51 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.6 2006/01/10 21:12:46 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -81,7 +81,11 @@ if( $gBitSystem->mLayout && empty( $gHideModules ) ) {
 						}
 						global $module_rows, $module_params, $module_title;
 						$gBitSmarty->assign_by_ref( 'module_rows', $module_rows = $r["rows"] );
-						parse_str( $r["params"], $module_params );
+						if( strpos( trim( $r['params'] ), ' ' ) ) {
+							$module_params = parse_xml_attributes( $r['params'] );
+						} else {
+							parse_str( $r["params"], $module_params );
+						}
 						$module_title = ( isset( $r['title'] ) ? tra( $r['title'] ) : ( isset( $module_params['title'] ) ? $module_params['title'] : NULL ) );
 						$pattern[0] = "/.*\/mod_(.*)\.tpl/";
 						$replace[0] = "$1";

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.2 2005/08/01 18:40:34 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.3 2006/01/10 21:12:47 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -81,6 +81,9 @@ if (isset($_GET['do'])) {
 	if ($_GET['do'] == 'modules_cache' || $_GET['do'] == 'all') {
 		unlink_r(TEMP_PKG_PATH."modules/cache/$bitdomain");
 	}
+	if ($_GET['do'] == 'cache' || $_GET['do'] == 'all') {
+		unlink_r(TEMP_PKG_PATH."cache/$bitdomain");
+	}
 }
 
 if (isset($_GET['compiletemplates'])) {
@@ -92,8 +95,9 @@ $languages = $gBitLanguage->listLanguages();
 ksort($languages);
 
 $du['templates_c'] = du(TEMP_PKG_PATH.'templates_c');
-$du['modules'] = du(TEMP_PKG_PATH.'modules/cache');
 $du['lang'] = du(TEMP_PKG_PATH.'lang');
+$du['modules'] = du(TEMP_PKG_PATH.'modules/cache');
+$du['cache'] = du(TEMP_PKG_PATH.'cache');
 $gBitSmarty->assign('du', $du);
 
 $templates=array();

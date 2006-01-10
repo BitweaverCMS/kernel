@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.9 2005/12/18 22:29:51 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.10 2006/01/10 21:12:46 squareing Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -752,6 +752,14 @@ class BitDate {
 	function gmstrftime($fmt, $ts=false)
 	{
 		return strftime($fmt,$ts,true);
+	}
+
+	function strtotime($time, $now=NULL)
+	{
+		if($now == NULL) 
+			return strtotime($time);
+		else
+			return strtotime($time, $now);
 	}
 
 	// hack - convert to adodb_date

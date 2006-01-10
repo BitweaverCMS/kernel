@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.22 2005/12/29 18:27:22 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.23 2006/01/10 21:12:46 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -314,6 +314,7 @@ class BitSystem extends BitBase {
 			$this->setBrowserTitle( !empty( $pBrowserTitle ) ? $pBrowserTitle : tra( 'Error' ) );
 			$pMid = 'bitpackage:kernel/error.tpl';
 		}
+
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
 //		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
@@ -662,7 +663,7 @@ class BitSystem extends BitBase {
 		// Define <PACKAGE>_PKG_URI
 		$pkgDefine = $pkgName.'_PKG_URI';
 		if (!defined($pkgDefine) && defined( 'BIT_BASE_URI' ) ) {
-			define($pkgDefine, BIT_BASE_URI . basename( $pPackagePath ) . '/');
+			define($pkgDefine, BIT_BASE_URI . '/' . basename( $pPackagePath ) . '/');
 		}
 
 		// Define <PACKAGE>_PKG_NAME
@@ -819,6 +820,8 @@ class BitSystem extends BitBase {
 
 	function registerUserPermissions( $packagedir, $userpermissions ) {
 		foreach( $userpermissions as $perm ) {
+			$this->mPermHash[$perm[0]] = $perm;
+			$this->mPermHash[$perm[0]]['sql'] = "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`, `perm_desc`, `level`, `package`) VALUES ('$perm[0]', '$perm[1]', '$perm[2]', '$perm[3]')";
 			$this->registerSchemaDefault( $packagedir,
 			"INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`, `perm_desc`, `level`, `package`) VALUES ('$perm[0]', '$perm[1]', '$perm[2]', '$perm[3]')");
 		}
@@ -1520,8 +1523,10 @@ asort( $this->mAppMenu );
 
 		if (ini_get('session.save_handler') == 'files') {
 			$save_path = ini_get('session.save_path');
-
-			if (!@is_dir($save_path)) {
+			
+			if (empty($save_path)) {
+				$errors .= "The session.save_path variable is not setup correctly (its empty).\n";
+			} else if (!@is_dir($save_path)) {
 				$errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
 			} else if (!bw_is_writeable($save_path)) {
 				$errors .= "The directory '$save_path' is not writeable.\n";
@@ -1756,7 +1761,7 @@ asort( $this->mAppMenu );
 	 * Retrieves the user's preferred offset for displaying dates.
 	 */
 	function get_display_offset($_user = false) {
-		return $this->mServerTimestamp->get_display_offset();
+		return $this->mServerTimestamp->get_display_offset($_user);
 	}
 
 	/**

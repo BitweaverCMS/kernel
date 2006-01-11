@@ -34,7 +34,12 @@
 									{smartlink ititle="Down" ibiticon="liberty/move_down" iforce="icon" page=layout fMove=down fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									&nbsp;&nbsp;
 									{if $colkey ne 'center'}
-										{smartlink ititle="Move to Right" ibiticon="liberty/move_$colkey" iforce="icon" page=layout fMove=$colkey fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
+										{if $colkey == 'left'}
+											{assign var=dir value=right}
+										{elseif $colkey == 'right'}
+											{assign var=dir value=left}
+										{/if}
+										{smartlink ititle="Move to Right" ibiticon="liberty/move_$dir" iforce="icon" page=layout fMove=$colkey fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									{/if}
 									&nbsp;&nbsp;
 									{if $column[ix].type ne 'P'}

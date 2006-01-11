@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.18 2006/01/01 21:53:46 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.1.1.1.2.19 2006/01/11 18:46:29 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -690,7 +690,11 @@ class BitDate {
 			$year += $y;
 			$mon -= $y*12;
 		}
-
+		else if ( $mon <= 0 ) {
+			$mon += 12;
+			$year -= 1;
+		}
+		
 		$_day_power = 86400;
 		$_hour_power = 3600;
 		$_min_power = 60;

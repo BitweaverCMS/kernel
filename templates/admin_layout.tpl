@@ -66,7 +66,15 @@
 	<div class="row">
 		{formlabel label="Create Customized layout for" for="fPackage"}
 		{forminput}
-			{html_options name="fPackage" id="fPackage" values=$sections options=$sections selected=`$fPackage` onchange="this.form.submit();"}
+			<select name="fPackage" id="fPackage" onchange="this.form.submit();">
+					<option value="home" {if $fPackage == 'home'}selected="selected"{/if}>{tr}User Homepages{/tr}</option>
+					{foreach key=name item=package from=$gBitSystem->mPackages}
+							{if $package.installed and ($package.activatable or $package.tables)}
+									<option value="{$name}" {if $fPackage == $name}selected="selected"{/if}>{if $name eq 'kernel'}{tr}Site Default{/tr}{else}{tr}{$name|capitalize}{/tr}{/if}</option>
+							{/if}
+					{/foreach}
+			</select>
+
 			<noscript>
 				{formhelp note="Apply this setting before you customise and assign modules below."}
 			</noscript>

@@ -1,9 +1,9 @@
 {bitmodule title="$moduleTitle" name="bit_info"}
-	{assign var=version_info value=$gBitSystem->checkBitVersion()}
 	<ul>
 		<li>{tr}Powered By{/tr} <a href="http://bitweaver.org">bitweaver</a></li>
-		<li>{tr}Version{/tr}: <strong>{$version_info.local}</strong></li>
+		<li>{tr}Version{/tr}: <strong>{$smarty.const.BIT_MAJOR_VERSION}.{$smarty.const.BIT_MINOR_VERSION}.{$smarty.const.BIT_SUB_VERSION} {$smarty.const.BIT_LEVEL}</strong></li>
 		{if $gBitUser->isAdmin()}
+			{assign var=version_info value=$gBitSystem->checkBitVersion()}
 			<li>
 				{if $version_info.compare lt 0}
 					{tr}Upgrade to{/tr} <strong>{$version_info.upgrade}</strong>

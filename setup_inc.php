@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.38 2005/12/26 18:36:53 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.39 2006/01/14 09:14:46 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -81,14 +81,6 @@ $gBitSmarty->assign_by_ref( 'browserInfo', $gSniffer->_browser_info );
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 global $gBitLanguage;
 $gBitLanguage = new BitLanguage();
-
-// pass version information on to smarty
-$gBitSmarty->assign( 'bitMajorVersion',	BIT_MAJOR_VERSION );
-$gBitSmarty->assign( 'bitMinorVersion',	BIT_MINOR_VERSION  );
-$gBitSmarty->assign( 'bitSubVersion',	BIT_SUB_VERSION  );
-$gBitSmarty->assign( 'bitLevel',		BIT_LEVEL );
-
-$gBitSmarty->assign( 'PHP_SELF', $_SERVER['PHP_SELF'] );
 
 require_once(KERNEL_PKG_PATH . 'BitCache.php');
 global $gBitUser, $gTicket, $gBitSmarty, $userlib, $gBitDbType;

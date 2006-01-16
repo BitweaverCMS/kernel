@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.19 2006/01/15 07:59:06 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.20 2006/01/16 23:57:36 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -855,6 +855,8 @@ class BitDb
 					// Use of alias in order by is not supported because of optimizer processing
 					if ( $pSortMode == 'page_name_asc' ) $pSortMode = 'title_asc';
 					if ( $pSortMode == 'page_name_desc' ) $pSortMode = 'title_desc';
+					if ( $pSortMode == 'content_id_asc' ) $pSortMode = 'tc.content_id_asc';
+					if ( $pSortMode == 'content_id_desc' ) $pSortMode = 'tc.content_id_desc';
 					if ( $pSortMode == 'creator_user_asc' ) $pSortMode = 'uuc.login_asc';
 					if ( $pSortMode == 'creator_user_desc' ) $pSortMode = 'uuc.login_desc';
 					if ( $pSortMode == 'creator_real_name_asc' ) $pSortMode = 'uuc.real_name_asc';

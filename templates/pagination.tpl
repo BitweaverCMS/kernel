@@ -49,7 +49,7 @@
 
 				<span class="right">
 					{if $listInfo.current_page < $listInfo.total_pages}
-						<a href="{$pageUrl}&list_page={$listInfo.current_page+1}">{tr}Next{/tr} &raquo;</a>
+						&nbsp;<a href="{$pageUrl}&list_page={$listInfo.current_page+1}">{tr}Next{/tr}&nbsp;&raquo;</a>
 					{/if}
 
 					{foreach from=$listInfo.block.next key=list_page item=next}

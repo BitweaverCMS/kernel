@@ -43,7 +43,6 @@
 					{/foreach}
 
 					{if $listInfo.current_page > 1}
-						{assign var=blockStart value=1}
 						<a href="{$pageUrl}&list_page={$listInfo.current_page-1}">&laquo;&nbsp;{tr}Prev{/tr}</a>&nbsp;
 					{/if}
 				</span>

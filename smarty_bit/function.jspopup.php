@@ -8,7 +8,7 @@
 /**
  * smarty_function_jspopup
  */
-function smarty_function_jspopup($params, &$gBitSmarty) {
+function smarty_function_jspopup( $params, &$gBitSmarty ) {
 	$ret = '';
 	if( empty( $params['href'] ) ) {
 		$gBitSmarty->trigger_error( 'assign: missing "href" parameter' );
@@ -29,6 +29,21 @@ function smarty_function_jspopup($params, &$gBitSmarty) {
 		}
 	}
 
+	if( !empty( $params['ibiticon'] ) ) {
+		require_once $gBitSmarty->_get_plugin_filepath( 'function','biticon' );
+		$tmp = explode( '/', $params['ibiticon'] );
+		$ibiticon = array(
+			'ipackage' => $tmp[0],
+			'iname' => $tmp[1],
+			'iexplain' => $params['title'],
+		);
+
+		if( !empty( $params['iforce'] ) ) {
+			$ibiticon['iforce'] = $params['iforce'];
+		}
+		$icon = smarty_function_biticon( $ibiticon, $gBitSmarty );
+	}
+
 	if( !empty( $params['type'] ) && $params['type'] == 'fullscreen' ) {
 		$js = 'popUpWin(this.href,\'fullScreen\');';
 	} else {
@@ -40,7 +55,7 @@ function smarty_function_jspopup($params, &$gBitSmarty) {
 	if( !empty( $params['gutsonly'] ) ) {
 		return $guts;
 	} else {
-		return( '<a '.$guts.'>'.tra( $params['title'] ).'</a>' );
+		return( '<a '.$guts.'>'.( !empty( $icon ) ? $icon : tra( $params['title'] ) ).'</a>' );
 	}
 }
 ?>

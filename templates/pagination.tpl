@@ -31,35 +31,42 @@
 	</div> <!-- end .pagination -->
 {elseif $listInfo && $listInfo.total_pages > 1}
 	<div class="pagination">
-	{tr}Displaying{/tr} <strong>{$listInfo.offset+1}</strong> {tr}to{/tr} <strong>{$listInfo.offset+$listInfo.max_records}</strong> ({tr}of{/tr} <strong>{$listInfo.total_records}</strong>)
-	<div class="pager">
-	{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`"}
-	{if $listInfo.current_page > 1}
-		{assign var=blockStart value=1}
-		{tr}<a href="{$pageUrl}&list_page={$listInfo.current_page-1}">&laquo; {tr}Prev{/tr}</a>{/tr}&nbsp;
-	{/if}
-	{if $listInfo.current_page-$listInfo.block_pages > 0}
-		{assign var=blockStart value=$listInfo.current_page-$listInfo.block_pages+1}
-	{else}
-		{assign var=blockStart value=1}
-	{/if}
-	{if $blockStart > 1} <a href="{$pageUrl}&list_page={$listInfo.current_page-1}">1</a>  <a href="{$pageUrl}&list_page={$listInfo.current_page-$listInfo.block_pages}">...</a> {/if}
+		{math equation="offset + 1 * max" offset=$listInfo.offset max=$listInfo.max_records assign=to}
+		{tr}Displaying{/tr} <strong>{$listInfo.offset+1}</strong> {tr}to{/tr} <strong>{if $to > $listInfo.total_records}{$listInfo.total_records}{else}{$to}{/if}</strong> ({tr}of{/tr} <strong>{$listInfo.total_records}</strong>)
+		{if $gBitSystem->isFeatureActive( 'direct_pagination' )}
+			<div class="pager">
+				<span class="left">
+					{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`"}
 
-	{section name=pager start=$blockStart loop=$blockStart+$listInfo.block_pages*2}
-	{if $smarty.section.pager.index <= $listInfo.total_pages}
-		{if $smarty.section.pager.index != $listInfo.current_page}
-		<a href="{$pageUrl}&list_page={$smarty.section.pager.index}">{$smarty.section.pager.index}</a>
+					{foreach from=$listInfo.block.prev key=list_page item=prev}
+						&nbsp;<a href="{$pageUrl}&list_page={$list_page}">{$prev}</a>&nbsp;
+					{/foreach}
+
+					{if $listInfo.current_page > 1}
+						<a href="{$pageUrl}&list_page={$listInfo.current_page-1}">&laquo;&nbsp;{tr}Prev{/tr}</a>&nbsp;
+					{/if}
+				</span>
+
+				<span class="right">
+					{if $listInfo.current_page < $listInfo.total_pages}
+						<a href="{$pageUrl}&list_page={$listInfo.current_page+1}">{tr}Next{/tr} &raquo;</a>
+					{/if}
+
+					{foreach from=$listInfo.block.next key=list_page item=next}
+						&nbsp;<a href="{$pageUrl}&list_page={$list_page}">{$next}</a>&nbsp;
+					{/foreach}
+				</span>
+			</div>
 		{else}
-		<strong>{$listInfo.current_page}</strong>
-		{/if}&nbsp;
-	{/if}
-	{/section}
-	{if $blockStart+$listInfo.block_pages*2 < $listInfo.total_pages} <a href="{$pageUrl}&list_page={$listInfo.current_page+1}">...</a>  <a href="{$pageUrl}&list_page={$listInfo.total_pages}">{$listInfo.total_pages}</a>{/if}
-
-	{if $listInfo.current_page < $listInfo.total_pages}
-	<a href="{$pageUrl}&list_page={$listInfo.current_page+1}">{tr}Next{/tr} &raquo;</a>
-	{/if}
-	</div>
+			{form action="$pgnUrl"}
+				<input type="hidden" name="find" value="{$find|default:$smarty.request.find}" />
+				<input type="hidden" name="sort_mode" value="{$sort_mode}" />
+				{foreach from=$pgnHidden key=name item=value}
+					<input type="hidden" name="{$name}" value="{$value}" />
+				{/foreach}
+				{tr}Go to page{/tr} <input class="gotopage" type="text" size="3" maxlength="4" name="page" /> {tr}of{/tr} <strong>{$listInfo.total_pages}</strong>
+			{/form}
+		{/if}
 	</div> <!-- end .pagination -->
 {/if}
 {/strip}

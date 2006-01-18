@@ -63,7 +63,7 @@ array( 'INDEXES' => array (
 ),
 
 'BONNIE' => array(
-	'CLYDE' => array(
+	'BWR1' => array(
 array( 'RENAMETABLE' => array(
 		'tiki_modules' => 'tiki_layout_modules',
 )),

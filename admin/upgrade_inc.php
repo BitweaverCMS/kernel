@@ -2,6 +2,38 @@
 global $gBitSystem, $gUpgradeFrom, $gUpgradeTo;
 $upgrades = array(
 
+'TIKIWIKI19' => array (
+	'TIKIWIKI18' => array (
+/*
+ leave these in for now - might show up in R2
+
+CREATE TABLE tiki_logs (
+  logId int(8) NOT NULL auto_increment,
+  logtype varchar(20) NOT NULL,
+  logmessage text NOT NULL,
+  loguser varchar(200) NOT NULL,
+  logip varchar(200) NOT NULL,
+  logclient text NOT NULL,
+  logtime int(14) NOT NULL,
+  PRIMARY KEY  (logId),
+  KEY logtype (logtype)
+);
+CREATE TABLE tiki_secdb(
+  md5_value varchar(32) NOT NULL,
+  filename varchar(250) NOT NULL,
+  tiki_version varchar(60) NOT NULL,
+  severity int(4) NOT NULL default '0',
+  PRIMARY KEY  (md5_value,filename,tiki_version),
+  KEY sdb_fn (filename)
+);
+ALTER TABLE `tiki_cookies` CHANGE cookie cookie text;
+alter table tiki_sessions add tikihost varchar(200) default NULL;
+*/
+
+	)
+),
+
+
 'TIKIWIKI18' => array(
 	'BONNIE' => array(
 // Step 1
@@ -128,41 +160,6 @@ if( isset( $upgrades[$gUpgradeFrom][$gUpgradeTo] ) ) {
 
 
 /*
-
-// Sliced and diced TW 1.9 upgrade scripts that did actual schema alterations
-
-
--- Articles
-ALTER TABLE `tiki_articles` ADD `topline` VARCHAR( 255 ) AFTER `articleId` ;
-ALTER TABLE `tiki_articles` ADD `subtitle` VARCHAR( 255 ) AFTER `title` ;
-ALTER TABLE `tiki_articles` ADD `linkto` VARCHAR( 255 ) AFTER `subtitle` ;
-ALTER TABLE `tiki_articles` ADD `image_caption` TEXT AFTER `image_name` ;
-ALTER TABLE `tiki_submissions` ADD `topline` VARCHAR( 255 ) AFTER `subId` ;
-ALTER TABLE `tiki_submissions` ADD `subtitle` VARCHAR( 255 ) AFTER `title` ;
-ALTER TABLE `tiki_submissions` ADD `linkto` VARCHAR( 255 ) AFTER `subtitle` ;
-ALTER TABLE `tiki_submissions` ADD `image_caption` TEXT AFTER `image_name` ;
-ALTER TABLE `tiki_articles` ADD `lang` VARCHAR( 16 ) AFTER `linkto` ;
-ALTER TABLE `tiki_submissions` ADD `lang` VARCHAR( 16 ) AFTER `linkto` ;
-ALTER TABLE `tiki_article_types` ADD `show_topline` CHAR( 1 ) AFTER `show_size` ;
-ALTER TABLE `tiki_article_types` ADD `show_subtitle` CHAR( 1 ) AFTER `show_topline` ;
-ALTER TABLE `tiki_article_types` ADD `show_linkto` CHAR( 1 ) AFTER `show_subtitle` ;
-ALTER TABLE `tiki_article_types` ADD `show_image_caption` CHAR( 1 ) AFTER `show_linkto` ;
-ALTER TABLE `tiki_article_types` ADD `show_lang` CHAR( 1 ) AFTER `show_image_caption` ;
-ALTER TABLE `tiki_articles` ADD `bibliographical_references` TEXT DEFAULT NULL AFTER `created` , ADD `resume` TEXT DEFAULT NULL AFTER `bibliographical_references`;
-ALTER TABLE `tiki_submissions` ADD `bibliographical_references` TEXT DEFAULT NULL AFTER `created` , ADD `resume` TEXT DEFAULT NULL AFTER `bibliographical_references`;
-ALTER TABLE tiki_articles DROP COLUMN `bibliographical_references`;
-ALTER TABLE tiki_articles DROP COLUMN `resume`;
-
-
-
--- Blogs
-ALTER TABLE `tiki_blog_posts` ADD `priv` VARCHAR( 1 );
-ALTER TABLE `tiki_blogs` ADD `show_avatar` char(1) default NULL;
-ALTER TABLE tiki_blog_posts drop KEY ft;
-ALTER TABLE tiki_blog_posts ADD FULLTEXT KEY ft(data, title);
-ALTER TABLE tiki_blog_posts MODIFY data_size int(11) unsigned NOT NULL default '0';
-
-
 
 -- Calendars
 alter table `tiki_calendars` drop `customevent`;
@@ -295,42 +292,12 @@ CREATE TABLE tiki_friendship_requests (
 );
 ALTER TABLE users_score RENAME TO tiki_users_score;
 ALTER TABLE users_users ADD score int4 NOT NULL default 0;
+ALTER TABLE `users_users` CHANGE score score int(11) NOT NULL default '0';
 alter table `tiki_users_score` modify `expire` int(14) not null;
 alter table `tiki_score` drop description;
 alter table `tiki_score` drop category;
 alter table `tiki_score` drop ord;
 alter table `tiki_users_score` drop score;
-
-
-
--- Kernal
-CREATE TABLE tiki_logs (
-  logId int(8) NOT NULL auto_increment,
-  logtype varchar(20) NOT NULL,
-  logmessage text NOT NULL,
-  loguser varchar(200) NOT NULL,
-  logip varchar(200) NOT NULL,
-  logclient text NOT NULL,
-  logtime int(14) NOT NULL,
-  PRIMARY KEY  (logId),
-  KEY logtype (logtype)
-);
-CREATE TABLE tiki_secdb(
-  md5_value varchar(32) NOT NULL,
-  filename varchar(250) NOT NULL,
-  tiki_version varchar(60) NOT NULL,
-  severity int(4) NOT NULL default '0',
-  PRIMARY KEY  (md5_value,filename,tiki_version),
-  KEY sdb_fn (filename)
-);
-
-ALTER TABLE `tiki_cookies` CHANGE cookie cookie text;
-
-alter table tiki_sessions add tikihost varchar(200) default NULL;
-alter table tiki_sessions add tikihost varchar(200) default NULL;
-
-ALTER TABLE `tiki_cookies` CHANGE cookie cookie text;
-
 
 
 
@@ -608,64 +575,9 @@ CREATE TABLE tiki_tracker_options (
 ALTER TABLE `tiki_tracker_fields` ADD `isMandatory` varchar ( 1 ) DEFAULT 'n' NOT NULL ;
 UPDATE `tiki_tracker_fields` set `isMandatory`='y' where `isMandatory`='';
 ALTER TABLE `tiki_user_votings` ADD optionId int(10) NOT NULL default '0';
-
-
-
--- Users
-ALTER TABLE `users_users` CHANGE score score int(11) NOT NULL default '0';
-ALTER TABLE users_groups DROP groupHomeLocalized;
 ALTER TABLE `users_groups` ADD `usersTrackerId` INT(11) ;
 ALTER TABLE `users_groups` ADD `groupTrackerId` INT(11) ;
 ALTER TABLE `users_groups` ADD `usersFieldId` INT( 11 ), ADD `groupFieldId` INT( 11 );
-
-alter table tiki_user_modules add parse char(1) default NULL;
-
-CREATE TABLE tiki_user_tasks_history (
-  belongs_to integer(14) NOT NULL,                   -- the fist task in a history it has the same id as the task id
-  task_version integer(4) NOT NULL DEFAULT 0,        -- version number for the history it starts with 0
-  title varchar(250) NOT NULL,                       -- title
-  description text DEFAULT NULL,                     -- description
-  start integer(14) DEFAULT NULL,                    -- date of the starting, if it is not set than there is not starting date
-  end integer(14) DEFAULT NULL,                      -- date of the end, if it is not set than there is not dealine
-  lasteditor varchar(200) NOT NULL,                  -- lasteditor: username of last editior
-  lastchanges integer(14) NOT NULL,                  -- date of last changes
-  priority integer(2) NOT NULL DEFAULT 3,            -- priority
-  completed integer(14) DEFAULT NULL,                -- date of the completation if it is null it is not yet completed
-  deleted integer(14) DEFAULT NULL,                  -- date of the deleteation it it is null it is not deleted
-  status char(1) DEFAULT NULL,                       -- null := waiting,
-                                                     -- o := open / in progress,
-                                                     -- c := completed -> (percentage = 100)
-  percentage int(4) DEFAULT NULL,
-  accepted_creator char(1) DEFAULT NULL,             -- y - yes, n - no, null - waiting
-  accepted_user char(1) DEFAULT NULL,                -- y - yes, n - no, null - waiting
-  PRIMARY KEY (belongs_to, task_version)
-) AUTO_INCREMENT=1 ;
-
-UPDATE tiki_user_tasks set title = '-'  where title IS NULL;
-INSERT INTO tiki_user_tasks_history (belongs_to, title, start, description, lasteditor, lastchanges, priority, completed, status, percentage) SELECT  taskId, title, date, description, user, date, priority, completed, status, percentage FROM tiki_user_tasks;
-ALTER TABLE tiki_user_tasks DROP description;
-ALTER TABLE tiki_user_tasks DROP title;
-ALTER TABLE tiki_user_tasks ADD last_version integer(4) NOT NULL DEFAULT 0 AFTER taskId;
-ALTER TABLE tiki_user_tasks MODIFY user varchar(200) NOT NULL DEFAULT '';
-ALTER TABLE tiki_user_tasks ADD creator varchar(200) NOT NULL AFTER user;
-ALTER TABLE tiki_user_tasks ADD public_for_group varchar(30) DEFAULT NULL AFTER creator;
-ALTER TABLE tiki_user_tasks ADD rights_by_creator char(1) DEFAULT NULL AFTER public_for_group;
-ALTER TABLE tiki_user_tasks CHANGE `date` `created` integer(14) NOT NULL;
-ALTER TABLE tiki_user_tasks ADD status char(1) default NULL;
-ALTER TABLE tiki_user_tasks ADD priority int(2) default NULL;
-ALTER TABLE tiki_user_tasks ADD completed int(14) default NULL;
-ALTER TABLE tiki_user_tasks ADD percentage int(4) default NULL;
-
-
--- Wiki
-ALTER TABLE `tiki_pages`  modify  `wiki_cache` INT( 10  ) default null;
-ALTER TABLE `tiki_pages` ADD `lang` VARCHAR( 16 ) AFTER `page_size` ;
-ALTER TABLE `tiki_pages` ADD `lockedby` VARCHAR(200) default NULL;
-ALTER TABLE  `tiki_pages` DROP column `lock`;
-ALTER TABLE tiki_history ADD version_minor int(8) NOT NULL default 0 AFTER version;
-ALTER TABLE `tiki_pages` ADD `is_html` TINYINT(1) default 0;
-ALTER TABLE `tiki_pages` ADD created int(14);
-
 
 
 

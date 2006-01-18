@@ -41,16 +41,16 @@ function smarty_function_formfeedback( $params,&$gBitSmarty ) {
 				}
 				$feedback .= '</ul>';
 			} else {
-				$feedback .= '<div class="'.$key.'">'.$val.'</div>';
+				$feedback .= '<p class="'.$key.'">'.$val.'</p>';
 			}
 		}
 	}
 
 	$html = '';
 	if( !empty( $feedback ) ) {
-		$html = '<div class="clear formfeedback">';
+		$html = '<p class="clear formfeedback">';
 		$html .= $feedback;
-		$html .= '</div>';
+		$html .= '</p>';
 	}
 	return $html;
 }

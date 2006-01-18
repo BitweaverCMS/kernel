@@ -35,7 +35,7 @@ function smarty_block_box($params, $content, &$gBitSmarty) {
 			default:
 				$atts .= $key.'="'.$val.'" ';
 				break;
-		}			
+		}
 	}
 	$gBitSmarty->assign( 'content',$content );
 	$gBitSmarty->assign( 'atts',$atts );

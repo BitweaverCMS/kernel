@@ -33,6 +33,7 @@
  *			- iurl		(optional)	pass in a full url
  *			- ifile		(optional)	set the file where the link should point (default is the current file)<br>
  *			- ipackage	(optional)	set the package the link should point to (default is the current package)<br>
+ *			- icontrol	(optional)	the hash sent out by postGetList()
  *			- *			(optional)	anything else that gets added to the pile of items is appended using &amp;$key=$val<br>
  *			- ihash		(optional)	you can pass in all the above as an array called ihash or secondary * items common to all links<br>
  * Output:	any kind of link. especially useful when it comes to links used to sort a table, due to the simplified syntax and loss of cumbersome if clauses
@@ -121,13 +122,20 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		}
 	}
 
-	$ignore = array( 'isort', 'ianchor', 'isort_mode', 'iorder', 'ititle', 'idefault', 'ifile', 'ipackage', 'itype', 'iurl', 'ionclick', 'ibiticon', 'iforce' );
+	$ignore = array( 'icontrol', 'isort', 'ianchor', 'isort_mode', 'iorder', 'ititle', 'idefault', 'ifile', 'ipackage', 'itype', 'iurl', 'ionclick', 'ibiticon', 'iforce' );
 	// append any other paramters that were passed in
 	foreach( $hash as $key => $val ) {
 		if( !empty( $val ) && !in_array( $key, $ignore ) ) {
 			$url_params .= empty( $url_params ) ? '?' : '&amp;';
 			$url_params .= $key."=".$val;
 		}
+	}
+
+	if( !empty( $hash['icontrol'] ) && is_array( $hash['icontrol'] ) ) {
+		$sep = empty( $url_params ) ? '?' : '&amp;';
+		$url_params .= !empty( $hash['icontrol']['current_page'] ) ? $sep.'list_page='.$hash['icontrol']['current_page'] : '';
+		$sep = empty( $url_params ) ? '?' : '&amp;';
+		$url_params .= !empty( $hash['icontrol']['find'] ) ? $sep.'find='.$hash['icontrol']['find'] : '';
 	}
 
 	require_once $gBitSmarty->_get_plugin_filepath( 'function','biticon' );

@@ -20,20 +20,29 @@
  * @todo somehow make the variable that is contained within $iselect global --> this will allow importing of outside variables not set in $_REQUEST
  */
 function smarty_block_form($params, $content, &$gBitSmarty) {
+	global $gBitSystem;
+
 	if( $content ) {
 		if( !isset( $params['method'] ) ) {
 			$params['method'] = 'post';
 		}
 		$atts = '';
+		if( isset( $params['secure'] ) && $params['secure'] ) {
+			// This is NEEDED to enforce HTTPS secure logins!
+			$url = 'https://' . $_SERVER['HTTP_HOST'];
+		} else {
+			$url = '';
+		}
+
 		foreach( $params as $key => $val ) {
 			switch( $key ) {
 				case 'ifile':
 				case 'ipackage':
 					if( $key == ipackage ) {
 						if( $val == 'root' ) {
-							$url = BIT_ROOT_URL.$params['ifile'];
+							$url .= BIT_ROOT_URL.$params['ifile'];
 						} else {
-							$url = constant( strtoupper( $val ).'_PKG_URL' ).$params['ifile'];
+							$url .= constant( strtoupper( $val ).'_PKG_URL' ).$params['ifile'];
 						}
 					}
 					break;
@@ -44,17 +53,27 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 					break;
 				// this is needed for backwards compatibility since we sometimes pass in a url
 				case 'action':
-					$url = $val;
+					if( substr( $val, 0, 4 ) == 'http' ) {
+						if( isset( $params['secure'] ) && $params['secure'] && (substr( $val, 0, 5 ) != 'https')) {
+							$val = preg_replace('/^http/', 'https', $val);
+						}
+						$url = $val;
+					} else {
+						$url .= $val;
+					}
 					break;
 				case 'ianchor':
+				case 'secure':
 					break;
 				default:
 					$atts .= $key.'="'.$val.'" ';
 					break;
 			}
 		}
-		if( !isset( $url ) ) {
+		if( !isset( $url ) || empty( $url ) ) {
 			$url = $_SERVER['PHP_SELF'];
+		} else if( $url == 'https://' . $_SERVER['HTTP_HOST'] ) {
+			$url .= $_SERVER['PHP_SELF'];
 		}
 		$ret = '<form action="'.$url.( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' ).'" '.$atts.'>';
 		$ret .= isset( $legend ) ? '<fieldset>'.$legend : '<div>';		// adding the div makes it easier to be xhtml compliant

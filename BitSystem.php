@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.23 2006/01/10 21:12:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.24 2006/01/20 11:08:21 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1025,7 +1025,7 @@ asort( $this->mAppMenu );
 				}
 			}
 		} elseif( $bitIndex == 'my_page' || $bitIndex == 'my_home' || $bitIndex == 'user_home'  ) {
-			// TODO: my_home is deprecated, but was the default for CLYDE. remove in DILLINGER - spiderr
+			// TODO: my_home is deprecated, but was the default for BWR1. remove in DILLINGER - spiderr
 			if( $gBitUser->isRegistered() ) {
 				if( !$gBitUser->isRegistered() ) {
 					$url = USERS_PKG_URL.'login.php';

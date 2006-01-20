@@ -35,6 +35,7 @@ function smarty_function_formfeedback( $params,&$gBitSmarty ) {
 				if( !is_array( $val ) ) {
 					$val = array( $val );
 				}
+				// only HEAD
 				foreach( $val as $valText ) {
 					$feedback .= '<p id="fat'.$i++.'" class="fade-000000 '.$key.'">'.smarty_function_biticon( $biticon,$gBitSmarty ).' '.$valText.'</p>';
 				}

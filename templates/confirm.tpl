@@ -1,30 +1,28 @@
 {strip}
 <div class="display confirm">
-
 	<div class="header">
 		<h1>{tr}Confirmation{/tr}</h1>
 	</div>
 
 	<div class="body">
 		{form}
-			{box title=$browserTitle}
+			{box title=Confirm}
 				{foreach from=$hiddenFields item=value key=name}
 					<input type="hidden" name="{$name}" value="{$value}" />
 				{/foreach}
 				<div class="row">
-					{formlabel label=$msgFields.label}
-					{forminput}
-						{$msgFields.confirm_item}
-						<br /><br />
-						{formfeedback warning=$msgFields.warning}
-						{formfeedback success=$msgFields.success}
-						{formfeedback error=$msgFields.error}
+					<h1>{$msgFields.label}</h1>
+					<p class="highlight" style="text-align:center;">{$msgFields.confirm_item}</p>
+					{if $inputFields}
 						<ul>
 							{section name=ix loop=$inputFields}
 								<li class="note">{$inputFields[ix]}</li>
 							{/section}
 						</ul>
-					{/forminput}
+					{/if}
+					{formfeedback warning=$msgFields.warning}
+					{formfeedback success=$msgFields.success}
+					{formfeedback error=$msgFields.error}
 				</div>
 
 				<div class="row submit">
@@ -35,5 +33,4 @@
 		{/form}
 	</div><!-- end .body -->
 </div><!-- end .confirm -->
-
 {/strip}

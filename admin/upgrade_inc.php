@@ -33,7 +33,6 @@ alter table tiki_sessions add tikihost varchar(200) default NULL;
 	)
 ),
 
-
 'TIKIWIKI18' => array(
 	'BONNIE' => array(
 // Step 1
@@ -151,6 +150,140 @@ array( 'DATADICT' => array(
 
 	)
 )
+
+/*
+// clean up all tiki_preferences in the database by using only under_scores in the databae
+'BWR1' => array(
+	'BWR2' => array(
+// STEP 1
+array( 'QUERY' =>
+	array( 'SQL92' => array(
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='bit_index' WHERE `name'='bitIndex'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='allow_register' WHERE `name'='allowRegister'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='forgot_pass' WHERE `name'='forgotPass'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='eponymous_groups' WHERE `name'='eponymousGroups'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='register_passcode' WHERE `name'='registerPasscode'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='use_register_passcode' WHERE `name'='useRegisterPasscode'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='validate_user' WHERE `name'='validateUsers'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='validate_email' WHERE `name'='validateEmail'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='temp_dir' WHERE `name'='tmpDir'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='max_records' WHERE `name'='maxRecords'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='url_index' WHERE `name'='urlIndex'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='anon_can_edit' WHERE `name'='anonCanEdit'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='max_versions' WHERE `name'='maxVersions'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='wiki_home_page' WHERE `name'='wikiHomePage'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='wiki_license_page' WHERE `name'='wikiLicensePage'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='wiki_submit_notice' WHERE `name'='wikiSubmitNotice'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='site_title' WHERE `name'='siteTitle'",
+
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='feature_last_changes' WHERE `name'='feature_lastChanges'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='feature_like_pages' WHERE `name'='feature_likePages'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='feature_list_pages' WHERE `name'='feature_listPages'",
+		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `name='feature_user_preferences' WHERE `name'='feature_userPreferences'",
+	)
+)),
+	)
+),
+
+
+// here are the proposed changes in the php and tpl files
+// these should probably be checked and refined before run
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bbitIndex\b/bit_index/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\ballowRegister\b/allow_register/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bforgotPass\b/forgot_pass/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\beponymousGroups\b/eponymous_groups/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bregisterPasscode\b/register_passcode/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\buseRegisterPasscode\b/use_register_passcode/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bvalidateUsers\b/validate_user/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bvalidateEmail\b/validate_email/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\btmpDir\b/temp_dir/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bmaxRecords\b/max_records/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\burlIndex\b/url_index/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\banonCanEdit\b/anon_can_edit/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bmaxVersions\b/max_versions/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bwikiHomePage\b/wiki_home_page/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bwikiLicensePage\b/wiki_license_page/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bwikiSubmitNotice\b/wiki_submit_notice/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bsiteTitle\b/site_title/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bfeature_lastChanges\b/feature_last_changes/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bfeature_likePages\b/feature_like_pages/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bfeature_listPages\b/feature_list_pages/g" {} \;
+find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bfeature_userPreferences\b/feature_user_preferences/g" {} \;
+
+
+
+// should we continue using 'feature_' for tiki_preferences?
+// a list of currenlty used deprecated preference names
+feature_userfiles
+feature_clear_passwords
+feature_custom_home
+feature_user_bookmarks
+feature_tasks
+feature_usermenu
+feature_userPreferences
+feature_user_watches
+feature_help
+feature_wikihelp
+feature_helpnotes
+feature_bot_bar
+feature_top_bar
+feature_banning
+feature_contact
+feature_jstabs
+feature_left_column
+feature_right_column
+feature_bidi
+feature_theme_control
+feature_top_bar_dropdown
+feature_referer_stats
+feature_hotwords_nw
+feature_hotwords
+feature_babelfish
+feature_babelfish_logo
+feature_autolinks
+feature_backlinks
+feature_dump
+feature_history
+feature_lastChanges
+feature_likePages
+feature_allow_dup_wiki_page_names
+feature_listPages
+feature_page_title
+feature_ranking
+feature_sandbox
+feature_warn_on_edit
+feature_wiki
+feature_wiki_attachments
+feature_wiki_books
+feature_wiki_comments
+feature_wiki_description
+feature_wiki_discuss
+feature_wiki_footnotes
+feature_wiki_icache
+feature_wiki_monosp
+feature_wiki_multiprint
+feature_wiki_notepad
+feature_wiki_generate_pdf
+feature_wiki_pictures
+feature_wiki_plurals
+feature_wiki_rankings
+feature_wiki_tables
+feature_wiki_templates
+feature_wiki_undo
+feature_wiki_usrlock
+feature_wikiwords
+wiki_feature_copyrights
+feature_search_fulltext
+feature_search_stats
+feature_categoryobjects
+feature_categorypath
+feature_cms_rankings
+feature_article_submissions
+feature_blogposts_comments
+feature_blog_rankings
+feature_blogs
+
+*/
 
 );
 

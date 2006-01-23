@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.11 2006/01/14 19:54:44 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.12 2006/01/23 22:06:19 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -1157,5 +1157,91 @@ class BitDate {
 		return $return;
 
 	}
+
+	function calculateTimeZoneDate( $dateTime, $fromTZ, $toTZ, $fromLocation = 'North America', $toLocation = 'GMT' ) {
+
+		$retval     = $dateTime;
+		$timeStamp  = strtotime( $dateTime );
+
+		$timeZonesArray = array( 'GMT' => array( 'GMT' => +0 // GMT
+                                                     ),
+				'North America'  =>  array( 'NST' => -3.5, // Newfoundland Standard Time
+											'NDT' => -2.5, // Newfoundland Daylight Time
+											'AST' => -4, // Atlantic Standard Time
+											'ADT' => -3, // Atlantic Daylight Time
+											'EST' => -5, // Eastern Standard Time
+											'EDT' => -4, // Eastern Daylight Time
+											'CST' => -6, // Central Standard Time
+											'CDT' => -5, // Central Daylight Time
+											'MST' => -7, // Central Daylight Time
+											'MDT' => -6, // Mountain Daylight Time
+											'PST' => -8, // Pacific Standard Time
+											'PDT' => -7, // Pacific Daylight Time
+											'AKST' => -9, // Alaska Standard Time
+											'AKDT' => -8, // Alaska Daylight Time
+											'HAST' => -10, // Hawaii-Aleutian Standard Time
+											'HADT' => -9 // Hawaii-Aleutian Daylight Time
+											),
+				'Australia'      =>  array( 'NFT' => +11.5, // Norfolk (Island) Time
+											'EST' => +10, // Eastern Standard Time
+											'EDT' => +11, // Eastern Daylight Time
+											'CST' => +9.5, // Central Standard Time
+											'CDT' => +10.5, // Central Daylight Time
+											'WST' => +8, // Western Standard Time
+											'CXT' => +7, // Christmas Island Time
+											),
+				'Europe'         =>  array( 'GMT' => +0, // Greenwich Mean Time
+											'BST' => +1, // British Summer Time
+											'IST' => +1, // Irish Summer Time
+											'WET' => +0, // Western European Time
+											'WEST' => +1, // Western European Summer Time
+											'CET' => +1, // Central European Time
+											'CEST' => +2, // Central European Summer Time
+											'EET' => +2, // Eastern European Time
+											'EEST' => +3 // Eastern European Summer Time
+											),
+				'Military'       =>  array( 'Z' => +0, // Zulu Time Zone
+											'Y' => -12, // Yankee Time Zone
+											'X' => -11, // X-ray Time Zone
+											'W' => -10, // Whiskey Time Zone
+											'V' => -9, // Victor Time Zone
+											'U' => -8, // Uniform Time Zone
+											'T' => -7, // Tango Time Zone
+											'S' => -6, // Sierra Time Zone
+											'R' => -5, // Romeo Time Zone
+											'Q' => -4, // Quebec Time Zone
+											'P' => -3, // Papa Time Zone
+											'O' => -2, // Oscar Time Zone
+											'N' => -1, // November Time Zone
+											'A' => +1, // Alpha Time Zone
+											'B' => +2, // Bravo Time Zone
+											'C' => +3, // Charlie Time Zone
+											'D' => +4, // Delta Time Zone
+											'E' => +5, // Echo Time Zone
+											'F' => +6, // Foxtrot Time Zone
+											'G' => +7, // Golf Time Zone
+											'H' => +8, // Hotel Time Zone
+											'I' => +9, // India Time Zone
+											'K' => +10, // Kilo Time Zone
+											'L' => +11, // Lima Time Zone
+											'M' => +12 // Mike Time Zone
+											));
+
+			$fromGMTDiff  = $timeZonesArray[$fromLocation][$fromTZ];
+			$toGMTDiff    = $timeZonesArray[$toLocation][$toTZ];
+
+			if(( '' != trim( $fromGMTDiff )) && ( '' != trim( $toGMTDiff ))) {
+			if( $fromGMTDiff > $toGMTDiff ) {
+				$netDiff = $fromGMTDiff - $toGMTDiff;
+			} else {
+				$netDiff = $toGMTDiff - $fromGMTDiff;
+			}
+			$retval = date( 'Y-m-d h:i:sa', ( $timeStamp + ( 3600 * $netDiff )));
+
+		}
+ 		return $retval;
+
+	} // end function calculateTimeZoneDate()
+	
 }
 ?>

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.74 2006/01/20 12:28:55 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.75 2006/01/24 21:50:55 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1891,6 +1891,9 @@ asort( $this->mAppMenu );
 				if( $release[0] > BIT_MAJOR_VERSION ) {
 					$ret['release'] = implode( '.', $release );
 					$ret['page'] = $release[0].'.'.$release[1];
+				} elseif( $release[0] < BIT_MAJOR_VERSION ) {
+					$ret['compare'] = version_compare( $local, $version );
+					$ret['upgrade'] = $version;
 				}
 			} else {
 				$error['number'] = 1;

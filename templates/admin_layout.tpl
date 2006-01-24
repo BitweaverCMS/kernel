@@ -39,7 +39,7 @@
 										{elseif $colkey == 'right'}
 											{assign var=dir value=left}
 										{/if}
-										{smartlink ititle="Move to Right" ibiticon="liberty/move_$dir" iforce="icon" page=layout fMove=$colkey fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
+										{smartlink ititle="Move to $dir" ibiticon="liberty/move_$dir" iforce="icon" page=layout fMove=$colkey fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}
 									{/if}
 									&nbsp;&nbsp;
 									{if $column[ix].type ne 'P'}

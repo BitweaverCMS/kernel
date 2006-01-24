@@ -188,27 +188,27 @@ array( 'QUERY' =>
 
 // here are the proposed changes in the php and tpl files
 // these should probably be checked and refined before run
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bbitIndex\b/bit_index/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\ballowRegister\b/allow_register/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bforgotPass\b/forgot_pass/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\beponymousGroups\b/eponymous_groups/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bregisterPasscode\b/register_passcode/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\buseRegisterPasscode\b/use_register_passcode/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bvalidateUsers\b/validate_user/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bvalidateEmail\b/validate_email/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\btmpDir\b/temp_dir/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bmaxRecords\b/max_records/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\burlIndex\b/url_index/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\banonCanEdit\b/anon_can_edit/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bmaxVersions\b/max_versions/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bwikiHomePage\b/wiki_home_page/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bwikiLicensePage\b/wiki_license_page/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bwikiSubmitNotice\b/wiki_submit_notice/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bsiteTitle\b/site_title/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bfeature_lastChanges\b/feature_last_changes/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bfeature_likePages\b/feature_like_pages/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bfeature_listPages\b/feature_list_pages/g" {} \;
-find . -regex ".*[(php)|(tpl)]" -exec perl -i -wpe "s/\bfeature_userPreferences\b/feature_user_preferences/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bbitIndex\b/bit_index/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\ballowRegister\b/allow_register/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bforgotPass\b/forgot_pass/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\beponymousGroups\b/eponymous_groups/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bregisterPasscode\b/register_passcode/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\buseRegisterPasscode\b/use_register_passcode/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bvalidateUsers\b/validate_user/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bvalidateEmail\b/validate_email/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\btmpDir\b/temp_dir/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bmaxRecords\b/max_records/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\burlIndex\b/url_index/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\banonCanEdit\b/anon_can_edit/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bmaxVersions\b/max_versions/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bwikiHomePage\b/wiki_home_page/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bwikiLicensePage\b/wiki_license_page/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bwikiSubmitNotice\b/wiki_submit_notice/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bsiteTitle\b/site_title/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bfeature_lastChanges\b/feature_last_changes/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bfeature_likePages\b/feature_like_pages/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bfeature_listPages\b/feature_list_pages/g" {} \;
+find . -regex ".*\.\(php\|tpl\)" -exec perl -i -wpe "s/\bfeature_userPreferences\b/feature_user_preferences/g" {} \;
 
 
 

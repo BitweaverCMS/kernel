@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.40 2006/01/25 16:25:06 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.41 2006/01/25 17:42:25 lsces Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -210,7 +210,8 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign_by_ref("gBitSystemPackages", $gBitSystem->mPackages);
 
 	// check to see if admin has closed the site
-	if ( $gBitSystem->isFeatureActive( 'site_closed' ) && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check) && (isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] != USERS_PKG_URL.'validate.php' )) {
+    if ( (isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] == USERS_PKG_URL.'validate.php' ) ) $bypass_siteclose_check = 'y';
+	if ( $gBitSystem->isFeatureActive( 'site_closed' ) && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check)) {
 		$_REQUEST['error'] = $gBitSystem->getPreference('site_closed_msg', 'Site is closed for maintainance; please come back later.');
 		include( KERNEL_PKG_PATH . 'error_simple.php' );
 		exit;

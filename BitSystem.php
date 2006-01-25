@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.27 2006/01/25 15:40:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.28 2006/01/25 18:34:54 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1318,15 +1318,16 @@ asort( $this->mAppMenu );
 		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "tiki_layouts` tl, `" . BIT_DB_PREFIX . "tiki_layouts_modules` tlm, `" . BIT_DB_PREFIX . "tiki_module_map` tmm
 				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->mDb->convert_sortmode("ord_asc");
 		$result = $this->mDb->query($query, $bindVars);
+		$row = $result->fetchRow();
 		// CHeck to see if we have ACTIVE_PACKAGE modules at the top of the results
-		if (isset($result->fields['layout']) && ($result->fields['layout'] != DEFAULT_PACKAGE) && (ACTIVE_PACKAGE != DEFAULT_PACKAGE)) {
+		if (isset($row['layout']) && ($row['layout'] != DEFAULT_PACKAGE) && (ACTIVE_PACKAGE != DEFAULT_PACKAGE)) {
 			$skipDefaults = true;
 		} else {
 			$skipDefaults = false;
 		}
 
 		$gCenterPieces = array();
-		while( $row = $result->fetchRow() ) {
+		while( $row ) {
 			if ($skipDefaults && $row['layout'] == DEFAULT_PACKAGE) {
 				// we're done! we've got all the non-DEFAULT_PACKAGE modules
 				break;
@@ -1380,6 +1381,7 @@ asort( $this->mAppMenu );
 				array_push($gCenterPieces, $row['module_rsrc']);
 			}
 			array_push($ret[$row['position']], $row);
+			$row = $result->fetchRow();			
 		}
 		return $ret;
 	}

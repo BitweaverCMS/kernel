@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.25 2006/01/25 15:40:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.26 2006/01/25 17:37:48 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -54,7 +54,7 @@ define('BIT_THEME_PATH', BIT_ROOT_PATH . 'themes/');
 ini_set ( 'session.use_trans_sid', 'Off' );
 
 // Force a global ADODB db object so all classes share the same connection
-switch( $gBitDbSystem ) {
+switch( @$gBitDbSystem ) {
 	case 'pear':
 		$dbClass = 'BitDbPear';
 		break;

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/BitDb.php,v 1.20 2006/01/16 23:57:36 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.1 2006/01/25 15:40:24 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -17,9 +17,7 @@
 /**
  * ensure your AdoDB install is a subdirectory off your include path
  */
-require_once(UTIL_PKG_PATH."adodb/adodb.inc.php");
 require_once( KERNEL_PKG_PATH.'bit_error_inc.php' );
-define( 'BIT_QUERY_DEFAULT', -1 );
 
 /**
  * This class is used for database access and provides a number of functions to help
@@ -75,52 +73,9 @@ class BitDb
 	*/
 	function BitDb()
 	{
-		global $gBitDbType, $gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName, $ADODB_FETCH_MODE;
 		$this->mCacheFlag = FALSE;
 		$this->mNumQueries = 0;
 		$this->setFatalActive();
-
-		global $ADODB_CACHE_DIR;
-		if( empty( $ADODB_CACHE_DIR ) ) {
-			$ADODB_CACHE_DIR = getTempDir().'/adodb/'.$_SERVER['HTTP_HOST'].'/';
-		}
-		mkdir_p( $ADODB_CACHE_DIR );
-
-
-		// Get all the ADODB stuff included
-		if (!defined("ADODB_FORCE_NULLS"))
-			define("ADODB_FORCE_NULLS", 1);
-		if (!defined("ADODB_ASSOC_CASE"))
-			define("ADODB_ASSOC_CASE", 0);
-		if (!defined("ADODB_CASE_ASSOC"))
-			define("ADODB_CASE_ASSOC", 0);
-		// typo in adodb's driver for sybase?
-		if (!defined("ADODB_FETCH_MODE")) {
-			define("ADODB_FETCH_MODE", ADODB_CASE_ASSOC);
-		}
-		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-
-		if( !empty( $gBitDbName ) && !empty( $gBitDbType ) ) {
-			$this->mType = $gBitDbType;
-			$this->mName = $gBitDbName;
-			if(!isset($this->mName)) {
-				die("No database name specified");
-			}
-			$this->preDBConnection();
-			$this->mDb = ADONewConnection($gBitDbType);
-			$this->mDb->Connect($gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName);
-
-			if(!$this->mDb)
-			{
-				die("Unable to login to the database '<?=$gBitDbName?>' on '<?=$gBitDbHost?>' as `user` '<?=$gBitDbUser?>'<p>".$this->mDb->ErrorMsg());
-			}
-			$this->postDBConnection();
-			unset ($pDSN);
-			if( defined( "DB_PERFORMANCE_STATS" ) && constant( "DB_PERFORMANCE_STATS" ) )
-			{
-				$this->mDb->LogSQL();
-			}
-		}
 	}
 	/**
 	* This function contains any pre-connection work
@@ -178,7 +133,6 @@ class BitDb
 	function isValid() {
 		return( !empty( $this->mDb ) );
 	}
-
 	/**
 	* Determines if the database connection is valid
 	* @return true if DB connection is valid, false if not
@@ -186,7 +140,6 @@ class BitDb
 	function isFatalActive() {
 		return( $this->mFatalActive );
 	}
-
 	/**
 	* Determines if the database connection is valid
 	* @return true if DB connection is valid, false if not
@@ -194,323 +147,6 @@ class BitDb
 	function setFatalActive( $pActive=TRUE ) {
 		$this->mFatalActive = $pActive;
 	}
-
-
-	/**
-	* Used to create tables - most commonly from package/schema_inc.php files
-	* @todo remove references to BIT_DB_PREFIX, us a member function
-	* @param pTables an array of tables and creation information in DataDict
-	* style
-	* @param pOptions an array of options used while creating the tables
-	* @return true|false
-	* true if created with no errors | false if errors are stored in $this->mFailed
-	*/
-	function createTables($pTables, $pOptions = array())
-	{
-		switch ($this->mType)
-		{
-			case "mysql":
-			// SHOULD HANDLE INNODB so foreign keys are cool - XOXO spiderr
-			$pOptions['mysql'] = 'TYPE=INNODB';
-			default:
-			//$pOptions[] = 'REPLACE';
-		}
-		$dict = NewDataDictionary($this->mDb);
-		$this->mFailed = array();
-		$result = true;
-		foreach(array_keys($pTables) AS $tableName)
-		{
-			$completeTableName = (defined("BIT_DB_PREFIX")) ? BIT_DB_PREFIX.$tableName : $tableName;
-			$sql = $dict->CreateTableSQL($completeTableName, $pTables[$tableName], $pOptions);
-			if ($sql && ($dict->ExecuteSQLArray($sql) > 0))
-			{
-				// Success
-			}
-			else
-			{
-				// Failure
-				$result = false;
-				array_push($this->mFailed, $sql.": ".$this->mDb->ErrorMsg());
-			}
-		}
-		return $result;
-	}
-	/**
-	* Used to check if tables already exists.
-	* @todo should be used to confirm tables are already created
-	* @param pTable the table name
-	* @return true if table already exists
-	*/
-	function tableExists($pTable)
-	{
-		$dict = NewDataDictionary($this->mDb);
-	$pTable = preg_replace("/`/", "", $pTable);
-		$tables = $dict->MetaTables(false, false, $pTable);
-		return array_search($pTable, $tables) !== FALSE;
-	}
-	/**
-	* Used to drop tables
-	* @todo remove references to BIT_DB_PREFIX, us a member function
-	* @param pTables an array of table names to drop
-	* @return true | false
-	* true if dropped with no errors |
-	* false if errors are stored in $this->mFailed
-	*/
-	function dropTables($pTables)
-	{
-		$dict = NewDataDictionary($this->mDb);
-		$this->mFailed = array();
-		$return = true;
-		foreach($pTables AS $tableName)
-		{
-			$completeTableName = (defined("BIT_DB_PREFIX")) ? BIT_DB_PREFIX.$tableName : $tableName;
-			$sql = $dict->DropTableSQL($completeTableName);
-			if ($sql && ($dict->ExecuteSQLArray($sql) > 0))
-			{
-				//echo "Success<br>";
-			}
-			else
-			{
-				//echo "Failure<br>";
-				$return = false;
-				array_push($this->mFailed, $sql);
-			}
-		}
-		return $return;
-	}
-	/**
-	* Function to set ADODB query caching member variable
-	* @param pCacheExecute flag to enable or disable ADODB query caching
-	* @return nothing
-	*/
-	function setCacheState( $pCacheFlag=TRUE ) {
-		$this->mCacheFlag = $pCacheFlag;
-	}
-
-	/**
-	* Function to set ADODB query caching member variable
-	* @param pCacheExecute flag to enable or disable ADODB query caching
-	* @return nothing
-	*/
-	function getCacheState() {
-		return( $this->mCacheFlag );
-	}
-
-	/**
-	* Quotes a string to be sent to the database which is
-	* passed to function on to AdoDB->qstr().
-	* @todo not sure what its supposed to do
-	* @param pStr string to be quotes
-	* @return quoted string using AdoDB->qstr()
-	*/
-	function qstr($pStr)
-	{
-		return $this->mDb->qstr($pStr);
-	}
-
-	/** Queries the database, returning an error if one occurs, rather
-	* than exiting while printing the error. -rlpowell
-	* @param pQuery the SQL query. Use backticks (`) to quote all table
-	* and attribute names for AdoDB to quote appropriately.
-	* @param pError the error string to modify and return
-	* @param pValues an array of values used in a parameterised query
-	* @param pNumRows the number of rows (LIMIT) to return in this query
-	* @param pOffset the row number to begin returning rows from. Used in
-	* @return an AdoDB RecordSet object
-	* conjunction with $pNumRows
-	* @todo currently not used anywhere.
-	*/
-	function queryError( $pQuery, &$pError, $pValues = NULL, $pNumRows = -1,
-	$pOffset = -1 )
-	{
-		$this->convertQuery($pQuery);
-		if ($pNumRows == -1 && $pOffset == -1)
-		$result = $this->mDb->Execute($pQuery, $pValues);
-		else
-		$result = $this->mDb->SelectLimit($pQuery, $pNumRows, $pOffset, $pValues);
-		if (!$result)
-		{
-			$pError = $this->mDb->ErrorMsg();
-			$result=false;
-		}
-		//count the number of queries made
-		$this->mNumQueries++;
-		//$this->debugger_log($pQuery, $pValues);
-		return $result;
-	}
-
-	/** Queries the database reporting an error if detected
-	* than exiting while printing the error. -rlpowell
-	* @param pQuery the SQL query. Use backticks (`) to quote all table
-	* and attribute names for AdoDB to quote appropriately.
-	* @param pValues an array of values used in a parameterised query
-	* @param pNumRows the number of rows (LIMIT) to return in this query
-	* @param pOffset the row number to begin returning rows from. Used in
-	* conjunction with $pNumRows
-	* @return an AdoDB RecordSet object
-	*/
-	function query($query, $values = null, $numrows = BIT_QUERY_DEFAULT, $offset = BIT_QUERY_DEFAULT, $pCacheTime=BIT_QUERY_DEFAULT )
-	{
-		$this->convertQuery($query);
-		if( empty( $this->mDb ) ) {
-			return FALSE;
-		}
-
-		$this->queryStart();
-
-		if( !is_numeric( $numrows ) ) {
-			$numrows = BIT_QUERY_DEFAULT;
-		}
-
-		if( !is_numeric( $offset ) ) {
-			$offset = BIT_QUERY_DEFAULT;
-		}
-
-		if( $numrows == BIT_QUERY_DEFAULT && $offset == BIT_QUERY_DEFAULT ) {
-			if( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
-				$result = $this->mDb->Execute( $query, $values );
-			} else {
-				$result = $this->mDb->CacheExecute( $pCacheTime, $query, $values );
-			}
-		} else {
-			if( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
-				$result = $this->mDb->SelectLimit( $query, $numrows, $offset, $values );
-			} else {
-				$result = $this->mDb->CacheSelectLimit( $pCacheTime, $query, $numrows, $offset, $values );
-			}
-		}
-
-		$this->queryComplete();
-		return $result;
-	}
-
-	/**
-	* ADODB compatibility functions for bitcommerce
-	*/
-	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=BIT_QUERY_DEFAULT) {
-		return $this->query( $pQuery, NULL, $pNumRows, BIT_QUERY_DEFAULT, $pCacheTime );
-	}
-
-	/**
-	 * List columns in a database as an array of ADOFieldObjects.
-	 * See top of file for definition of object.
-	 *
-	 * @param table	table name to query
-	 * @param upper	uppercase table name (required by some databases)
-	 * @param schema is optional database schema to use - not supported by all databases.
-	 *
-	 * @return  array of ADOFieldObjects for current table.
-	 */
-	function MetaColumns($table,$normalize=true, $schema=false) {
-		return $this->mDb->MetaColumns( $table, $normalize, $schema );
-	}
-
-	/**
-	 * List indexes in a database as an array of ADOFieldObjects.
-	 * See top of file for definition of object.
-	 *
-	 * @param table	table name to query
-	 * @param primary list primary indexes
-	 * @param owner list owner of index
-	 *
-	 * @return  array of ADOFieldObjects for current table.
-	 */
-	function MetaIndexes($table,$primary=false, $owner=false) {
-		return $this->mDb->MetaIndexes( $table, $primary, $owner);
-	}
-
-
-	/** Executes the SQL and returns all elements of the first column as a 1-dimensional array. The recordset is discarded for you automatically. If an error occurs, false is returned.
-	* See AdoDB GetCol() function for more detail.
-	* @param pQuery the SQL query. Use backticks (`) to quote all table
-	* and attribute names for AdoDB to quote appropriately.
-	* @param pValues an array of values used in a parameterised query
-	* @param pForceArray if set to true, when an array is created for each value
-	* @param pFirst2Cols if set to true, only returns the first two columns
-	* @return the associative array, or false if an error occurs
-	* @todo not currently used anywhere
-	*/
-
-	function getCol( $pQuery, $pValues=FALSE, $pTrim=FALSE )
-	{
-		if( empty( $this->mDb ) ) {
-			return FALSE;
-		}
-		$this->queryStart();
-		$this->convertQuery($pQuery);
-		$execFunction = ( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ? 'GetAssoc' : 'CacheGetAssoc' );
-		$result = $this->mDb->getCol( $pQuery, $pValues, $pTrim );
-		//count the number of queries made
-		$this->queryComplete();
-		return $result;
-	}
-	/** Returns an associative array for the given query.
-	* See AdoDB GetAssoc() function for more detail.
-	* @param pQuery the SQL query. Use backticks (`) to quote all table
-	* and attribute names for AdoDB to quote appropriately.
-	* @param pValues an array of values used in a parameterised query
-	* @param pForceArray if set to true, when an array is created for each value
-	* @param pFirst2Cols if set to true, only returns the first two columns
-	* @return the associative array, or false if an error occurs
-	*/
-	function getArray( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT )
-	{
-		if( empty( $this->mDb ) ) {
-			return FALSE;
-		}
-		$this->queryStart();
-		$this->convertQuery($pQuery);
-		$execFunction = ( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ? 'GetArray' : 'CacheGetArray' );
-		$result = $this->mDb->GetArray( $pQuery, $pValues, $pForceArray, $pFirst2Cols );
-		$this->queryComplete();
-		return $result;
-	}
-
-	/** Returns an associative array for the given query.
-	* See AdoDB GetAssoc() function for more detail.
-	* @param pQuery the SQL query. Use backticks (`) to quote all table
-	* and attribute names for AdoDB to quote appropriately.
-	* @param pValues an array of values used in a parameterised query
-	* @param pForceArray if set to true, when an array is created for each value
-	* @param pFirst2Cols if set to true, only returns the first two columns
-	* @return the associative array, or false if an error occurs
-	*/
-	function getAssoc( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT )
-	{
-		if( empty( $this->mDb ) ) {
-			return FALSE;
-		}
-		$this->queryStart();
-		$this->convertQuery($pQuery);
-		$execFunction = ( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ? 'GetAssoc' : 'CacheGetAssoc' );
-		$result = $this->mDb->GetAssoc( $pQuery, $pValues, $pForceArray, $pFirst2Cols );
-		$this->queryComplete();
-		return $result;
-	}
-
-	/** Executes the SQL and returns the first row as an array. The recordset and remaining rows are discarded for you automatically. If an error occurs, false is returned.
-	* See AdoDB GetRow() function for more detail.
-	* @param pQuery the SQL query. Use backticks (`) to quote all table
-	* and attribute names for AdoDB to quote appropriately.
-	* @param pValues an array of values used in a parameterised query
-	* @return returns the first row as an array, or false if an error occurs
-	*/
-	function getRow( $pQuery, $pValues=FALSE, $pCacheTime=BIT_QUERY_DEFAULT )
-	{
-		if( empty( $this->mDb ) ) {
-			return FALSE;
-		}
-		$this->queryStart();
-		$this->convertQuery($pQuery);
-		if( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
-			$result = $this->mDb->GetRow( $pQuery, $pValues );
-		} else {
-			$result = $this->mDb->CacheGetRow( $pCacheTime, $pQuery, $pValues );
-		}
-		$this->queryComplete();
-		return $result;
-	}
-
 	/**
 	* Used to start query timer if in debug mode
 	*/
@@ -523,7 +159,6 @@ class BitDb
 			flush();
 		}
 	}
-
 	/**
 	* Used to stop query tracking and output results if in debug mode
 	*/
@@ -542,6 +177,211 @@ class BitDb
 			flush();
 		}
 	}
+	
+	/**
+	* Used to create tables - most commonly from package/schema_inc.php files
+	* @todo remove references to BIT_DB_PREFIX, us a member function
+	* @param pTables an array of tables and creation information in DataDict
+	* style
+	* @param pOptions an array of options used while creating the tables
+	* @return true|false
+	* true if created with no errors | false if errors are stored in $this->mFailed
+	*/
+	function createTables($pTables, $pOptions = array())
+	{
+		// PURE VIRTUAL
+	}
+	
+	/**
+	* Used to check if tables already exists.
+	* @todo should be used to confirm tables are already created
+	* @param pTable the table name
+	* @return true if table already exists
+	*/
+	function tableExists($pTable)
+	{
+		// PURE VIRTUAL
+	}
+	
+	/**
+	* Used to drop tables
+	* @todo remove references to BIT_DB_PREFIX, us a member function
+	* @param pTables an array of table names to drop
+	* @return true | false
+	* true if dropped with no errors |
+	* false if errors are stored in $this->mFailed
+	*/
+	function dropTables($pTables)
+	{
+		// PURE VIRTUAL
+	}
+	
+	/**
+	* Function to set ADODB query caching member variable
+	* @param pCacheExecute flag to enable or disable ADODB query caching
+	* @return nothing
+	*/
+	function setCacheState( $pCacheFlag=TRUE ) {
+		$this->mCacheFlag = $pCacheFlag;
+	}
+	
+	/**
+	* Function to set ADODB query caching member variable
+	* @param pCacheExecute flag to enable or disable ADODB query caching
+	* @return nothing
+	*/
+	function getCacheState() {
+		return( $this->mCacheFlag );
+	}
+	
+	/**
+	* Quotes a string to be sent to the database
+	* @param pStr string to be quotes
+	* @return quoted string using AdoDB->qstr()
+	*/
+	function qstr($pStr)
+	{
+		// PURE VIRTUAL
+	}
+	
+	/** Queries the database, returning an error if one occurs, rather
+	* than exiting while printing the error. -rlpowell
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pError the error string to modify and return
+	* @param pValues an array of values used in a parameterised query
+	* @param pNumRows the number of rows (LIMIT) to return in this query
+	* @param pOffset the row number to begin returning rows from. Used in
+	* @return an AdoDB RecordSet object
+	* conjunction with $pNumRows
+	* @todo currently not used anywhere.
+	*/
+	function queryError( $pQuery, &$pError, $pValues = NULL, $pNumRows = -1, $pOffset = -1 )
+	{
+		// PURE VIRTUAL
+	}
+	
+	/** Queries the database reporting an error if detected
+	* than exiting while printing the error. -rlpowell
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pValues an array of values used in a parameterised query
+	* @param pNumRows the number of rows (LIMIT) to return in this query
+	* @param pOffset the row number to begin returning rows from. Used in
+	* conjunction with $pNumRows
+	* @return an AdoDB RecordSet object
+	*/
+	function query($query, $values = null, $numrows = BIT_QUERY_DEFAULT, $offset = BIT_QUERY_DEFAULT, $pCacheTime=BIT_QUERY_DEFAULT )
+	{
+		// PURE VIRTUAL
+	}
+
+	/**
+	* ADODB compatibility functions for bitcommerce
+	*/
+	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=BIT_QUERY_DEFAULT) {
+		// PURE VIRTUAL
+	}
+
+	/**
+	 * Create a list of tables available in the current database
+	 *
+	 * @param ttype can either be 'VIEW' or 'TABLE' or false.
+	 * 		If false, both views and tables are returned.
+	 *		"VIEW" returns only views
+	 *		"TABLE" returns only tables
+	 * @param showSchema returns the schema/user with the table name, eg. USER.TABLE
+	 * @param mask  is the input mask - only supported by oci8 and postgresql
+	 *
+	 * @return  array of tables for current database.
+	*/
+	function MetaTables( $ttype = false, $showSchema = false, $mask=false ) {
+		// PURE VIRTUAL
+	}
+
+	/**
+	 * List columns in a database as an array of ADOFieldObjects.
+	 * See top of file for definition of object.
+	 *
+	 * @param table	table name to query
+	 * @param upper	uppercase table name (required by some databases)
+	 * @param schema is optional database schema to use - not supported by all databases.
+	 *
+	 * @return  array of ADOFieldObjects for current table.
+	 */
+	function MetaColumns($table,$normalize=true, $schema=false) {
+		// PURE VIRTUAL
+	}
+
+	/**
+	 * List indexes in a database as an array of ADOFieldObjects.
+	 * See top of file for definition of object.
+	 *
+	 * @param table	table name to query
+	 * @param primary list primary indexes
+	 * @param owner list owner of index
+	 *
+	 * @return  array of ADOFieldObjects for current table.
+	 */
+	function MetaIndexes($table,$primary=false, $owner=false) {
+		// PURE VIRTUAL
+	}
+
+
+	/** Executes the SQL and returns all elements of the first column as a 1-dimensional array. The recordset is discarded for you automatically. If an error occurs, false is returned.
+	* See AdoDB GetCol() function for more detail.
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pValues an array of values used in a parameterised query
+	* @param pForceArray if set to true, when an array is created for each value
+	* @param pFirst2Cols if set to true, only returns the first two columns
+	* @return the associative array, or false if an error occurs
+	* @todo not currently used anywhere
+	*/
+
+	function getCol( $pQuery, $pValues=FALSE, $pTrim=FALSE )
+	{
+		// PURE VIRTUAL
+	}
+	/** Returns an associative array for the given query.
+	* See AdoDB GetAssoc() function for more detail.
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pValues an array of values used in a parameterised query
+	* @param pForceArray if set to true, when an array is created for each value
+	* @param pFirst2Cols if set to true, only returns the first two columns
+	* @return the associative array, or false if an error occurs
+	*/
+	function getArray( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT )
+	{
+		// PURE VIRTUAL
+	}
+
+	/** Returns an associative array for the given query.
+	* See AdoDB GetAssoc() function for more detail.
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pValues an array of values used in a parameterised query
+	* @param pForceArray if set to true, when an array is created for each value
+	* @param pFirst2Cols if set to true, only returns the first two columns
+	* @return the associative array, or false if an error occurs
+	*/
+	function getAssoc( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT )
+	{
+		// PURE VIRTUAL
+	}
+
+	/** Executes the SQL and returns the first row as an array. The recordset and remaining rows are discarded for you automatically. If an error occurs, false is returned.
+	* See AdoDB GetRow() function for more detail.
+	* @param pQuery the SQL query. Use backticks (`) to quote all table
+	* and attribute names for AdoDB to quote appropriately.
+	* @param pValues an array of values used in a parameterised query
+	* @return returns the first row as an array, or false if an error occurs
+	*/
+	function getRow( $pQuery, $pValues=FALSE, $pCacheTime=BIT_QUERY_DEFAULT )
+	{
+		// PURE VIRTUAL
+	}
 
 	/** Returns a single column value from the database.
 	* @param pQuery the SQL query. Use backticks (`) to quote all table
@@ -553,16 +393,7 @@ class BitDb
 	*/
 	function getOne($pQuery, $pValues=NULL, $pNumRows=NULL, $pOffset=NULL, $pCacheTime = BIT_QUERY_DEFAULT )
 	{
-		$result = $this->query($pQuery, $pValues, 1, $pOffset, $pCacheTime );
-		$res = ($result != NULL) ? $result->fetchRow() : false;
-		if ($res === false)
-		{
-			return (NULL);
-			//simulate pears behaviour
-		}
-		//$this->debugger_log($pQuery, $pValues);
-		list($key, $value) = each($res);
-		return $value;
+		// PURE VIRTUAL
 	}
 
 	/**
@@ -622,10 +453,7 @@ class BitDb
 	* @return		0 if not supported, otherwise a sequence id
 	*/
 	function GenID( $pSequenceName ) {
-		if( empty( $this->mDb ) ) {
-			return FALSE;
-		}
-		return $this->mDb->GenID( str_replace("`","",BIT_DB_PREFIX).$pSequenceName );
+		// PURE VIRTUAL
 	}
 
 	/**
@@ -639,8 +467,7 @@ class BitDb
 	*/
 	function CreateSequence($seqname='adodbseq',$startID=1)
 	{
-		if (empty($this->mDb->_genSeqSQL)) return FALSE;
-		return $this->mDb->CreateSequence($seqname, $startID);
+		// PURE VIRTUAL
 	}
 
 	/**
@@ -654,7 +481,7 @@ class BitDb
 	*/
 	function ifNull($pField, $pNullRepl)
 	{
-		return $this->mDb->ifNull($pField, $pNullRepl);
+		// PURE VIRTUAL
 	}
 
 	/** Format the timestamp in the format the database accepts.
@@ -665,9 +492,7 @@ class BitDb
 	*/
 	function ts($pDate)
 	{
-		// not sure what this did - maybe someone can comment why its here
-		//return preg_replace("/'/","", $this->mDb->DBTimeStamp($pDate));
-		return $this->mDb->DBTimeStamp($pDate);
+		// PURE VIRTUAL
 	}
 
 	/**
@@ -742,7 +567,7 @@ class BitDb
 	 * Format date column in sql string given an input format that understands Y M D
 	 */
 	function SQLDate($pDateFormat, $pBaseDate=false) {
-		return $this->mDb->SQLDate($pDateFormat, $pBaseDate) ;
+		// PURE VIRTUAL
 	}
 
 	/**
@@ -759,7 +584,7 @@ class BitDb
 	 * rather than unix seconds
 	 */
 	function OffsetDate( $pDays, $pColumn=NULL ) {
-		return $this->mDb->OffsetDate( $pDays, $pColumn );
+		// PURE VIRTUAL
 	}
 
 	/** Converts backtick (`) quotes to the appropriate quote for the
@@ -788,7 +613,7 @@ class BitDb
 					break;
 				case "pgsql":
 				case "postgres7":
-					print '<div class="error">You must update your kernel/config_inc.php so that $gBitDbType="postgres"</div>';
+//					print '<div class="error">You must update your kernel/config_inc.php so that $gBitDbType="postgres"</div>';
 				case "firebird":
 				case "mssql":
 				case "postgres":
@@ -940,33 +765,7 @@ class BitDb
 	* @param pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose
 	**/
 	function debug( $pLevel=99 ) {
-		if( is_object( $this->mDb ) ) {
-			$this->mDb->debug = $pLevel;
-		}
-	}
-
-	/**
-	 *
-	 */
-	function debugger_log($query, $values)
-	{
-		// Will spam only if debug parameter present in URL
-		// \todo DON'T FORGET TO REMOVE THIS BEFORE 1.8 RELEASE
-		if (!isset($_REQUEST["debug"])) return;
-		// spam to debugger log
-		include_once( DEBUG_PKG_PATH.'debugger.php' );
-		global $debugger;
-		if (is_array($values) && strpos($query, '?'))
-			foreach ($values as $v)
-			{
-				$q = strpos($query, '?');
-				if ($q)
-				{
-					$tmp = substr($query, 0, $q)."'".$v."'".substr($query, $q + 1);
-					$query = $tmp;
-				}
-			}
-		$debugger->msg($this->num_queries.': '.$query);
+		// PURE VIRTUAL
 	}
 
 	/**
@@ -1022,7 +821,7 @@ class BitDb
 	 *	   are disabled, making it backward compatible.
 	 */
 	function StartTrans() {
-		 return $this->mDb->StartTrans();
+		// PURE VIRTUAL
 	}
 
 	/**
@@ -1034,7 +833,7 @@ class BitDb
 	 *	@returns true on commit, false on rollback.
 	 */
 	function CompleteTrans() {
-		 return $this->mDb->CompleteTrans();
+		// PURE VIRTUAL
 	}
 
 	/**
@@ -1044,32 +843,16 @@ class BitDb
 	 * @return true/false.
 	 */
 	function RollbackTrans() {
-		$this->mDb->FailTrans();
-		 return $this->mDb->CompleteTrans( FALSE );
-	}
-
-	/**
-	 * Create a list of tables available in the current database
-	 *
-	 * @param ttype can either be 'VIEW' or 'TABLE' or false.
-	 * 		If false, both views and tables are returned.
-	 *		"VIEW" returns only views
-	 *		"TABLE" returns only tables
-	 * @param showSchema returns the schema/user with the table name, eg. USER.TABLE
-	 * @param mask  is the input mask - only supported by oci8 and postgresql
-	 *
-	 * @return  array of tables for current database.
-	 */
-	function MetaTables( $ttype = false, $showSchema = false, $mask=false ) {
-		 return $this->mDb->MetaTables( $ttype, $showSchema, $mask );
+		// PURE VIRTUAL
 	}
 
 	/**
 	* @return # rows affected by UPDATE/DELETE
 	*/
 	function Affected_Rows() {
-		return $this->mDb->Affected_Rows();
+		// PURE VIRTUAL
 	}
+	
 	/**
 	 * Check for Postgres specific extensions
 	 */

@@ -1,12 +1,13 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.5 2005/12/26 12:24:37 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.6 2006/01/25 15:40:25 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 // Initialization
+$gForceAdodb = TRUE;
 require_once( '../../bit_setup_inc.php' );
 require_once( KERNEL_PKG_PATH.'admin_lib.php' );
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.24 2006/01/23 21:56:01 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.25 2006/01/25 15:40:24 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -54,9 +54,21 @@ define('BIT_THEME_PATH', BIT_ROOT_PATH . 'themes/');
 ini_set ( 'session.use_trans_sid', 'Off' );
 
 // Force a global ADODB db object so all classes share the same connection
-require_once(KERNEL_PKG_PATH . 'BitDb.php');
+switch( $gBitDbSystem ) {
+	case 'pear':
+		$dbClass = 'BitDbPear';
+		break;
+	default:
+		$dbClass = 'BitDbAdodb';
+		break;
+}
+// the installer and select admin pages required DataDict to verify package installation
+if( !empty( $gForceAdodb ) ) {
+	$dbClass = 'BitDbAdodb';
+}
+require_once(KERNEL_PKG_PATH . $dbClass.'.php');
 global $gBitDb;
-$gBitDb = new BitDb();
+$gBitDb = new $dbClass();
 
 require_once(KERNEL_PKG_PATH . 'BitSystem.php');
 global $gRefreshSitePrefs;

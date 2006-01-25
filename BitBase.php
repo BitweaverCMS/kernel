@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.12 2006/01/10 21:12:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.13 2006/01/25 15:40:24 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -20,7 +20,7 @@
 /**
  * required setup
  */
-require_once ( KERNEL_PKG_PATH.'BitDb.php' );
+require_once ( KERNEL_PKG_PATH.'BitDbBase.php' );
 include_once ( KERNEL_PKG_PATH.'BitCache.php' );
 
 define( 'STORAGE_BINARY', 1 );
@@ -105,7 +105,7 @@ class BitBase
      * Determines if there is a valide database connection
      **/
 	function isDatabaseValid() {
-		return( !empty( $this->mDb->mDb ) && $this->mDb->mDb->_connectionID );
+		return( !empty( $this->mDb ) && $this->mDb->isValid() );
 	}
 
     /**

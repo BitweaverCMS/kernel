@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.26 2006/01/24 21:49:20 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.27 2006/01/25 15:40:24 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -148,11 +148,9 @@ class BitSystem extends BitBase {
 
 		if ( empty( $this->mPrefs ) ) {
 			$query = "SELECT `name` ,`value` FROM `" . BIT_DB_PREFIX . "tiki_preferences` " . $whereClause;
-			$rs = $this->mDb->query($query, $queryVars, -1, -1 );
-			if ($rs) {
-				while (!$rs->EOF) {
-					$this->mPrefs[$rs->fields['name']] = $rs->fields['value'];
-					$rs->MoveNext();
+			if( $rs = $this->mDb->query($query, $queryVars, -1, -1 ) ) {
+				while( $row = $rs->fetchRow() ) {
+					$this->mPrefs[$row['name']] = $row['value'];
 				}
 			}
 		}
@@ -1292,9 +1290,8 @@ asort( $this->mAppMenu );
 			}
 			$query = "SELECT tl.`user_id` FROM `" . BIT_DB_PREFIX . "tiki_layouts` tl
 					$whereClause ";
-			$result = $this->mDb->query($query, array($pUserMixed));
-			if ($result->fields['user_id']) {
-				$layoutUserId = $result->fields['user_id'];
+			if( $userId = $this->mDb->getOne($query, array($pUserMixed)) ) {
+				$layoutUserId = $userId;
 			}
 		}
 		$whereClause = 'AND ';
@@ -1329,12 +1326,12 @@ asort( $this->mAppMenu );
 		}
 
 		$gCenterPieces = array();
-		while (!$result->EOF) {
-			if ($skipDefaults && $result->fields['layout'] == DEFAULT_PACKAGE) {
+		while( $row = $result->fetchRow() ) {
+			if ($skipDefaults && $row['layout'] == DEFAULT_PACKAGE) {
 				// we're done! we've got all the non-DEFAULT_PACKAGE modules
 				break;
 			}
-			$row = &$result->fields;
+			
 			if( !empty( $row["section_params"] ) ) {
 				$row['params'] = $row['section_params'];
 			}
@@ -1383,7 +1380,6 @@ asort( $this->mAppMenu );
 				array_push($gCenterPieces, $row['module_rsrc']);
 			}
 			array_push($ret[$row['position']], $row);
-			$result->MoveNext();
 		}
 		return $ret;
 	}

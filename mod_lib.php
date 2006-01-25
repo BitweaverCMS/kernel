@@ -3,7 +3,7 @@
  * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.11 2006/01/25 15:22:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.12 2006/01/25 15:40:24 spiderr Exp $
  */
 
 /**
@@ -104,8 +104,7 @@ class ModLib extends BitBase {
 
 		if( (empty( $pHash['module_id'] ) || !is_numeric( $pHash['module_id'] )) && isset( $pHash['module_rsrc'] ) ) {
 			$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."tiki_module_map` WHERE `module_rsrc`=?";
-			$result = $this->mDb->query( $query, array( $pHash['module_rsrc'] ) );
-			$pHash['module_id'] = $result->fields['module_id'];
+			$pHash['module_id'] = $this->mDb->getOne( $query, array( $pHash['module_rsrc'] ) );
 		}
 
 		if( empty( $pHash['pos'] ) ) {
@@ -398,16 +397,16 @@ class ModLib extends BitBase {
 	              FROM `".BIT_DB_PREFIX."tiki_layouts_modules` tlm, `".BIT_DB_PREFIX."tiki_module_map` tmm
 				  WHERE tmm.`module_id` = tlm.`module_id` ORDER BY `module_rsrc`";
 		$result = $this->mDb->query( $query );
-		while( !$result->EOF ) {
-			if( preg_match( '/center_/', $result->fields['module_rsrc'] ) ) {
+		while( $row = $result->fetchRow() ) {
+			if( preg_match( '/center_/', $row['module_rsrc'] ) ) {
 				$subArray = 'center';
 			} else {
 				$subArray = 'border';
 			}
-			$result->fields['name'] = $this->convertResourceToName( $result->fields['module_rsrc'] );
+			$row['name'] = $this->convertResourceToName( $row['module_rsrc'] );
 
 			// handle old style serialized group names for legacy data
-			if( preg_match( '/[A-Za-z]/', $result->fields["groups"] ) ) {
+			if( preg_match( '/[A-Za-z]/', $row["groups"] ) ) {
 				static $allGroups;
 				if( empty( $allGroups ) ) {
 					$allGroups = $gBitUser->getAllUserGroups( ROOT_USER_ID );
@@ -416,23 +415,22 @@ class ModLib extends BitBase {
 				foreach( array_keys( $allGroups ) as $groupId ) {
 					$allGroupNames["$groupId"] = $allGroups[$groupId]["group_name"];
 				}
-				if( $modGroups = @unserialize( $result->fields["groups"] ) ) {
+				if( $modGroups = @unserialize( $row["groups"] ) ) {
 					foreach( $modGroups as $groupName ) {
 						if( $searchId = array_search( $groupName, $allGroupNames ) ) {
-							$result->fields["groups"] = $searchId.' ';
+							$row["groups"] = $searchId.' ';
 						}
 					}
 				}
 			}
 
-			$result->fields["groups"] = trim( $result->fields["groups"] );
-			if( !empty( $result->fields["groups"] ) ) {
-				$result->fields["groups"] = explode( ' ', $result->fields["groups"] );
+			$row["groups"] = trim( $row["groups"] );
+			if( !empty( $row["groups"] ) ) {
+				$row["groups"] = explode( ' ', $row["groups"] );
 			}
-			if ( $gBitUser->isAdmin() || !empty( $result->fields['groups'] ) || (is_array($result->fields['groups']) && in_array($gBitUser->mGroups, $result->fields['groups'])) ) {
-				array_push( $ret[$subArray], $result->fields );
+			if ( $gBitUser->isAdmin() || !empty( $row['groups'] ) || (is_array($row['groups']) && in_array($gBitUser->mGroups, $row['groups'])) ) {
+				array_push( $ret[$subArray], $row );
 			}
-			$result->MoveNext();
 		}
 		return $ret;
 	}

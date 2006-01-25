@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.5 2005/12/26 12:24:37 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.6 2006/01/25 12:58:43 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -12,7 +12,7 @@ include_once( KERNEL_PKG_PATH.'mod_lib.php' );
 // needed for custom menus
 include_once( KERNEL_PKG_PATH.'menu_lib.php' );
 
-if (!isset($_REQUEST["groups"])) {
+if( !isset($_REQUEST["groups"] ) ) {
 	$_REQUEST["groups"] = array();
 }
 
@@ -20,7 +20,22 @@ if( empty( $_REQUEST['fPackage'] ) ) {
 	$_REQUEST['fPackage'] = DEFAULT_PACKAGE;
 }
 
+$gBitSmarty->assign_by_ref( 'feedback', $feedback = array() );
 $layout = $gBitSystem->getLayout( ROOT_USER_ID, $_REQUEST['fPackage'], FALSE );
+
+if( empty( $_REQUEST['nojs'] ) ) {
+	// load the javascript to get everythign working
+	$gBitSmarty->assign( 'loadDragDrop', TRUE );
+
+	// the layout has been moved around and we need to save it
+	if( !empty( $_REQUEST['apply_layout'] ) ) {
+		if( $modlib->storeModulesBatch( $_REQUEST ) ) {
+			$feedback['success'] = tra( "The layout was successfully saved." );
+		} else {
+			$feedback['error'] = tra( "There was a problem storing the layout." );
+		}
+	}
+}
 
 if( !empty( $_REQUEST['module_name'] ) ) {
 	$fAssign['name'] = $_REQUEST['module_name'];
@@ -55,7 +70,6 @@ $gBitSmarty->assign( 'formMiscFeatures',$formMiscFeatures );
 $processForm = set_tab();
 
 if( $processForm == 'Misc' ) {
-
 	foreach( array_keys( $formMiscFeatures ) as $item ) {
 		simple_set_toggle( $item );
 	}

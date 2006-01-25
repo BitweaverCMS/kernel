@@ -3,7 +3,7 @@
  * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.9 2005/10/23 14:40:22 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.10 2006/01/25 12:58:43 squareing Exp $
  */
 
 /**
@@ -113,6 +113,75 @@ class ModLib extends BitBase {
 		}
 
 		return $ret;
+	}
+
+	function verifyBatch( &$pParamHash ) {
+		// initialise variables
+		$pParamHash['store']['module'] = array();
+		$pParamHash['store']['layout'] = array();
+
+		// prepare all module parameters for storage
+		if( !empty( $pParamHash['module'] ) ) {
+			foreach( $pParamHash['module'] as $module_id => $params ) {
+				// all values that makes sense from tiki_layouts_modules are here
+				$paramOptions = array( 'rows', 'title', 'params', 'cache_time' );
+				foreach( $paramOptions as $option ) {
+					// we need to be able to set things in the db to NULL, if the user wants to nuke some settings
+					if( isset( $params[$option] ) ) {
+						$pParamHash['store']['module'][$module_id][$option] = !empty( $params[$option] ) ? $params[$option] : NULL;
+					}
+				}
+			}
+		}
+
+		// evaluate code from drag / drop interface
+		if( !empty( $pParamHash['side_columns'] ) || !empty( $pParamHash['center_column'] ) ) {
+			// if we allow users to use this interface, we should add some security here
+			eval( $pParamHash['side_columns'] );
+			eval( $pParamHash['center_column'] );
+			$newLayout = array_merge( $side_columns, $center_column );
+		}
+
+		global $gBitSystem;
+		// compare $pParamHash['user_id'] with $gBitUser - otherwise a user could simply set user_id in url and screw up someone elses layout.
+		$bitLayout = $gBitSystem->getLayout( ( ( !empty( $pParamHash['user_id'] ) && ( $gBitUser->mUserId == $pParamHash['user_id'] ) ) ? $pParamHash['user_id'] : ROOT_USER_ID ), $_REQUEST['fPackage'], FALSE );
+
+		// prepare module positional data for storage
+		if( !empty( $bitLayout ) && !empty( $newLayout ) ) {
+			// cycle through both layouts and join the information
+			foreach( $bitLayout as $area => $column ) {
+				if( !empty( $column ) ) {
+					foreach( $column as $module ) {
+						foreach( $newLayout as $_area => $_column ) {
+							foreach( $_column as $_pos => $_module ) {
+								// module_id-<id> is the information fed from the drag / drop javascript
+								if( preg_match( "/^module_id-".$module['module_id']."$/", $_module ) ) {
+									$pParamHash['store']['layout'][$module['module_id']]['ord'] = $_pos + 1;
+									$pParamHash['store']['layout'][$module['module_id']]['position'] = substr( $_area, 0, 1 );
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return TRUE;
+	}
+
+	function storeModulesBatch( $pParamHash ) {
+		if( $this->verifyBatch( $pParamHash ) ) {
+			foreach( $pParamHash['store']['layout'] as $module_id => $storeModule ) {
+				$locId = array( 'name' => 'module_id', 'value' => $module_id );
+				$table = "`".BIT_DB_PREFIX."tiki_layouts`";
+				$this->mDb->associateUpdate( $table, $storeModule, $locId );
+			}
+			foreach( $pParamHash['store']['module'] as $module_id => $storeModule ) {
+				$locId = array( 'name' => 'module_id', 'value' => $module_id );
+				$table = "`".BIT_DB_PREFIX."tiki_layouts_modules`";
+				$this->mDb->associateUpdate( $table, $storeModule, $locId );
+			}
+		}
+		return TRUE;
 	}
 
 	function storeLayout( $pHash ) {

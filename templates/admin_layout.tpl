@@ -80,18 +80,18 @@
 							{section name=ix loop=$layout.$area}
 								<li id="module_id-{$layout.$area[ix].module_id}">
 									{if $colkey ne 'center'}
-										<strong>{tr}Title{/tr}</strong>: <input size="20" name="module[{$layout.$area[ix].module_id}][title]" value="{$layout.$area[ix].title}" /><br />
-										<strong>{tr}Rows{/tr}</strong>: <input size="5" name="module[{$layout.$area[ix].module_id}][rows]" value="{$layout.$area[ix].rows}" /><br />
-									{/if}
-									{if $column[ix].type ne 'P'}
-										<strong>{tr}Remove Module{/tr}</strong>: {smartlink ititle="Unassign" ibiticon="liberty/delete_small" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout fMove=unassign fPackage=$fPackage fModule=`$layout.$area[ix].module_id`}<br />
+										<strong>{tr}Title{/tr}</strong>: <input size="20" name="modules[{$layout.$area[ix].module_id}][title]" value="{$layout.$area[ix].title}" /><br />
+										<strong>{tr}Rows{/tr}</strong>: <input size="5" name="modules[{$layout.$area[ix].module_id}][rows]" value="{$layout.$area[ix].rows}" /><br />
 									{/if}
 									<strong>{tr}Module{/tr}</strong>: {$layout.$area[ix].name|escape}<br />
 									{if $layout.$area[ix].cache_time}
 										<strong>{tr}Cache Time{/tr}</strong>: {$layout.$area[ix].cache_time}<br />
 									{/if}
 									{if $layout.$area[ix].params}
-										<strong>{tr}Parameters{/tr}</strong>:<br />{$layout.$area[ix].params|replace:"&":"<br />"}
+										<strong>{tr}Parameters{/tr}</strong>:<br />{$layout.$area[ix].params|replace:"&":"<br />"}<br />
+									{/if}
+									{if $column[ix].type ne 'P'}
+										<input type="submit" name="unassign[{$layout.$area[ix].module_id}]" value="{tr}Remove Module{/tr}" onclick="javascript:getSort('center_column');getSort('side_columns');this.form.submit;" />
 									{/if}
 								</li>
 							{sectionelse}
@@ -107,6 +107,7 @@
 
 		<input type="hidden" name="side_columns" id="side_columns" value="" />
 		<input type="hidden" name="center_column" id="center_column" value="" />
+		<input type="hidden" name="package" value="{$fPackage}" />
 		<input type="hidden" name="page" value="{$page}" />
 
 		<div class="row submit">

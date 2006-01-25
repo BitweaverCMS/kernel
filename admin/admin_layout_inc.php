@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.6 2006/01/25 12:58:43 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.7 2006/01/25 15:22:34 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -28,7 +28,12 @@ if( empty( $_REQUEST['nojs'] ) ) {
 	$gBitSmarty->assign( 'loadDragDrop', TRUE );
 
 	// the layout has been moved around and we need to save it
-	if( !empty( $_REQUEST['apply_layout'] ) ) {
+	if( !empty( $_REQUEST['apply_layout'] ) || !empty( $_REQUEST['unassign'] ) ) {
+		if( !empty( $_REQUEST['unassign'] ) ) {
+			$unassign = array_keys( $_REQUEST['unassign'] );
+			$modlib->unassignModule( $unassign[0], ROOT_USER_ID, $_REQUEST['package'] );
+			unset( $_REQUEST['modules'][$unassign[0]] );
+		}
 		if( $modlib->storeModulesBatch( $_REQUEST ) ) {
 			$feedback['success'] = tra( "The layout was successfully saved." );
 		} else {

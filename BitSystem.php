@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.28 2006/01/25 18:34:54 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.29 2006/01/26 14:57:12 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1381,7 +1381,7 @@ asort( $this->mAppMenu );
 				array_push($gCenterPieces, $row['module_rsrc']);
 			}
 			array_push($ret[$row['position']], $row);
-			$row = $result->fetchRow();			
+			$row = $result->fetchRow();
 		}
 		return $ret;
 	}

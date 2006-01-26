@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.1 2006/01/25 15:40:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.2 2006/01/26 15:16:52 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -35,9 +35,9 @@ class BitDbAdodb extends BitDb
 	function BitDbAdodb()
 	{
 		global $gBitDbType, $gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName, $ADODB_FETCH_MODE;
-		
+
 		parent::BitDb();
-		
+
 		global $ADODB_CACHE_DIR;
 		if( empty( $ADODB_CACHE_DIR ) ) {
 			$ADODB_CACHE_DIR = getTempDir().'/adodb/'.$_SERVER['HTTP_HOST'].'/';
@@ -507,7 +507,7 @@ class BitDbAdodb extends BitDb
 	 *	   are disabled, making it backward compatible.
 	 */
 	function StartTrans() {
-		 return $this->mDb->StartTrans();
+		return $this->mDb->StartTrans();
 	}
 
 	/**
@@ -519,7 +519,7 @@ class BitDbAdodb extends BitDb
 	 *	@returns true on commit, false on rollback.
 	 */
 	function CompleteTrans() {
-		 return $this->mDb->CompleteTrans();
+		return $this->mDb->CompleteTrans();
 	}
 
 	/**
@@ -530,7 +530,7 @@ class BitDbAdodb extends BitDb
 	 */
 	function RollbackTrans() {
 		$this->mDb->FailTrans();
-		 return $this->mDb->CompleteTrans( FALSE );
+		return $this->mDb->CompleteTrans( FALSE );
 	}
 
 	/**
@@ -546,7 +546,7 @@ class BitDbAdodb extends BitDb
 	 * @return  array of tables for current database.
 	 */
 	function MetaTables( $ttype = false, $showSchema = false, $mask=false ) {
-		 return $this->mDb->MetaTables( $ttype, $showSchema, $mask );
+		return $this->mDb->MetaTables( $ttype, $showSchema, $mask );
 	}
 
 	/**
@@ -598,9 +598,7 @@ function bit_error_handler($dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnecti
 			$subject .= ' SILENT';
 	}
 
-	bit_log_error( $logString, $dbParmas['db_msg'] );	
+	bit_log_error( $logString, $dbParams['db_msg'] );
 }
-
-
 
 ?>

@@ -19,7 +19,7 @@
  * set error handling
  */
 if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
-	define( 'ADODB_ERROR_HANDLER', 'bit_error_handler' );
+	define( 'ADODB_ERROR_HANDLER', 'bit_log_error' );
 }
 
 function bit_log_error( $pLogMessage, $pSubject ) {
@@ -43,7 +43,7 @@ function bit_log_error( $pLogMessage, $pSubject ) {
 	if( $fatal ) {
 		die();
 	} else {
-				return $logString;
+		return $logString;
 	}
 }
 
@@ -55,33 +55,33 @@ function bit_error_string( $iDBParms ) {
 	$separator = "\n";
 	$indent = "  ";
 
-    $date = date("D M d H:i:s Y"); // [Tue Sep 24 12:19:20 2002] [error]
+	$date = date("D M d H:i:s Y"); // [Tue Sep 24 12:19:20 2002] [error]
 
-    if( isset( $gBitUser->mInfo ) ) {
+	if( isset( $gBitUser->mInfo ) ) {
 		$acctStr = "ID: ".$gBitUser->mInfo['user_id']." - Login: ".$gBitUser->mInfo['login']." - e-mail: ".$gBitUser->mInfo['email'];
-    } else {
+	} else {
 		$acctStr = "User unknown";
-    }
+	}
 
 	$info  = $indent."[ - ".BIT_MAJOR_VERSION.".".BIT_MINOR_VERSION.".".BIT_SUB_VERSION." ".BIT_LEVEL." - ] [ $date ]".$separator;
 	$info .= $indent."-----------------------------------------------------------------------------------------------".$separator;
-    $info .= $indent."#### USER AGENT: ".$_SERVER['HTTP_USER_AGENT'].$separator;
-    $info .= $indent."#### ACCT: ".$acctStr.$separator;
-    $info .= $indent."#### URL: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$separator;
+	$info .= $indent."#### USER AGENT: ".$_SERVER['HTTP_USER_AGENT'].$separator;
+	$info .= $indent."#### ACCT: ".$acctStr.$separator;
+	$info .= $indent."#### URL: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$separator;
 	if( isset($_SERVER['HTTP_REFERER'] ) ) {
-    	$info .= $indent."#### REFERRER: $_SERVER[HTTP_REFERER]".$separator;
+		$info .= $indent."#### REFERRER: $_SERVER[HTTP_REFERER]".$separator;
 	}
-    $info .= $indent."#### HOST: $_SERVER[HTTP_HOST]".$separator;
+	$info .= $indent."#### HOST: $_SERVER[HTTP_HOST]".$separator;
 	$info .= $indent."#### IP: $_SERVER[REMOTE_ADDR]".$separator;
 
-    if( $gBitDb && isset( $php_errormsg ) ) {
+	if( $gBitDb && isset( $php_errormsg ) ) {
 		$info .= $indent."#### PHP: ".$php_errormsg.$separator;
-    }
+	}
 
-    if ( $iDBParms['sql'] ) {
+	if ( $iDBParms['sql'] ) {
 		$badSpace = array("\n", "\t");
 		$info .= $indent."#### SQL: ".str_replace($badSpace, ' ', $iDBParms['sql']).$separator;
-    }
+	}
 
 	$errno = ((int)$iDBParms['errno'] ? 'Errno: '.$iDBParms['errno'] : '');
 

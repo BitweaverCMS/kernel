@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.1 2006/01/25 15:40:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.2 2006/01/26 17:28:35 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -413,14 +413,19 @@ bt();
 }
 
 // This function will handle all errors
-function bit_error_handler ($error_obj) {
-    // Be verbose while developing the application
-    if( !defined( 'IS_LIVE' ) ) {
-		$dbParams = array( 'errno'=> $error_obj->getCode(), 'db_msg'=>$error_obj->getMessage(), 'sql'=>$error_obj->getDebugInfo());
+function bit_error_handler( $error_obj ) {
+	// Be verbose while developing the application
+	if( !defined( 'IS_LIVE' ) ) {
+		$dbParams = array(
+			'errno' => $error_obj->getCode(),
+			'db_msg'=> $error_obj->getMessage(),
+			'sql'=> $error_obj->getDebugInfo()
+		);
 		$logString = bit_error_string( $dbParams );
 
-    	vd( $logString );
-		// Dump a silly message if the site is in production
+		bit_log_error( $logString, $dbParams['db_msg'] );
+
+	// Dump a silly message if the site is in production
 	} else {
 		die ('Sorry you request can not be processed now. Try again later');
 	}

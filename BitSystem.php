@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.75 2006/01/24 21:50:55 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.76 2006/01/26 15:00:34 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -148,11 +148,9 @@ class BitSystem extends BitBase {
 
 		if ( empty( $this->mPrefs ) ) {
 			$query = "SELECT `name` ,`value` FROM `" . BIT_DB_PREFIX . "tiki_preferences` " . $whereClause;
-			$rs = $this->mDb->query($query, $queryVars, -1, -1 );
-			if ($rs) {
-				while (!$rs->EOF) {
-					$this->mPrefs[$rs->fields['name']] = $rs->fields['value'];
-					$rs->MoveNext();
+			if( $rs = $this->mDb->query($query, $queryVars, -1, -1 ) ) {
+				while( $row = $rs->fetchRow() ) {
+					$this->mPrefs[$row['name']] = $row['value'];
 				}
 			}
 		}
@@ -1292,9 +1290,8 @@ asort( $this->mAppMenu );
 			}
 			$query = "SELECT tl.`user_id` FROM `" . BIT_DB_PREFIX . "tiki_layouts` tl
 					$whereClause ";
-			$result = $this->mDb->query($query, array($pUserMixed));
-			if ($result->fields['user_id']) {
-				$layoutUserId = $result->fields['user_id'];
+			if( $userId = $this->mDb->getOne($query, array($pUserMixed)) ) {
+				$layoutUserId = $userId;
 			}
 		}
 		$whereClause = 'AND ';
@@ -1321,20 +1318,21 @@ asort( $this->mAppMenu );
 		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "tiki_layouts` tl, `" . BIT_DB_PREFIX . "tiki_layouts_modules` tlm, `" . BIT_DB_PREFIX . "tiki_module_map` tmm
 				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->mDb->convert_sortmode("ord_asc");
 		$result = $this->mDb->query($query, $bindVars);
+		$row = $result->fetchRow();
 		// CHeck to see if we have ACTIVE_PACKAGE modules at the top of the results
-		if (isset($result->fields['layout']) && ($result->fields['layout'] != DEFAULT_PACKAGE) && (ACTIVE_PACKAGE != DEFAULT_PACKAGE)) {
+		if (isset($row['layout']) && ($row['layout'] != DEFAULT_PACKAGE) && (ACTIVE_PACKAGE != DEFAULT_PACKAGE)) {
 			$skipDefaults = true;
 		} else {
 			$skipDefaults = false;
 		}
 
 		$gCenterPieces = array();
-		while (!$result->EOF) {
-			if ($skipDefaults && $result->fields['layout'] == DEFAULT_PACKAGE) {
+		while( $row ) {
+			if ($skipDefaults && $row['layout'] == DEFAULT_PACKAGE) {
 				// we're done! we've got all the non-DEFAULT_PACKAGE modules
 				break;
 			}
-			$row = &$result->fields;
+			
 			if( !empty( $row["section_params"] ) ) {
 				$row['params'] = $row['section_params'];
 			}
@@ -1383,7 +1381,7 @@ asort( $this->mAppMenu );
 				array_push($gCenterPieces, $row['module_rsrc']);
 			}
 			array_push($ret[$row['position']], $row);
-			$result->MoveNext();
+			$row = $result->fetchRow();
 		}
 		return $ret;
 	}

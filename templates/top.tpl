@@ -14,7 +14,7 @@
 	{/if}
 
 	{if $siteTitle}
-	<br />
+		<br />
 	{/if}
 
 	{if $gBitSystem->isFeatureActive( 'feature_calendar' ) and $gBitUser->hasPermission( 'bit_p_view_calendar' )}

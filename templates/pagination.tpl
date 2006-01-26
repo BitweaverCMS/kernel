@@ -31,11 +31,17 @@
 	</div> <!-- end .pagination -->
 {elseif $listInfo && $listInfo.total_pages > 1}
 	<div class="pagination">
+		{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find`"}
 		{math equation="offset + 1 * max" offset=$listInfo.offset max=$listInfo.max_records assign=to}
+		{if $listInfo.current_page > 1}
+			&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page-1}">&laquo;</a>&nbsp;
+		{/if}
 		{tr}Page <strong>{$listInfo.current_page}</strong> of <strong>{$listInfo.total_pages}</strong>{/tr}
+		{if $listInfo.current_page < $listInfo.total_pages}
+			&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page+1}">&raquo;</a>&nbsp;
+		{/if}
 		<br />
 		{tr}Items <strong>{$listInfo.offset+1}</strong> to <strong>{if $to > $listInfo.total_records}{$listInfo.total_records}{else}{$to}{/if}</strong> (of <strong>{$listInfo.total_records}</strong>){/tr}
-		{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find`"}
 		{if $gBitSystem->isFeatureActive( 'direct_pagination' )}
 			<div class="pager">
 				<span class="left" style="float:left; width:48%; text-align:right;">

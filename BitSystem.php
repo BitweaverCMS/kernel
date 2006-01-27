@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.30 2006/01/27 15:45:17 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.31 2006/01/27 16:15:52 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1131,23 +1131,27 @@ asort( $this->mAppMenu );
 	* @access public
 	*/
 	function getStyleCss($pStyle = NULL, $pUserId = NULL) {
-		global $gBitUser;
-		if (empty($pStyle)) {
+		global $gBitUser, $gBitSystem;
+		if( empty( $pStyle ) ) {
 			$pStyle = $this->getStyle();
 		}
 		$ret = '';
-		if ($pStyle == 'custom') {
+		if( $pStyle == 'custom' ) {
 			// This is a page which uses a user-customized theme
 			// The user who owns the page (whose custom theme is being requested)
 			$homepageUser = new BitUser($pUserId);
 			$homepageUser->load();
 			// Path to the user-customized css file
-			$cssPath = $homepageUser->getStoragePath('theme',$homepageUser->mUserId,NULL).'custom.css';
-			if (file_exists($cssPath)) {
-				$ret = $homepageUser->getStorageURL('theme',$homepageUser->mUserId,NULL).'custom.css';
+			$cssPath = $homepageUser->getStoragePath( 'theme', $homepageUser->mUserId, NULL ).'custom.css';
+			if( file_exists( $cssPath ) ) {
+				$ret = $homepageUser->getStorageURL( 'theme', $homepageUser->mUserId, NULL ).'custom.css';
 			}
-		} elseif( file_exists( THEMES_PKG_PATH.'styles/'.$pStyle.'/'.$pStyle.'.css' ) ) {
-			$ret = THEMES_PKG_URL.'styles/'.$pStyle.'/'.$pStyle.'.css';
+		} else {
+			if( $gBitSystem->getPreference( 'style_variation' ) && is_readable( THEMES_PKG_PATH.'styles/'.$pStyle.'/alternate/'.$gBitSystem->getPreference( 'style_variation' ).'.css' ) ) {
+				$ret = THEMES_PKG_URL.'styles/'.$pStyle.'/alternate/'.$gBitSystem->getPreference( 'style_variation' ).'.css';
+			} elseif( is_readable( THEMES_PKG_PATH.'styles/'.$pStyle.'/'.$pStyle.'.css' ) ) {
+				$ret = THEMES_PKG_URL.'styles/'.$pStyle.'/'.$pStyle.'.css';
+			}
 		}
 		return $ret;
 	}

@@ -6,7 +6,7 @@
 
 	<link rel="shortcut icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
-	<link rel="start" title="{$siteTitle} {tr}Home Page{/tr}" href="{$smarty.const.BIT_ROOT_URL}" />
+	<link rel="start" title="{$gBitSystemPrefs.siteTitle} {tr}Home Page{/tr}" href="{$smarty.const.BIT_ROOT_URL}" />
 	<link rel="help" title="{tr}Help{/tr}" href="http://www.bitweaver.org/" />
 {/strip}
 <script type="text/javascript">//<![CDATA[

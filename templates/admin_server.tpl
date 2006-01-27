@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.5 2005/10/29 17:53:55 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.6 2006/01/27 22:59:37 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -10,7 +10,7 @@
 					{formfeedback warning="After changing the browser title, you might have to login again."}
 					{formlabel label="Site title" for="siteTitle"}
 					{forminput}
-						<input size="50" type="text" name="siteTitle" id="siteTitle" value="{$siteTitle|escape}" />
+						<input size="50" type="text" name="siteTitle" id="siteTitle" value="{$gBitSystemPrefs.siteTitle|escape}" />
 						{formhelp note="The title of your site. The title appears in the banner area and in the browsers top bar."}
 					{/forminput}
 				</div>

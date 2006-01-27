@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.29 2006/01/26 14:57:12 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.30 2006/01/27 15:45:17 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1130,11 +1130,9 @@ asort( $this->mAppMenu );
 	* @return none
 	* @access public
 	*/
-	function getStyleCss($pStyle = NULL, $pUserId = NULL)
-	{
+	function getStyleCss($pStyle = NULL, $pUserId = NULL) {
 		global $gBitUser;
-		if (empty($pStyle))
-		{
+		if (empty($pStyle)) {
 			$pStyle = $this->getStyle();
 		}
 		$ret = '';
@@ -1148,14 +1146,8 @@ asort( $this->mAppMenu );
 			if (file_exists($cssPath)) {
 				$ret = $homepageUser->getStorageURL('theme',$homepageUser->mUserId,NULL).'custom.css';
 			}
-		} else {
-			if( $gBitUser->verifyStorageFile( $pStyle.'.css',$pStyle,$gBitUser->mUserId,'stylist' ) ) {
-				$ret = $gBitUser->getStorageUrl( $pStyle,$gBitUser->mUserId,'stylist' ).$pStyle.'.css';
-			} elseif( $gBitUser->verifyStorageFile( $pStyle.'.css',$pStyle,NULL,'stylist' ) ) {
-				$ret = $gBitUser->getStorageUrl( $pStyle,NULL,'stylist' ).$pStyle.'.css';
-			} elseif( file_exists( THEMES_PKG_PATH.'styles/'.$pStyle.'/'.$pStyle.'.css' ) ) {
-				$ret = THEMES_PKG_URL.'styles/'.$pStyle.'/'.$pStyle.'.css';
-			}
+		} elseif( file_exists( THEMES_PKG_PATH.'styles/'.$pStyle.'/'.$pStyle.'.css' ) ) {
+			$ret = THEMES_PKG_URL.'styles/'.$pStyle.'/'.$pStyle.'.css';
 		}
 		return $ret;
 	}
@@ -1167,17 +1159,10 @@ asort( $this->mAppMenu );
 	* @return path to custom.css file
 	* @access public
 	*/
-	function getCustomStyleCss( $pStyle = null )
-	{
-		global $gBitUser;
+	function getCustomStyleCss( $pStyle = null ) {
 		$ret = null;
 		if( empty( $pStyle ) ) {
 			$pStyle = $this->getStyle();
-		}
-		if( $gBitUser->verifyStorageFile( 'custom.css',$pStyle,$gBitUser->mUserId,'stylist' ) ) {
-			$ret = $gBitUser->getStorageUrl( $pStyle,$gBitUser->mUserId,'stylist' ).'custom.css';
-		} elseif( $gBitUser->verifyStorageFile( 'custom.css',$pStyle,NULL,'stylist' ) ) {
-			$ret = $gBitUser->getStorageUrl( $pStyle,NULL,'stylist' ).'custom.css';
 		}
 		return $ret;
 	}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.27 2006/01/26 14:57:12 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.28 2006/01/27 23:04:46 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -296,11 +296,15 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign_by_ref('num_queries', $num_queries);
 	// Assign all prefs to smarty was we are done mucking about for a 1000 lines
 	$gBitSmarty->assign_by_ref('gBitSystemPrefs', $gBitSystem->mPrefs);
-	$prefs = &$gBitSystem->mPrefs; // TODO $prefs is only for backward compatibility, need to remove entirely
-	foreach ($prefs as $name => $val) {
-		$$name = $val;
-		$gBitSmarty->assign("$name", $val);
-	}
+
+//	======================= HOPEFULLY WE CAN SURVIVE WITHOUT THIS PREFERENCE ASSIGNEMENT STUFF =================
+//	$prefs = &$gBitSystem->mPrefs; // TODO $prefs is only for backward compatibility, need to remove entirely
+//	foreach ($prefs as $name => $val) {
+//		$$name = $val;
+//		$gBitSmarty->assign("$name", $val);
+//	}
+//	============================================================================================================
+
 	/* # not implemented
 		$http_basic_auth = $gBitSystem->getPreference('http_basic_auth', '/');
 		$gBitSmarty->assign('http_basic_auth',$http_basic_auth);

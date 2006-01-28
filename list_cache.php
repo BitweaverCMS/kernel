@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/list_cache.php,v 1.1.1.1.2.2 2005/07/26 15:50:08 drewslater Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/list_cache.php,v 1.1.1.1.2.3 2006/01/28 09:18:36 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -14,27 +14,13 @@
  */
 require_once( '../bit_setup_inc.php' );
 
-if (!$gBitUser->isAdmin()) {
-	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
+$gBitSystem->verifyPermission( 'bit_p_admin' );
 
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
-
-/*
-if($feature_listPages != 'y') {
-  $gBitSmarty->assign('msg',tra("This feature is disabled"));
-  $gBitSystem->display( 'error.tpl' );
-  die;  
-}
-*/
 if (isset($_REQUEST["remove"])) {
-	
 	$gBitSystem->remove_cache($_REQUEST["remove"]);
 }
 
 if (isset($_REQUEST["refresh"])) {
-	
 	$gBitSystem->refresh_cache($_REQUEST["refresh"]);
 }
 

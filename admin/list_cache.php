@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/list_cache.php,v 1.1.1.1.2.1 2005/07/26 15:50:08 drewslater Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/list_cache.php,v 1.1.1.1.2.2 2006/01/28 09:18:36 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -9,27 +9,13 @@
 // Initialization
 require_once( '../../bit_setup_inc.php' );
 
-if (!$gBitUser->isAdmin()) {
-	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
+$gBitSystem->verifyPermission( 'bit_p_admin' );
 
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
-
-/*
-if($feature_listPages != 'y') {
-  $gBitSmarty->assign('msg',tra("This feature is disabled"));
-  $gBitSystem->display( 'error.tpl' );
-  die;  
-}
-*/
 if (isset($_REQUEST["remove"])) {
-	
 	$gBitSystem->remove_cache($_REQUEST["remove"]);
 }
 
 if (isset($_REQUEST["refresh"])) {
-	
 	$gBitSystem->refresh_cache($_REQUEST["refresh"]);
 }
 

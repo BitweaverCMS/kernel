@@ -1,5 +1,5 @@
 <div id="bittop">
-	{if $siteTitle}
+	{if $gBitSystemPrefs.siteTitle}
 		<div style="float:right;">
 	{/if}
 
@@ -13,7 +13,7 @@
 		{/if}
 	{/if}
 
-	{if $siteTitle}
+	{if $gBitSystemPrefs.siteTitle}
 		<br />
 	{/if}
 
@@ -23,10 +23,10 @@
 		{$smarty.now|bit_short_datetime}
 	{/if}
 
-	{if $siteTitle}
+	{if $gBitSystemPrefs.siteTitle}
 		</div>
 	{/if}
 
-	<h1>{$siteTitle}</h1>
-	<h3>{$site_slogan}</h3>
+	<h1>{$gBitSystemPrefs.siteTitle}</h1>
+	<h3>{$gBitSystemPrefs.site_slogan}</h3>
 </div>

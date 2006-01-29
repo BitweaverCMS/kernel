@@ -3,7 +3,7 @@
  * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.13 2006/01/25 18:34:54 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.14 2006/01/29 21:45:42 squareing Exp $
  */
 
 /**
@@ -63,7 +63,7 @@ class ModLib extends BitBase {
 			$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."tiki_module_map` WHERE `module_rsrc`=?";
 			$pHash['module_id'] = $this->mDb->getOne($query,array($pHash['module_rsrc']));
 
-			if( $pHash['module_id'] ) { 	// If this module is not listed in the module map...
+			if( !@BitBase::verifyId( $pHash['module_id'] ) ) { 	// If this module is not listed in the module map...
 				$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_module_map` (`module_rsrc`) VALUES ( ? )";	// Insert a row for this module
 				$result = $this->mDb->query($query,array($pHash['module_rsrc']));
 				$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."tiki_module_map` WHERE `module_rsrc`=?";	// Get the module_id assigned to it

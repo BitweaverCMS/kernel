@@ -31,7 +31,12 @@
 	</div> <!-- end .pagination -->
 {elseif $listInfo && $listInfo.total_pages > 1}
 	<div class="pagination">
-		{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find`"}
+		{capture name=string}
+			{foreach from=$listInfo.parameters key=param item=value}
+				&amp;{$param}={$value}
+			{/foreach}
+		{/capture}
+		{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find``$smarty.capture.string`"}
 		{math equation="offset + 1 * max" offset=$listInfo.offset max=$listInfo.max_records assign=to}
 		{if $listInfo.current_page > 1}
 			&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page-1}">&laquo;</a>&nbsp;

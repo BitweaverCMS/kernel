@@ -3,7 +3,7 @@
  * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.14 2006/01/29 21:45:42 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.15 2006/01/30 19:22:45 squareing Exp $
  */
 
 /**
@@ -132,12 +132,17 @@ class ModLib extends BitBase {
 			}
 		}
 
-		// evaluate code from drag / drop interface
+		// unserialize() code from drag / drop interface
+		// our serializer in js doesn't support multi level serialisation, so we have to unserialize each sub array manually.
 		if( !empty( $pParamHash['side_columns'] ) || !empty( $pParamHash['center_column'] ) ) {
-			// if we allow users to use this interface, we should add some security here
-			// either change output from javascript or ensure we only eval() an array
-			eval( $pParamHash['side_columns'] );
-			eval( $pParamHash['center_column'] );
+			$side_columns = ( unserialize( $pParamHash['side_columns'] ) );
+			foreach( $side_columns as $col => $modules ) {
+				$side_columns[$col] = unserialize( $modules );
+			}
+			$center_column = ( unserialize( $pParamHash['center_column'] ) );
+			foreach( $center_column as $col => $modules ) {
+				$center_column[$col] = unserialize( $modules );
+			}
 			$newLayout = array_merge( $side_columns, $center_column );
 		}
 

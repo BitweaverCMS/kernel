@@ -107,7 +107,7 @@
 
 		<input type="hidden" name="side_columns" id="side_columns" value="" />
 		<input type="hidden" name="center_column" id="center_column" value="" />
-		<input type="hidden" name="package" value="{$fPackage}" />
+		<input type="hidden" name="fPackage" value="{$fPackage}" />
 		<input type="hidden" name="page" value="{$page}" />
 
 		<div class="row submit">

@@ -3,7 +3,7 @@
  * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.15 2006/01/30 19:22:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.16 2006/01/31 21:33:43 bitweaver Exp $
  */
 
 /**
@@ -545,7 +545,7 @@ class ModLib extends BitBase {
 				  WHERE tmm.`module_rsrc` = ? AND tmm.`module_id` = tlm.`module_id`";
 			$row = $this->mDb->getRow($query,array($mod_rsrc));
 		}
-		if ($paramsStr) {
+		if( !empty( $row['params'] ) ) {
 			$tok = strtok($paramsStr,';');
 			while ($tok) {
 				$pref = explode('=',$tok);

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.2 2006/01/31 17:08:05 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.3 2006/01/31 20:18:04 bitweaver Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -647,6 +647,7 @@ class BitDb
 
 		$bIsFunction = FALSE;
 		$functionMap = array( 'random' => array("postgres" => "RANDOM()",
+												"pgsql" => "RANDOM()",
 												"mysql3" => "RAND()",
 												"mysql" => "RAND()",
 												"mssql" => "NEWID()",
@@ -654,7 +655,6 @@ class BitDb
 												//"oci8" => "" STILL NEEDED
 												//"sqlite" => "" STILL NEEDED
 												//"sybase" => "" STILL NEEDED
-
 		foreach ($functionMap as $funcName=>$funcMethods) {
 			if ($pSortMode == $funcName) {
 				if	(in_array($this->mType, array_keys($funcMethods))) {

@@ -3,7 +3,7 @@
  * Communications Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/comm_lib.php,v 1.4 2005/08/30 22:23:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/comm_lib.php,v 1.5 2006/01/31 20:18:04 bitweaver Exp $
  */
 
 /**
@@ -25,7 +25,7 @@ class CommLib extends BitBase {
 		global $gBitSystem;
 		$now = $gBitSystem->getUTCTime();
 		$this->create_page($info["page_name"], 0, $info["data"], $now, $info["comment"], $info["received_from_user"], $info["received_from_site"], $info["description"]);
-		$query = "delete from `".BIT_DB_PREFIX."tiki_received_pages` where `received_page_id`=?";
+		$query = "delete from `".BIT_DB_PREFIX."wiki_received_pages` where `received_page_id`=?";
 		$result = $this->mDb->query($query,array((int)$received_page_id));
 		return true;
 	}
@@ -69,7 +69,7 @@ class CommLib extends BitBase {
 	}
 
 	function remove_received_page($received_page_id) {
-		$query = "delete from `".BIT_DB_PREFIX."tiki_received_pages` where `received_page_id`=?";
+		$query = "delete from `".BIT_DB_PREFIX."wiki_received_pages` where `received_page_id`=?";
 		$result = $this->mDb->query($query,array((int)$received_page_id));
 	}
 
@@ -79,12 +79,12 @@ class CommLib extends BitBase {
 	}
 
 	function rename_received_page($received_page_id, $name) {
-		$query = "update `".BIT_DB_PREFIX."tiki_received_pages` set `page_name`=? where `received_page_id`=?";
+		$query = "update `".BIT_DB_PREFIX."wiki_received_pages` set `page_name`=? where `received_page_id`=?";
 		$result = $this->mDb->query($query,array($name,(int)$received_page_id));
 	}
 
 	function get_received_page($received_page_id) {
-		$query = "select * from `".BIT_DB_PREFIX."tiki_received_pages` where `received_page_id`=?";
+		$query = "select * from `".BIT_DB_PREFIX."wiki_received_pages` where `received_page_id`=?";
 		$result = $this->mDb->query($query,array((int)$received_page_id));
 		if (!$result->numRows()) return false;
 		$res = $result->fetchRow();
@@ -109,7 +109,7 @@ class CommLib extends BitBase {
 	}
 
 	function update_received_page($received_page_id, $page_name, $data, $comment) {
-		$query = "update `".BIT_DB_PREFIX."tiki_received_pages` set `page_name`=?, `data`=?, `comment`=? where `received_page_id`=?";
+		$query = "update `".BIT_DB_PREFIX."wiki_received_pages` set `page_name`=?, `data`=?, `comment`=? where `received_page_id`=?";
 		$result = $this->mDb->query($query,array($page_name,$data,$comment,(int)$received_page_id));
 	}
 
@@ -130,10 +130,10 @@ class CommLib extends BitBase {
 		global $gBitSystem;
 		$now = $gBitSystem->getUTCTime();
 		// Remove previous page sent from the same site-user (an update)
-		$query = "delete from `".BIT_DB_PREFIX."tiki_received_pages` where `page_name`=? and `receivedFromSite`=? and `received_from_user`=?";
+		$query = "delete from `".BIT_DB_PREFIX."wiki_received_pages` where `page_name`=? and `receivedFromSite`=? and `received_from_user`=?";
 		$result = $this->mDb->query($query,array($page_name,$site,$user));
 		// Now insert the page
-		$query = "insert into `".BIT_DB_PREFIX."tiki_received_pages`(`page_name`,`data`,`comment`,`received_from_site`, `received_from_user`, `received_date`,`description`) values(?,?,?,?,?,?,?)";
+		$query = "insert into `".BIT_DB_PREFIX."wiki_received_pages`(`page_name`,`data`,`comment`,`received_from_site`, `received_from_user`, `received_date`,`description`) values(?,?,?,?,?,?,?)";
 		$result = $this->mDb->query($query,array($page_name,$data,$comment,$site,$user,(int)$now,$description));
 	}
 

@@ -11,7 +11,7 @@
 
  * Usage:
  * {querytable
- *	table =""   (Table or tables, example tiki_pages,users)
+ *	table =""   (Table or tables, example wiki_pages,users)
  *	template = "" (Template to be used for table rows, put them in templates/tables)
  *
  *	where = "" (Where condition for the query)

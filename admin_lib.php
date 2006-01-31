@@ -3,7 +3,7 @@
  * Administration Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/admin_lib.php,v 1.4 2005/08/30 22:23:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/admin_lib.php,v 1.5 2006/01/31 20:18:04 bitweaver Exp $
  */
  
 /**
@@ -102,8 +102,8 @@ class AdminLib extends BitBase {
 			$mid = "";
 		}
 
-		$query = "select * from `".BIT_DB_PREFIX."tiki_extwiki` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_extwiki` $mid";
+		$query = "select * from `".BIT_DB_PREFIX."wiki_ext` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
+		$query_cant = "select count(*) from `".BIT_DB_PREFIX."wiki_ext` $mid";
 		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
@@ -121,13 +121,13 @@ class AdminLib extends BitBase {
 	function replace_extwiki($extwiki_id, $extwiki, $name) {
 		// Check the name
 		if ($extwiki_id) {
-			$query = "update `".BIT_DB_PREFIX."tiki_extwiki` set `extwiki`=?,`name`=? where `extwiki_id`=?";
+			$query = "update `".BIT_DB_PREFIX."wiki_ext` set `extwiki`=?,`name`=? where `extwiki_id`=?";
 			$result = $this->mDb->query($query,array($extwiki,$name,$extwiki_id));
 		} else {
-			$query = "delete from `".BIT_DB_PREFIX."tiki_extwiki` where `name`=? and `extwiki`=?";
+			$query = "delete from `".BIT_DB_PREFIX."wiki_ext` where `name`=? and `extwiki`=?";
 			$bindvars=array($name,$extwiki);
 			$result = $this->mDb->query($query,$bindvars);
-			$query = "insert into `".BIT_DB_PREFIX."tiki_extwiki`(`name`,`extwiki`)
+			$query = "insert into `".BIT_DB_PREFIX."wiki_ext`(`name`,`extwiki`)
                 		values(?,?)";
 			$result = $this->mDb->query($query,$bindvars);
 		}
@@ -148,13 +148,13 @@ class AdminLib extends BitBase {
 		$perm_name = 'bit_p_extwiki_' . $info['name'];
 		$query = "delete from `".BIT_DB_PREFIX."users_permissions` where `perm_name`=?";
 		$this->mDb->query($query,array($perm_name));
-		$query = "delete from `".BIT_DB_PREFIX."tiki_extwiki` where `extwiki_id`=?";
+		$query = "delete from `".BIT_DB_PREFIX."wiki_ext` where `extwiki_id`=?";
 		$this->mDb->query($query,array($extwiki_id));
 		return true;
 	}
 
 	function get_extwiki($extwiki_id) {
-		$query = "select * from `".BIT_DB_PREFIX."tiki_extwiki` where `extwiki_id`=?";
+		$query = "select * from `".BIT_DB_PREFIX."wiki_ext` where `extwiki_id`=?";
 
 		$result = $this->mDb->query($query,array($extwiki_id));
 
@@ -168,8 +168,8 @@ class AdminLib extends BitBase {
 	function remove_orphan_images() {
 		$merge = array();
 
-		// Find images in tiki_pages
-		$query = "select `data` from `".BIT_DB_PREFIX."tiki_pages`";
+		// Find images in wiki_pages
+		$query = "select `data` from `".BIT_DB_PREFIX."wiki_pages`";
 		$result = $this->mDb->query($query,array());
 
 		while ($res = $result->fetchRow()) {
@@ -182,7 +182,7 @@ class AdminLib extends BitBase {
 		}
 
 		// Find images in Tiki articles
-		$query = "select `body` from `".BIT_DB_PREFIX."tiki_articles`";
+		$query = "select `body` from `".BIT_DB_PREFIX."articles`";
 		$result = $this->mDb->query($query,array());
 
 		while ($res = $result->fetchRow()) {
@@ -207,8 +207,8 @@ class AdminLib extends BitBase {
 			$merge = array_unique($merge);
 		}
 
-		// Find images in tiki_blog_posts
-		$query = "select `data` from `".BIT_DB_PREFIX."tiki_blog_posts`";
+		// Find images in blog_posts
+		$query = "select `data` from `".BIT_DB_PREFIX."blog_posts`";
 		$result = $this->mDb->query($query,array());
 
 		while ($res = $result->fetchRow()) {
@@ -243,7 +243,7 @@ class AdminLib extends BitBase {
 	}
 
 	function tag_exists($tag) {
-		$query = "select distinct `tag_name` from `".BIT_DB_PREFIX."tiki_tags` where `tag_name` = ?";
+		$query = "select distinct `tag_name` from `".BIT_DB_PREFIX."wiki_tags` where `tag_name` = ?";
 
 		$result = $this->mDb->query($query,array($tag));
 		return $result->numRows($result);
@@ -253,19 +253,19 @@ class AdminLib extends BitBase {
 		global $wikiHomePage, $gBitUser, $gBitSystem;
 
 		$this->mDb->StartTrans();
-		$query = "delete from `".BIT_DB_PREFIX."tiki_tags` where `tag_name`=?";
+		$query = "delete from `".BIT_DB_PREFIX."wiki_tags` where `tag_name`=?";
 		$result = $this->mDb->query($query,array($tagname));
 		$action = "removed tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
-		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog` (`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values ( ?,?,?,?,?,?,? )";
+		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
+		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log` (`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values ( ?,?,?,?,?,?,? )";
 		$result = $this->mDb->query($query,array($homePageId, $action,$wikiHomePage,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 		$this->mDb->CompleteTrans();
 		return true;
 	}
 
 	function get_tags() {
-		$query = "select distinct `tag_name` from `".BIT_DB_PREFIX."tiki_tags`";
+		$query = "select distinct `tag_name` from `".BIT_DB_PREFIX."wiki_tags`";
 
 		$result = $this->mDb->query($query,array());
 		$ret = array();
@@ -283,23 +283,23 @@ class AdminLib extends BitBase {
 		global $wikiHomePage, $gBitUser, $gBitSystem;
 
 		$this->mDb->StartTrans();
-		$query = "select * from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON( tp.`content_id`=tc.`content_id` )";
+		$query = "select * from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON( tp.`content_id`=tc.`content_id` )";
 		$result = $this->mDb->query($query,array());
 
 		while ($res = $result->fetchRow()) {
 			$data = $res["data"];
 			$description = $res["description"];
-			$query = "delete from `".BIT_DB_PREFIX."tiki_tags`where `tag_name`=? and `page_id`=?";
+			$query = "delete from `".BIT_DB_PREFIX."wiki_tags`where `tag_name`=? and `page_id`=?";
 			$this->mDb->query($query,array($tagname,$res["page_id"]));
-			$query = "insert into `".BIT_DB_PREFIX."tiki_tags`(`page_id`,`tag_name`,`page_name`,`hits`,`data`,`last_modified`,`comment`,`version`,`user_id`,`ip`,`flag`,`description`)
+			$query = "insert into `".BIT_DB_PREFIX."wiki_tags`(`page_id`,`tag_name`,`page_name`,`hits`,`data`,`last_modified`,`comment`,`version`,`user_id`,`ip`,`flag`,`description`)
                 		values(?,?,?,?,?,?,?,?,?,?,?,?)";
 			$result2 = $this->mDb->query($query,array($res["page_id"],$tagname,$res["title"],$res["hits"],$data,$res["last_modified"],$res["comment"],$res["version"],$res["user_id"],$res["ip"],$res["flag"],$description));
 		}
 
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
+		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
 		$action = "created tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
-		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`page_id`,`action`,`page_name`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?,?)";
+		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`page_id`,`action`,`page_name`,`last_modified`,`user_id`,`ip`,`comment`) values(?,?,?,?,?,?,?)";
 		$result = $this->mDb->query($query,array($homePageId,$action,$wikiHomePage,$t,$gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],$comment));
 		$this->mDb->CompleteTrans();
 		return true;
@@ -312,9 +312,9 @@ class AdminLib extends BitBase {
 		require_once( WIKI_PKG_PATH.'BitPage.php' );
 
 		$this->mDb->StartTrans();
-		$query = "update `".BIT_DB_PREFIX."tiki_pages` set `cache_timestamp`=0";
+		$query = "update `".BIT_DB_PREFIX."wiki_pages` set `cache_timestamp`=0";
 		$this->mDb->query($query,array());
-		$query = "select *, `data` AS `edit`, `page_name` AS `title` FROM `".BIT_DB_PREFIX."tiki_tags` where `tag_name`=?";
+		$query = "select *, `data` AS `edit`, `page_name` AS `title` FROM `".BIT_DB_PREFIX."wiki_tags` where `tag_name`=?";
 		$result = $this->mDb->query($query,array($tagname));
 
 		while ($res = $result->fetchRow()) {
@@ -322,10 +322,10 @@ class AdminLib extends BitBase {
 			$tagPage->store( $res );
 		}
 
-		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."tiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
+		$homePageId = $this->mDb->getOne( "SELECT `page_id` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON(tp.`content_id`=tc.`content_id`) WHERE tc.`title`=?", array( $wikiHomePage ) );
 		$action = "recovered tag: $tagname";
 		$t = $gBitSystem->getUTCTime();
-		$query = "insert into `".BIT_DB_PREFIX."tiki_actionlog`(`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values (?,?,?,?,?,?,?)";
+		$query = "insert into `".BIT_DB_PREFIX."wiki_action_log`(`page_id`, `action`, `page_name`, `last_modified`, `user_id`, `ip`, `comment`) values (?,?,?,?,?,?,?)";
 		$result = $this->mDb->query($query,array($homePageId,$action,$wikiHomePage,$t, $gBitUser->mUserId,$_SERVER["REMOTE_ADDR"],''));
 		$this->mDb->CompleteTrans();
 		return true;

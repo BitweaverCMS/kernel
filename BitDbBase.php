@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.1 2006/01/25 15:40:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.2 2006/01/31 17:08:05 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -18,6 +18,9 @@
  * ensure your AdoDB install is a subdirectory off your include path
  */
 require_once( KERNEL_PKG_PATH.'bit_error_inc.php' );
+
+define( 'BIT_QUERY_DEFAULT', -1 );
+
 
 /**
  * This class is used for database access and provides a number of functions to help
@@ -599,18 +602,6 @@ class BitDb
 		if( !empty( $this->mType ) ) {
 			switch ($this->mType) {
 				case "oci8":
-					$pQuery = preg_replace("/`/", "\"", $pQuery);
-					// convert bind variables - adodb does not do that
-					$qe = explode("?", $pQuery);
-					$pQuery = "";
-					for ($i = 0;
-					$i < sizeof($qe) - 1;
-					$i++)
-					{
-						$pQuery .= $qe[$i] . ":" . $i;
-					}
-					$pQuery .= $qe[$i];
-					break;
 				case "pgsql":
 				case "postgres7":
 //					print '<div class="error">You must update your kernel/config_inc.php so that $gBitDbType="postgres"</div>';

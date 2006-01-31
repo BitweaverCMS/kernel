@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.3 2006/01/26 17:28:35 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.4 2006/01/31 17:08:05 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -19,7 +19,6 @@
  */
 require_once(UTIL_PKG_PATH."adodb/adodb.inc.php");
 require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
-define( 'BIT_QUERY_DEFAULT', -1 );
 
 /**
  * This class is used for database access and provides a number of functions to help
@@ -486,6 +485,37 @@ class BitDbAdodb extends BitDb
 	function OffsetDate( $pDays, $pColumn=NULL ) {
 		return $this->mDb->OffsetDate( $pDays, $pColumn );
 	}
+	
+	/** Converts backtick (`) quotes to the appropriate quote for the
+	* database.
+	* @private
+	* @param pQuery the SQL query using backticks (`)
+	* @return the correctly quoted SQL statement
+	* @todo investigate replacement by AdoDB NameQuote() function
+	*/
+	function convertQuery(&$pQuery)
+	{
+		if( !empty( $this->mType ) ) {
+			switch ($this->mType) {
+				case "oci8":
+					$pQuery = preg_replace("/`/", "\"", $pQuery);
+					// convert bind variables - adodb does not do that
+					$qe = explode("?", $pQuery);
+					$pQuery = "";
+					for ($i = 0;
+					$i < sizeof($qe) - 1;
+					$i++)
+					{
+						$pQuery .= $qe[$i] . ":" . $i;
+					}
+					$pQuery .= $qe[$i];
+					break;
+				default:
+					parent::convertQuery( $pQuery );
+					break;
+			}
+		}
+	}	
 
 	/** will activate ADODB's native debugging output
 	* @param pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose

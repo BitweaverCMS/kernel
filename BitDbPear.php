@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.2 2006/01/26 17:28:35 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.3 2006/01/31 17:08:05 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -21,8 +21,6 @@ require_once 'DB.php';
 
 require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
 
-define( 'BIT_QUERY_DEFAULT', -1 );
-
 /**
  * This class is used for database access and provides a number of functions to help
  * with database portability.
@@ -35,33 +33,35 @@ define( 'BIT_QUERY_DEFAULT', -1 );
 class BitDbPear extends BitDb
 {
 
-	function BitDbPear()
+	function BitDbPear( $pPearDsn=NULL )
 	{
-		global $gBitPearDbOptions, $gBitDbType, $gBitDbUser, $gBitDbPassword, $gBitDbHost, $gBitDbName;
+		global $gBitPearDbOptions;
 		parent::BitDb();
 
-		$pearDsn = array(
-			'phptype'  => $gBitDbType,
-			'username' => $gBitDbUser,
-			'password' => $gBitDbPassword ,
-			'hostspec' => $gBitDbHost,
-			'database' => $gBitDbName,
-		);
+		if( empty( $pPearDsn ) ) {
+			global $gBitDbType, $gBitDbUser, $gBitDbPassword, $gBitDbHost, $gBitDbName;
+			$pPearDsn = array(
+				'phptype'  => $gBitDbType,
+				'username' => $gBitDbUser,
+				'password' => $gBitDbPassword ,
+				'hostspec' => $gBitDbHost,
+				'database' => $gBitDbName,
+			);
+		}
 
-
-		$this->mDb =& DB::connect($pearDsn, $gBitPearDbOptions);
+		$this->mDb =& DB::connect($pPearDsn, $gBitPearDbOptions);
 		if( PEAR::isError( $this->mDb ) ) {
 			die( $this->mDb->getMessage() );
 		}
 
-		PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'bit_error_handler');
+		PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'bit_pear_error_handler');
 		
 		$this->mDb->setFetchMode( DB_FETCHMODE_ASSOC );
 		// Default to autocommit unless StartTrans is called
 		$this->mDb->autoCommit( TRUE );
 
-		$this->mType = $pearDsn['phptype'];
-		$this->mName = $pearDsn['database'];
+		$this->mType = $pPearDsn['phptype'];
+		$this->mName = $pPearDsn['database'];
 }
 	/**
 	* Quotes a string to be sent to the database which is
@@ -258,11 +258,10 @@ class BitDbPear extends BitDb
 	function getOne($pQuery, $pValues=NULL, $pNumRows=NULL, $pOffset=NULL, $pCacheTime = BIT_QUERY_DEFAULT )
 	{
 		$value = NULL;
-		$result = $this->query($pQuery, $pValues, 1, $pOffset, $pCacheTime );
-		$res = ($result != NULL) ? $result->fetchRow() : false;
-		if( $res ) {
-			//$this->debugger_log($pQuery, $pValues);
-			$value = current($res);
+		if( $result = $this->query($pQuery, $pValues, 1, 0, $pCacheTime ) ) {
+			if( $res = $result->fetchRow() ) {
+				$value = current($res);
+			}
 		}
 		return $value;
 	}
@@ -413,7 +412,7 @@ bt();
 }
 
 // This function will handle all errors
-function bit_error_handler( $error_obj ) {
+function bit_pear_error_handler( $error_obj ) {
 	// Be verbose while developing the application
 	if( !defined( 'IS_LIVE' ) ) {
 		$dbParams = array(

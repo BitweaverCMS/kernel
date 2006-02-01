@@ -59,33 +59,9 @@ $tables = array(
 	email C(200)
 ",
 
-'tiki_menu_options' => "
-	option_id I4 AUTO PRIMARY,
-	menu_id I4,
-	type C(1),
-	name C(200),
-	url C(255),
-	position I4,
-	section C(255),
-	perm C(255),
-	groupname C(255)
-",
-
-'tiki_menus' => "
-	menu_id I4 AUTO PRIMARY,
-	name C(200) NOTNULL,
-	description X,
-	type C(1)
-",
-
 'tiki_module_map' => "
 	module_id I4 AUTO PRIMARY,
 	module_rsrc C(250) NOTNULL
-",
-
-'tiki_pageviews' => "
-	day I8 PRIMARY,
-	pageviews I8
 ",
 
 'tiki_preferences' => "

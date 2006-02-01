@@ -33,12 +33,6 @@ $tables = array(
 ",
 
 
-'tiki_dsn' => "
-	dsn_id I4 AUTO PRIMARY,
-	name C(200) NOTNULL,
-	dsn C(255)
-",
-
 'tiki_dynamic_variables' => "
 	name C(40) PRIMARY,
 	data X

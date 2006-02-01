@@ -14,7 +14,6 @@
 		<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php">{tr}Banning{/tr}</a></li>
 	{/if}
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/db_performance.php">{tr}Database Performance{/tr}</a></li>
-	{* unused - spiderr <li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_dsn.php">{tr}DSN{/tr}</a></li> *}
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php">{tr}System Cache{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/list_cache.php">{tr}Link Cache{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/phpinfo.php">{tr}PHPinfo{/tr}</a></li>

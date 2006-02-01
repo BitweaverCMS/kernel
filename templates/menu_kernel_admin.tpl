@@ -4,7 +4,6 @@
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=features" title="{tr}Features{/tr}" >{tr}Features{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=general" title="{tr}General{/tr}" >{tr}General Settings{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=server" title="{tr}Server{/tr}" >{tr}Server Settings{/tr}</a></li>
-	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=menus" title="{tr}Custom Menus{/tr}" >{tr}Custom Menus{/tr}</a></li>
 
 	{if $gBitUser->hasPermission( 'bit_p_edit_content_templates' )}
 		<li><a class="item" href="{$smarty.const.THEMES_PKG_URL}admin/admin_content_templates.php">{tr}Content templates{/tr}</a></li>

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.34 2006/02/01 19:45:29 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.35 2006/02/01 20:13:34 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1304,7 +1304,7 @@ asort( $this->mAppMenu );
 			$whereClause .= " tl.`layout`=? ORDER BY ";
 			array_push($bindVars, $pLayout);
 		}
-		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "themes_layouts` tl, `" . BIT_DB_PREFIX . "tiki_layouts_modules` tlm, `" . BIT_DB_PREFIX . "tiki_module_map` tmm
+		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "themes_layouts` tl, `" . BIT_DB_PREFIX . "themes_layouts_modules` tlm, `" . BIT_DB_PREFIX . "themes_module_map` tmm
 				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->mDb->convert_sortmode("ord_asc");
 		$result = $this->mDb->query($query, $bindVars);
 		$row = $result->fetchRow();

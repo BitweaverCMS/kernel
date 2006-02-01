@@ -3,7 +3,7 @@
  * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.19 2006/02/01 19:45:30 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.20 2006/02/01 20:13:34 spiderr Exp $
  */
 
 /**
@@ -51,7 +51,7 @@ class ModLib extends BitBase {
 
 
 		if( empty( $pHash['module_id'] ) || !is_numeric( $pHash['module_id'] ) ) {
-			$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."tiki_module_map` WHERE `module_rsrc`=?";
+			$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."themes_module_map` WHERE `module_rsrc`=?";
 			$pHash['module_id'] = $this->mDb->getOne( $query, array( $pHash['module_rsrc'] ) );
 		}
 
@@ -60,17 +60,17 @@ class ModLib extends BitBase {
 
 	function storeModule( &$pHash ) {
 		if( $this->verifyModuleParams( $pHash ) ) {
-			$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."tiki_module_map` WHERE `module_rsrc`=?";
+			$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."themes_module_map` WHERE `module_rsrc`=?";
 			$pHash['module_id'] = $this->mDb->getOne($query,array($pHash['module_rsrc']));
 
 			if( !@BitBase::verifyId( $pHash['module_id'] ) ) { 	// If this module is not listed in the module map...
-				$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_module_map` (`module_rsrc`) VALUES ( ? )";	// Insert a row for this module
+				$query = "INSERT INTO `".BIT_DB_PREFIX."themes_module_map` (`module_rsrc`) VALUES ( ? )";	// Insert a row for this module
 				$result = $this->mDb->query($query,array($pHash['module_rsrc']));
-				$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."tiki_module_map` WHERE `module_rsrc`=?";	// Get the module_id assigned to it
+				$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."themes_module_map` WHERE `module_rsrc`=?";	// Get the module_id assigned to it
 				$pHash['module_id'] = $this->mDb->getOne($query,array($pHash['module_rsrc']));
 			}
 
-			$query = "SELECT COUNT(*) AS `count` FROM `".BIT_DB_PREFIX."tiki_layouts_modules` WHERE `module_id`=?";
+			$query = "SELECT COUNT(*) AS `count` FROM `".BIT_DB_PREFIX."themes_layouts_modules` WHERE `module_id`=?";
 			$modCount = $this->mDb->getOne($query,array($pHash['module_id']));
 			if( empty( $pHash['groups'] ) ) {
 				$pHash['groups'] = NULL;
@@ -79,18 +79,18 @@ class ModLib extends BitBase {
 			$bindVars = array( $pHash['availability'], $pHash['title'], $pHash['cache_time'], $pHash['rows'],  $pHash['groups'], $pHash['module_id'] );
 
 			if ( ($modCount) > 0 ) {
-				$query = "UPDATE `".BIT_DB_PREFIX."tiki_layouts_modules`
+				$query = "UPDATE `".BIT_DB_PREFIX."themes_layouts_modules`
 						  SET `availability`=?, `title`=?, `cache_time`=?, `rows`=?, `groups`=?
 						  WHERE `module_id`=?";
 			} else {
-				$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_layouts_modules`
+				$query = "INSERT INTO `".BIT_DB_PREFIX."themes_layouts_modules`
 						  ( `availability`, `title`, `cache_time`, `rows`, `groups`, `module_id` )
 						  VALUES ( ?, ?, ?, ?, ?, ? )";
 			}
 			$result = $this->mDb->query( $query, $bindVars );
 
 			if( !isset($pHash['layout']) || $pHash['layout'] == 'kernel' ) {
-				$this->mDb->query( "UPDATE `".BIT_DB_PREFIX."tiki_layouts_modules` SET `params`=? WHERE `module_id`=?", array( $pHash['params'], $pHash['module_id'] ) );
+				$this->mDb->query( "UPDATE `".BIT_DB_PREFIX."themes_layouts_modules` SET `params`=? WHERE `module_id`=?", array( $pHash['params'], $pHash['module_id'] ) );
 			}
 		}
 
@@ -101,7 +101,7 @@ class ModLib extends BitBase {
 		if( empty( $pHash['ord'] ) ) $pHash['ord'] = NULL;
 
 		if( (empty( $pHash['module_id'] ) || !is_numeric( $pHash['module_id'] )) && isset( $pHash['module_rsrc'] ) ) {
-			$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."tiki_module_map` WHERE `module_rsrc`=?";
+			$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."themes_module_map` WHERE `module_rsrc`=?";
 			$pHash['module_id'] = $this->mDb->getOne( $query, array( $pHash['module_rsrc'] ) );
 		}
 
@@ -120,7 +120,7 @@ class ModLib extends BitBase {
 		// prepare all modules parameters for storage
 		if( !empty( $pParamHash['modules'] ) ) {
 			foreach( $pParamHash['modules'] as $module_id => $params ) {
-				// all values that makes sense from tiki_layouts_modules are here
+				// all values that makes sense from themes_layouts_modules are here
 				// perhaps we can rewrite verifyModuleParams to work with this thing here.
 				$paramOptions = array( 'rows', 'title', 'params', 'cache_time' );
 				foreach( $paramOptions as $option ) {
@@ -181,7 +181,7 @@ class ModLib extends BitBase {
 			}
 			foreach( $pParamHash['store']['modules'] as $module_id => $storeModule ) {
 				$locId = array( 'name' => 'module_id', 'value' => $module_id );
-				$table = "`".BIT_DB_PREFIX."tiki_layouts_modules`";
+				$table = "`".BIT_DB_PREFIX."themes_layouts_modules`";
 				$this->mDb->associateUpdate( $table, $storeModule, $locId );
 			}
 		}
@@ -193,7 +193,7 @@ class ModLib extends BitBase {
 			$query = "DELETE FROM `".BIT_DB_PREFIX."themes_layouts` WHERE `user_id`=? AND `layout`=? AND `module_id`=?";
 			$result = $this->mDb->query( $query, array( $pHash['user_id'], $pHash['layout'], (int)$pHash['module_id'] ) );
 			//check for valid values
-			// kernel layout (site default) params are stored in tiki_layouts_modules
+			// kernel layout (site default) params are stored in themes_layouts_modules
 			if( $pHash['layout'] == 'kernel' ) {
 				$pHash['params'] = NULL;
 			}
@@ -240,9 +240,9 @@ class ModLib extends BitBase {
 	}
 
 	function disableModule( $pModuleName ) {
-		$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."tiki_module_map` WHERE `module_rsrc`=?";
+		$query = "SELECT `module_id` FROM `".BIT_DB_PREFIX."themes_module_map` WHERE `module_rsrc`=?";
 		if( $module_id = $this->mDb->getOne($query,array($pModuleName)) ) {
-			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_layouts_modules` WHERE `module_id`=?";
+			$query = "DELETE FROM `".BIT_DB_PREFIX."themes_layouts_modules` WHERE `module_id`=?";
 			$result = $this->mDb->query($query,array($module_id));
 		}
 	}
@@ -308,7 +308,7 @@ class ModLib extends BitBase {
 			$query = "UPDATE `".BIT_DB_PREFIX."themes_layouts` SET `rows` = ?  WHERE `module_id` = ? AND `user_id` = ?";
 			$result = $this->mDb->query($query, array($rows, $module_id, $user_id));
 		} else {
-			$query = "UPDATE `".BIT_DB_PREFIX."tiki_layouts_modules` SET `rows` = ? WHERE `module_id` = ?";
+			$query = "UPDATE `".BIT_DB_PREFIX."themes_layouts_modules` SET `rows` = ? WHERE `module_id` = ?";
 			$result = $this->mDb->query($query, array($rows, $module_id));
 		}
 
@@ -357,7 +357,7 @@ class ModLib extends BitBase {
 
 		$ret = array( 'center'=>array(), 'border'=>array() );
 		$query = "SELECT tmm.`module_rsrc`, tlm.*
-	              FROM `".BIT_DB_PREFIX."tiki_layouts_modules` tlm, `".BIT_DB_PREFIX."tiki_module_map` tmm
+	              FROM `".BIT_DB_PREFIX."themes_layouts_modules` tlm, `".BIT_DB_PREFIX."themes_module_map` tmm
 				  WHERE tmm.`module_id` = tlm.`module_id` ORDER BY `module_rsrc`";
 		$result = $this->mDb->query( $query );
 		while( $row = $result->fetchRow() ) {
@@ -505,7 +505,7 @@ class ModLib extends BitBase {
 			$this->unassignModule($moduleId);
 			$query = " delete from `".BIT_DB_PREFIX."tidbits_user_modules` where `name`=?";
 			$result = $this->mDb->query($query,array($name));
-			$query = " DELETE FROM `".BIT_DB_PREFIX."tiki_layouts_modules` where `module_id` = ?";
+			$query = " DELETE FROM `".BIT_DB_PREFIX."themes_layouts_modules` where `module_id` = ?";
 			$result = $this->mDb->query($query, array($moduleId));
 		}
 
@@ -537,7 +537,7 @@ class ModLib extends BitBase {
 	function get_module_params($mod_rsrc, $user_id = ROOT_USER_ID ) {
 		// First we try to get preferences at the per-user level (e.g. from themes_layouts table)
 		$query = "SELECT tl.`params`, tl.`rows`
-				  FROM `".BIT_DB_PREFIX."themes_layouts` tl, `".BIT_DB_PREFIX."tiki_module_map` tmm
+				  FROM `".BIT_DB_PREFIX."themes_layouts` tl, `".BIT_DB_PREFIX."themes_module_map` tmm
 				  WHERE tmm.`module_rsrc` = ? AND tl.`user_id` = ? AND tmm.`module_id` = tl.`module_id`";
 		$row = $this->mDb->getRow($query,array($mod_rsrc, $user_id));
 
@@ -546,7 +546,7 @@ class ModLib extends BitBase {
 		if( empty( $row['params'] ) ) {
 			// No per-user preferences were stored for this user so we will pull the default parameters
 			$query = "SELECT tlm.`params`, tlm.`rows`
-				  FROM `".BIT_DB_PREFIX."tiki_layouts_modules` tlm, `".BIT_DB_PREFIX."tiki_module_map` tmm
+				  FROM `".BIT_DB_PREFIX."themes_layouts_modules` tlm, `".BIT_DB_PREFIX."themes_module_map` tmm
 				  WHERE tmm.`module_rsrc` = ? AND tmm.`module_id` = tlm.`module_id`";
 			$row = $this->mDb->getRow($query,array($mod_rsrc));
 		}
@@ -584,7 +584,7 @@ class ModLib extends BitBase {
 			$query = "UPDATE `".BIT_DB_PREFIX."themes_layouts` SET `params` = ?  WHERE `module_id` = ? AND `user_id` = ?";
 			$result = $this->mDb->query($query, array($paramsStr, $module_id, $user_id));
 		} else {
-			$query = "UPDATE `".BIT_DB_PREFIX."tiki_layouts_modules` SET `params` = ? WHERE `module_id` = ?";
+			$query = "UPDATE `".BIT_DB_PREFIX."themes_layouts_modules` SET `params` = ? WHERE `module_id` = ?";
 			$result = $this->mDb->query($query, array($paramsStr, $module_id));
 		}
 
@@ -593,7 +593,7 @@ class ModLib extends BitBase {
 
 	function get_module_id($mod_rsrc) {
 		$query = "SELECT `module_id`
-			  FROM `".BIT_DB_PREFIX."tiki_module_map`
+			  FROM `".BIT_DB_PREFIX."themes_module_map`
 			  WHERE `module_rsrc` = ?";
 		$ret = $this->mDb->getOne($query, array($mod_rsrc));
 		return $ret;

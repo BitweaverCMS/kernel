@@ -33,9 +33,9 @@ foreach( array_keys( $tables ) AS $tableName ) {
 }
 
 $indices = array (
-	'tiki_layouts_user_id_idx' => array( 'table' => 'tiki_layouts', 'cols' => 'user_id', 'opts' => NULL ),
-	'tiki_layouts_layout_idx' => array( 'table' => 'tiki_layouts', 'cols' => 'layout', 'opts' => NULL ),
-	'tiki_module_map_rsrc_idx' => array( 'table' => 'tiki_module_map', 'cols' => 'module_rsrc', 'opts' => NULL )
+	'tiki_layouts_user_id_idx' => array( 'table' => 'themes_layouts', 'cols' => 'user_id', 'opts' => NULL ),
+	'tiki_layouts_layout_idx' => array( 'table' => 'themes_layouts', 'cols' => 'layout', 'opts' => NULL ),
+	'tiki_module_map_rsrc_idx' => array( 'table' => 'themes_module_map', 'cols' => 'module_rsrc', 'opts' => NULL )
 );
 
 $gBitInstaller->registerSchemaIndexes( KERNEL_PKG_NAME, $indices );

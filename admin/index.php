@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.7 2006/02/01 16:24:55 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.8 2006/02/01 19:13:28 hash9 Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -9,7 +9,6 @@
 // Initialization
 $gForceAdodb = TRUE;
 require_once( '../../bit_setup_inc.php' );
-require_once( KERNEL_PKG_PATH.'admin_lib.php' );
 
 if( isset( $_REQUEST["page"] ) ) {
 	$page = $_REQUEST["page"];

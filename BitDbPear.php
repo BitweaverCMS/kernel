@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.4 2006/02/01 18:41:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.5 2006/02/01 20:35:52 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -49,7 +49,7 @@ class BitDbPear extends BitDb
 			);
 		}
 
-		$this->mDb =& DB::connect($pPearDsn, $gBitPearDbOptions);
+		$this->mDb = DB::connect($pPearDsn, $gBitPearDbOptions);
 		if( PEAR::isError( $this->mDb ) ) {
 			die( $this->mDb->getMessage() );
 		}

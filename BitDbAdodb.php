@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.4 2006/01/31 17:08:05 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.5 2006/02/01 18:41:37 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -455,7 +455,7 @@ class BitDbAdodb extends BitDb
 	* @todo could be used to later convert all int timestamps into db
 	* timestamps. Currently not used anywhere.
 	*/
-	function ts($pDate)
+	function ls($pDate)
 	{
 		// not sure what this did - maybe someone can comment why its here
 		//return preg_replace("/'/","", $this->mDb->DBTimeStamp($pDate));

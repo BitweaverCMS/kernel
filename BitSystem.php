@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.32 2006/01/31 20:18:04 bitweaver Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.33 2006/02/01 18:41:37 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1687,8 +1687,8 @@ asort( $this->mAppMenu );
 		$bindvars=array();
 		}
 
-		$query = "select `cache_id` ,`url`,`refresh` from `".BIT_DB_PREFIX."tiki_link_cache` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_link_cache` $mid";
+		$query = "select `cache_id` ,`url`,`refresh` from `".BIT_DB_PREFIX."liberty_link_cache` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
+		$query_cant = "select count(*) from `".BIT_DB_PREFIX."liberty_link_cache` $mid";
 		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
@@ -1705,13 +1705,13 @@ asort( $this->mAppMenu );
 
 	function refresh_cache($cache_id) {
 		global $gBitSystem;
-		$query = "select `url`  from `".BIT_DB_PREFIX."tiki_link_cache`
+		$query = "select `url`  from `".BIT_DB_PREFIX."liberty_link_cache`
 		where `cache_id`=?";
 
 		$url = $this->mDb->getOne($query, array( $cache_id ) );
 		$data = tp_http_request($url);
 		$refresh = $gBitSystem->getUTCTime();
-		$query = "update `".BIT_DB_PREFIX."tiki_link_cache`
+		$query = "update `".BIT_DB_PREFIX."liberty_link_cache`
 		set `data`=?, `refresh`=?
 		where `cache_id`=? ";
 		$result = $this->mDb->query($query, array( $data, $refresh, $cache_id) );
@@ -1719,14 +1719,14 @@ asort( $this->mAppMenu );
 	}
 
 	function remove_cache($cache_id) {
-		$query = "delete from `".BIT_DB_PREFIX."tiki_link_cache` where `cache_id`=?";
+		$query = "delete from `".BIT_DB_PREFIX."liberty_link_cache` where `cache_id`=?";
 
 		$result = $this->mDb->query($query, array( $cache_id ) );
 		return true;
 	}
 
 	function get_cache($cache_id) {
-		$query = "select * from `".BIT_DB_PREFIX."tiki_link_cache`
+		$query = "select * from `".BIT_DB_PREFIX."liberty_link_cache`
 		where `cache_id`=?";
 
 		$result = $this->mDb->query($query, array( $cache_id ) );

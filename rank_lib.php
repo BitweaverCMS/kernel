@@ -2,7 +2,7 @@
 /**
  * Content Ranking Library
  * 
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.6 2006/01/31 20:18:04 bitweaver Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/rank_lib.php,v 1.7 2006/02/01 18:41:37 squareing Exp $
  * @package kernel
  */
 
@@ -25,11 +25,11 @@ class RankLib extends BitBase {
 		$sort_mode = !empty( $pListHash['sort_mode'] ) ? $pListHash['sort_mode'] : 'hits_desc';
 
 		if( !empty( $pListHash['content_type_guid'] ) ) {
-			$where = "WHERE tc.`content_type_guid`=?";
+			$where = "WHERE lc.`content_type_guid`=?";
 			$bindVars[] = $pListHash['content_type_guid'];
 		}
 
-		$query = "SELECT tc.`content_id`, tc.`title`, tc.`hits` FROM `".BIT_DB_PREFIX."tiki_content` tc $where ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
+		$query = "SELECT lc.`content_id`, lc.`title`, lc.`hits` FROM `".BIT_DB_PREFIX."liberty_content` lc $where ORDER BY ".$this->mDb->convert_sortmode( $sort_mode );
 		$result = $this->mDb->query( $query, $bindVars, $limit, 0 );
 
 		$_ret = array();
@@ -48,7 +48,7 @@ class RankLib extends BitBase {
 	}
 
 	function wiki_ranking_top_pages($limit) {
-		$query = "select tc.`title` as `page_name`, `hits` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `hits` desc";
+		$query = "select lc.`title` as `page_name`, `hits` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) order by `hits` desc";
 
 		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
@@ -71,7 +71,7 @@ class RankLib extends BitBase {
 		// I don't think this is needed any more - bigbug
 		// $this->page_rank();
 
-		$query = "select tc.`title` as `page_name`, `page_rank` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `page_rank` desc";
+		$query = "select lc.`title` as `page_name`, `page_rank` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) order by `page_rank` desc";
 		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
 
@@ -92,7 +92,7 @@ class RankLib extends BitBase {
 	function wiki_ranking_last_pages($limit) {
 		global $gBitSystem;
 
-		$query = "select tc.`title` as `page_name`, `last_modified`, `hits` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `last_modified` desc";
+		$query = "select lc.`title` as `page_name`, `last_modified`, `hits` from `".BIT_DB_PREFIX."wiki_pages` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) order by `last_modified` desc";
 
 		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
@@ -114,7 +114,7 @@ class RankLib extends BitBase {
 	function forums_ranking_last_topics($limit) {
 		global $gBitSystem;
 		$query = "select * from
-		`".BIT_DB_PREFIX."tiki_comments`,`".BIT_DB_PREFIX."tiki_forums` where
+		`".BIT_DB_PREFIX."liberty_comments`,`".BIT_DB_PREFIX."tiki_forums` where
 		`object`=".$this->mDb->sql_cast("`forum_id`","string")." and `object_type` = 'forum' and
 		`parent_id`=0 order by `comment_date` desc";
 
@@ -137,10 +137,10 @@ class RankLib extends BitBase {
 
 	function forums_ranking_most_read_topics($limit) {
 		$query = "select
-		tc.`hits`,tc.`title`,tf.`name`,tf.`forum_id`,tc.`thread_id`,tc.`object`
-		from `".BIT_DB_PREFIX."tiki_comments` tc,`".BIT_DB_PREFIX."tiki_forums` tf where
+		lc.`hits`,lc.`title`,lf.`name`,lf.`forum_id`,lc.`thread_id`,lc.`object`
+		from `".BIT_DB_PREFIX."liberty_comments` lc,`".BIT_DB_PREFIX."tiki_forums` lf where
 		`object`=`forum_id` and `object_type` = 'forum' and
-		`parent_id`=0 order by tc.`hits` desc";
+		`parent_id`=0 order by lc.`hits` desc";
 
 		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
@@ -161,10 +161,10 @@ class RankLib extends BitBase {
 
 	function forums_ranking_top_topics($limit) {
 		$query = "select
-		tc.`average`,tc.`title`,tf.`name`,tf.`forum_id`,tc.`thread_id`,tc.`object`
-		from `".BIT_DB_PREFIX."tiki_comments` tc,`".BIT_DB_PREFIX."tiki_forums` tf where
+		lc.`average`,lc.`title`,lf.`name`,lf.`forum_id`,lc.`thread_id`,lc.`object`
+		from `".BIT_DB_PREFIX."liberty_comments` lc,`".BIT_DB_PREFIX."tiki_forums` lf where
 		`object`=`forum_id` and `object_type` = 'forum' and
-		`parent_id`=0 order by tc.`average` desc";
+		`parent_id`=0 order by lc.`average` desc";
 
 		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
@@ -284,7 +284,7 @@ class RankLib extends BitBase {
 	}
 
 	function filegal_ranking_top_files($limit) {
-		$query = "select `file_id`,`filename`,`downloads` from `".BIT_DB_PREFIX."tiki_files` order by `downloads` desc";
+		$query = "select `file_id`,`filename`,`downloads` from `".BIT_DB_PREFIX."liberty_files` order by `downloads` desc";
 
 		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
@@ -326,7 +326,7 @@ class RankLib extends BitBase {
 
 	function filegal_ranking_last_files($limit) {
 		global $gBitSystem;
-		$query = "select `file_id`,`filename`,`created` from `".BIT_DB_PREFIX."tiki_files` order by `created` desc";
+		$query = "select `file_id`,`filename`,`created` from `".BIT_DB_PREFIX."liberty_files` order by `created` desc";
 
 		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
@@ -346,7 +346,7 @@ class RankLib extends BitBase {
 	}
 
 	function cms_ranking_top_articles($limit) {
-		$query = "select tc.`title`, tc.`hits` from `".BIT_DB_PREFIX."articles` tp INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`content_id` = tp.`content_id`) order by `hits` desc";
+		$query = "select lc.`title`, lc.`hits` from `".BIT_DB_PREFIX."articles` tp INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`content_id` = tp.`content_id`) order by `hits` desc";
 
 		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();
@@ -449,7 +449,7 @@ class RankLib extends BitBase {
 
 	function wiki_ranking_top_authors($limit) {
 		
-		$query = "select distinct users.`login` as `user`, count(*) as `numb` from `".BIT_DB_PREFIX."users_users` users INNER JOIN `".BIT_DB_PREFIX."tiki_content` tc ON (tc.`user_id` =  users.`user_id`) where tc.`content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' group by `user` order by ".$this->mDb->convert_sortmode("numb_desc");
+		$query = "select distinct users.`login` as `user`, count(*) as `numb` from `".BIT_DB_PREFIX."users_users` users INNER JOIN `".BIT_DB_PREFIX."liberty_content` lc ON (lc.`user_id` =  users.`user_id`) where lc.`content_type_guid`='".BITPAGE_CONTENT_TYPE_GUID."' group by `user` order by ".$this->mDb->convert_sortmode("numb_desc");
 
 		$result = $this->mDb->query($query,array(),$limit,0);
 		$ret = array();

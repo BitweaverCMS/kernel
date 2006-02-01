@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.12 2006/01/23 22:06:19 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.13 2006/02/01 18:41:37 squareing Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -753,9 +753,9 @@ class BitDate {
 		return $ret;
 	}
 
-	function gmstrftime($fmt, $ts=false)
+	function gmstrftime($fmt, $ls=false)
 	{
-		return strftime($fmt,$ts,true);
+		return strftime($fmt,$ls,true);
 	}
 
 	function strtotime($time, $now=NULL)
@@ -767,13 +767,13 @@ class BitDate {
 	}
 
 	// hack - convert to adodb_date
-	function strftime($fmt, $ts=false,$is_gmt=false)
+	function strftime($fmt, $ls=false,$is_gmt=false)
 	{
 	global $ADODB_DATE_LOCALE;
 
-		if ((abs($ts) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
-			if (!defined('ADODB_NO_NEGATIVE_TS') || $ts >= 0) // if windows, must be +ve integer
-				return ($is_gmt)? @gmstrftime($fmt,$ts): @strftime($fmt,$ts);
+		if ((abs($ls) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
+			if (!defined('ADODB_NO_NEGATIVE_TS') || $ls >= 0) // if windows, must be +ve integer
+				return ($is_gmt)? @gmstrftime($fmt,$ls): @strftime($fmt,$ls);
 		}
 
 		if (empty($ADODB_DATE_LOCALE)) {
@@ -856,8 +856,8 @@ class BitDate {
 				$fmtdate .= $ch;
 		}
 		//echo "fmt=",$fmtdate,"<br>";
-		if ($ts === false) $ts = time();
-		$ret = $this->date($fmtdate, $ts, $is_gmt);
+		if ($ls === false) $ls = time();
+		$ret = $this->date($fmtdate, $ls, $is_gmt);
 		return $ret;
 	}
 

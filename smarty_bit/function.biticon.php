@@ -106,13 +106,13 @@ function smarty_function_biticon($params, &$gBitSmarty) {
 	}
 	//if we have icon styles, first look there
 	if( isset( $icon_style ) ) {
-		if( false !== ( $matchFile = get_first_match( BIT_THEME_PATH."styles/$icon_style/icons/".$params['ipackage']."/".$params['ipath'],$params['iname'] ) ) ) {
-			return output_icon( $params, BIT_THEME_URL."styles/$icon_style/icons/".$params['ipackage']."/".$params['ipath'].$matchFile );
+		if( false !== ( $matchFile = get_first_match( THEMES_PKG_PATH."styles/$icon_style/icons/".$params['ipackage']."/".$params['ipath'],$params['iname'] ) ) ) {
+			return output_icon( $params, THEMES_PKG_URL."styles/$icon_style/icons/".$params['ipackage']."/".$params['ipath'].$matchFile );
 		}
 	}
 
 	// first check themes/force
-	if( false !== ( $matchFile = get_first_match( BIT_THEME_PATH."force/icons/".$params['ipackage'].'/'.$params['ipath'],$params['iname'] ) ) ) {
+	if( false !== ( $matchFile = get_first_match( THEMES_PKG_PATH."force/icons/".$params['ipackage'].'/'.$params['ipath'],$params['iname'] ) ) ) {
 		$ret = output_icon( $params, BIT_ROOT_URL."themes/force/icons/".$params['ipackage'].'/'.$params['ipath'].$matchFile );
 		return $ret;
 	}
@@ -128,8 +128,8 @@ function smarty_function_biticon($params, &$gBitSmarty) {
 	}
 
 	//Well, then lets look in the default location
-	if( false !== ( $matchFile = get_first_match( BIT_THEME_PATH."styles/default/icons/".$params['ipackage']."/".$params['ipath'],$params['iname'] ) ) ) {
-		return output_icon( $params, BIT_THEME_URL."styles/default/icons/".$params['ipackage']."/".$params['ipath'].$matchFile );
+	if( false !== ( $matchFile = get_first_match( THEMES_PKG_PATH."styles/default/icons/".$params['ipackage']."/".$params['ipath'],$params['iname'] ) ) ) {
+		return output_icon( $params, THEMES_PKG_URL."styles/default/icons/".$params['ipackage']."/".$params['ipath'].$matchFile );
 	}
 
 	//Still didn't find it! Well lets output something (return false if only the url is requested)

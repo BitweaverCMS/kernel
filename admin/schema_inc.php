@@ -11,71 +11,18 @@ $tables = array(
 	timer N(16.6) NOTNULL
 ",
 
-'tiki_banning' => "
-	ban_id I4 AUTO PRIMARY,
-	mode C(4),
-	title C(200),
-	ip1 C(3),
-	ip2 C(3),
-	ip3 C(3),
-	ip4 C(3),
-	`user` C(40),
-	date_from T NOTNULL,
-	date_to T NOTNULL,
-	use_dates C(1),
-	created I8,
-	message X
-",
-
-'tiki_banning_sections' => "
-	ban_id I4 PRIMARY,
-	section C(100) PRIMARY
-",
-
-
-'tiki_layouts' => "
-	user_id I4 NOTNULL,
-	module_id I4 NOTNULL,
-	layout C(160) NOTNULL DEFAULT 'home',
-	position C(1) NOTNULL,
-	rows I4,
-	params C(255),
-	ord I4 NOTNULL DEFAULT '1'
-",
-
-'tiki_layouts_modules' => "
-	module_id I4 PRIMARY,
-	availability C(1),
-	title C(255),
-	cache_time I8,
-	rows I4,
-	params C(255),
-	groups X
-",
-
-'tiki_mail_events' => "
-	event C(200),
-	object C(200),
-	email C(200)
-",
-
-'tiki_module_map' => "
-	module_id I4 AUTO PRIMARY,
-	module_rsrc C(250) NOTNULL
-",
-
-'tiki_preferences' => "
+'kernel_prefs' => "
 	name C(40) PRIMARY,
 	package C(100),
 	value C(250)
 ",
 
-'tiki_programmed_content' => "
-	p_id I4 AUTO PRIMARY,
-	content_id I4 NOTNULL,
-	publish_date I8 NOTNULL,
-	data X
+'mail_notifications' => "
+	event C(200),
+	object C(200),
+	email C(200)
 ",
+
 
 );
 

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.33 2006/02/01 18:41:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.34 2006/02/01 19:45:29 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -61,7 +61,7 @@ class BitSystem extends BitBase {
 	// Used by packages to register notification events that can be subscribed to.
 	var $mNotifyEvents = array();
 	/**
-	* Used to store contents of tiki_preferences
+	* Used to store contents of kernel_prefs
 	* @private
 	*/
 	var $mPrefs;
@@ -147,7 +147,7 @@ class BitSystem extends BitBase {
 		}
 
 		if ( empty( $this->mPrefs ) ) {
-			$query = "SELECT `name` ,`value` FROM `" . BIT_DB_PREFIX . "tiki_preferences` " . $whereClause;
+			$query = "SELECT `name` ,`value` FROM `" . BIT_DB_PREFIX . "kernel_prefs` " . $whereClause;
 			if( $rs = $this->mDb->query($query, $queryVars, -1, -1 ) ) {
 				while( $row = $rs->fetchRow() ) {
 					$this->mPrefs[$row['name']] = $row['value'];
@@ -184,10 +184,10 @@ class BitSystem extends BitBase {
 				$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `value`=? WHERE `multisite_id`=? AND `name`=?";
 				$result = $this->mDb->query( $query, array( empty( $value ) ? '' : $value, $gMultisites->mMultisiteId, $name ) );
 			} else {
-				$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_preferences` WHERE `name`=?";
+				$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_prefs` WHERE `name`=?";
 				$result = $this->mDb->query( $query, array( $name ) );
 				if( isset( $value ) ) {
-					$query = "INSERT INTO `".BIT_DB_PREFIX."tiki_preferences`(`name`,`value`,`package`) VALUES (?,?,?)";
+					$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`name`,`value`,`package`) VALUES (?,?,?)";
 					$result = $this->mDb->query( $query, array( $name, $value, strtolower( $pPackageName ) ) );
 				}
 			}
@@ -220,7 +220,7 @@ class BitSystem extends BitBase {
 	**/
 	function expungePackagePreferences( $pPackageName ) {
 		if( !empty( $pPackageName ) ) {
-			$query = "DELETE FROM `".BIT_DB_PREFIX."tiki_preferences` WHERE `package`=?";
+			$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_prefs` WHERE `package`=?";
 			$result = $this->mDb->query( $query, array( strtolower( $pPackageName ) ) );
 			// let's force a reload of the prefs
 			unset( $this->mPrefs );
@@ -828,7 +828,7 @@ class BitSystem extends BitBase {
 	function registerPreferences( $packagedir, $preferences ) {
 		foreach( $preferences as $pref ) {
 			$this->registerSchemaDefault( $packagedir,
-			"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences`(`package`,`name`,`value`) VALUES ('$pref[0]', '$pref[1]','$pref[2]')");
+			"INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`package`,`name`,`value`) VALUES ('$pref[0]', '$pref[1]','$pref[2]')");
 		}
 	}
 
@@ -980,7 +980,7 @@ asort( $this->mAppMenu );
 			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getPreference("package_".strtolower($package)) != 'y') {
 				$this->storePreference('package_'.strtolower( $package ), 'n');
 			} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
-				// Delete the package_<pkgname> row from tiki_preferences
+				// Delete the package_<pkgname> row from kernel_prefs
 				$this->storePreference('package_'.strtolower( $package ), NULL );
 			}
 		}
@@ -1277,7 +1277,7 @@ asort( $this->mAppMenu );
 			} else {
 				$whereClause = ", `" . BIT_DB_PREFIX . "users_users` uu WHERE tl.`user_id`=uu.`user_id` AND uu.`login`=?";
 			}
-			$query = "SELECT tl.`user_id` FROM `" . BIT_DB_PREFIX . "tiki_layouts` tl
+			$query = "SELECT tl.`user_id` FROM `" . BIT_DB_PREFIX . "themes_layouts` tl
 					$whereClause ";
 			if( $userId = $this->mDb->getOne($query, array($pUserMixed)) ) {
 				$layoutUserId = $userId;
@@ -1304,7 +1304,7 @@ asort( $this->mAppMenu );
 			$whereClause .= " tl.`layout`=? ORDER BY ";
 			array_push($bindVars, $pLayout);
 		}
-		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "tiki_layouts` tl, `" . BIT_DB_PREFIX . "tiki_layouts_modules` tlm, `" . BIT_DB_PREFIX . "tiki_module_map` tmm
+		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "themes_layouts` tl, `" . BIT_DB_PREFIX . "tiki_layouts_modules` tlm, `" . BIT_DB_PREFIX . "tiki_module_map` tmm
 				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->mDb->convert_sortmode("ord_asc");
 		$result = $this->mDb->query($query, $bindVars);
 		$row = $result->fetchRow();

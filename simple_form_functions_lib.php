@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.7 2006/01/10 21:12:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.8 2006/02/01 19:45:30 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -22,7 +22,7 @@ function simple_set_toggle( $pFeature, $pPackageName = NULL ) {
 /**
  * Store or update a boolean value in the database
  * @param $pName name of the parameter to be set in the database
- * @param $pValue set $pName to $pValue in tiki_preferences
+ * @param $pValue set $pName to $pValue in kernel_prefs
  * @param $pPackageName name of the package the feature belongs to
  * @return none
  */

@@ -3,7 +3,7 @@
  * User access Banning Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/ban_lib.php,v 1.4 2005/08/30 22:23:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/ban_lib.php,v 1.5 2006/02/01 19:45:30 spiderr Exp $
  */
 
 /**
@@ -17,7 +17,7 @@ class BanLib extends BitBase {
 	}
 
 	function get_rule($ban_id) {
-		$query = "select * from `".BIT_DB_PREFIX."tiki_banning` where `ban_id`=?";
+		$query = "select * from `".BIT_DB_PREFIX."tidbits_banning` where `ban_id`=?";
 
 		$result = $this->mDb->query($query,array($ban_id));
 		$res = $result->fetchRow();
@@ -35,7 +35,7 @@ class BanLib extends BitBase {
 	}
 
 	function remove_rule($ban_id) {
-		$query = "delete from `".BIT_DB_PREFIX."tiki_banning` where `ban_id`=?";
+		$query = "delete from `".BIT_DB_PREFIX."tidbits_banning` where `ban_id`=?";
 
 		$this->mDb->query($query,array($ban_id));
 		$query = "delete from `".BIT_DB_PREFIX."tiki_banning_sections` where `ban_id`=?";
@@ -62,8 +62,8 @@ class BanLib extends BitBase {
 			}
 		}
 
-		$query = "select * from `".BIT_DB_PREFIX."tiki_banning` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_banning` $mid";
+		$query = "select * from `".BIT_DB_PREFIX."tidbits_banning` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
+		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tidbits_banning` $mid";
 		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
@@ -86,7 +86,7 @@ class BanLib extends BitBase {
 		$retval["data"] = $ret;
 		$retval["cant"] = $cant;
 		$now = $gBitSystem->getUTCTime();
-		$query = "select `ban_id` from `".BIT_DB_PREFIX."tiki_banning` where `use_dates`=? and `date_to` < ?";
+		$query = "select `ban_id` from `".BIT_DB_PREFIX."tidbits_banning` where `use_dates`=? and `date_to` < ?";
 		$result = $this->mDb->query($query,array('y',$now));
 
 		while ($res = $result->fetchRow()) {
@@ -115,7 +115,7 @@ class BanLib extends BitBase {
 		$sections) {
 
 		if ($ban_id) {
-			$query = " update `".BIT_DB_PREFIX."tiki_banning` set
+			$query = " update `".BIT_DB_PREFIX."tidbits_banning` set
   			`title`=?,
   			`ip1`=?,
   			`ip2`=?,
@@ -134,10 +134,10 @@ class BanLib extends BitBase {
 			global $gBitSystem;
 			$now = $gBitSystem->getUTCTime();
 
-			$query = "insert into `".BIT_DB_PREFIX."tiki_banning`(`mode`,`title`,`ip1`,`ip2`,`ip3`,`ip4`,`user`,`date_from`,`date_to`,`use_dates`,`message`,`created`)
+			$query = "insert into `".BIT_DB_PREFIX."tidbits_banning`(`mode`,`title`,`ip1`,`ip2`,`ip3`,`ip4`,`user`,`date_from`,`date_to`,`use_dates`,`message`,`created`)
 		values(?,?,?,?,?,?,?,?,?,?,?,?)";
 			$this->mDb->query($query,array($mode,$title,$ip1,$ip2,$ip3,$ip4,$user,$date_from,$date_to,$use_dates,$message,$now));
-			$ban_id = $this->mDb->getOne("select max(`ban_id`) from `".BIT_DB_PREFIX."tiki_banning` where `created`=?",array($now));
+			$ban_id = $this->mDb->getOne("select max(`ban_id`) from `".BIT_DB_PREFIX."tidbits_banning` where `created`=?",array($now));
 		}
 
 		$query = "delete from `".BIT_DB_PREFIX."tiki_banning_sections` where `ban_id`=?";

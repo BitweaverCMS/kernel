@@ -3,7 +3,7 @@
  * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.20 2006/02/01 20:13:34 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.21 2006/02/01 21:40:37 squareing Exp $
  */
 
 /**
@@ -211,7 +211,7 @@ class ModLib extends BitBase {
 	}
 
 	function getAssignedModules( $name ) {
-		$query = "select tlm.*, count() from `".BIT_DB_PREFIX."tiki_modules` where `name`=?";
+		$query = "select tlm.*, count() from `".BIT_DB_PREFIX."themes_layouts_modules` where `name`=?";
 
 		$result = $this->mDb->query($query,array($name));
 		$res = $result->fetchRow();

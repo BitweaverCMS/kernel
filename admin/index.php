@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.6 2006/01/25 15:40:25 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.7 2006/02/01 16:24:55 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -57,10 +57,12 @@ if (isset($page)) {
 			case 'server':
 			case 'layout':
 			case 'modules':
-			case 'menus':
-			case 'menu_options':
 			case 'custom_modules':
 				$package = 'kernel';
+				break;
+			case 'menus':
+			case 'menu_options':
+				$package = 'tidbits';
 				break;
 			case 'login':
 			case 'userfiles':

@@ -33,23 +33,6 @@ $tables = array(
 ",
 
 
-'tiki_content_templates' => "
-	template_id I4 AUTO PRIMARY,
-	content X,
-	name C(200),
-	created I8
-",
-
-'tiki_content_templates_sections' => "
-	template_id I4 PRIMARY,
-	section C(160) PRIMARY
-",
-
-'tiki_cookies' => "
-	cookie_id I4 AUTO PRIMARY,
-	cookie C(255)
-",
-
 'tiki_dsn' => "
 	dsn_id I4 AUTO PRIMARY,
 	name C(200) NOTNULL,
@@ -232,7 +215,6 @@ $gBitInstaller->registerModules( $moduleHash );
 // ### Default UserPermissions
 $gBitInstaller->registerUserPermissions( KERNEL_PKG_NAME, array(
 	array('bit_p_admin', 'Can manage users groups and permissions and all aspects of site management', 'admin', KERNEL_PKG_NAME ),
-	array('bit_p_edit_cookies', 'Can admin cookies', 'editors', KERNEL_PKG_NAME),
 	array('bit_p_admin_banning', 'Can ban users or IPs', 'admin', KERNEL_PKG_NAME),
 	array('bit_p_access_closed_site', 'Can access site when closed', 'admin', KERNEL_PKG_NAME)
 ) );

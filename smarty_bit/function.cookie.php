@@ -11,7 +11,7 @@
 function smarty_function_cookie($params, &$gBitSmarty)
 {
     global $taglinelib;
-    include_once( KERNEL_PKG_PATH.'tagline_lib.php' );
+    include_once( TIDBITS_PKG_PATH.'BitFortuneCookies.php' );
     extract($params);
     // Param = zone
   

@@ -19,9 +19,6 @@
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/list_cache.php">{tr}Link Cache{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/phpinfo.php">{tr}PHPinfo{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_notifications.php">{tr}Notification{/tr}</a></li>
-	{if $gBitUser->hasPermission( 'bit_p_edit_cookies' )}
-		<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_cookies.php">{tr}Cookies{/tr}</a></li>
-	{/if}
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?version_check=1">{tr}Check Version{/tr}</a></li>
 </ul>
 {/strip}

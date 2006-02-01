@@ -3,7 +3,7 @@
  * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.16 2006/01/31 21:33:43 bitweaver Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.17 2006/02/01 16:18:23 squareing Exp $
  */
 
 /**
@@ -19,9 +19,9 @@ class ModLib extends BitBase {
 	function replace_user_module($name, $title, $data) {
 
 		if ((!empty($name)) && (!empty($title)) && (!empty($data))) {
-			$query = "delete from `".BIT_DB_PREFIX."tiki_user_modules` where `name`=?";
+			$query = "delete from `".BIT_DB_PREFIX."tidbits_user_modules` where `name`=?";
 			$result = $this->mDb->query($query,array($name));
-			$query = "insert into `".BIT_DB_PREFIX."tiki_user_modules`(`name`,`title`,`data`) values(?,?,?)";
+			$query = "insert into `".BIT_DB_PREFIX."tidbits_user_modules`(`name`,`title`,`data`) values(?,?,?)";
 
 			$result = $this->mDb->query($query,array($name,$title,$data));
 			return true;
@@ -484,14 +484,14 @@ class ModLib extends BitBase {
 
 	/*shared*/
 	function is_user_module($name) {
-		$query = "select `name`  from `".BIT_DB_PREFIX."tiki_user_modules` where `name`=?";
+		$query = "select `name`  from `".BIT_DB_PREFIX."tidbits_user_modules` where `name`=?";
 		$result = $this->mDb->query($query,array($name));
 		return $result->numRows();
 	}
 
 	/*shared*/
 	function get_user_module($name) {
-		$query = "select * from `".BIT_DB_PREFIX."tiki_user_modules` where `name`=?";
+		$query = "select * from `".BIT_DB_PREFIX."tidbits_user_modules` where `name`=?";
 		$result = $this->mDb->query($query,array($name));
 		$res = $result->fetchRow();
 		return $res;
@@ -502,7 +502,7 @@ class ModLib extends BitBase {
 
 		if ($moduleId) {
 			$this->unassignModule($moduleId);
-			$query = " delete from `".BIT_DB_PREFIX."tiki_user_modules` where `name`=?";
+			$query = " delete from `".BIT_DB_PREFIX."tidbits_user_modules` where `name`=?";
 			$result = $this->mDb->query($query,array($name));
 			$query = " DELETE FROM `".BIT_DB_PREFIX."tiki_layouts_modules` where `module_id` = ?";
 			$result = $this->mDb->query($query, array($moduleId));
@@ -512,10 +512,10 @@ class ModLib extends BitBase {
 	}
 
 	function list_user_modules() {
-		$query = "select * from `".BIT_DB_PREFIX."tiki_user_modules`";
+		$query = "select * from `".BIT_DB_PREFIX."tidbits_user_modules`";
 
 		$result = $this->mDb->query($query,array());
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_user_modules`";
+		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tidbits_user_modules`";
 		$cant = $this->mDb->getOne($query_cant,array());
 		$ret = array();
 

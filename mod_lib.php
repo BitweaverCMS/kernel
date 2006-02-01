@@ -3,7 +3,7 @@
  * Modules Management Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.17 2006/02/01 16:18:23 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/mod_lib.php,v 1.18 2006/02/01 16:40:15 spiderr Exp $
  */
 
 /**
@@ -434,13 +434,14 @@ class ModLib extends BitBase {
 
 	function getAllModules( $pDir='modules', $pPrefix='mod_' ) {
 		global $gBitSystem;
-		$user_modules = $this->list_user_modules();
-
-		$all_modules = array();
-
-		if( $pPrefix == 'mod_' ) {
-			foreach ($user_modules["data"] as $um) {
-				$all_modules[tra( 'Custom Modules' )]['_custom:custom/'.$um["name"]] = $um["name"];
+		if( $user_modules = $this->list_user_modules() ) {
+	
+			$all_modules = array();
+	
+			if( $pPrefix == 'mod_' ) {
+				foreach ($user_modules["data"] as $um) {
+					$all_modules[tra( 'Custom Modules' )]['_custom:custom/'.$um["name"]] = $um["name"];
+				}
 			}
 		}
 
@@ -512,20 +513,24 @@ class ModLib extends BitBase {
 	}
 
 	function list_user_modules() {
-		$query = "select * from `".BIT_DB_PREFIX."tidbits_user_modules`";
-
-		$result = $this->mDb->query($query,array());
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."tidbits_user_modules`";
-		$cant = $this->mDb->getOne($query_cant,array());
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-			$ret[] = $res;
-		}
-
+		global $gBitSystem;
 		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
+		if( $gBitSystem->isPackageActive( 'tidbits' ) ) {
+			$query = "select * from `".BIT_DB_PREFIX."tidbits_user_modules`";
+	
+			$result = $this->mDb->query($query,array());
+			$query_cant = "select count(*) from `".BIT_DB_PREFIX."tidbits_user_modules`";
+			$cant = $this->mDb->getOne($query_cant,array());
+			$ret = array();
+	
+			while ($res = $result->fetchRow()) {
+				$ret[] = $res;
+			}
+	
+			$retval = array();
+			$retval["data"] = $ret;
+			$retval["cant"] = $cant;
+		}
 		return $retval;
 	}
 

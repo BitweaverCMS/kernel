@@ -20,7 +20,7 @@ if( (!isset($gBitDbHost)) || empty($gBitDbHost) ) {
 	$gBitDbHost   = 'localhost';
 }
 if( !defined( 'DEFAULT_THEME' ) ) {
-	define( 'DEFAULT_THEME', 'native' );
+	define( 'DEFAULT_THEME', 'jill' );
 }
 if( !defined( 'BIT_QUERY_CACHE_TIME' ) ) {
 	define( 'BIT_QUERY_CACHE_TIME', 86400 );

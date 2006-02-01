@@ -33,11 +33,6 @@ $tables = array(
 ",
 
 
-'tiki_dynamic_variables' => "
-	name C(40) PRIMARY,
-	data X
-",
-
 'tiki_layouts' => "
 	user_id I4 NOTNULL,
 	module_id I4 NOTNULL,

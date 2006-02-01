@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.7 2005/12/26 12:24:37 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.8 2006/02/01 20:38:41 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -97,11 +97,6 @@ $formFeaturesAdmin = array(
 		'label' => 'Referer Statistics',
 		'note' => 'Records statistics including HTTP_REFERRER',
 		'page' => 'RefererStats',
-	),
-	'feature_theme_control' => array(
-		'label' => 'Theme Control',
-		'note' => '???',
-		'page' => 'ThemeControl',
 	),
 );
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.28 2006/01/27 23:04:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.29 2006/02/01 20:38:41 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -48,7 +48,7 @@ define('BIT_LANG_PATH', LANGUAGES_PKG_PATH . 'lang/');
 
 define('BIT_MODULES_PATH', BIT_ROOT_PATH . 'modules/');
 define('BIT_TEMP_PATH', BIT_ROOT_PATH . 'temp/');
-define('BIT_THEME_PATH', BIT_ROOT_PATH . 'themes/');
+define('THEMES_PKG_PATH', BIT_ROOT_PATH . 'themes/');
 
 // this is evil stuff and causes hell for us
 ini_set ( 'session.use_trans_sid', 'Off' );
@@ -98,13 +98,16 @@ require_once(KERNEL_PKG_PATH . 'BitCache.php');
 global $gBitUser, $gTicket, $gBitSmarty, $userlib, $gBitDbType;
 
 // for PHP<4.2.0
-if (!function_exists('array_fill'))
-{
+if (!function_exists('array_fill')) {
 	require_once(KERNEL_PKG_PATH . 'array_fill.func.php');
 }
 // num queries has to be global
 global $num_queries;
 $num_queries = 0;
+
+require_once( THEMES_PKG_PATH."BitThemes.php" );
+global $gBitThemes;
+$gBitThemes = new BitThemes();
 
 if( $gBitSystem->isDatabaseValid() ) {
 

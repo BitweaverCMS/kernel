@@ -17,8 +17,6 @@
 		<li><a class="item" href="{$smarty.const.FEATURED_LINKS_PKG_URL}admin/index.php">{tr}Links{/tr}</a></li>
 	{/if}{if $gBitSystem->isFeatureActive( 'feature_polls' )}
 		<li><a class="item" href="{$smarty.const.POLLS_PKG_URL}edit.php">{tr}Polls{/tr}</a></li>
-	{/if}{if $gBitSystem->isFeatureActive( 'feature_theme_control' )}
-		<li><a class="item" href="{$smarty.const.THEMES_PKG_URL}theme_control.php">{tr}Theme control{/tr}</a></li>
 	{/if}
 {/if}{if $gBitSystem->isFeatureActive( 'feature_chat' ) and $gBitUser->hasPermission( 'bit_p_admin_chat' )}
 	<li><a class="item" href="{$smarty.const.CHAT_PKG_URL}admin/index.php">{tr}Chat{/tr}</a></li>

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.35 2006/02/01 20:13:34 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.36 2006/02/01 20:38:41 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -809,12 +809,12 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function registerMenuOptions( $packagedir, $menu_options ) {
-		foreach( $menu_options as $opt ) {
-			$this->registerSchemaDefault( $packagedir,
-			"INSERT INTO `".BIT_DB_PREFIX."tiki_menu_options` (`menu_id` , `type` , `name` , `url` , `position` , `section` , `perm` , `groupname`) VALUES ($opt[0],'$opt[1]','$opt[2]','$opt[3]',$opt[4],'$opt[5]','$opt[6]','$opt[7]')");
-		}
-	}
+//	function registerMenuOptions( $packagedir, $menu_options ) {
+//		foreach( $menu_options as $opt ) {
+//			$this->registerSchemaDefault( $packagedir,
+//			"INSERT INTO `".BIT_DB_PREFIX."tiki_menu_options` (`menu_id` , `type` , `name` , `url` , `position` , `section` , `perm` , `groupname`) VALUES ($opt[0],'$opt[1]','$opt[2]','$opt[3]',$opt[4],'$opt[5]','$opt[6]','$opt[7]')");
+//		}
+//	}
 
 	function registerUserPermissions( $packagedir, $userpermissions ) {
 		foreach( $userpermissions as $perm ) {

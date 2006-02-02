@@ -1,13 +1,12 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.2 2005/08/01 18:40:33 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.3 2006/02/02 08:36:03 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 require_once( '../../bit_setup_inc.php' );
 
-include_once( KERNEL_PKG_PATH.'menu_lib.php' );
 include_once( KERNEL_PKG_PATH.'mod_lib.php' );
 
 if( $gBitSystem->isPackageActive( 'dcs' ) ) {
@@ -47,9 +46,6 @@ if( $gBitSystem->isPackageActive( 'imagegals' ) ) {
 	$galleries = $gBitSystem->list_galleries(0, -1, 'last_modified_desc', $user, '');
 	$gBitSmarty->assign('galleries', $galleries["data"]);
 }
-$menus = $menulib->list_menus(0, -1, 'menu_id_desc', '');
-$gBitSmarty->assign('menus', $menus["data"]);
-
 $gBitSmarty->assign('wysiwyg', 'n');
 
 if (!$gBitUser->isAdmin()) {

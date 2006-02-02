@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.5 2006/02/01 20:35:52 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.6 2006/02/02 22:17:53 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -49,20 +49,32 @@ class BitDbPear extends BitDb
 			);
 		}
 
+		if( empty( $gBitPearDbOptions ) ) {
+			$gBitPearDbOptions = array(
+			  'debug'       => 2,
+			  'persistent' => false,
+			);
+
+		}
+
+		PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'bit_pear_login_error' );
+
 		$this->mDb = DB::connect($pPearDsn, $gBitPearDbOptions);
+
 		if( PEAR::isError( $this->mDb ) ) {
-			die( $this->mDb->getMessage() );
+			$this->mErrors['db_connect'] = $this->mDb->getDebugInfo();
+		} else {
+		
+			$this->mDb->setFetchMode( DB_FETCHMODE_ASSOC );
+			// Default to autocommit unless StartTrans is called
+			$this->mDb->autoCommit( TRUE );
+	
+			$this->mType = $pPearDsn['phptype'];
+			$this->mName = $pPearDsn['database'];
 		}
 
 		PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'bit_pear_error_handler');
-		
-		$this->mDb->setFetchMode( DB_FETCHMODE_ASSOC );
-		// Default to autocommit unless StartTrans is called
-		$this->mDb->autoCommit( TRUE );
-
-		$this->mType = $pPearDsn['phptype'];
-		$this->mName = $pPearDsn['database'];
-}
+	}
 	/**
 	* Quotes a string to be sent to the database which is
 	* passed to function on to AdoDB->qstr().
@@ -428,6 +440,10 @@ function bit_pear_error_handler( $error_obj ) {
 	} else {
 		die ('Sorry you request can not be processed now. Try again later');
 	}
+}
+
+function bit_pear_login_error( $pErrorObj ) {
+	return $pErrorObj->getDebugInfo();
 }
 
 ?>

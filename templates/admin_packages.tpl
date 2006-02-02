@@ -24,6 +24,10 @@
 					{/if}
 				{/foreach}
 			{/legend}
+
+			<div class="row submit">
+				<input type="submit" name="features" value="{tr}Activate bitweaver Packages{/tr}"/>
+			</div>
 		{/jstab}
 
 		{jstab title="Select Services"}
@@ -55,6 +59,10 @@
 					{/foreach}
 				{/foreach}
 			{/legend}
+
+			<div class="row submit">
+				<input type="submit" name="features" value="{tr}Activate bitweaver Packages{/tr}"/>
+			</div>
 		{/jstab}
 
 		{if $show_install_tab}
@@ -102,10 +110,6 @@
 				{/foreach}
 			{/legend}
 		{/jstab}
-
-		<div class="row submit">
-			<input type="submit" name="features" value="{tr}Activate bitweaver Packages{/tr}"/>
-		</div>
 	{/jstabs}
 {/form}
 

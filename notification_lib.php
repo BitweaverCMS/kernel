@@ -3,7 +3,7 @@
  * eMail Notification Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.4 2005/08/30 22:23:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.5 2006/02/02 08:59:46 squareing Exp $
  * @author awcolley
  *
  * created 2003/06/03
@@ -54,8 +54,8 @@ class NotificationLib extends BitBase
             $mid = " ";
             $bindvars=array();
         }
-        $query = "select * from `".BIT_DB_PREFIX."tiki_mail_events` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
-        $query_cant = "select count(*) from `".BIT_DB_PREFIX."tiki_mail_events` $mid";
+        $query = "select * from `".BIT_DB_PREFIX."mail_notifications` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
+        $query_cant = "select count(*) from `".BIT_DB_PREFIX."mail_notifications` $mid";
         $result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
         $cant = $this->mDb->getOne($query_cant,$bindvars);
         $ret = array();
@@ -77,7 +77,7 @@ class NotificationLib extends BitBase
     */
     function add_mail_event($event, $object, $email)
     {
-        $query = "insert into `".BIT_DB_PREFIX."tiki_mail_events`(`event`,`object`,`email`) values(?,?,?)";
+        $query = "insert into `".BIT_DB_PREFIX."mail_notifications`(`event`,`object`,`email`) values(?,?,?)";
         $result = $this->mDb->query($query, array($event,$object,$email) );
     }
     /**
@@ -88,7 +88,7 @@ class NotificationLib extends BitBase
     */
     function remove_mail_event($event, $object, $email)
     {
-        $query = "delete from `".BIT_DB_PREFIX."tiki_mail_events` where `event`=? and `object`=? and `email`=?";
+        $query = "delete from `".BIT_DB_PREFIX."mail_notifications` where `event`=? and `object`=? and `email`=?";
         $result = $this->mDb->query($query,array($event,$object,$email));
     }
 
@@ -100,7 +100,7 @@ class NotificationLib extends BitBase
     */
     function get_mail_events($event, $object)
     {
-        $query = "select `email` from `".BIT_DB_PREFIX."tiki_mail_events` where `event`=? and (`object`=? or `object`='*')";
+        $query = "select `email` from `".BIT_DB_PREFIX."mail_notifications` where `event`=? and (`object`=? or `object`='*')";
         $result = $this->mDb->query($query, array($event,$object) );
         $ret = array();
         while ($res = $result->fetchRow())

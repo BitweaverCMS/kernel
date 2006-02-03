@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.36 2006/02/01 20:38:41 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.37 2006/02/03 16:00:51 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -157,9 +157,25 @@ class BitSystem extends BitBase {
 		return count( $this->mPrefs );
 	}
 
+	// <<< getPreference
+	/**
+	* Add getConfig / setConfig for more uniform handling of config variables instead of spreading global vars.
+	* These are only for runtime, install specific settings that are not held in the database.
+	*
+	* @access public
+	**/
+	function getConfig( $pName, $pDefault = NULL ) {
+		return( empty( $this->mConfig[$pName] ) ? $pDefault : $this->mConfig[$pName] );
+	}
+
+	function setConfig( $pName, $pValue ) {
+		$this->mConfig[$pName] = $pValue;
+		return( TRUE );
+	}
+
 	// <<< storePreference
 	/**
-	* Tiki needs lots of settings just to operate.
+	* bitweaver needs lots of settings just to operate.
 	* loadPreferences assigns itself the default preferences, then loads just the differences from the database.
 	* In storePreference (and only when storePreference is called) we make a second copy of defaults to see if
 	* preferences you are changing is different from the default.

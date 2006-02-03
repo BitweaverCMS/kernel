@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.7 2006/02/01 20:13:34 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.8 2006/02/03 17:23:54 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -31,10 +31,10 @@ $formModuleFeatures = array(
 );
 $gBitSmarty->assign( 'formModuleFeatures',$formModuleFeatures );
 
-$all_mods = $modlib->getAllModules();                           // Get all column modules (e.g. left & right)
+$all_mods = $gBitThemes->getAllModules();                           // Get all column modules (e.g. left & right)
 $gBitSmarty->assign_by_ref( 'all_modules', $all_mods );
 
-$all_centers = $modlib->getAllModules( 'templates', 'center_' );   // Get all center templates
+$all_centers = $gBitThemes->getAllModules( 'templates', 'center_' );   // Get all center templates
 $gBitSmarty->assign_by_ref( 'all_centers', $all_centers );              
 
 $all_mods = array_merge_recursive($all_mods,$all_centers);                         // Merge them all back into one array
@@ -69,12 +69,12 @@ if( $processForm == 'Modules' ) {
                     $groupList = NULL;
                 }
                 $storeMod = array('module_rsrc'=>$moduleName, 'rows'=>$_REQUEST['fModuleRows'.$modCount], 'params'=>$_REQUEST['fModuleParams'.$modCount], 'cache_time'=>$_REQUEST['fModuleCacheTime'.$modCount], 'groups'=>$groupList);
-                $modlib->storeModule($storeMod);
+                $gBitThemes->storeModule($storeMod);
                 $actionDescr = array('actionType'=>'enable', 'moduleName'=>$moduleName);
                 array_push($actionSummary,$actionDescr);
                 $actionsTaken = true;
             } elseif ($action == 'disable') {
-                $modlib->disableModule($moduleName);
+                $gBitThemes->disableModule($moduleName);
                 $actionDescr = array('actionType'=>'disable', 'moduleName'=>$moduleName);
                 array_push($actionSummary,$actionDescr);
                 $actionsTaken = true;
@@ -86,7 +86,7 @@ $gBitSmarty->assign_by_ref('actionSummary',$actionSummary);
 $gBitSmarty->assign_by_ref('actionsTaken',$actionsTaken);
 
 
-$all_avail_modules = $modlib->getAssignableModules();
+$all_avail_modules = $gBitThemes->getAssignableModules();
 $avail_columns = $all_avail_modules['border'];
 $avail_centers = $all_avail_modules['center'];
 $avail_modules = array_merge($avail_columns , $avail_centers);
@@ -127,7 +127,7 @@ foreach ($all_modules as $name=>$module) {
 // Get a list of all modules currently used by the kernel for layouts
 $query = "SELECT tl.`module_id`, tl.`layout`, tmm.`module_rsrc` FROM `".BIT_DB_PREFIX."themes_layouts` tl, `".BIT_DB_PREFIX."themes_module_map` tmm
 	  WHERE tl.`module_id` = tmm.`module_id` AND tl.`user_id` = 1";
-$result = $modlib->mDb->query($query);
+$result = $gBitThemes->mDb->query($query);
 $rows = $result->getRows();
 
 // Set up the javascript

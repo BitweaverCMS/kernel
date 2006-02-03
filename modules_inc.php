@@ -1,21 +1,16 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.6 2006/01/10 21:12:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.7 2006/02/03 17:23:54 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.6 2006/01/10 21:12:46 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.7 2006/02/03 17:23:54 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
-global $gBitSmarty, $gBitSystem, $modlib, $gBitUser;
-
-/**
- * required setup
- */
-include_once( KERNEL_PKG_PATH.'mod_lib.php' );
+global $gBitSmarty, $gBitSystem, $gBitThemes, $gBitUser;
 
 clearstatcache();
 $now = $gBitSystem->getUTCTime();
@@ -61,7 +56,7 @@ if( $gBitSystem->mLayout && empty( $gHideModules ) ) {
 							fclose ($fp);
 							$r["data"] = $data;
 						} else {
-							if( $info = $modlib->get_user_module( $template ) ) {
+							if( $info = $gBitThemes->getCustomModule( $template ) ) {
 								// Ahora usar el template de user
 								$gBitSmarty->assign_by_ref('user_title', $info["title"]);
 								$gBitSmarty->assign_by_ref('user_data', $info["data"]);

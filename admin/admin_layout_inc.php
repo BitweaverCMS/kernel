@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.11 2006/02/02 08:36:03 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.12 2006/02/03 17:23:54 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -29,10 +29,10 @@ if( empty( $_REQUEST['nojs'] ) ) {
 	if( !empty( $_REQUEST['apply_layout'] ) || !empty( $_REQUEST['unassign'] ) ) {
 		if( !empty( $_REQUEST['unassign'] ) ) {
 			$unassign = array_keys( $_REQUEST['unassign'] );
-			$modlib->unassignModule( $unassign[0], ROOT_USER_ID, $_REQUEST['fPackage'] );
+			$gBitThemes->unassignModule( $unassign[0], ROOT_USER_ID, $_REQUEST['fPackage'] );
 			unset( $_REQUEST['modules'][$unassign[0]] );
 		}
-		if( $modlib->storeModulesBatch( $_REQUEST ) ) {
+		if( $gBitThemes->storeModulesBatch( $_REQUEST ) ) {
 			$feedback['success'] = tra( "The layout was successfully saved." );
 		} else {
 			$feedback['error'] = tra( "There was a problem storing the layout." );
@@ -81,19 +81,19 @@ if( $processForm == 'Misc' ) {
 	if( isset( $_REQUEST['fMove'] ) && isset(  $_REQUEST['fModule'] ) ) {
 		switch( $_REQUEST['fMove'] ) {
 			case "unassign":
-				$modlib->unassignModule( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'] );
+				$gBitThemes->unassignModule( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'] );
 				break;
 			case "up":
-				$modlib->moduleUp( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'] );
+				$gBitThemes->moduleUp( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'] );
 				break;
 			case "down":
-				$modlib->moduleDown( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'] );
+				$gBitThemes->moduleDown( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'] );
 				break;
 			case "left":
-				$modlib->modulePosition( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'], 'r' );
+				$gBitThemes->modulePosition( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'], 'r' );
 				break;
 			case "right":
-				$modlib->modulePosition( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'], 'l' );
+				$gBitThemes->modulePosition( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'], 'l' );
 				break;
 		}
 	}
@@ -102,7 +102,7 @@ if( $processForm == 'Misc' ) {
 } elseif (isset($_REQUEST["edit_assign"])) {
 	$_REQUEST["edit_assign"] = urldecode($_REQUEST["edit_assign"]);
 
-	$info = $modlib->get_assigned_module($_REQUEST["edit_assign"]);
+	$info = $gBitThemes->get_assigned_module($_REQUEST["edit_assign"]);
 	$grps = '';
 
 	if ($info["groups"]) {
@@ -144,10 +144,10 @@ if( $processForm == 'Misc' ) {
 	}
 	$fAssign = &$_REQUEST['fAssign'];
 	$fAssign['layout'] = $_REQUEST['fPackage'];
-	$modlib->storeModule( $fAssign );
+	$gBitThemes->storeModule( $fAssign );
 	$fAssign['user_id'] = ROOT_USER_ID;
 	$fAssign['layout'] = $_REQUEST['fPackage'];
-	$modlib->storeLayout( $fAssign );
+	$gBitThemes->storeLayout( $fAssign );
 	$gBitSmarty->assign_by_ref( 'fAssign', $fAssign );
 }
 
@@ -157,7 +157,7 @@ $gBitSmarty->assign( 'sortedPackages', $sortedPackages );
 $gBitSmarty->assign( 'fPackage', $_REQUEST['fPackage'] );
 
 $layout = $gBitSystem->getLayout( ROOT_USER_ID, (isset( $_REQUEST['fPackage'] ) ? $_REQUEST['fPackage'] : NULL), FALSE );
-$modlib->generateModuleNames( $layout );
+$gBitThemes->generateModuleNames( $layout );
 $gBitSmarty->assign_by_ref( 'layout', $layout );
 
 $layoutAreas = array( 'left'=>'l', 'center'=>'c', 'right'=>'r' );
@@ -175,15 +175,15 @@ foreach( $gBitSystem->mPackages as $pkg ) {
 //****** Setup assign modules panel
 $module_groups = array();
 
-$allModules = $modlib->getAllModules();
+$allModules = $gBitThemes->getAllModules();
 ksort( $allModules );
 $gBitSmarty->assign_by_ref( 'allModules', $allModules );
 
-$allModulesHelp = $modlib->getAllModules( 'modules', 'help_mod_' );
+$allModulesHelp = $gBitThemes->getAllModules( 'modules', 'help_mod_' );
 ksort( $allModulesHelp );
 $gBitSmarty->assign_by_ref( 'allModulesHelp', $allModulesHelp );
 
-$allCenters = $modlib->getAllModules( 'templates', 'center_' );
+$allCenters = $gBitThemes->getAllModules( 'templates', 'center_' );
 ksort( $allCenters );
 $sections['kernel'] = tra( "Site Default" );
 foreach( array_keys( $allCenters ) as $pkg ) {

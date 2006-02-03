@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/module_controls_inc.php,v 1.4 2006/01/10 21:12:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/module_controls_inc.php,v 1.5 2006/02/03 17:23:54 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: module_controls_inc.php,v 1.4 2006/01/10 21:12:46 squareing Exp $
+ * $Id: module_controls_inc.php,v 1.5 2006/02/03 17:23:54 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -50,19 +50,19 @@ $user_id = ROOT_USER_ID;
 if( isset( $_REQUEST['fMove'] ) && isset(  $_REQUEST['fPackage'] ) && isset(  $_REQUEST['fModule'] ) ) {
 	switch( $_REQUEST['fMove'] ) {
 		case "unassign":
-			$modlib->unassignModule( $_REQUEST['fModule'], $user_id, $_REQUEST['fPackage'] );
+			$gBitThemes->unassignModule( $_REQUEST['fModule'], $user_id, $_REQUEST['fPackage'] );
 			break;
 		case "up":
-			$modlib->moduleUp( $_REQUEST['fModule'], $user_id, $_REQUEST['fPackage'] );
+			$gBitThemes->moduleUp( $_REQUEST['fModule'], $user_id, $_REQUEST['fPackage'] );
 			break;
 		case "down":
-			$modlib->moduleDown( $_REQUEST['fModule'], $user_id, $_REQUEST['fPackage'] );
+			$gBitThemes->moduleDown( $_REQUEST['fModule'], $user_id, $_REQUEST['fPackage'] );
 			break;
 		case "left":
-			$modlib->modulePosition( $_REQUEST['fModule'], $user_id, $_REQUEST['fPackage'], 'r' );
+			$gBitThemes->modulePosition( $_REQUEST['fModule'], $user_id, $_REQUEST['fPackage'], 'r' );
 			break;
 		case "right":
-			$modlib->modulePosition( $_REQUEST['fModule'], $user_id, $_REQUEST['fPackage'], 'l' );
+			$gBitThemes->modulePosition( $_REQUEST['fModule'], $user_id, $_REQUEST['fPackage'], 'l' );
 			break;
 	}
 }

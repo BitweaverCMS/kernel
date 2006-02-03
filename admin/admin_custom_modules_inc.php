@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.3 2006/02/02 08:36:03 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.4 2006/02/03 17:23:54 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -72,12 +72,12 @@ if (isset($_REQUEST["um_remove"])) {
 	
 	$_REQUEST["um_remove"] = urldecode($_REQUEST["um_remove"]);
 
-	$modlib->remove_user_module($_REQUEST["um_remove"]);
+	$gBitThemes->removeCustomModule($_REQUEST["um_remove"]);
 } elseif (isset($_REQUEST["um_edit"])) {
 	
 	$_REQUEST["um_edit"] = urldecode($_REQUEST["um_edit"]);
 
-	$um_info = $modlib->get_user_module($_REQUEST["um_edit"]);
+	$um_info = $gBitThemes->getCustomModule($_REQUEST["um_edit"]);
 	$gBitSmarty->assign_by_ref('um_name', $um_info["name"]);
 	$gBitSmarty->assign_by_ref('um_title', $um_info["title"]);
 	$gBitSmarty->assign_by_ref('um_data', $um_info["data"]);
@@ -89,11 +89,11 @@ if (isset($_REQUEST["um_remove"])) {
     $gBitSmarty->assign_by_ref('um_name', $_REQUEST["um_name"]);
     $gBitSmarty->assign_by_ref('um_title', $_REQUEST["um_title"]);
     $gBitSmarty->assign_by_ref('um_data', $_REQUEST["um_data"]);
-    $modlib->replace_user_module($_REQUEST["um_name"], $_REQUEST["um_title"], $_REQUEST["um_data"]);
+    $gBitThemes->replaceCustomModule($_REQUEST["um_name"], $_REQUEST["um_title"], $_REQUEST["um_data"]);
 }
 
 
-$user_modules = $modlib->list_user_modules();
+$user_modules = $gBitThemes->listCustomModules();
 $gBitSmarty->assign_by_ref('user_modules', $user_modules["data"]);
 
 $sameurl_elements = array(

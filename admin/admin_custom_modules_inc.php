@@ -1,13 +1,11 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.4 2006/02/03 17:23:54 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.5 2006/02/03 17:28:22 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 require_once( '../../bit_setup_inc.php' );
-
-include_once( KERNEL_PKG_PATH.'mod_lib.php' );
 
 if( $gBitSystem->isPackageActive( 'dcs' ) ) {
 	include_once( DCS_PKG_PATH.'dcs_lib.php' );

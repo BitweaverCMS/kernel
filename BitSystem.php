@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.37 2006/02/03 16:00:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.38 2006/02/04 16:08:02 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1322,71 +1322,72 @@ asort( $this->mAppMenu );
 		}
 		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "themes_layouts` tl, `" . BIT_DB_PREFIX . "themes_layouts_modules` tlm, `" . BIT_DB_PREFIX . "themes_module_map` tmm
 				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->mDb->convert_sortmode("ord_asc");
-		$result = $this->mDb->query($query, $bindVars);
-		$row = $result->fetchRow();
-		// CHeck to see if we have ACTIVE_PACKAGE modules at the top of the results
-		if (isset($row['layout']) && ($row['layout'] != DEFAULT_PACKAGE) && (ACTIVE_PACKAGE != DEFAULT_PACKAGE)) {
-			$skipDefaults = true;
-		} else {
-			$skipDefaults = false;
-		}
+		if( $result = $this->mDb->query($query, $bindVars) ) {
+			$row = $result->fetchRow();
+			// CHeck to see if we have ACTIVE_PACKAGE modules at the top of the results
+			if (isset($row['layout']) && ($row['layout'] != DEFAULT_PACKAGE) && (ACTIVE_PACKAGE != DEFAULT_PACKAGE)) {
+				$skipDefaults = true;
+			} else {
+				$skipDefaults = false;
+			}
 
-		$gCenterPieces = array();
-		while( $row ) {
-			if ($skipDefaults && $row['layout'] == DEFAULT_PACKAGE) {
-				// we're done! we've got all the non-DEFAULT_PACKAGE modules
-				break;
-			}
-			
-			if( !empty( $row["section_params"] ) ) {
-				$row['params'] = $row['section_params'];
-			}
-			if( !empty( $row["groups"] ) ) {
-				if( $this->isFeatureActive( 'modallgroups' ) || $gBitUser->isAdmin() ) {
-					$row["visible"] = TRUE;
-				} else {
-					if( preg_match( '/[A-Za-z]/', $row["groups"] ) ) {
-						// old style serialized group names
-						$row["module_groups"] = array();
-						if( $grps = @unserialize($row["groups"]) ) {
-							foreach ($grps as $grp) {
-								global $gBitUser;
-								if( !($groupId = array_search( $grp, $gBitUser->mGroups )) ) {
-									if( $gBitUser->isAdmin() ) {
-										$row["module_groups"][] = $gBitUser->groupExists( $grp, '*' );
+			$gCenterPieces = array();
+			while( $row ) {
+				if ($skipDefaults && $row['layout'] == DEFAULT_PACKAGE) {
+					// we're done! we've got all the non-DEFAULT_PACKAGE modules
+					break;
+				}
+				
+				if( !empty( $row["section_params"] ) ) {
+					$row['params'] = $row['section_params'];
+				}
+				if( !empty( $row["groups"] ) ) {
+					if( $this->isFeatureActive( 'modallgroups' ) || $gBitUser->isAdmin() ) {
+						$row["visible"] = TRUE;
+					} else {
+						if( preg_match( '/[A-Za-z]/', $row["groups"] ) ) {
+							// old style serialized group names
+							$row["module_groups"] = array();
+							if( $grps = @unserialize($row["groups"]) ) {
+								foreach ($grps as $grp) {
+									global $gBitUser;
+									if( !($groupId = array_search( $grp, $gBitUser->mGroups )) ) {
+										if( $gBitUser->isAdmin() ) {
+											$row["module_groups"][] = $gBitUser->groupExists( $grp, '*' );
+										}
+									}
+
+									if( @$this->verifyId( $groupId ) ) {
+										$row["module_groups"][] = $groupId;
 									}
 								}
 
-								if( @$this->verifyId( $groupId ) ) {
-									$row["module_groups"][] = $groupId;
-								}
+
 							}
-
-
+						} else {
+							$row["module_groups"] = explode( ' ', $row["groups"] );
 						}
-					} else {
-						$row["module_groups"] = explode( ' ', $row["groups"] );
-					}
-					// Check for the right groups
-					foreach( $row["module_groups"] as $modGroupId ) {
-						if( $gBitUser->isInGroup( $modGroupId ) ) {
-							$row["visible"] = TRUE;
-							break; // no need to continue looping
+						// Check for the right groups
+						foreach( $row["module_groups"] as $modGroupId ) {
+							if( $gBitUser->isInGroup( $modGroupId ) ) {
+								$row["visible"] = TRUE;
+								break; // no need to continue looping
+							}
 						}
 					}
+				} else {
+					$row["visible"] = TRUE;
+					$row["module_groups"] = array();
 				}
-			} else {
-				$row["visible"] = TRUE;
-				$row["module_groups"] = array();
+				if (empty($ret[$row['position']])) {
+					$ret[$row['position']] = array();
+				}
+				if ($row['position'] == CENTER_COLUMN) {
+					array_push($gCenterPieces, $row['module_rsrc']);
+				}
+				array_push($ret[$row['position']], $row);
+				$row = $result->fetchRow();
 			}
-			if (empty($ret[$row['position']])) {
-				$ret[$row['position']] = array();
-			}
-			if ($row['position'] == CENTER_COLUMN) {
-				array_push($gCenterPieces, $row['module_rsrc']);
-			}
-			array_push($ret[$row['position']], $row);
-			$row = $result->fetchRow();
 		}
 		return $ret;
 	}

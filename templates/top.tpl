@@ -1,5 +1,5 @@
 <div id="bittop">
-	{if $gBitSystemPrefs.siteTitle}
+	{if $gBitSystemPrefs.site_title}
 		<div style="float:right;">
 	{/if}
 
@@ -8,12 +8,12 @@
 		<a href="{$smarty.const.USERS_PKG_URL}logout.php">{tr}logout{/tr}</a>
 	{else}
 		<a href="{$smarty.const.USERS_PKG_URL}login.php">{tr}login{/tr}</a>
-		{if $gBitSystem->isFeatureActive( 'allowRegister' )}
+		{if $gBitSystem->isFeatureActive( 'allow_register' )}
 			| <a href="{$smarty.const.USERS_PKG_URL}register.php">{tr}register{/tr}</a> 
 		{/if}
 	{/if}
 
-	{if $gBitSystemPrefs.siteTitle}
+	{if $gBitSystemPrefs.site_title}
 		<br />
 	{/if}
 
@@ -23,10 +23,10 @@
 		{$smarty.now|bit_short_datetime}
 	{/if}
 
-	{if $gBitSystemPrefs.siteTitle}
+	{if $gBitSystemPrefs.site_title}
 		</div>
 	{/if}
 
-	<h1>{$gBitSystemPrefs.siteTitle}</h1>
+	<h1>{$gBitSystemPrefs.site_title}</h1>
 	<h3>{$gBitSystemPrefs.site_slogan}</h3>
 </div>

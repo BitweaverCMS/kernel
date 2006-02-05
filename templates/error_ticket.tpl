@@ -35,7 +35,7 @@
             <input type="submit" name="ticket_action_button" value="{tr}Click here to confirm your action{/tr}" />
             </form><br /><br />
             <a href="javascript:history.back()">{tr}Go back{/tr}</a><br /><br />
-            <a href="{$bitIndex}">{tr}Return to home page{/tr}</a>
+            <a href="{$bit_index}">{tr}Return to home page{/tr}</a>
           </div>
         </div>
       </div>

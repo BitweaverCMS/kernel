@@ -9,7 +9,7 @@
 			{/if}
 
 			<li class="m-home">
-				<a class="head" accesskey="h" href="{$smarty.const.BIT_ROOT_URL}">{$gBitSystemPrefs.site_menu_title|default:$gBitSystemPrefs.siteTitle}</a>
+				<a class="head" accesskey="h" href="{$smarty.const.BIT_ROOT_URL}">{$gBitSystemPrefs.site_menu_title|default:$gBitSystemPrefs.site_title}</a>
 				{include file="bitpackage:kernel/menu_global.tpl"}
 			</li>
 

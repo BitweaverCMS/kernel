@@ -3,66 +3,6 @@ global $gBitSystem, $gUpgradeFrom, $gUpgradeTo;
 $upgrades = array(
 
 /*
-// clean up all tiki_preferences in the database by using only under_scores in the databae
-'BWR1' => array(
-	'BWR2' => array(
-// STEP 1
-array( 'QUERY' =>
-	array( 'SQL92' => array(
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='bit_index' WHERE `name'='bitIndex'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='allow_register' WHERE `name'='allowRegister'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='forgot_pass' WHERE `name'='forgotPass'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='eponymous_groups' WHERE `name'='eponymousGroups'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='register_passcode' WHERE `name'='registerPasscode'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='use_register_passcode' WHERE `name'='useRegisterPasscode'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='validate_user' WHERE `name'='validateUsers'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='validate_email' WHERE `name'='validateEmail'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='temp_dir' WHERE `name'='tmpDir'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='max_records' WHERE `name'='maxRecords'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='url_index' WHERE `name'='urlIndex'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='anon_can_edit' WHERE `name'='anonCanEdit'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='max_versions' WHERE `name'='maxVersions'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='wiki_home_page' WHERE `name'='wikiHomePage'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='wiki_license_page' WHERE `name'='wikiLicensePage'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='wiki_submit_notice' WHERE `name'='wikiSubmitNotice'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='site_title' WHERE `name'='siteTitle'",
-
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_last_changes' WHERE `name'='feature_lastChanges'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_like_pages' WHERE `name'='feature_likePages'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_list_pages' WHERE `name'='feature_listPages'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_user_preferences' WHERE `name'='feature_userPreferences'",
-	)
-)),
-	)
-),
-
-
-// here are the proposed changes in the php and tpl files
-// these should probably be checked and refined before run
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bbitIndex\b/bit_index/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\ballowRegister\b/allow_register/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bforgotPass\b/forgot_pass/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\beponymousGroups\b/eponymous_groups/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bregisterPasscode\b/register_passcode/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\buseRegisterPasscode\b/use_register_passcode/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bvalidateUsers\b/validate_user/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bvalidateEmail\b/validate_email/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\btmpDir\b/temp_dir/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bmaxRecords\b/max_records/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\burlIndex\b/url_index/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\banonCanEdit\b/anon_can_edit/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bmaxVersions\b/max_versions/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bwikiHomePage\b/wiki_home_page/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bwikiLicensePage\b/wiki_license_page/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bwikiSubmitNotice\b/wiki_submit_notice/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bsiteTitle\b/site_title/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bfeature_lastChanges\b/feature_last_changes/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bfeature_likePages\b/feature_like_pages/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bfeature_listPages\b/feature_list_pages/g" {} \;
-find . -name "*.php" -or -name "*.tpl" -exec perl -i -wpe "s/\bfeature_userPreferences\b/feature_user_preferences/g" {} \;
-
-
-
 // should we continue using 'feature_' for tiki_preferences?
 // a list of currenlty used deprecated preference names
 feature_userfiles
@@ -133,7 +73,6 @@ feature_article_submissions
 feature_blogposts_comments
 feature_blog_rankings
 feature_blogs
-
 */
 
 'TIKIWIKI19' => array (
@@ -284,6 +223,38 @@ array( 'DATADICT' => array(
 
 	)
 )
+
+'BWR1' => array(
+	'BWR2' => array(
+// clean up all kernel_prefs in the database by using only under_scores in the databae
+array( 'QUERY' =>
+	array( 'SQL92' => array(
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='bit_index' WHERE `name'='bitIndex'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='allow_register' WHERE `name'='allowRegister'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='forgot_pass' WHERE `name'='forgotPass'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='eponymous_groups' WHERE `name'='eponymousGroups'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='register_passcode' WHERE `name'='registerPasscode'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='use_register_passcode' WHERE `name'='useRegisterPasscode'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='validate_user' WHERE `name'='validateUsers'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='validate_email' WHERE `name'='validateEmail'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='temp_dir' WHERE `name'='tmpDir'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='max_records' WHERE `name'='maxRecords'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='url_index' WHERE `name'='urlIndex'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='anon_can_edit' WHERE `name'='anonCanEdit'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='max_versions' WHERE `name'='maxVersions'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='wiki_home_page' WHERE `name'='wikiHomePage'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='wiki_license_page' WHERE `name'='wikiLicensePage'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='wiki_submit_notice' WHERE `name'='wikiSubmitNotice'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='site_title' WHERE `name'='siteTitle'",
+
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_last_changes' WHERE `name'='feature_lastChanges'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_like_pages' WHERE `name'='feature_likePages'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_list_pages' WHERE `name'='feature_listPages'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_user_preferences' WHERE `name'='feature_userPreferences'",
+	)
+)),
+	)
+),
 
 );
 

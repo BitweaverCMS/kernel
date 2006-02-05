@@ -1,11 +1,11 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.6 2006/01/27 22:59:37 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.7 2006/02/05 21:30:55 squareing Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
 
 <div class="menu">
 	<ul>
-		<li><a class="item" href="{$smarty.const.BIT_ROOT_URL}">{$gBitSystemPrefs.siteTitle} {tr}Home{/tr}</a></li>
+		<li><a class="item" href="{$smarty.const.BIT_ROOT_URL}">{$gBitSystemPrefs.site_title} {tr}Home{/tr}</a></li>
 		{if $gBitUser->isAdmin()}
 			<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">{tr}Administration{/tr}</a></li>
 		{/if}

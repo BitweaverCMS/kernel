@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.6 2006/01/27 22:59:37 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.7 2006/02/05 21:30:55 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -8,9 +8,9 @@
 			{legend legend="Page Setup"}
 				<div class="row">
 					{formfeedback warning="After changing the browser title, you might have to login again."}
-					{formlabel label="Site title" for="siteTitle"}
+					{formlabel label="Site title" for="site_title"}
 					{forminput}
-						<input size="50" type="text" name="siteTitle" id="siteTitle" value="{$gBitSystemPrefs.siteTitle|escape}" />
+						<input size="50" type="text" name="site_title" id="site_title" value="{$gBitSystemPrefs.site_title|escape}" />
 						{formhelp note="The title of your site. The title appears in the banner area and in the browsers top bar."}
 					{/forminput}
 				</div>
@@ -75,9 +75,9 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="Temporary directory" for="tmpDir"}
+					{formlabel label="Temporary directory" for="temp_dir"}
 					{forminput}
-						<input size="50" type="text" name="tmpDir" id="tmpDir" value="{$tmpDir|escape}" />
+						<input size="50" type="text" name="temp_dir" id="temp_dir" value="{$temp_dir|escape}" />
 					{/forminput}
 				</div>
 

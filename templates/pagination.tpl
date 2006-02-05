@@ -15,7 +15,7 @@
 
 		{if $direct_pagination eq 'y'}
 			{section loop=$cant_pages name=foo}
-				{assign var=selector_offset value=$smarty.section.foo.index|times:$maxRecords}
+				{assign var=selector_offset value=$smarty.section.foo.index|times:"$gBitSystem->getPreference( 'max_records' )"}
 				<a href="{$pgnUrl}?find={$find|default:$smarty.request.find}&amp;sort_mode={$sort_mode}&amp;offset={$selector_offset}">{$smarty.section.foo.index_next}</a>
 			{/section}
 		{else}

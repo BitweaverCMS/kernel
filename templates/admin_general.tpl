@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.4 2006/01/27 22:59:37 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.5 2006/02/05 21:30:55 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -7,16 +7,16 @@
 		{jstab title="Homepage Settings"}
 			{legend legend="Homepage Settings"}
 				<div class="row">
-					{formlabel label="Home page" for="bitIndex"}
+					{formlabel label="Home page" for="bit_index"}
 					{forminput}
-						<select name="bitIndex" id="bitIndex">
-							<option value="my_page"{if $gBitSystemPrefs.bitIndex eq 'my_page'} selected="selected"{/if}>{tr}My {$gBitSystemPrefs.siteTitle} Page{/tr}</option>
-							<option value="user_home"{if $gBitSystemPrefs.bitIndex eq 'user_home'} selected="selected"{/if}>{tr}User's homepage{/tr}</option>
-							<option value="group_home"{if $gBitSystemPrefs.bitIndex eq 'group_home'} selected="selected"{/if}>{tr}Group home{/tr}</option>
-							<option value="custom_home"{if $gBitSystemPrefs.bitIndex eq $gBitSystemPrefs.urlIndex} selected="selected"{/if}>{tr}Custom home{/tr}</option>
+						<select name="bit_index" id="bit_index">
+							<option value="my_page"{if $gBitSystemPrefs.bit_index eq 'my_page'} selected="selected"{/if}>{tr}My {$gBitSystemPrefs.site_title} Page{/tr}</option>
+							<option value="user_home"{if $gBitSystemPrefs.bit_index eq 'user_home'} selected="selected"{/if}>{tr}User's homepage{/tr}</option>
+							<option value="group_home"{if $gBitSystemPrefs.bit_index eq 'group_home'} selected="selected"{/if}>{tr}Group home{/tr}</option>
+							<option value="custom_home"{if $gBitSystemPrefs.bit_index eq $gBitSystemPrefs.url_index} selected="selected"{/if}>{tr}Custom home{/tr}</option>
 							{foreach key=name item=package from=$gBitSystem->mPackages }
 								{if $package.homeable && $package.installed}
-									<option {if $gBitSystemPrefs.bitIndex eq $package.name}selected="selected"{/if} value="{$package.name}">{$package.name|capitalize}</option>
+									<option {if $gBitSystemPrefs.bit_index eq $package.name}selected="selected"{/if} value="{$package.name}">{$package.name|capitalize}</option>
 								{/if}
 							{/foreach}
 						</select>
@@ -31,9 +31,9 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="URI for custom home" for="urlIndex"}
+					{formlabel label="URI for custom home" for="url_index"}
 					{forminput}
-						<input type="text" id="urlIndex" name="urlIndex" value="{$gBitSystemPrefs.urlIndex|escape}" size="50" />
+						<input type="text" id="url_index" name="url_index" value="{$gBitSystemPrefs.url_index|escape}" size="50" />
 						{formhelp note="Use a specific URI to direct users to a particular page when accessing your site. Can be used to have an introductory page.<br />To activate this, please select <em>Custom home</em> above."}
 					{/forminput}
 				</div>
@@ -92,9 +92,9 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="Maximum number of records in listings" for="maxRecords"}
+					{formlabel label="Maximum number of records in listings" for="max_records"}
 					{forminput}
-						<input size="5" type="text" name="maxRecords" id="maxRecords" value="{$gBitSystemPrefs.maxRecords|escape}" />
+						<input size="5" type="text" name="max_records" id="max_records" value="{$gBitSystemPrefs.max_records|escape}" />
 					{/forminput}
 				</div>
 

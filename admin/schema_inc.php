@@ -148,9 +148,6 @@ $gBitInstaller->registerSchemaIndexes( KERNEL_PKG_NAME, $indices );
 $gBitInstaller->registerPackageInfo( KERNEL_PKG_NAME, array(
 	'description' => "This is the heart of the application. Without this --&gt; nothing.",
 	'license' => '<a href="http://www.gnu.org/licenses/licenses.html#LGPL">LGPL</a>',
-	'version' => '0.1',
-	'state' => 'experimental',
-	'dependencies' => '',
 ) );
 
 // ### Default Preferences

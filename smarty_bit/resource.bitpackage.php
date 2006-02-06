@@ -34,7 +34,7 @@ function smarty_resource_bitpackage_source($tpl_name, &$tpl_source, &$gBitSmarty
 	$overrideTemplate = $gBitSystem->getStylePath()."/$package/$template";
 	$overrideTemplateSimple = $gBitSystem->getStylePath().$template;
 	// look for default package template
-	$package_template = BIT_PKG_PATH.$gBitSystem->mPackages[strtolower( $package )]['dir']."/$subdir/$template";
+	$package_template = BIT_ROOT_PATH.$gBitSystem->mPackages[strtolower( $package )]['dir']."/$subdir/$template";
 
 	//vd( $forceTemplateSimple.' - '.$overrideTemplate.' - '.$overrideTemplateSimple.' - '.$package_template );
 
@@ -55,7 +55,7 @@ function smarty_resource_bitpackage_source($tpl_name, &$tpl_source, &$gBitSmarty
 		$tpl_source = fread( fopen($package_template, "r"), filesize($package_template) );
 		$ret = TRUE;
 	} else {
-		$tpl_source = "<p>MISSING TEMPLATE:<br/> <b>p_resource_type:</b> $p_resource_type<br/><b>p_resource_name:</b> $p_resource_name<br/><b>p_template_source:</b> $p_template_source<br/><b>p_template_timestamp:</b> $p_template_timestamp<br/><b>p_smarty_obj:</b> $p_smarty_obj <br /><b>override_template:</b> $override_template<br/><b>package_template:</b>$package_template<br/><b>TIKI Package Path:</b>".BIT_PKG_PATH;
+		$tpl_source = "<p>MISSING TEMPLATE:<br/> <b>p_resource_type:</b> $p_resource_type<br/><b>p_resource_name:</b> $p_resource_name<br/><b>p_template_source:</b> $p_template_source<br/><b>p_template_timestamp:</b> $p_template_timestamp<br/><b>p_smarty_obj:</b> $p_smarty_obj <br /><b>override_template:</b> $override_template<br/><b>package_template:</b>$package_template<br/><b>TIKI Package Path:</b>".BIT_ROOT_PATH;
 		$ret = TRUE;
 	}
 
@@ -86,7 +86,7 @@ function smarty_resource_bitpackage_timestamp($tpl_name, &$tpl_timestamp, &$gBit
 	// look in root of style themes/style/<stylename>/
 	$overrideTemplateSimple = $gBitSystem->getStylePath().$template;
 	// look for default package template
-	$package_template = BIT_PKG_PATH.$gBitSystem->mPackages[strtolower( $package )]['dir']."/$subdir/$template";
+	$package_template = BIT_ROOT_PATH.$gBitSystem->mPackages[strtolower( $package )]['dir']."/$subdir/$template";
 
 	//print "<br/>Time ($package $template)(FORCE: $forceTemplateSimple<br/>OVERRIDE: $overrideTemplate $overrideTemplateSimple $package_template)<br/>";
 

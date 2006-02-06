@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.30 2006/02/06 00:07:32 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.31 2006/02/06 09:58:33 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -26,28 +26,23 @@ define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
 // This means these packages *CANNOT* be renamed
 define('KERNEL_PKG_DIR', 'kernel');
 define('KERNEL_PKG_NAME', 'kernel');
-define('KERNEL_PKG_PATH', BIT_PKG_PATH . 'kernel/');
+define('KERNEL_PKG_PATH', BIT_ROOT_PATH . 'kernel/');
 define('KERNEL_PKG_URL', BIT_ROOT_URL . 'kernel/');
 
 require_once(KERNEL_PKG_PATH . 'preflight_inc.php');
 
 define('LIBERTY_PKG_DIR', 'liberty');
 define('LIBERTY_PKG_NAME', 'liberty');
-define('LIBERTY_PKG_PATH', BIT_PKG_PATH . 'liberty/');
+define('LIBERTY_PKG_PATH', BIT_ROOT_PATH . 'liberty/');
 define('LIBERTY_PKG_URL', BIT_ROOT_URL . 'liberty/');
 
 // These are manually setup here because it's good to have a gBitUser setup prior to scanPackages
-define('TEMP_PKG_PATH', BIT_PKG_PATH . 'temp/');
-define('UTIL_PKG_PATH', BIT_PKG_PATH . 'util/');
+define('TEMP_PKG_PATH', BIT_ROOT_PATH . 'temp/');
+define('UTIL_PKG_PATH', BIT_ROOT_PATH . 'util/');
 define('UTIL_PKG_URL', BIT_ROOT_URL . 'util/');
-define('USERS_PKG_PATH', BIT_PKG_PATH . 'users/');
+define('USERS_PKG_PATH', BIT_ROOT_PATH . 'users/');
 define('USERS_PKG_URL', BIT_ROOT_URL . 'users/');
-
 define('LANGUAGES_PKG_PATH', BIT_ROOT_PATH . 'languages/');
-define('BIT_LANG_PATH', LANGUAGES_PKG_PATH . 'lang/');
-
-define('BIT_MODULES_PATH', BIT_ROOT_PATH . 'modules/');
-define('BIT_TEMP_PATH', BIT_ROOT_PATH . 'temp/');
 define('THEMES_PKG_PATH', BIT_ROOT_PATH . 'themes/');
 
 // this is evil stuff and causes hell for us

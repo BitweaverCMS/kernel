@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.31 2006/02/06 09:58:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.32 2006/02/06 16:20:08 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -31,12 +31,12 @@ define('KERNEL_PKG_URL', BIT_ROOT_URL . 'kernel/');
 
 require_once(KERNEL_PKG_PATH . 'preflight_inc.php');
 
+// These are manually setup here because it's good to have a gBitUser setup prior to scanPackages
 define('LIBERTY_PKG_DIR', 'liberty');
 define('LIBERTY_PKG_NAME', 'liberty');
 define('LIBERTY_PKG_PATH', BIT_ROOT_PATH . 'liberty/');
 define('LIBERTY_PKG_URL', BIT_ROOT_URL . 'liberty/');
 
-// These are manually setup here because it's good to have a gBitUser setup prior to scanPackages
 define('TEMP_PKG_PATH', BIT_ROOT_PATH . 'temp/');
 define('UTIL_PKG_PATH', BIT_ROOT_PATH . 'util/');
 define('UTIL_PKG_URL', BIT_ROOT_URL . 'util/');
@@ -62,24 +62,28 @@ if( !empty( $gForceAdodb ) ) {
 	$dbClass = 'BitDbAdodb';
 }
 require_once(KERNEL_PKG_PATH . $dbClass.'.php');
+
+// ================== INITATE GLOBAL CLASSES ==================
+require_once(KERNEL_PKG_PATH . 'BitCache.php');
 global $gBitDb;
 $gBitDb = new $dbClass();
 
 require_once(KERNEL_PKG_PATH . 'BitSystem.php');
-global $gRefreshSitePrefs;
-$gRefreshSitePrefs = FALSE;
 global $gBitSmarty, $gBitSystem;
 $gBitSystem = new BitSystem();
+
+BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
+BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');
 
 // array used to load stuff using <body onload="">
 global $gBodyOnload;
 $gBitSmarty->assign_by_ref( 'gBodyOnload', $gBodyOnload = array() );
 
+// this is used to override the currently set site theme. when this is set everything else is ignored
 global $gPreviewStyle;
 $gPreviewStyle = FALSE;
-BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
-BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');
 
+// collects information about the browser - needed for various browser specific theme settings
 require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
 $gSniffer = new phpSniff;
@@ -89,14 +93,7 @@ require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 global $gBitLanguage;
 $gBitLanguage = new BitLanguage();
 
-require_once(KERNEL_PKG_PATH . 'BitCache.php');
-global $gBitUser, $gTicket, $gBitSmarty, $userlib, $gBitDbType;
-
-// for PHP<4.2.0
-if (!function_exists('array_fill')) {
-	require_once(KERNEL_PKG_PATH . 'array_fill.func.php');
-}
-// num queries has to be global
+// num queries has to be global - this this needed? - xing
 global $num_queries;
 $num_queries = 0;
 
@@ -104,8 +101,10 @@ require_once( THEMES_PKG_PATH."BitThemes.php" );
 global $gBitThemes;
 $gBitThemes = new BitThemes();
 
-if( $gBitSystem->isDatabaseValid() ) {
+// set various classes global
+global $gBitUser, $gTicket, $userlib, $gBitDbType;
 
+if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSystem->loadPreferences();
 	if ($gBitSystem->getPreference('feature_obzip') == 'y') {
 		ob_start ("ob_gzhandler");
@@ -193,25 +192,18 @@ if( $gBitSystem->isDatabaseValid() ) {
 	parse_str($parsed["query"], $query);
 	$father = httpPrefix() . $parsed["path"];
 
-	if (count($query) > 0)
-	{
+	if (count($query) > 0) {
 		$first = 1;
-		foreach ($query as $name => $val)
-		{
-			if ($first)
-			{
+		foreach ($query as $name => $val) {
+			if ($first) {
 				$first = false;
 				$father .= '?' . $name . '=' . $val;
-			}
-			else
-			{
+			} else {
 				$father .= '&amp;' . $name . '=' . $val;
 			}
 		}
 		$father .= '&amp;';
-	}
-	else
-	{
+	} else {
 		$father .= '?';
 	}
 	$ownurl_father = $father;
@@ -243,28 +235,26 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	$https_mode = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on';
-	if ($https_mode)
-	{
+	if ($https_mode) {
 		$http_port = 80;
 		$https_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 443;
-	}
-	else
-	{
+	} else {
 		$http_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
 		$https_port = 443;
 	}
 
 	$title = $gBitSystem->getPreference("title", "");
-	$contact_user = $gBitSystem->getPreference('contact_user', 'admin');
+	$https_port = $gBitSystem->getPreference('https_port', $https_port);
+	$https_prefix = $gBitSystem->getPreference('https_prefix', '/');
+	// we need this for backwards compatibility - use $gBitSystem->getPrerference( 'max_records' ) if you need it, or else the spanish inquisition will come and poke you with a soft cushion
+	$max_records = $gBitSystem->getPreference("max_records", 10);
+
+	/* this stuff isn't really needed here - xing - 2006-02-06
 	$http_domain = $gBitSystem->getPreference('http_domain', '');
 	$http_port = $gBitSystem->getPreference('http_port', $http_port);
 	$http_prefix = $gBitSystem->getPreference('http_prefix', '/');
-	$https_domain = $gBitSystem->getPreference('https_domain', '');
-	$https_port = $gBitSystem->getPreference('https_port', $https_port);
-	$https_prefix = $gBitSystem->getPreference('https_prefix', '/');
 	$modallgroups = $gBitSystem->getPreference("modallgroups", 'y');
 	$modseparateanon = $gBitSystem->getPreference("modseparateanon", 'n');
-	$max_records = $gBitSystem->getPreference("max_records", 10);
 
 	$gBitSmarty->assign('http_domain', $http_domain);
 	$gBitSmarty->assign('http_port', $http_port);
@@ -273,26 +263,28 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign('https_port', $https_port);
 	$gBitSmarty->assign('https_prefix', $https_prefix);
 
-	$gBitSmarty->assign('title', $title);
 	$gBitSmarty->assign('feature_server_name', $gBitSystem->getPreference( 'feature_server_name', $_SERVER["SERVER_NAME"] ));
-	$gBitSmarty->assign('temp_dir', getTempDir());
-	$gBitSmarty->assign('contact_user', $contact_user);
 	$gBitSmarty->assign('count_admin_pvs', 'y');
 	$gBitSmarty->assign('modallgroups', $modallgroups);
 	$gBitSmarty->assign('modseparateanon', $modseparateanon);
 	$gBitSmarty->assign('max_records', $max_records);
+	$gBitSmarty->assign_by_ref('num_queries', $num_queries);
 	$gBitSmarty->assign('direct_pagination', 'n');
+	*/
 
 	if (ini_get('zlib.output_compression') == 1) {
 		$gBitSmarty->assign('gzip', 'Enabled');
-	} elseif ($gBitSystem->getPreference('feature_obzip') == 'y') {
+	} elseif ($gBitSystem->isFeatureActive('feature_obzip')) {
 		$gBitSmarty->assign('gzip', 'Enabled');
 	} else {
 		$gBitSmarty->assign('gzip', 'Disabled');
 	}
 
-	$gBitSmarty->assign_by_ref('num_queries', $num_queries);
-	// Assign all prefs to smarty was we are done mucking about for a 1000 lines
+	// can't figure out if we can nuke these
+	$gBitSmarty->assign('title', $title);
+	$gBitSmarty->assign('temp_dir', getTempDir());
+
+	// Assign all prefs to smarty we are done mucking about for a 1000 lines
 	$gBitSmarty->assign_by_ref('gBitSystemPrefs', $gBitSystem->mPrefs);
 
 //	======================= HOPEFULLY WE CAN SURVIVE WITHOUT THIS PREFERENCE ASSIGNEMENT STUFF =================
@@ -304,9 +296,9 @@ if( $gBitSystem->isDatabaseValid() ) {
 //	============================================================================================================
 
 	/* # not implemented
-		$http_basic_auth = $gBitSystem->getPreference('http_basic_auth', '/');
-		$gBitSmarty->assign('http_basic_auth',$http_basic_auth);
-		*/
+	$http_basic_auth = $gBitSystem->getPreference('http_basic_auth', '/');
+	$gBitSmarty->assign('http_basic_auth',$http_basic_auth);
+	*/
 	$gBitSmarty->assign('https_login', $gBitSystem->getPreference( 'https_login' ) );
 	$gBitSmarty->assign('https_login_required', $gBitSystem->getPreference( 'https_login_required' ) );
 
@@ -314,6 +306,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign('login_url', $login_url);
 
 	if( $gBitSystem->isFeatureActive( 'https_login' ) || $gBitSystem->isFeatureActive( 'https_login_required' ) )	{
+		$https_domain = $gBitSystem->getPreference('https_domain', '');
 		$http_login_url = 'http://' . $http_domain;
 
 		if ($http_port != 80)
@@ -375,31 +368,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 		// this has to be done since the permission can't be checked in BitLanguage::translate() as it's called too soon by prefilter.tr
 		$gBitSystem->mPrefs['interactive_translation'] = 'n';
 	}
-
-	/* SPIDERRKILL - i think everything below here is not fully implemented or deprecated
-
-		//Check for an update of dynamic vars
-		if(isset($bit_p_edit_dynvar) && $gBitUser->hasPermission( 'bit_p_edit_dynvar' )) {
-			if(isset($_REQUEST['_dyn_update'])) { echo "****";
-				foreach($_REQUEST as $name => $value) {
-					if(substr($name,0,4)=='dyn_' and $name!='_dyn_update') {
-						$gBitSystem->update_dynamic_variable(substr($name,4),$_REQUEST[$name]);
-					}
-				}
-			}
-		}
-
-		if($gBitSystem->getPreference('feature_phpopentracker') == 'y') {
-
-			include_once(BIT_PKG_PATH.'phpOpenTracker/phpOpenTracker.php');
-			// log access
-			phpOpenTracker::log();
-		}
-
-		$popupLinks = $gBitSystem->getPreference("popupLinks", 'n');
-		$gBitSmarty->assign('popupLinks', $popupLinks);
-*/
-
 }
 
 ?>

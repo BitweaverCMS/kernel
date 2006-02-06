@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.4 2006/02/06 10:18:07 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.5 2006/02/06 16:20:08 squareing Exp $ *}
 {strip}
 {form}
 	{jstabs}
@@ -34,7 +34,7 @@
 						{if $users_list}
 							{html_options name="contact_user" output=$users_list values=$users_list selected=$gBitSystemPrefs.contact_user id="contact_user"}
 						{else}
-							<input name="contact_user"  value="{$contact_user}"  id="contact_user" />
+							<input name="contact_user"  value="{$gBitSystemPrefs.contact_user}"  id="contact_user" />
 						{/if}
 						{formhelp note="Pick the user who should recieve the meassages sent using the 'Contact Us' feature"}
 					{/forminput}

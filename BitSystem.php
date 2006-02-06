@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.40 2006/02/06 16:05:13 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.41 2006/02/06 16:20:08 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -185,9 +185,7 @@ class BitSystem extends BitBase {
 	* @access public
 	**/
 	function storePreference( $name, $value, $pPackageName=NULL ) {
-		global $gMultisites;
-		global $gRefreshSitePrefs;
-		global $bitdomain;
+		global $gMultisites, $bitdomain;
 
 		if (file_exists(TEMP_PKG_PATH."templates_c/" . $bitdomain . "preferences.php")) {
 			@unlink (TEMP_PKG_PATH."templates_c/" . $bitdomain . "preferences.php");
@@ -215,9 +213,7 @@ class BitSystem extends BitBase {
 		}
 
 		$this->mPrefs[$name] = $value;
-
-		$gRefreshSitePrefs = TRUE;
-		return true;
+		return TRUE;
 	}
 	// >>>
 

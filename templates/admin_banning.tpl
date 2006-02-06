@@ -134,7 +134,7 @@
 {if $next_offset >= 0}
  [<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php?offset={$next_offset}&amp;find={$find}">{tr}next{/tr}</a>]
 {/if}
-{if $direct_pagination eq 'y'}
+{if $gBitSystem->isFeatureActive( 'direct_pagination' )}
 <br />
 {section loop=$cant_pages name=foo}
 {assign var=selector_offset value=$smarty.section.foo.index|times:"$gBitSystemPrefs.max_records"}

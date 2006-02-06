@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.5 2005/11/22 07:26:48 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.6 2006/02/06 16:20:08 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -239,4 +239,8 @@ function bw_is_writeable($filename) {
 	}
 }
 
+// for PHP<4.2.0
+if (!function_exists('array_fill')) {
+	require_once(KERNEL_PKG_PATH . 'array_fill.func.php');
+}
 ?>

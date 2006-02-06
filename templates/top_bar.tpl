@@ -35,10 +35,6 @@
 									{include file=`$menu.tpl`}
 								</li>
 							{/foreach}
-							<li>
-								<a class="head" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">{tr}Layout and Design{/tr}</a>
-								{include file="bitpackage:kernel/menu_layout_admin.tpl"}
-							</li>
 						</ul>
 					{/if}
 				</li>

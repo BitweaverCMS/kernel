@@ -20,7 +20,6 @@
 	Add a value in first check when you create a new admin page. *}
 	<div class="body">
 		{if $file }
-			{* SPIDERKILL FOR NOW include file="bitpackage:kernel/anchors.tpl" *}
 			{include file="bitpackage:$package/admin_`$file`.tpl"}
 		{else}
 			{if $version_info.error.number ne 0}
@@ -77,12 +76,6 @@
 					<td style="width:25%;vertical-align:top;" rowspan="10">
 						{box class="kernelmenu menu box" ipackage=kernel iname="pkg_kernel" iexplain="kernel" idiv="menuicon" title="Kernel"}
 							{include file=$kernelTemplate}
-						{/box}
-					</td>
-
-					<td style="width:25%;vertical-align:top;">
-						{box class="layoutmenu menu box" ipackage=kernel iname="pkg_layout" iexplain="layout and design" idiv="menuicon" title="look &amp; feel"}
-							{include file="bitpackage:kernel/menu_layout_admin.tpl"}
 						{/box}
 					</td>
 

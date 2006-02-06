@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_modules.tpl,v 1.2 2005/07/25 20:02:10 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_modules.tpl,v 1.3 2006/02/06 15:22:36 spiderr Exp $ *}
 
 {$moduleJavascript}
 
@@ -96,7 +96,7 @@
 				<input type="submit" name="EditTabSubmit" value="{tr}Save changes{/tr}" />
 			</div>
 
-			{formhelp note="Enabling modules here does not modify the page layout. This page is used to specify what users can use what modules when modifying their own personal layout.<br />To change the module layout of your site please visit Administration --&gt; Layout and Design --&gt; Layout"}
+			{formhelp note="Enabling modules here does not modify the page layout. This page is used to specify what users can use what modules when modifying their own personal layout.<br />To change the module layout of your site please visit Administration --&gt; Themes --&gt; Layout"}
 		{/form}
 
 		{if $actionsTaken}

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.5 2005/12/18 22:29:51 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.6 2006/02/06 15:22:35 spiderr Exp $ *}
 {strip}
 {if $packageMenu}
 	{bitmodule title="$moduleTitle" name="package_menu"}
@@ -29,25 +29,6 @@
 				</script>
 			</div>
 		{/foreach}
-		<div class="menu layoutmenu">
-			{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-				<a class="head" href="javascript:icntoggle('layoutadmenu');">{biticon ipackage=liberty iname="collapsed" id="layoutadmenuimg" iexplain="folder"}&nbsp;
-			{else}
-				<a class="head" href="javascript:toggle('layoutadmenu');">
-			{/if}
-			{tr}Layout and Design{/tr}</a>
-			{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-				<script type="text/javascript">
-					setfoldericonstate('layoutadmenu');
-				</script>
-			{/if}
-			<div id="layoutadmenu">
-				{include file="bitpackage:kernel/menu_layout_admin.tpl"}
-			</div>
-			<script type="text/javascript">
-				$(layoutadmenu).style.display = '{$layoutdisplay}';
-			</script>
-		</div>
 	{/bitmodule}
 {/if}
 {/strip}

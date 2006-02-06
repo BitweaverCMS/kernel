@@ -21,24 +21,5 @@
 			</script>
 		</div>
 	{/foreach}
-	<div class="admenu {$key}menu">
-		{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-			<a class="menuhead" href="javascript:icntoggle('layoutadmenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
-		{else}
-			<a class="menuhead" href="javascript:toggle('layoutadmenu');">
-		{/if}
-		{tr}Layout and Design{/tr}</a>
-		{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-			<script type="text/javascript">
-				setfoldericonstate('layoutadmenu');
-			</script>
-		{/if}
-		<div id="layoutadmenu">
-			{include file="bitpackage:kernel/menu_layout_admin.tpl"}
-		</div>
-		<script type="text/javascript">
-			$(layoutadmenu).style.display = '{$layoutdisplay}';
-		</script>
-	</div>
 {/bitmodule}
 {/strip}

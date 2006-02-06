@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.13 2006/01/25 15:40:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.14 2006/02/06 00:07:32 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -191,7 +191,7 @@ class BitBase
 		global $gBitSmarty, $gBitSystem;
 
 		// If offset is set use it if not then use offset =0
-		// use the maxRecords php variable to set the limit
+		// use the max_records php variable to set the limit
 		// if sortMode is not set then use last_modified_desc
 		if ( empty( $pListHash['sort_mode'] ) ) {
 			if ( empty( $_REQUEST["sort_mode"] ) ) {
@@ -203,7 +203,7 @@ class BitBase
 
 		if( empty( $pListHash['max_records'] ) ) {
 			global $gBitSystem;
-			$pListHash['max_records'] = $gBitSystem->getPreference( "maxRecords", 10 );
+			$pListHash['max_records'] = $gBitSystem->getPreference( "max_records", 10 );
 		}
 
 		if( empty( $pListHash['offset'] ) ) {

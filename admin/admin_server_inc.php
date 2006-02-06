@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.2 2005/08/01 18:40:34 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.3 2006/02/06 00:07:32 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -37,7 +37,7 @@ if( $processForm ) {
 	}
 
 	$pref_byref_values = array(
-		"siteTitle",
+		"site_title",
 		"site_slogan",
 		"site_description",
 		"site_keywords",
@@ -47,16 +47,16 @@ if( $processForm ) {
 		byref_set_value ($britem);
 	}
 
-	// Special handling for tmpDir, which has a default value
-	if (isset($_REQUEST["tmpDir"])) {
-		$gBitSystem->storePreference("tmpDir", $_REQUEST["tmpDir"]);
+	// Special handling for temp_dir, which has a default value
+	if (isset($_REQUEST["temp_dir"])) {
+		$gBitSystem->storePreference("temp_dir", $_REQUEST["temp_dir"]);
 
-		$gBitSmarty->assign_by_ref("tmpDir", $_REQUEST["tmpDir"]);
+		$gBitSmarty->assign_by_ref("temp_dir", $_REQUEST["temp_dir"]);
 	} else {
 		$tdir = BitSystem::tempdir();
 
-		$gBitSystem->storePreference("tmpDir", $tdir);
-		$gBitSmarty->assign("tmpDir", $tdir);
+		$gBitSystem->storePreference("temp_dir", $tdir);
+		$gBitSmarty->assign("temp_dir", $tdir);
 	}
 
 	// Special handling for centralissed_upload_dir, which has a default value

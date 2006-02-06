@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.29 2006/02/01 20:38:41 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.30 2006/02/06 00:07:32 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -146,7 +146,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 		if (isset($_COOKIE['tiki-theme'])) {
 			$theme = $_COOKIE['tiki-theme'];
 		}
-		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'feature_userPreferences' ) ) {
+		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'feature_user_preferences' ) ) {
 			if( $userStyle = $gBitUser->getPreference('theme') ) {
 				$theme = $userStyle;
 			}
@@ -269,7 +269,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$https_prefix = $gBitSystem->getPreference('https_prefix', '/');
 	$modallgroups = $gBitSystem->getPreference("modallgroups", 'y');
 	$modseparateanon = $gBitSystem->getPreference("modseparateanon", 'n');
-	$maxRecords = $gBitSystem->getPreference("maxRecords", 10);
+	$max_records = $gBitSystem->getPreference("max_records", 10);
 
 	$gBitSmarty->assign('http_domain', $http_domain);
 	$gBitSmarty->assign('http_port', $http_port);
@@ -280,12 +280,12 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	$gBitSmarty->assign('title', $title);
 	$gBitSmarty->assign('feature_server_name', $gBitSystem->getPreference( 'feature_server_name', $_SERVER["SERVER_NAME"] ));
-	$gBitSmarty->assign('tmpDir', getTempDir());
+	$gBitSmarty->assign('temp_dir', getTempDir());
 	$gBitSmarty->assign('contact_user', $contact_user);
 	$gBitSmarty->assign('count_admin_pvs', 'y');
 	$gBitSmarty->assign('modallgroups', $modallgroups);
 	$gBitSmarty->assign('modseparateanon', $modseparateanon);
-	$gBitSmarty->assign('maxRecords', $maxRecords);
+	$gBitSmarty->assign('max_records', $max_records);
 	$gBitSmarty->assign('direct_pagination', 'n');
 
 	if (ini_get('zlib.output_compression') == 1) {

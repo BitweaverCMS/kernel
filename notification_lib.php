@@ -3,7 +3,7 @@
  * eMail Notification Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.5 2006/02/02 08:59:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.6 2006/02/06 00:07:32 squareing Exp $
  * @author awcolley
  *
  * created 2003/06/03
@@ -36,12 +36,12 @@ class NotificationLib extends BitBase
     /**
     * Lists registered notification events
     * @param offset the location to begin listing from
-    * @param maxRecords the maximum number of records returned
+    * @param max_records the maximum number of records returned
     * @param sort_mode the method of sorting used in the listing
     * @param find text used to filter listing
     * @return array of registered notification events
     */
-    function list_mail_events($offset, $maxRecords, $sort_mode, $find)
+    function list_mail_events($offset, $max_records, $sort_mode, $find)
     {
         if ($find)
         {
@@ -56,7 +56,7 @@ class NotificationLib extends BitBase
         }
         $query = "select * from `".BIT_DB_PREFIX."mail_notifications` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
         $query_cant = "select count(*) from `".BIT_DB_PREFIX."mail_notifications` $mid";
-        $result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+        $result = $this->mDb->query($query,$bindvars,$max_records,$offset);
         $cant = $this->mDb->getOne($query_cant,$bindvars);
         $ret = array();
         while ($res = $result->fetchRow())

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.4 2006/02/01 20:38:41 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.5 2006/02/06 00:07:32 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -44,17 +44,17 @@ if ($processForm) {
 
 	$pref_simple_values = array(
 		"site_menu_title",
-		"maxRecords",
-		"urlIndex",
+		"max_records",
+		"url_index",
 	);
 
 	foreach ($pref_simple_values as $svitem) {
 		simple_set_value ($svitem);
 	}
 
-	// Special handling for tied fields: bitIndex and urlIndex
-	if (!empty($_REQUEST["urlIndex"]) && $_REQUEST["bitIndex"] == 'custom_home') {
-		$_REQUEST["bitIndex"] = $_REQUEST["urlIndex"];
+	// Special handling for tied fields: bit_index and url_index
+	if (!empty($_REQUEST["url_index"]) && $_REQUEST["bit_index"] == 'custom_home') {
+		$_REQUEST["bit_index"] = $_REQUEST["url_index"];
 	}
 
 	$pref_byref_values = array(
@@ -62,7 +62,7 @@ if ($processForm) {
 		"long_time_format",
 		"short_date_format",
 		"short_time_format",
-		"bitIndex"
+		"bit_index"
 	);
 
 	foreach ($pref_byref_values as $britem) {

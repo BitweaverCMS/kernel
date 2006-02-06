@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.38 2006/02/04 16:08:02 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.39 2006/02/06 00:07:32 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1022,8 +1022,8 @@ asort( $this->mAppMenu );
 
 	function getDefaultPage() {
 		global $userlib, $gBitUser, $gBitSystem;
-		$bitIndex = $this->getPreference( "bitIndex" );
-		if ( $bitIndex == 'group_home') {
+		$bit_index = $this->getPreference( "bit_index" );
+		if ( $bit_index == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
 			if( @$this->verifyId( $gBitUser->mInfo['default_group_id'] ) && ( $group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ) ) ) {
 			} elseif( $this->getPreference( 'default_home_group' ) && ( $group_home = $gBitUser->getGroupHome( $this->getPreference( 'default_home_group' ) ) ) ) {
@@ -1038,15 +1038,15 @@ asort( $this->mAppMenu );
 					$url = $group_home;
 				}
 			}
-		} elseif( $bitIndex == 'my_page' || $bitIndex == 'my_home' || $bitIndex == 'user_home'  ) {
+		} elseif( $bit_index == 'my_page' || $bit_index == 'my_home' || $bit_index == 'user_home'  ) {
 			// TODO: my_home is deprecated, but was the default for BWR1. remove in DILLINGER - spiderr
 			if( $gBitUser->isRegistered() ) {
 				if( !$gBitUser->isRegistered() ) {
 					$url = USERS_PKG_URL.'login.php';
 				} else {
-					if( $bitIndex == 'my_page' ) {
+					if( $bit_index == 'my_page' ) {
 						$url = USERS_PKG_URL . 'my.php';
-					} elseif( $bitIndex == 'user_home' ) {
+					} elseif( $bit_index == 'user_home' ) {
 						$url = $gBitUser->getDisplayUrl();
 					} else {
 						$homePage = $gBitUser->getPreference( 'homePage' );
@@ -1062,10 +1062,10 @@ asort( $this->mAppMenu );
 			} else {
 				$url = USERS_PKG_URL . 'login.php';
 			}
-		} elseif( in_array( $bitIndex, array_keys( $gBitSystem->mPackages ) ) ) {
-			$url = constant( strtoupper( $bitIndex ).'_PKG_URL' );
-		} elseif( !empty( $bitIndex ) ) {
-			$url = BIT_ROOT_URL.$bitIndex;
+		} elseif( in_array( $bit_index, array_keys( $gBitSystem->mPackages ) ) ) {
+			$url = constant( strtoupper( $bit_index ).'_PKG_URL' );
+		} elseif( !empty( $bit_index ) ) {
+			$url = BIT_ROOT_URL.$bit_index;
 		}
 
 		// if no special case was matched above, default to users' my page
@@ -1692,7 +1692,7 @@ asort( $this->mAppMenu );
 
 	//********************* CACHE METHODS **************************//
 
-	function list_cache($offset, $maxRecords, $sort_mode, $find) {
+	function list_cache($offset, $max_records, $sort_mode, $find) {
 
 		if ($find) {
 		$findesc = '%' . $find . '%';
@@ -1706,7 +1706,7 @@ asort( $this->mAppMenu );
 
 		$query = "select `cache_id` ,`url`,`refresh` from `".BIT_DB_PREFIX."liberty_link_cache` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
 		$query_cant = "select count(*) from `".BIT_DB_PREFIX."liberty_link_cache` $mid";
-		$result = $this->mDb->query($query,$bindvars,$maxRecords,$offset);
+		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
 		$cant = $this->mDb->getOne($query_cant,$bindvars);
 		$ret = array();
 

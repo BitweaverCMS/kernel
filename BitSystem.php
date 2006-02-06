@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.39 2006/02/06 00:07:32 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.40 2006/02/06 16:05:13 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -720,13 +720,15 @@ class BitSystem extends BitBase {
 	*/
 	function registerAppMenu($pKey, $pMenuTitle, $pTitleUrl, $pMenuTemplate, $pAdminPanel = false)
 	{
-		$this->mAppMenu[strtolower($pKey)] = array('title' => $pMenuTitle,
-			'titleUrl' => $pTitleUrl,
-			'template' => $pMenuTemplate,
-			'adminPanel' => $pAdminPanel,
-			'style' => 'display:' . (empty($pMenuTitle) || (isset($_COOKIE[$pKey . 'menu']) && ($_COOKIE[$pKey . 'menu'] == 'o')) ? 'block;' : 'none;')
-			// TODO this display logic should maybe be moved to .tpl logic, but need to acces $_COOKIES in {$smartVar}
-			);
+		if( $this->getPreference( 'menu_'.$pKey ) != 'n' ) {
+			$this->mAppMenu[strtolower($pKey)] = array('title' => $pMenuTitle,
+				'titleUrl' => $pTitleUrl,
+				'template' => $pMenuTemplate,
+				'adminPanel' => $pAdminPanel,
+				'style' => 'display:' . (empty($pMenuTitle) || (isset($_COOKIE[$pKey . 'menu']) && ($_COOKIE[$pKey . 'menu'] == 'o')) ? 'block;' : 'none;')
+				// TODO this display logic should maybe be moved to .tpl logic, but need to acces $_COOKIES in {$smartVar}
+				);
+		}
 	}
 	// >>>
 	// === registerSchemaTable

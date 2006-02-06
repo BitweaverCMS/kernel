@@ -222,7 +222,7 @@ array( 'DATADICT' => array(
 )),
 
 	)
-)
+),
 
 'BWR1' => array(
 	'BWR2' => array(

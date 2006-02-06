@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.41 2006/02/06 16:20:08 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.42 2006/02/06 16:27:31 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -699,6 +699,7 @@ class BitSystem extends BitBase {
 				$pPackageName = $_SERVER['ACTIVE_PACKAGE'];
 			}
 			define('ACTIVE_PACKAGE', $pPackageName);
+			define('ACTIVE_PACKAGE_DIR', $this->mPackages[$pkgNameKey]['dir'] );
 			$this->mActivePackage = $pPackageName;
 		}
 

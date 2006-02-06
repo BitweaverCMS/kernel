@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.32 2006/02/06 16:20:08 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.33 2006/02/06 16:27:31 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -40,8 +40,8 @@ define('LIBERTY_PKG_URL', BIT_ROOT_URL . 'liberty/');
 define('TEMP_PKG_PATH', BIT_ROOT_PATH . 'temp/');
 define('UTIL_PKG_PATH', BIT_ROOT_PATH . 'util/');
 define('UTIL_PKG_URL', BIT_ROOT_URL . 'util/');
-define('USERS_PKG_PATH', BIT_ROOT_PATH . 'users/');
-define('USERS_PKG_URL', BIT_ROOT_URL . 'users/');
+//define('USERS_PKG_PATH', BIT_ROOT_PATH . 'users/');
+//define('USERS_PKG_URL', BIT_ROOT_URL . 'users/');
 define('LANGUAGES_PKG_PATH', BIT_ROOT_PATH . 'languages/');
 define('THEMES_PKG_PATH', BIT_ROOT_PATH . 'themes/');
 

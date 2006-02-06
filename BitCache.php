@@ -3,7 +3,7 @@
  * Basic cache handling
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.5 2006/02/06 09:58:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.6 2006/02/06 15:15:53 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -42,7 +42,6 @@ class BitCache
     */
     function BitCache()
     {
-		vd(TEMP_PKG_PATH);
         if (defined("TEMP_PKG_PATH"))
         {
             $this->mFolder = TEMP_PKG_PATH."cache";

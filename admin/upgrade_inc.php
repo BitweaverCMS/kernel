@@ -5,73 +5,73 @@ $upgrades = array(
 /*
 // should we continue using 'feature_' for tiki_preferences?
 // a list of currenlty used deprecated preference names
-feature_userfiles
-feature_clear_passwords
-feature_custom_home
-feature_user_bookmarks
+user_files
+clear_passwords
+custom_home
+user_bookmarks
 feature_tasks
-feature_usermenu
-feature_userPreferences
-feature_user_watches
-feature_help
-feature_wikihelp
-feature_helpnotes
-feature_bot_bar
-feature_top_bar
-feature_banning
-feature_contact
-feature_jstabs
-feature_left_column
-feature_right_column
-feature_bidi
-feature_theme_control
-feature_top_bar_dropdown
-feature_referer_stats
-feature_hotwords_nw
-feature_hotwords
-feature_babelfish
-feature_babelfish_logo
-feature_autolinks
-feature_backlinks
-feature_dump
-feature_history
-feature_lastChanges
-feature_likePages
-feature_allow_dup_wiki_page_names
-feature_listPages
-feature_page_title
-feature_ranking
-feature_sandbox
-feature_warn_on_edit
+usermenu
+user_preferences
+user_watches
+help
+wiki_help
+help_notes
+bot_bar
+top_bar
+banning
+site_contact
+jstabs
+left_column
+right_column
+bidirectional_text
+theme_control
+top_bar_dropdown
+referer_stats
+hotwords_nw
+hotwords
+babelfish
+babelfish_logo
+autolinks
+backlinks
+wiki_dump
+content_history
+last_changes
+like_pages
+allow_dup_wiki_page_names
+list_pages
+page_title
+wiki_ranking
+sandbox
+warn_on_edit
 feature_wiki
-feature_wiki_attachments
-feature_wiki_books
-feature_wiki_comments
-feature_wiki_description
-feature_wiki_discuss
-feature_wiki_footnotes
-feature_wiki_icache
-feature_wiki_monosp
-feature_wiki_multiprint
-feature_wiki_notepad
-feature_wiki_generate_pdf
-feature_wiki_pictures
-feature_wiki_plurals
-feature_wiki_rankings
-feature_wiki_tables
-feature_wiki_templates
-feature_wiki_undo
-feature_wiki_usrlock
-feature_wikiwords
-wiki_feature_copyrights
-feature_search_fulltext
-feature_search_stats
+wiki_attachments
+wiki_books
+wiki_comments
+wiki_description
+wiki_discuss
+wiki_footnotes
+wiki_icache
+wiki_monosp
+wiki_multiprint
+wiki_notepad
+wiki_generate_pdf
+wiki_pictures
+wiki_plurals
+wiki_rankings
+wiki_tables
+wiki_templates
+wiki_undo
+wiki_usrlock
+wiki_words
+wiki_copyrights
+search_fulltext
+search_stats
 feature_categoryobjects
 feature_categorypath
-feature_cms_rankings
-feature_article_submissions
-feature_blogposts_comments
-feature_blog_rankings
+cms_rankings
+article_submissions
+blogposts_comments
+blog_rankings
 feature_blogs
 */
 
@@ -211,7 +211,7 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."tiki_preferences` SET `value`='native' WHERE `name`='style'",
 		"DELETE FROM `".BIT_DB_PREFIX."tiki_preferences` WHERE `name`='tikiIndex'",
 		"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` ( `name`, `value` ) VALUES ( 'bitIndex', 'wiki' )",
-		"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` ( `name`, `value` ) VALUES ( 'feature_top_bar_dropdown', 'y' )",
+		"INSERT INTO `".BIT_DB_PREFIX."tiki_preferences` ( `name`, `value` ) VALUES ( 'top_bar_dropdown', 'y' )",
 	)
 )),
 
@@ -229,27 +229,92 @@ array( 'DATADICT' => array(
 // clean up all kernel_prefs in the database by using only under_scores in the databae
 array( 'QUERY' =>
 	array( 'SQL92' => array(
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='bit_index' WHERE `name'='bitIndex'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='allow_register' WHERE `name'='allowRegister'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='forgot_pass' WHERE `name'='forgotPass'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='eponymous_groups' WHERE `name'='eponymousGroups'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='register_passcode' WHERE `name'='registerPasscode'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='use_register_passcode' WHERE `name'='useRegisterPasscode'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='validate_user' WHERE `name'='validateUsers'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='validate_email' WHERE `name'='validateEmail'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='temp_dir' WHERE `name'='tmpDir'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='max_records' WHERE `name'='maxRecords'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='url_index' WHERE `name'='urlIndex'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='anon_can_edit' WHERE `name'='anonCanEdit'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='max_versions' WHERE `name'='maxVersions'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='wiki_home_page' WHERE `name'='wikiHomePage'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='wiki_license_page' WHERE `name'='wikiLicensePage'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='wiki_submit_notice' WHERE `name'='wikiSubmitNotice'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='site_title' WHERE `name'='siteTitle'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_last_changes' WHERE `name'='feature_lastChanges'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_like_pages' WHERE `name'='feature_likePages'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_list_pages' WHERE `name'='feature_listPages'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name='feature_user_preferences' WHERE `name'='feature_userPreferences'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='bit_index' WHERE `name`='bitIndex'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='allow_register' WHERE `name`='allowRegister'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='forgot_pass' WHERE `name`='forgotPass'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='eponymous_groups' WHERE `name`='eponymousGroups'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='register_passcode' WHERE `name`='registerPasscode'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='use_register_passcode' WHERE `name`='useRegisterPasscode'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='validate_user' WHERE `name`='validateUsers'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='validate_email' WHERE `name`='validateEmail'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='temp_dir' WHERE `name`='tmpDir'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='max_records' WHERE `name`='maxRecords'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='url_index' WHERE `name`='urlIndex'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='anon_can_edit' WHERE `name`='anonCanEdit'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='max_versions' WHERE `name`='maxVersions'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_home_page' WHERE `name`='wikiHomePage'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_license_page' WHERE `name`='wikiLicensePage'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_submit_notice' WHERE `name`='wikiSubmitNotice'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='site_title' WHERE `name`='siteTitle'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='feature_last_changes' WHERE `name`='last_changes'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='feature_like_pages' WHERE `name`='like_pages'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='feature_list_pages' WHERE `name`='list_pages'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='feature_user_preferences' WHERE `name`='user_preferences'",
+
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='allow_dup_wiki_page_names' WHERE `name`='feature_allow_dup_wiki_page_names'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='article_submissions' WHERE `name`='feature_article_submissions'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='autolinks' WHERE `name`='feature_autolinks'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='babelfish' WHERE `name`='feature_babelfish'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='babelfish_logo' WHERE `name`='feature_babelfish_logo'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='backlinks' WHERE `name`='feature_backlinks'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='banning' WHERE `name`='feature_banning'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='bidirectional_text' WHERE `name`='feature_bidi'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='blogposts_comments' WHERE `name`='feature_blogposts_comments'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='blog_rankings' WHERE `name`='feature_blog_rankings'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='bot_bar' WHERE `name`='feature_bot_bar'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='clear_passwords' WHERE `name`='feature_clear_passwords'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='cms_rankings' WHERE `name`='feature_cms_rankings'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='site_contact' WHERE `name`='feature_contact'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='custom_home' WHERE `name`='feature_custom_home'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_dump' WHERE `name`='feature_dump'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='help' WHERE `name`='feature_help'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='help_notes' WHERE `name`='feature_helpnotes'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='help_popup' WHERE `name`='feature_helppopup'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='hotwords' WHERE `name`='feature_hotwords'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='hotwords_nw' WHERE `name`='feature_hotwords_nw'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='jstabs' WHERE `name`='feature_jstabs'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='last_changes' WHERE `name`='feature_lastChanges'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='left_column' WHERE `name`='feature_left_column'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='like_pages' WHERE `name`='feature_likePages'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='list_pages' WHERE `name`='feature_listPages'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='page_title' WHERE `name`='feature_page_title'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_ranking' WHERE `name`='feature_ranking'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='referer_stats' WHERE `name`='feature_referer_stats'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='right_column' WHERE `name`='feature_right_column'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='sandbox' WHERE `name`='feature_sandbox'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='search_fulltext' WHERE `name`='feature_search_fulltext'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='search_stats' WHERE `name`='feature_search_stats'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='theme_control' WHERE `name`='feature_theme_control'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='top_bar' WHERE `name`='feature_top_bar'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='top_bar_dropdown' WHERE `name`='feature_top_bar_dropdown'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='user_bookmarks' WHERE `name`='feature_user_bookmarks'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='user_files' WHERE `name`='feature_userfiles'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='usermenu' WHERE `name`='feature_usermenu'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='user_preferences' WHERE `name`='feature_userPreferences'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='user_watches' WHERE `name`='feature_user_watches'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='warn_on_edit' WHERE `name`='feature_warn_on_edit'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_attachments' WHERE `name`='feature_wiki_attachments'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_books' WHERE `name`='feature_wiki_books'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_comments' WHERE `name`='feature_wiki_comments'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_description' WHERE `name`='feature_wiki_description'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_discuss' WHERE `name`='feature_wiki_discuss'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_footnotes' WHERE `name`='feature_wiki_footnotes'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_generate_pdf' WHERE `name`='feature_wiki_generate_pdf'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_help' WHERE `name`='feature_wikihelp'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_history' WHERE `name`='feature_history'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_icache' WHERE `name`='feature_wiki_icache'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_monosp' WHERE `name`='feature_wiki_monosp'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_multiprint' WHERE `name`='feature_wiki_multiprint'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_notepad' WHERE `name`='feature_wiki_notepad'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_pictures' WHERE `name`='feature_wiki_pictures'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_plurals' WHERE `name`='feature_wiki_plurals'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_rankings' WHERE `name`='feature_wiki_rankings'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_tables' WHERE `name`='feature_wiki_tables'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_templates' WHERE `name`='feature_wiki_templates'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_undo' WHERE `name`='feature_wiki_undo'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_usrlock' WHERE `name`='feature_wiki_usrlock'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_words' WHERE `name`='feature_wikiwords'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_copyrights' WHERE `name`='wiki_feature_copyrights'",
 	)
 )),
 	)

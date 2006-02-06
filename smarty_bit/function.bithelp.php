@@ -18,7 +18,7 @@ function smarty_function_bithelp($params, &$gBitSmarty) {
 	if($gBitUser->hasPermission( 'bit_p_admin' )){
 		$outstr .= "<a href=\"".KERNEL_PKG_URL."admin/index.php\">".smarty_function_biticon(array('ipackage'=>'liberty', 'iname'=>'administration', 'iexplain'=>'Administration Menu'),$gBitSmarty)."</a> ";
 	}
-	if($gBitSystem->getPreference('feature_help') != 'y') {
+	if($gBitSystem->isFeatureActive('help')) {
 		$outstr .= "";
 	} else {
 		$helpInfo = $gBitSmarty->get_template_vars('TikiHelpInfo');

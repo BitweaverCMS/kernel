@@ -12,18 +12,18 @@
  * Name:	formhelp
  * Input:
  *			- note		(optional)	words that are displayed, can also be an array, where: 'key: value'<br /> is printed
- *									only displayed if feature_helpnotes is enabled
+ *									only displayed if help_notes is enabled
  *			- link		(optional)	provide a link to an internal page (avoids the problem with links being inerpreted
  *									prematurely by the tra() function
  *									<package>/<path to file>/<title>
  *			- package	(optional)	creates a page to 'Package'.ucfirst( $package ) and takes precedence over $page, should both be set.
- *									only dispalyed if feature_help is enabled
+ *									only dispalyed if help is enabled
  *			- install	(optional)	used for packages that require a separate installation
  *									passed in as an array:
  *										package => name of package to be installed
  *										file => path to installation file e.g.: admin/install.php
  *			- page		(optional)	page name on bitweaver
- *									only dispalyed if feature_help is enabled
+ *									only dispalyed if help is enabled
  *			- force		(optional)	if set, it will always dipslay this entry regardless of the feature settings
  */
 function smarty_function_formhelp( $params, &$gBitSmarty ) {
@@ -68,13 +68,13 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 	}
 
 	global $gBitSystem;
-	if( $gBitSystem->getPreference( 'feature_help' ) == 'y' || $gBitSystem->getPreference( 'feature_helpnotes' ) == 'y' || $force == 'y' ) {
+	if( $gBitSystem->isFeatureActive( 'help' ) || $gBitSystem->isFeatureActive( 'help_notes' ) || $force == 'y' ) {
 		if( !empty( $note ) || !empty( $page ) || !empty( $link ) ) {
-			if( !empty( $page ) && ( $gBitSystem->getPreference('feature_help') == 'y' || $force == 'y' ) ) {
+			if( !empty( $page ) && ( $gBitSystem->isFeatureActive('help') || $force == 'y' ) ) {
 				$ret_page = '<strong>'.tra( 'Online help' ).'</strong>: <a class=\'external\' href=\'http://doc.bitweaver.org/wiki/index.php?page='.$page.'\'>'.$page.'</a><br />';
 			}
 
-			if( !empty( $link ) && ( $gBitSystem->getPreference('feature_help') == 'y' || $force == 'y' ) ) {
+			if( !empty( $link ) && ( $gBitSystem->isFeatureActive('help') || $force == 'y' ) ) {
 				if( is_array( $link ) ) {
 					$ret_link  = '<br /><strong>'.tra( 'IntraLink' ).'</strong>: ';
 					$ret_link .= '<a href=\'';
@@ -84,7 +84,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 			}
 
 			$ret_note = '';
-			if( ( !empty( $note ) && $gBitSystem->getPreference('feature_helpnotes') == 'y' ) || ( !empty( $force ) && !empty( $note ) ) ) {
+			if( ( !empty( $note ) && $gBitSystem->isFeatureActive('help_notes') ) || ( !empty( $force ) && !empty( $note ) ) ) {
 				if( is_array( $note ) ) {
 					foreach( $note as $name => $value ) {
 						if( $name == 'install' ) {
@@ -108,7 +108,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 			$content .= $ret_install;
 
 			// using the overlib popup system
-			if( $gBitSystem->getPreference('feature_helppopup') == 'y') {
+			if( $gBitSystem->isFeatureActive('help_popup') ) {
 				require_once $gBitSmarty->_get_plugin_filepath('function','popup');
 				require_once $gBitSmarty->_get_plugin_filepath('function','biticon');
 

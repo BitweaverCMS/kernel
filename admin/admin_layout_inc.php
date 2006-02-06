@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.13 2006/02/03 17:28:22 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.14 2006/02/06 22:56:46 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -45,7 +45,7 @@ if( !empty( $_REQUEST['module_name'] ) ) {
 }
 
 $formMiscFeatures = array(
-	'feature_top_bar' => array(
+	'top_bar' => array(
 		'label' => 'Top bar menu',
 		'note' => 'Here you can enable or disable the menubar at the top of the page (available in most themes). Before you disable this bar, please make sure you have some means of navigation set up to access at least the administration page.',
 	),
@@ -53,15 +53,15 @@ $formMiscFeatures = array(
 		'label' => 'Hide "My" Link',
 		'note' => 'Hide the <strong>My &lt;sitename&gt;</strong> link from users that are not logged in.',
 	),
-	'feature_top_bar_dropdown' => array(
+	'top_bar_dropdown' => array(
 		'label' => 'Dropdown menu',
 		'note' => 'Use the CSS driven dropdown menus in the top bar. Compatibility and further reading can be found at <a class="external" href="http://www.htmldog.com/articles/suckerfish/dropdowns/">Suckerfish Dropdowns</a>.',
 	),
-	'feature_right_column' => array(
+	'right_column' => array(
 		'label' => 'Right Module Column',
 		'note' => 'Here you can disable the right column site-wide.',
 	),
-	'feature_left_column' => array(
+	'left_column' => array(
 		'label' => 'Left Module Column',
 		'note' => 'Here you can disable the left column site-wide.',
 	),

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.7 2006/02/05 21:30:55 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.8 2006/02/06 22:56:46 squareing Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -47,7 +47,7 @@
 	{/foreach}
 
 {* =========================== User menu =========================== *}
-	{if $gBitSystem->isFeatureActive( 'feature_usermenu' )and $usr_user_menus}
+	{if $gBitSystem->isFeatureActive( 'usermenu' )and $usr_user_menus}
 		<li>
 			{if $gBitSystem->isFeatureActive( 'feature_cssmenus' )}
 				{if $menu.title}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/layout_options.php,v 1.3 2005/08/01 18:40:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/layout_options.php,v 1.4 2006/02/06 22:56:46 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -9,15 +9,15 @@
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
-# $Header: /cvsroot/bitweaver/_bit_kernel/Attic/layout_options.php,v 1.3 2005/08/01 18:40:33 squareing Exp $
+# $Header: /cvsroot/bitweaver/_bit_kernel/Attic/layout_options.php,v 1.4 2006/02/06 22:56:46 squareing Exp $
 $section_top_bar = $section . '_top_bar';
 
 $section_bot_bar = $section . '_bot_bar';
 $section_left_column = $section . '_left_column';
 $section_right_column = $section . '_right_column';
-$gBitSmarty->assign('feature_top_bar', $$section_top_bar);
-$gBitSmarty->assign('feature_bot_bar', $$section_bot_bar);
-$gBitSmarty->assign('feature_left_column', $$section_left_column);
-$gBitSmarty->assign('feature_right_column', $$section_right_column);
+$gBitSmarty->assign('top_bar', $$section_top_bar);
+$gBitSmarty->assign('bot_bar', $$section_bot_bar);
+$gBitSmarty->assign('left_column', $$section_left_column);
+$gBitSmarty->assign('right_column', $$section_right_column);
 
 ?>

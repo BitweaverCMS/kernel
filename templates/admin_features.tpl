@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.5 2006/02/06 16:20:08 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.6 2006/02/06 22:56:47 squareing Exp $ *}
 {strip}
 {form}
 	{jstabs}
@@ -21,9 +21,9 @@
 
 			{legend legend="Anonymous Contact"}
 				<div class="row">
-					{formlabel label="Contact Us" for="feature_contact"}
+					{formlabel label="Contact Us" for="site_contact"}
 					{forminput}
-						{html_checkboxes name="feature_contact" values="y" checked=`$gBitSystemPrefs.feature_contact` labels=false id="feature_contact"}
+						{html_checkboxes name="site_contact" values="y" checked=`$gBitSystemPrefs.site_contact` labels=false id="site_contact"}
 						{formhelp note="Enables anonymous users to send a message to a specified user using a form" page="ContactUs"}
 					{/forminput}
 				</div>

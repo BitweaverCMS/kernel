@@ -1,7 +1,7 @@
 {strip}
-{if $gBitSystem->isFeatureActive( 'feature_contact' ) or $gBitUser->isRegistered()}
+{if $gBitSystem->isFeatureActive( 'site_contact' ) or $gBitUser->isRegistered()}
 	<ul>
-		{if $gBitSystem->isFeatureActive( 'feature_contact' )}
+		{if $gBitSystem->isFeatureActive( 'site_contact' )}
 			<li><a class="item" href="{$smarty.const.MESSU_PKG_URL}contact.php">{biticon ipackage=liberty iname=spacer iforce=icon} {tr}Contact us{/tr}</a></li>
 		{/if}
 

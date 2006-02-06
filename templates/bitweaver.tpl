@@ -1,14 +1,14 @@
 {include file="bitpackage:kernel/header.tpl"}
 {strip}
 {if $print_page ne "y"}
-	{if $gBitSystem->isFeatureActive( 'feature_bidi' )}
+	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}
 		<div dir="rtl">
 	{/if}
 
 	<div id="bitbody">
 		{include file="bitpackage:kernel/top.tpl"}
 
-		{if $gBitSystem->isFeatureActive( 'feature_top_bar' )}
+		{if $gBitSystem->isFeatureActive( 'top_bar' )}
 			{include file="bitpackage:kernel/top_bar.tpl"}
 		{/if}
 
@@ -29,14 +29,14 @@
 			</tr>
 		</table>
 
-		{if $gBitSystem->isFeatureActive( 'feature_bot_bar' )}
+		{if $gBitSystem->isFeatureActive( 'bot_bar' )}
 			<div id="bitbottom">
 				{include file="bitpackage:kernel/bot_bar.tpl"}
 			</div> <!-- end #bitbottom -->
 		{/if}
 	</div> <!-- end #bitbody -->
 
-	{if $gBitSystem->isFeatureActive( 'feature_bidi' )}
+	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}
 		</div>
 	{/if}
 

@@ -11,7 +11,7 @@
 </head>
 <body{if $gBodyOnload} onload="{foreach from=$gBodyOnload item=loadString}{$loadString}{/foreach}"{/if}>
 <div style="display:none;position:absolute;top:0;left:-999em;"><a class="skip" style="position:absolute;top:0;left:-999em;width:0;height:0;" href="#content">{tr}Skip Navigation{/tr}</a></div>
-{if $gBitSystem->isFeatureActive( 'feature_helppopup' )}
+{if $gBitSystem->isFeatureActive( 'help_popup' )}
 	{popup_init src="`$smarty.const.UTIL_PKG_URL`javascript/libs/overlib.js"}
 {/if}
 {/strip}

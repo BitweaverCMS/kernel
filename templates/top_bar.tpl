@@ -16,8 +16,8 @@
 			{foreach key=key item=menu from=$appMenu}
 				{if $menu.title && $menu.titleUrl && $menu.template}
 					<li class="m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.adminPanel} current{/if}">
-						<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.adminPanel} selected{/if}" href="{$menu.titleUrl}">{tr}{$menu.title}{/tr}</a>
-						{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}
+						<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.adminPanel} selected{/if}" href="{$menu.titleUrl}">{tr}{$menu.title}{/tr}</a>
+						{if $gBitSystem->isFeatureActive( 'top_bar_dropdown' )}
 							{include file="`$menu.template`"}
 						{/if}
 					</li>
@@ -26,8 +26,8 @@
 
 			{if $gBitUser->isAdmin()}
 				<li class="m-admin{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} current{/if}">
-					<a accesskey="A" class="{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} selected{/if}" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">{tr}Administration{/tr}</a>
-					{if $gBitSystem->isFeatureActive( 'feature_top_bar_dropdown' )}
+					<a accesskey="A" class="{if $gBitSystem->isFeatureActive( 'top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} selected{/if}" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">{tr}Administration{/tr}</a>
+					{if $gBitSystem->isFeatureActive( 'top_bar_dropdown' )}
 						<ul>
 							{foreach key=key item=menu from=$adminMenu}
 								<li>

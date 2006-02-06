@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.9 2006/02/06 10:18:06 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.10 2006/02/06 22:56:46 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -21,7 +21,7 @@ $formFeaturesBit = array(
 		'note' => 'In addition to making the URL easier to read and remember it enhances search engine results. Using this feature requires Apache <a href="http://httpd.apache.org/docs-2.0/mod/mod_rewrite.html">mod_rewrite</a> support in the web server (usually installed by default), This extended version adds a /view tag to the URLs to make them unambigious for rewrites.  It will be necessary to modify the default .htaccess files when using this feature.',
 		'page' => 'FeaturePrettyUrlsExtended',
 	),
-	'feature_autolinks' => array(
+	'autolinks' => array(
 		'label' => 'AutoLinks',
 		'note' => 'If enabled, URLs entered by users will automatically be shown as clickable links.',
 	),
@@ -48,7 +48,7 @@ $formFeaturesBit = array(
 	),
 );
 if( $gBitSystem->isPackageActive( 'stats' ) ) {
-	$formFeaturesBit['feature_referer_stats'] = array(
+	$formFeaturesBit['referer_stats'] = array(
 		'label' => 'Referer Statistics',
 		'note' => 'Records statistics including HTTP_REFERRER',
 	);
@@ -56,19 +56,19 @@ if( $gBitSystem->isPackageActive( 'stats' ) ) {
 $gBitSmarty->assign( 'formFeaturesBit',$formFeaturesBit );
 
 $formFeaturesHelp = array(
-	'feature_helpnotes' => array(
+	'help_notes' => array(
 		'label' => 'Help Notes',
 		'note' => 'Show inline help notes in forms such as the one you are reading now.',
 	),
-	'feature_help' => array(
+	'help' => array(
 		'label' => 'Online Help Links',
 		'note' => 'Display links to relevant online help pages found on www.bitweaver.org.',
 	),
-	'feature_wikihelp' => array(
+	'wiki_help' => array(
 		'label' => 'Show Wiki Help',
 		'note' => 'Displays <strong>extensive</strong> (about 50kb) help regarding tikiwiki syntax and wiki plugins whenever there is an entry form that takes wiki syntax.',
 	),
-	'feature_helppopup' => array(
+	'help_popup' => array(
 		'label' => 'Use Popup for Help Items',
 		'note' => 'This will place a clickable icon after form elements for the extended help information.',
 	),
@@ -81,7 +81,7 @@ $gBitSmarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list :
 $processForm = set_tab();
 
 if( $processForm ) {
-	$featureToggles = array_merge( $formFeaturesBit,$formFeaturesHelp,array( 'feature_contact' => 0 ) );
+	$featureToggles = array_merge( $formFeaturesBit,$formFeaturesHelp,array( 'site_contact' => 0 ) );
 	foreach( array_keys( $featureToggles ) as $item ) {
 		simple_set_toggle( $item );
 	}

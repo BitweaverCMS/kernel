@@ -42,9 +42,9 @@ $gBitInstaller->registerPackageInfo( KERNEL_PKG_NAME, array(
 
 // ### Default Preferences
 $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
-	array(KERNEL_PKG_NAME,'feature_help','y'),
-	array(KERNEL_PKG_NAME,'feature_wikihelp','y'),
-	array(KERNEL_PKG_NAME,'feature_helpnotes','y'),
+	array(KERNEL_PKG_NAME,'help','y'),
+	array(KERNEL_PKG_NAME,'wiki_help','y'),
+	array(KERNEL_PKG_NAME,'help_notes','y'),
 	array(KERNEL_PKG_NAME,'short_date_format','%d %b %Y'),
 	array(KERNEL_PKG_NAME,'short_time_format','%H:%M %Z'),
 	//array(KERNEL_PKG_NAME,'site_title',''),
@@ -62,27 +62,27 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 	//array(KERNEL_PKG_NAME,'https_login_required','n'),
 	array(KERNEL_PKG_NAME,'https_port','443'),
 	array(KERNEL_PKG_NAME,'https_prefix','/'),
-	array(KERNEL_PKG_NAME,'feature_bot_bar','y'),
-	array(KERNEL_PKG_NAME,'feature_top_bar','y'),
-	//array(KERNEL_PKG_NAME,'feature_banning','n'),
-	//array(KERNEL_PKG_NAME,'feature_contact','n'),
-	array(KERNEL_PKG_NAME,'feature_jstabs','y' ),
+	array(KERNEL_PKG_NAME,'bot_bar','y'),
+	array(KERNEL_PKG_NAME,'top_bar','y'),
+	//array(KERNEL_PKG_NAME,'banning','n'),
+	//array(KERNEL_PKG_NAME,'site_contact','n'),
+	array(KERNEL_PKG_NAME,'jstabs','y' ),
 	array(KERNEL_PKG_NAME,'contact_user','admin'),
 	array(KERNEL_PKG_NAME,'count_admin_pvs','y'),
 	//array(KERNEL_PKG_NAME,'direct_pagination','n'),
 	array(KERNEL_PKG_NAME,'display_timezone','UTC'),
 	array(KERNEL_PKG_NAME,'long_date_format','%A %d of %B, %Y'),
 	array(KERNEL_PKG_NAME,'long_time_format','%H:%M:%S %Z'),
-	array(KERNEL_PKG_NAME,'feature_left_column','y'),
-	array(KERNEL_PKG_NAME,'feature_right_column','y'),
+	array(KERNEL_PKG_NAME,'left_column','y'),
+	array(KERNEL_PKG_NAME,'right_column','y'),
 	array(KERNEL_PKG_NAME,'max_records','10'),
 	array(KERNEL_PKG_NAME,'language','en'),
 	array(KERNEL_PKG_NAME,'sender_email',''),
 	array(KERNEL_PKG_NAME,'url_index',''),
-	//array(THEMES_PKG_NAME,'feature_bidi','n' ),
+	//array(THEMES_PKG_NAME,'bidirectional_text','n' ),
 	array(THEMES_PKG_NAME,'slide_style', DEFAULT_THEME ),
 	array(THEMES_PKG_NAME,'style', DEFAULT_THEME ),
-	array(THEMES_PKG_NAME,'feature_top_bar_dropdown','y' )
+	array(THEMES_PKG_NAME,'top_bar_dropdown','y' )
 ) );
 
 $moduleHash = array(

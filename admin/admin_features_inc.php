@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.8 2006/02/01 20:38:41 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.9 2006/02/06 10:18:06 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -24,83 +24,56 @@ $formFeaturesBit = array(
 	'feature_autolinks' => array(
 		'label' => 'AutoLinks',
 		'note' => 'If enabled, URLs entered by users will automatically be shown as clickable links.',
-		'page' => 'AutoLinks',
 	),
 	'feature_html_pages' => array(
 		'label' => 'HTML Pages',
 		'note' => 'A simple way for creating pages that will be displayed to the users and that can be linked from/to any place in your site.',
-		'page' => 'HtmlPages',
-	),
-	'feature_categoryobjects' => array(
-		'label' => 'Show Category Objects',
-		'note' => 'Display a list of items that are part of a particular category at the bottom of the page.',
-		'page' => 'ShowCategoryObjects',
-	),
-	'feature_categorypath' => array(
-		'label' => 'Show Category Path',
-		'note' => 'Display the category path at the top of the page',
-		'page' => 'ShowCategoryPath',
 	),
 	'feature_jscalendar' => array(
 		'label' => 'Enable JSCalendar',
 		'note' => 'Enable use of the JSCalendar library',
 		'page' => 'JSCalendar',
 	),
+	'feature_editcss' => array(
+		'label' => 'Edit Css',
+		'note' => 'Enables you to edit CSS files from within your browser to customise your site style according to your desires.',
+	),
+	'feature_categoryobjects' => array(
+		'label' => 'Show Category Objects',
+		'note' => 'Display a list of items that are part of a particular category at the bottom of the page.',
+	),
+	'feature_categorypath' => array(
+		'label' => 'Show Category Path',
+		'note' => 'Display the category path at the top of the page',
+	),
 );
+if( $gBitSystem->isPackageActive( 'stats' ) ) {
+	$formFeaturesBit['feature_referer_stats'] = array(
+		'label' => 'Referer Statistics',
+		'note' => 'Records statistics including HTTP_REFERRER',
+	);
+}
 $gBitSmarty->assign( 'formFeaturesBit',$formFeaturesBit );
 
 $formFeaturesHelp = array(
 	'feature_helpnotes' => array(
 		'label' => 'Help Notes',
 		'note' => 'Show inline help notes in forms such as the one you are reading now.',
-		'page' => 'HelpSystem',
 	),
 	'feature_help' => array(
 		'label' => 'Online Help Links',
 		'note' => 'Display links to relevant online help pages found on www.bitweaver.org.',
-		'page' => 'HelpSystem',
 	),
 	'feature_wikihelp' => array(
 		'label' => 'Show Wiki Help',
 		'note' => 'Displays <strong>extensive</strong> (about 50kb) help regarding tikiwiki syntax and wiki plugins whenever there is an entry form that takes wiki syntax.',
-		'page' => 'HelpSystem',
 	),
 	'feature_helppopup' => array(
 		'label' => 'Use Popup for Help Items',
 		'note' => 'This will place a clickable icon after form elements for the extended help information.',
-		'page' => 'HelpSystem',
 	),
 );
 $gBitSmarty->assign( 'formFeaturesHelp',$formFeaturesHelp );
-
-$formFeaturesContent = array(
-	'feature_dynamic_content' => array(
-		'label' => 'Dynamic Content System',
-		'note' => 'You can edit blocks of HTML code or text from a admin screen and you can display this block in any Tiki template or user module. Updating the block content will update the template.',
-		'page' => 'DynamicContentSystem',
-	),
-	'feature_editcss' => array(
-		'label' => 'Edit Css',
-		'note' => 'Enables you to edit CSS files - this setting is antiquated and will be removed soon. use the stylist package if you want to modify css files.',
-		'page' => 'EditCss',
-	),
-);
-$gBitSmarty->assign( 'formFeaturesContent',$formFeaturesContent );
-
-$formFeaturesAdmin = array(
-	'feature_banning' => array(
-		'label' => 'Banning System',
-		'note' => 'This enables you to ban users from this site, based on IP address',
-		'page' => 'BanningSystem',
-	),
-	'feature_referer_stats' => array(
-		'label' => 'Referer Statistics',
-		'note' => 'Records statistics including HTTP_REFERRER',
-		'page' => 'RefererStats',
-	),
-);
-
-$gBitSmarty->assign( 'formFeaturesAdmin',$formFeaturesAdmin );
 
 $users_list = $gBitUser->get_users_names();
 $gBitSmarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list : NULL );
@@ -108,7 +81,7 @@ $gBitSmarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list :
 $processForm = set_tab();
 
 if( $processForm ) {
-	$featureToggles = array_merge( $formFeaturesBit,$formFeaturesContent,$formFeaturesAdmin,$formFeaturesHelp,array( 'feature_contact' => 0 ) );
+	$featureToggles = array_merge( $formFeaturesBit,$formFeaturesHelp,array( 'feature_contact' => 0 ) );
 	foreach( array_keys( $featureToggles ) as $item ) {
 		simple_set_toggle( $item );
 	}

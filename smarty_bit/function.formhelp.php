@@ -37,9 +37,12 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 	foreach( $hash as $key => $val ) {
 		switch( $key ) {
 			case 'note':
+			case 'warning':
 			case 'link':
-			case 'label':
 			case 'page':
+				$rawHash[$key] = $val;
+				break;
+			case 'label':
 			case 'package':
 			case 'install':
 			case 'force':
@@ -58,35 +61,35 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 	}
 
 	// if link was passed in as a string, convert it into an array
-	if( !empty( $link ) && is_string( $link ) ) {
-		$l = explode( '/', $link );
-		unset( $link );
+	if( !empty( $rawHash['link'] ) && is_string( $rawHash['link'] ) ) {
+		$l = explode( '/', $rawHash['link'] );
+		unset( $rawHash['link'] );
 		// package is first, title last, and all remaining elements file (can be 'foo/bar.php' as well)
-		$link['package'] = array_shift( $l );
-		$link['title']   = array_pop( $l );
-		$link['file']    = implode( '/', $l );
+		$rawHash['link']['package'] = array_shift( $l );
+		$rawHash['link']['title']   = array_pop( $l );
+		$rawHash['link']['file']    = implode( '/', $l );
 	}
 
 	global $gBitSystem;
 	if( $gBitSystem->isFeatureActive( 'help' ) || $gBitSystem->isFeatureActive( 'help_notes' ) || $force == 'y' ) {
-		if( !empty( $note ) || !empty( $page ) || !empty( $link ) ) {
-			if( !empty( $page ) && ( $gBitSystem->isFeatureActive('help') || $force == 'y' ) ) {
-				$ret_page = '<strong>'.tra( 'Online help' ).'</strong>: <a class=\'external\' href=\'http://doc.bitweaver.org/wiki/index.php?page='.$page.'\'>'.$page.'</a><br />';
+		if( !empty( $rawHash ) ) {
+			if( !empty( $rawHash['page'] ) && ( $gBitSystem->isFeatureActive('help') || $force == 'y' ) ) {
+				$ret_page = '<strong>'.tra( 'Online help' ).'</strong>: <a class=\'external\' href=\'http://doc.bitweaver.org/wiki/index.php?page='.$rawHash['page'].'\'>'.$rawHash['page'].'</a><br />';
 			}
 
-			if( !empty( $link ) && ( $gBitSystem->isFeatureActive('help') || $force == 'y' ) ) {
-				if( is_array( $link ) ) {
+			if( !empty( $rawHash['link'] ) && ( $gBitSystem->isFeatureActive('help') || $force == 'y' ) ) {
+				if( is_array( $rawHash['link'] ) ) {
 					$ret_link  = '<br /><strong>'.tra( 'IntraLink' ).'</strong>: ';
 					$ret_link .= '<a href=\'';
-					$ret_link .= constant( strtoupper( $link['package'] ).'_PKG_URL' ).$link['file'];
-					$ret_link .= '\'>'.tra( $link['title'] ).'</a>';
+					$ret_link .= constant( strtoupper( $rawHash['link']['package'] ).'_PKG_URL' ).$rawHash['link']['file'];
+					$ret_link .= '\'>'.tra( $rawHash['link']['title'] ).'</a>';
 				}
 			}
 
 			$ret_note = '';
-			if( ( !empty( $note ) && $gBitSystem->isFeatureActive('help_notes') ) || ( !empty( $force ) && !empty( $note ) ) ) {
-				if( is_array( $note ) ) {
-					foreach( $note as $name => $value ) {
+			if( ( !empty( $rawHash['note'] ) && $gBitSystem->isFeatureActive('help_notes') ) || ( !empty( $force ) && !empty( $rawHash['note'] ) ) ) {
+				if( is_array( $rawHash['note'] ) ) {
+					foreach( $rawHash['note'] as $name => $value ) {
 						if( $name == 'install' ) {
 							$ret_install  = '<strong>'.tra( 'Install' ).'</strong>: '.tra( 'To use this package, you will first have to run the package specific installer' ).': ';
 							$ret_install .= '<a href=\'';
@@ -97,8 +100,12 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 						}
 					}
 				} else {
-					$ret_note .= tra( $note );
+					$ret_note .= tra( $rawHash['note'] );
 				}
+			}
+
+			if( !empty( $rawHash['warning'] ) ) {
+				$ret_note .= '<br /><span class="warning">'.tra( $rawHash['warning'] ).'</span>';
 			}
 
 			// join all the output content into one string

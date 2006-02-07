@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.42 2006/02/06 16:27:31 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.43 2006/02/07 10:56:43 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -544,11 +544,10 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function verifyPermission( $pPermission, $pMsg = NULL )
-	{
+	function verifyPermission( $pPermission, $pMsg = NULL ) {
 		global $gBitSmarty, $gBitUser, ${$pPermission};
-		if( $gBitUser->hasPermission($pPermission) ) {
-			return true;
+		if( empty( $pPermission ) || $gBitUser->hasPermission( $pPermission ) ) {
+			return TRUE;
 		} else {
 			$this->fatalPermission( $pPermission, $pMsg );
 		}

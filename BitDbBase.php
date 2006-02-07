@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.5 2006/02/05 22:10:53 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.6 2006/02/07 01:19:19 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -180,7 +180,7 @@ class BitDb
 			flush();
 		}
 	}
-	
+
 	/**
 	* Used to create tables - most commonly from package/schema_inc.php files
 	* @todo remove references to BIT_DB_PREFIX, us a member function
@@ -194,7 +194,7 @@ class BitDb
 	{
 		// PURE VIRTUAL
 	}
-	
+
 	/**
 	* Used to check if tables already exists.
 	* @todo should be used to confirm tables are already created
@@ -205,7 +205,7 @@ class BitDb
 	{
 		// PURE VIRTUAL
 	}
-	
+
 	/**
 	* Used to drop tables
 	* @todo remove references to BIT_DB_PREFIX, us a member function
@@ -218,7 +218,7 @@ class BitDb
 	{
 		// PURE VIRTUAL
 	}
-	
+
 	/**
 	* Function to set ADODB query caching member variable
 	* @param pCacheExecute flag to enable or disable ADODB query caching
@@ -227,7 +227,7 @@ class BitDb
 	function setCacheState( $pCacheFlag=TRUE ) {
 		$this->mCacheFlag = $pCacheFlag;
 	}
-	
+
 	/**
 	* Function to set ADODB query caching member variable
 	* @param pCacheExecute flag to enable or disable ADODB query caching
@@ -236,7 +236,7 @@ class BitDb
 	function getCacheState() {
 		return( $this->mCacheFlag );
 	}
-	
+
 	/**
 	* Quotes a string to be sent to the database
 	* @param pStr string to be quotes
@@ -246,7 +246,7 @@ class BitDb
 	{
 		// PURE VIRTUAL
 	}
-	
+
 	/** Queries the database, returning an error if one occurs, rather
 	* than exiting while printing the error. -rlpowell
 	* @param pQuery the SQL query. Use backticks (`) to quote all table
@@ -263,7 +263,7 @@ class BitDb
 	{
 		// PURE VIRTUAL
 	}
-	
+
 	/** Queries the database reporting an error if detected
 	* than exiting while printing the error. -rlpowell
 	* @param pQuery the SQL query. Use backticks (`) to quote all table
@@ -843,7 +843,7 @@ class BitDb
 	function Affected_Rows() {
 		// PURE VIRTUAL
 	}
-	
+
 	/**
 	 * Check for Postgres specific extensions
 	 */

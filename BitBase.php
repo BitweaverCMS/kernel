@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.15 2006/02/06 09:58:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.16 2006/02/07 01:19:19 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -88,6 +88,7 @@ class BitBase
 			$this->setDatabase($gBitDb);
 		}
  		$this->mErrors = array();
+ 		$this->mInfo = array();
     }
 
     /**
@@ -176,11 +177,6 @@ class BitBase
     }
 
 
-
-	function getPreference($pName, $pDefault = '') {
-		global $gBitSystem;
-		return $gBitSystem->getPreference( $pName, $pDefault );
-	}
 
     /**
     * Prepares parameters with default values for any getList function

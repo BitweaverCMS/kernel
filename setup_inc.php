@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.34 2006/02/08 01:40:11 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.35 2006/02/08 16:17:19 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -71,6 +71,14 @@ $gBitDb = new $dbClass();
 require_once(KERNEL_PKG_PATH . 'BitSystem.php');
 global $gBitSmarty, $gBitSystem;
 $gBitSystem = new BitSystem();
+
+// first things first: strip malicious stuff from the url:
+foreach( $_GET as $key => $value ) {
+	if( preg_match( "/script/i", urldecode( $value ) ) ) {
+		unset( $_REQUEST[$key] );
+		unset( $_GET[$key] );
+	}
+}
 
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');

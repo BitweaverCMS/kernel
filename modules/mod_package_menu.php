@@ -4,7 +4,7 @@
  * @subpackage modules
  */
 global $gBitSystem;
-if( ACTIVE_PACKAGE == 'messu' ) {
+if( ACTIVE_PACKAGE == 'messages' ) {
 	$active = 'users';
 } else {
 	$active = ACTIVE_PACKAGE;

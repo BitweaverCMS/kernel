@@ -505,8 +505,8 @@ ALTER TABLE tiki_mailin_accounts add column (discard_after varchar(255) default 
 
 
 
--- messu
-CREATE TABLE messu_archive (
+-- messages
+CREATE TABLE messages_archive (
   msgId int(14) NOT NULL auto_increment,
   user varchar(200) NOT NULL default '',
   user_from varchar(200) NOT NULL default '',
@@ -523,7 +523,7 @@ CREATE TABLE messu_archive (
   priority int(2) default NULL,
   PRIMARY KEY  (msgId)
 ) AUTO_INCREMENT=1 ;
-CREATE TABLE messu_sent (
+CREATE TABLE messages_sent (
   msgId int(14) NOT NULL auto_increment,
   user varchar(200) NOT NULL default '',
   user_from varchar(200) NOT NULL default '',
@@ -541,9 +541,9 @@ CREATE TABLE messu_sent (
   PRIMARY KEY  (msgId)
 ) AUTO_INCREMENT=1 ;
 
-ALTER TABLE messu_messages ADD replyto_hash varchar(32) default NULL AFTER hash;
-ALTER TABLE messu_archive ADD replyto_hash varchar(32) default NULL AFTER hash;
-ALTER TABLE messu_sent ADD replyto_hash varchar(32) default NULL AFTER hash;
+ALTER TABLE messages_messages ADD replyto_hash varchar(32) default NULL AFTER hash;
+ALTER TABLE messages_archive ADD replyto_hash varchar(32) default NULL AFTER hash;
+ALTER TABLE messages_sent ADD replyto_hash varchar(32) default NULL AFTER hash;
 
 
 

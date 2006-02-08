@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.43 2006/02/07 10:56:43 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.44 2006/02/08 21:51:13 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -136,8 +136,7 @@ class BitSystem extends BitBase {
 		}
 	}
 
-	function loadPreferences($pPackage = null)
-	{
+	function loadPreferences($pPackage = null) {
 		$queryVars = array();
 		$whereClause = '';
 
@@ -147,10 +146,10 @@ class BitSystem extends BitBase {
 		}
 
 		if ( empty( $this->mPrefs ) ) {
-			$query = "SELECT `name` ,`value` FROM `" . BIT_DB_PREFIX . "kernel_prefs` " . $whereClause;
-			if( $rs = $this->mDb->query($query, $queryVars, -1, -1 ) ) {
+			$query = "SELECT `name` ,`value`, `package` FROM `" . BIT_DB_PREFIX . "kernel_prefs` " . $whereClause;
+			if( $rs = $this->mDb->query( $query, $queryVars, -1, -1 ) ) {
 				while( $row = $rs->fetchRow() ) {
-					$this->mPrefs[$row['name']] = $row['value'];
+					$this->mPrefs[$row['package']][$row['name']] = $row['value'];
 				}
 			}
 		}
@@ -184,25 +183,22 @@ class BitSystem extends BitBase {
 	*
 	* @access public
 	**/
-	function storePreference( $name, $value, $pPackageName=NULL ) {
-		global $gMultisites, $bitdomain;
-
-		if (file_exists(TEMP_PKG_PATH."templates_c/" . $bitdomain . "preferences.php")) {
-			@unlink (TEMP_PKG_PATH."templates_c/" . $bitdomain . "preferences.php");
-		}
+	function storePreference( $pName, $pValue, $pPackage = NULL ) {
+		// PREFTEST
+		global $gMultisites, $prefHash;
 
 		// store the pref if we have a value _AND_ it is different from the default
-		if( ( empty( $this->mPrefs[$name] ) || ( $this->mPrefs[$name] != $value ) ) ) {
+		if( ( empty( $this->getPreference[$pName] ) || ( $this->getPreference[$pName] != $pValue ) ) ) {
 			// store the preference in multisites, if used
-			if( @$this->verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mPrefs[$name] ) ) {
+			if( @$this->verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mPrefs[$pName] ) ) {
 				$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `value`=? WHERE `multisite_id`=? AND `name`=?";
-				$result = $this->mDb->query( $query, array( empty( $value ) ? '' : $value, $gMultisites->mMultisiteId, $name ) );
+				$result = $this->mDb->query( $query, array( empty( $pValue ) ? '' : $pValue, $gMultisites->mMultisiteId, $pName ) );
 			} else {
 				$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_prefs` WHERE `name`=?";
-				$result = $this->mDb->query( $query, array( $name ) );
-				if( isset( $value ) ) {
+				$result = $this->mDb->query( $query, array( $pName ) );
+				if( isset( $pValue ) ) {
 					$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`name`,`value`,`package`) VALUES (?,?,?)";
-					$result = $this->mDb->query( $query, array( $name, $value, strtolower( $pPackageName ) ) );
+					$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage ) ) );
 				}
 			}
 
@@ -212,22 +208,40 @@ class BitSystem extends BitBase {
 			$this->mCacheTime = BIT_QUERY_CACHE_TIME;
 		}
 
-		$this->mPrefs[$name] = $value;
+		$this->mPrefs[$pPackage][$pName] = $pValue;
+		// PREFTEST
+		// this is kept for backwards compatability
+		$prefHash[$pName] = $pValue;
 		return TRUE;
 	}
 	// >>>
 
-	function getPreference($name, $default = '') {
+	// PREFTEST
+	// the *real* way to get hold of a preference
+	// use package, name of preference and optionally a default value
+	function getPref( $pPackage, $pName, $pDefault = '' ) {
 		if( empty( $this->mPrefs ) ) {
 			$this->loadPreferences();
 		}
-		return( empty( $this->mPrefs[$name] ) ? $default : $this->mPrefs[$name] );
+		return( empty( $this->mPrefs[$pPackage][$pName] ) ? $pDefault : $this->mPrefs[$pPackage][$pName] );
+	}
+
+	// PREFTEST
+	// DEPRECATED: this function is deprecated and will be faded out for the new and improved getPrefs() above.
+	function getPreference($pName, $default = '') {
+		if( empty( $this->mPrefs ) ) {
+			$this->loadPreferences();
+		}
+		foreach( $this->mPrefs as $package => $packagePrefs ) {
+			if( !empty( $packagePrefs[$pName] ) ) {
+				return( $this->getPref( $package, $pName, $default ) );
+			}
+		}
 	}
 
 	// <<< expungePackagePreferences
 	/**
 	* Delete all prefences for the given package
-	*
 	* @access public
 	**/
 	function expungePackagePreferences( $pPackageName ) {
@@ -473,20 +487,19 @@ class BitSystem extends BitBase {
 	*
 	* @param $pKey hash key
 	*/
-	function isPackageActive( $pPackageName )
-	{
+	function isPackageActive( $pPackageName ) {
 		$ret = FALSE;
 		if (defined( (strtoupper( $pPackageName ).'_PKG_NAME') ) ) {
 			$name = strtolower( @constant( (strtoupper( $pPackageName ).'_PKG_NAME') ) );
 			if( $name ) {
-                               // kernel always active
-                                if ($name == 'kernel') {
-                                        $ret = 1;
-                                        }
-                                else {
-                                        // we have migrated the old tikiwiki feature_<pac
-                                        $ret = ($this->getPreference('package_'.$name) == 'y');
-                                        }
+				// kernel always active
+				if ($name == 'kernel') {
+					$ret = 1;
+				}
+				else {
+					// we have migrated the old tikiwiki feature_<pac
+					$ret = ($this->getPreference('package_'.$name) == 'y');
+				}
 
 			}
 		}
@@ -960,7 +973,7 @@ asort( $this->mAppMenu );
 			} else {
 				$prefix = '';
 			}
- 			$showTables = ( $prefix ? $prefix.'%' : NULL );
+			$showTables = ( $prefix ? $prefix.'%' : NULL );
 			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $showTables ) ) {
 				foreach( array_keys( $this->mPackages ) as $package ) {
 					if( !empty( $this->mPackages[$package]['tables'] ) ) {
@@ -983,7 +996,7 @@ asort( $this->mAppMenu );
 					$this->mPackages[$package]['active_switch'] = $this->getPreference( 'package_'.strtolower( $package ) );
 					if( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['active_switch'] != 'y' ) {
 						// we have a disabled required package. turn it back on!
-						$this->storePreference( 'package_'.strtolower( $package ), 'y' );
+						$this->storePreference( 'package_'.strtolower( $package ), 'y', $package );
 						$this->mPackages[$package]['active_switch'] = $this->getPreference( 'package_'.strtolower( $package ) );
 					}
 				}
@@ -992,7 +1005,7 @@ asort( $this->mAppMenu );
 
 		foreach( array_keys( $this->mPackages ) as $package ) {
 			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getPreference("package_".strtolower($package)) != 'y') {
-				$this->storePreference('package_'.strtolower( $package ), 'n');
+				$this->storePreference('package_'.strtolower( $package ), 'n', $package);
 			} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
 				// Delete the package_<pkgname> row from kernel_prefs
 				$this->storePreference('package_'.strtolower( $package ), NULL );
@@ -1005,18 +1018,6 @@ asort( $this->mAppMenu );
 	function makePackageHomeable($package) {
 		$this->mPackages[strtolower( $package )]['homeable'] = TRUE;
 	}
-
-	// Not sure if this is needed anymore - wolff_borg
-/*	function storePreferences()
-	{
-		if (count($this->mPrefs))
-		{
-			foreach(array_keys($this->mPrefs) as $name)
-			{
-				$this->storePreference($name, $this->mPrefs[$name]);
-			}
-		}
-	}*/
 
 	function getDefaultPage() {
 		global $userlib, $gBitUser, $gBitSystem;

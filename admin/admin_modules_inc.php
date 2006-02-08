@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.9 2006/02/03 17:28:22 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.10 2006/02/08 21:51:14 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -34,7 +34,7 @@ $all_mods = $gBitThemes->getAllModules();                           // Get all c
 $gBitSmarty->assign_by_ref( 'all_modules', $all_mods );
 
 $all_centers = $gBitThemes->getAllModules( 'templates', 'center_' );   // Get all center templates
-$gBitSmarty->assign_by_ref( 'all_centers', $all_centers );              
+$gBitSmarty->assign_by_ref( 'all_centers', $all_centers );
 
 $all_mods = array_merge_recursive($all_mods,$all_centers);                         // Merge them all back into one array
 
@@ -54,32 +54,31 @@ $actionsTaken = false;
 $processForm = set_tab();
 
 if( $processForm == 'Modules' ) {
-	
 	foreach( array_keys( $formModuleFeatures ) as $item ) {
-		simple_set_toggle( $item );
+		simple_set_toggle( $item, THEMES_PKG_NAME );
 	}
 } elseif ( $processForm == 'Edit' ) {
-    $modCount = 0;
-    foreach ($_REQUEST['fModuleAction'] as $moduleName=>$action) {
-            if ($action == 'enable') {
-                if (strlen($_REQUEST['fModuleGroups'.$modCount]) > 0) {
-                    $groupList = preg_replace('/,/',' ',$_REQUEST['fModuleGroups'.$modCount]);
-                } else {
-                    $groupList = NULL;
-                }
-                $storeMod = array('module_rsrc'=>$moduleName, 'rows'=>$_REQUEST['fModuleRows'.$modCount], 'params'=>$_REQUEST['fModuleParams'.$modCount], 'cache_time'=>$_REQUEST['fModuleCacheTime'.$modCount], 'groups'=>$groupList);
-                $gBitThemes->storeModule($storeMod);
-                $actionDescr = array('actionType'=>'enable', 'moduleName'=>$moduleName);
-                array_push($actionSummary,$actionDescr);
-                $actionsTaken = true;
-            } elseif ($action == 'disable') {
-                $gBitThemes->disableModule($moduleName);
-                $actionDescr = array('actionType'=>'disable', 'moduleName'=>$moduleName);
-                array_push($actionSummary,$actionDescr);
-                $actionsTaken = true;
-            }
-            $modCount++;
-    }
+	$modCount = 0;
+	foreach ($_REQUEST['fModuleAction'] as $moduleName=>$action) {
+		if ($action == 'enable') {
+			if (strlen($_REQUEST['fModuleGroups'.$modCount]) > 0) {
+				$groupList = preg_replace('/,/',' ',$_REQUEST['fModuleGroups'.$modCount]);
+			} else {
+				$groupList = NULL;
+			}
+			$storeMod = array('module_rsrc'=>$moduleName, 'rows'=>$_REQUEST['fModuleRows'.$modCount], 'params'=>$_REQUEST['fModuleParams'.$modCount], 'cache_time'=>$_REQUEST['fModuleCacheTime'.$modCount], 'groups'=>$groupList);
+			$gBitThemes->storeModule($storeMod);
+			$actionDescr = array('actionType'=>'enable', 'moduleName'=>$moduleName);
+			array_push($actionSummary,$actionDescr);
+			$actionsTaken = true;
+		} elseif ($action == 'disable') {
+			$gBitThemes->disableModule($moduleName);
+			$actionDescr = array('actionType'=>'disable', 'moduleName'=>$moduleName);
+			array_push($actionSummary,$actionDescr);
+			$actionsTaken = true;
+		}
+		$modCount++;
+	}
 }
 $gBitSmarty->assign_by_ref('actionSummary',$actionSummary);
 $gBitSmarty->assign_by_ref('actionsTaken',$actionsTaken);

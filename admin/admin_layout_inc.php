@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.14 2006/02/06 22:56:46 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.15 2006/02/08 21:51:14 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -73,7 +73,7 @@ $processForm = set_tab();
 
 if( $processForm == 'Misc' ) {
 	foreach( array_keys( $formMiscFeatures ) as $item ) {
-		simple_set_toggle( $item );
+		simple_set_toggle( $item, THEMES_PKG_NAME );
 	}
 } elseif( isset( $_REQUEST['fModule'] ) ) {
 

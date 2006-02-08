@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.5 2006/02/06 00:07:32 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.6 2006/02/08 21:51:14 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -29,7 +29,6 @@ $gBitSmarty->assign( 'formGeneralMisc',$formGeneralMisc );
 $processForm = set_tab();
 
 if ($processForm) {
-	
 	$pref_toggles = array(
 		"cacheimages",
 		"cachepages",
@@ -39,7 +38,7 @@ if ($processForm) {
 	);
 
 	foreach ($pref_toggles as $toggle) {
-		simple_set_toggle ($toggle);
+		simple_set_toggle ($toggle, KERNEL_PKG_NAME);
 	}
 
 	$pref_simple_values = array(
@@ -49,7 +48,7 @@ if ($processForm) {
 	);
 
 	foreach ($pref_simple_values as $svitem) {
-		simple_set_value ($svitem);
+		simple_set_value ($svitem, KERNEL_PKG_NAME);
 	}
 
 	// Special handling for tied fields: bit_index and url_index

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.3 2006/02/06 00:07:32 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.4 2006/02/08 21:51:14 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -18,7 +18,7 @@ if( $processForm ) {
 	);
 
 	foreach ($pref_toggles as $toggle) {
-		simple_set_toggle ($toggle);
+		simple_set_toggle ($toggle, KERNEL_PKG_NAME);
 	}
 
 	$pref_simple_values = array(
@@ -33,7 +33,7 @@ if( $processForm ) {
 	);
 
 	foreach ($pref_simple_values as $svitem) {
-		simple_set_value ($svitem);
+		simple_set_value ($svitem, KERNEL_PKG_NAME);
 	}
 
 	$pref_byref_values = array(
@@ -49,19 +49,19 @@ if( $processForm ) {
 
 	// Special handling for temp_dir, which has a default value
 	if (isset($_REQUEST["temp_dir"])) {
-		$gBitSystem->storePreference("temp_dir", $_REQUEST["temp_dir"]);
+		$gBitSystem->storePreference("temp_dir", $_REQUEST["temp_dir"], KERNEL_PKG_NAME );
 
 		$gBitSmarty->assign_by_ref("temp_dir", $_REQUEST["temp_dir"]);
 	} else {
 		$tdir = BitSystem::tempdir();
 
-		$gBitSystem->storePreference("temp_dir", $tdir);
+		$gBitSystem->storePreference("temp_dir", $tdir, KERNEL_PKG_NAME );
 		$gBitSmarty->assign("temp_dir", $tdir);
 	}
 
 	// Special handling for centralissed_upload_dir, which has a default value
 	$centralDir = ( isset( $_REQUEST["centralized_upload_dir"] ) ? $_REQUEST["centralized_upload_dir"] : NULL );
-	$gBitSystem->storePreference( "centralized_upload_dir", $centralDir );
+	$gBitSystem->storePreference( "centralized_upload_dir", $centralDir , KERNEL_PKG_NAME );
 	$gBitSmarty->assign_by_ref( "centralized_upload_dir", $centralDir );
 
 }

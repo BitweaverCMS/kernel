@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.4 2005/10/23 14:40:23 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.5 2006/02/08 21:51:14 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -20,7 +20,7 @@ if( !empty( $_REQUEST['features'] ) ) {
 		if( isset( $pkg['name'] ) ) {
 			$pkgName = strtolower( $pkg['name'] );
 			if( isset( $_REQUEST['fPackage'][$pkgName] ) ) {
-				$gBitSystem->storePreference( 'package_'.$pkgName, 'y' );
+				$gBitSystem->storePreference( 'package_'.$pkgName, 'y', KERNEL_PKG_NAME );
 				unset( $pkgArray[$pkgKey] );
 			}
 		}
@@ -31,7 +31,7 @@ if( !empty( $_REQUEST['features'] ) ) {
 		if( isset( $pkg['name'] ) ) {
 			$pkgName = strtolower( $pkg['name'] );
 			if( empty($pkg['required']) ) {
-				$gBitSystem->storePreference( 'package_'.$pkgName, 'n' );
+				$gBitSystem->storePreference( 'package_'.$pkgName, 'n', KERNEL_PKG_NAME );
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.35 2006/02/08 16:17:19 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.36 2006/02/08 21:51:14 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -163,7 +163,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	} else {
 		$bitdomain .= "/";
 	}
-	$gBitSystem->storePreference('bitdomain', $bitdomain);
+	$gBitSystem->storePreference('bitdomain', $bitdomain, KERNEL_PKG_NAME );
 
 	$gBitSmarty->assign("bitdomain", $bitdomain);
 	// The votes array stores the votes the user has made
@@ -292,8 +292,18 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign('title', $title);
 	$gBitSmarty->assign('temp_dir', getTempDir());
 
+	// PREFTEST
 	// Assign all prefs to smarty we are done mucking about for a 1000 lines
-	$gBitSmarty->assign_by_ref('gBitSystemPrefs', $gBitSystem->mPrefs);
+	$prefHash = array();
+	foreach( $gBitSystem->mPrefs as $prefs ) {
+		if( is_array( $prefs ) ) {
+			$prefHash = array_merge( $prefHash, $prefs );
+		}
+	}
+	// PREFTEST
+	// this is used for backwards compatability and can hopefully be faded out soon.
+	$gBitSmarty->assign_by_ref( 'gBitSystemPrefs', $prefHash );
+	$gBitSmarty->assign_by_ref( 'gBitPrefs', $gBitSystem->mPrefs );
 
 //	======================= HOPEFULLY WE CAN SURVIVE WITHOUT THIS PREFERENCE ASSIGNEMENT STUFF =================
 //	$prefs = &$gBitSystem->mPrefs; // TODO $prefs is only for backward compatibility, need to remove entirely

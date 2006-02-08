@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.6 2006/02/07 01:19:19 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.7 2006/02/08 16:41:35 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -439,12 +439,14 @@ class BitDb
 	function associateUpdate( $updateTable, $updateData, $updateId ) {
 		$setSql = ( '`'.implode( array_keys( $updateData ), '`=?, `' ).'`=?' );
 		$bindVars = array_values( $updateData );
-		array_push( $bindVars, $updateId["value"] );
+		$keyNames = ( '`'.implode( array_keys( $updateIds ), '`=? AND `' ).'`=?' );
+		$keyVars = array_values( $updateIds );
+		array_merge( $bindVars, $keyVars );
 		if( $updateTable[0] != '`' ) {
 			$updateTable = '`'.$updateTable.'`';
 		}
 
-		$query = "UPDATE $updateTable SET $setSql WHERE `".$updateId["name"]."`=?";
+		$query = "UPDATE $updateTable SET $setSql WHERE $keyNames";
 		$result = $this->query( $query, $bindVars );
 	}
 

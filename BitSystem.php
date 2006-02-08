@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.44 2006/02/08 21:51:13 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.45 2006/02/08 23:24:27 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -232,9 +232,11 @@ class BitSystem extends BitBase {
 		if( empty( $this->mPrefs ) ) {
 			$this->loadPreferences();
 		}
-		foreach( $this->mPrefs as $package => $packagePrefs ) {
-			if( !empty( $packagePrefs[$pName] ) ) {
-				return( $this->getPref( $package, $pName, $default ) );
+		if( !empty( $this->mPrefs ) ) {
+			foreach( $this->mPrefs as $package => $packagePrefs ) {
+				if( !empty( $packagePrefs[$pName] ) ) {
+					return( $this->getPref( $package, $pName, $default ) );
+				}
 			}
 		}
 	}

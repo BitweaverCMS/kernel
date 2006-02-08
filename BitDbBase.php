@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.9 2006/02/08 22:21:16 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.10 2006/02/08 23:24:27 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -441,7 +441,7 @@ class BitDb
 		$bindVars = array_values( $updateData );
 		$keyNames = ( '`'.implode( array_keys( $updateId ), '`=? AND `' ).'`=?' );
 		$keyVars = array_values( $updateId );
-		array_merge( $bindVars, $keyVars );
+		$bindVars = array_merge( $bindVars, $keyVars );
 		if( $updateTable[0] != '`' ) {
 			$updateTable = '`'.$updateTable.'`';
 		}

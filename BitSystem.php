@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.76 2006/01/26 15:00:34 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.77 2006/02/09 08:38:17 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1850,7 +1850,7 @@ asort( $this->mAppMenu );
 		$error['number'] = 0;
 		$error['string'] = $data = '';
 
-		if( $fsock = @fsockopen( 'www.bitweaver.org', 80, $error['number'], $error['string'], 30 ) ) {
+		if( $fsock = @fsockopen( 'www.bitweaver.org', 80, $error['number'], $error['string'], 1 ) ) {
 			@fwrite( $fsock, "GET /bitversion.txt HTTP/1.1\r\n" );
 			@fwrite( $fsock, "HOST: www.bitweaver.org\r\n" );
 			@fwrite( $fsock, "Connection: close\r\n\r\n" );

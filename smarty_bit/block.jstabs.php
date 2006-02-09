@@ -17,7 +17,7 @@ function smarty_block_jstabs( $params, $content, &$gBitSmarty ) {
 	global $gBitSystem;
 	extract( $params );
 
-	if( $gBitSystem->mPrefs['disable_jstabs'] == 'y' ) {
+	if( $gBitSystem->isFeatureActive( 'disable_jstabs' ) ) {
 		$ret .= '<div class="tabpane">'.$content.'</div>';
 	} else {
 		if( !empty( $tab ) ) {

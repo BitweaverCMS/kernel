@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.36 2006/02/08 21:51:14 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.37 2006/02/09 10:30:37 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -292,18 +292,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign('title', $title);
 	$gBitSmarty->assign('temp_dir', getTempDir());
 
-	// PREFTEST
-	// Assign all prefs to smarty we are done mucking about for a 1000 lines
-	$prefHash = array();
-	foreach( $gBitSystem->mPrefs as $prefs ) {
-		if( is_array( $prefs ) ) {
-			$prefHash = array_merge( $prefHash, $prefs );
-		}
-	}
-	// PREFTEST
-	// this is used for backwards compatability and can hopefully be faded out soon.
-	$gBitSmarty->assign_by_ref( 'gBitSystemPrefs', $prefHash );
-	$gBitSmarty->assign_by_ref( 'gBitPrefs', $gBitSystem->mPrefs );
+	$gBitSmarty->assign_by_ref( 'gBitSystemPrefs', $gBitSystem->mPrefs );
 
 //	======================= HOPEFULLY WE CAN SURVIVE WITHOUT THIS PREFERENCE ASSIGNEMENT STUFF =================
 //	$prefs = &$gBitSystem->mPrefs; // TODO $prefs is only for backward compatibility, need to remove entirely
@@ -384,7 +373,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$gBitSmarty->assign_by_ref( "gBitTranslationHash", $gBitTranslationHash );
 	} else {
 		// this has to be done since the permission can't be checked in BitLanguage::translate() as it's called too soon by prefilter.tr
-		$gBitSystem->mPrefs['interactive_translation'] = 'n';
+		$gBitSystem->setPreference( 'interactive_translation', 'n' );
 	}
 }
 

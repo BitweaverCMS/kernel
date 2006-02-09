@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.45 2006/02/08 23:24:27 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.46 2006/02/09 09:59:53 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -136,6 +136,21 @@ class BitSystem extends BitBase {
 		}
 	}
 
+	/**
+	* Set a hash value in the mPrefs hash. This does *NOT* store the value in the database. It does no checking for existing or duplicate values. the main point of this function is to limit direct accessing of the mPrefs hash. I will probably make mPrefs private one day.
+	*
+	* @param string Hash key for the mPrefs value
+	* @param string Value for the mPrefs hash key
+	*/
+	function setPreference( $pPrefName, $pPrefValue ) {
+		$this->mPrefs[$pPrefName] = $pPrefValue;
+	}
+
+	/**
+	* Load all preferences and store them in $this->mPrefs
+	*
+	* @param $pPackage optionally get preferences only for selected package
+	*/
 	function loadPreferences($pPackage = null) {
 		$queryVars = array();
 		$whereClause = '';
@@ -149,7 +164,7 @@ class BitSystem extends BitBase {
 			$query = "SELECT `name` ,`value`, `package` FROM `" . BIT_DB_PREFIX . "kernel_prefs` " . $whereClause;
 			if( $rs = $this->mDb->query( $query, $queryVars, -1, -1 ) ) {
 				while( $row = $rs->fetchRow() ) {
-					$this->mPrefs[$row['package']][$row['name']] = $row['value'];
+					$this->mPrefs[$row['name']] = $row['value'];
 				}
 			}
 		}
@@ -184,8 +199,7 @@ class BitSystem extends BitBase {
 	* @access public
 	**/
 	function storePreference( $pName, $pValue, $pPackage = NULL ) {
-		// PREFTEST
-		global $gMultisites, $prefHash;
+		global $gMultisites;
 
 		// store the pref if we have a value _AND_ it is different from the default
 		if( ( empty( $this->getPreference[$pName] ) || ( $this->getPreference[$pName] != $pValue ) ) ) {
@@ -208,37 +222,17 @@ class BitSystem extends BitBase {
 			$this->mCacheTime = BIT_QUERY_CACHE_TIME;
 		}
 
-		$this->mPrefs[$pPackage][$pName] = $pValue;
-		// PREFTEST
-		// this is kept for backwards compatability
-		$prefHash[$pName] = $pValue;
+		$this->setPreference( $pName, $pValue );
 		return TRUE;
 	}
 	// >>>
 
-	// PREFTEST
-	// the *real* way to get hold of a preference
-	// use package, name of preference and optionally a default value
-	function getPref( $pPackage, $pName, $pDefault = '' ) {
+	// easily get the value of any given preference stored in kernel_prefs
+	function getPreference( $pName, $pDefault = '' ) {
 		if( empty( $this->mPrefs ) ) {
 			$this->loadPreferences();
 		}
-		return( empty( $this->mPrefs[$pPackage][$pName] ) ? $pDefault : $this->mPrefs[$pPackage][$pName] );
-	}
-
-	// PREFTEST
-	// DEPRECATED: this function is deprecated and will be faded out for the new and improved getPrefs() above.
-	function getPreference($pName, $default = '') {
-		if( empty( $this->mPrefs ) ) {
-			$this->loadPreferences();
-		}
-		if( !empty( $this->mPrefs ) ) {
-			foreach( $this->mPrefs as $package => $packagePrefs ) {
-				if( !empty( $packagePrefs[$pName] ) ) {
-					return( $this->getPref( $package, $pName, $default ) );
-				}
-			}
-		}
+		return( empty( $this->mPrefs[$pName] ) ? $pDefault : $this->mPrefs[$pName] );
 	}
 
 	// <<< expungePackagePreferences

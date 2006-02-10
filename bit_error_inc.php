@@ -158,7 +158,12 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 function vd( $iVar ) {
 	if( !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' ) {
 		include( UTIL_PKG_PATH.'dBug/dBug.php' );
-		new dBug( $iVar );
+		if( is_object( $iVar ) ) {
+			if( isset( $iVar->mDb ) ) {
+				unset( 	$iVar->mDb );
+			}
+			new dBug( $iVar );
+		}
 	} else {
 		print '<pre>';
 		if( is_object( $iVar ) ) {

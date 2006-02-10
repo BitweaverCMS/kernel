@@ -66,4 +66,16 @@ global $gPreScan;
 if( empty( $gPreScan ) ) {
 	$gPreScan = array( 'kernel', 'users', 'liberty' );
 }
+
+global $gShellScript;
+if( !empty( $gShellScript ) ) {
+	// keep notices quiet
+    $_SERVER['SCRIPT_URL'] = '';
+    $_SERVER['HTTP_HOST'] = 'localhost';
+    $_SERVER['HTTP_USER_AGENT'] = 'cron';
+    $_SERVER['SERVER_NAME'] = '';
+    $_SERVER['HTTP_SERVER_VARS'] = '';
+
+}
+
 ?>

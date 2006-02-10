@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.6 2006/02/02 22:17:53 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.7 2006/02/10 17:22:38 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -185,6 +185,7 @@ class BitDbPear extends BitDb
 		$this->queryComplete();
 		return $result;
 	}
+
 	/** Returns an associative array for the given query.
 	* See AdoDB GetAssoc() function for more detail.
 	* @param pQuery the SQL query. Use backticks (`) to quote all table
@@ -289,7 +290,6 @@ class BitDbPear extends BitDb
 		if( empty( $this->mDb ) ) {
 			return FALSE;
 		}
-bt();		
 		return $this->mDb->GenID( str_replace("`","",BIT_DB_PREFIX).$pSequenceName );
 	}
 
@@ -427,15 +427,15 @@ bt();
 function bit_pear_error_handler( $error_obj ) {
 	// Be verbose while developing the application
 	if( !defined( 'IS_LIVE' ) ) {
+		$bindVars = !empty( $error_obj->backtrace[0]['object']->backtrace[2]['object']->_data ) ? $error_obj->backtrace[0]['object']->backtrace[2]['object']->_data : NULL;
 		$dbParams = array(
 			'errno' => $error_obj->getCode(),
 			'db_msg'=> $error_obj->getMessage(),
-			'sql'=> $error_obj->getDebugInfo()
+			'sql'=> $error_obj->getDebugInfo()." ('".implode( "','", $bindVars )."')",
 		);
+
 		$logString = bit_error_string( $dbParams );
-
 		bit_log_error( $logString, $dbParams['db_msg'] );
-
 	// Dump a silly message if the site is in production
 	} else {
 		die ('Sorry you request can not be processed now. Try again later');

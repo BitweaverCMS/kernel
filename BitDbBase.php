@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.10 2006/02/08 23:24:27 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.11 2006/02/10 17:22:38 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -60,6 +60,11 @@ class BitDb
 	* @private
 	*/
 	var $mNumQueries = 0;
+	/**
+	* Case sensitivity flag used in convertQuery
+	* @private
+	*/
+	var $mCaseSensitive = TRUE;
 	/**
 	* Used to enable AdoDB caching
 	* @private
@@ -161,6 +166,13 @@ class BitDb
 			$this->mDb->debug = $gDebug;
 			flush();
 		}
+	}
+	/**
+	* Sets the case sensitivity mode which is used in convertQuery
+	* @return true if DB connection is valid, false if not
+	*/
+	function setCaseSensitivity( $pSensitivity=TRUE ) {
+		$this->mCaseSensitive = $pSensitivity;
 	}
 	/**
 	* Used to stop query tracking and output results if in debug mode
@@ -605,13 +617,16 @@ class BitDb
 			switch ($this->mType) {
 				case "oci8":
 				case "pgsql":
-				case "postgres7":
-//					print '<div class="error">You must update your kernel/config_inc.php so that $gBitDbType="postgres"</div>';
+				case "postgres":	// For PEAR
+				case "postgres7":	// Deprecated ADODB
 				case "firebird":
 				case "mssql":
-				case "postgres":
 				case "sybase":
-					$pQuery = preg_replace("/`/", "\"", $pQuery);
+					if( $this->mCaseSensitive ) {
+						$pQuery = preg_replace("/`/", "\"", $pQuery);
+					} else {
+						$pQuery = preg_replace("/`/", "", $pQuery);
+					}
 					break;
 				case "sqlite":
 					$pQuery = preg_replace("/`/", "", $pQuery);

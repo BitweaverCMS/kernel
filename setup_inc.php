@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.37 2006/02/09 10:30:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.38 2006/02/13 10:06:15 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -114,7 +114,7 @@ global $gBitUser, $gTicket, $userlib, $gBitDbType;
 
 if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSystem->loadPreferences();
-	if ($gBitSystem->getPreference('feature_obzip') == 'y') {
+	if ($gBitSystem->getPreference('output_obzip') == 'y') {
 		ob_start ("ob_gzhandler");
 	}
 
@@ -123,7 +123,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 		require_once( BIT_ROOT_PATH.'liberty/bit_setup_inc.php' );
 	}
 
-	$host = $gBitSystem->getPreference( 'feature_server_name', $_SERVER['HTTP_HOST'] );
+	$host = $gBitSystem->getPreference( 'kernel_server_name', $_SERVER['HTTP_HOST'] );
 	if( !defined('BIT_BASE_URI' ) ) {
 		define( 'BIT_BASE_URI', 'http://'.$host );
 	}
@@ -143,12 +143,12 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// setStyle first, in case package decides it wants to reset the style in it's own <package>/bit_setup_inc.php
 	$theme = $gBitSystem->getStyle();
 	$theme = !empty($theme) ? $theme : 'basic';
-	// feature_user_theme='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
-	if( $gBitSystem->getPreference('feature_user_theme') == 'y' ) {
+	// users_themes='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
+	if( $gBitSystem->getPreference('users_themes') == 'y' ) {
 		if (isset($_COOKIE['tiki-theme'])) {
 			$theme = $_COOKIE['tiki-theme'];
 		}
-		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'feature_user_preferences' ) ) {
+		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'users_preferences' ) ) {
 			if( $userStyle = $gBitUser->getPreference('theme') ) {
 				$theme = $userStyle;
 			}
@@ -271,7 +271,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign('https_port', $https_port);
 	$gBitSmarty->assign('https_prefix', $https_prefix);
 
-	$gBitSmarty->assign('feature_server_name', $gBitSystem->getPreference( 'feature_server_name', $_SERVER["SERVER_NAME"] ));
+	$gBitSmarty->assign('kernel_server_name', $gBitSystem->getPreference( 'kernel_server_name', $_SERVER["SERVER_NAME"] ));
 	$gBitSmarty->assign('count_admin_pvs', 'y');
 	$gBitSmarty->assign('modallgroups', $modallgroups);
 	$gBitSmarty->assign('modseparateanon', $modseparateanon);
@@ -282,7 +282,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	if (ini_get('zlib.output_compression') == 1) {
 		$gBitSmarty->assign('gzip', 'Enabled');
-	} elseif ($gBitSystem->isFeatureActive('feature_obzip')) {
+	} elseif ($gBitSystem->isFeatureActive('output_obzip')) {
 		$gBitSmarty->assign('gzip', 'Enabled');
 	} else {
 		$gBitSmarty->assign('gzip', 'Disabled');

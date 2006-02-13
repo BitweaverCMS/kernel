@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.6 2006/02/08 21:51:14 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.7 2006/02/13 10:06:15 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -16,7 +16,7 @@ $formGeneralMisc = array(
 	'cacheimages' => array(
 		'label' => 'Use cache for external images',
 	),
-	'feature_obzip' => array(
+	'output_obzip' => array(
 		'label' => 'Use gzipped output',
 	),
 	'count_admin_pvs' => array(
@@ -34,7 +34,7 @@ if ($processForm) {
 		"cachepages",
 		"count_admin_pvs",
 		"direct_pagination",
-		"feature_obzip",
+		"output_obzip",
 	);
 
 	foreach ($pref_toggles as $toggle) {

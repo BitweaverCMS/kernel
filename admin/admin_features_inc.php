@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.11 2006/02/08 21:51:14 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.12 2006/02/13 10:06:15 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -17,7 +17,7 @@ $formFeaturesBit = array(
 		'page' => 'PrettyUrls',
 		'pkg' => KERNEL_PKG_NAME,
 	),
-	'feature_pretty_urls_extended' => array(
+	'pretty_urls_extended' => array(
 		'label' => 'Use Extended Pretty URLs',
 		'note' => 'In addition to making the URL easier to read and remember it enhances search engine results. Using this feature requires Apache <a href="http://httpd.apache.org/docs-2.0/mod/mod_rewrite.html">mod_rewrite</a> support in the web server (usually installed by default), This extended version adds a /view tag to the URLs to make them unambigious for rewrites.  It will be necessary to modify the default .htaccess files when using this feature.',
 		'page' => 'FeaturePrettyUrlsExtended',
@@ -28,7 +28,7 @@ $formFeaturesBit = array(
 		'note' => 'If enabled, URLs entered by users will automatically be shown as clickable links.',
 		'pkg' => KERNEL_PKG_NAME,
 	),
-	'feature_html_pages' => array(
+	'html_pages' => array(
 		'label' => 'HTML Pages',
 		'note' => 'A simple way for creating pages that will be displayed to the users and that can be linked from/to any place in your site.',
 		'pkg' => KERNEL_PKG_NAME,
@@ -39,17 +39,17 @@ $formFeaturesBit = array(
 		'page' => 'JSCalendar',
 		'pkg' => THEMES_PKG_NAME,
 	),
-	'feature_editcss' => array(
+	'themes_edit_css' => array(
 		'label' => 'Edit Css',
 		'note' => 'Enables you to edit CSS files from within your browser to customise your site style according to your desires.',
 		'pkg' => THEMES_PKG_NAME,
 	),
-	'feature_categoryobjects' => array(
+	'categories_objects' => array(
 		'label' => 'Show Category Objects',
 		'note' => 'Display a list of items that are part of a particular category at the bottom of the page.',
 		'pkg' => CATEGORIES_PKG_NAME,
 	),
-	'feature_categorypath' => array(
+	'categories_path' => array(
 		'label' => 'Show Category Path',
 		'note' => 'Display the category path at the top of the page',
 		'pkg' => CATEGORIES_PKG_NAME,

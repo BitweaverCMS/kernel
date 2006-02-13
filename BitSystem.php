@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.47 2006/02/09 14:52:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.48 2006/02/13 10:06:14 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -373,7 +373,7 @@ class BitSystem extends BitBase {
 		$customHome = NULL;
 		if( !empty( $gQueryUser ) && $gQueryUser->canCustomizeLayout() && @$this->verifyId( $gQueryUserId ) ) {
 			$customHome = $gQueryUserId;
-		} elseif( $this->isFeatureActive( 'feature_user_layout' ) ) {
+		} elseif( $this->isFeatureActive( 'users_layouts' ) ) {
 			$customHome = $gBitUser->mUsername;
 		}
 

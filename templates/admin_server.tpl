@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.7 2006/02/05 21:30:55 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.8 2006/02/13 10:06:16 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -49,9 +49,9 @@
 			{legend legend="Server Settings"}
 				<div class="row">
 					{formfeedback warning="Please make sure you know what you are doing as setting this wrongly could prevent you from logging in again."}
-					{formlabel label="Server name" for="feature_server_name"}
+					{formlabel label="Server name" for="kernel_server_name"}
 					{forminput}
-						<input size="50" type="text" name="feature_server_name" id="feature_server_name" value="{$gBitSystemPrefs.feature_server_name|escape}" />
+						<input size="50" type="text" name="kernel_server_name" id="kernel_server_name" value="{$gBitSystemPrefs.kernel_server_name|escape}" />
 						{formhelp note="This value should be something like <strong>yourhome.com</strong> and is used for absolute URIs.<br />This setting does <strong>not</strong> require a trailing slash."}
 					{/forminput}
 				</div>

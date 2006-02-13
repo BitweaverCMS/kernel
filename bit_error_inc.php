@@ -156,7 +156,7 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 
 // var dump variable in something nicely readable in web browser
 function vd( $iVar ) {
-	if( !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' ) {
+	if( !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && !empty( $iVar ) && !is_string( $iVar ) ) {
 		include( UTIL_PKG_PATH.'dBug/dBug.php' );
 		if( is_object( $iVar ) ) {
 			if( isset( $iVar->mDb ) ) {

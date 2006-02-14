@@ -156,20 +156,18 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 
 // var dump variable in something nicely readable in web browser
 function vd( $iVar ) {
-	if( !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && !empty( $iVar ) && !is_string( $iVar ) ) {
-		include( UTIL_PKG_PATH.'dBug/dBug.php' );
-		if( is_object( $iVar ) ) {
-			if( isset( $iVar->mDb ) ) {
-				unset( 	$iVar->mDb );
-			}
-			new dBug( $iVar );
+	if( is_object( $iVar ) ) {
+		if( isset( $iVar->mDb ) ) {
+			unset( 	$iVar->mDb );
 		}
+	}
+
+	if( !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && !empty( $iVar ) && (is_object( $iVar ) || is_array( $iVar )) ) {
+		include( UTIL_PKG_PATH.'dBug/dBug.php' );
+		new dBug( $iVar );
 	} else {
 		print '<pre>';
 		if( is_object( $iVar ) ) {
-			if( isset( $iVar->mDb ) ) {
-				unset( 	$iVar->mDb );
-			}
 			var_dump( $iVar );
 		} elseif( is_string( $iVar ) && !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' ) {
 			var_dump( htmlentities( $iVar ) );

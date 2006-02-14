@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.7 2006/02/10 17:22:38 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.8 2006/02/14 16:39:06 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -290,7 +290,7 @@ class BitDbPear extends BitDb
 		if( empty( $this->mDb ) ) {
 			return FALSE;
 		}
-		return $this->mDb->GenID( str_replace("`","",BIT_DB_PREFIX).$pSequenceName );
+		return $this->mDb->nextId( str_replace("`","",BIT_DB_PREFIX).$pSequenceName );
 	}
 
 	/**

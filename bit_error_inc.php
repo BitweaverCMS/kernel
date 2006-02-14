@@ -163,7 +163,7 @@ function vd( $iVar ) {
 	}
 
 	if( !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && !empty( $iVar ) && (is_object( $iVar ) || is_array( $iVar )) ) {
-		include( UTIL_PKG_PATH.'dBug/dBug.php' );
+		include_once( UTIL_PKG_PATH.'dBug/dBug.php' );
 		new dBug( $iVar );
 	} else {
 		print '<pre>';

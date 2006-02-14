@@ -79,7 +79,7 @@
 						{/box}
 					</td>
 
-					{assign var="i" value="2"}
+					{assign var="i" value="1"}
 					{foreach key=key item=template from=$adminTemplates}
 						{if $key ne "kernel"}
 							<td style="width:25%;vertical-align:top;">

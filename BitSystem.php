@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.48 2006/02/13 10:06:14 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.49 2006/02/15 07:46:10 jht001 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -202,7 +202,7 @@ class BitSystem extends BitBase {
 		global $gMultisites;
 
 		// store the pref if we have a value _AND_ it is different from the default
-		if( ( empty( $this->getPreference[$pName] ) || ( $this->getPreference[$pName] != $pValue ) ) ) {
+		if( ( empty( $this->mPrefs[$pName] ) || ( $this->mPrefs[$pName] != $pValue ) ) ) {
 			// store the preference in multisites, if used
 			if( @$this->verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mPrefs[$pName] ) ) {
 				$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `value`=? WHERE `multisite_id`=? AND `name`=?";

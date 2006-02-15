@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.8 2006/02/14 16:39:06 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.9 2006/02/15 16:13:14 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -33,13 +33,13 @@ require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
 class BitDbPear extends BitDb
 {
 
-	function BitDbPear( $pPearDsn=NULL )
+	function BitDbPear( $pPearDsn=NULL, $pPearOptions = NULL )
 	{
-		global $gBitPearDbOptions;
 		parent::BitDb();
 
 		if( empty( $pPearDsn ) ) {
 			global $gBitDbType, $gBitDbUser, $gBitDbPassword, $gBitDbHost, $gBitDbName;
+
 			$pPearDsn = array(
 				'phptype'  => $gBitDbType,
 				'username' => $gBitDbUser,
@@ -49,17 +49,17 @@ class BitDbPear extends BitDb
 			);
 		}
 
-		if( empty( $gBitPearDbOptions ) ) {
-			$gBitPearDbOptions = array(
-			  'debug'       => 2,
-			  'persistent' => false,
+		if( empty( $pPearOptions ) ) {
+			$pPearOptions = array(
+				'debug'       => 2,
+				'persistent'  => false,
+				'portability' => DB_PORTABILITY_ALL,
 			);
-
 		}
 
 		PEAR::setErrorHandling(PEAR_ERROR_CALLBACK, 'bit_pear_login_error' );
 
-		$this->mDb = DB::connect($pPearDsn, $gBitPearDbOptions);
+		$this->mDb = DB::connect($pPearDsn, $pPearOptions);
 
 		if( PEAR::isError( $this->mDb ) ) {
 			$this->mErrors['db_connect'] = $this->mDb->getDebugInfo();
@@ -144,6 +144,7 @@ class BitDbPear extends BitDb
 		if( !is_numeric( $offset ) ) {
 			$offset = BIT_QUERY_DEFAULT;
 		}
+
 		if( $numrows == BIT_QUERY_DEFAULT && $offset == BIT_QUERY_DEFAULT ) {
 			$result = $this->mDb->query( $query, $values );
 		} else {
@@ -172,7 +173,7 @@ class BitDbPear extends BitDb
 	* @todo not currently used anywhere
 	*/
 
-	function getCol( $pQuery, $pValues=FALSE, $pTrim=FALSE )
+	function getCol( $pQuery, $pValues=array(), $pTrim=FALSE )
 	{
 		if( empty( $this->mDb ) ) {
 			return FALSE;
@@ -180,7 +181,7 @@ class BitDbPear extends BitDb
 		$this->queryStart();
 		$this->convertQuery($pQuery);
 		$execFunction = ( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ? 'GetAssoc' : 'CacheGetAssoc' );
-		$result = $this->mDb->getCol( $pQuery, $pValues, $pTrim );
+		$result = $this->mDb->getCol( $pQuery, 0, $pValues );
 		//count the number of queries made
 		$this->queryComplete();
 		return $result;

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.49 2006/02/15 07:46:10 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.50 2006/02/15 23:10:09 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1300,7 +1300,7 @@ asort( $this->mAppMenu );
 		// This saves a count() query to see if the ACTIVE_PACKAGE has a layout, since it usually probably doesn't
 		// I don't know if it's better or not to save the count() query and retrieve more data - my gut says so,
 		// but i've done no research - spiderr
-		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->dType != 'firebird' && $this->dType != 'mssql') {
+		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->dType != 'firebird' && $this->dType != 'mssql'  && $this->dType != 'oci8' ) {
 			// ORDER BY comparison is crucial so current layout modules come up first
 			$whereClause .= " (tl.`layout`=? OR tl.`layout`=? ) ORDER BY tl.`layout`=? DESC, ";
 			array_push($bindVars, $pLayout);

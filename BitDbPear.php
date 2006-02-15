@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.9 2006/02/15 16:13:14 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.10 2006/02/15 23:04:38 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -44,8 +44,7 @@ class BitDbPear extends BitDb
 				'phptype'  => $gBitDbType,
 				'username' => $gBitDbUser,
 				'password' => $gBitDbPassword ,
-				'hostspec' => $gBitDbHost,
-				'database' => $gBitDbName,
+				'database' => $gBitDbHost.'/'.$gBitDbName,
 			);
 		}
 
@@ -236,7 +235,6 @@ class BitDbPear extends BitDb
 		}
 		$this->queryStart();
 		$this->convertQuery($pQuery);
-		$execFunction = 'GetAssoc';
 		$result = $this->mDb->getAssoc( $pQuery, $pForceArray, $pValues, $pFirst2Cols );
 		$this->queryComplete();
 		return $result;

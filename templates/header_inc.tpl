@@ -22,7 +22,7 @@
 //]]></script>
 {* the order of the js files is crucial *}
 <script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/bitweaver.js"></script>
-{if $loadAjax}
+{if $loadAjax && !$loadDragDrop}
 	{if $jsDebug}
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/prototype_1.4.js"></script>
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/debugger.js"></script>

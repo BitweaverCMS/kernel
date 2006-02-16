@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.10 2006/02/15 23:04:38 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.11 2006/02/16 21:00:20 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -272,6 +272,7 @@ class BitDbPear extends BitDb
 		$value = NULL;
 		if( $result = $this->query($pQuery, $pValues, 1, 0, $pCacheTime ) ) {
 			if( $res = $result->fetchRow() ) {
+				reset( $res );
 				$value = current($res);
 			}
 		}

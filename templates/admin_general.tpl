@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.5 2006/02/05 21:30:55 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.6 2006/02/16 11:10:24 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -24,7 +24,7 @@
 							<dl><dt>My bitweaver Page</dt><dd>This page contains all links the user can access with his/her current permissions.</dd>
 								<dt>User's Homepage</dt><dd>This is the user's public homepage</dd>
 								<dt>Group Home</dt><dd>You can define an individual home page for a group of users using this option. To define home pages, please access the <em>Groups and Permissions</em>.</dd>
-								<dt>Custom Home</dt><dd>You can define any url as your tp homepage. This could be an introductory page with links or a flash introduction...</dd>
+								<dt>Custom Home</dt><dd>You can define any url as your bitweaver homepage. This could be an introductory page with links or a flash introduction...</dd>
 								<dt>Package Homes</dt><dd>Here you can set a particular package that will serve as your home page. If you want to select an individual homepage from the exisiting ones, please access the <br /><em>Administration --> 'Package' --> 'Package' Settings</em> page.</dd>
 							</dl>"}
 					{/forminput}

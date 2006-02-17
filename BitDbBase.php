@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.12 2006/02/11 08:30:44 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.13 2006/02/17 22:44:34 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -84,6 +84,8 @@ class BitDb
 		$this->mCacheFlag = FALSE;
 		$this->mNumQueries = 0;
 		$this->setFatalActive();
+		global $gDbCaseSensitivity;
+		$this->setCaseSensitivity( $gDbCaseSensitivity );
 	}
 	/**
 	* This function contains any pre-connection work
@@ -173,6 +175,13 @@ class BitDb
 	*/
 	function setCaseSensitivity( $pSensitivity=TRUE ) {
 		$this->mCaseSensitive = $pSensitivity;
+	}
+	/**
+	* Sets the case sensitivity mode which is used in convertQuery
+	* @return true if DB connection is valid, false if not
+	*/
+	function getCaseSensitivity( $pSensitivity=TRUE ) {
+		return( $this->mCaseSensitive );
 	}
 	/**
 	* Used to stop query tracking and output results if in debug mode

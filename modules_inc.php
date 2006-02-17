@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.7 2006/02/03 17:23:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.8 2006/02/17 22:44:34 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.7 2006/02/03 17:23:54 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.8 2006/02/17 22:44:34 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -71,11 +71,11 @@ if( $gBitSystem->mLayout && empty( $gHideModules ) ) {
 					} else {
 						list( $rsrc_type, $package ) = split(  ':', $package );
 						//print("Cache: $cachefile PHP: $phpfile Template: $template<br/>");
-						if( !$r["rows"] ) {
-							$r["rows"] = 10;
+						if( !$r['module_rows'] ) {
+							$r['module_rows'] = 10;
 						}
 						global $module_rows, $module_params, $module_title;
-						$gBitSmarty->assign_by_ref( 'module_rows', $module_rows = $r["rows"] );
+						$gBitSmarty->assign_by_ref( 'module_rows', $module_rows = $r['module_rows'] );
 						if( strpos( trim( $r['params'] ), ' ' ) ) {
 							$module_params = parse_xml_attributes( $r['params'] );
 						} else {
@@ -87,7 +87,7 @@ if( $gBitSystem->mLayout && empty( $gHideModules ) ) {
 						$pattern[1] = "/_/";
 						$replace[1] = " ";
 						$gBitSmarty->assign( 'moduleTitle', ( isset( $module_title ) ? tra( $module_title ) : tra( ucfirst( preg_replace( $pattern, $replace, $r['module_rsrc'] ) ) ) ) );
-						$gBitSmarty->assign_by_ref( 'module_rows', $r["rows"] );
+						$gBitSmarty->assign_by_ref( 'module_rows', $r['module_rows'] );
 						$gBitSmarty->assign_by_ref( 'module_id', $r["module_id"] );
 						$gBitSmarty->assign_by_ref( 'module_layout', $r["layout"] );
 						$colkey = ($column == 'r') ? 'right' : 'left';

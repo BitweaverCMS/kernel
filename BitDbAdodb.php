@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.7 2006/02/17 17:25:01 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.8 2006/02/17 20:33:56 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -48,11 +48,8 @@ class BitDbAdodb extends BitDb
 			define("ADODB_FORCE_NULLS", 1);
 		if (!defined("ADODB_ASSOC_CASE"))
 			define("ADODB_ASSOC_CASE", 0);
-		if (!defined("ADODB_CASE_ASSOC"))
-			define("ADODB_CASE_ASSOC", 0);
-		// typo in adodb's driver for sybase?
 		if (!defined("ADODB_FETCH_MODE")) {
-			define("ADODB_FETCH_MODE", ADODB_CASE_ASSOC);
+			define("ADODB_FETCH_MODE", ADODB_ASSOC_CASE);
 		}
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 

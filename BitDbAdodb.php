@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.6 2006/02/15 23:09:42 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.7 2006/02/17 17:25:01 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -42,7 +42,6 @@ class BitDbAdodb extends BitDb
 			$ADODB_CACHE_DIR = getTempDir().'/adodb/'.$_SERVER['HTTP_HOST'].'/';
 		}
 		mkdir_p( $ADODB_CACHE_DIR );
-
 
 		// Get all the ADODB stuff included
 		if (!defined("ADODB_FORCE_NULLS"))
@@ -497,9 +496,7 @@ class BitDbAdodb extends BitDb
 	{
 		if( !empty( $this->mType ) ) {
 			switch ($this->mType) {
-				case "oci8po":
 				case "oci8":
-					$pQuery = preg_replace("/`/", "\"", $pQuery);
 					// convert bind variables - adodb does not do that
 					$qe = explode("?", $pQuery);
 					$pQuery = "";
@@ -510,6 +507,8 @@ class BitDbAdodb extends BitDb
 						$pQuery .= $qe[$i] . ":" . $i;
 					}
 					$pQuery .= $qe[$i];
+				case "oci8po":
+					$pQuery = preg_replace("/`/", "\"", $pQuery);
 					break;
 				default:
 					parent::convertQuery( $pQuery );

@@ -51,8 +51,8 @@ function smarty_resource_bitpackage_source($tpl_name, &$tpl_source, &$gBitSmarty
 	} elseif ( file_exists( $overrideTemplateSimple ) ) {
 		$tpl_source = filesize($overrideTemplateSimple) ? fread( fopen($overrideTemplateSimple, "r"), filesize($overrideTemplateSimple) ) : '';
 		$ret = TRUE;
-	} elseif ( file_exists( $package_template )) {
-		$tpl_source = fread( fopen($package_template, "r"), filesize($package_template) );
+	} elseif ( file_exists( $package_template ) ) {
+		$tpl_source = !filesize( $package_template ) ? '' : fread( fopen($package_template, "r"), filesize($package_template) );
 		$ret = TRUE;
 	} else {
 		$tpl_source = "<p>MISSING TEMPLATE:<br/> <b>p_resource_type:</b> $p_resource_type<br/><b>p_resource_name:</b> $p_resource_name<br/><b>p_template_source:</b> $p_template_source<br/><b>p_template_timestamp:</b> $p_template_timestamp<br/><b>p_smarty_obj:</b> $p_smarty_obj <br /><b>override_template:</b> $override_template<br/><b>package_template:</b>$package_template<br/><b>TIKI Package Path:</b>".BIT_ROOT_PATH;

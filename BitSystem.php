@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.50 2006/02/15 23:10:09 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.51 2006/02/17 14:58:20 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1843,7 +1843,7 @@ asort( $this->mAppMenu );
 	}
 
 	// Check for new version
-	// returns and array with information on bitweaver version
+	// returns an array with information on bitweaver version
 	function checkBitVersion() {
 		$local= BIT_MAJOR_VERSION.'.'.BIT_MINOR_VERSION.'.'.BIT_SUB_VERSION;
 		$ret['local'] = $local;
@@ -1851,22 +1851,38 @@ asort( $this->mAppMenu );
 		$error['number'] = 0;
 		$error['string'] = $data = '';
 
-		if( $fsock = @fsockopen( 'www.bitweaver.org', 80, $error['number'], $error['string'], 30 ) ) {
-			@fwrite( $fsock, "GET /bitversion.txt HTTP/1.1\r\n" );
-			@fwrite( $fsock, "HOST: www.bitweaver.org\r\n" );
-			@fwrite( $fsock, "Connection: close\r\n\r\n" );
+		// cache the bitversion.txt file locally and update only once a day
+		if( !is_file( TEMP_PKG_PATH.'bitversion.txt' ) || ( time() - filemtime( TEMP_PKG_PATH.'bitversion.txt' ) ) > 86400 ) {
+			$h = fopen( TEMP_PKG_PATH.'bitversion.txt', 'w' );
+			if( isset( $h ) ) {
+				if( $fsock = @fsockopen( 'www.biteaver.org', 80, $error['number'], $error['string'], 1 ) ) {
+					@fwrite( $fsock, "GET /bitversion.txt HTTP/1.1\r\n" );
+					@fwrite( $fsock, "HOST: www.bitweaver.org\r\n" );
+					@fwrite( $fsock, "Connection: close\r\n\r\n" );
 
-			$get_info = FALSE;
-			while( !@feof( $fsock ) ) {
-				if( $get_info ) {
-					$data .= @fread( $fsock, 1024 );
-				} else {
-					if( @fgets( $fsock, 1024 ) == "\r\n" ) {
-						$get_info = TRUE;
+					$get_info = FALSE;
+					while( !@feof( $fsock ) ) {
+						if( $get_info ) {
+							$data .= @fread( $fsock, 1024 );
+						} else {
+							if( @fgets( $fsock, 1024 ) == "\r\n" ) {
+								$get_info = TRUE;
+							}
+						}
 					}
+					@fclose( $fsock );
 				}
+				fwrite( $h, $data );
+				fclose( $h );
 			}
-			@fclose( $fsock );
+		}
+
+		if( is_readable( TEMP_PKG_PATH.'bitversion.txt' ) ) {
+			$h = fopen( TEMP_PKG_PATH.'bitversion.txt', 'r' );
+			if( isset( $h ) ) {
+				$data = fread( $h, 1024 );
+				fclose( $h );
+			}
 
 			// nuke all lines that don't just contain a version number
 			$lines = explode( "\n", $data );
@@ -1876,7 +1892,7 @@ asort( $this->mAppMenu );
 				}
 			}
 
-			if( !empty( $versions ) && preg_match( "/\d+\.\d+\.\d+/", $versions[0] ) ) {
+			if( !empty( $data ) && !empty( $versions ) && preg_match( "/\d+\.\d+\.\d+/", $versions[0] ) ) {
 				sort( $versions );
 				foreach( $versions as $version ) {
 					if( preg_match( "/^".BIT_MAJOR_VERSION."\./", $version ) ) {
@@ -1896,7 +1912,7 @@ asort( $this->mAppMenu );
 				}
 			} else {
 				$error['number'] = 1;
-				$error['string'] = tra( 'No version information could be gathered. Perhaps there was a problem connecting to bitweaver.org.' );
+				$error['string'] = tra( 'No version information available. Check your connection to bitweaver.org' );
 			}
 		}
 		// append any release level

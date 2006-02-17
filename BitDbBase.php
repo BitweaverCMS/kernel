@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.13 2006/02/17 22:44:34 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.14 2006/02/17 23:03:11 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -625,12 +625,13 @@ class BitDb
 		if( !empty( $this->mType ) ) {
 			switch ($this->mType) {
 				case "oci8":
+				case "oci8po":
 				case "pgsql":
 				case "postgres":	// For PEAR
 				case "postgres7":	// Deprecated ADODB
 				case "mssql":
 				case "sybase":
-					if( $this->mCaseSensitive ) {
+					if( $this->getCaseSensitivity() ) {
 						$pQuery = preg_replace("/`/", "\"", $pQuery);
 					} else {
 						$pQuery = preg_replace("/`/", "", $pQuery);

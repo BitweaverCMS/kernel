@@ -26,8 +26,8 @@
 									{if $layout.$area[ix].cache_time}
 										<strong>{tr}Cache Time{/tr}</strong>: {$layout.$area[ix].cache_time}<br />
 									{/if}
-									{if $layout.$area[ix].rows}
-										<strong>{tr}Rows{/tr}</strong>: {$layout.$area[ix].rows}<br />
+									{if $layout.$area[ix].module_rows}
+										<strong>{tr}Rows{/tr}</strong>: {$layout.$area[ix].module_rows}<br />
 									{/if}
 									{if $layout.$area[ix].params}
 										<strong>{tr}Parameters{/tr}</strong>:<br />{$layout.$area[ix].params|replace:"&":"<br />"}
@@ -81,7 +81,7 @@
 								<li id="module_id-{$layout.$area[ix].module_id}">
 									{if $colkey ne 'center'}
 										<strong>{tr}Title{/tr}</strong>: <input size="20" name="modules[{$layout.$area[ix].module_id}][title]" value="{$layout.$area[ix].title}" /><br />
-										<strong>{tr}Rows{/tr}</strong>: <input size="5" name="modules[{$layout.$area[ix].module_id}][rows]" value="{$layout.$area[ix].rows}" /><br />
+										<strong>{tr}Rows{/tr}</strong>: <input size="5" name="modules[{$layout.$area[ix].module_id}][module_rows]" value="{$layout.$area[ix].module_rows}" /><br />
 									{/if}
 									<strong>{tr}Module{/tr}</strong>: {$layout.$area[ix].name|escape}<br />
 									{if $layout.$area[ix].cache_time}
@@ -213,9 +213,9 @@
 			</div>
 
 			<div class="row">
-				{formlabel label="Rows" for="rows"}
+				{formlabel label="Rows" for="module_rows"}
 				{forminput}
-					<input type="text" size="5" name="fAssign[rows]" id="rows" value="{$fAssign.rows|escape}" />
+					<input type="text" size="5" name="fAssign[module_rows]" id="module_rows" value="{$fAssign.module_rows|escape}" />
 					{formhelp note="Select what the maximum number of items are displayed. (optional - default is 10)"}
 				{/forminput}
 			</div>
@@ -310,7 +310,7 @@
 			<div class="row">
 				{formlabel label="Rows" for="c_rows"}
 				{forminput}
-					<input type="text" size="5" name="fAssign[rows]" id="c_rows" value="{$fAssign.rows|escape}" />
+					<input type="text" size="5" name="fAssign[module_rows]" id="c_rows" value="{$fAssign.module_rows|escape}" />
 					{formhelp note="Select what the maximum number of items are displayed. (optional - default is 10)"}
 				{/forminput}
 			</div>

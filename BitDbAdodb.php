@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.8 2006/02/17 20:33:56 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.9 2006/02/17 23:03:11 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -504,9 +504,6 @@ class BitDbAdodb extends BitDb
 						$pQuery .= $qe[$i] . ":" . $i;
 					}
 					$pQuery .= $qe[$i];
-				case "oci8po":
-					$pQuery = preg_replace("/`/", "\"", $pQuery);
-					break;
 				default:
 					parent::convertQuery( $pQuery );
 					break;

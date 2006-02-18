@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.55 2006/02/18 09:22:44 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.56 2006/02/18 18:35:24 bitweaver Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -373,7 +373,8 @@ class BitSystem extends BitBase {
 		$customHome = NULL;
 		if( !empty( $gQueryUser ) && $gQueryUser->canCustomizeLayout() && @$this->verifyId( $gQueryUserId ) ) {
 			$customHome = $gQueryUserId;
-		} elseif( $this->isFeatureActive( 'users_layouts' ) ) {
+		} elseif( $this->getPreference( 'users_layouts' ) == 'y' ) {
+			// user_layouts can have 3 falues - 'y', 'h', or 'n'/null. isFeatureActice cannot be called here.
 			$customHome = $gBitUser->mUsername;
 		}
 

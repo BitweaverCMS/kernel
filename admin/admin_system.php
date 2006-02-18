@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.1.1.1.2.3 2006/01/08 01:36:56 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.1.1.1.2.4 2006/02/18 00:28:32 wolff_borg Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -84,6 +84,9 @@ if (isset($_GET['do'])) {
 	if ($_GET['do'] == 'cache' || $_GET['do'] == 'all') {
 		unlink_r(TEMP_PKG_PATH."cache/$bitdomain");
 	}
+	if ($_GET['do'] == 'nexus' || $_GET['do'] == 'all') {
+		unlink_r(TEMP_PKG_PATH."nexus/$bitdomain");
+	}
 }
 
 if (isset($_GET['compiletemplates'])) {
@@ -98,6 +101,7 @@ $du['templates_c'] = du(TEMP_PKG_PATH.'templates_c');
 $du['lang'] = du(TEMP_PKG_PATH.'lang');
 $du['modules'] = du(TEMP_PKG_PATH.'modules/cache');
 $du['cache'] = du(TEMP_PKG_PATH.'cache');
+$du['nexus'] = du(TEMP_PKG_PATH.'nexus');
 $gBitSmarty->assign('du', $du);
 
 $templates=array();

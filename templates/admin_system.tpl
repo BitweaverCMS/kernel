@@ -35,6 +35,12 @@
 				<td style="text-align:right;">{$du.cache.total|kbsize}</td>
 				<td style="text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=cache">{tr}Empty{/tr}</a></td>
 			</tr>
+			<tr class="odd">
+				<td><strong>{$smarty.const.TEMP_PKG_PATH}nexus/</strong></td>
+				<td style="text-align:right;">{tr}{$du.nexus.cant} files{/tr}</td>
+				<td style="text-align:right;">{$du.nexus.total|kbsize}</td>
+				<td style="text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=nexus">{tr}Empty{/tr}</a></td>
+			</tr>
 		</table>
 
 		<br />

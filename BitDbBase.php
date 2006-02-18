@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.14 2006/02/17 23:03:11 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.15 2006/02/18 09:27:06 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -631,14 +631,12 @@ class BitDb
 				case "postgres7":	// Deprecated ADODB
 				case "mssql":
 				case "sybase":
+				case "firebird":
 					if( $this->getCaseSensitivity() ) {
 						$pQuery = preg_replace("/`/", "\"", $pQuery);
 					} else {
 						$pQuery = preg_replace("/`/", "", $pQuery);
 					}
-					break;
-				case "firebird":
-					$pQuery = preg_replace("/`/", "\"", $pQuery);
 					break;
 				case "sqlite":
 					$pQuery = preg_replace("/`/", "", $pQuery);
@@ -680,7 +678,7 @@ class BitDb
 												"mysql3" => "RAND()",
 												"mysql" => "RAND()",
 												"mssql" => "NEWID()",
-												"firebird" => "1"));
+												"firebird" => "RAND()"));
 												//"oci8" => "" STILL NEEDED
 												//"sqlite" => "" STILL NEEDED
 												//"sybase" => "" STILL NEEDED

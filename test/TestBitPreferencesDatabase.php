@@ -25,7 +25,7 @@ class TestBitPreferencesDatabase extends UnitTestCase {
 	if (!$gBitDb->tableExists($name)) {
 	    $tables = array($name => "
 		  `name` C(50) PRIMARY,
-		  `value` C(255)
+		  `pref_value` C(255)
 		");
 	}
 	global $gCache;

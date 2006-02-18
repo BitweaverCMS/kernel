@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.54 2006/02/17 23:51:42 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.55 2006/02/18 09:22:44 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -161,10 +161,10 @@ class BitSystem extends BitBase {
 		}
 
 		if ( empty( $this->mPrefs ) ) {
-			$query = "SELECT `name` ,`value`, `package` FROM `" . BIT_DB_PREFIX . "kernel_prefs` " . $whereClause;
+			$query = "SELECT `name` ,`pref_value`, `package` FROM `" . BIT_DB_PREFIX . "kernel_prefs` " . $whereClause;
 			if( $rs = $this->mDb->query( $query, $queryVars, -1, -1 ) ) {
 				while( $row = $rs->fetchRow() ) {
-					$this->mPrefs[$row['name']] = $row['value'];
+					$this->mPrefs[$row['name']] = $row['pref_value'];
 				}
 			}
 		}
@@ -205,13 +205,13 @@ class BitSystem extends BitBase {
 		if( ( empty( $this->mPrefs[$pName] ) || ( $this->mPrefs[$pName] != $pValue ) ) ) {
 			// store the preference in multisites, if used
 			if( @$this->verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mPrefs[$pName] ) ) {
-				$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `value`=? WHERE `multisite_id`=? AND `name`=?";
+				$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `pref_value`=? WHERE `multisite_id`=? AND `name`=?";
 				$result = $this->mDb->query( $query, array( empty( $pValue ) ? '' : $pValue, $gMultisites->mMultisiteId, $pName ) );
 			} else {
 				$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_prefs` WHERE `name`=?";
 				$result = $this->mDb->query( $query, array( $pName ) );
 				if( isset( $pValue ) ) {
-					$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`name`,`value`,`package`) VALUES (?,?,?)";
+					$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`name`,`pref_value`,`package`) VALUES (?,?,?)";
 					$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage ) ) );
 				}
 			}
@@ -861,7 +861,7 @@ class BitSystem extends BitBase {
 	function registerPreferences( $packagedir, $preferences ) {
 		foreach( $preferences as $pref ) {
 			$this->registerSchemaDefault( $packagedir,
-			"INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`package`,`name`,`value`) VALUES ('$pref[0]', '$pref[1]','$pref[2]')");
+			"INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`package`,`name`,`pref_value`) VALUES ('$pref[0]', '$pref[1]','$pref[2]')");
 		}
 	}
 
@@ -1334,7 +1334,7 @@ class BitSystem extends BitBase {
 			$whereClause .= " tl.`layout`=? ORDER BY ";
 			array_push($bindVars, $pLayout);
 		}
-		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "themes_layouts` tl, `" . BIT_DB_PREFIX . "themes_layouts_modules` tlm, `" . BIT_DB_PREFIX . "themes_module_map` tmm
+		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`layout_position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "themes_layouts` tl, `" . BIT_DB_PREFIX . "themes_layouts_modules` tlm, `" . BIT_DB_PREFIX . "themes_module_map` tmm
 				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->mDb->convert_sortmode("ord_asc");
 		if( $result = $this->mDb->query($query, $bindVars) ) {
 			$row = $result->fetchRow();
@@ -1393,13 +1393,13 @@ class BitSystem extends BitBase {
 					$row["visible"] = TRUE;
 					$row["module_groups"] = array();
 				}
-				if (empty($ret[$row['position']])) {
-					$ret[$row['position']] = array();
+				if (empty($ret[$row['layout_position']])) {
+					$ret[$row['layout_position']] = array();
 				}
-				if ($row['position'] == CENTER_COLUMN) {
+				if ($row['layout_position'] == CENTER_COLUMN) {
 					array_push($gCenterPieces, $row['module_rsrc']);
 				}
-				array_push($ret[$row['position']], $row);
+				array_push($ret[$row['layout_position']], $row);
 				$row = $result->fetchRow();
 			}
 		}

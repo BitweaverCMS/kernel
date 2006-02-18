@@ -25,7 +25,7 @@ class TestBitPreferencesCacheDatabase extends UnitTestCase {
 	    $tables = array(
 			    $name => "
 		  `name` C(50) PRIMARY,
-		  `value` C(255)
+		  `pref_value` C(255)
 		");
 	    $gBitDb->createTables($tables);
 	}

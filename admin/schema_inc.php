@@ -14,7 +14,7 @@ $tables = array(
 'kernel_prefs' => "
 	name C(40) PRIMARY,
 	package C(100),
-	value C(250)
+	pref_value C(250)
 ",
 
 'mail_notifications' => "

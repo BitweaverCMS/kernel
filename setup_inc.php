@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.42 2006/01/25 22:29:35 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.43 2006/02/18 00:26:32 wolff_borg Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -108,7 +108,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	$host = $gBitSystem->getPreference( 'feature_server_name', $_SERVER['HTTP_HOST'] );
 	if( !defined('BIT_BASE_URI' ) ) {
-		define( 'BIT_BASE_URI', 'http://'.$host );
+		define( 'BIT_BASE_URI', 'http://'.$host.BIT_ROOT_URL);
 	}
 
 	$gBitSystem->scanPackages();

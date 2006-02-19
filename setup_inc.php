@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.38 2006/02/13 10:06:15 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.39 2006/02/19 16:57:07 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -11,6 +11,26 @@
 /**
  * required setup
  */
+
+// first things first: strip malicious stuff from out input
+foreach( $_GET as $key => $value ) {
+	if( !empty( $value ) && is_array( $value ) ) {
+		foreach( $value as $k => $v ) {
+			if( preg_match( "/script/i", urldecode( $v ) ) ) {
+				unset( $_REQUEST[$key][$k] );
+				unset( $_GET[$key][$k] );
+				unset( $_POST[$key][$k] );
+			}
+		}
+	} else {
+		if( preg_match( "/script/i", urldecode( $value ) ) ) {
+			unset( $_REQUEST[$key] );
+			unset( $_GET[$key] );
+			unset( $_POST[$key] );
+		}
+	}
+}
+
 require_once(BIT_ROOT_PATH . 'kernel/config_defaults_inc.php');
 
 error_reporting( BIT_PHP_ERROR_REPORTING );
@@ -71,14 +91,6 @@ $gBitDb = new $dbClass();
 require_once(KERNEL_PKG_PATH . 'BitSystem.php');
 global $gBitSmarty, $gBitSystem;
 $gBitSystem = new BitSystem();
-
-// first things first: strip malicious stuff from the url:
-foreach( $_GET as $key => $value ) {
-	if( preg_match( "/script/i", urldecode( $value ) ) ) {
-		unset( $_REQUEST[$key] );
-		unset( $_GET[$key] );
-	}
-}
 
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');

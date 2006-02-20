@@ -14,6 +14,7 @@
  *           - warning, error or success are defined css styles, but you can feed it anything
  */
 function smarty_function_formfeedback( $params,&$gBitSmarty ) {
+	detoxify( $params );
 	if( !empty( $params['hash'] ) ) {
 		$hash = &$params['hash'];
 	} else {

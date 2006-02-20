@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.56 2006/02/18 18:35:24 bitweaver Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.57 2006/02/20 11:01:28 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1873,9 +1873,8 @@ class BitSystem extends BitBase {
 
 		// cache the bitversion.txt file locally and update only once a day
 		if( !is_file( TEMP_PKG_PATH.'bitversion.txt' ) || ( time() - filemtime( TEMP_PKG_PATH.'bitversion.txt' ) ) > 86400 ) {
-			$h = fopen( TEMP_PKG_PATH.'bitversion.txt', 'w' );
-			if( isset( $h ) ) {
-				if( $fsock = @fsockopen( 'www.biteaver.org', 80, $error['number'], $error['string'], 1 ) ) {
+			if( $h = fopen( TEMP_PKG_PATH.'bitversion.txt', 'w' ) ) {
+				if( $fsock = @fsockopen( 'www.bitweaver.org', 80, $error['number'], $error['string'], 5 ) ) {
 					@fwrite( $fsock, "GET /bitversion.txt HTTP/1.1\r\n" );
 					@fwrite( $fsock, "HOST: www.bitweaver.org\r\n" );
 					@fwrite( $fsock, "Connection: close\r\n\r\n" );

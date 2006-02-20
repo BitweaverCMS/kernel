@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.15 2006/02/18 09:27:06 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.16 2006/02/20 19:19:52 bitweaver Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -181,7 +181,18 @@ class BitDb
 	* @return true if DB connection is valid, false if not
 	*/
 	function getCaseSensitivity( $pSensitivity=TRUE ) {
-		return( $this->mCaseSensitive );
+		switch ($this->mType) {
+			case "oci8":
+			case "oci8po":
+				// Force Oracle to always be insensitive
+				$ret = FALSE;
+				break;
+			default:
+				$ret = $this->mCaseSensitive;
+				break;
+		}
+	
+		return( $ret );
 	}
 	/**
 	* Used to stop query tracking and output results if in debug mode
@@ -626,6 +637,9 @@ class BitDb
 			switch ($this->mType) {
 				case "oci8":
 				case "oci8po":
+					// Force Oracle to always be insensitive
+					$pQuery = preg_replace("/`/", "", $pQuery);
+					break;
 				case "pgsql":
 				case "postgres":	// For PEAR
 				case "postgres7":	// Deprecated ADODB

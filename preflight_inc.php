@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.7 2006/02/20 10:35:07 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.8 2006/02/21 07:17:25 jht001 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -137,7 +137,7 @@ if (!function_exists('array_fill')) {
 // if you have a situation where you simply print any $_REQUEST on screen, use this to remove any malicious stuff
 function detoxify( &$pParamHash ) {
 	foreach( $pParamHash as $key => $value ) {
-		if( !empty( $value ) && is_array( $value ) ) {
+		if( isset( $value ) && is_array( $value ) ) {
 			detoxify( $value );
 		} else {
 			if( preg_match( "/<script[^>]*>/i", urldecode( $value ) ) ) {

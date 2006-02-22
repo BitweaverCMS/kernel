@@ -11,26 +11,14 @@
 */
 function get_first_match( $dir,$filename ) {
 	if( !is_dir( $dir ) ) {
-		 //intf("Could not find dir: %s<br />",$dir);
-		 return false;
+		return FALSE;
 	}
 	$dh=opendir( $dir );
 	$pattern = strtolower( $filename ).'.';
 	while( false !== ( $curFile = readdir( $dh ) ) ) {
-		//print(' ');
-		//print_r($pattern);
-		//print(' ');
-		//print_r(strtolower($curFile));
-		//print(' ');
-		//print_r(strpos(strtolower($curFile),$pattern));
-		//print('<>');
-		if((strpos(strtolower($curFile),$pattern)===0) && is_file($dir.$curFile)) {
+		if( ( strpos( strtolower( $curFile ),$pattern )===0 ) && is_file( $dir.$curFile ) ) {
 			return $curFile;
 		}
-		//else
-		//{
-		//	printf(" %s != %s @ %s<br />",$curFile, $pattern, $dir.$curFile);
-		//}
 	}
 	return false;
 }
@@ -39,8 +27,13 @@ function get_first_match( $dir,$filename ) {
 * output_icon
 */
 function output_icon( $params, $file ) {
-	global $gBitSystem;
+	global $gBitSystem, $gSniffer;
 	$iexplain = isset( $params["iexplain"] ) ? tra( $params["iexplain"] ) : 'please set iexplain';
+
+	// text browsers don't need to see forced icons - usually part of menus or javascript stuff
+	if( $params['iforce'] == 'icon' && ( $gSniffer->_browser_info['browser'] == 'lx' || $gSniffer->_browser_info['browser'] == 'li' ) ) {
+		return '';
+	}
 
 	if( isset( $params["url"] ) ) {
 		$outstr = $file;
@@ -50,9 +43,9 @@ function output_icon( $params, $file ) {
 		} else {
 			$outstr='<img src="'.$file.'"';
 			if( isset( $params["iexplain"] ) ) {
-				$outstr .= ' alt="'.tra( $params["iexplain"] ).'" title="'.tra($params["iexplain"]).'"';
+				$outstr .= ' alt="'.tra( $params["iexplain"] ).'" title="'.tra( $params["iexplain"] ).'"';
 			} else {
-				$outstr .= ' alt="image"';
+				$outstr .= ' alt=""';
 			}
 
 			$ommit = array( 'ipackage', 'ipath', 'iname', 'iexplain', 'iforce' );

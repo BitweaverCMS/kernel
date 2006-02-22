@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.9 2006/02/17 23:03:11 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.10 2006/02/22 23:02:10 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -54,6 +54,9 @@ class BitDbAdodb extends BitDb
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 
 		if( !empty( $gBitDbName ) && !empty( $gBitDbType ) ) {
+			if( $gBitDbType == 'oci8' ) {
+				$gBitDbType = 'oci8po';
+			}
 			$this->mType = $gBitDbType;
 			$this->mName = $gBitDbName;
 			if(!isset($this->mName)) {

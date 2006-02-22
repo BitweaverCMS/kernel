@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.40 2006/02/20 10:35:07 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.41 2006/02/22 12:54:33 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -88,7 +88,7 @@ $gPreviewStyle = FALSE;
 require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
 $gSniffer = new phpSniff;
-$gBitSmarty->assign_by_ref( 'browserInfo', $gSniffer->_browser_info );
+$gBitSmarty->assign_by_ref( 'gBrowserInfo', $gSniffer->_browser_info );
 
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 global $gBitLanguage;

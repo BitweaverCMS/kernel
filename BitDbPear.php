@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.11 2006/02/16 21:00:20 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.12 2006/02/22 23:01:39 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -290,7 +290,9 @@ class BitDbPear extends BitDb
 		if( empty( $this->mDb ) ) {
 			return FALSE;
 		}
-		return $this->mDb->nextId( str_replace("`","",BIT_DB_PREFIX).$pSequenceName );
+		// Pear appends _seq just to be a pain
+		$seqName  = str_replace( '_seq', '', str_replace("`","",BIT_DB_PREFIX).$pSequenceName );
+		return $this->mDb->nextId( $seqName );
 	}
 
 	/**
@@ -412,7 +414,9 @@ class BitDbPear extends BitDb
 	 * @return  array of tables for current database.
 	 */
 	function MetaTables( $ttype = false, $showSchema = false, $mask=false ) {
-		 return $this->mDb->MetaTables( $ttype, $showSchema, $mask );
+bt();
+vd( '$gForceAdodb = TRUE; is need on the page: '.$_SERVER['SCRIPT_FILENAME'] );
+		 return array();
 	}
 
 	/**

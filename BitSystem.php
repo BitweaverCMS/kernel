@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.57 2006/02/20 11:01:28 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.58 2006/02/22 13:00:22 gilesw Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -201,6 +201,8 @@ class BitSystem extends BitBase {
 	function storePreference( $pName, $pValue, $pPackage = NULL ) {
 		global $gMultisites;
 
+		//stop undefined offset error being thrown after packages are installed
+		if(!empty( $this->mPrefs )){
 		// store the pref if we have a value _AND_ it is different from the default
 		if( ( empty( $this->mPrefs[$pName] ) || ( $this->mPrefs[$pName] != $pValue ) ) ) {
 			// store the preference in multisites, if used
@@ -221,7 +223,7 @@ class BitSystem extends BitBase {
 			$this->loadPreferences();
 			$this->mCacheTime = BIT_QUERY_CACHE_TIME;
 		}
-
+		}
 		$this->setPreference( $pName, $pValue );
 		return TRUE;
 	}

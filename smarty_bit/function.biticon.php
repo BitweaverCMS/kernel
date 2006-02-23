@@ -31,7 +31,7 @@ function output_icon( $params, $file ) {
 	$iexplain = isset( $params["iexplain"] ) ? tra( $params["iexplain"] ) : 'please set iexplain';
 
 	// text browsers don't need to see forced icons - usually part of menus or javascript stuff
-	if( $params['iforce'] == 'icon' && ( $gSniffer->_browser_info['browser'] == 'lx' || $gSniffer->_browser_info['browser'] == 'li' ) ) {
+	if( !empty( $params['iforce'] ) && $params['iforce'] == 'icon' && ( $gSniffer->_browser_info['browser'] == 'lx' || $gSniffer->_browser_info['browser'] == 'li' ) ) {
 		return '';
 	}
 

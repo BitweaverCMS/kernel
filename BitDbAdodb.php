@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.10 2006/02/22 23:02:10 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.11 2006/02/25 02:02:11 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -13,6 +13,16 @@
  *
  * @author spider <spider@steelsun.com>
  */
+
+// This code must execute before adodb/adodb.inc.php runs
+// Otherwsie $ADODB_CACHE_DIR ends up being set to '/tmp'
+global $ADODB_CACHE_DIR;
+if( empty( $ADODB_CACHE_DIR ) ) {
+	$ADODB_CACHE_DIR = getTempDir().'/adodb/'.$_SERVER['HTTP_HOST'].'/';
+}
+mkdir_p( $ADODB_CACHE_DIR );
+
+
 
 /**
  * ensure your AdoDB install is a subdirectory off your include path
@@ -37,11 +47,6 @@ class BitDbAdodb extends BitDb
 
 		parent::BitDb();
 
-		global $ADODB_CACHE_DIR;
-		if( empty( $ADODB_CACHE_DIR ) ) {
-			$ADODB_CACHE_DIR = getTempDir().'/adodb/'.$_SERVER['HTTP_HOST'].'/';
-		}
-		mkdir_p( $ADODB_CACHE_DIR );
 
 		// Get all the ADODB stuff included
 		if (!defined("ADODB_FORCE_NULLS"))
@@ -232,13 +237,13 @@ class BitDbAdodb extends BitDb
 		}
 
 		if( $numrows == BIT_QUERY_DEFAULT && $offset == BIT_QUERY_DEFAULT ) {
-			if( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
+			if( defined( 'NOCACHE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
 				$result = $this->mDb->Execute( $query, $values );
 			} else {
 				$result = $this->mDb->CacheExecute( $pCacheTime, $query, $values );
 			}
 		} else {
-			if( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
+			if( defined( 'NOCACHE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
 				$result = $this->mDb->SelectLimit( $query, $numrows, $offset, $values );
 			} else {
 				$result = $this->mDb->CacheSelectLimit( $pCacheTime, $query, $numrows, $offset, $values );
@@ -284,8 +289,11 @@ class BitDbAdodb extends BitDb
 		}
 		$this->queryStart();
 		$this->convertQuery($pQuery);
-		$execFunction = ( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ? 'GetAll' : 'CacheGetAll' );
-		$result = $this->mDb->getAll( $pQuery, $pValues );
+		if( defined( 'NOCACHE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
+			$result = $this->mDb->getAll( $pQuery, $pValues );
+		} else {
+			$result = $this->mDb->CacheGetAll($pCacheTime, $pQuery, $pValues );
+		}
 		//count the number of queries made
 		$this->queryComplete();
 		return $result;
@@ -310,8 +318,11 @@ class BitDbAdodb extends BitDb
 		}
 		$this->queryStart();
 		$this->convertQuery($pQuery);
-		$execFunction = ( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ? 'GetAssoc' : 'CacheGetAssoc' );
-		$result = $this->mDb->getCol( $pQuery, $pValues, $pTrim );
+		if( defined( 'NOCACHE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
+			$result = $this->mDb->getCol( $pQuery, $pValues, $pTrim );
+		} else {
+			$result = $this->mDb->CachegetCol( $pCacheTime, $pQuery, $pValues, $pTrim );
+		}
 		//count the number of queries made
 		$this->queryComplete();
 		return $result;
@@ -332,8 +343,11 @@ class BitDbAdodb extends BitDb
 		}
 		$this->queryStart();
 		$this->convertQuery($pQuery);
-		$execFunction = ( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ? 'GetArray' : 'CacheGetArray' );
-		$result = $this->mDb->GetArray( $pQuery, $pValues, $pForceArray, $pFirst2Cols );
+		if( defined( 'NOCACHE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
+			$result = $this->mDb->GetArray( $pQuery, $pValues, $pForceArray, $pFirst2Cols );
+		} else {
+			$result = $this->mDb->CacheGetArray( $pCacheTime, $pQuery, $pValues, $pForceArray, $pFirst2Cols );
+		}
 		$this->queryComplete();
 		return $result;
 	}
@@ -354,8 +368,11 @@ class BitDbAdodb extends BitDb
 		}
 		$this->queryStart();
 		$this->convertQuery($pQuery);
-		$execFunction = ( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ? 'GetAssoc' : 'CacheGetAssoc' );
-		$result = $this->mDb->GetAssoc( $pQuery, $pValues, $pForceArray, $pFirst2Cols );
+		if( defined( 'NOCACHE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
+			$result = $this->mDb->GetAssoc( $pQuery, $pValues, $pForceArray, $pFirst2Cols );
+		} else {
+			$result = $this->mDb->CacheGetAssoc( $pCacheTime, $pQuery, $pValues, $pForceArray, $pFirst2Cols );
+		}
 		$this->queryComplete();
 		return $result;
 	}
@@ -374,7 +391,7 @@ class BitDbAdodb extends BitDb
 		}
 		$this->queryStart();
 		$this->convertQuery($pQuery);
-		if( !defined( 'IS_LIVE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
+		if( defined( 'NOCACHE' ) || $pCacheTime == BIT_QUERY_DEFAULT ) {
 			$result = $this->mDb->GetRow( $pQuery, $pValues );
 		} else {
 			$result = $this->mDb->CacheGetRow( $pCacheTime, $pQuery, $pValues );
@@ -595,7 +612,7 @@ class BitDbAdodb extends BitDb
  * @param $P2		$fn specific parameter - see below
  */
 function bit_error_handler( $dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnection ) {
-	if( !defined( 'IS_LIVE' ) ) {
+	if( defined( 'NOCACHE' ) ) {
 		global $gBitDb;
 		if (ini_get('error_reporting') == 0) return; // obey @ protocol
 

@@ -114,42 +114,45 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 			$content .= $ret_link;
 			$content .= $ret_install;
 
+			$html = '';
 			// using the overlib popup system
-			if( $gBitSystem->isFeatureActive('help_popup') ) {
-				require_once $gBitSmarty->_get_plugin_filepath('function','popup');
-				require_once $gBitSmarty->_get_plugin_filepath('function','biticon');
+			if( !empty( $content ) ) {
+				if( $gBitSystem->isFeatureActive('help_popup') ) {
+					require_once $gBitSmarty->_get_plugin_filepath('function','popup');
+					require_once $gBitSmarty->_get_plugin_filepath('function','biticon');
 
-				$gBitSmarty->assign( 'title',tra('Extended Help') );
+					$gBitSmarty->assign( 'title',tra('Extended Help') );
 
-				$gBitSmarty->assign( 'content', $content );
-				$gBitSmarty->assign( 'closebutton', TRUE );
-				$text = $gBitSmarty->fetch('bitpackage:kernel/popup_box.tpl');
-				$text = ereg_replace( '"',"'",$text );
+					$gBitSmarty->assign( 'content', $content );
+					$gBitSmarty->assign( 'closebutton', TRUE );
+					$text = $gBitSmarty->fetch('bitpackage:kernel/popup_box.tpl');
+					$text = ereg_replace( '"',"'",$text );
 
-				$popup = array(
-					'trigger' => 'onclick',
-					'text' => $text,
-					'fullhtml' => '1',
-					'sticky' => '1',
-					'timeout' => '8000',
-				);
+					$popup = array(
+						'trigger' => 'onclick',
+						'text' => $text,
+						'fullhtml' => '1',
+						'sticky' => '1',
+						'timeout' => '8000',
+					);
 
-				$biticon = array(
-					'ipackage' => 'liberty',
-					'iname' => 'info',
-					'iforce' => 'icon',
-					'iexplain' => 'Extended Help',
-				);
+					$biticon = array(
+						'ipackage' => 'liberty',
+						'iname' => 'info',
+						'iforce' => 'icon',
+						'iexplain' => 'Extended Help',
+					);
 
-				$html = ' <span class="formhelppopup" '.$atts.'>&nbsp;';
-				$html .= '<a '.smarty_function_popup( $popup, $gBitSmarty ).'>';
-				$html .= smarty_function_biticon( $biticon, $gBitSmarty );
-				$html .= '</a>';
-				$html .= '</span>';
-			} else {
-				$html = '<div class="formhelp" '.$atts.'>';
-				$html .= $content;
-				$html .= '</div>';
+					$html .= ' <span class="formhelppopup" '.$atts.'>&nbsp;';
+					$html .= '<a '.smarty_function_popup( $popup, $gBitSmarty ).'>';
+					$html .= smarty_function_biticon( $biticon, $gBitSmarty );
+					$html .= '</a>';
+					$html .= '</span>';
+				} else {
+					$html .= '<div class="formhelp" '.$atts.'>';
+					$html .= $content;
+					$html .= '</div>';
+				}
 			}
 
 			return $html;

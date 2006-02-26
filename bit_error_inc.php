@@ -26,6 +26,8 @@ function bit_log_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config_inc.php
 	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : !empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL;
 
+	error_log( $pLogMessage );
+
 	if( ( !defined('IS_LIVE') || !IS_LIVE) ) {
 		print  '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>bitweaver - White Screen of Death</title></head><body>';
 		print "\n<p><a href='http://sourceforge.net/tracker/?func=add&amp;group_id=141358&amp;atid=749176'>Click here to log a bug</a>, if this appears to be an error with the application.</p>\n";

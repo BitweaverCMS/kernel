@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.12 2006/02/22 23:01:39 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.13 2006/02/26 17:49:08 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -429,21 +429,15 @@ vd( '$gForceAdodb = TRUE; is need on the page: '.$_SERVER['SCRIPT_FILENAME'] );
 
 // This function will handle all errors
 function bit_pear_error_handler( $error_obj ) {
-	// Be verbose while developing the application
-	if( !defined( 'IS_LIVE' ) ) {
-		$bindVars = !empty( $error_obj->backtrace[0]['object']->backtrace[2]['object']->_data ) ? $error_obj->backtrace[0]['object']->backtrace[2]['object']->_data : NULL;
-		$dbParams = array(
-			'errno' => $error_obj->getCode(),
-			'db_msg'=> $error_obj->getMessage(),
-			'sql'=> $error_obj->getDebugInfo()." ('".implode( "','", $bindVars )."')",
-		);
+	$bindVars = !empty( $error_obj->backtrace[0]['object']->backtrace[2]['object']->_data ) ? $error_obj->backtrace[0]['object']->backtrace[2]['object']->_data : NULL;
+	$dbParams = array(
+		'errno' => $error_obj->getCode(),
+		'db_msg'=> $error_obj->getMessage(),
+		'sql'=> $error_obj->getDebugInfo()." ('".implode( "','", $bindVars )."')",
+	);
 
-		$logString = bit_error_string( $dbParams );
-		bit_log_error( $logString, $dbParams['db_msg'] );
-	// Dump a silly message if the site is in production
-	} else {
-		die ('Sorry you request can not be processed now. Try again later');
-	}
+	$logString = bit_error_string( $dbParams );
+	bit_log_error( $logString, $dbParams['db_msg'] );
 }
 
 function bit_pear_login_error( $pErrorObj ) {

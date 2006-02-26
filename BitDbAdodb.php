@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.11 2006/02/25 02:02:11 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.12 2006/02/26 17:49:08 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -612,40 +612,34 @@ class BitDbAdodb extends BitDb
  * @param $P2		$fn specific parameter - see below
  */
 function bit_error_handler( $dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnection ) {
-	if( defined( 'NOCACHE' ) ) {
-		global $gBitDb;
-		if (ini_get('error_reporting') == 0) return; // obey @ protocol
+	global $gBitDb;
+	if (ini_get('error_reporting') == 0) return; // obey @ protocol
 
-		$dbParams = array( 'db_type'=>$dbms, 'call_func'=>$fn, 'errno'=>$errno, 'db_msg'=>$errmsg, 'sql'=>$p1, 'p2'=>$p2);
-		$logString = bit_error_string( $dbParams );
-		/*
-		 * Log connection error somewhere
-		 *	0 message is sent to PHP's system logger, using the Operating System's system
-		 *		logging mechanism or a file, depending on what the error_log configuration
-		 *		directive is set to.
-		 *	1 message is sent by email to the address in the destination parameter.
-		 *		This is the only message type where the fourth parameter, extra_headers is used.
-		 *		This message type uses the same internal function as mail() does.
-		 *	2 message is sent through the PHP debugging connection.
-		 *		This option is only available if remote debugging has been enabled.
-		 *		In this case, the destination parameter specifies the host name or IP address
-		 *		and optionally, port number, of the socket receiving the debug information.
-		 *	3 message is appended to the file destination
-		 */
-		error_log( $logString,0 );
-		$subject = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : 'BITWEAVER';
+	$dbParams = array( 'db_type'=>$dbms, 'call_func'=>$fn, 'errno'=>$errno, 'db_msg'=>$errmsg, 'sql'=>$p1, 'p2'=>$p2);
+	$logString = bit_error_string( $dbParams );
+	/*
+	 * Log connection error somewhere
+	 *	0 message is sent to PHP's system logger, using the Operating System's system
+	 *		logging mechanism or a file, depending on what the error_log configuration
+	 *		directive is set to.
+	 *	1 message is sent by email to the address in the destination parameter.
+	 *		This is the only message type where the fourth parameter, extra_headers is used.
+	 *		This message type uses the same internal function as mail() does.
+	 *	2 message is sent through the PHP debugging connection.
+	 *		This option is only available if remote debugging has been enabled.
+	 *		In this case, the destination parameter specifies the host name or IP address
+	 *		and optionally, port number, of the socket receiving the debug information.
+	 *	3 message is appended to the file destination
+	 */
+	error_log( $logString,0 );
+	$subject = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : 'BITWEAVER';
 
-		$fatal = FALSE;
-		if( ( $fn == 'EXECUTE' ) && ( $thisConnection->MetaError() != -5 ) && $gBitDb->isFatalActive() ) {
-			$fatal = TRUE;
-		}
-
-		bit_log_error( $logString, $dbParams['db_msg'], $fatal );
-
-	// Dump a silly message if the site is in production
-	} else {
-		die ('Sorry you request can not be processed now. Try again later');
+	$fatal = FALSE;
+	if( ( $fn == 'EXECUTE' ) && ( $thisConnection->MetaError() != -5 ) && $gBitDb->isFatalActive() ) {
+		$fatal = TRUE;
 	}
+
+	bit_log_error( $logString, $dbParams['db_msg'], $fatal );
 }
 
 ?>

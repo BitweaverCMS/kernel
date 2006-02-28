@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.77 2006/02/09 08:38:17 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.78 2006/02/28 13:20:03 wolff_borg Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -955,7 +955,7 @@ asort( $this->mAppMenu );
 							$tablePresent = in_array( $fullTable, $dbTables );
 							if( !$tablePresent ) {
 								// There is an incomplete table
-								//	vd( "Missing Table: $fullTable" );
+								//	vd( "Missing Table: $fullTable ($package)" );
 							}
 							if( isset( $this->mPackages[$package]['installed'] ) ) {
 								$this->mPackages[$package]['installed'] &= $tablePresent;

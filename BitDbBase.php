@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.16 2006/02/20 19:19:52 bitweaver Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.17 2006/03/01 20:16:13 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -256,7 +256,7 @@ class BitDb
 	* @param pCacheExecute flag to enable or disable ADODB query caching
 	* @return nothing
 	*/
-	function setCacheState( $pCacheFlag=TRUE ) {
+	function setCaching( $pCacheFlag=TRUE ) {
 		$this->mCacheFlag = $pCacheFlag;
 	}
 
@@ -265,7 +265,7 @@ class BitDb
 	* @param pCacheExecute flag to enable or disable ADODB query caching
 	* @return nothing
 	*/
-	function getCacheState() {
+	function isCachingActive() {
 		return( $this->mCacheFlag );
 	}
 

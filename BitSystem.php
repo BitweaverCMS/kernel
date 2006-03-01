@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.59 2006/03/01 18:35:14 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.60 2006/03/01 20:16:13 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -161,7 +161,7 @@ class BitSystem extends BitBase {
 		return count( $this->mConfig );
 	}
 
-	// <<< getPreference
+	// <<< getConfig
 	/**
 	* Add getConfig / setConfig for more uniform handling of config variables instead of spreading global vars.
 	* easily get the value of any given preference stored in kernel_prefs
@@ -194,42 +194,42 @@ class BitSystem extends BitBase {
 		$this->setConfig( $pPrefName, $pPrefValue );
 	}
 
-	// <<< storePreference
+	// <<< storeConfig
 	/**
 	* bitweaver needs lots of settings just to operate.
 	* loadConfig assigns itself the default preferences, then loads just the differences from the database.
-	* In storePreference (and only when storePreference is called) we make a second copy of defaults to see if
+	* In storeConfig (and only when storeConfig is called) we make a second copy of defaults to see if
 	* preferences you are changing is different from the default.
 	* if it is the same, don't store it!
 	* So instead updating the whole prefs table, only updat "delta" of the changes delta from defaults.
 	*
 	* @access public
 	**/
-	function storePreference( $pName, $pValue, $pPackage = NULL ) {
+	function storeConfig( $pName, $pValue, $pPackage = NULL ) {
 		global $gMultisites;
-
 		//stop undefined offset error being thrown after packages are installed
-		if(!empty( $this->mConfig )){
-		// store the pref if we have a value _AND_ it is different from the default
-		if( ( empty( $this->mConfig[$pName] ) || ( $this->mConfig[$pName] != $pValue ) ) ) {
-			// store the preference in multisites, if used
-			if( @$this->verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mConfig[$pName] ) ) {
-				$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `pref_value`=? WHERE `multisite_id`=? AND `name`=?";
-				$result = $this->mDb->query( $query, array( empty( $pValue ) ? '' : $pValue, $gMultisites->mMultisiteId, $pName ) );
-			} else {
-				$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_prefs` WHERE `name`=?";
-				$result = $this->mDb->query( $query, array( $pName ) );
-				if( isset( $pValue ) ) {
-					$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`name`,`pref_value`,`package`) VALUES (?,?,?)";
-					$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage ) ) );
+		if( !empty( $this->mConfig ) ){
+			// store the pref if we have a value _AND_ it is different from the default
+			if( ( empty( $this->mConfig[$pName] ) || ( $this->mConfig[$pName] != $pValue ) ) ) {
+				// store the preference in multisites, if used
+				if( @$this->verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mConfig[$pName] ) ) {
+					$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `pref_value`=? WHERE `multisite_id`=? AND `name`=?";
+					$result = $this->mDb->query( $query, array( empty( $pValue ) ? '' : $pValue, $gMultisites->mMultisiteId, $pName ) );
+				} else {
+					$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_prefs` WHERE `name`=?";
+					$result = $this->mDb->query( $query, array( $pName ) );
+					if( isset( $pValue ) ) {
+						$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`name`,`pref_value`,`package`) VALUES (?,?,?)";
+						$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage ) ) );
+					}
 				}
+	
+				// Force the ADODB cache to flush
+				$isCaching = $this->mDb->isCachingActive();
+				$this->mDb->setCaching( FALSE );
+				$this->loadConfig();
+				$this->mDb->setCaching( $isCaching );
 			}
-
-			// Force the ADODB cache to flush
-			$this->mCacheTime = 0;
-			$this->loadConfig();
-			$this->mCacheTime = BIT_QUERY_CACHE_TIME;
-		}
 		}
 		$this->setPreference( $pName, $pValue );
 		return TRUE;
@@ -1018,7 +1018,7 @@ class BitSystem extends BitBase {
 					$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
 					if( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['active_switch'] != 'y' ) {
 						// we have a disabled required package. turn it back on!
-						$this->storePreference( 'package_'.strtolower( $package ), 'y', $package );
+						$this->storeConfig( 'package_'.strtolower( $package ), 'y', $package );
 						$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
 					}
 				}
@@ -1027,10 +1027,10 @@ class BitSystem extends BitBase {
 
 		foreach( array_keys( $this->mPackages ) as $package ) {
 			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getConfig("package_".strtolower($package)) != 'y') {
-				$this->storePreference('package_'.strtolower( $package ), 'n', $package);
+				$this->storeConfig('package_'.strtolower( $package ), 'n', $package);
 			} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
 				// Delete the package_<pkgname> row from kernel_prefs
-				$this->storePreference('package_'.strtolower( $package ), NULL );
+				$this->storeConfig('package_'.strtolower( $package ), NULL );
 			}
 		}
 	}

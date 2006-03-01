@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.44 2006/03/01 18:35:14 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.45 2006/03/01 20:16:13 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -156,7 +156,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	} else {
 		$bitdomain .= "/";
 	}
-	$gBitSystem->storePreference('bitdomain', $bitdomain, KERNEL_PKG_NAME );
+	$gBitSystem->storeConfig('bitdomain', $bitdomain, KERNEL_PKG_NAME );
 
 	$gBitSmarty->assign("bitdomain", $bitdomain);
 	// The votes array stores the votes the user has made

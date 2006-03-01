@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.8 2006/02/01 19:45:30 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.9 2006/03/01 20:16:13 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -36,7 +36,7 @@ function toggle_preference( $pName, $pValue = NULL, $pPackageName = NULL ) {
 	} else {
 		$prefValue='n';
 	}
-	$gBitSystem->storePreference( $pName, $prefValue, $pPackageName );
+	$gBitSystem->storeConfig( $pName, $prefValue, $pPackageName );
 }
 
 /**
@@ -48,7 +48,7 @@ function toggle_preference( $pName, $pValue = NULL, $pPackageName = NULL ) {
 function simple_set_value( $pFeature, $pPackageName = NULL ) {
 	global $_REQUEST, $gBitSystem, $gBitSmarty;
 	if( isset( $_REQUEST[$pFeature] ) ) {
-		$gBitSystem->storePreference( $pFeature, $_REQUEST[$pFeature], $pPackageName );
+		$gBitSystem->storeConfig( $pFeature, $_REQUEST[$pFeature], $pPackageName );
 		$gBitSmarty->assign( $pFeature, $_REQUEST[$pFeature] );
 	}
 }
@@ -62,7 +62,7 @@ function simple_set_value( $pFeature, $pPackageName = NULL ) {
 function simple_set_int( $pFeature, $pPackageName = NULL ) {
 	global $_REQUEST, $gBitSystem, $gBitSmarty;
 	if ( isset( $_REQUEST[$pFeature] ) && is_numeric( $_REQUEST[$pFeature] ) ) {
-		$gBitSystem->storePreference( $pFeature, $_REQUEST[$pFeature], $pPackageName );
+		$gBitSystem->storeConfig( $pFeature, $_REQUEST[$pFeature], $pPackageName );
 		$gBitSmarty->assign( $pFeature, $_REQUEST[$pFeature] );
 	}
 }
@@ -77,11 +77,11 @@ function byref_set_value( $pFeature, $pPref = "", $pPackageName = NULL ) {
 	global $_REQUEST, $gBitSystem, $gBitSmarty;
 	if( isset( $_REQUEST[$pFeature] ) ) {
 		if( strlen( $pPref ) > 0 ) {
-			$gBitSystem->storePreference( $pPref, $_REQUEST[$pFeature], $pPackageName );
+			$gBitSystem->storeConfig( $pPref, $_REQUEST[$pFeature], $pPackageName );
 			// also assign the ref appareantly --gongo
 			$gBitSmarty->assign_by_ref( $pPref, $_REQUEST[$pFeature] );
 		} else {
-			$gBitSystem->storePreference( $pFeature, $_REQUEST[$pFeature], $pPackageName );
+			$gBitSystem->storeConfig( $pFeature, $_REQUEST[$pFeature], $pPackageName );
 		}
 
 		$gBitSmarty->assign_by_ref( $pFeature, $_REQUEST[$pFeature] );

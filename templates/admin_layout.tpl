@@ -348,7 +348,7 @@
 				<div class="row">
 					{formlabel label=`$output.label` for=$feature}
 					{forminput}
-						{html_checkboxes name="$feature" values="y" checked=`$gBitSystem->getConfig('')$feature` labels=false id=$feature}
+						{html_checkboxes name="$feature" values="y" checked=$gBitSystem->getConfig($feature) labels=false id=$feature}
 						{formhelp hash=$output}
 					{/forminput}
 				</div>

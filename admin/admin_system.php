@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.3 2006/01/10 21:12:47 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.4 2006/03/01 18:35:14 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -101,7 +101,7 @@ $du['cache'] = du(TEMP_PKG_PATH.'cache');
 $gBitSmarty->assign('du', $du);
 
 $templates=array();
-$langdir = TEMP_PKG_PATH."templates_c/".$gBitSystem->getPreference('style')."/";
+$langdir = TEMP_PKG_PATH."templates_c/".$gBitSystem->getConfig('style')."/";
 $gBitSmarty->assign('langdir', $langdir);
 foreach(array_keys($languages) as $clang) {
 	if(is_dir($langdir.$clang)) {

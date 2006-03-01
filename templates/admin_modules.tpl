@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_modules.tpl,v 1.3 2006/02/06 15:22:36 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_modules.tpl,v 1.4 2006/03/01 18:35:15 spiderr Exp $ *}
 
 {$moduleJavascript}
 
@@ -10,7 +10,7 @@
 				<div class="row">
 					{formlabel label=`$output.label` for=$feature}
 					{forminput}
-						{html_checkboxes name="$feature" values="y" checked=`$gBitSystemPrefs.$feature` labels=false id=$feature}
+						{html_checkboxes name="$feature" values="y" checked=`$gBitSystem->getConfig('')$feature` labels=false id=$feature}
 						{formhelp note=`$output.note` page=`$output.page`}
 					{/forminput}
 				</div>

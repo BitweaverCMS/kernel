@@ -1,15 +1,15 @@
 {strip}
 <div id="bittopbar">
 	<ul id="nav" class="menu hor">
-		{if $use_custom_top_bar and $gBitSystemPrefs.top_bar_position eq 'replace'}
+		{if $use_custom_top_bar and $gBitSystem->getConfig('top_bar_position') eq 'replace'}
 			{include file="`$smarty.const.TEMP_PKG_PATH`nexus/modules/top_bar_inc.tpl"}
 		{else}
-			{if $use_custom_top_bar and $gBitSystemPrefs.top_bar_position eq 'left'}
+			{if $use_custom_top_bar and $gBitSystem->getConfig('top_bar_position') eq 'left'}
 				{include file="`$smarty.const.TEMP_PKG_PATH`nexus/modules/top_bar_inc.tpl"}
 			{/if}
 
 			<li class="m-home">
-				<a class="head" accesskey="h" href="{$smarty.const.BIT_ROOT_URL}">{$gBitSystemPrefs.site_menu_title|default:$gBitSystemPrefs.site_title}</a>
+				<a class="head" accesskey="h" href="{$smarty.const.BIT_ROOT_URL}">{$gBitSystem->getConfig('site_menu_title',$gBitSystem->getConfig('site_title','My Site'))}</a>
 				{include file="bitpackage:kernel/menu_global.tpl"}
 			</li>
 
@@ -40,7 +40,7 @@
 				</li>
 			{/if}
 
-			{if $use_custom_top_bar and ( !$gBitSystemPrefs.top_bar_position or $gBitSystemPrefs.top_bar_position eq 'right' )}
+			{if $use_custom_top_bar and ( !$gBitSystem->getConfig('top_bar_position') or $gBitSystem->getConfig('top_bar_position') eq 'right' )}
 				{include file="`$smarty.const.TEMP_PKG_PATH`nexus/modules/top_bar_inc.tpl"}
 			{/if}
 		{/if}

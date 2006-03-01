@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.15 2006/02/08 21:51:14 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.16 2006/03/01 18:35:14 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -165,10 +165,10 @@ $gBitSmarty->assign_by_ref( 'layoutAreas', $layoutAreas );
 $packages = array();
 foreach( $gBitSystem->mPackages as $pkg ) {
 	array_push( $packages, array( "name" => $pkg,
-								  "left_column" => $gBitSystem->getPreference( $pkg."_left_column", 'y' ),
-								  "right_column" => $gBitSystem->getPreference( $pkg."_right_column", 'y'),
-								  "top_bar" => $gBitSystem->getPreference( $pkg."_top_bar", 'y'),
-								  "bot_bar" => $gBitSystem->getPreference( $pkg."_bot_bar", 'y') ) );
+								  "left_column" => $gBitSystem->getConfig( $pkg."_left_column", 'y' ),
+								  "right_column" => $gBitSystem->getConfig( $pkg."_right_column", 'y'),
+								  "top_bar" => $gBitSystem->getConfig( $pkg."_top_bar", 'y'),
+								  "bot_bar" => $gBitSystem->getConfig( $pkg."_bot_bar", 'y') ) );
 }
 
 //****** Setup assign modules panel

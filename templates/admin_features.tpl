@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.6 2006/02/06 22:56:47 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.7 2006/03/01 18:35:15 spiderr Exp $ *}
 {strip}
 {form}
 	{jstabs}
@@ -9,7 +9,7 @@
 					<div class="row">
 						{formlabel label=`$output.label` for=$feature}
 						{forminput}
-							{html_checkboxes name="$feature" values="y" checked=`$gBitSystemPrefs.$feature` labels=false id=$feature}
+							{html_checkboxes name="$feature" values="y" checked=`$gBitSystem->getConfig('')$feature` labels=false id=$feature}
 							{formhelp note=`$output.note` page=`$output.page`}
 						{/forminput}
 					</div>
@@ -23,7 +23,7 @@
 				<div class="row">
 					{formlabel label="Contact Us" for="site_contact"}
 					{forminput}
-						{html_checkboxes name="site_contact" values="y" checked=`$gBitSystemPrefs.site_contact` labels=false id="site_contact"}
+						{html_checkboxes name="site_contact" values="y" checked=`$gBitSystem->getConfig('site_contact')` labels=false id="site_contact"}
 						{formhelp note="Enables anonymous users to send a message to a specified user using a form" page="ContactUs"}
 					{/forminput}
 				</div>
@@ -32,9 +32,9 @@
 					{formlabel label="Contact user" for="contact_user"}
 					{forminput}
 						{if $users_list}
-							{html_options name="contact_user" output=$users_list values=$users_list selected=$gBitSystemPrefs.contact_user id="contact_user"}
+							{html_options name="contact_user" output=$users_list values=$users_list selected=$gBitSystem->getConfig('contact_user') id="contact_user"}
 						{else}
-							<input name="contact_user"  value="{$gBitSystemPrefs.contact_user}"  id="contact_user" />
+							<input name="contact_user"  value="{$gBitSystem->getConfig('contact_user')}"  id="contact_user" />
 						{/if}
 						{formhelp note="Pick the user who should recieve the meassages sent using the 'Contact Us' feature"}
 					{/forminput}
@@ -51,7 +51,7 @@
 					<div class="row">
 						{formlabel label=`$output.label` for=$feature}
 						{forminput}
-							{html_checkboxes name="$feature" values="y" checked=`$gBitSystemPrefs.$feature` labels=false id=$feature}
+							{html_checkboxes name="$feature" values="y" checked=`$gBitSystem->getConfig('')$feature` labels=false id=$feature}
 							{formhelp note=`$output.note` page=`$output.page`}
 						{/forminput}
 					</div>

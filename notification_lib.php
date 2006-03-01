@@ -3,7 +3,7 @@
  * eMail Notification Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.6 2006/02/06 00:07:32 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.7 2006/03/01 18:35:14 spiderr Exp $
  * @author awcolley
  *
  * created 2003/06/03
@@ -141,7 +141,7 @@ class NotificationLib extends BitBase
 			$gBitSmarty->assign('mail_pagedata', $data );
 			$mail_data = $gBitSmarty->fetch('bitpackage:'.$package.'/'.$package.'_change_notification.tpl');
 
-			@mail($email, $package . tra(' page'). ' ' . $name . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n" );
+			@mail($email, $package . tra(' page'). ' ' . $name . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getConfig( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n" );
 		}
 	}
 
@@ -158,7 +158,7 @@ class NotificationLib extends BitBase
 			$gBitSmarty->assign('mail_site',$_SERVER["SERVER_NAME"]);
 			$mail_data = $gBitSmarty->fetch('bitpackage:users/new_user_notification.tpl');
 
-			mail( $email, tra('New user registration'),$mail_data,"From: ".$gBitSystem->getPreference('sender_email')."\r\nContent-type: text/plain;charset=utf-8\r\n");
+			mail( $email, tra('New user registration'),$mail_data,"From: ".$gBitSystem->getConfig('sender_email')."\r\nContent-type: text/plain;charset=utf-8\r\n");
 		}
 	}
 

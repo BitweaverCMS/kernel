@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.58 2006/02/22 13:00:22 gilesw Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.59 2006/03/01 18:35:14 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -64,7 +64,7 @@ class BitSystem extends BitBase {
 	* Used to store contents of kernel_prefs
 	* @private
 	*/
-	var $mPrefs;
+	var $mConfig;
 	/**
 	* Used to monitor if ::regiserPackage() was called. This is to prevent duplicate package registration for packages that have directory names different from their package name.
 	* @private
@@ -137,21 +137,11 @@ class BitSystem extends BitBase {
 	}
 
 	/**
-	* Set a hash value in the mPrefs hash. This does *NOT* store the value in the database. It does no checking for existing or duplicate values. the main point of this function is to limit direct accessing of the mPrefs hash. I will probably make mPrefs private one day.
-	*
-	* @param string Hash key for the mPrefs value
-	* @param string Value for the mPrefs hash key
-	*/
-	function setPreference( $pPrefName, $pPrefValue ) {
-		$this->mPrefs[$pPrefName] = $pPrefValue;
-	}
-
-	/**
-	* Load all preferences and store them in $this->mPrefs
+	* Load all preferences and store them in $this->mConfig
 	*
 	* @param $pPackage optionally get preferences only for selected package
 	*/
-	function loadPreferences($pPackage = null) {
+	function loadConfig($pPackage = null) {
 		$queryVars = array();
 		$whereClause = '';
 
@@ -160,37 +150,54 @@ class BitSystem extends BitBase {
 			$whereClause = ' WHERE `package`=? ';
 		}
 
-		if ( empty( $this->mPrefs ) ) {
+		if ( empty( $this->mConfig ) ) {
 			$query = "SELECT `name` ,`pref_value`, `package` FROM `" . BIT_DB_PREFIX . "kernel_prefs` " . $whereClause;
 			if( $rs = $this->mDb->query( $query, $queryVars, -1, -1 ) ) {
 				while( $row = $rs->fetchRow() ) {
-					$this->mPrefs[$row['name']] = $row['pref_value'];
+					$this->mConfig[$row['name']] = $row['pref_value'];
 				}
 			}
 		}
-		return count( $this->mPrefs );
+		return count( $this->mConfig );
 	}
 
 	// <<< getPreference
 	/**
 	* Add getConfig / setConfig for more uniform handling of config variables instead of spreading global vars.
-	* These are only for runtime, install specific settings that are not held in the database.
+	* easily get the value of any given preference stored in kernel_prefs
 	*
 	* @access public
 	**/
 	function getConfig( $pName, $pDefault = NULL ) {
+		if( empty( $this->mConfig ) ) {
+			$this->loadConfig();
+		}
 		return( empty( $this->mConfig[$pName] ) ? $pDefault : $this->mConfig[$pName] );
 	}
+	// deprecated method saved compatibility until all getPreference calls have been eliminated
+	function getPreference( $pName, $pDefault = '' ) {
+		return $this->getConfig( $pName, $pDefault );
+	}
 
+
+	/**
+	* Set a hash value in the mConfig hash. This does *NOT* store the value in the database. It does no checking for existing or duplicate values. the main point of this function is to limit direct accessing of the mConfig hash. I will probably make mConfig private one day.
+	*
+	* @param string Hash key for the mConfig value
+	* @param string Value for the mConfig hash key
+	*/
 	function setConfig( $pName, $pValue ) {
 		$this->mConfig[$pName] = $pValue;
 		return( TRUE );
+	}
+	function setPreference( $pPrefName, $pPrefValue ) {
+		$this->setConfig( $pPrefName, $pPrefValue );
 	}
 
 	// <<< storePreference
 	/**
 	* bitweaver needs lots of settings just to operate.
-	* loadPreferences assigns itself the default preferences, then loads just the differences from the database.
+	* loadConfig assigns itself the default preferences, then loads just the differences from the database.
 	* In storePreference (and only when storePreference is called) we make a second copy of defaults to see if
 	* preferences you are changing is different from the default.
 	* if it is the same, don't store it!
@@ -202,11 +209,11 @@ class BitSystem extends BitBase {
 		global $gMultisites;
 
 		//stop undefined offset error being thrown after packages are installed
-		if(!empty( $this->mPrefs )){
+		if(!empty( $this->mConfig )){
 		// store the pref if we have a value _AND_ it is different from the default
-		if( ( empty( $this->mPrefs[$pName] ) || ( $this->mPrefs[$pName] != $pValue ) ) ) {
+		if( ( empty( $this->mConfig[$pName] ) || ( $this->mConfig[$pName] != $pValue ) ) ) {
 			// store the preference in multisites, if used
-			if( @$this->verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mPrefs[$pName] ) ) {
+			if( @$this->verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mConfig[$pName] ) ) {
 				$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `pref_value`=? WHERE `multisite_id`=? AND `name`=?";
 				$result = $this->mDb->query( $query, array( empty( $pValue ) ? '' : $pValue, $gMultisites->mMultisiteId, $pName ) );
 			} else {
@@ -220,7 +227,7 @@ class BitSystem extends BitBase {
 
 			// Force the ADODB cache to flush
 			$this->mCacheTime = 0;
-			$this->loadPreferences();
+			$this->loadConfig();
 			$this->mCacheTime = BIT_QUERY_CACHE_TIME;
 		}
 		}
@@ -229,26 +236,18 @@ class BitSystem extends BitBase {
 	}
 	// >>>
 
-	// easily get the value of any given preference stored in kernel_prefs
-	function getPreference( $pName, $pDefault = '' ) {
-		if( empty( $this->mPrefs ) ) {
-			$this->loadPreferences();
-		}
-		return( empty( $this->mPrefs[$pName] ) ? $pDefault : $this->mPrefs[$pName] );
-	}
-
-	// <<< expungePackagePreferences
+	// <<< expungePackageConfig
 	/**
 	* Delete all prefences for the given package
 	* @access public
 	**/
-	function expungePackagePreferences( $pPackageName ) {
+	function expungePackageConfig( $pPackageName ) {
 		if( !empty( $pPackageName ) ) {
 			$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_prefs` WHERE `package`=?";
 			$result = $this->mDb->query( $query, array( strtolower( $pPackageName ) ) );
 			// let's force a reload of the prefs
-			unset( $this->mPrefs );
-			$this->loadPreferences();
+			unset( $this->mConfig );
+			$this->loadConfig();
 		}
 	}
 	// >>>
@@ -264,7 +263,7 @@ class BitSystem extends BitBase {
 	*/
 	function hasValidSenderEmail( $pSenderEmail=NULL ) {
 		if( empty( $pSenderEmail ) ) {
-			$pSenderEmail = $this->getPreference( 'sender_email' );
+			$pSenderEmail = $this->getConfig( 'sender_email' );
 		}
 		return( !empty( $pSenderEmail ) && !preg_match( '/.*localhost$/', $pSenderEmail ) );
 	}
@@ -280,8 +279,8 @@ class BitSystem extends BitBase {
 	function getErrorEmail() {
 		if( defined('ERROR_EMAIL') ) {
 			$ret = ERROR_EMAIL;
-		} elseif( $this->getPreference( 'sender_email' ) ) {
-			$ret = $this->getPreference( 'sender_email' );
+		} elseif( $this->getConfig( 'sender_email' ) ) {
+			$ret = $this->getConfig( 'sender_email' );
 		} elseif( !empty( $_SERVER['SERVER_ADMIN'] ) ) {
 			$ret = $_SERVER['SERVER_ADMIN'];
 		} else {
@@ -301,8 +300,8 @@ class BitSystem extends BitBase {
 	*/
 	function sendEmail( $pMailHash ) {
 		$extraHeaders = '';
-		if( $this->getPreference( 'bcc_email' ) ) {
-			$extraHeaders = "Bcc: ".$this->getPreference( 'bcc_email' )."\r\n";
+		if( $this->getConfig( 'bcc_email' ) ) {
+			$extraHeaders = "Bcc: ".$this->getConfig( 'bcc_email' )."\r\n";
 		}
 		if( !empty( $pMailHash['Reply-to'] ) ) {
 			$extraHeaders = "Reply-to: ".$pMailHash['Reply-to']."\r\n";
@@ -311,7 +310,7 @@ class BitSystem extends BitBase {
 		mail($pMailHash['email'],
 			$pMailHash['subject'].' '.$_SERVER["SERVER_NAME"],
 			$pMailHash['body'],
-			"From: ".$this->getPreference( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
+			"From: ".$this->getConfig( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
 		);
 	}
 	// >>>
@@ -375,7 +374,7 @@ class BitSystem extends BitBase {
 		$customHome = NULL;
 		if( !empty( $gQueryUser ) && $gQueryUser->canCustomizeLayout() && @$this->verifyId( $gQueryUserId ) ) {
 			$customHome = $gQueryUserId;
-		} elseif( $this->getPreference( 'users_layouts' ) == 'y' ) {
+		} elseif( $this->getConfig( 'users_layouts' ) == 'y' ) {
 			// user_layouts can have 3 falues - 'y', 'h', or 'n'/null. isFeatureActice cannot be called here.
 			$customHome = $gBitUser->mUsername;
 		}
@@ -431,14 +430,16 @@ class BitSystem extends BitBase {
 		$append = array( 'themes' );
 		$anti = $mid = $post = array();
 		foreach( $this->mPackages as $package => $info ) {
-			$file = $info['path'].'templates/'.$pFilename;
-			if( is_readable( $file ) ) {
-				if( in_array( $package, $prepend ) ) {
-					$anti[] = $file;
-				} elseif( in_array( $package, $append ) ) {
-					$post[] = $file;
-				} else {
-					$mid[] = $file;
+			if( !empty( $info['path'] ) ) {
+				$file = $info['path'].'templates/'.$pFilename;
+				if( is_readable( $file ) ) {
+					if( in_array( $package, $prepend ) ) {
+						$anti[] = $file;
+					} elseif( in_array( $package, $append ) ) {
+						$post[] = $file;
+					} else {
+						$mid[] = $file;
+					}
 				}
 			}
 		}
@@ -497,7 +498,7 @@ class BitSystem extends BitBase {
 				}
 				else {
 					// we have migrated the old tikiwiki feature_<pac
-					$ret = ($this->getPreference('package_'.$name) == 'y');
+					$ret = ($this->getConfig('package_'.$name) == 'y');
 				}
 
 			}
@@ -624,7 +625,7 @@ class BitSystem extends BitBase {
 	{
 		$ret = FALSE;
 		if( $pFeatureName ) {
-			$featureValue = $this->getPreference($pFeatureName);
+			$featureValue = $this->getConfig($pFeatureName);
 			$ret = !empty( $featureValue ) && ( $featureValue != 'n' );
 		}
 
@@ -738,7 +739,7 @@ class BitSystem extends BitBase {
 	*/
 	function registerAppMenu($pKey, $pMenuTitle, $pTitleUrl, $pMenuTemplate, $pAdminPanel = false)
 	{
-		if( $this->getPreference( 'menu_'.$pKey ) != 'n' ) {
+		if( $this->getConfig( 'menu_'.$pKey ) != 'n' ) {
 			$this->mAppMenu[strtolower($pKey)] = array('title' => $pMenuTitle,
 				'titleUrl' => $pTitleUrl,
 				'template' => $pMenuTemplate,
@@ -861,11 +862,14 @@ class BitSystem extends BitBase {
 		}
 	}
 
-	function registerPreferences( $packagedir, $preferences ) {
+	function registerConfig( $packagedir, $preferences ) {
 		foreach( $preferences as $pref ) {
 			$this->registerSchemaDefault( $packagedir,
 			"INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`package`,`name`,`pref_value`) VALUES ('$pref[0]', '$pref[1]','$pref[2]')");
 		}
+	}
+	function registerPreferences( $packagedir, $preferences ) {
+		$this->registerConfig( $packagedir, $preferences );
 	}
 
 	function registerModules( $pModuleHash ) {
@@ -1011,18 +1015,18 @@ class BitSystem extends BitBase {
 					} else {
 						$this->mPackages[$package]['installed'] = TRUE;
 					}
-					$this->mPackages[$package]['active_switch'] = $this->getPreference( 'package_'.strtolower( $package ) );
+					$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
 					if( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['active_switch'] != 'y' ) {
 						// we have a disabled required package. turn it back on!
 						$this->storePreference( 'package_'.strtolower( $package ), 'y', $package );
-						$this->mPackages[$package]['active_switch'] = $this->getPreference( 'package_'.strtolower( $package ) );
+						$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
 					}
 				}
 			}
 		}
 
 		foreach( array_keys( $this->mPackages ) as $package ) {
-			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getPreference("package_".strtolower($package)) != 'y') {
+			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getConfig("package_".strtolower($package)) != 'y') {
 				$this->storePreference('package_'.strtolower( $package ), 'n', $package);
 			} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
 				// Delete the package_<pkgname> row from kernel_prefs
@@ -1039,11 +1043,11 @@ class BitSystem extends BitBase {
 
 	function getDefaultPage() {
 		global $userlib, $gBitUser, $gBitSystem;
-		$bit_index = $this->getPreference( "bit_index" );
+		$bit_index = $this->getConfig( "bit_index" );
 		if ( $bit_index == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
 			if( @$this->verifyId( $gBitUser->mInfo['default_group_id'] ) && ( $group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ) ) ) {
-			} elseif( $this->getPreference( 'default_home_group' ) && ( $group_home = $gBitUser->getGroupHome( $this->getPreference( 'default_home_group' ) ) ) ) {
+			} elseif( $this->getConfig( 'default_home_group' ) && ( $group_home = $gBitUser->getGroupHome( $this->getConfig( 'default_home_group' ) ) ) ) {
 			}
 
 			if( !empty( $group_home ) ) {
@@ -1109,7 +1113,7 @@ class BitSystem extends BitBase {
 	{
 		if (empty($this->mStyle))
 		{
-			$this->mStyle = $this->getPreference('style');
+			$this->mStyle = $this->getConfig('style');
 		}
 		return $this->mStyle;
 	}
@@ -1180,8 +1184,8 @@ class BitSystem extends BitBase {
 				$ret = $homepageUser->getStorageURL( 'theme', $homepageUser->mUserId, NULL ).'custom.css';
 			}
 		} else {
-			if( $gBitSystem->getPreference( 'style_variation' ) && is_readable( THEMES_PKG_PATH.'styles/'.$pStyle.'/alternate/'.$gBitSystem->getPreference( 'style_variation' ).'.css' ) ) {
-				$ret = THEMES_PKG_URL.'styles/'.$pStyle.'/alternate/'.$gBitSystem->getPreference( 'style_variation' ).'.css';
+			if( $gBitSystem->getConfig( 'style_variation' ) && is_readable( THEMES_PKG_PATH.'styles/'.$pStyle.'/alternate/'.$gBitSystem->getConfig( 'style_variation' ).'.css' ) ) {
+				$ret = THEMES_PKG_URL.'styles/'.$pStyle.'/alternate/'.$gBitSystem->getConfig( 'style_variation' ).'.css';
 			} elseif( is_readable( THEMES_PKG_PATH.'styles/'.$pStyle.'/'.$pStyle.'.css' ) ) {
 				$ret = THEMES_PKG_URL.'styles/'.$pStyle.'/'.$pStyle.'.css';
 			}
@@ -1433,6 +1437,8 @@ class BitSystem extends BitBase {
 	* @access public
 	*/
 	function lookupMimeType( $pExtension ) {
+		// rfc1341 - mime types are case insensitive.
+		$pExtension = strtolower( $pExtension );
 		if( empty( $this->mMimeTypes ) ) {
 			// use the local mime.types files if it is available since it may be more current
 			$mimeFile = is_file( '/etc/mime.types' ) && is_readable( '/etc/mime.types' ) ? '/etc/mime.types' : KERNEL_PKG_PATH.'admin/mime.types';
@@ -1792,7 +1798,7 @@ class BitSystem extends BitBase {
 		static $long_date_format = false;
 
 		if (!$long_date_format)
-		$long_date_format = $this->getPreference('long_date_format', '%A %d of %B, %Y');
+		$long_date_format = $this->getConfig('long_date_format', '%A %d of %B, %Y');
 
 		return $long_date_format;
 	}
@@ -1804,7 +1810,7 @@ class BitSystem extends BitBase {
 		static $short_date_format = false;
 
 		if (!$short_date_format)
-		$short_date_format = $this->getPreference('short_date_format', '%a %d of %b, %Y');
+		$short_date_format = $this->getConfig('short_date_format', '%a %d of %b, %Y');
 
 		return $short_date_format;
 	}
@@ -1816,7 +1822,7 @@ class BitSystem extends BitBase {
 		static $long_time_format = false;
 
 		if (!$long_time_format)
-		$long_time_format = $this->getPreference('long_time_format', '%H:%M:%S %Z');
+		$long_time_format = $this->getConfig('long_time_format', '%H:%M:%S %Z');
 
 		return $long_time_format;
 	}
@@ -1828,7 +1834,7 @@ class BitSystem extends BitBase {
 		static $short_time_format = false;
 
 		if (!$short_time_format)
-		$short_time_format = $this->getPreference('short_time_format', '%H:%M %Z');
+		$short_time_format = $this->getConfig('short_time_format', '%H:%M %Z');
 
 		return $short_time_format;
 	}

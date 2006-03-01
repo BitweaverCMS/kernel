@@ -61,7 +61,7 @@
 {if $gBitSystem->isFeatureActive( 'direct_pagination' )}
 <br />
 {section loop=$cant_pages name=foo}
-{assign var=selector_offset value=$smarty.section.foo.index|times:"$gBitSystemPrefs.max_records"}
+{assign var=selector_offset value=$smarty.section.foo.index|times:"$gBitSystem->getConfig('max_records')"}
 <a href="{$smarty.const.THEMES_PKG_URL}list_cache.php?find={$find}&amp;offset={$selector_offset}&amp;sort_mode={$sort_mode}">{$smarty.section.foo.index_next}</a>&nbsp;
 {/section}
 {/if}

@@ -38,7 +38,7 @@ function output_icon( $params, $file ) {
 	if( isset( $params["url"] ) ) {
 		$outstr = $file;
 	} else {
-		if( $gBitSystem->getPreference( 'biticon_display' ) == 'text' && $params['iforce'] != 'icon' ) {
+		if( $gBitSystem->getConfig( 'biticon_display' ) == 'text' && $params['iforce'] != 'icon' ) {
 			$outstr = $iexplain;
 		} else {
 			$outstr='<img src="'.$file.'"';
@@ -68,7 +68,7 @@ function output_icon( $params, $file ) {
 			$outstr .= " />";
 		}
 
-		if( $gBitSystem->getPreference( 'biticon_display' ) == 'icon_text' && $params['iforce'] != 'icon' || $params['iforce'] == 'icon_text' ) {
+		if( $gBitSystem->getConfig( 'biticon_display' ) == 'icon_text' && $params['iforce'] != 'icon' || $params['iforce'] == 'icon_text' ) {
 			$outstr .= '&nbsp;'.$iexplain;
 		}
 	}
@@ -88,7 +88,7 @@ function smarty_function_biticon($params, &$gBitSmarty) {
 	if( 0 ) {
 		print_r($params);
 		print("<br />");
-		print_r($gBitSystem->getPreference('style'));
+		print_r($gBitSystem->getConfig('style'));
 		print("<br />");
 		print_r($icon_style);
 		print("<br />");

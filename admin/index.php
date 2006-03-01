@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.8 2006/02/01 19:13:28 hash9 Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.9 2006/03/01 18:35:14 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -25,13 +25,13 @@ require_once( KERNEL_PKG_PATH.'simple_form_functions_lib.php' );
 $gBitInstaller = &$gBitSystem;
 $gBitSystem->verifyInstalledPackages();
 //vd($gBitSystem->mPackages);
-$home_blog = $gBitSystem->getPreference("home_blog", 0);
+$home_blog = $gBitSystem->getConfig("home_blog", 0);
 $gBitSmarty->assign('home_blog', $home_blog);
 
-$home_forum = $gBitSystem->getPreference("home_forum", 0);
+$home_forum = $gBitSystem->getConfig("home_forum", 0);
 $gBitSmarty->assign('home_forum', $home_forum);
 
-$home_gallery = $gBitSystem->getPreference("home_gallery", 0);
+$home_gallery = $gBitSystem->getConfig("home_gallery", 0);
 $gBitSmarty->assign('home_gallery', $home_gallery);
 if( isset( $page ) ) {
 	$gBitSmarty->assign('page', $page);
@@ -40,7 +40,7 @@ if( isset( $pageName ) ) {
 	$gBitSmarty->assign( 'pageName', $pageName );
 }
 
-$home_file_gallery = $gBitSystem->getPreference("home_file_gallery", 0);
+$home_file_gallery = $gBitSystem->getConfig("home_file_gallery", 0);
 $gBitSmarty->assign('home_file_gallery', $home_file_gallery);
 
 if (isset($page)) {
@@ -78,7 +78,7 @@ if (isset($page)) {
 	$gBitSmarty->assign('file', $file );
 	include_once ( $adminPage );
 	// Spiderr - a bit hackish, but need to force preferences refresh
-	$gBitSystem->loadPreferences();
+	$gBitSystem->loadConfig();
 } else {
 //vd( $gBitSystem->mPackages );
 	$adminTemplates = array();

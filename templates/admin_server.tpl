@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.8 2006/02/13 10:06:16 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.9 2006/03/01 18:35:15 spiderr Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -10,7 +10,7 @@
 					{formfeedback warning="After changing the browser title, you might have to login again."}
 					{formlabel label="Site title" for="site_title"}
 					{forminput}
-						<input size="50" type="text" name="site_title" id="site_title" value="{$gBitSystemPrefs.site_title|escape}" />
+						<input size="50" type="text" name="site_title" id="site_title" value="{$gBitSystem->getConfig('site_title')|escape}" />
 						{formhelp note="The title of your site. The title appears in the banner area and in the browsers top bar."}
 					{/forminput}
 				</div>
@@ -18,7 +18,7 @@
 				<div class="row">
 					{formlabel label="Site slogan" for="site_slogan"}
 					{forminput}
-						<input size="50" type="text" name="site_slogan" id="site_slogan" value="{$gBitSystemPrefs.site_slogan|escape}" />
+						<input size="50" type="text" name="site_slogan" id="site_slogan" value="{$gBitSystem->getConfig('site_slogan')|escape}" />
 						{formhelp note="This slogan is (usually) shown below the site title."}
 					{/forminput}
 				</div>
@@ -26,7 +26,7 @@
 				<div class="row">
 					{formlabel label="Site Description" for="site_description"}
 					{forminput}
-						<input size="50" type="text" name="site_description" id="site_description" maxlength="180" value="{$gBitSystemPrefs.site_description|escape}" />
+						<input size="50" type="text" name="site_description" id="site_description" maxlength="180" value="{$gBitSystem->getConfig('site_description')|escape}" />
 						{formhelp note="This text is used to describe your site to search engines. Some search engines use this information to create a summary of your site.<br />The text you enter here will not be visible anywhere.<br />The Limit for search engines is <strong>180</strong> characters."}
 					{/forminput}
 				</div>
@@ -34,7 +34,7 @@
 				<div class="row">
 					{formlabel label="Site Keywords" for="site_keywords"}
 					{forminput}
-						<textarea cols="50" rows="5" name="site_keywords" id="site_keywords">{$gBitSystemPrefs.site_keywords|escape}</textarea>
+						<textarea cols="50" rows="5" name="site_keywords" id="site_keywords">{$gBitSystem->getConfig('site_keywords')|escape}</textarea>
 						{formhelp note="Keywords are used to tell search engines what your page is for. Based on these keywords, your site can be categorised better and searches will give you higher rankings.<br />The text you enter here will not be visible anywhere.<br />The Limit for search engines is <strong>900</strong> characters.<br />(due to db restrictions, this list of words will be cut off at 250 chars)."}
 					{/forminput}
 				</div>
@@ -51,7 +51,7 @@
 					{formfeedback warning="Please make sure you know what you are doing as setting this wrongly could prevent you from logging in again."}
 					{formlabel label="Server name" for="kernel_server_name"}
 					{forminput}
-						<input size="50" type="text" name="kernel_server_name" id="kernel_server_name" value="{$gBitSystemPrefs.kernel_server_name|escape}" />
+						<input size="50" type="text" name="kernel_server_name" id="kernel_server_name" value="{$gBitSystem->getConfig('kernel_server_name')|escape}" />
 						{formhelp note="This value should be something like <strong>yourhome.com</strong> and is used for absolute URIs.<br />This setting does <strong>not</strong> require a trailing slash."}
 					{/forminput}
 				</div>
@@ -62,7 +62,7 @@
 					{/if}
 					{formlabel label="Site Emailer return address" for="sender_email"}
 					{forminput}
-						<input size="50" type="text" name="sender_email" id="sender_email" value="{$gBitSystemPrefs.sender_email|escape}" />
+						<input size="50" type="text" name="sender_email" id="sender_email" value="{$gBitSystem->getConfig('sender_email')|escape}" />
 						{formhelp note="When users recieve an automatically generated email, this is the email address that will be used as return address."}
 					{/forminput}
 				</div>
@@ -85,14 +85,14 @@
 					{formfeedback warning="After changing this setting you might have to log in again."}
 					{formlabel label="Store session data in database" for="session_db"}
 					{forminput}
-						{html_checkboxes name="session_db" values="y" checked=$gBitSystemPrefs.session_db labels=false id="session_db"}
+						{html_checkboxes name="session_db" values="y" checked=$gBitSystem->getConfig('session_db') labels=false id="session_db"}
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Session lifetime in seconds" for="session_lifetime"}
 					{forminput}
-						<input size="5" type="text" name="session_lifetime" id="session_lifetime" value="{$gBitSystemPrefs.session_lifetime}" /> {tr}seconds{/tr}
+						<input size="5" type="text" name="session_lifetime" id="session_lifetime" value="{$gBitSystem->getConfig('session_lifetime')}" /> {tr}seconds{/tr}
 						{formhelp note=""}
 					{/forminput}
 				</div>
@@ -108,7 +108,7 @@
 				<div class="row">
 					{formlabel label="Disallow access to the site" for="site_closed"}
 					{forminput}
-						{html_checkboxes name="site_closed" values="y" checked=$gBitSystemPrefs.site_closed labels=false id="site_closed"}
+						{html_checkboxes name="site_closed" values="y" checked=$gBitSystem->getConfig('site_closed') labels=false id="site_closed"}
 						{formhelp note="Disallow access to the site (except for those with permission)"}
 					{/forminput}
 				</div>
@@ -116,7 +116,7 @@
 				<div class="row">
 					{formlabel label="Message to display when site is closed" for="site_closed_msg"}
 					{forminput}
-						<input type="text" name="site_closed_msg" id="site_closed_msg" value="{$gBitSystemPrefs.site_closed_msg}" size="50" />
+						<input type="text" name="site_closed_msg" id="site_closed_msg" value="{$gBitSystem->getConfig('site_closed_msg')}" size="50" />
 					{/forminput}
 				</div>
 
@@ -131,14 +131,14 @@
 				<div class="row">
 					{formlabel label="Max average server load threshold in the last minute" for="load_threshold"}
 					{forminput}
-						<input type="text" name="load_threshold" id="load_threshold" value="{$gBitSystemPrefs.load_threshold}" size="5" />
+						<input type="text" name="load_threshold" id="load_threshold" value="{$gBitSystem->getConfig('load_threshold')}" size="5" />
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Message to display when server is too busy" for="site_busy_msg"}
 					{forminput}
-						<input type="text" name="site_busy_msg" id="site_busy_msg" value="{$gBitSystemPrefs.site_busy_msg}" size="50" />
+						<input type="text" name="site_busy_msg" id="site_busy_msg" value="{$gBitSystem->getConfig('site_busy_msg')}" size="50" />
 					{/forminput}
 				</div>
 

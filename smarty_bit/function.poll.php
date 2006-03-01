@@ -27,7 +27,7 @@ function smarty_function_poll($params, &$gBitSmarty) {
     if($id) {
       $menu_info = $polllib->get_poll($id);
       $channels = $polllib->list_poll_options($id,0,-1,'option_id_asc','');
-			if ($gBitSystem->getPreference('feature_poll_comments') == 'y') {
+			if ($gBitSystem->getConfig('feature_poll_comments') == 'y') {
 				$comments = new LibertyComment();
 				$comments_count = $comments->count_comments("poll:".$menu_info["poll_id"]);
 			}

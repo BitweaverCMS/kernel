@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.5 2006/02/13 10:06:15 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.6 2006/03/01 18:35:14 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -16,7 +16,7 @@ require_once( '../bit_setup_inc.php' );
 require_once( WIKI_PKG_PATH.'BitPage.php' );
 
 /*
-if($gBitSystem->getPreference('wiki_list_pages') != 'y') {
+if($gBitSystem->getConfig('wiki_list_pages') != 'y') {
   $gBitSmarty->assign('msg',tra("This feature is disabled"));
   $gBitSystem->display( 'error.tpl' );
   die;  

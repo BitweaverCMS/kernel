@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.6 2006/02/16 11:10:24 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.7 2006/03/01 18:35:15 spiderr Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -10,13 +10,13 @@
 					{formlabel label="Home page" for="bit_index"}
 					{forminput}
 						<select name="bit_index" id="bit_index">
-							<option value="my_page"{if $gBitSystemPrefs.bit_index eq 'my_page'} selected="selected"{/if}>{tr}My {$gBitSystemPrefs.site_title} Page{/tr}</option>
-							<option value="user_home"{if $gBitSystemPrefs.bit_index eq 'user_home'} selected="selected"{/if}>{tr}User's homepage{/tr}</option>
-							<option value="group_home"{if $gBitSystemPrefs.bit_index eq 'group_home'} selected="selected"{/if}>{tr}Group home{/tr}</option>
-							<option value="custom_home"{if $gBitSystemPrefs.bit_index eq $gBitSystemPrefs.url_index} selected="selected"{/if}>{tr}Custom home{/tr}</option>
+							<option value="my_page"{if $gBitSystem->getConfig('bit_index') eq 'my_page'} selected="selected"{/if}>{tr}My {$gBitSystem->getConfig('site_title')} Page{/tr}</option>
+							<option value="user_home"{if $gBitSystem->getConfig('bit_index') eq 'user_home'} selected="selected"{/if}>{tr}User's homepage{/tr}</option>
+							<option value="group_home"{if $gBitSystem->getConfig('bit_index') eq 'group_home'} selected="selected"{/if}>{tr}Group home{/tr}</option>
+							<option value="custom_home"{if $gBitSystem->getConfig('bit_index') eq $gBitSystem->getConfig('url_index')} selected="selected"{/if}>{tr}Custom home{/tr}</option>
 							{foreach key=name item=package from=$gBitSystem->mPackages }
 								{if $package.homeable && $package.installed}
-									<option {if $gBitSystemPrefs.bit_index eq $package.name}selected="selected"{/if} value="{$package.name}">{$package.name|capitalize}</option>
+									<option {if $gBitSystem->getConfig('bit_index') eq $package.name}selected="selected"{/if} value="{$package.name}">{$package.name|capitalize}</option>
 								{/if}
 							{/foreach}
 						</select>
@@ -33,7 +33,7 @@
 				<div class="row">
 					{formlabel label="URI for custom home" for="url_index"}
 					{forminput}
-						<input type="text" id="url_index" name="url_index" value="{$gBitSystemPrefs.url_index|escape}" size="50" />
+						<input type="text" id="url_index" name="url_index" value="{$gBitSystem->getConfig('url_index')|escape}" size="50" />
 						{formhelp note="Use a specific URI to direct users to a particular page when accessing your site. Can be used to have an introductory page.<br />To activate this, please select <em>Custom home</em> above."}
 					{/forminput}
 				</div>
@@ -86,7 +86,7 @@
 				<div class="row">
 					{formlabel label="Menu Title" for="site_menu_title"}
 					{forminput}
-						<input size="40" type="text" name="site_menu_title" id="site_menu_title" value="{$gBitSystemPrefs.site_menu_title|escape}" />
+						<input size="40" type="text" name="site_menu_title" id="site_menu_title" value="{$gBitSystem->getConfig('site_menu_title')|escape}" />
 						{formhelp note="Override the default home page link name in the top menu bar."}
 					{/forminput}
 				</div>
@@ -94,7 +94,7 @@
 				<div class="row">
 					{formlabel label="Maximum number of records in listings" for="max_records"}
 					{forminput}
-						<input size="5" type="text" name="max_records" id="max_records" value="{$gBitSystemPrefs.max_records|escape}" />
+						<input size="5" type="text" name="max_records" id="max_records" value="{$gBitSystem->getConfig('max_records')|escape}" />
 					{/forminput}
 				</div>
 
@@ -102,7 +102,7 @@
 					<div class="row">
 						{formlabel label=`$output.label` for=$feature}
 						{forminput}
-							{html_checkboxes name="$feature" values="y" checked=`$gBitSystemPrefs.$feature` labels=false id=$feature}
+							{html_checkboxes name="$feature" values="y" checked=`$gBitSystem->getConfig('')$feature` labels=false id=$feature}
 							{formhelp note=`$output.note` page=`$output.page`}
 						{/forminput}
 					</div>

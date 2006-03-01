@@ -34,8 +34,8 @@ function smarty_modifier_bit_date_format($string, $format = "%b %e, %Y", $defaul
 
 	$disptime = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC($string);
 	
-	global $gBitLanguage; //$gBitLanguage->mLanguage= $gBitSystem->getPreference("language", "en");
-	if ($gBitSystem->getPreference("language", "en") != $gBitLanguage->mLanguage && $tra_format) {
+	global $gBitLanguage; //$gBitLanguage->mLanguage= $gBitSystem->getConfig("language", "en");
+	if ($gBitSystem->getConfig("language", "en") != $gBitLanguage->mLanguage && $tra_format) {
 		$format = $tra_format;
 	}
 

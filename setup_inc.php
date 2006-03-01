@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.43 2006/02/26 21:58:58 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.44 2006/03/01 18:35:14 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -106,8 +106,8 @@ $gBitThemes = new BitThemes();
 global $gBitUser, $gTicket, $userlib, $gBitDbType;
 
 if( $gBitSystem->isDatabaseValid() ) {
-	$gBitSystem->loadPreferences();
-	if ($gBitSystem->getPreference('output_obzip') == 'y') {
+	$gBitSystem->loadConfig();
+	if ($gBitSystem->getConfig('output_obzip') == 'y') {
 		ob_start ("ob_gzhandler");
 	}
 
@@ -116,7 +116,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 		require_once( BIT_ROOT_PATH.'liberty/bit_setup_inc.php' );
 	}
 
-	$host = $gBitSystem->getPreference( 'kernel_server_name', $_SERVER['HTTP_HOST'] );
+	$host = $gBitSystem->getConfig( 'kernel_server_name', $_SERVER['HTTP_HOST'] );
 	if( !defined('BIT_BASE_URI' ) ) {
 		define( 'BIT_BASE_URI', 'http://'.$host );
 	}
@@ -137,7 +137,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$theme = $gBitSystem->getStyle();
 	$theme = !empty($theme) ? $theme : 'basic';
 	// users_themes='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
-	if( $gBitSystem->getPreference('users_themes') == 'y' ) {
+	if( $gBitSystem->getConfig('users_themes') == 'y' ) {
 		if (isset($_COOKIE['tiki-theme'])) {
 			$theme = $_COOKIE['tiki-theme'];
 		}
@@ -215,20 +215,20 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// check to see if admin has closed the site
     if ( (isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] == USERS_PKG_URL.'validate.php' ) ) $bypass_siteclose_check = 'y';
 	if ( $gBitSystem->isFeatureActive( 'site_closed' ) && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check)) {
-		$_REQUEST['error'] = $gBitSystem->getPreference('site_closed_msg', 'Site is closed for maintainance; please come back later.');
+		$_REQUEST['error'] = $gBitSystem->getConfig('site_closed_msg', 'Site is closed for maintainance; please come back later.');
 		include( KERNEL_PKG_PATH . 'error_simple.php' );
 		exit;
 	}
 	// check to see if max server load threshold is enabled
-	$use_load_threshold = $gBitSystem->getPreference('use_load_threshold', 'n');
+	$use_load_threshold = $gBitSystem->getConfig('use_load_threshold', 'n');
 	// get average server load in the last minute. Keep quiet cause virtual hosts can give perm denied
 	if (@is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
 		list($server_load) = explode(' ', $load[0]);
 		$gBitSmarty->assign('server_load', $server_load);
 		if ($use_load_threshold == 'y' && !$gBitUser->hasPermission( 'bit_p_access_closed_site' ) && !isset($bypass_siteclose_check)) {
-			$load_threshold = $gBitSystem->getPreference('load_threshold', 3);
+			$load_threshold = $gBitSystem->getConfig('load_threshold', 3);
 			if ($server_load > $load_threshold) {
-				$_REQUEST['error'] = $gBitSystem->getPreference('site_busy_msg', 'Server is currently too busy; please come back later.');
+				$_REQUEST['error'] = $gBitSystem->getConfig('site_busy_msg', 'Server is currently too busy; please come back later.');
 				include( KERNEL_PKG_PATH . 'error_simple.php' );
 				exit;
 			}
@@ -244,18 +244,18 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$https_port = 443;
 	}
 
-	$title = $gBitSystem->getPreference("title", "");
-	$https_port = $gBitSystem->getPreference('https_port', $https_port);
-	$https_prefix = $gBitSystem->getPreference('https_prefix', '/');
+	$title = $gBitSystem->getConfig("title", "");
+	$https_port = $gBitSystem->getConfig('https_port', $https_port);
+	$https_prefix = $gBitSystem->getConfig('https_prefix', '/');
 	// we need this for backwards compatibility - use $gBitSystem->getPrerference( 'max_records' ) if you need it, or else the spanish inquisition will come and poke you with a soft cushion
-	$max_records = $gBitSystem->getPreference("max_records", 10);
+	$max_records = $gBitSystem->getConfig("max_records", 10);
 
 	/* this stuff isn't really needed here - xing - 2006-02-06
-	$http_domain = $gBitSystem->getPreference('http_domain', '');
-	$http_port = $gBitSystem->getPreference('http_port', $http_port);
-	$http_prefix = $gBitSystem->getPreference('http_prefix', '/');
-	$modallgroups = $gBitSystem->getPreference("modallgroups", 'y');
-	$modseparateanon = $gBitSystem->getPreference("modseparateanon", 'n');
+	$http_domain = $gBitSystem->getConfig('http_domain', '');
+	$http_port = $gBitSystem->getConfig('http_port', $http_port);
+	$http_prefix = $gBitSystem->getConfig('http_prefix', '/');
+	$modallgroups = $gBitSystem->getConfig("modallgroups", 'y');
+	$modseparateanon = $gBitSystem->getConfig("modseparateanon", 'n');
 
 	$gBitSmarty->assign('http_domain', $http_domain);
 	$gBitSmarty->assign('http_port', $http_port);
@@ -264,7 +264,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign('https_port', $https_port);
 	$gBitSmarty->assign('https_prefix', $https_prefix);
 
-	$gBitSmarty->assign('kernel_server_name', $gBitSystem->getPreference( 'kernel_server_name', $_SERVER["SERVER_NAME"] ));
+	$gBitSmarty->assign('kernel_server_name', $gBitSystem->getConfig( 'kernel_server_name', $_SERVER["SERVER_NAME"] ));
 	$gBitSmarty->assign('count_admin_pvs', 'y');
 	$gBitSmarty->assign('modallgroups', $modallgroups);
 	$gBitSmarty->assign('modseparateanon', $modseparateanon);
@@ -296,17 +296,17 @@ if( $gBitSystem->isDatabaseValid() ) {
 //	============================================================================================================
 
 	/* # not implemented
-	$http_basic_auth = $gBitSystem->getPreference('http_basic_auth', '/');
+	$http_basic_auth = $gBitSystem->getConfig('http_basic_auth', '/');
 	$gBitSmarty->assign('http_basic_auth',$http_basic_auth);
 	*/
-	$gBitSmarty->assign('https_login', $gBitSystem->getPreference( 'https_login' ) );
-	$gBitSmarty->assign('https_login_required', $gBitSystem->getPreference( 'https_login_required' ) );
+	$gBitSmarty->assign('https_login', $gBitSystem->getConfig( 'https_login' ) );
+	$gBitSmarty->assign('https_login_required', $gBitSystem->getConfig( 'https_login_required' ) );
 
 	$login_url = USERS_PKG_URL . 'validate.php';
 	$gBitSmarty->assign('login_url', $login_url);
 
 	if( $gBitSystem->isFeatureActive( 'https_login' ) || $gBitSystem->isFeatureActive( 'https_login_required' ) )	{
-		$https_domain = $gBitSystem->getPreference('https_domain', '');
+		$https_domain = $gBitSystem->getConfig('https_domain', '');
 		$http_login_url = 'http://' . $http_domain;
 
 		if ($http_port != 80)

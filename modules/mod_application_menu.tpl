@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.9 2006/03/01 18:35:14 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.10 2006/03/01 21:19:33 starrrider Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -24,14 +24,14 @@
 				{else}
 					{if $menu.title}
 						{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-							<a class="head" href="javascript:icntoggle('{$key}menu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
+							<a class="head" href="javascript:flipIcon('{$key}menu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
 						{else}
 							<a class="head" href="javascript:toggle('{$key}menu');">
 						{/if}
 						{tr}{$menu.title}{/tr}</a>
 						{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 							<script type="text/javascript">
-								setfoldericonstate('{$key}menu');
+								flipIcon('{$key}menu');
 							</script>
 						{/if}
 					{/if}
@@ -62,7 +62,7 @@
 				{/if}
 			{else}
 				{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-					<a class="head" href="javascript:icntoggle('usrmenu');">{biticon ipackage=liberty iname="collapsed" id="usrmenu" iexplain="folder"}
+					<a class="head" href="javascript:flipIcon('usrmenu');">{biticon ipackage=liberty iname="collapsed" id="usrmenu" iexplain="folder"}
 				{else}
 					<a class="head" href="javascript:toggle('usrmenu');">
 				{/if}

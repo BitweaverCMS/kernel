@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.6 2006/02/06 15:22:35 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.7 2006/03/01 21:19:33 starrrider Exp $ *}
 {strip}
 {if $packageMenu}
 	{bitmodule title="$moduleTitle" name="package_menu"}
@@ -11,14 +11,14 @@
 		{foreach key=key item=menu from=$adminMenu}
 			<div class="menu {$key}menu">
 				{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-					<a class="head" href="javascript:icntoggle('{$key}admenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`admenuimg" iexplain="folder"}&nbsp;
+					<a class="head" href="javascript:flipIcon('{$key}admenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`admenuimg" iexplain="folder"}&nbsp;
 				{else}
 					<a class="head" href="javascript:toggle('{$key}admenu');">
 				{/if}
 				{tr}{$key|capitalize}{/tr}</a>
 				{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 					<script type="text/javascript">
-						setfoldericonstate('{$key}admenu');
+						flipIcon('{$key}admenu');
 					</script>
 				{/if}
 				<div id="{$key}admenu">

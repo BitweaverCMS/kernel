@@ -3,14 +3,14 @@
 	{foreach key=key item=menu from=$adminMenu}
 		<div class="admenu {$key}menu">
 			{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-				<a class="menuhead" href="javascript:icntoggle('{$key}admenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
+				<a class="menuhead" href="javascript:flipIcon('{$key}admenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
 			{else}
 				<a class="menuhead" href="javascript:toggle('{$key}admenu');">
 			{/if}
 			{tr}{$key|capitalize}{/tr}</a>
 			{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 				<script type="text/javascript">
-					setfoldericonstate('{$key}admenu');
+					flipIcon('{$key}admenu');
 				</script>
 			{/if}
 			<div id="{$key}admenu">

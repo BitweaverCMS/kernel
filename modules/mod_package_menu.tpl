@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.1.1.1.2.4 2005/12/18 19:58:26 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.1.1.1.2.5 2006/03/01 16:26:45 starrrider Exp $ *}
 {strip}
 {if $packageMenu}
 	{bitmodule title="$moduleTitle" name="package_menu"}
@@ -11,14 +11,14 @@
 		{foreach key=key item=menu from=$adminMenu}
 			<div class="menu {$key}menu">
 				{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-					<a class="head" href="javascript:icntoggle('{$key}admenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`admenuimg" iexplain="folder"}&nbsp;
+					<a class="head" href="javascript:flipIcon('{$key}admenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`admenuimg" iexplain="folder"}&nbsp;
 				{else}
 					<a class="head" href="javascript:toggle('{$key}admenu');">
 				{/if}
 				{tr}{$key|capitalize}{/tr}</a>
 				{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 					<script type="text/javascript">
-						setfoldericonstate('{$key}admenu');
+						flipIcon('{$key}admenu');
 					</script>
 				{/if}
 				<div id="{$key}admenu">
@@ -31,14 +31,14 @@
 		{/foreach}
 		<div class="menu layoutmenu">
 			{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-				<a class="head" href="javascript:icntoggle('layoutadmenu');">{biticon ipackage=liberty iname="collapsed" id="layoutadmenuimg" iexplain="folder"}&nbsp;
+				<a class="head" href="javascript:flipIcon('layoutadmenu');">{biticon ipackage=liberty iname="collapsed" id="layoutadmenuimg" iexplain="folder"}&nbsp;
 			{else}
 				<a class="head" href="javascript:toggle('layoutadmenu');">
 			{/if}
 			{tr}Layout and Design{/tr}</a>
 			{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 				<script type="text/javascript">
-					setfoldericonstate('layoutadmenu');
+					flipIcon('layoutadmenu');
 				</script>
 			{/if}
 			<div id="layoutadmenu">

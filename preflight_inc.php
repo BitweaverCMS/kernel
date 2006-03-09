@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.8 2006/02/21 07:17:25 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.9 2006/03/09 06:34:04 seannerd Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -18,9 +18,18 @@ function getTempDir() {
 		if( !empty( $gTempDir ) ) {
 			$tempdir = $gTempDir;
 		} else {
-			$tempfile = tempnam(((@ini_get('safe_mode'))
-						? ($_SERVER['DOCUMENT_ROOT'] . '/temp/')
-						: (false)), 'foo');
+			if (!isWindows()) {
+				$tempfile = tempnam(((@ini_get('safe_mode'))
+							? ($_SERVER['DOCUMENT_ROOT'] . '/temp/')
+							: (false)), 'foo');
+			} else {
+				// This looks weird - here is what it does in windows
+				// If the passed directory doesn't exist, the windows enviroment variable TMP
+				// will be used. I passed _x_ plus a time stamp - that should not exist.
+				// I tried the function with an empty string, null and false instead of a bogus
+				// directory - but then I end up with the root (\)
+				$tempfile = tempnam("_x_" . time(), 'foo');
+			}
 			$tempdir = dirname($tempfile);
 			@unlink($tempfile);
 		}

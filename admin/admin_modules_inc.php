@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.11 2006/02/13 10:06:15 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.12 2006/03/09 19:14:10 seannerd Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -104,7 +104,7 @@ foreach ($all_modules as $name=>$module) {
     $curMod['name'] = $module;
     $curMod['module_rsrc'] = $name;
     $curMod['enabled'] = false;
-    $curMod['rows'] = '';
+    $curMod['module_rows'] = '';
     $curMod['cache_time'] = '';
     $curMod['params'] = '';
     $curMod['groups'] = array();
@@ -113,7 +113,7 @@ foreach ($all_modules as $name=>$module) {
         if ($availMod['module_rsrc'] == $name) {
 			// Fill specific information for those modules who are already in use or enabled for use.
 			$curMod['enabled'] = true;
-			$curMod['rows'] = $availMod['rows'];
+			$curMod['module_rows'] = $availMod['module_rows'];
 			$curMod['cache_time'] = $availMod['cache_time'];
 			$curMod['params'] = $availMod['params'];
 			$curMod['groups'] = $availMod['groups'];
@@ -143,7 +143,7 @@ $javascript .= "function CModule(name, module_rsrc, bEnabled, rows, params, cach
 // Store all module data in our javascrip CModule class array
 $javascript .= 'modArray = new Array('.count($all_modules).");\n";
 foreach ($availHash as $index=>$colMod) {
-	$javascript .= "modArray[$index] = new CModule('".$colMod['name']."','".$colMod['module_rsrc']."',".($colMod['enabled'] ? 'true' : 'false').",'".$colMod['rows']."','".$colMod['params']."','".$colMod['cache_time']."');\n";
+	$javascript .= "modArray[$index] = new CModule('".$colMod['name']."','".$colMod['module_rsrc']."',".($colMod['enabled'] ? 'true' : 'false').",'".$colMod['module_rows']."','".$colMod['params']."','".$colMod['cache_time']."');\n";
     if( !empty( $colMod['groups'] ) && count( $colMod['groups'] ) ) {
         $javascript .= "modArray[$index].groups = [ ";
         foreach( $colMod['groups'] as $index=>$group_name) {

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.13 2006/03/01 20:16:13 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.14 2006/03/14 14:57:44 wakeworks Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -429,11 +429,17 @@ class BitDbAdodb extends BitDb
 	*		It will be created if it does not already exist
 	* @return		0 if not supported, otherwise a sequence id
 	*/
-	function GenID( $pSequenceName ) {
+	function GenID( $pSequenceName, $pUseDbPrefix = true ) {
 		if( empty( $this->mDb ) ) {
 			return FALSE;
 		}
-		return $this->mDb->GenID( str_replace("`","",BIT_DB_PREFIX).$pSequenceName );
+		if ($pUseDbPrefix) {
+			$prefix = str_replace("`","",BIT_DB_PREFIX);
+		}
+		else {
+			$prefix = '';
+		}
+		return $this->mDb->GenID( $prefix.$pSequenceName );
 	}
 
 	/**

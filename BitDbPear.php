@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.13 2006/02/26 17:49:08 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.14 2006/03/14 14:57:44 wakeworks Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -286,12 +286,18 @@ class BitDbPear extends BitDb
 	*		It will be created if it does not already exist
 	* @return		0 if not supported, otherwise a sequence id
 	*/
-	function GenID( $pSequenceName ) {
+	function GenID( $pSequenceName, $pUseDbPrefix = true ) {
 		if( empty( $this->mDb ) ) {
 			return FALSE;
 		}
 		// Pear appends _seq just to be a pain
-		$seqName  = str_replace( '_seq', '', str_replace("`","",BIT_DB_PREFIX).$pSequenceName );
+		if ($pUseDbPrefix) {
+			$prefix = str_replace("`","",BIT_DB_PREFIX);
+		}
+		else {
+			$prefix = '';
+		}
+		$seqName  = str_replace( '_seq', '', $prefix.$pSequenceName );
 		return $this->mDb->nextId( $seqName );
 	}
 

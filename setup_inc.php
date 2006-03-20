@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.45 2006/03/01 20:16:13 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.46 2006/03/20 19:35:18 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -59,6 +59,7 @@ switch( @$gBitDbSystem ) {
 		break;
 }
 // the installer and select admin pages required DataDict to verify package installation
+global $gForceAdodb;
 if( !empty( $gForceAdodb ) ) {
 	$dbClass = 'BitDbAdodb';
 }

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.14 2006/03/14 14:57:44 wakeworks Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.15 2006/03/20 19:35:18 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -32,10 +32,14 @@ require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
  */
 class BitDbPear extends BitDb
 {
-
+	var $mDebug;
+	
 	function BitDbPear( $pPearDsn=NULL, $pPearOptions = NULL )
 	{
+		global $gDebug;
 		parent::BitDb();
+
+		$this->mDebug = $gDebug;
 
 		if( empty( $pPearDsn ) ) {
 			global $gBitDbType, $gBitDbUser, $gBitDbPassword, $gBitDbHost, $gBitDbName;
@@ -151,6 +155,13 @@ class BitDbPear extends BitDb
 		}
 
 		$this->queryComplete();
+		if( !empty( $this->mDebug ) ) {
+			print( "<tt>\n".vsprintf( str_replace( '?', "'%s'", $this->mDb->last_query ), $this->mDb->last_parameters )."\n</tt><br/>" );
+			if( $this->mDebug == 99 ) {
+				bt();
+			}
+		}
+		
 		return $result;
 	}
 
@@ -406,6 +417,14 @@ class BitDbPear extends BitDb
 		$this->mDb->autoCommit( TRUE );
 		return( $ret );
 	}
+
+	/** will activate ADODB's native debugging output
+	* @param pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose
+	**/
+	function debug( $pLevel=99 ) {
+		$this->mDebug = $pLevel;
+	}
+
 
 	/**
 	 * Create a list of tables available in the current database

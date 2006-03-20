@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.18 2006/03/14 14:57:44 wakeworks Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.19 2006/03/20 19:47:16 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -71,6 +71,11 @@ class BitDb
 	*/
 	var $mCacheFlag;
 	/**
+	* Used to determine SQL debug output. BitDbAdodb overrides associated methods to use the debugging mechanisms built into ADODB
+	* @private
+	*/
+	var $mDebug;
+	/**
 	* Determines if fatal query functions should terminate script execution. Defaults to TRUE. Can be deactived for things like expected duplicate inserts
 	* @private
 	*/
@@ -81,6 +86,8 @@ class BitDb
 	*/
 	function BitDb()
 	{
+		global $gDebug;
+		$this->mDebug = $gDebug;
 		$this->mCacheFlag = FALSE;
 		$this->mNumQueries = 0;
 		$this->setFatalActive();
@@ -161,13 +168,23 @@ class BitDb
 	* Used to start query timer if in debug mode
 	*/
 	function queryStart() {
-		global $gDebug;
-		if( $gDebug ) {
+		if( $this->getDebugLevel() ) {
 			global $gBitSystem;
 			$this->mQueryLap = $gBitSystem->mTimer->elapsed();
-			$this->mDb->debug = $gDebug;
-			flush();
 		}
+	}
+	/** will activate ADODB like native debugging output
+	* @param pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose
+	**/
+	function debug( $pLevel=99 ) {
+		$this->mDebug = $pLevel;
+	}
+
+	/** returns the level of query debugging output
+	* @return pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose
+	**/
+	function getDebugLevel() {
+		return( $this->mDebug );
 	}
 	/**
 	* Sets the case sensitivity mode which is used in convertQuery
@@ -202,8 +219,7 @@ class BitDb
 		//count the number of queries made
 		$num_queries++;
 		$this->mNumQueries++;
-		global $gDebug;
-		if( $gDebug ) {
+		if( $this->getDebugLevel() ) {
 			global $gBitSystem;
 			$interval = $gBitSystem->mTimer->elapsed() - $this->mQueryLap;
 			$style = ( $interval > .5 ) ? 'color:red;' : (( $interval > .15 ) ? 'color:orange;' : '');
@@ -793,13 +809,6 @@ class BitDb
 			break;
 		}
 	}
-	/** will activate ADODB's native debugging output
-	* @param pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose
-	**/
-	function debug( $pLevel=99 ) {
-		// PURE VIRTUAL
-	}
-
 	/**
 	* Used to encode blob data (eg PostgreSQL). Can be called statically
 	* @todo had a lot of trouble with AdoDB BlobEncode and BlobDecode

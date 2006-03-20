@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.15 2006/03/20 19:35:18 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.16 2006/03/20 19:47:16 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -32,14 +32,10 @@ require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
  */
 class BitDbPear extends BitDb
 {
-	var $mDebug;
-	
 	function BitDbPear( $pPearDsn=NULL, $pPearOptions = NULL )
 	{
 		global $gDebug;
 		parent::BitDb();
-
-		$this->mDebug = $gDebug;
 
 		if( empty( $pPearDsn ) ) {
 			global $gBitDbType, $gBitDbUser, $gBitDbPassword, $gBitDbHost, $gBitDbName;
@@ -102,8 +98,7 @@ class BitDbPear extends BitDb
 	* conjunction with $pNumRows
 	* @todo currently not used anywhere.
 	*/
-	function queryError( $pQuery, &$pError, $pValues = NULL, $pNumRows = -1,
-	$pOffset = -1 )
+	function queryError( $pQuery, &$pError, $pValues = NULL, $pNumRows = -1, $pOffset = -1 )
 	{
 		$this->convertQuery($pQuery);
 		if ($pNumRows == -1 && $pOffset == -1)
@@ -155,14 +150,18 @@ class BitDbPear extends BitDb
 		}
 
 		$this->queryComplete();
+		
+		return $result;
+	}
+
+	function queryComplete() {
 		if( !empty( $this->mDebug ) ) {
 			print( "<tt>\n".vsprintf( str_replace( '?', "'%s'", $this->mDb->last_query ), $this->mDb->last_parameters )."\n</tt><br/>" );
 			if( $this->mDebug == 99 ) {
 				bt();
 			}
 		}
-		
-		return $result;
+		parent::queryComplete();
 	}
 
 	/**
@@ -417,14 +416,6 @@ class BitDbPear extends BitDb
 		$this->mDb->autoCommit( TRUE );
 		return( $ret );
 	}
-
-	/** will activate ADODB's native debugging output
-	* @param pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose
-	**/
-	function debug( $pLevel=99 ) {
-		$this->mDebug = $pLevel;
-	}
-
 
 	/**
 	 * Create a list of tables available in the current database

@@ -2,79 +2,6 @@
 global $gBitSystem, $gUpgradeFrom, $gUpgradeTo;
 $upgrades = array(
 
-/*
-// should we continue using 'feature_' for tiki_preferences?
-// a list of currenlty used deprecated preference names
-user_files
-clear_passwords
-custom_home
-user_bookmarks
-feature_tasks
-usermenu
-user_preferences
-user_watches
-help
-wiki_help
-help_notes
-bot_bar
-top_bar
-banning
-site_contact
-jstabs
-left_column
-right_column
-bidirectional_text
-theme_control
-top_bar_dropdown
-referer_stats
-hotwords_nw
-hotwords
-babelfish
-babelfish_logo
-autolinks
-backlinks
-wiki_dump
-content_history
-last_changes
-like_pages
-allow_dup_wiki_page_names
-list_pages
-page_title
-wiki_ranking
-sandbox
-warn_on_edit
-feature_wiki
-wiki_attachments
-wiki_books
-wiki_comments
-wiki_description
-wiki_discuss
-wiki_footnotes
-wiki_icache
-wiki_monosp
-wiki_multiprint
-wiki_notepad
-wiki_generate_pdf
-wiki_pictures
-wiki_plurals
-wiki_rankings
-wiki_tables
-wiki_templates
-wiki_undo
-wiki_usrlock
-wiki_words
-wiki_copyrights
-search_fulltext
-search_stats
-feature_categoryobjects
-feature_categorypath
-cms_rankings
-article_submissions
-blogposts_comments
-blog_rankings
-feature_blogs
-*/
-
 'TIKIWIKI19' => array (
 	'TIKIWIKI18' => array (
 /*
@@ -226,6 +153,25 @@ array( 'DATADICT' => array(
 
 'BWR1' => array(
 	'BWR2' => array(
+array( 'DATADICT' => array(
+	// RENAME
+	array( 'RENAMETABLE' => array(
+		'tiki_preferences'       => 'kernel_prefs',
+		'tiki_banning'           => 'tidbits_banning',
+		'tiki_banning_sections'  => 'tidbits_banning_sections',
+		'tiki_cookies'           => 'tidbits_fortune_cookies',
+		'tiki_layouts'           => 'themes_layouts',
+		'tiki_layouts_modules'   => 'themes_layouts_modules',
+		'tiki_mail_events'       => 'mail_notifications',
+		'tiki_module_map'        => 'themes_module_map',
+		'tiki_pageviews'         => 'stats_pageviews',
+		// this table is marked for removal
+		'tiki_dynamic_variables' => 'liberty_dynamic_variables',
+	)),
+	array( 'DROPTABLE' => array(
+		'tiki_programmed_content', 'tiki_dsn', 'tiki_content_templates', 'tiki_content_templates_sections', 'tiki_menus', 'tiki_menu_options',
+	)),
+)),
 // clean up all kernel_prefs in the database by using only under_scores in the databae
 array( 'QUERY' =>
 	array( 'SQL92' => array(

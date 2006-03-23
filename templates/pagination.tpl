@@ -48,8 +48,10 @@
 		{if $listInfo.current_page < $listInfo.total_pages}
 			&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page+1}">&raquo;</a>&nbsp;
 		{/if}
+{*
 		<br />
 		{tr}Items <strong>{$listInfo.offset+1}</strong> to <strong>{if $to > $listInfo.total_records}{$listInfo.total_records}{else}{$to}{/if}</strong> (of <strong>{$listInfo.total_records}</strong>){/tr}
+*}
 		{if $gBitSystem->isFeatureActive( 'direct_pagination' )}
 			<div class="pager">
 				<span class="left" style="float:left; width:48%; text-align:right;">

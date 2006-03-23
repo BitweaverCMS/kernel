@@ -256,7 +256,6 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_plurals' WHERE `name`='feature_wiki_plurals'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_rankings' WHERE `name`='feature_wiki_rankings'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_tables' WHERE `name`='feature_wiki_tables'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_templates' WHERE `name`='feature_wiki_templates'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_undo' WHERE `name`='feature_wiki_undo'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_usrlock' WHERE `name`='feature_wiki_usrlock'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_words' WHERE `name`='feature_wikiwords'",

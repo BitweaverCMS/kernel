@@ -80,7 +80,7 @@
 							{section name=ix loop=$layout.$area}
 								<li id="module_id-{$layout.$area[ix].module_id}">
 									{if $colkey ne 'center'}
-										<strong>{tr}Title{/tr}</strong>: <input size="20" name="modules[{$layout.$area[ix].module_id}][title]" value="{$layout.$area[ix].title}" /><br />
+										<strong>{tr}Title{/tr}</strong>: <input size="20" name="modules[{$layout.$area[ix].module_id}][title]" value="{$layout.$area[ix].title|escape}" /><br />
 										<strong>{tr}Rows{/tr}</strong>: <input size="5" name="modules[{$layout.$area[ix].module_id}][module_rows]" value="{$layout.$area[ix].module_rows}" /><br />
 									{/if}
 									<strong>{tr}Module{/tr}</strong>: {$layout.$area[ix].name|escape}<br />

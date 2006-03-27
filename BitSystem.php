@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.60 2006/03/01 20:16:13 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.61 2006/03/27 22:52:44 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -583,6 +583,7 @@ class BitSystem extends BitBase {
 			$pMsg .= '</p><p>You must be logged in. Please <a href="'.USERS_PKG_URL.'login.php">login</a> or <a href="'.USERS_PKG_URL.'register.php">register</a>.';
 			$gBitSmarty->assign( 'template', 'bitpackage:users/login_inc.tpl' );
 		}
+		$gBitSmarty->assign( 'fatalTitle', tra( "Permission denied." ) );
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->display( "error.tpl" );
 		die;
@@ -889,9 +890,10 @@ class BitSystem extends BitBase {
 	* @return none this function will DIE DIE DIE!!!
 	* @access public
 	*/
-	function fatalError( $pMsg, $pTemplate='error.tpl' )
+	function fatalError( $pMsg, $pTemplate='error.tpl', $pErrorTitle="Seems there's been a minor glitch somewhere." )
 	{
 		global $gBitSmarty;
+		$gBitSmarty->assign('fatalTitle', tra($pErrorTitle) );
 		$gBitSmarty->assign('msg', tra($pMsg) );
 		$this->display( $pTemplate );
 		die;

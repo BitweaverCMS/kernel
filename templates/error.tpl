@@ -5,7 +5,7 @@
 	</div>
 
 	<div class="body">
-		{box title="Seems there's been a minor glitch somewhere."}
+		{box title=$fatalTitle}
 			<p class="highlight">{$msg}</p>
 
 			{if $template}

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.61 2006/03/27 22:52:44 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.62 2006/03/29 09:44:42 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -738,16 +738,20 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function registerAppMenu($pKey, $pMenuTitle, $pTitleUrl, $pMenuTemplate, $pAdminPanel = false)
-	{
+	function registerAppMenu( $pKey, $pMenuTitle, $pTitleUrl, $pMenuTemplate, $pAdminPanel = false ) {
 		if( $this->getConfig( 'menu_'.$pKey ) != 'n' ) {
-			$this->mAppMenu[strtolower($pKey)] = array('title' => $pMenuTitle,
+			$this->mAppMenu[strtolower( $pKey )] = array(
+				'title' => $pMenuTitle,
 				'titleUrl' => $pTitleUrl,
 				'template' => $pMenuTemplate,
 				'adminPanel' => $pAdminPanel,
-				'style' => 'display:' . (empty($pMenuTitle) || (isset($_COOKIE[$pKey . 'menu']) && ($_COOKIE[$pKey . 'menu'] == 'o')) ? 'block;' : 'none;')
+				'style' => 'display:'.( empty( $pMenuTitle ) || ( isset( $_COOKIE[$pKey.'menu'] ) && ( $_COOKIE[$pKey.'menu'] == 'o' ) ) ? 'block;' : 'none;' )
 				// TODO this display logic should maybe be moved to .tpl logic, but need to acces $_COOKIES in {$smartVar}
-				);
+			);
+		} else {
+			$this->mAppMenuDisabled[strtolower( $pKey )] = array(
+				'title' => $pMenuTitle,
+			);
 		}
 	}
 	// >>>

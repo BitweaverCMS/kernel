@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.16 2006/03/01 18:35:14 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.17 2006/03/29 10:10:23 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -45,18 +45,6 @@ if( !empty( $_REQUEST['module_name'] ) ) {
 }
 
 $formMiscFeatures = array(
-	'top_bar' => array(
-		'label' => 'Top bar menu',
-		'note' => 'Here you can enable or disable the menubar at the top of the page (available in most themes). Before you disable this bar, please make sure you have some means of navigation set up to access at least the administration page.',
-	),
-	'hide_my_top_bar_link' => array(
-		'label' => 'Hide "My" Link',
-		'note' => 'Hide the <strong>My &lt;sitename&gt;</strong> link from users that are not logged in.',
-	),
-	'top_bar_dropdown' => array(
-		'label' => 'Dropdown menu',
-		'note' => 'Use the CSS driven dropdown menus in the top bar. Compatibility and further reading can be found at <a class="external" href="http://www.htmldog.com/articles/suckerfish/dropdowns/">Suckerfish Dropdowns</a>.',
-	),
 	'right_column' => array(
 		'label' => 'Right Module Column',
 		'note' => 'Here you can disable the right column site-wide.',

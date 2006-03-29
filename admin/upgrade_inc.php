@@ -286,6 +286,13 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_prefs` SET `name`='wiki_url_import' WHERE `name`='feature_wiki_url_import'",
 	)
 )),
+array( 'DATADICT' => array(
+	array( 'RENAMECOLUMN' => array(
+		'kernel_prefs' => array(
+			'`value`' => 'pref_value'
+		),
+	)),
+)),
 	)
 ),
 

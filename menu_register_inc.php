@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.7 2005/12/18 22:29:51 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.8 2006/03/29 08:56:49 squareing Exp $
  * @package kernel
  * @subpackage functions
  *
@@ -30,7 +30,7 @@
 		}
 		array_multisort( $adminMenu );
 		$gBitSmarty->assign_by_ref( 'adminMenu', $adminMenu );
-		$layoutdisplay = ((isset($_COOKIE['layoutadmenu']) && ($_COOKIE['layoutadmenu'] == 'o')) ? 'block' : 'none');
-		$gBitSmarty->assign_by_ref( 'layoutdisplay', $layoutdisplay );
+		//$layoutdisplay = ((isset($_COOKIE['layoutadmenu']) && ($_COOKIE['layoutadmenu'] == 'o')) ? 'block' : 'none');
+		//$gBitSmarty->assign_by_ref( 'layoutdisplay', $layoutdisplay );
 	}
 ?>

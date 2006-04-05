@@ -157,15 +157,8 @@ array( 'DATADICT' => array(
 	// RENAME
 	array( 'RENAMETABLE' => array(
 		'tiki_preferences'       => 'kernel_prefs',
-		'tiki_banning'           => 'tidbits_banning',
-		'tiki_banning_sections'  => 'tidbits_banning_sections',
-		'tiki_cookies'           => 'tidbits_fortune_cookies',
-		'tiki_layouts'           => 'themes_layouts',
-		'tiki_layouts_modules'   => 'themes_layouts_modules',
 		'tiki_mail_events'       => 'mail_notifications',
-		'tiki_module_map'        => 'themes_module_map',
-		'tiki_pageviews'         => 'stats_pageviews',
-		// this table is marked for removal
+		// TODO: this table is marked for removal
 		'tiki_dynamic_variables' => 'liberty_dynamic_variables',
 	)),
 	array( 'DROPTABLE' => array(
@@ -289,7 +282,7 @@ array( 'QUERY' =>
 array( 'DATADICT' => array(
 	array( 'RENAMECOLUMN' => array(
 		'kernel_prefs' => array(
-			'`value`' => 'pref_value'
+			'`value`' => '`pref_value` C(250)',
 		),
 	)),
 )),

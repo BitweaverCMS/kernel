@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.17 2006/03/01 18:35:14 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.18 2006/04/10 14:03:58 sylvieg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -132,7 +132,17 @@ class BitBase
     * Determines if any given variable exists and is a number
     **/
 	function verifyId( $pId ) {
-		return( !empty( $pId ) && is_numeric( $pId ) );
+		if ( empty( $pId ) ) {
+			return false;
+		}
+		if ( is_array( $pId ) ) {
+			foreach ($pId as $id) {
+				if ( !is_numeric( $id ) )
+					return false;
+			}
+			return true;
+		}
+		return( is_numeric( $pId ) );
 	}
 
     // {{{ display

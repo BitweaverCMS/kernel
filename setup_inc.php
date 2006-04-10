@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.46 2006/03/20 19:35:18 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.47 2006/04/10 16:11:10 sylvieg Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -139,13 +139,13 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$theme = !empty($theme) ? $theme : 'basic';
 	// users_themes='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
 	if( $gBitSystem->getConfig('users_themes') == 'y' ) {
-		if (isset($_COOKIE['tiki-theme'])) {
-			$theme = $_COOKIE['tiki-theme'];
-		}
 		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'users_preferences' ) ) {
 			if( $userStyle = $gBitUser->getPreference('theme') ) {
 				$theme = $userStyle;
 			}
+		}
+		if (isset($_COOKIE['tiki-theme'])) {
+			$theme = $_COOKIE['tiki-theme'];
 		}
 	}
 	$gBitSystem->setStyle($theme);

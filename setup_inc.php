@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.50 2006/04/11 17:40:57 bitweaver Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.51 2006/04/11 17:52:09 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -11,6 +11,13 @@
 /**
  * required setup
  */
+
+// remove all html from $_GET
+if( !empty( $_GET ) && is_array( $_GET ) ) {
+	foreach( $_GET as $key => $val ) {
+		$_REQUEST[$key] = $_POST[$key] = $_GET[$key] = htmlspecialchars( $val );
+	}
+}
 
 require_once(BIT_ROOT_PATH . 'kernel/config_defaults_inc.php');
 

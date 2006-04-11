@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.63 2006/03/29 10:10:23 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.64 2006/04/11 17:40:57 bitweaver Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -61,7 +61,7 @@ class BitSystem extends BitBase {
 	// Used by packages to register notification events that can be subscribed to.
 	var $mNotifyEvents = array();
 	/**
-	* Used to store contents of kernel_prefs
+	* Used to store contents of kernel_config
 	* @private
 	*/
 	var $mConfig;
@@ -151,10 +151,10 @@ class BitSystem extends BitBase {
 		}
 
 		if ( empty( $this->mConfig ) ) {
-			$query = "SELECT `name` ,`pref_value`, `package` FROM `" . BIT_DB_PREFIX . "kernel_prefs` " . $whereClause;
+			$query = "SELECT `config_name` ,`config_value`, `package` FROM `" . BIT_DB_PREFIX . "kernel_config` " . $whereClause;
 			if( $rs = $this->mDb->query( $query, $queryVars, -1, -1 ) ) {
 				while( $row = $rs->fetchRow() ) {
-					$this->mConfig[$row['name']] = $row['pref_value'];
+					$this->mConfig[$row['config_name']] = $row['config_value'];
 				}
 			}
 		}
@@ -164,7 +164,7 @@ class BitSystem extends BitBase {
 	// <<< getConfig
 	/**
 	* Add getConfig / setConfig for more uniform handling of config variables instead of spreading global vars.
-	* easily get the value of any given preference stored in kernel_prefs
+	* easily get the value of any given preference stored in kernel_config
 	*
 	* @access public
 	**/
@@ -213,13 +213,13 @@ class BitSystem extends BitBase {
 			if( ( empty( $this->mConfig[$pName] ) || ( $this->mConfig[$pName] != $pValue ) ) ) {
 				// store the preference in multisites, if used
 				if( @$this->verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mConfig[$pName] ) ) {
-					$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `pref_value`=? WHERE `multisite_id`=? AND `name`=?";
+					$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `config_value`=? WHERE `multisite_id`=? AND `config_name`=?";
 					$result = $this->mDb->query( $query, array( empty( $pValue ) ? '' : $pValue, $gMultisites->mMultisiteId, $pName ) );
 				} else {
-					$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_prefs` WHERE `name`=?";
+					$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `name`=?";
 					$result = $this->mDb->query( $query, array( $pName ) );
 					if( isset( $pValue ) ) {
-						$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`name`,`pref_value`,`package`) VALUES (?,?,?)";
+						$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_config`(`config_name`,`config_value`,`package`) VALUES (?,?,?)";
 						$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage ) ) );
 					}
 				}
@@ -243,7 +243,7 @@ class BitSystem extends BitBase {
 	**/
 	function expungePackageConfig( $pPackageName ) {
 		if( !empty( $pPackageName ) ) {
-			$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_prefs` WHERE `package`=?";
+			$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `package`=?";
 			$result = $this->mDb->query( $query, array( strtolower( $pPackageName ) ) );
 			// let's force a reload of the prefs
 			unset( $this->mConfig );
@@ -865,7 +865,7 @@ class BitSystem extends BitBase {
 	function registerConfig( $packagedir, $preferences ) {
 		foreach( $preferences as $pref ) {
 			$this->registerSchemaDefault( $packagedir,
-			"INSERT INTO `".BIT_DB_PREFIX."kernel_prefs`(`package`,`name`,`pref_value`) VALUES ('$pref[0]', '$pref[1]','$pref[2]')");
+			"INSERT INTO `".BIT_DB_PREFIX."kernel_config`(`package`,`config_name`,`config_value`) VALUES ('$pref[0]', '$pref[1]','$pref[2]')");
 		}
 	}
 	function registerPreferences( $packagedir, $preferences ) {
@@ -1030,7 +1030,7 @@ class BitSystem extends BitBase {
 			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getConfig("package_".strtolower($package)) != 'y') {
 				$this->storeConfig('package_'.strtolower( $package ), 'n', $package);
 			} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
-				// Delete the package_<pkgname> row from kernel_prefs
+				// Delete the package_<pkgname> row from kernel_config
 				$this->storeConfig('package_'.strtolower( $package ), NULL );
 			}
 		}

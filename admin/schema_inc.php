@@ -11,10 +11,10 @@ $tables = array(
 	timer N(16.6) NOTNULL
 ",
 
-'kernel_prefs' => "
-	name C(40) PRIMARY,
+'kernel_config' => "
+	config_name C(40) PRIMARY,
 	package C(100),
-	pref_value C(250)
+	config_value C(250)
 ",
 
 'mail_notifications' => "

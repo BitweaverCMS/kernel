@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.49 2006/04/11 13:05:16 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.50 2006/04/11 17:40:57 bitweaver Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -132,7 +132,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign_by_ref("gBitSystem", $gBitSystem);
 	// XSS security check
 	if( !empty( $_REQUEST['tk'] ) ) {
-		$gBitUser->verifyTicket();
+//		$gBitUser->verifyTicket();
 	}
 
 	// setStyle first, in case package decides it wants to reset the style in it's own <package>/bit_setup_inc.php

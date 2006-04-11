@@ -118,7 +118,6 @@ $gBitInstaller->registerModules( $moduleHash );
 // ### Default UserPermissions
 $gBitInstaller->registerUserPermissions( KERNEL_PKG_NAME, array(
 	array('bit_p_admin', 'Can manage users groups and permissions and all aspects of site management', 'admin', KERNEL_PKG_NAME ),
-	array('bit_p_admin_banning', 'Can ban users or IPs', 'admin', KERNEL_PKG_NAME),
 	array('bit_p_access_closed_site', 'Can access site when closed', 'admin', KERNEL_PKG_NAME)
 ) );
 

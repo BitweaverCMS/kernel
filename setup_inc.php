@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.52 2006/04/11 18:24:02 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.53 2006/04/11 22:27:57 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -93,6 +93,10 @@ require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
 $gSniffer = new phpSniff;
 $gBitSmarty->assign_by_ref( 'gBrowserInfo', $gSniffer->_browser_info );
+// if we're viewing this site with a text-browser, we force the text-browser theme
+if( $gSniffer->_browser_info['browser'] == 'lx' || $gSniffer->_browser_info['browser'] == 'li' ) {
+	$gPreviewStyle = 'lynx';
+}
 
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 global $gBitLanguage;

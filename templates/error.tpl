@@ -12,7 +12,7 @@
 				{include file=$template}
 			{/if}
 
-			{if $page and ( $gBitUser->isAdmin() or $gBitUser->hasPermission( 'bit_p_admin_wiki' ) )}
+			{if $page and ( $gBitUser->isAdmin() or $gBitUser->hasPermission( 'p_wiki_admin' ) )}
 				<p>{tr}Create the page{/tr}: <a href="{$smarty.const.WIKI_PKG_URL}edit.php?page={$page}">{$page}</a></p>
 			{/if}
 

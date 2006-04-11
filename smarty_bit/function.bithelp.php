@@ -15,7 +15,7 @@ require_once('function.biticon.php');
 function smarty_function_bithelp($params, &$gBitSmarty) {
 	global $gBitSystem, $gBitUser;
 	$outstr = "";
-	if($gBitUser->hasPermission( 'bit_p_admin' )){
+	if($gBitUser->hasPermission( 'p_admin' )){
 		$outstr .= "<a href=\"".KERNEL_PKG_URL."admin/index.php\">".smarty_function_biticon(array('ipackage'=>'liberty', 'iname'=>'administration', 'iexplain'=>'Administration Menu'),$gBitSmarty)."</a> ";
 	}
 	if($gBitSystem->isFeatureActive('help')) {

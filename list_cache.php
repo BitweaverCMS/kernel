@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/list_cache.php,v 1.5 2006/02/06 00:07:32 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/list_cache.php,v 1.6 2006/04/11 13:05:16 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -14,7 +14,7 @@
  */
 require_once( '../bit_setup_inc.php' );
 
-$gBitSystem->verifyPermission( 'bit_p_admin' );
+$gBitSystem->verifyPermission( 'p_admin' );
 
 if (isset($_REQUEST["remove"])) {
 	$gBitSystem->remove_cache($_REQUEST["remove"]);

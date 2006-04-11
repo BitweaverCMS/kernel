@@ -5,7 +5,7 @@
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=general" title="{tr}General{/tr}" >{tr}General Settings{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=server" title="{tr}Server{/tr}" >{tr}Server Settings{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/backup.php">{tr}Backups{/tr}</a></li>
-	{if $gBitSystem->isFeatureActive( 'banning' ) and ($gBitUser->hasPermission( 'bit_p_admin_banning' ))}
+	{if $gBitSystem->isFeatureActive( 'banning' ) and ($gBitUser->hasPermission( 'p_tidbits_admin_banning' ))}
 		<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_banning.php">{tr}Banning{/tr}</a></li>
 	{/if}
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/db_performance.php">{tr}Database Performance{/tr}</a></li>

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/phpinfo.php,v 1.1 2005/06/19 04:52:54 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/phpinfo.php,v 1.2 2006/04/11 13:05:16 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -8,6 +8,6 @@
 
 // Initialization
 require_once( '../../bit_setup_inc.php' );
-$gBitSystem->verifyPermission( 'bit_p_admin' );
+$gBitSystem->verifyPermission( 'p_admin' );
 phpinfo();
 ?>

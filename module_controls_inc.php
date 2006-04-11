@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/module_controls_inc.php,v 1.6 2006/02/03 17:28:21 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/module_controls_inc.php,v 1.7 2006/04/11 13:05:16 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: module_controls_inc.php,v 1.6 2006/02/03 17:28:21 squareing Exp $
+ * $Id: module_controls_inc.php,v 1.7 2006/04/11 13:05:16 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -18,7 +18,7 @@
  */
 include_once( '../bit_setup_inc.php' );
 
-if (!$gBitUser->hasPermission( 'bit_p_configure_modules' )) {
+if (!$gBitUser->hasPermission( 'p_tidbits_configure_modules' )) {
 	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
 	$gBitSystem->display( 'error.tpl' );
 	die;

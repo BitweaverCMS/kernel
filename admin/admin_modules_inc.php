@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.12 2006/03/09 19:14:10 seannerd Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.13 2006/04/11 13:05:16 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -9,7 +9,7 @@ require_once( '../../bit_setup_inc.php' );
 
 global $userlib;
 
-$gBitSystem->verifyPermission( 'bit_p_admin' );
+$gBitSystem->verifyPermission( 'p_admin' );
 
 $gBitSmarty->assign('PHP_SELF',$_SERVER['PHP_SELF']);
 

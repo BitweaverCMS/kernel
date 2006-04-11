@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.48 2006/04/10 18:29:16 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.49 2006/04/11 13:05:16 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -216,7 +216,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// check to see if admin has closed the site
     if ( (isset($_SERVER['SCRIPT_URL']) && $_SERVER['SCRIPT_URL'] == USERS_PKG_URL.'validate.php' ) ) $bypass_siteclose_check = 'y';
-	if ( $gBitSystem->isFeatureActive( 'site_closed' ) && !$gBitUser->hasPermission('bit_p_access_closed_site') && !isset($bypass_siteclose_check)) {
+	if ( $gBitSystem->isFeatureActive( 'site_closed' ) && !$gBitUser->hasPermission('p_access_closed_site') && !isset($bypass_siteclose_check)) {
 		$_REQUEST['error'] = $gBitSystem->getConfig('site_closed_msg', 'Site is closed for maintainance; please come back later.');
 		include( KERNEL_PKG_PATH . 'error_simple.php' );
 		exit;
@@ -227,7 +227,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	if (@is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
 		list($server_load) = explode(' ', $load[0]);
 		$gBitSmarty->assign('server_load', $server_load);
-		if ($use_load_threshold == 'y' && !$gBitUser->hasPermission( 'bit_p_access_closed_site' ) && !isset($bypass_siteclose_check)) {
+		if ($use_load_threshold == 'y' && !$gBitUser->hasPermission( 'p_access_closed_site' ) && !isset($bypass_siteclose_check)) {
 			$load_threshold = $gBitSystem->getConfig('load_threshold', 3);
 			if ($server_load > $load_threshold) {
 				$_REQUEST['error'] = $gBitSystem->getConfig('site_busy_msg', 'Server is currently too busy; please come back later.');
@@ -364,7 +364,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	// if we are interactively translating the website, we force template caching on every page load.
-	if( $gBitSystem->isFeatureActive( 'interactive_translation' ) && $gBitUser->hasPermission( 'bit_p_edit_languages' ) ) {
+	if( $gBitSystem->isFeatureActive( 'interactive_translation' ) && $gBitUser->hasPermission( 'p_languages_edit' ) ) {
 		$gBitSmarty->assign_by_ref( "gBitTranslationHash", $gBitTranslationHash );
 	} else {
 		// this has to be done since the permission can't be checked in BitLanguage::translate() as it's called too soon by prefilter.tr

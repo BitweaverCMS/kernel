@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.10 2006/03/20 19:35:18 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.11 2006/04/11 13:05:16 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -19,7 +19,7 @@ if( isset( $_REQUEST["page"] ) ) {
 	$gBitSystem->setBrowserTitle( 'Administration' );
 }
 
-$gBitSystem->verifyPermission( 'bit_p_admin' );
+$gBitSystem->verifyPermission( 'p_admin' );
 
 require_once( KERNEL_PKG_PATH.'simple_form_functions_lib.php' );
 

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.65 2006/04/11 18:00:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.66 2006/04/11 18:24:02 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -58,6 +58,11 @@ class BitSystem extends BitBase {
 	var $mStyle;
 	var $mActivePackage;
 	var $mInstallModules = array();
+	/**
+	* Javascript to be added to the <body onload> attribute
+	* @private
+	*/
+	var $mOnload = array();
 	// Used by packages to register notification events that can be subscribed to.
 	var $mNotifyEvents = array();
 	/**
@@ -1101,6 +1106,18 @@ class BitSystem extends BitBase {
 			}
 		}
 		return $url;
+	}
+	// === setOnloadScript
+	/**
+	* set the title of the browser
+	*
+	* @param string $ pScanFile file to be looked for
+	* @return none
+	* @access public
+	*/
+	function setOnloadScript( $pJavscript )
+	{
+		array_push( $this->mOnload, $pJavscript );
 	}
 	// === getStyle
 	/**

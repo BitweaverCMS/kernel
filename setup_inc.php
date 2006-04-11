@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.51 2006/04/11 17:52:09 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.52 2006/04/11 18:24:02 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -83,11 +83,6 @@ $gBitSystem = new BitSystem();
 
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');
-
-// array used to load stuff using <body onload="">
-global $gBodyOnload;
-$gBodyOnload = array();
-$gBitSmarty->assign_by_ref( 'gBodyOnload', $gBodyOnload );
 
 // this is used to override the currently set site theme. when this is set everything else is ignored
 global $gPreviewStyle;

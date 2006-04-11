@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.66 2006/04/11 18:24:02 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.67 2006/04/11 21:58:52 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -437,13 +437,14 @@ class BitSystem extends BitBase {
 		foreach( $this->mPackages as $package => $info ) {
 			if( !empty( $info['path'] ) ) {
 				$file = $info['path'].'templates/'.$pFilename;
+				$out = "bitpackage:{$package}/{$pFilename}";
 				if( is_readable( $file ) ) {
 					if( in_array( $package, $prepend ) ) {
-						$anti[] = $file;
+						$anti[] = $out;
 					} elseif( in_array( $package, $append ) ) {
-						$post[] = $file;
+						$post[] = $out;
 					} else {
-						$mid[] = $file;
+						$mid[] = $out;
 					}
 				}
 			}

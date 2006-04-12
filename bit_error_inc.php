@@ -164,7 +164,10 @@ function vd( $iVar ) {
 		}
 	}
 
-	if( !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && ((is_object( $iVar ) && !empty( $iVar )) || is_array( $iVar )) ) {
+	// xdebug rocks!
+	if( extension_loaded( 'xdebug' ) ) {
+		var_dump( $iVar );
+	} elseif( !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && ((is_object( $iVar ) && !empty( $iVar )) || is_array( $iVar )) ) {
 		include_once( UTIL_PKG_PATH.'dBug/dBug.php' );
 		new dBug( $iVar );
 	} else {

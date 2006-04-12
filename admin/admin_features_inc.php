@@ -1,14 +1,10 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.12 2006/02/13 10:06:15 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.13 2006/04/12 06:38:35 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-
-//This doen't scale very well when you have 1000's of users
-//$users_list = $gBitUser->get_users_names();
-//$gBitSmarty->assign( 'users_list',$users_list );
 
 $formFeaturesBit = array(
 	'pretty_urls' => array(
@@ -35,7 +31,7 @@ $formFeaturesBit = array(
 	),
 	'feature_jscalendar' => array(
 		'label' => 'Enable JSCalendar',
-		'note' => 'Enable use of the JSCalendar library',
+		'note' => 'JSCalendar is a javascript calendar popup that allows you to easily select a date using an easy to use and appealing interface.',
 		'page' => 'JSCalendar',
 		'pkg' => THEMES_PKG_NAME,
 	),
@@ -88,9 +84,6 @@ $formFeaturesHelp = array(
 );
 $gBitSmarty->assign( 'formFeaturesHelp',$formFeaturesHelp );
 
-$users_list = $gBitUser->get_users_names();
-$gBitSmarty->assign( 'users_list', ( count( $users_list ) < 50 ) ? $users_list : NULL );
-
 $processForm = set_tab();
 
 if( $processForm ) {
@@ -98,7 +91,6 @@ if( $processForm ) {
 	foreach( $featureToggles as $item => $info ) {
 		simple_set_toggle( $item, $info['pkg'] );
 	}
-	simple_set_value( "contact_user", KERNEL_PKG_NAME );
 }
 
 $gBitSystem->setHelpInfo('Features','Settings','Help with the features settings');

@@ -62,12 +62,7 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 	//array(KERNEL_PKG_NAME,'https_login_required','n'),
 	array(KERNEL_PKG_NAME,'https_port','443'),
 	array(KERNEL_PKG_NAME,'https_prefix','/'),
-	array(KERNEL_PKG_NAME,'bot_bar','y'),
-	array(KERNEL_PKG_NAME,'top_bar','y'),
 	//array(KERNEL_PKG_NAME,'banning','n'),
-	//array(KERNEL_PKG_NAME,'site_contact','n'),
-	array(KERNEL_PKG_NAME,'jstabs','y' ),
-	array(KERNEL_PKG_NAME,'contact_user','admin'),
 	array(KERNEL_PKG_NAME,'count_admin_pvs','y'),
 	//array(KERNEL_PKG_NAME,'direct_pagination','n'),
 	array(KERNEL_PKG_NAME,'display_timezone','UTC'),
@@ -79,10 +74,6 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 	array(KERNEL_PKG_NAME,'language','en'),
 	array(KERNEL_PKG_NAME,'sender_email',''),
 	array(KERNEL_PKG_NAME,'url_index',''),
-	//array(THEMES_PKG_NAME,'bidirectional_text','n' ),
-	array(THEMES_PKG_NAME,'slide_style', DEFAULT_THEME ),
-	array(THEMES_PKG_NAME,'style', DEFAULT_THEME ),
-	array(THEMES_PKG_NAME,'top_bar_dropdown','y' )
 ) );
 
 $moduleHash = array(

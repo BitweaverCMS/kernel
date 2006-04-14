@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.14 2006/04/14 19:36:18 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.15 2006/04/14 20:25:51 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -42,7 +42,7 @@ $formFeaturesBit = array(
 	),
 );
 if( $gBitSystem->isPackageActive( 'stats' ) ) {
-	$formFeaturesBit['referer_stats'] = array(
+	$formFeaturesBit['stats_referers'] = array(
 		'label' => 'Referer Statistics',
 		'note' => 'Records statistics including HTTP_REFERRER',
 		'pkg' => STATS_PKG_NAME,
@@ -77,7 +77,7 @@ $gBitSmarty->assign( 'formFeaturesHelp',$formFeaturesHelp );
 $processForm = set_tab();
 
 if( $processForm ) {
-	$featureToggles = array_merge( $formFeaturesBit,$formFeaturesHelp,array( 'site_contact' => 0 ) );
+	$featureToggles = array_merge( $formFeaturesBit,$formFeaturesHelp );
 	foreach( $featureToggles as $item => $info ) {
 		simple_set_toggle( $item, $info['pkg'] );
 	}

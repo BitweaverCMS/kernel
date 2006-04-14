@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.7 2006/02/13 10:06:15 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.8 2006/04/14 20:25:51 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -10,10 +10,10 @@ $formGeneralMisc = array(
 	'direct_pagination' => array(
 		'label' => 'Use direct pagination links',
 	),
-	'cachepages' => array(
+	'liberty_cache_pages' => array(
 		'label' => 'Use cache for external pages',
 	),
-	'cacheimages' => array(
+	'liberty_cache_images' => array(
 		'label' => 'Use cache for external images',
 	),
 	'output_obzip' => array(
@@ -30,8 +30,8 @@ $processForm = set_tab();
 
 if ($processForm) {
 	$pref_toggles = array(
-		"cacheimages",
-		"cachepages",
+		"liberty_cache_images",
+		"liberty_cache_pages",
 		"count_admin_pvs",
 		"direct_pagination",
 		"output_obzip",

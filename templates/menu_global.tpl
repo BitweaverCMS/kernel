@@ -1,7 +1,7 @@
 {strip}
-{if $gBitSystem->isFeatureActive( 'site_contact' ) or $gBitUser->isRegistered()}
+{if $gBitSystem->isFeatureActive( 'messages_site_contact' ) or $gBitUser->isRegistered()}
 	<ul>
-		{if $gBitSystem->isFeatureActive( 'site_contact' )}
+		{if $gBitSystem->isFeatureActive( 'messages_site_contact' )}
 			<li><a class="item" href="{$smarty.const.MESSAGES_PKG_URL}contact.php">{biticon ipackage=liberty iname=spacer iforce=icon} {tr}Contact us{/tr}</a></li>
 		{/if}
 

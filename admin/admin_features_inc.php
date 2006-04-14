@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.13 2006/04/12 06:38:35 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.14 2006/04/14 19:36:18 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -17,16 +17,6 @@ $formFeaturesBit = array(
 		'label' => 'Use Extended Pretty URLs',
 		'note' => 'In addition to making the URL easier to read and remember it enhances search engine results. Using this feature requires Apache <a href="http://httpd.apache.org/docs-2.0/mod/mod_rewrite.html">mod_rewrite</a> support in the web server (usually installed by default), This extended version adds a /view tag to the URLs to make them unambigious for rewrites.  It will be necessary to modify the default .htaccess files when using this feature.',
 		'page' => 'FeaturePrettyUrlsExtended',
-		'pkg' => KERNEL_PKG_NAME,
-	),
-	'autolinks' => array(
-		'label' => 'AutoLinks',
-		'note' => 'If enabled, URLs entered by users will automatically be shown as clickable links.',
-		'pkg' => KERNEL_PKG_NAME,
-	),
-	'html_pages' => array(
-		'label' => 'HTML Pages',
-		'note' => 'A simple way for creating pages that will be displayed to the users and that can be linked from/to any place in your site.',
 		'pkg' => KERNEL_PKG_NAME,
 	),
 	'feature_jscalendar' => array(

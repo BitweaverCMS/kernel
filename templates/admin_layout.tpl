@@ -341,8 +341,8 @@
 		{/form}
 	{/jstab}
 
-	{jstab title="Miscellaneous Settigns"}
-		{form action=$smarty.server.PHP_SELF legend="Miscellaneous Settigns"}
+	{jstab title="Miscellaneous Settings"}
+		{form action=$smarty.server.PHP_SELF legend="Miscellaneous Settings"}
 			<input type="hidden" name="page" value="{$page}" />
 			{foreach from=$formMiscFeatures key=feature item=output}
 				<div class="row">

@@ -278,7 +278,63 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_user_versions' WHERE `name`='feature_userVersions'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_url_import' WHERE `name`='feature_wiki_url_import'",
 
-		// added 2006-04-13
+		// added 2006-04-17
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_list_author' WHERE `name`='art_list_author'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_list_date' WHERE `name`='art_list_date'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_list_img' WHERE `name`='art_list_img'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_list_reads' WHERE `name`='art_list_reads'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_list_size' WHERE `name`='art_list_size'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_list_title' WHERE `name`='art_list_title'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_list_topic' WHERE `name`='art_list_topic'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_list_type' WHERE `name`='art_list_type'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_list_expire' WHERE `name`='art_list_expire'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_max_list' WHERE `name`='max_articles'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_rankings' WHERE `name`='cms_rankings'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_submissions' WHERE `name`='article_submissions'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_description_length' WHERE `name`='article_description_length'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='articles_date_threshold' WHERE `name`='article_date_threshold'";
+
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_backlinks' WHERE `name`='backlinks'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_allow_dup_page_names' WHERE `name`='allow_dup_wiki_page_names'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_page_title' WHERE `name`='page_title'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_sandbox' WHERE `name`='sandbox'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_attachments_use_db' WHERE `name`='w_use_db'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_attachments_use_dir' WHERE `name`='w_use_dir'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_warn_on_edit_time' WHERE `name`='warn_on_edit_time'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_book_show_path' WHERE `name`='wikibook_show_path'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_book_show_navigation' WHERE `name`='wikibook_show_navigation'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_min_versions' WHERE `name`='keep_versions'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='wiki_max_versions' WHERE `name`='max_versions'";
+
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='messages_site_contact' WHERE `name`='site_contact'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='messages_contact_user' WHERE `name`='contact_user'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='chatterbox_prune_threshold' WHERE `name`='prune_threshold'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='languages_record_untranslated' WHERE `name`='record_untranslated'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='hotwords_new_window' WHERE `name`='hotwords_nw'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='blog_posts_comments' WHERE `name`='blogposts_comments'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pigeonholes_display_members' WHERE `name`='display_pigeonhole_members'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pigeonholes_limit_member_number' WHERE `name`='limit_member_number'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_session_time' WHERE `name`='pgv_session_time'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_calendar_format' WHERE `name`='calendar_format'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_default_pedigree_generations' WHERE `name`='default_pedigree_generations'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_max_pedigree_generations' WHERE `name`='max_pedigree_generations'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_max_descendancy_generations' WHERE `name`='max_descendancy_generations'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_use_RIN' WHERE `name`='use_RIN'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_pedigree_root_id' WHERE `name`='pedigree_root_id'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_gedcom_prefix_id' WHERE `name`='gedcom_prefix_id'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_source_prefix_id' WHERE `name`='source_prefix_id'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_repo_prefix_id' WHERE `name`='repo_prefix_id'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_fam_prefix_id' WHERE `name`='fam_prefix_id'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='pgv_media_prefix_id' WHERE `name`='media_prefix_id'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='stats_referers' WHERE `name`='referer_stats'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='liberty_cache_images' WHERE `name`='cacheimages'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='liberty_cache_pages' WHERE `name`='cachepages'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='tidbits_banning' WHERE `name`='banning'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='tidbits_userfiles' WHERE `name`='user_files'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='tidbits_userfiles_use_dir' WHERE `name`='uf_use_dir'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='tidbits_tasks' WHERE `name`='feature_tasks'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='tidbits_usermenu' WHERE `name`='usermenu'";
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='tidbits_bookmarks' WHERE `name`='user_bookmarks'";
 	)
 )),
 array( 'DATADICT' => array(

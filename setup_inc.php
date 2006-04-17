@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.54 2006/04/12 13:37:59 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.55 2006/04/17 16:23:20 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -262,7 +262,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$http_domain = $gBitSystem->getConfig('http_domain', '');
 	$http_port = $gBitSystem->getConfig('http_port', $http_port);
 	$http_prefix = $gBitSystem->getConfig('http_prefix', '/');
-	$modallgroups = $gBitSystem->getConfig("modallgroups", 'y');
+	$site_show_all_modules_always = $gBitSystem->getConfig("site_show_all_modules_always", 'y');
 	$modseparateanon = $gBitSystem->getConfig("modseparateanon", 'n');
 
 	$gBitSmarty->assign('http_domain', $http_domain);
@@ -274,7 +274,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	$gBitSmarty->assign('kernel_server_name', $gBitSystem->getConfig( 'kernel_server_name', $_SERVER["SERVER_NAME"] ));
 	$gBitSmarty->assign('count_admin_pvs', 'y');
-	$gBitSmarty->assign('modallgroups', $modallgroups);
+	$gBitSmarty->assign('site_show_all_modules_always', $site_show_all_modules_always);
 	$gBitSmarty->assign('modseparateanon', $modseparateanon);
 	$gBitSmarty->assign('max_records', $max_records);
 	$gBitSmarty->assign_by_ref('num_queries', $num_queries);

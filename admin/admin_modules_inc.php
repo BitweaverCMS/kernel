@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.13 2006/04/11 13:05:16 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_modules_inc.php,v 1.14 2006/04/17 16:23:20 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -15,15 +15,15 @@ $gBitSmarty->assign('PHP_SELF',$_SERVER['PHP_SELF']);
 
 // module features
 $formModuleFeatures = array(
-	'themes_collapsible_modules' => array(
+	'site_collapsible_modules' => array(
 		'label' => 'Collapsible Modules',
 		'note' => 'This allows users to collapse modules by clicking on their titles. Can be useful if you use many modules.',
 	),
-	'modallgroups' => array(
+	'site_show_all_modules_always' => array(
 		'label' => 'Display modules to all groups always',
 		'note' => 'If you activate this, any modules you assign will be visible to all users, regardless of the settings on the layout page.<br />Hint: If you lose your login module, use /users/login.php to login!',
 	),
-	'themes_module_controls' => array(
+	'site_module_controls' => array(
 		'label' => 'Show Module Controls',
 		'note' => 'Displays module control buttons at the top of modules for easy placement by users.',
 	),

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.17 2006/03/29 10:10:23 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.18 2006/04/17 16:23:20 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -45,11 +45,11 @@ if( !empty( $_REQUEST['module_name'] ) ) {
 }
 
 $formMiscFeatures = array(
-	'right_column' => array(
+	'site_right_column' => array(
 		'label' => 'Right Module Column',
 		'note' => 'Here you can disable the right column site-wide.',
 	),
-	'left_column' => array(
+	'site_left_column' => array(
 		'label' => 'Left Module Column',
 		'note' => 'Here you can disable the left column site-wide.',
 	),
@@ -153,10 +153,10 @@ $gBitSmarty->assign_by_ref( 'layoutAreas', $layoutAreas );
 $packages = array();
 foreach( $gBitSystem->mPackages as $pkg ) {
 	array_push( $packages, array( "name" => $pkg,
-								  "left_column" => $gBitSystem->getConfig( $pkg."_left_column", 'y' ),
-								  "right_column" => $gBitSystem->getConfig( $pkg."_right_column", 'y'),
-								  "top_bar" => $gBitSystem->getConfig( $pkg."_top_bar", 'y'),
-								  "bot_bar" => $gBitSystem->getConfig( $pkg."_bot_bar", 'y') ) );
+								  "site_left_column" => $gBitSystem->getConfig( $pkg."_left_column", 'y' ),
+								  "site_right_column" => $gBitSystem->getConfig( $pkg."_right_column", 'y'),
+								  "site_top_bar" => $gBitSystem->getConfig( $pkg."_top_bar", 'y'),
+								  "site_bot_bar" => $gBitSystem->getConfig( $pkg."_bot_bar", 'y') ) );
 }
 
 //****** Setup assign modules panel

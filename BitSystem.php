@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.67 2006/04/11 21:58:52 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.68 2006/04/17 16:23:20 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -374,7 +374,7 @@ class BitSystem extends BitBase {
 		define( 'THEMES_STYLE_URL', $this->getStyleUrl() );
 		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'jscalendar/' );
 		// dont forget to assign slideshow stylesheet if we are viewing page as slideshow
-//		$gBitSmarty->assign('slide_style', $this->getStyleCss("slide_style"));
+//		$gBitSmarty->assign('site_slide_style', $this->getStyleCss("site_slide_style"));
 
 		$customHome = NULL;
 		if( !empty( $gQueryUser ) && $gQueryUser->canCustomizeLayout() && @$this->verifyId( $gQueryUserId ) ) {
@@ -1382,7 +1382,7 @@ class BitSystem extends BitBase {
 					$row['params'] = $row['section_params'];
 				}
 				if( !empty( $row["groups"] ) ) {
-					if( $this->isFeatureActive( 'modallgroups' ) || $gBitUser->isAdmin() ) {
+					if( $this->isFeatureActive( 'site_show_all_modules_always' ) || $gBitUser->isAdmin() ) {
 						$row["visible"] = TRUE;
 					} else {
 						if( preg_match( '/[A-Za-z]/', $row["groups"] ) ) {

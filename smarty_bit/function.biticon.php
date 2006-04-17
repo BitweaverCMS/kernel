@@ -38,7 +38,7 @@ function output_icon( $params, $file ) {
 	if( isset( $params["url"] ) ) {
 		$outstr = $file;
 	} else {
-		if( $gBitSystem->getConfig( 'biticon_display' ) == 'text' && $params['iforce'] != 'icon' ) {
+		if( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'text' && $params['iforce'] != 'icon' ) {
 			$outstr = $iexplain;
 		} else {
 			$outstr='<img src="'.$file.'"';
@@ -68,7 +68,7 @@ function output_icon( $params, $file ) {
 			$outstr .= " />";
 		}
 
-		if( $gBitSystem->getConfig( 'biticon_display' ) == 'icon_text' && $params['iforce'] != 'icon' || $params['iforce'] == 'icon_text' ) {
+		if( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'icon_text' && $params['iforce'] != 'icon' || $params['iforce'] == 'icon_text' ) {
 			$outstr .= '&nbsp;'.$iexplain;
 		}
 	}

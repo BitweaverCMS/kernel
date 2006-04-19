@@ -1,10 +1,10 @@
 {strip}
 <div id="bittopbar">
 	<ul id="nav" class="menu hor">
-		{if $use_custom_top_bar and $gBitSystem->getConfig('top_bar_position') eq 'replace'}
+		{if $use_custom_top_bar and $gBitSystem->getConfig('nexus_top_bar') eq 'replace'}
 			{include file="`$smarty.const.TEMP_PKG_PATH`nexus/modules/top_bar_inc.tpl"}
 		{else}
-			{if $use_custom_top_bar and $gBitSystem->getConfig('top_bar_position') eq 'left'}
+			{if $use_custom_top_bar and $gBitSystem->getConfig('nexus_top_bar') eq 'left'}
 				{include file="`$smarty.const.TEMP_PKG_PATH`nexus/modules/top_bar_inc.tpl"}
 			{/if}
 
@@ -40,7 +40,7 @@
 				</li>
 			{/if}
 
-			{if $use_custom_top_bar and ( !$gBitSystem->getConfig('top_bar_position') or $gBitSystem->getConfig('top_bar_position') eq 'right' )}
+			{if $use_custom_top_bar and ( !$gBitSystem->getConfig('nexus_top_bar') or $gBitSystem->getConfig('nexus_top_bar') eq 'right' )}
 				{include file="`$smarty.const.TEMP_PKG_PATH`nexus/modules/top_bar_inc.tpl"}
 			{/if}
 		{/if}

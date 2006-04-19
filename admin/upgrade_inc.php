@@ -350,6 +350,8 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='site_collapsible_modules' WHERE `name`='themes_collapsible_modules'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='site_module_controls' WHERE `name`='themes_module_controls'",
 
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='nexus_top_bar' WHERE `name`='top_bar_position'",
+
 	//	"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `value`='small' WHERE `name`='liberty_auto_display_attachment_thumbs'",
 		// added 2006-04-19
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `name`='site_session_lifetime' WHERE `name`='session_lifetime'";

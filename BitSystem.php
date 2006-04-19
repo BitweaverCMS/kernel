@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.69 2006/04/19 13:48:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.70 2006/04/19 18:16:03 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1007,11 +1007,16 @@ class BitSystem extends BitBase {
 				foreach( array_keys( $this->mPackages ) as $package ) {
 					if( !empty( $this->mPackages[$package]['tables'] ) ) {
 						foreach( array_keys( $this->mPackages[$package]['tables'] ) as $table ) {
-							$fullTable = $prefix.$table;
+							// painful hardcoded exception for bitcommerce
+							if( $package == 'bitcommerce' ) {
+								$fullTable = $table;
+							} else {
+								$fullTable = $prefix.$table;
+							}
 							$tablePresent = in_array( $fullTable, $dbTables );
 							if( !$tablePresent ) {
 								// There is an incomplete table
-								//	vd( "Missing Table: $fullTable" );
+									vd( "Missing Table: $fullTable" );
 							}
 							if( isset( $this->mPackages[$package]['installed'] ) ) {
 								$this->mPackages[$package]['installed'] &= $tablePresent;

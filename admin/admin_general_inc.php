@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.9 2006/04/19 13:48:37 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_general_inc.php,v 1.10 2006/04/19 17:18:13 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -19,7 +19,7 @@ $formGeneralMisc = array(
 	'site_output_obzip' => array(
 		'label' => 'Use gzipped output',
 	),
-	'count_admin_pvs' => array(
+	'users_count_admin_pageviews' => array(
 		'label' => 'Count admin pageviews',
 	),
 );
@@ -32,7 +32,7 @@ if ($processForm) {
 	$pref_toggles = array(
 		"liberty_cache_images",
 		"liberty_cache_pages",
-		"count_admin_pvs",
+		"users_count_admin_pageviews",
 		"site_direct_pagination",
 		"site_output_obzip",
 	);
@@ -52,7 +52,7 @@ if ($processForm) {
 	}
 
 	// Special handling for tied fields: bit_index and site_url_index
-	if (!empty($_REQUEST["site_url_index"]) && $_REQUEST["bit_index"] == 'custom_home') {
+	if (!empty($_REQUEST["site_url_index"]) && $_REQUEST["bit_index"] == 'users_custom_home') {
 		$_REQUEST["bit_index"] = $_REQUEST["site_url_index"];
 	}
 

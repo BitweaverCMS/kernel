@@ -63,7 +63,7 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 	array(KERNEL_PKG_NAME,'site_https_port','443'),
 	array(KERNEL_PKG_NAME,'site_https_prefix','/'),
 	//array(KERNEL_PKG_NAME,'banning','n'),
-	array(KERNEL_PKG_NAME,'count_admin_pvs','y'),
+	array(KERNEL_PKG_NAME,'users_count_admin_pageviews','y'),
 	//array(KERNEL_PKG_NAME,'site_direct_pagination','n'),
 	array(KERNEL_PKG_NAME,'site_display_timezone','UTC'),
 	array(KERNEL_PKG_NAME,'site_long_date_format','%A %d of %B, %Y'),

@@ -10,7 +10,7 @@
 	<link rel="help" title="{tr}Help{/tr}" href="http://www.bitweaver.org/" />
 
 	<script type="text/javascript">/* <![CDATA[ */
-		{if $gBitSystem->isFeatureActive( 'rememberme' )}
+		{if $gBitSystem->isFeatureActive( 'users_remember_me' )}
 			var bitCookiePath = "{$gBitSystem->mPrefs.cookie_path}";
 			var bitCookieDomain = "{$gBitSystem->mPrefs.cookie_domain|default:"`$smarty.server.SERVER_NAME`"}";
 		{else}

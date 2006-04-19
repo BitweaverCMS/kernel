@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.56 2006/04/19 13:48:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.57 2006/04/19 17:18:13 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -273,7 +273,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign('site_https_prefix', $site_https_prefix);
 
 	$gBitSmarty->assign('kernel_server_name', $gBitSystem->getConfig( 'kernel_server_name', $_SERVER["SERVER_NAME"] ));
-	$gBitSmarty->assign('count_admin_pvs', 'y');
+	$gBitSmarty->assign('users_count_admin_pageviews', 'y');
 	$gBitSmarty->assign('site_show_all_modules_always', $site_show_all_modules_always);
 	$gBitSmarty->assign('modseparateanon', $modseparateanon);
 	$gBitSmarty->assign('max_records', $max_records);

@@ -13,7 +13,7 @@
 
 		<br />
 
-		{if $gBitSystem->isFeatureActive( 'direct_pagination' )}
+		{if $gBitSystem->isFeatureActive( 'site_direct_pagination' )}
 			{section loop=$control.cant_pages name=foo}
 				{assign var=selector_offset value=$smarty.section.foo.index|times:$control.max_records}
 				<a href="{$pgnUrl}?find={$control.find}&amp;sort_mode={$control.sort_mode}&amp;offset={$selector_offset}">{$smarty.section.foo.index_next}</a>

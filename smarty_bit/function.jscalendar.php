@@ -32,7 +32,7 @@ function smarty_function_jscalendar($params, &$gBitSmarty) {
 		$electric     = 'false'; // ID of the span where the date is to be shown
 		$time         = time();  // override the currently set date
 		$onUpdate     = '';      // execute the following javascript function when a link is pressed
-		$daFormat     = $gBitSystem->getConfig( 'short_date_format' ).' '.$gBitSystem->getConfig( 'short_time_format' ); // format of output date
+		$daFormat     = $gBitSystem->getConfig( 'site_short_date_format' ).' '.$gBitSystem->getConfig( 'site_short_time_format' ); // format of output date
 		$displayArea  = '';
 
 		// override default values

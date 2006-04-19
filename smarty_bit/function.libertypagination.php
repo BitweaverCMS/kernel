@@ -3,7 +3,7 @@
  * Smarty {libertypagination} function plugin
  *
  * This provides a means of paging through longer lists of data using an up and down arrow.
- * In addition, if the 'direct_pagination' feature is enabled, then a direct page number can be entered jump directly to
+ * In addition, if the 'site_direct_pagination' feature is enabled, then a direct page number can be entered jump directly to
  *
  * Type:     function<br>
  * Name:     libertypagination<br>

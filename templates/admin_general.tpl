@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.9 2006/03/29 10:10:23 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.10 2006/04/19 13:48:38 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -13,7 +13,7 @@
 							<option value="my_page"{if $gBitSystem->getConfig('bit_index') eq 'my_page'} selected="selected"{/if}>{tr}My {$gBitSystem->getConfig('site_title')} Page{/tr}</option>
 							<option value="user_home"{if $gBitSystem->getConfig('bit_index') eq 'user_home'} selected="selected"{/if}>{tr}User's homepage{/tr}</option>
 							<option value="group_home"{if $gBitSystem->getConfig('bit_index') eq 'group_home'} selected="selected"{/if}>{tr}Group home{/tr}</option>
-							<option value="custom_home"{if $gBitSystem->getConfig('bit_index') eq $gBitSystem->getConfig('url_index')} selected="selected"{/if}>{tr}Custom home{/tr}</option>
+							<option value="custom_home"{if $gBitSystem->getConfig('bit_index') eq $gBitSystem->getConfig('site_url_index')} selected="selected"{/if}>{tr}Custom home{/tr}</option>
 							{foreach key=name item=package from=$gBitSystem->mPackages }
 								{if $package.homeable && $package.installed}
 									<option {if $gBitSystem->getConfig('bit_index') eq $package.name}selected="selected"{/if} value="{$package.name}">{$package.name|capitalize}</option>
@@ -31,9 +31,9 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="URI for custom home" for="url_index"}
+					{formlabel label="URI for custom home" for="site_url_index"}
 					{forminput}
-						<input type="text" id="url_index" name="url_index" value="{$gBitSystem->getConfig('url_index')|escape}" size="50" />
+						<input type="text" id="site_url_index" name="site_url_index" value="{$gBitSystem->getConfig('site_url_index')|escape}" size="50" />
 						{formhelp note="Use a specific URI to direct users to a particular page when accessing your site. Can be used to have an introductory page.<br />To activate this, please select <em>Custom home</em> above."}
 					{/forminput}
 				</div>
@@ -47,30 +47,30 @@
 		{jstab title="Date and Time"}
 			{legend legend="Date and Time Formats"}
 				<div class="row">
-					{formlabel label="Long date format" for="long_date_format"}
+					{formlabel label="Long date format" for="site_long_date_format"}
 					{forminput}
-						<input type="text" name="long_date_format" id="long_date_format" value="{$long_date_format|escape}" size="50"/>
+						<input type="text" name="site_long_date_format" id="site_long_date_format" value="{$site_long_date_format|escape}" size="50"/>
 					{/forminput}
 				</div>
 
 				<div class="row">
-					{formlabel label="Short date format" for="short_date_format"}
+					{formlabel label="Short date format" for="site_short_date_format"}
 					{forminput}
-						<input type="text" name="short_date_format" id="short_date_format" value="{$short_date_format|escape}" size="50"/>
+						<input type="text" name="site_short_date_format" id="site_short_date_format" value="{$site_short_date_format|escape}" size="50"/>
 					{/forminput}
 				</div>
 
 				<div class="row">
-					{formlabel label="Long time format" for="long_time_format"}
+					{formlabel label="Long time format" for="site_long_time_format"}
 					{forminput}
-						<input type="text" name="long_time_format" id="long_time_format" value="{$long_time_format|escape}" size="50"/>
+						<input type="text" name="site_long_time_format" id="site_long_time_format" value="{$site_long_time_format|escape}" size="50"/>
 					{/forminput}
 				</div>
 
 				<div class="row">
-					{formlabel label="Short time format" for="short_time_format"}
+					{formlabel label="Short time format" for="site_short_time_format"}
 					{forminput}
-						<input type="text" name="short_time_format" id="short_time_format" value="{$short_time_format|escape}" size="50"/>
+						<input type="text" name="site_short_time_format" id="site_short_time_format" value="{$site_short_time_format|escape}" size="50"/>
 						{formhelp note="<strong>Online Help</strong>: <a class=\"external\" href=\"http://www.php.net/manual/en/function.strftime.php\">Date and Time Format Help</a>"}
 					{/forminput}
 				</div>

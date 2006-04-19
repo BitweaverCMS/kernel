@@ -12,7 +12,7 @@
  * Name:	formhelp
  * Input:
  *			- note		(optional)	words that are displayed, can also be an array, where: 'key: value'<br /> is printed
- *									only displayed if help_notes is enabled
+ *									only displayed if site_form_help is enabled
  *			- link		(optional)	provide a link to an internal page (avoids the problem with links being inerpreted
  *									prematurely by the tra() function
  *									<package>/<path to file>/<title>
@@ -71,13 +71,13 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 	}
 
 	global $gBitSystem;
-	if( $gBitSystem->isFeatureActive( 'help' ) || $gBitSystem->isFeatureActive( 'help_notes' ) || $force == 'y' ) {
+	if( $gBitSystem->isFeatureActive( 'site_online_help' ) || $gBitSystem->isFeatureActive( 'site_form_help' ) || $force == 'y' ) {
 		if( !empty( $rawHash ) ) {
-			if( !empty( $rawHash['page'] ) && ( $gBitSystem->isFeatureActive('help') || $force == 'y' ) ) {
+			if( !empty( $rawHash['page'] ) && ( $gBitSystem->isFeatureActive('site_online_help') || $force == 'y' ) ) {
 				$ret_page = '<strong>'.tra( 'Online help' ).'</strong>: <a class=\'external\' href=\'http://doc.bitweaver.org/wiki/index.php?page='.$rawHash['page'].'\'>'.$rawHash['page'].'</a><br />';
 			}
 
-			if( !empty( $rawHash['link'] ) && ( $gBitSystem->isFeatureActive('help') || $force == 'y' ) ) {
+			if( !empty( $rawHash['link'] ) && ( $gBitSystem->isFeatureActive('site_online_help') || $force == 'y' ) ) {
 				if( is_array( $rawHash['link'] ) ) {
 					$ret_link  = '<br /><strong>'.tra( 'IntraLink' ).'</strong>: ';
 					$ret_link .= '<a href=\'';
@@ -87,7 +87,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 			}
 
 			$ret_note = '';
-			if( ( !empty( $rawHash['note'] ) && $gBitSystem->isFeatureActive('help_notes') ) || ( !empty( $force ) && !empty( $rawHash['note'] ) ) ) {
+			if( ( !empty( $rawHash['note'] ) && $gBitSystem->isFeatureActive('site_form_help') ) || ( !empty( $force ) && !empty( $rawHash['note'] ) ) ) {
 				if( is_array( $rawHash['note'] ) ) {
 					foreach( $rawHash['note'] as $name => $value ) {
 						if( $name == 'install' ) {
@@ -117,7 +117,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 			$html = '';
 			// using the overlib popup system
 			if( !empty( $content ) ) {
-				if( $gBitSystem->isFeatureActive('help_popup') ) {
+				if( $gBitSystem->isFeatureActive('site_help_popup') ) {
 					require_once $gBitSmarty->_get_plugin_filepath('function','popup');
 					require_once $gBitSmarty->_get_plugin_filepath('function','biticon');
 

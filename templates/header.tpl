@@ -10,7 +10,7 @@
 	{/foreach}
 </head>
 <body{if $gBitSystem->mOnload} onload="{foreach from=$gBitSystem->mOnload item=loadString}{$loadString}{/foreach}"{/if}>
-{if $gBitSystem->isFeatureActive( 'help_popup' )}
+{if $gBitSystem->isFeatureActive( 'site_help_popup' )}
 	{popup_init src="`$smarty.const.UTIL_PKG_URL`javascript/libs/overlib.js"}
 {/if}
 {/strip}

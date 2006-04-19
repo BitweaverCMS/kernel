@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.15 2006/04/14 20:25:51 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.16 2006/04/19 13:48:37 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -51,22 +51,22 @@ if( $gBitSystem->isPackageActive( 'stats' ) ) {
 $gBitSmarty->assign( 'formFeaturesBit',$formFeaturesBit );
 
 $formFeaturesHelp = array(
-	'help_notes' => array(
+	'site_form_help' => array(
 		'label' => 'Help Notes',
 		'note' => 'Show inline help notes in forms such as the one you are reading now.',
 		'pkg' => KERNEL_PKG_NAME,
 	),
-	'help' => array(
+	'site_online_help' => array(
 		'label' => 'Online Help Links',
 		'note' => 'Display links to relevant online help pages found on www.bitweaver.org.',
 		'pkg' => KERNEL_PKG_NAME,
 	),
-	'wiki_help' => array(
+	'site_edit_help' => array(
 		'label' => 'Show Wiki Help',
 		'note' => 'Displays <strong>extensive</strong> (about 50kb) help regarding tikiwiki syntax and wiki plugins whenever there is an entry form that takes wiki syntax.',
 		'pkg' => KERNEL_PKG_NAME,
 	),
-	'help_popup' => array(
+	'site_help_popup' => array(
 		'label' => 'Use Popup for Help Items',
 		'note' => 'This will place a clickable icon after form elements for the extended help information.',
 		'pkg' => KERNEL_PKG_NAME,

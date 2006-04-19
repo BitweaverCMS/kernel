@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.18 2006/04/10 14:03:58 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.19 2006/04/19 13:48:37 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -284,7 +284,7 @@ function tp_http_request($url, $reqmethod = NULL ) {
 	if( empty( $reqmethod ) ) {
 		$reqmethod = HTTP_REQUEST_METHOD_GET;
 	}
-	global $use_proxy,$proxy_host,$proxy_port;
+	global $site_use_proxy,$site_proxy_host,$site_proxy_port;
 
 	// test url :
 	$url = trim( $url );
@@ -303,9 +303,9 @@ function tp_http_request($url, $reqmethod = NULL ) {
 		$url .= "/";
 	}
 	// Proxy settings
-	if ($use_proxy == 'y') {
-		$aSettingsRequest["proxy_host"]=$proxy_host;
-		$aSettingsRequest["proxy_port"]=$proxy_port;
+	if ($site_use_proxy == 'y') {
+		$aSettingsRequest["site_proxy_host"]=$site_proxy_host;
+		$aSettingsRequest["site_proxy_port"]=$site_proxy_port;
 	}
 	$req = &new HTTP_Request($url, $aSettingsRequest);
 	// (cdx) return false when can't connect

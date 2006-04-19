@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.13 2006/02/01 18:41:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.14 2006/04/19 13:48:37 squareing Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -61,7 +61,7 @@ class BitDate {
 		$this->display_offset = 0;
 
 		// Load pref from DB is cache is empty
-		$display_tz = $gBitUser->getPreference('display_timezone', "Local");
+		$display_tz = $gBitUser->getPreference('site_display_timezone', "Local");
 
 		// Recompute offset each request in case DST kicked in
 		if ($display_tz != "UTC" && isset($_COOKIE["tz_offset"]))

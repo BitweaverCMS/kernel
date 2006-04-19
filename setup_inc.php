@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.55 2006/04/17 16:23:20 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.56 2006/04/19 13:48:37 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -115,7 +115,7 @@ global $gBitUser, $gTicket, $userlib, $gBitDbType;
 
 if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSystem->loadConfig();
-	if ($gBitSystem->getConfig('output_obzip') == 'y') {
+	if ($gBitSystem->getConfig('site_output_obzip') == 'y') {
 		ob_start ("ob_gzhandler");
 	}
 
@@ -228,14 +228,14 @@ if( $gBitSystem->isDatabaseValid() ) {
 		exit;
 	}
 	// check to see if max server load threshold is enabled
-	$use_load_threshold = $gBitSystem->getConfig('use_load_threshold', 'n');
+	$site_use_load_threshold = $gBitSystem->getConfig('site_use_load_threshold', 'n');
 	// get average server load in the last minute. Keep quiet cause virtual hosts can give perm denied
 	if (@is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
 		list($server_load) = explode(' ', $load[0]);
 		$gBitSmarty->assign('server_load', $server_load);
-		if ($use_load_threshold == 'y' && !$gBitUser->hasPermission( 'p_access_closed_site' ) && !isset($bypass_siteclose_check)) {
-			$load_threshold = $gBitSystem->getConfig('load_threshold', 3);
-			if ($server_load > $load_threshold) {
+		if ($site_use_load_threshold == 'y' && !$gBitUser->hasPermission( 'p_access_closed_site' ) && !isset($bypass_siteclose_check)) {
+			$site_load_threshold = $gBitSystem->getConfig('site_load_threshold', 3);
+			if ($server_load > $site_load_threshold) {
 				$_REQUEST['error'] = $gBitSystem->getConfig('site_busy_msg', 'Server is currently too busy; please come back later.');
 				include( KERNEL_PKG_PATH . 'error_simple.php' );
 				exit;
@@ -245,32 +245,32 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	$https_mode = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on';
 	if ($https_mode) {
-		$http_port = 80;
-		$https_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 443;
+		$site_http_port = 80;
+		$site_https_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 443;
 	} else {
-		$http_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
-		$https_port = 443;
+		$site_http_port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
+		$site_https_port = 443;
 	}
 
 	$title = $gBitSystem->getConfig("title", "");
-	$https_port = $gBitSystem->getConfig('https_port', $https_port);
-	$https_prefix = $gBitSystem->getConfig('https_prefix', '/');
+	$site_https_port = $gBitSystem->getConfig('site_https_port', $site_https_port);
+	$site_https_prefix = $gBitSystem->getConfig('site_https_prefix', '/');
 	// we need this for backwards compatibility - use $gBitSystem->getPrerference( 'max_records' ) if you need it, or else the spanish inquisition will come and poke you with a soft cushion
 	$max_records = $gBitSystem->getConfig("max_records", 10);
 
 	/* this stuff isn't really needed here - xing - 2006-02-06
-	$http_domain = $gBitSystem->getConfig('http_domain', '');
-	$http_port = $gBitSystem->getConfig('http_port', $http_port);
-	$http_prefix = $gBitSystem->getConfig('http_prefix', '/');
+	$site_http_domain = $gBitSystem->getConfig('site_http_domain', '');
+	$site_http_port = $gBitSystem->getConfig('site_http_port', $site_http_port);
+	$site_http_prefix = $gBitSystem->getConfig('site_http_prefix', '/');
 	$site_show_all_modules_always = $gBitSystem->getConfig("site_show_all_modules_always", 'y');
 	$modseparateanon = $gBitSystem->getConfig("modseparateanon", 'n');
 
-	$gBitSmarty->assign('http_domain', $http_domain);
-	$gBitSmarty->assign('http_port', $http_port);
-	$gBitSmarty->assign('http_prefix', $http_prefix);
-	$gBitSmarty->assign('https_domain', $https_domain);
-	$gBitSmarty->assign('https_port', $https_port);
-	$gBitSmarty->assign('https_prefix', $https_prefix);
+	$gBitSmarty->assign('site_http_domain', $site_http_domain);
+	$gBitSmarty->assign('site_http_port', $site_http_port);
+	$gBitSmarty->assign('site_http_prefix', $site_http_prefix);
+	$gBitSmarty->assign('site_https_domain', $site_https_domain);
+	$gBitSmarty->assign('site_https_port', $site_https_port);
+	$gBitSmarty->assign('site_https_prefix', $site_https_prefix);
 
 	$gBitSmarty->assign('kernel_server_name', $gBitSystem->getConfig( 'kernel_server_name', $_SERVER["SERVER_NAME"] ));
 	$gBitSmarty->assign('count_admin_pvs', 'y');
@@ -278,12 +278,12 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign('modseparateanon', $modseparateanon);
 	$gBitSmarty->assign('max_records', $max_records);
 	$gBitSmarty->assign_by_ref('num_queries', $num_queries);
-	$gBitSmarty->assign('direct_pagination', 'n');
+	$gBitSmarty->assign('site_direct_pagination', 'n');
 	*/
 
 	if (ini_get('zlib.output_compression') == 1) {
 		$gBitSmarty->assign('gzip', 'Enabled');
-	} elseif ($gBitSystem->isFeatureActive('output_obzip')) {
+	} elseif ($gBitSystem->isFeatureActive('site_output_obzip')) {
 		$gBitSmarty->assign('gzip', 'Enabled');
 	} else {
 		$gBitSmarty->assign('gzip', 'Disabled');
@@ -291,7 +291,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// can't figure out if we can nuke these
 	$gBitSmarty->assign('title', $title);
-	$gBitSmarty->assign('temp_dir', getTempDir());
+	$gBitSmarty->assign('site_temp_dir', getTempDir());
 
 	$gBitSmarty->assign_by_ref( 'gBitSystemPrefs', $gBitSystem->mPrefs );
 
@@ -307,48 +307,48 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$http_basic_auth = $gBitSystem->getConfig('http_basic_auth', '/');
 	$gBitSmarty->assign('http_basic_auth',$http_basic_auth);
 	*/
-	$gBitSmarty->assign('https_login', $gBitSystem->getConfig( 'https_login' ) );
-	$gBitSmarty->assign('https_login_required', $gBitSystem->getConfig( 'https_login_required' ) );
+	$gBitSmarty->assign('site_https_login', $gBitSystem->getConfig( 'site_https_login' ) );
+	$gBitSmarty->assign('site_https_login_required', $gBitSystem->getConfig( 'site_https_login_required' ) );
 
 	$login_url = USERS_PKG_URL . 'validate.php';
 	$gBitSmarty->assign('login_url', $login_url);
 
-	if( $gBitSystem->isFeatureActive( 'https_login' ) || $gBitSystem->isFeatureActive( 'https_login_required' ) )	{
-		$https_domain = $gBitSystem->getConfig('https_domain', '');
-		$http_login_url = 'http://' . $http_domain;
+	if( $gBitSystem->isFeatureActive( 'site_https_login' ) || $gBitSystem->isFeatureActive( 'site_https_login_required' ) )	{
+		$site_https_domain = $gBitSystem->getConfig('site_https_domain', '');
+		$http_login_url = 'http://' . $site_http_domain;
 
-		if ($http_port != 80)
-			$http_login_url .= ':' . $http_port;
+		if ($site_http_port != 80)
+			$http_login_url .= ':' . $site_http_port;
 
-		$http_login_url .= $http_prefix . $gBitSystem->getDefaultPage();
+		$http_login_url .= $site_http_prefix . $gBitSystem->getDefaultPage();
 
 		if (SID)
 			$http_login_url .= '?' . SID;
 
 		$edit_data = htmlentities(isset($_REQUEST["edit"]) ? $_REQUEST["edit"] : '', ENT_QUOTES);
 
-		$https_login_url = 'https://' . $https_domain;
+		$https_login_url = 'https://' . $site_https_domain;
 
-		if ($https_port != 443)
-			$https_login_url .= ':' . $https_port;
+		if ($site_https_port != 443)
+			$https_login_url .= ':' . $site_https_port;
 
-		$https_login_url .= $https_prefix . $gBitSystem->getDefaultPage();
+		$https_login_url .= $site_https_prefix . $gBitSystem->getDefaultPage();
 
 		if (SID)
 			$https_login_url .= '?' . SID;
 
 		$stay_in_ssl_mode = isset($_REQUEST['stay_in_ssl_mode']) ? $_REQUEST['stay_in_ssl_mode'] : '';
 
-		if ($https_login_required == 'y') {
+		if ($site_https_login_required == 'y') {
 			// only show "Stay in SSL checkbox if we're not already in HTTPS mode"
 			$show_stay_in_ssl_mode = !$https_mode ? 'y' : 'n';
 			$gBitSmarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
 			if (!$https_mode) {
-				$https_login_url = 'https://' . $https_domain;
-				if ($https_port != 443)
-					$https_login_url .= ':' . $https_port;
+				$https_login_url = 'https://' . $site_https_domain;
+				if ($site_https_port != 443)
+					$https_login_url .= ':' . $site_https_port;
 
-				$https_login_url .= $https_prefix . $login_url;
+				$https_login_url .= $site_https_prefix . $login_url;
 
 				if (SID) {
 					$https_login_url .= '?' . SID;

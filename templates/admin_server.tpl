@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.9 2006/03/01 18:35:15 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.10 2006/04/19 13:48:38 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -60,39 +60,39 @@
 					{if !$gBitSystem->hasValidSenderEmail()}
 						{formfeedback error="Site emailer return address is not valid!"}
 					{/if}
-					{formlabel label="Site Emailer return address" for="sender_email"}
+					{formlabel label="Site Emailer return address" for="site_sender_email"}
 					{forminput}
-						<input size="50" type="text" name="sender_email" id="sender_email" value="{$gBitSystem->getConfig('sender_email')|escape}" />
+						<input size="50" type="text" name="site_sender_email" id="site_sender_email" value="{$gBitSystem->getConfig('site_sender_email')|escape}" />
 						{formhelp note="When users recieve an automatically generated email, this is the email address that will be used as return address."}
 					{/forminput}
 				</div>
 
 				<div class="row">
-					{formlabel label="Centralized user upload directory" for="centralized_upload_dir"}
+					{formlabel label="Centralized user upload directory" for="site_upload_dir"}
 					{forminput}
-						<input size="50" type="text" name="centralized_upload_dir" id="centralized_upload_dir" value="{$centralized_upload_dir|escape}" />
+						<input size="50" type="text" name="site_upload_dir" id="site_upload_dir" value="{$site_upload_dir|escape}" />
 					{/forminput}
 				</div>
 
 				<div class="row">
-					{formlabel label="Temporary directory" for="temp_dir"}
+					{formlabel label="Temporary directory" for="site_temp_dir"}
 					{forminput}
-						<input size="50" type="text" name="temp_dir" id="temp_dir" value="{$temp_dir|escape}" />
+						<input size="50" type="text" name="site_temp_dir" id="site_temp_dir" value="{$site_temp_dir|escape}" />
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formfeedback warning="After changing this setting you might have to log in again."}
-					{formlabel label="Store session data in database" for="session_db"}
+					{formlabel label="Store session data in database" for="site_store_session_db"}
 					{forminput}
-						{html_checkboxes name="session_db" values="y" checked=$gBitSystem->getConfig('session_db') labels=false id="session_db"}
+						{html_checkboxes name="site_store_session_db" values="y" checked=$gBitSystem->getConfig('site_store_session_db') labels=false id="site_store_session_db"}
 					{/forminput}
 				</div>
 
 				<div class="row">
-					{formlabel label="Session lifetime in seconds" for="session_lifetime"}
+					{formlabel label="Session lifetime in seconds" for="site_session_lifetime"}
 					{forminput}
-						<input size="5" type="text" name="session_lifetime" id="session_lifetime" value="{$gBitSystem->getConfig('session_lifetime')}" /> {tr}seconds{/tr}
+						<input size="5" type="text" name="site_session_lifetime" id="site_session_lifetime" value="{$gBitSystem->getConfig('site_session_lifetime')}" /> {tr}seconds{/tr}
 						{formhelp note=""}
 					{/forminput}
 				</div>
@@ -121,17 +121,17 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="Disallow access when load is above the threshold" for="use_load_threshold"}
+					{formlabel label="Disallow access when load is above the threshold" for="site_load_threshold"}
 					{forminput}
-						{html_checkboxes name="use_load_threshold" values="y" checked=$BitSystemPrefs.use_load_threshold labels=false id="use_load_threshold"}
+						{html_checkboxes name="site_load_threshold" values="y" checked=$BitSystemPrefs.site_load_threshold labels=false id="site_load_threshold"}
 						{formhelp note="Disallow access when load is above the threshold (except for those with permission)"}
 					{/forminput}
 				</div>
 
 				<div class="row">
-					{formlabel label="Max average server load threshold in the last minute" for="load_threshold"}
+					{formlabel label="Max average server load threshold in the last minute" for="site_load_threshold"}
 					{forminput}
-						<input type="text" name="load_threshold" id="load_threshold" value="{$gBitSystem->getConfig('load_threshold')}" size="5" />
+						<input type="text" name="site_load_threshold" id="site_load_threshold" value="{$gBitSystem->getConfig('site_load_threshold')}" size="5" />
 					{/forminput}
 				</div>
 
@@ -151,23 +151,23 @@
 		{jstab title="Proxy"}
 			{legend legend="Proxy Settings"}
 				<div class="row">
-					{formlabel label="Use proxy" for="use_proxy"}
+					{formlabel label="Use proxy" for="site_use_proxy"}
 					{forminput}
-						{html_checkboxes name="use_proxy" values="y" checked=$use_proxy labels=false id="use_proxy"}
+						{html_checkboxes name="site_use_proxy" values="y" checked=$site_use_proxy labels=false id="site_use_proxy"}
 					{/forminput}
 				</div>
 
 				<div class="row">
-					{formlabel label="Proxy Host" for="proxy_host"}
+					{formlabel label="Proxy Host" for="site_proxy_host"}
 					{forminput}
-						<input type="text" name="proxy_host" id="proxy_host" value="{$proxy_host|escape}" size="50" />
+						<input type="text" name="site_proxy_host" id="site_proxy_host" value="{$site_proxy_host|escape}" size="50" />
 					{/forminput}
 				</div>
 
 				<div class="row">
-					{formlabel label="Proxy port" for="proxy_port"}
+					{formlabel label="Proxy port" for="site_proxy_port"}
 					{forminput}
-						<input type="text" name="proxy_port" id="proxy_port" value="{$proxy_port|escape}" size="50" />
+						<input type="text" name="site_proxy_port" id="site_proxy_port" value="{$site_proxy_port|escape}" size="50" />
 					{/forminput}
 				</div>
 

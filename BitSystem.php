@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.68 2006/04/17 16:23:20 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.69 2006/04/19 13:48:37 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -268,7 +268,7 @@ class BitSystem extends BitBase {
 	*/
 	function hasValidSenderEmail( $pSenderEmail=NULL ) {
 		if( empty( $pSenderEmail ) ) {
-			$pSenderEmail = $this->getConfig( 'sender_email' );
+			$pSenderEmail = $this->getConfig( 'site_sender_email' );
 		}
 		return( !empty( $pSenderEmail ) && !preg_match( '/.*localhost$/', $pSenderEmail ) );
 	}
@@ -284,8 +284,8 @@ class BitSystem extends BitBase {
 	function getErrorEmail() {
 		if( defined('ERROR_EMAIL') ) {
 			$ret = ERROR_EMAIL;
-		} elseif( $this->getConfig( 'sender_email' ) ) {
-			$ret = $this->getConfig( 'sender_email' );
+		} elseif( $this->getConfig( 'site_sender_email' ) ) {
+			$ret = $this->getConfig( 'site_sender_email' );
 		} elseif( !empty( $_SERVER['SERVER_ADMIN'] ) ) {
 			$ret = $_SERVER['SERVER_ADMIN'];
 		} else {
@@ -315,7 +315,7 @@ class BitSystem extends BitBase {
 		mail($pMailHash['email'],
 			$pMailHash['subject'].' '.$_SERVER["SERVER_NAME"],
 			$pMailHash['body'],
-			"From: ".$this->getConfig( 'sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
+			"From: ".$this->getConfig( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
 		);
 	}
 	// >>>
@@ -1814,48 +1814,48 @@ class BitSystem extends BitBase {
 	 * Retrieves the user's preferred long date format for displaying dates.
 	 */
 	function get_long_date_format() {
-		static $long_date_format = false;
+		static $site_long_date_format = false;
 
-		if (!$long_date_format)
-		$long_date_format = $this->getConfig('long_date_format', '%A %d of %B, %Y');
+		if (!$site_long_date_format)
+		$site_long_date_format = $this->getConfig('site_long_date_format', '%A %d of %B, %Y');
 
-		return $long_date_format;
+		return $site_long_date_format;
 	}
 
 	/**
 	 * Retrieves the user's preferred short date format for displaying dates.
 	 */
 	function get_short_date_format() {
-		static $short_date_format = false;
+		static $site_short_date_format = false;
 
-		if (!$short_date_format)
-		$short_date_format = $this->getConfig('short_date_format', '%a %d of %b, %Y');
+		if (!$site_short_date_format)
+		$site_short_date_format = $this->getConfig('site_short_date_format', '%a %d of %b, %Y');
 
-		return $short_date_format;
+		return $site_short_date_format;
 	}
 
 	/**
 	 * Retrieves the user's preferred long time format for displaying dates.
 	 */
 	function get_long_time_format() {
-		static $long_time_format = false;
+		static $site_long_time_format = false;
 
-		if (!$long_time_format)
-		$long_time_format = $this->getConfig('long_time_format', '%H:%M:%S %Z');
+		if (!$site_long_time_format)
+		$site_long_time_format = $this->getConfig('site_long_time_format', '%H:%M:%S %Z');
 
-		return $long_time_format;
+		return $site_long_time_format;
 	}
 
 	/**
 	 * Retrieves the user's preferred short time format for displaying dates.
 	 */
 	function get_short_time_format() {
-		static $short_time_format = false;
+		static $site_short_time_format = false;
 
-		if (!$short_time_format)
-		$short_time_format = $this->getConfig('short_time_format', '%H:%M %Z');
+		if (!$site_short_time_format)
+		$site_short_time_format = $this->getConfig('site_short_time_format', '%H:%M %Z');
 
-		return $short_time_format;
+		return $site_short_time_format;
 	}
 
 	/**

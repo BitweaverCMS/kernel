@@ -13,7 +13,7 @@
 
 		<br />
 
-		{if $gBitSystem->isFeatureActive( 'direct_pagination' )}
+		{if $gBitSystem->isFeatureActive( 'site_direct_pagination' )}
 			{section loop=$cant_pages name=foo}
 				{assign var=selector_offset value=$smarty.section.foo.index|times:"$gBitSystem->getConfig('max_records')"}
 				<a href="{$pgnUrl}?find={$find|default:$smarty.request.find}&amp;sort_mode={$sort_mode}&amp;offset={$selector_offset}">{$smarty.section.foo.index_next}</a>
@@ -52,7 +52,7 @@
 		<br />
 		{tr}Items <strong>{$listInfo.offset+1}</strong> to <strong>{if $to > $listInfo.total_records}{$listInfo.total_records}{else}{$to}{/if}</strong> (of <strong>{$listInfo.total_records}</strong>){/tr}
 *}
-		{if $gBitSystem->isFeatureActive( 'direct_pagination' )}
+		{if $gBitSystem->isFeatureActive( 'site_direct_pagination' )}
 			<div class="pager">
 				<span class="left" style="float:left; width:48%; text-align:right;">
 					{foreach from=$listInfo.block.prev key=list_page item=prev}

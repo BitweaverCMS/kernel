@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.57 2006/04/19 17:18:13 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.58 2006/04/21 15:05:01 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -11,13 +11,6 @@
 /**
  * required setup
  */
-
-// remove all html from $_GET
-if( !empty( $_GET ) && is_array( $_GET ) ) {
-	foreach( $_GET as $key => $val ) {
-		$_REQUEST[$key] = $_POST[$key] = $_GET[$key] = htmlspecialchars( $val );
-	}
-}
 
 require_once(BIT_ROOT_PATH . 'kernel/config_defaults_inc.php');
 
@@ -38,6 +31,12 @@ define('KERNEL_PKG_PATH', BIT_ROOT_PATH . 'kernel/');
 define('KERNEL_PKG_URL', BIT_ROOT_URL . 'kernel/');
 
 require_once(KERNEL_PKG_PATH . 'preflight_inc.php');
+
+// clean up $_GET and make sure others are clean as well
+if( !empty( $_GET ) && is_array( $_GET ) ) {
+	detoxify( $_GET, TRUE );
+	array_merge( $_REQUEST, $_POST, $_GET );
+}
 
 // These are manually setup here because it's good to have a gBitUser setup prior to scanPackages
 define('LIBERTY_PKG_DIR', 'liberty');

@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.10 2006/03/17 14:21:40 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.11 2006/04/21 13:07:43 squareing Exp $
  */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
@@ -65,6 +65,9 @@ class BitSmarty extends Smarty
 
 	function _smarty_include ($pParams)
 	{
+		if( defined( 'TEMPLATE_DEBUG' ) && TEMPLATE_DEBUG == TRUE ) {
+			echo "\n<!-- - - - {$pParams['smarty_include_tpl_file']} - - - -->\n";
+		}
 		$this->includeSiblingPhp( $pParams['smarty_include_tpl_file'] );
 		return parent::_smarty_include ($pParams);
 	}
@@ -95,6 +98,9 @@ class BitSmarty extends Smarty
 
 		// the PHP sibling file needs to be included here, before the fetch so caching works properly
 		$this->includeSiblingPhp($_smarty_tpl_file);
+		if( defined( 'TEMPLATE_DEBUG' ) && TEMPLATE_DEBUG == TRUE ) {
+			echo "\n<!-- - - - {$_smarty_tpl_file} - - - -->\n";
+		}
 		return parent::fetch($_smarty_tpl_file, $_smarty_cache_id, $_smarty_compile_id, $_smarty_display);
 	}
 	// {{{ includeSiblingPhp

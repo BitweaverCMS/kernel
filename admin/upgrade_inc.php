@@ -294,6 +294,7 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='articles_description_length' WHERE `config_name`='article_description_length'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='articles_date_threshold' WHERE `config_name`='article_date_threshold'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='articles_display_filter_bar' WHERE `config_name`='display_article_filter_bar'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='articles_list_status' WHERE `config_name`='art_list_status'",
 
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='wiki_backlinks' WHERE `config_name`='backlinks'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='wiki_allow_dup_page_names' WHERE `config_name`='allow_dup_wiki_page_names'",

@@ -10,12 +10,13 @@
 * get_first_match
 */
 function get_first_match( $dir, $filename ) {
+	$ret = FALSE;
 	if( is_dir( $dir ) ) {
 		$dh = opendir( $dir );
 		$extensions = array( 'gif', 'png', 'jpg' );
 		foreach( $extensions as $ext ) {
 			if( is_file( $dir.$filename.'.'.$ext ) ) {
-				return $filename.'.'.$ext;
+				$ret = $filename.'.'.$ext;
 			}
 		}
 //		$pattern = strtolower( $filename ).'.';
@@ -24,9 +25,8 @@ function get_first_match( $dir, $filename ) {
 //				return $curFile;
 //			}
 //		}
-	} else {
-		return FALSE;
 	}
+	return $ret;
 }
 
 /**

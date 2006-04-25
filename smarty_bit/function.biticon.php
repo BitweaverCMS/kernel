@@ -9,18 +9,24 @@
 /**
 * get_first_match
 */
-function get_first_match( $dir,$filename ) {
-	if( !is_dir( $dir ) ) {
+function get_first_match( $dir, $filename ) {
+	if( is_dir( $dir ) ) {
+		$dh = opendir( $dir );
+		$extensions = array( 'gif', 'png', 'jpg' );
+		foreach( $extensions as $ext ) {
+			if( is_file( $dir.$filename.'.'.$ext ) ) {
+				return $filename.'.'.$ext;
+			}
+		}
+//		$pattern = strtolower( $filename ).'.';
+//		while( FALSE !== ( $curFile = readdir( $dh ) ) ) {
+//			if( ( strpos( strtolower( $curFile ), $pattern ) === 0 ) && is_file( $dir.$curFile ) ) {
+//				return $curFile;
+//			}
+//		}
+	} else {
 		return FALSE;
 	}
-	$dh=opendir( $dir );
-	$pattern = strtolower( $filename ).'.';
-	while( false !== ( $curFile = readdir( $dh ) ) ) {
-		if( ( strpos( strtolower( $curFile ),$pattern )===0 ) && is_file( $dir.$curFile ) ) {
-			return $curFile;
-		}
-	}
-	return false;
 }
 
 /**

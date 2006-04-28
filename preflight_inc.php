@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.11 2006/04/21 15:05:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.12 2006/04/28 15:25:55 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -153,6 +153,17 @@ function detoxify( &$pParamHash, $pHtml = FALSE ) {
 			}
 		}
 	}
+}
+
+// simple function to include in deprecated function calls. makes the developer replace with newer code
+function deprecated( $pReplace = NULL ) {
+	$trace = debug_backtrace();
+	//vd( $trace);
+	$out = "Deprecated function call:\n\tfunction: ".$trace[1]['class']."::".$trace[1]['function']."()\n\tfile: ".$trace[1]['file']."\n\tline: ".$trace[1]['line'];
+	if( !empty( $pReplace ) ) {
+		$out .= "\n\treplace with: ".$pReplace;
+	}
+	vd( $out );
 }
 
 ?>

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.72 2006/04/24 15:12:50 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.73 2006/04/28 15:26:36 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -181,9 +181,9 @@ class BitSystem extends BitBase {
 	}
 	// deprecated method saved compatibility until all getPreference calls have been eliminated
 	function getPreference( $pName, $pDefault = '' ) {
+		deprecated( 'BitSystem::getConfig()' );
 		return $this->getConfig( $pName, $pDefault );
 	}
-
 
 	/**
 	* Set a hash value in the mConfig hash. This does *NOT* store the value in the database. It does no checking for existing or duplicate values. the main point of this function is to limit direct accessing of the mConfig hash. I will probably make mConfig private one day.

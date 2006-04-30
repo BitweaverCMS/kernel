@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.73 2006/04/28 15:26:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.74 2006/04/30 17:43:36 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1082,12 +1082,12 @@ class BitSystem extends BitBase {
 					} elseif( $bit_index == 'user_home' ) {
 						$url = $gBitUser->getDisplayUrl();
 					} else {
-						$homePage = $gBitUser->getPreference( 'homePage' );
-						if (isset($homePage) && !empty($homePage)) {
-							if (strpos($homePage, '/') === false) {
-								$url = BitPage::getDisplayUrl( $homePage );
+						$users_homepage = $gBitUser->getPreference( 'users_homepage' );
+						if (isset($users_homepage) && !empty($users_homepage)) {
+							if (strpos($users_homepage, '/') === false) {
+								$url = BitPage::getDisplayUrl( $users_homepage );
 							} else {
-								$url = $homePage;
+								$url = $users_homepage;
 							}
 						}
 					}

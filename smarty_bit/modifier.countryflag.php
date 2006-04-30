@@ -16,7 +16,7 @@
 function smarty_modifier_countryflag($user)
 {
   global $gBitSystem;
-  $flag = $gBitSystem->getConfig('country','Other',$user);
+  $flag = $gBitSystem->getConfig('users_country','Other',$user);
   return "<img alt='flag' src='".IMG_PKG_URL."flags/".$flag.".gif' />";
 }
 

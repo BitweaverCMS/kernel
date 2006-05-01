@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.78 2006/02/28 13:20:03 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.79 2006/05/01 15:24:06 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -637,6 +637,13 @@ class BitSystem extends BitBase {
 	* @access public
 	*/
 	function registerPackage( $pPackageName, $pPackagePath, $pActivatable=TRUE, $pService=FALSE ) {
+		if( is_array( $pPackageName ) ) {
+			// backward compatible R2 package registration
+			$pPackageName = $pPackageName['package_name'];
+			$pPackagePath = $pPackageName['package_path'];
+			$pActivatable = !empty( $pPackagePath['activatable'] ) ? TRUE : FALSE;
+			$pService = !empty( $pPackagePath['service'] ) ? TRUE : FALSE;
+		}
 		$this->mRegisterCalled = TRUE;
 		if( empty( $this->mPackages ) ) {
 			$this->mPackages = array();

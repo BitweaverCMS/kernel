@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.15 2006/03/20 19:47:16 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.16 2006/05/02 20:57:40 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -47,7 +47,6 @@ class BitDbAdodb extends BitDb
 
 		parent::BitDb();
 
-
 		// Get all the ADODB stuff included
 		if (!defined("ADODB_FORCE_NULLS"))
 			define("ADODB_FORCE_NULLS", 1);
@@ -82,6 +81,8 @@ class BitDbAdodb extends BitDb
 				$this->mDb->LogSQL();
 			}
 		}
+
+		$this->debug( $this->getDebugLevel() );
 	}
 	/**
 	* Used to create tables - most commonly from package/schema_inc.php files
@@ -550,7 +551,7 @@ class BitDbAdodb extends BitDb
 	* @return pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose
 	**/
 	function getDebugLevel() {
-		return( $this->mDb->debug );
+		return( $this->mDebug );
 	}
 
 	/**

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.19 2006/03/20 19:47:16 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.20 2006/05/02 16:42:55 sylvieg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -679,7 +679,21 @@ class BitDb
 	* @param pSortMode fieldname and sort order string (eg name_asc)
 	* @return the correctly quoted SQL ORDER statement
 	*/
-	function convert_sortmode($pSortMode) {
+	function convert_sortmode( $pSortMode ) {
+		if ( is_array( $pSortMode ) ) {
+			$sql = '';
+			foreach ($pSortMode as $sortMode) {
+				if (!empty( $sql )) {
+					$sql .= ',';
+				}
+				$sql .= $this->convert_sortmode_one_item( $sortMode );
+			}
+			return $sql;
+		} else {
+			return $this->convert_sortmode_one_item( $pSortMode );
+		}
+	}
+	function convert_sortmode_one_item( $pSortMode ) {
 		/* functionMap allows us to things like sort by random rows. If the
 			sortMode requested is 'random' it will insert the properly named
 			db-specific function to achieve this. - ATS

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.20 2006/05/02 16:42:55 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.21 2006/05/03 16:38:56 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -714,7 +714,7 @@ class BitDb
 
 		$pSortMode = preg_replace( '/lastModif/', 'last_modified', $pSortMode );
 		$pSortMode = preg_replace( '/pageName/', 'title', $pSortMode );
-		$pSortMode = preg_replace( '/^user_/', 'login_', $pSortMode );
+		$pSortMode = preg_replace( '/^user_(asc|desc)/', 'login_\1', $pSortMode );
 
 		$bIsFunction = FALSE;
 		$functionMap = array( 'random' => array("postgres" => "RANDOM()",

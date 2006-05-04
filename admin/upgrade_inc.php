@@ -430,6 +430,19 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='eponymous_groups' WHERE `config_name`='users_eponymous_groups'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='display_name' WHERE `config_name`='users_display_name'",
 
+		// rss config rename
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='articles_rss_title'       WHERE `config_name`='title_rss_articles'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='articles_rss_description' WHERE `config_name`='desc_rss_articles'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='articles_rss_max_records' WHERE `config_name`='max_rss_articles'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='wiki_rss_title'           WHERE `config_name`='title_rss_wiki'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='wiki_rss_description'     WHERE `config_name`='desc_rss_wiki'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='wiki_rss_max_records'     WHERE `config_name`='max_rss_wiki'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='liberty_rss_title'        WHERE `config_name`='title_rss_liberty'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='liberty_rss_description'  WHERE `config_name`='desc_rss_liberty'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='liberty_rss_max_records'  WHERE `config_name`='max_rss_liberty'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blogs_rss_title'          WHERE `config_name`='title_rss_blogs'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blogs_rss_description'    WHERE `config_name`='desc_rss_blogs'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blogs_rss_max_records'    WHERE `config_name`='max_rss_blogs'",
 	)
 )),
 array( 'DATADICT' => array(

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.74 2006/04/30 17:43:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.75 2006/05/04 16:36:20 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1971,6 +1971,16 @@ class BitSystem extends BitBase {
 		$ret['error'] = $error;
 		return $ret;
 	}
+
+	/**
+	* Statically callable function to determine if the current call was made using Ajax
+	*
+	* @access public
+	**/
+	function isAjaxRequest() {
+		return (!empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' ? true : false);
+	}
+
 
 	// should be moved somewhere else. unbreaking things for now - 25-JUN-2005 - spiderr
 	// \TODO remove html hardcoded in diff2

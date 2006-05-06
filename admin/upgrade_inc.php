@@ -164,6 +164,12 @@ array( 'DATADICT' => array(
 	array( 'DROPTABLE' => array(
 		'tiki_programmed_content', 'tiki_dsn', 'tiki_content_templates', 'tiki_content_templates_sections', 'tiki_menus', 'tiki_menu_options',
 	)),
+	array( 'RENAMECOLUMN' => array(
+		'kernel_config' => array(
+			'`value`' => '`config_value` C(250)',
+			'`name`' => '`config_name` C(250)',
+		),
+	)),
 )),
 // clean up all kernel_config in the database by using only under_scores in the databae
 array( 'QUERY' =>
@@ -448,14 +454,6 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blogs_rss_description'    WHERE `config_name`='desc_rss_blogs'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blogs_rss_max_records'    WHERE `config_name`='max_rss_blogs'",
 	)
-)),
-array( 'DATADICT' => array(
-	array( 'RENAMECOLUMN' => array(
-		'kernel_config' => array(
-			'`value`' => '`config_value` C(250)',
-			'`name`' => '`config_name` C(250)',
-		),
-	)),
 )),
 	)
 ),

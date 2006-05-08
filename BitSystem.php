@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.76 2006/05/08 03:45:35 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.77 2006/05/08 03:46:41 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1440,7 +1440,7 @@ class BitSystem extends BitBase {
 	/*static*/
 	function genPass() {
 		$vocales = "aeiou";
-		$consonantes = "bcdfghjklmnpqrstvwxyz0123456789";
+		$consonantes = "bcdfghjklmnpqrstvwxyz123456789";
 		$r = '';
 		for ($i = 0; $i < 8; $i++) {
 			if ($i % 2) {

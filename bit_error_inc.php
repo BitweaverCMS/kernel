@@ -158,6 +158,14 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 
 // var dump variable in something nicely readable in web browser
 function vd( $iVar ) {
+	print vc( $iVar );
+}
+
+
+// var capture variable in something nicely readable in web browser
+function vc( $iVar ) {
+	
+	ob_start();
 	if( is_object( $iVar ) ) {
 		if( isset( $iVar->mDb ) ) {
 			unset( 	$iVar->mDb );
@@ -181,6 +189,9 @@ function vd( $iVar ) {
 		}
 		print "</pre>\n";
 	}
+	$ret = ob_get_contents();
+	ob_end_clean();
+	return $ret;
 }
 
 

@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.19 2006/04/19 13:48:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.20 2006/05/26 15:06:56 sylvieg Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -212,7 +212,7 @@ class BitBase
 			$pListHash['max_records'] = $gBitSystem->getConfig( "max_records", 10 );
 		}
 
-		if( empty( $pListHash['offset'] ) ) {
+		if( !isset( $pListHash['offset'] ) ) {
 			if (isset($pListHash['page'])) {
 				$pListHash['offset'] = ($pListHash['page'] - 1) * $pListHash['max_records'];
 			} else {

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.11 2006/04/19 17:18:14 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_general.tpl,v 1.12 2006/05/26 16:19:05 sylvieg Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -50,6 +50,7 @@
 					{formlabel label="Long date format" for="site_long_date_format"}
 					{forminput}
 						<input type="text" name="site_long_date_format" id="site_long_date_format" value="{$site_long_date_format|escape}" size="50"/>
+						{formhelp note="Default: %A %d {tr}of{/tr} %B, %Y"}
 					{/forminput}
 				</div>
 
@@ -57,6 +58,7 @@
 					{formlabel label="Short date format" for="site_short_date_format"}
 					{forminput}
 						<input type="text" name="site_short_date_format" id="site_short_date_format" value="{$site_short_date_format|escape}" size="50"/>
+						{formhelp note="Default: %a %d {tr}of{/tr} %b, %Y"}
 					{/forminput}
 				</div>
 
@@ -64,6 +66,7 @@
 					{formlabel label="Long time format" for="site_long_time_format"}
 					{forminput}
 						<input type="text" name="site_long_time_format" id="site_long_time_format" value="{$site_long_time_format|escape}" size="50"/>
+						{formhelp note="Default: %H:%M:%S %Z"}
 					{/forminput}
 				</div>
 
@@ -71,8 +74,9 @@
 					{formlabel label="Short time format" for="site_short_time_format"}
 					{forminput}
 						<input type="text" name="site_short_time_format" id="site_short_time_format" value="{$site_short_time_format|escape}" size="50"/>
-						{formhelp note="<strong>Online Help</strong>: <a class=\"external\" href=\"http://www.php.net/manual/en/function.strftime.php\">Date and Time Format Help</a>"}
+						{formhelp note="Default: %H:%M %Z"}
 					{/forminput}
+					{formhelp note="<strong>Online Help</strong>: <a class=\"external\" href=\"http://www.php.net/manual/en/function.strftime.php\">Date and Time Format Help</a>"}
 				</div>
 
 				<div class="row submit">

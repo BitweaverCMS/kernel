@@ -14,10 +14,14 @@ require_once $gBitSmarty->_get_plugin_filepath('modifier','bit_date_format');
 /**
  * smarty_modifier_bit_short_datetime
  */
-function smarty_modifier_bit_short_datetime($string)
+function smarty_modifier_bit_short_datetime($string, $time='')
 {
 	global $gBitSystem;
-	return smarty_modifier_bit_date_format($string, $gBitSystem->get_short_datetime_format(), null, "%a %d ".tra('of')." %b, %Y[%H:%M %Z]");
+	if ( !empty( $time ) && date( 'Ymd' ) == date( 'Ymd', $string ) ) {
+		return smarty_modifier_bit_date_format($string, $gBitSystem->get_short_time_format(), null, tra("%H:%M %Z"));
+} else {
+		return smarty_modifier_bit_date_format($string, $gBitSystem->get_short_datetime_format(), null, "%a %d ".tra('of')." %b, %Y[%H:%M %Z]");
+	}
 }
 
 /* vim: set expandtab: */

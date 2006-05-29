@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.60 2006/05/29 20:46:33 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.61 2006/05/29 22:01:04 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -35,6 +35,7 @@ require_once(KERNEL_PKG_PATH . 'preflight_inc.php');
 // clean up $_GET and make sure others are clean as well
 if( !empty( $_GET ) && is_array( $_GET ) ) {
 	detoxify( $_GET, TRUE );
+	$_REQUEST = array_merge( $_REQUEST, $_GET );
 }
 
 // These are manually setup here because it's good to have a gBitUser setup prior to scanPackages

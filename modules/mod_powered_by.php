@@ -10,7 +10,10 @@
  * @subpackage modules
  */
 
-global $gBitDbType;
-print $gBitDbType; 
-$gBitSmarty->assign( 'gDbType', $gBitDbType );
+$flag = $gBitSystem->getConfig( 'powered_by_DB_Logo' );
+if ( $flag == 1 ) {
+	global $gBitDbType;
+	$flag = $gBitDbType;
+}
+$gBitSmarty->assign( 'gDbType', $flag );
 ?>

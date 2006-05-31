@@ -3,21 +3,21 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.11 2006/04/21 13:07:43 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.12 2006/05/31 17:59:35 squareing Exp $
  */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-/**
- * let smarty define SMARTY_DIR so it's an absolute path :
- */
-define('SMARTY_DIR', UTIL_PKG_PATH . 'smarty/libs/');
-if( file_exists( SMARTY_DIR.'Smarty.class.php' ) ) {
+
+if( file_exists( UTIL_PKG_PATH.'smarty/libs/Smarty.class.php' ) ) {
+	// set SMARTY_DIR that we have the absolute path
+	define( 'SMARTY_DIR', UTIL_PKG_PATH.'smarty/libs/' );
 	// If we have smarty in our kernel, use that.
 	$smartyIncFile = SMARTY_DIR . 'Smarty.class.php';
 } else {
 	// assume it is in php's global include_path
+	// don't set SMARTY_DIR if we are not using the bw copy
 	$smartyIncFile = 'Smarty.class.php';
 }
 
@@ -160,7 +160,7 @@ class BitSmarty extends Smarty
 		$style = $gBitSystem->getStyle();
 		$endPath = "$bitdomain/$style/".$gBitLanguage->mLanguage;
 
- 		// Compile directory
+		// Compile directory
 		$compDir = $temp . "templates_c/$endPath";
 		$compDir = str_replace('//', '/', $compDir);
 		$compDir = clean_file_path($compDir);
@@ -186,7 +186,7 @@ function add_link_ticket($tpl_source, &$smarty) {
 		$tpl_source = preg_replace( $from, $to, $tpl_source );
 		$from = '#<form([^>]*)>#i';
 		$to = '<form\\1><div><input type="hidden" name="tk" value="{$gBitUser->mTicket}" /></div>';
- 		$tpl_source = preg_replace( $from, $to, $tpl_source );
+		$tpl_source = preg_replace( $from, $to, $tpl_source );
 		if( strpos( $tpl_source, '{form}' ) ) {
 			$tpl_source = str_replace( '{form}', '{form}<input type="hidden" name="tk" value="{$gBitUser->mTicket}" />', $tpl_source );
 		} elseif( strpos( $tpl_source, '{form ' ) ) {

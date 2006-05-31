@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.2 2005/06/19 08:50:56 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.3 2006/05/31 18:41:25 lsces Exp $ *}
 {strip}
 {bitmodule title="$moduleTitle" name="powered_by"}
 	<div style="text-align:center;">
@@ -7,6 +7,22 @@
 		<a href="http://smarty.php.net/">{biticon ipackage="liberty" iname="smarty" ipath="bitweaver/" iexplain="Powered by Smarty" iforce=icon}</a>
 		<br /><br />
 		<a href="http://adodb.sourceforge.net/">{biticon ipackage="liberty" iname="adodb" ipath="bitweaver/" iexplain="Powered by Adodb" iforce=icon}</a>
+		{if $gDbType eq 'firebird'}
+			<br /><br />
+			<a href="http://firebird.sourceforge.net/">{biticon ipackage="liberty" iname="firebird" ipath="bitweaver/" iexplain="Powered by Firebird" iforce=icon}</a>
+		{/if}
+		{if $gDbType eq 'mysql'}
+			<br /><br />
+			<a href="http://www.mysql.com/">{biticon ipackage="liberty" iname="mysql" ipath="bitweaver/" iexplain="Powered by MySQL" iforce=icon}</a>
+		{/if}
+		{if $gDbType eq 'postgresql'}
+			<br /><br />
+			<a href="http://www.postgresql.org/">{biticon ipackage="liberty" iname="postgresql" ipath="bitweaver/" iexplain="Powered by PostgreSQL" iforce=icon}</a>
+		{/if}
+		{if $gDbType eq 'oracle'}
+			<br /><br />
+			<a href="http://www.oracle.com/">{biticon ipackage="liberty" iname="oracle" ipath="bitweaver/" iexplain="Powered by Oracle" iforce=icon}</a>
+		{/if}
 	</div>
 {/bitmodule}
 {/strip}

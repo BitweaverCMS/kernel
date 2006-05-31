@@ -11,7 +11,7 @@
  */
 
 $flag = $gBitSystem->getConfig( 'powered_by_DB_Logo' );
-if ( $flag == 1 ) {
+if ( $flag == 'y' ) {
 	global $gBitDbType;
 	$flag = $gBitDbType;
 }

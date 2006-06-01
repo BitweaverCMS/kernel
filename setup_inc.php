@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.61 2006/05/29 22:01:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.62 2006/06/01 18:35:49 sylvieg Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -228,8 +228,8 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 	// check to see if max server load threshold is enabled
 	$site_use_load_threshold = $gBitSystem->getConfig('site_use_load_threshold', 'n');
-	// get average server load in the last minute. Keep quiet cause virtual hosts can give perm denied
-	if (@is_readable('/proc/loadavg') && $load = file('/proc/loadavg')) {
+	// get average server load in the last minute. Keep quiet cause virtual hosts can give perm denied or openbase_dir is open_basedir on
+	if (@is_readable('/proc/loadavg') && @($load = file('/proc/loadavg'))) {
 		list($server_load) = explode(' ', $load[0]);
 		$gBitSmarty->assign('server_load', $server_load);
 		if ($site_use_load_threshold == 'y' && !$gBitUser->hasPermission( 'p_access_closed_site' ) && !isset($bypass_siteclose_check)) {

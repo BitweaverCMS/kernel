@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.17 2006/05/31 21:19:32 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.18 2006/06/01 13:57:02 lsces Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -39,11 +39,6 @@ $formFeaturesBit = array(
 		'label' => 'Show Category Path',
 		'note' => 'Display the category path at the top of the page',
 		'pkg' => CATEGORIES_PKG_NAME,
-	),
-	'powered_by_DB_Logo' => array(
-		'label' => 'Show Database Powered By Logo',
-		'note' => 'Adds the current database engine Powered By logo to the bottom of the powered by list',
-		'pkg' => KERNEL_PKG_NAME,
 	),
 );
 if( $gBitSystem->isPackageActive( 'stats' ) ) {

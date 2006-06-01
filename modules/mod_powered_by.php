@@ -10,8 +10,8 @@
  * @subpackage modules
  */
 
-$flag = $gBitSystem->getConfig( 'powered_by_DB_Logo' );
-if ( $flag == 'y' ) {
+$flag = '';
+if ( isset($module_params['powered_by_DB_Logo']) ) {
 	global $gBitDbType;
 	$flag = $gBitDbType;
 }

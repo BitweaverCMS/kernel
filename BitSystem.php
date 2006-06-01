@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.77 2006/05/08 03:46:41 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.78 2006/06/01 16:56:41 sylvieg Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1577,10 +1577,15 @@ class BitSystem extends BitBase {
 			
 			if (empty($save_path)) {
 				$errors .= "The session.save_path variable is not setup correctly (its empty).\n";
-			} else if (!@is_dir($save_path)) {
-				$errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
-			} else if (!bw_is_writeable($save_path)) {
-				$errors .= "The directory '$save_path' is not writeable.\n";
+			} else {
+				if (strpos ($save_path, ";") !== FALSE) {
+  					$save_path = substr ($save_path, strpos ($save_path, ";")+1);
+				}
+				if (!@is_dir($save_path)) {
+					$errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
+				} else if (!bw_is_writeable($save_path)) {
+					$errors .= "The directory '$save_path' is not writeable.\n";
+				}
 			}
 
 			if ($errors) {

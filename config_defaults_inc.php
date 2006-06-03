@@ -67,6 +67,7 @@ if( empty( $gPreScan ) ) {
 	$gPreScan = array( 'kernel', 'users', 'liberty' );
 }
 
+// when running scripts
 global $gShellScript;
 if( !empty( $gShellScript ) ) {
 	// keep notices quiet
@@ -75,7 +76,12 @@ if( !empty( $gShellScript ) ) {
     $_SERVER['HTTP_USER_AGENT'] = 'cron';
     $_SERVER['SERVER_NAME'] = '';
     $_SERVER['HTTP_SERVER_VARS'] = '';
+}
 
+// used to only load core packages
+global $gExclusiveScan;
+if( empty( $gExclusiveScan ) ) {
+	$gExclusiveScan = FALSE;
 }
 
 ?>

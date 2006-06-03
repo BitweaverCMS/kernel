@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.78 2006/06/01 16:56:41 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.79 2006/06/03 11:06:45 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -912,13 +912,17 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE ) {
-		global $gPreScan;
-		if (!empty($gPreScan) && is_array($gPreScan)) {
-			foreach($gPreScan as $pkgName) {
+	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pLoadCore=FALSE ) {
+		global $gPreScan, $gExclusiveScan;
+		if( !empty( $gExclusiveScan ) && is_array( $gExclusiveScan ) ) {
+			$gPreScan = &$gExclusiveScan;
+		}
+
+		if( !empty( $gPreScan ) && is_array( $gPreScan ) ) {
+			foreach( $gPreScan as $pkgName ) {
 				$this->mRegisterCalled = FALSE;
 				$scanFile = BIT_ROOT_PATH.$pkgName.'/'.$pScanFile;
-				if (file_exists( $scanFile )) {
+				if( file_exists( $scanFile ) ) {
 					if( $pOnce ) {
 						include_once( $scanFile );
 					} else {
@@ -940,7 +944,7 @@ class BitSystem extends BitBase {
 		}
 
 		// load lib configs
-		if( $pkgDir = opendir(BIT_ROOT_PATH) ) {
+		if( empty( $gExclusiveScan ) && $pkgDir = opendir( BIT_ROOT_PATH ) ) {
 			// Make two passes through the root - 1. to define the DEFINES, and 2. to include the $pScanFile's
 			while (false !== ($dirName = readdir($pkgDir))) {
 				if (is_dir(BIT_ROOT_PATH . '/' . $dirName) && ($dirName != 'CVS') && ( preg_match( '/^\w/', $dirName)) ) {
@@ -967,7 +971,7 @@ class BitSystem extends BitBase {
 				}
 			}
 
-			if (!defined('ACTIVE_PACKAGE')) {
+			if( !defined( 'ACTIVE_PACKAGE' ) ) {
 				define('ACTIVE_PACKAGE', 'kernel'); // when in doubt, assume the kernel
 			}
 

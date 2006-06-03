@@ -19,7 +19,7 @@
 	{* the order of the js files is crucial *}
 	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/bitweaver.js"></script>
 	{if $loadAjax && !$loadDragDrop}
-		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/prototype_1.5.js"></script>
+		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/prototype.js"></script>
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/ajax.js"></script>
 		{if $loadDebug}
 			<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/debugger.js"></script>

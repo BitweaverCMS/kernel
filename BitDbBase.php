@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.21 2006/05/03 16:38:56 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.22 2006/06/03 10:07:54 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -61,6 +61,11 @@ class BitDb
 	*/
 	var $mNumQueries = 0;
 	/**
+	* Used to store the total query time for this request.
+	* @private
+	*/
+	var $mQueryTime = 0;
+	/**
 	* Case sensitivity flag used in convertQuery
 	* @private
 	*/
@@ -90,6 +95,7 @@ class BitDb
 		$this->mDebug = $gDebug;
 		$this->mCacheFlag = FALSE;
 		$this->mNumQueries = 0;
+		$this->mQueryTime = 0;
 		$this->setFatalActive();
 		global $gDbCaseSensitivity;
 		$this->setCaseSensitivity( $gDbCaseSensitivity );
@@ -168,10 +174,8 @@ class BitDb
 	* Used to start query timer if in debug mode
 	*/
 	function queryStart() {
-		if( $this->getDebugLevel() ) {
-			global $gBitSystem;
-			$this->mQueryLap = $gBitSystem->mTimer->elapsed();
-		}
+		global $gBitSystem;
+		$this->mQueryLap = $gBitSystem->mTimer->elapsed();
 	}
 	/** will activate ADODB like native debugging output
 	* @param pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose
@@ -219,14 +223,15 @@ class BitDb
 		//count the number of queries made
 		$num_queries++;
 		$this->mNumQueries++;
+		global $gBitSystem;
+		$interval = $gBitSystem->mTimer->elapsed() - $this->mQueryLap;
+		$this->mQueryTime += $interval;
 		if( $this->getDebugLevel() ) {
-			global $gBitSystem;
-			$interval = $gBitSystem->mTimer->elapsed() - $this->mQueryLap;
 			$style = ( $interval > .5 ) ? 'color:red;' : (( $interval > .15 ) ? 'color:orange;' : '');
 			print '<p style="'.$style.'">### Query: '.$num_queries.' Start time: '.$this->mQueryLap.' ### Query run time: '.$interval.'</p>';
-			$this->mQueryLap = 0;
 			flush();
 		}
+		$this->mQueryLap = 0;
 	}
 
 	/**

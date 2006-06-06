@@ -321,6 +321,8 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='hotwords_new_window' WHERE `config_name`='hotwords_nw'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blog_posts_comments' WHERE `config_name`='blogposts_comments'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='pigeonholes_display_members' WHERE `config_name`='display_pigeonhole_members'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='pigeonholes_display_path' WHERE `config_name`='display_pigeonhole_path'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='pigeonholes_display_description' WHERE `config_name`='display_pigeonhole_description'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='pigeonholes_limit_member_number' WHERE `config_name`='limit_member_number'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='pgv_session_time' WHERE `config_name`='pgv_session_time'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='pgv_calendar_format' WHERE `config_name`='calendar_format'",

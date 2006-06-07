@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.80 2006/06/06 17:11:23 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.81 2006/06/07 18:06:00 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1020,8 +1020,9 @@ class BitSystem extends BitBase {
 							$tablePresent = in_array( $fullTable, $dbTables );
 							if( !$tablePresent ) {
 								// There is an incomplete table
-								if (isset( $this->mPackages[$package]['installed']) && $this->mPackages[$package]['installed'])
-									vd( "Missing Table: $fullTable - Package $package desactivated" );
+								if( isset( $this->mPackages[$package]['installed'] ) && $this->mPackages[$package]['installed'] ) {
+									vd( "Missing Table: $fullTable - Package $package deactivated" );
+								}
 							}
 							if( isset( $this->mPackages[$package]['installed'] ) ) {
 								$this->mPackages[$package]['installed'] &= $tablePresent;

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.16 2006/05/02 20:57:40 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.17 2006/06/08 21:14:00 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -22,12 +22,14 @@ if( empty( $ADODB_CACHE_DIR ) ) {
 }
 mkdir_p( $ADODB_CACHE_DIR );
 
-
-
-/**
- * ensure your AdoDB install is a subdirectory off your include path
- */
-require_once(UTIL_PKG_PATH."adodb/adodb.inc.php");
+if( file_exists( UTIL_PKG_PATH.'smarty/libs/Smarty.class.php' ) ) {
+	// this is the adodb that is distributed with bitweaver
+	$adodbIncFile = UTIL_PKG_PATH.'adodb/adodb.inc.php';
+} else {
+	// assume it is in php's global include_path
+	$adodbIncFile = 'adodb.inc.php';
+}
+require_once( $adodbIncFile );
 require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
 
 /**

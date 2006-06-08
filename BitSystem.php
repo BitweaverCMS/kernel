@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.81 2006/06/07 18:06:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.82 2006/06/08 17:48:57 sylvieg Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1587,7 +1587,8 @@ class BitSystem extends BitBase {
 				if (strpos ($save_path, ";") !== FALSE) {
   					$save_path = substr ($save_path, strpos ($save_path, ";")+1);
 				}
-				if (!@is_dir($save_path)) {
+				$open = ini_get('open_basedir');
+				if (!@is_dir($save_path) && empty($open)) {
 					$errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
 				} else if (!bw_is_writeable($save_path)) {
 					$errors .= "The directory '$save_path' is not writeable.\n";

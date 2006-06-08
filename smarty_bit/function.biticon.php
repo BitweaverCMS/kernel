@@ -31,6 +31,10 @@ function get_first_match( $dir, $filename ) {
 
 /**
 * output_icon
+ ** iexplain
+ ** iforce
+ ** url
+ ** or every param of an img
 */
 function output_icon( $params, $file ) {
 	global $gBitSystem, $gSniffer;

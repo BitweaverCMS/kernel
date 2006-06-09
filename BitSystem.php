@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.82 2006/06/08 17:48:57 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.83 2006/06/09 19:14:57 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -946,11 +946,11 @@ class BitSystem extends BitBase {
 		// load lib configs
 		if( empty( $gExclusiveScan ) && $pkgDir = opendir( BIT_ROOT_PATH ) ) {
 			// Make two passes through the root - 1. to define the DEFINES, and 2. to include the $pScanFile's
-			while (false !== ($dirName = readdir($pkgDir))) {
-				if (is_dir(BIT_ROOT_PATH . '/' . $dirName) && ($dirName != 'CVS') && ( preg_match( '/^\w/', $dirName)) ) {
+			while( false !== ( $dirName = readdir( $pkgDir ) ) ) {
+				if( is_dir( BIT_ROOT_PATH . '/' . $dirName ) && ( $dirName != 'CVS' ) && ( preg_match( '/^\w/', $dirName ) ) ) {
 					$this->mRegisterCalled = FALSE;
 					$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
-					if (file_exists( $scanFile )) {
+					if( file_exists( $scanFile ) ) {
 						if( $pOnce ) {
 							include_once( $scanFile );
 						} else {
@@ -959,7 +959,7 @@ class BitSystem extends BitBase {
 					}
 					// We auto-register and directory in the root as a package if it does not call registerPackage itself
 					if( $pScanFile == 'bit_setup_inc.php' ) {
-						if( (!$this->mRegisterCalled || $dirName!='kernel') && empty( $this->mPackages[$dirName] ) && !file_exists( BIT_ROOT_PATH.$dirName.'/bit_setup_inc.php' ) ) {
+						if( ( !$this->mRegisterCalled || $dirName!='kernel' ) && empty( $this->mPackages[$dirName] ) && !file_exists( BIT_ROOT_PATH.$dirName.'/bit_setup_inc.php' ) ) {
 							$registerHash = array(
 								'package_name' => $dirName,
 								'package_path' => BIT_ROOT_PATH.$dirName.'/',
@@ -976,10 +976,10 @@ class BitSystem extends BitBase {
 			}
 
 			if( !defined( 'BIT_STYLES_PATH' ) && defined( 'THEMES_PKG_PATH' ) ) {
-				define('BIT_STYLES_PATH', THEMES_PKG_PATH . 'styles/');
+				define( 'BIT_STYLES_PATH', THEMES_PKG_PATH . 'styles/' );
 			}
 			if( !defined( 'BIT_STYLES_URL' ) && defined( 'THEMES_PKG_PATH' ) ) {
-				define('BIT_STYLES_URL', THEMES_PKG_URL . 'styles/');
+				define( 'BIT_STYLES_URL', THEMES_PKG_URL . 'styles/' );
 			}
 		}
 		asort( $this->mAppMenu );

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.83 2006/06/09 19:14:57 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.84 2006/06/11 10:20:41 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1462,12 +1462,15 @@ class BitSystem extends BitBase {
 	/**
 	* given an extension, return the mime type
 	*
-	* @param string $ pMsg error message to be displayed
-	* @return hash of mime types
+	* @param string $pExtension is the extension of the file or the complete file name
+	* @return mime type of entry and populates $this->mMimeTypes with existing mime types
 	* @access public
 	*/
 	function lookupMimeType( $pExtension ) {
 		// rfc1341 - mime types are case insensitive.
+		if( preg_match( "/.*\.[a-zA-Z]+$/", $pExtension ) ) {
+			$pExtension = substr( $pExtension, ( strrpos( $pExtension, '.' ) + 1 )  );
+		}
 		$pExtension = strtolower( $pExtension );
 		if( empty( $this->mMimeTypes ) ) {
 			// use the local mime.types files if it is available since it may be more current
@@ -1478,17 +1481,16 @@ class BitSystem extends BitBase {
 					if (!preg_match("/^\s*(?!#)\s*(\S+)\s+(?=\S)(.+)/",$line,$match)) {
 						continue;
 					}
-					$tmp = preg_split("/\s/",trim($match[2]));
+					$tmp = preg_split( "/\s/",trim( $match[2] ) );
 					foreach( $tmp as $type ) {
 						$this->mMimeTypes[strtolower($type)] = $match[1];
 					}
 				}
-				fclose ($fp);
+				fclose( $fp );
 			}
 		}
-		$ret = !empty( $this->mMimeTypes[$pExtension] ) ? $this->mMimeTypes[$pExtension] : 'application/binary';
 
-		return $ret;
+		return( !empty( $this->mMimeTypes[$pExtension] ) ? $this->mMimeTypes[$pExtension] : 'application/binary' );
 	}
 
 	/**

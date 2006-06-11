@@ -38,24 +38,28 @@
 				</p>
 				<input type="hidden" name="page" value="{$page}" />
 				{foreach item=servicePkgs key=service from=$serviceList}
-					<h2>{$service|capitalize|replace:"_":" "}</h2>
 					{foreach key=name item=package from=$servicePkgs}
+						{if $package.installed and !$package.required and $package.activatable}
+							{if $titled != 'y'}
+								<h2>{$service|capitalize|replace:"_":" "}</h2>
+								{assign var=titled value=y}
+							{/if}
+
 							<div class="row">
 								<div class="formlabel">
 									<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
 								</div>
 								{forminput}
 									<label>
-										{if $package.installed and !$package.required and $package.activatable}
 											<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if}/>
 											&nbsp;{$name|capitalize}
-										{else}
-											{$name|capitalize} - {tr}not installed yet{/tr}
-										{/if}
 									</label>
 									{formhelp note=`$package.info` package=$name}
 								{/forminput}
 							</div>
+						{else}
+							{assign var=titled value=n}
+						{/if}
 					{/foreach}
 				{/foreach}
 			{/legend}

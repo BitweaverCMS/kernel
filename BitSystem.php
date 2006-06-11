@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.79 2006/05/01 15:24:06 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.7.2.80 2006/06/11 02:03:49 wolff_borg Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -343,8 +343,10 @@ class BitSystem extends BitBase {
 		$this->mStyles['browserStyleSheet'] = $this->getBrowserStyleCss();
 		$this->mStyles['customStyleSheet'] = $this->getCustomStyleCss();
 		$this->mStyles['altStyleSheets'] = $this->getAltStyleCss();
-		define( 'THEMES_STYLE_URL', $this->getStyleUrl() );
-		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'jscalendar/' );
+		if (!defined( 'THEMES_STYLE_URL' ))
+			define( 'THEMES_STYLE_URL', $this->getStyleUrl() );
+		if (!defined( 'JSCALENDAR_PKG_URL' ))
+			define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'jscalendar/' );
 		// dont forget to assign slideshow stylesheet if we are viewing page as slideshow
 //		$gBitSmarty->assign('slide_style', $this->getStyleCss("slide_style"));
 
@@ -668,7 +670,7 @@ class BitSystem extends BitBase {
 		// Define <PACKAGE>_PKG_URI
 		$pkgDefine = $pkgName.'_PKG_URI';
 		if (!defined($pkgDefine) && defined( 'BIT_BASE_URI' ) ) {
-			define($pkgDefine, BIT_BASE_URI . '/' . basename( $pPackagePath ) . '/');
+			define($pkgDefine, BIT_BASE_URI . basename( $pPackagePath ) . '/');
 		}
 
 		// Define <PACKAGE>_PKG_NAME

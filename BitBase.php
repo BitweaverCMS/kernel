@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.20 2006/05/26 15:06:56 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.21 2006/06/15 14:00:09 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -348,6 +348,27 @@ function xmlentities($string, $quote_style=ENT_QUOTES)
    }
    // after the initial translation, _do_ map standalone '&' into '&#38;'
    return preg_replace("/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,5};)/","&#38;" , strtr($string, $trans));
+}
+
+/**
+ * Redirect to another page or site
+ * @param string The url to redirect to
+*/
+function bit_redirect( $pUrl ) {
+	// clean up URL before executing it
+	while (strstr($pUrl, '&&')) {
+		 $pUrl = str_replace('&&', '&', $pUrl);
+	}
+	while (strstr($pUrl, '&amp;&amp;')) {
+		$pUrl = str_replace('&amp;&amp;', '&amp;', $pUrl);
+	}
+	// header locates should not have the &amp; in the address it breaks things
+	while (strstr($pUrl, '&amp;')) {
+		$pUrl = str_replace('&amp;', '&', $pUrl);
+	}
+	header('Location: ' . $pUrl);
+	session_close();
+	exit();
 }
 
 function array_diff_keys()

@@ -12,6 +12,7 @@
  * Name:     formlabel
  * Input:
  *           - label       (required) - words that are displayed
+ *		  - mandatory (optional) - add a class formmandatory in the div
  */
 function smarty_function_formlabel( $params,&$gBitSmarty ) {
 	$atts = '';
@@ -20,6 +21,8 @@ function smarty_function_formlabel( $params,&$gBitSmarty ) {
 			case 'label':
 				$name = $val;
 				break;
+			case 'mandatory':
+				$mandatory = true;
 			default:
 				if( $val ) {
 					$atts .= ' '.$key.'="'.$val.'"';
@@ -27,7 +30,11 @@ function smarty_function_formlabel( $params,&$gBitSmarty ) {
 				break;
 		}			
 	}
-	$html = '<div class="formlabel">';
+	$html = '<div class="formlabel';
+	if (isset($mandatory) && $mandatory) {
+		$html .= ' formmandatory';
+	}
+	$html .= '">';
 	if( $atts != '' ) {
 		$html .= '<label'.$atts.'>';
 	}

@@ -72,6 +72,11 @@
 		{if $show_install_tab}
 			{jstab title="Install Packages"}
 				{legend legend="bitweaver Packages available for installation"}
+
+					<p class="help">
+					{tr}To install more packages, please run the installer{/tr}: <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Package Installer{/tr}</a>
+					</p>
+
 					{foreach key=name item=package from=$gBitSystem->mPackages}
 						{if $package.tables && !$package.required && !$package.installed}
 							<div class="row">
@@ -86,14 +91,6 @@
 						{/if}
 					{/foreach}
 				{/legend}
-
-				<br />
-
-				{box title="How to install bitweaver Packages"}
-					{tr}To install more packages, please run the <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>installer</a> to choose your desired packages.{/tr}
-					<br />
-					<small><strong>{tr}Note{/tr}</strong> : {tr}you might have to rename your 'install/install.done' file back to 'install/install.php' to be able to install more packages{/tr}</small>
-				{/box}
 			{/jstab}
 		{/if}
 

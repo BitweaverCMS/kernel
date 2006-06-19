@@ -7,49 +7,58 @@
 	</div>
 
 	<div class="body">
-		<table class="data">
-			<tr>
-				<th colspan="4">{tr}Exterminator{/tr} - <a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=all">{tr}Empty All{/tr}</a></th>
-			</tr>
-			<tr class="odd">
-				<td style="width:55%;"><strong>{$smarty.const.TEMP_PKG_PATH}lang/</strong></td>
-				<td style="width:15%; text-align:right;">{tr}{$du.lang.cant} files{/tr}</td>
-				<td style="width:15%; text-align:right;">{$du.lang.total|kbsize}</td>
-				<td style="width:15%; text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=lang_cache">{tr}Empty{/tr}</a></td>
-			</tr>
-			<tr class="even">
-				<td><strong>{$smarty.const.TEMP_PKG_PATH}templates_c/</strong></td>
-				<td style="text-align:right;">{tr}{$du.templates_c.cant} files{/tr}</td>
-				<td style="text-align:right;">{$du.templates_c.total|kbsize}</td>
-				<td style="text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=templates_c">{tr}Empty{/tr}</a></td>
-			</tr>
-			<tr class="odd">
-				<td><strong>{$smarty.const.TEMP_PKG_PATH}modules/cache/</strong></td>
-				<td style="text-align:right;">{tr}{$du.modules.cant} files{/tr}</td>
-				<td style="text-align:right;">{$du.modules.total|kbsize}</td>
-				<td style="text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=modules_cache">{tr}Empty{/tr}</a></td>
-			</tr>
-			<tr class="even">
-				<td><strong>{$smarty.const.TEMP_PKG_PATH}cache/</strong></td>
-				<td style="text-align:right;">{tr}{$du.cache.cant} files{/tr}</td>
-				<td style="text-align:right;">{$du.cache.total|kbsize}</td>
-				<td style="text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?do=cache">{tr}Empty{/tr}</a></td>
-			</tr>
-		</table>
+		{formfeedback hash=$feedback}
+		{legend legend="Exterminator"}
+			<div class="row">
+				{formlabel label="Clear entire cache" for=""}
+				{forminput}
+					<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?prune=all">{tr}Empty All{/tr}</a>
+					{formhelp note="This will clear out all cache files in all the directories listed below."}
+				{/forminput}
+			</div>
 
-		<br />
-
-		<table class="data">
-			<tr><th colspan="4">{tr}{$langdir} - Templates compiler{/tr}</th></tr>
-			{foreach key=key item=item from=$templates}
-				<tr class="{cycle values='odd,even'}">
-					<td style="width:55%;"><strong>{$key}</strong></td>
-					<td style="width:15%; text-align:right;">{tr}{$item.cant} files{/tr}</td>
-					<td style="width:15%; text-align:right;">{$item.total|kbsize}</td>
-					<td style="width:15%; text-align:right;"><a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?compiletemplates={$key}">{tr}Compile{/tr}</a></td>
+			<table class="data">
+				<caption>{tr}List of Cached Files{/tr}</caption>
+				<tr>
+					<th style="width:25%;">{tr}Cache Area{/tr}</th>
+					<th style="width:30%;">{tr}Relative Path{/tr}</th>
+					<th style="width:15%;">{tr}File Count{/tr}</th>
+					<th style="width:15%;">{tr}File Size{/tr}</th>
+					<th style="width:15%;">{tr}Actions{/tr}</th>
 				</tr>
-			{/foreach}
-		</table>
-	</div> {* end .body *}
-</div> {* end .admin *}
+				{foreach from=$diskUsage key=key item=item}
+					<tr class="{cycle values='odd,even'}">
+						<td>{$item.title}</td>
+						<td>{$item.url}</td>
+						<td style="text-align:right;">{tr}{$item.du.count} file(s){/tr}</td>
+						<td style="text-align:right;">{$item.du.size|kbsize}</td>
+						<td class="actionicon">{smartlink ititle=Empty ibiticon="liberty/delete" prune=$key}</td>
+					</tr>
+				{/foreach}
+			</table>
+		{/legend}
+
+		{legend legend="Templates Compiler"}
+			<table class="data">
+				<caption>{tr}List of Cached Templates{/tr}</caption>
+				<tr>
+					<th style="width:25%;">{tr}Language{/tr}</th>
+					<th style="width:30%;">{tr}Relative Path{/tr}</th>
+					<th style="width:15%;">{tr}File Count{/tr}</th>
+					<th style="width:15%;">{tr}File Size{/tr}</th>
+					<th style="width:15%;">{tr}Actions{/tr}</th>
+				</tr>
+				{foreach from=$templates key=key item=item}
+					<tr class="{cycle values='odd,even'}">
+						<td>{$item.title}</td>
+						<td>{$item.url}{$key}</td>
+						<td style="text-align:right;">{tr}{$item.du.count} file(s){/tr}</td>
+						<td style="text-align:right;">{$item.du.size|kbsize}</td>
+						<td class="actionicon">{smartlink ititle="Compile Templates" ibiticon="liberty/edit" compiletemplates=$key}</td>
+					</tr>
+				{/foreach}
+			</table>
+		{/legend}
+	</div><!-- end .body -->
+</div><!-- end .system -->
 {/strip}

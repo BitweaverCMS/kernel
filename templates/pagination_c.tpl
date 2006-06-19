@@ -1,11 +1,11 @@
 {strip}
-{if $control.total_pages gt 1}
+{if $control.cant_pages gt 1}
 	<div class="pagination">
 		{if $control.prev_offset >= 0}
 			<a href="{$pgnUrl}?find={$control.find}&amp;sort_mode={$control.sort_mode}&amp;offset={$control.prev_offset}{$pgnVars}">&laquo;</a>
 		{/if}
 
-		&nbsp;{tr}Page {$control.current_page} of {$control.total_pages}{/tr}&nbsp;
+		&nbsp;{tr}Page {$control.actual_page} of {$control.cant_pages}{/tr}&nbsp;
 
 		{if $control.next_offset >= 0}
 			<a href="{$pgnUrl}?find={$control.find}&amp;sort_mode={$control.sort_mode}&amp;offset={$control.next_offset}{$pgnVars}">&raquo;</a>
@@ -13,8 +13,8 @@
 
 		<br />
 
-		{if $gBitSystem->isFeatureActive( 'site_direct_pagination' )}
-			{section loop=$control.total_pages name=foo}
+		{if $direct_pagination eq 'y'}
+			{section loop=$control.cant_pages name=foo}
 				{assign var=selector_offset value=$smarty.section.foo.index|times:$control.max_records}
 				<a href="{$pgnUrl}?find={$control.find}&amp;sort_mode={$control.sort_mode}&amp;offset={$selector_offset}">{$smarty.section.foo.index_next}</a>
 			{/section}

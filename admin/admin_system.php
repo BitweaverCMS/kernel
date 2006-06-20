@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.5 2006/06/19 20:28:43 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.6 2006/06/20 11:15:03 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -88,31 +88,35 @@ $gBitSystem->display( 'bitpackage:kernel/admin_system.tpl', tra( "System Cache" 
 
 // ----------------------- Functions ----------------------- //
 function du( $path ) {
-	$size = $count = 0;
-	if( !$path or !is_dir( $path ) ) {
-		$ret['size'] = $size;
-		$ret['count'] = $count;
-		return $ret;
-	}
-	$all = opendir( $path );
-	while( $file = readdir( $all ) ) {
-		if( is_dir( $path.'/'.$file ) and $file <> ".." and $file <> "." and $file <> "CVS" ) {
-			$du = du( $path.'/'.$file );
-			$size += $du['size'];
-			$count += $du['count'];
-			unset( $file );
-		} elseif( !is_dir( $path.'/'.$file ) ) {
-			$stats = stat( $path.'/'.$file );
-			$size += $stats['size'];
-			$count++;
-			unset( $file );
-		}
-	}
-	closedir( $all );
-	unset( $all );
-	$ret['size'] = $size;
-	$ret['count'] = $count;
-	return $ret;
+    $size = $count = 0;
+
+    if( !$path or !is_dir( $path ) ) {
+        $ret['size'] = $size;
+        $ret['count'] = $count;
+        return $ret;
+    }
+
+    $all = opendir( $path );
+    while( FALSE !== ( $file = readdir( $all ) ) ) {
+        if( $file <> ".." and $file <> "." and $file <> "CVS" ) {
+            if( is_file( $path.'/'.$file ) ) {
+                $size += filesize( $path.'/'.$file );
+                $count++;
+                unset( $file );
+            } elseif( is_dir( $path.'/'.$file ) ) {
+                $du = du( $path.'/'.$file );
+                $size += $du['size'];
+                $count += $du['count'];
+                unset( $file );
+            }
+        }
+    }
+    closedir( $all );
+    unset( $all );
+
+    $ret['size'] = $size;
+    $ret['count'] = $count;
+    return $ret;
 }
 
 function cache_templates( $path, $oldlang, $newlang ) {

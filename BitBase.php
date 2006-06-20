@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.21 2006/06/15 14:00:09 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.22 2006/06/20 11:14:07 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -267,7 +267,7 @@ function tra($content) {
 function unlink_r( $path,$followLinks = FALSE ) {
 	if( is_dir( $path ) ) {
 		$dir = opendir( $path ) ;
-		while( $entry = readdir( $dir ) ) {
+		while( FALSE !== ( $entry = readdir( $dir ) ) ) {
 			if( is_file( "$path/$entry" ) || ( !$followLinks && is_link( "$path/$entry" ) ) ) {
 				unlink( "$path/$entry" );
 			} elseif( is_dir( "$path/$entry" ) && $entry != '.' && $entry != '..' ) {

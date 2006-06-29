@@ -34,6 +34,12 @@
 			return $source;
     }
 
+    // Pull out the title blocks
+    preg_match_all("!<title>.*?</title>!is", $source, $match);
+    $_title_blocks = $match[0];
+    $source = preg_replace("!<title>.*?</title>!is",
+    '@@@SMARTY:TRIM:TITLE@@@', $source);
+	    
     // Pull out the script blocks
     preg_match_all("!<script[^>]+>.*?</script>!is", $source, $match);
     $_script_blocks = $match[0];
@@ -57,6 +63,11 @@
 			$i++;
     }
 
+    // replace title blocks
+    foreach($_title_blocks as $curr_block) {
+            $source = preg_replace("!@@@SMARTY:TRIM:TITLE@@@!",$curr_block,$source,1);
+    }
+    
     // replace script blocks
     foreach($_script_blocks as $curr_block) {
 			$source = preg_replace("!@@@SMARTY:TRIM:SCRIPT@@@!",$curr_block,$source,1);

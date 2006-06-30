@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.84 2006/06/11 10:20:41 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.85 2006/06/30 14:14:16 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -85,15 +85,18 @@ class BitSystem extends BitBase {
 	// Constructor receiving a PEAR::Db database object.
 	function BitSystem()
 	{
+		global $gBitTimer;
 		// Call DB constructor which will create the database member variable
 		BitBase::BitBase();
-		// Critical Preflight Checks
-		$this->checkEnvironment();
 
 		$this->mAppMenu = array();
-		$this->mTimer = new BitTimer();
-		$this->mTimer->start();
+		$this->mTimer = $gBitTimer;
 		$this->mServerTimestamp = new BitDate();
+		
+		$this->loadConfig();
+		
+		// Critical Preflight Checks
+		$this->checkEnvironment();
 
 		$this->initSmarty();
 		$this->mRegisterCalled = FALSE;
@@ -1637,14 +1640,12 @@ class BitSystem extends BitBase {
 			$wwwgroup = 'nobody (or the group account the web server is running under)';
 		}
 
-		$permFiles = array(
-			'temp/'
-		);
+		$permFiles[] = $this->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
 
 		foreach( $permFiles as $file ) {
 			$present = FALSE;
 			// Create directories as needed
-			$target = BIT_ROOT_PATH . $file;
+			$target = $file;
 			if( preg_match( '/.*\/$/', $target ) ) {
 				// we have a directory
 				if( !is_dir( $target ) ) {
@@ -2070,6 +2071,10 @@ class BitTimer
 		return $this->parseMicro(microtime()) - $this->mTimer[$timer];
 	}
 }
+
+global $gBitTimer;
+$gBitTimer = new BitTimer();
+$gBitTimer->start();
 
 /* \brief  substr with a utf8 string - works only with $start and $length positive or nuls
 * This function is the same as substr but works with multibyte

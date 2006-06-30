@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.62 2006/06/01 18:35:49 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.63 2006/06/30 14:14:16 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -44,7 +44,6 @@ define('LIBERTY_PKG_NAME', 'liberty');
 define('LIBERTY_PKG_PATH', BIT_ROOT_PATH . 'liberty/');
 define('LIBERTY_PKG_URL', BIT_ROOT_URL . 'liberty/');
 
-define('TEMP_PKG_PATH', BIT_ROOT_PATH . 'temp/');
 define('UTIL_PKG_PATH', BIT_ROOT_PATH . 'util/');
 define('UTIL_PKG_URL', BIT_ROOT_URL . 'util/');
 define('USERS_PKG_PATH', BIT_ROOT_PATH . 'users/');
@@ -79,6 +78,8 @@ $gBitDb = new $dbClass();
 require_once(KERNEL_PKG_PATH . 'BitSystem.php');
 global $gBitSmarty, $gBitSystem;
 $gBitSystem = new BitSystem();
+
+define('TEMP_PKG_PATH', ($gBitSystem->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/') ) );
 
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');

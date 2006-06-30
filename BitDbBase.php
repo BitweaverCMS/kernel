@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.22 2006/06/03 10:07:54 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.23 2006/06/30 14:14:16 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -174,8 +174,8 @@ class BitDb
 	* Used to start query timer if in debug mode
 	*/
 	function queryStart() {
-		global $gBitSystem;
-		$this->mQueryLap = $gBitSystem->mTimer->elapsed();
+		global $gBitTimer;
+		$this->mQueryLap = $gBitTimer->elapsed();
 	}
 	/** will activate ADODB like native debugging output
 	* @param pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose
@@ -223,8 +223,8 @@ class BitDb
 		//count the number of queries made
 		$num_queries++;
 		$this->mNumQueries++;
-		global $gBitSystem;
-		$interval = $gBitSystem->mTimer->elapsed() - $this->mQueryLap;
+		global $gBitTimer;
+		$interval = $gBitTimer->elapsed() - $this->mQueryLap;
 		$this->mQueryTime += $interval;
 		if( $this->getDebugLevel() ) {
 			$style = ( $interval > .5 ) ? 'color:red;' : (( $interval > .15 ) ? 'color:orange;' : '');

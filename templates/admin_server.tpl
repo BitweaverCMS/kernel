@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.10 2006/04/19 13:48:38 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.11 2006/06/30 14:14:16 spiderr Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -70,14 +70,14 @@
 				<div class="row">
 					{formlabel label="Centralized user upload directory" for="site_upload_dir"}
 					{forminput}
-						<input size="50" type="text" name="site_upload_dir" id="site_upload_dir" value="{$site_upload_dir|escape}" />
+						<input size="50" type="text" name="site_upload_dir" id="site_upload_dir" value="{$gBitSystem->getConfig('site_upload_dir',$smarty.const.STORAGE_PKG_URL)|escape}" />
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Temporary directory" for="site_temp_dir"}
 					{forminput}
-						<input size="50" type="text" name="site_temp_dir" id="site_temp_dir" value="{$site_temp_dir|escape}" />
+						<input size="50" type="text" name="site_temp_dir" id="site_temp_dir" value="{$gBitSystem->getConfig('site_temp_dir',$smarty.const.TEMP_PKG_PATH)|escape}" />
 					{/forminput}
 				</div>
 

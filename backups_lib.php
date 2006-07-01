@@ -3,7 +3,7 @@
  * Database Backup Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/backups_lib.php,v 1.6 2006/01/10 21:12:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/backups_lib.php,v 1.7 2006/07/01 04:06:22 nickpalmer Exp $
  */
 
 /**
@@ -167,12 +167,15 @@ class BackupLib extends BitBase {
 
 					$fields .= ')';
 					$sentence .= ")";
-					$part = "insert into `$val` $fields $sentence;";
-					$len = pack("L", strlen($part));
-					fwrite($fp, $len);
-					//removing the de/cyphering stuff for now as it doesn't work on database restore
-//					$part = $this->RC4($pwd, $part);
-					fwrite($fp, $part);
+					// Don't write out empty tables - chokes mysql
+					if ($sentence != "values()") {
+						$part = "insert into `$val` $fields $sentence;";
+						$len = pack("L", strlen($part));
+						fwrite($fp, $len);
+						//removing the de/cyphering stuff for now as it doesn't work on database restore
+//						$part = $this->RC4($pwd, $part);
+						fwrite($fp, $part);
+					}
 				}
 			}
 		}

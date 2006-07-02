@@ -40,9 +40,9 @@
 				{foreach item=servicePkgs key=service from=$serviceList}
 					{foreach key=name item=package from=$servicePkgs}
 						{if $package.installed and !$package.required and $package.activatable}
-							{if $titled != 'y'}
+							{if $title != $service}
 								<h2>{$service|capitalize|replace:"_":" "}</h2>
-								{assign var=titled value=y}
+								{assign var=title value=$service}
 							{/if}
 
 							<div class="row">
@@ -57,8 +57,6 @@
 									{formhelp note=`$package.info` package=$name}
 								{/forminput}
 							</div>
-						{else}
-							{assign var=titled value=n}
 						{/if}
 					{/foreach}
 				{/foreach}

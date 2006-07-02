@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.11 2006/06/30 14:14:16 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.12 2006/07/02 18:02:53 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -78,6 +78,7 @@
 					{formlabel label="Temporary directory" for="site_temp_dir"}
 					{forminput}
 						<input size="50" type="text" name="site_temp_dir" id="site_temp_dir" value="{$gBitSystem->getConfig('site_temp_dir',$smarty.const.TEMP_PKG_PATH)|escape}" />
+						{formhelp note="Use the full path to the directory where you want to store the temporary data in. Make sure the server has write access to the directory and the trailing slash is required. e.g.: /tmp/bitweaver/"}
 					{/forminput}
 				</div>
 

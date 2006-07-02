@@ -387,7 +387,6 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_short_time_format' WHERE `config_name`='short_time_format'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_display_timezone' WHERE `config_name`='display_timezone'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_upload_dir' WHERE `config_name`='centralized_upload_dir'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_temp_dir' WHERE `config_name`='temp_dir'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_http_port' WHERE `config_name`='http_port'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_http_prefix' WHERE `config_name`='http_prefix'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_https_port' WHERE `config_name`='https_port'",
@@ -455,6 +454,8 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blogs_rss_title'          WHERE `config_name`='title_rss_blogs'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blogs_rss_description'    WHERE `config_name`='desc_rss_blogs'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blogs_rss_max_records'    WHERE `config_name`='max_rss_blogs'",
+
+		"DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`='site_temp_dir'",
 	)
 )),
 	)

@@ -1,9 +1,10 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.5 2006/02/13 10:06:16 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.6 2006/07/04 20:44:56 windblown Exp $ *}
 {strip}
 <div class="module box {$module_name|replace:"_":"-"}">
 	{if $module_title}
 		<div class="boxtitle">
-			{if $gBitSystem->isFeatureActive( 'themes_module_controls' )}
+		<!-- nohighlight -->
+		{if $gBitSystem->isFeatureActive( 'themes_module_controls' )}
 				<div class="control">
 					<a title="{tr}Move module up{/tr}" href="{$smarty.const.KERNEL_PKG_URL}module_controls_inc.php?fMove=up&fPackage={$module_layout}&fModule={$module_id}">
 						{biticon ipackage=liberty iname="move_up" iexplain="up"}</a>
@@ -18,10 +19,13 @@
 			{if $gBitSystem->isFeatureActive( 'themes_collapsible_modules' )}<a href="javascript:toggle('{$module_name}');">{/if}
 				{tr}{$module_title}{/tr}
 			{if $gBitSystem->isFeatureActive( 'themes_collapsible_modules' )}</a>{/if}
+		<!-- /nohighlight -->
 		</div>
 	{/if}
 	<div class="boxcontent" id="{$module_name}"{if $gBitSystem->isFeatureActive( 'themes_collapsible_modules' )} style="display:{$toggle_state};"{/if}>
-	    {$module_content}
+	    <!-- nohighlight -->
+		{$module_content}
+		<!-- /nohighlight -->
 	</div>
 </div>
 {/strip}

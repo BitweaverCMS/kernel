@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.23 2006/06/30 14:14:16 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.24 2006/07/04 15:30:45 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -97,8 +97,8 @@ class BitDb
 		$this->mNumQueries = 0;
 		$this->mQueryTime = 0;
 		$this->setFatalActive();
-		global $gDbCaseSensitivity;
-		$this->setCaseSensitivity( $gDbCaseSensitivity );
+		global $gBitDbCaseSensitivity;
+		$this->setCaseSensitivity( $gBitDbCaseSensitivity );
 	}
 	/**
 	* This function contains any pre-connection work

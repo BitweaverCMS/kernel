@@ -48,7 +48,7 @@
 {/section}
 </table>
 
-</div> {* end .body *}
+</div><!-- end .body -->
 
 <div class="pagination">
 {if $prev_offset >= 0}

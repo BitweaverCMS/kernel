@@ -52,5 +52,5 @@
 </tr></table>
 </form>
 
-</div> {* end .body *}
-</div> {* end .admin *}
+</div><!-- end .body -->
+</div><!-- end .permission -->

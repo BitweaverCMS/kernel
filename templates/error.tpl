@@ -19,6 +19,6 @@
 			<p><a href="javascript:history.back()">{tr}Go back{/tr}</a></p>
 			<p><a href="{$gBitSystem->getDefaultPage()}">{tr}Go to home page{/tr}</a></p>
 		{/box}
-	</div>
+	</div><!-- end .body -->
 </div>
 {/strip}

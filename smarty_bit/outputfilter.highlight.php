@@ -34,13 +34,29 @@
 			return $source;
     }
 
-    
-	
-	//  Pull everything up to the html <body> tag
-	preg_match_all("!.*?.\<body!si", $source, $match);
+   	//  Pull everything up to bitweaver's <div class="body" tag
+	preg_match_all("!.*?.\<div class=.?body.?!si", $source, $match);
 	$_bwbody_blocks = $match[0];
-    $source = preg_replace("!.*?.\<body!si",
+    $source = preg_replace("!.*?.\<div class=.?body.?!si",
     '@@@SMARTY:TRIM:BWBODY@@@', $source);
+	
+	//  Pull everything past <!-- end .body -->
+	preg_match_all("!<.?.?.? end .body .?.?>.*!si", $source, $match);
+	$_bwendbody_blocks = $match[0];
+    $source = preg_replace("!<.?.?.? end .body .?.?>.*!si",
+    '@@@SMARTY:TRIM:BWENDBODY@@@', $source);
+	
+	// let's try killing everything in module blocks
+    preg_match_all("!<div class=?.boxtitle.?[^>]+>.*?</div>!si", $source, $match);
+    $_boxtitle_blocks = $match[0];
+    $source = preg_replace("!<div class=?.boxtitle.?[^>]+>.*?</div>!si",
+    '@@@SMARTY:TRIM:BOXTITLE@@@', $source);
+	
+	// let's try killing everything in module blocks
+    preg_match_all("!<div class=?.boxcontent.?[^>]+>.*?</div>!si", $source, $match);
+    $_boxcontent_blocks = $match[0];
+    $source = preg_replace("!<div class=?.boxcontent.?[^>]+>.*?</div>!si",
+    '@@@SMARTY:TRIM:BOXCONTENT@@@', $source);
 	
 	// remove everything in the TOC
     preg_match_all("!<div class=?.maketoc.?[^>]+>.*?</div>!si", $source, $match);
@@ -48,29 +64,13 @@
     $source = preg_replace("!<div class=?.maketoc.?[^>]+>.*?</div>!si",
     '@@@SMARTY:TRIM:MAKETOC@@@', $source);
 	
-	// Pull out the <!-- nohighlight --> blocks
-	// This is a custom tag,  We'll see if it gets adopted or not
-	// much better than implementing a regexp for certain <Div tags, as those may be modified
-	//by someone creating a template
-    preg_match_all("!.?.?.?.?.?nohighlight.*?[^>]+>.*?<.*?/nohighlight.*?>!is", $source, $match);
-    $_nohighlight_blocks = $match[0];
-    $source = preg_replace("!.?.?.?.?.?nohighlight.*?[^>]+>.*?<.*?/nohighlight.*?>!is",
-    '@@@SMARTY:TRIM:NOHIGHLIGHT@@@', $source);
-	
 	// Pull out the script blocks
     preg_match_all("!<script[^>]+>.*?</script>!is", $source, $match);
     $_script_blocks = $match[0];
     $source = preg_replace("!<script[^>]+>.*?</script>!is",
     '@@@SMARTY:TRIM:SCRIPT@@@', $source);
 
-    /*/ Pull out the bw menu
-    preg_match_all("!<div id=?.bittopbar.?[^>]+>.*?</div>!is", $source, $match);
-    $_bittopbar_blocks = $match[0];
-    $source = preg_replace("!<div id=?.bittopbar.?[^>]+>.*?</div>!is",
-    '@@@SMARTY:TRIM:BITTOPBAR@@@', $source);*/
-
-	
-	// pull out all html tags
+    // pull out all html tags
     preg_match_all("'<[\/\!]*?[^<>]*?>'si", $source, $match);
     $_tag_blocks = $match[0];
     $source = preg_replace("'<[\/\!]*?[^<>]*?>'si", '@@@SMARTY:TRIM:TAG@@@', $source);
@@ -88,19 +88,29 @@
     }
 
 	
-	// replace the document all the way up to the <body
+	// replace the document all the way up to the <div class="body"
     foreach($_bwbody_blocks as $curr_block) {
             $source = preg_replace("!@@@SMARTY:TRIM:BWBODY@@@!",$curr_block,$source,1);
     }
 	
+	// replace the document from <!-- end .body -->
+    foreach($_bwendbody_blocks as $curr_block) {
+            $source = preg_replace("!@@@SMARTY:TRIM:BWENDBODY@@@!",$curr_block,$source,1);
+    }
+	
+	// replace the boxtitle
+    foreach($_boxtitle_blocks as $curr_block) {
+            $source = preg_replace("!@@@SMARTY:TRIM:BOXTITLE@@@!",$curr_block,$source,1);
+    }
+	
+	// replace the boxtitle
+    foreach($_boxcontent_blocks as $curr_block) {
+            $source = preg_replace("!@@@SMARTY:TRIM:BOXCONTENT@@@!",$curr_block,$source,1);
+    }
+
 	// replace the TOC
     foreach($_maketoc_blocks as $curr_block) {
             $source = preg_replace("!@@@SMARTY:TRIM:MAKETOC@@@!",$curr_block,$source,1);
-    }
-	
-	// replace the <!-- nohighlight --> blocks
-    foreach($_nohighlight_blocks as $curr_block) {
-            $source = preg_replace("!@@@SMARTY:TRIM:NOHIGHLIGHT@@@!",$curr_block,$source,1);
     }
 	
 	// replace script blocks
@@ -108,12 +118,7 @@
 			$source = preg_replace("!@@@SMARTY:TRIM:SCRIPT@@@!",$curr_block,$source,1);
     }
 	
-	/*/ replace bittopbar
-    foreach($_bittopbar_blocks as $curr_block) {
-            $source = preg_replace("!@@@SMARTY:TRIM:BITTOPBAR@@@!",$curr_block,$source,1);
-    }*/
-
-    foreach($_tag_blocks as $curr_block) {
+	foreach($_tag_blocks as $curr_block) {
 			$source = preg_replace("!@@@SMARTY:TRIM:TAG@@@!",$curr_block,$source,1);
     }
 

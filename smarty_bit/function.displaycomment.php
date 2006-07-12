@@ -14,16 +14,11 @@ function smarty_function_displaycomment($params) {
 	if (!empty($params['comment'])) {
 		$comment = $params['comment'];
 		$gBitSmarty->assign('comment', $comment);
-		$gBitSmarty->display('bitpackage:liberty/display_comment.tpl');
-if (0) {
-if (!empty($comment['children']) && count($comment['children']) >= 1) {
-		foreach ($comment['children'] as $childComment) {
-if (count($childComment) >= 1) {
-			smarty_function_displaycomment(array('comment'=>$childComment));
+		if (empty($params['template'])) {
+			$gBitSmarty->display('bitpackage:liberty/display_comment.tpl');
+		} else {
+			$gBitSmarty->display($params['template']);
 		}
-		}
-		}
-}
 	}
 }
 

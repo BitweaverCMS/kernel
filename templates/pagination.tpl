@@ -38,6 +38,9 @@
 			{foreach from=$listInfo.ihash key=param item=value}
 				&amp;{$param}={$value}
 			{/foreach}
+			{foreach from=$pgnHidden key=name item=value}
+				&amp;{$name}={$value}
+			{/foreach}
 		{/capture}
 		{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find``$smarty.capture.string`"}
 		{math equation="offset + 1 * max" offset=$listInfo.offset max=$listInfo.max_records assign=to}

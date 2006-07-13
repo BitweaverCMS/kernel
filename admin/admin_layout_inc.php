@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.18 2006/04/17 16:23:20 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.19 2006/07/13 18:59:34 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -38,6 +38,8 @@ if( empty( $_REQUEST['nojs'] ) ) {
 		}
 	}
 }
+
+$gBitSystem->verifyInstalledPackages();
 
 if( !empty( $_REQUEST['module_name'] ) ) {
 	$fAssign['name'] = $_REQUEST['module_name'];
@@ -139,7 +141,7 @@ if( $processForm == 'Misc' ) {
 }
 
 $sortedPackages = $gBitSystem->mPackages;
-sort( $sortedPackages );
+asort( $sortedPackages );
 $gBitSmarty->assign( 'sortedPackages', $sortedPackages );
 $gBitSmarty->assign( 'fPackage', $_REQUEST['fPackage'] );
 

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.12 2006/06/15 12:20:25 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.13 2006/07/13 18:59:34 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -23,9 +23,10 @@ $gBitSystem->verifyPermission( 'p_admin' );
 
 require_once( KERNEL_PKG_PATH.'simple_form_functions_lib.php' );
 
-//$gBitInstaller = &$gBitSystem;
+//make an alias in case anyone decides to verifyInstalledPackages
+$gBitInstaller = &$gBitSystem;
 //$gBitSystem->verifyInstalledPackages();
-//vd($gBitSystem->mPackages);
+
 $home_blog = $gBitSystem->getConfig("home_blog", 0);
 $gBitSmarty->assign('home_blog', $home_blog);
 

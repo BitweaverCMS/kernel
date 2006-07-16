@@ -57,7 +57,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 	}
 
 	if( !empty( $package ) ) {
-		$page = ucfirst( $package ).'Package';
+		$rawHash['page'] = ucfirst( $package ).'Package';
 	}
 
 	// if link was passed in as a string, convert it into an array

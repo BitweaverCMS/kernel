@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.65 2006/07/10 04:28:08 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.66 2006/07/17 00:06:37 nickpalmer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -320,6 +320,9 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	if( $gBitSystem->isFeatureActive( 'site_https_login' ) || $gBitSystem->isFeatureActive( 'site_https_login_required' ) )	{
 		$site_https_domain = $gBitSystem->getConfig('site_https_domain', '');
+		$site_http_domain = $gBitSystem->getConfig('site_http_domain', '');
+		$site_http_prefix = $gBitSystem->getConfig('site_http_prefix', '');
+
 		$http_login_url = 'http://' . $site_http_domain;
 
 		if ($site_http_port != 80)
@@ -344,7 +347,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 		$stay_in_ssl_mode = isset($_REQUEST['stay_in_ssl_mode']) ? $_REQUEST['stay_in_ssl_mode'] : '';
 
-		if ($site_https_login_required == 'y') {
+		if( $gBitSystem->isFeatureActive('site_https_login_required') ) {
 			// only show "Stay in SSL checkbox if we're not already in HTTPS mode"
 			$show_stay_in_ssl_mode = !$https_mode ? 'y' : 'n';
 			$gBitSmarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);

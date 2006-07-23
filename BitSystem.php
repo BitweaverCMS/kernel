@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.86 2006/07/02 18:11:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.87 2006/07/23 00:56:01 jht001 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -159,6 +159,7 @@ class BitSystem extends BitBase {
 		}
 
 		if ( empty( $this->mConfig ) ) {
+			$this->mConfig = array();
 			$query = "SELECT `config_name` ,`config_value`, `package` FROM `" . BIT_DB_PREFIX . "kernel_config` " . $whereClause;
 			if( $rs = $this->mDb->query( $query, $queryVars, -1, -1 ) ) {
 				while( $row = $rs->fetchRow() ) {
@@ -182,6 +183,30 @@ class BitSystem extends BitBase {
 		}
 		return( empty( $this->mConfig[$pName] ) ? $pDefault : $this->mConfig[$pName] );
 	}
+	
+	// <<< getConfigMatch
+	/**
+	* retreive a group of config variables
+	*
+	* @access public
+	**/
+	function getConfigMatch( $pattern, $select_value="" ) {
+		if( empty( $this->mConfig ) ) {
+			$this->loadConfig();
+		}
+
+		$matching_keys = array();
+		$matching_keys = preg_grep($pattern, array_keys($this->mConfig));
+		$new_array = array();
+		foreach($matching_keys as $key=>$value) {
+			if ( empty($select_value) || ( !empty($select_value) && $this->mConfig[$value] == $select_value) ) {
+				$new_array[$value] = $this->mConfig[$value]; 
+			}
+		}	
+		return( $new_array );
+	}
+	
+	
 	// deprecated method saved compatibility until all getPreference calls have been eliminated
 	function getPreference( $pName, $pDefault = '' ) {
 		deprecated( 'BitSystem::getConfig()' );
@@ -486,17 +511,23 @@ class BitSystem extends BitBase {
 
 	// === isPackageActive
 	/**
-	* check's if the current package is active and being used.
-	* The die code was duplicated _EVERYWHERE_ so here is an easy template to cut that down.
-	* It will verify that the given package is active or it will display the error template and die()
+	* check's if a package is active.
 	* @param $pPackageName the name of the package to test
-	* @param $pdie force the script to immediately die if pPackageName is not active
 	* @return none
 	* @access public
 	*
 	* @param $pKey hash key
 	*/
 	function isPackageActive( $pPackageName ) {
+
+	// A package is installed if
+	//    $this->getConfig('package_'.$name) == 'i'
+	// or $this->getConfig('package_'.$name) == 'y'
+	//
+	// A package is installed and active if
+	//     <package name>_PKG_NAME is defined
+	// and $this->getConfig('package_'.$name) == 'y'
+
 		$ret = FALSE;
 		if (defined( (strtoupper( $pPackageName ).'_PKG_NAME') ) ) {
 			$name = strtolower( @constant( (strtoupper( $pPackageName ).'_PKG_NAME') ) );
@@ -508,6 +539,46 @@ class BitSystem extends BitBase {
 				else {
 					// we have migrated the old tikiwiki feature_<pac
 					$ret = ($this->getConfig('package_'.$name) == 'y');
+				}
+
+			}
+		}
+
+		return( $ret );
+	}
+
+	// === isPackageInstalled
+	/**
+	* check's if a package is Installed
+	* @param $pPackageName the name of the package to test
+	* @return none
+	* @access public
+	*
+	* @param $pKey hash key
+	*/
+	function isPackageInstalled( $pPackageName ) {
+
+	// A package is installed if
+	//    $this->getConfig('package_'.$name) == 'i'
+	// or $this->getConfig('package_'.$name) == 'y'
+	//
+	// A package is installed and active if
+	//     <package name>_PKG_NAME is defined
+	// and $this->getConfig('package_'.$name) == 'y'
+
+		$ret = FALSE;
+		if (defined( (strtoupper( $pPackageName ).'_PKG_NAME') ) ) {
+			$name = strtolower( @constant( (strtoupper( $pPackageName ).'_PKG_NAME') ) );
+			if( $name ) {
+				// kernel always active
+				if ($name == 'kernel') {
+					$ret = 1;
+				}
+				else {
+					// we have migrated the old tikiwiki feature_<pac
+					$ret = ($this->getConfig('package_'.$name) == 'i')
+					|| ($this->getConfig('package_'.$name) == 'y')
+					;
 				}
 
 			}
@@ -672,6 +743,12 @@ class BitSystem extends BitBase {
 	*/
 	function registerPackage( $pRegisterHash ) {
 		extract( $pRegisterHash );
+		#extract can set:
+		#  $package_name
+		#  $package_path
+		#  $activatable
+		#  $service
+		#  $required_package
 
 		if( !isset( $activatable ) ) {
 			$activatable = TRUE;
@@ -681,12 +758,44 @@ class BitSystem extends BitBase {
 			$service = FALSE;
 		}
 
+		if( !isset( $required_package ) ) {
+			$required_package = FALSE;
+		}
+
 		$this->mRegisterCalled = TRUE;
 		if( empty( $this->mPackages ) ) {
 			$this->mPackages = array();
 		}
 		$pkgName = str_replace( ' ', '_', strtoupper( $package_name ) );
 		$pkgNameKey = strtolower( $pkgName );
+
+		// Set package required flag
+		$this->mPackages[$pkgNameKey]['required']  = $required_package;
+
+		// indicate if this package is a service or not
+		$this->mPackages[$pkgNameKey]['service'] = $service;
+
+		// set package status flag
+		$this->mPackages[$pkgNameKey]['status'] = $this->getConfig( 'package_'.$pkgNameKey, 'n');
+		# y = Active
+		# i = Installed
+		# n (or empty/null) = Not Active and Not Installed
+
+		// set package installed and active flag
+		if ($this->mPackages[$pkgNameKey]['status'] == 'a' || $this->mPackages[$pkgNameKey]['status'] == 'y') {
+			$this->mPackages[$pkgNameKey]['active_switch'] = TRUE;
+			}
+		else {
+			$this->mPackages[$pkgNameKey]['active_switch'] = FALSE;
+			}
+			
+		// set package installed flag (can be installed but not active)
+		if ($this->mPackages[$pkgNameKey]['active_switch'] || $this->mPackages[$pkgNameKey]['status'] == 'i') {
+			$this->mPackages[$pkgNameKey]['installed'] = TRUE;
+			}
+		else {
+			$this->mPackages[$pkgNameKey]['installed'] = FALSE;
+			}
 
 		// Define <PACKAGE>_PKG_PATH
 		$pkgDefine = $pkgName.'_PKG_PATH';
@@ -735,8 +844,6 @@ class BitSystem extends BitBase {
 			$this->mActivePackage = $package_name;
 		}
 
-		// indicate if this package is a service or not
-		$this->mPackages[$pkgNameKey]['service'] = $service;
 	}
 	// >>>
 	// === registerAppMenu
@@ -773,8 +880,9 @@ class BitSystem extends BitBase {
 			if( !empty( $pTableOptions ) ) {
 				$this->mPackages[$pPackage]['tables']['options'][$pTableName] = $pTableOptions;
 			}
+			// Package required now set in register package function
 			// A package is required if _any_ of it's tables are required
-			$this->mPackages[$pPackage]['required'] = $pRequired | (isset( $this->mPackages[$pPackage]['required'] ) ? $this->mPackages[$pPackage]['required'] : 0 );
+			//$this->mPackages[$pPackage]['required'] = $pRequired | (isset( $this->mPackages[$pPackage]['required'] ) ? $this->mPackages[$pPackage]['required'] : 0 );
 		}
 	}
 	// >>>
@@ -906,87 +1014,134 @@ class BitSystem extends BitBase {
 		$this->display( $pTemplate );
 		die;
 	}
+
+	// >>>
+	// === loadPackage
+	/**
+	* Loads a package
+	*
+	* @param string $ pkgName = package name to load
+	* @param string $ pScanFile file to be looked for
+	* @param string $ autoRegister - TRUE = autoregister any packages that don't register on their own, FALSE = don't 
+	* @param string $ pOnce - TRUE = do include_once to load file FALSE = do include to load the file
+	* @return
+	* @access public
+	*/
+	function loadPackage ($pkgName, $pScanFile, $autoRegister=TRUE, $pOnce=TRUE) 
+	{
+
+		#check if already loaded, loading again won't work with 'include_once' since
+		#no register call will be done, so don't auto register.
+		if ($autoRegister && !empty($this->mPackages[$pkgName]['name'])) {
+			$autoRegister = FALSE;
+			}
+
+		$this->mRegisterCalled = FALSE;
+		$scanFile = BIT_ROOT_PATH.$pkgName.'/'.$pScanFile;
+		$file_exists = 0;
+		if (file_exists( $scanFile )) {
+			$file_exists = 1;
+			if( $pOnce ) {
+				include_once( $scanFile );
+			} else {
+				include( $scanFile );
+			}
+		}
+
+		if( ($file_exists || $pkgName == 'kernel') && ($autoRegister && !$this->mRegisterCalled) ) {
+			$registerHash = array(
+				'package_name' => $pkgName,
+				'package_path' => BIT_ROOT_PATH.$pkgName.'/',
+				'activatable' => FALSE,
+			);
+			if ($pkgName == 'kernel') {
+				$registerHash = array_merge($registerHash, array('required_package'=>TRUE));
+				}
+			$this->registerPackage( $registerHash );
+		}
+
+	}
+
 	// >>>
 	// === scanPackages
 	/**
 	* scan all available packages. This is an *expensive* function. DO NOT call this functionally regularly , or arbitrarily. Failure to comply is punishable by death by jello suffication!
 	*
 	* @param string $ pScanFile file to be looked for
+	* @param string $ pOnce - TRUE = do include_once to load file FALSE = do include to load the file
+	* @param string $ pSelect - empty or 'all' = load all packages, 'installed' = load installed, 'active' = load active, 'x' = load packages with status x 
+	* @param string $ autoRegister - TRUE = autoregister any packages that don't register on their own, FALSE = don't 
+	* @param string $ fileSystemScan - TRUE = scan file system for packages to load, False = don't
 	* @return none
 	* @access public
 	*/
-	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pLoadCore=FALSE ) {
-		global $gPreScan, $gExclusiveScan;
-		if( !empty( $gExclusiveScan ) && is_array( $gExclusiveScan ) ) {
-			$gPreScan = &$gExclusiveScan;
-		}
+	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $autoRegister=TRUE, $fileSystemScan=TRUE ) {
 
-		if( !empty( $gPreScan ) && is_array( $gPreScan ) ) {
-			foreach( $gPreScan as $pkgName ) {
-				$this->mRegisterCalled = FALSE;
-				$scanFile = BIT_ROOT_PATH.$pkgName.'/'.$pScanFile;
-				if( file_exists( $scanFile ) ) {
-					if( $pOnce ) {
-						include_once( $scanFile );
-					} else {
-						include( $scanFile );
-					}
+		global $gPreScan;
 
-					if( $pScanFile == 'bit_setup_inc.php' ) {
-						if( !$this->mRegisterCalled || $pkgName!='kernel') {
-							$registerHash = array(
-								'package_name' => $pkgName,
-								'package_path' => BIT_ROOT_PATH.$pkgName.'/',
-								'activatable' => FALSE,
-							);
-							$this->registerPackage( $registerHash );
-						}
-					}
-				}
+		#get list of packages from DB
+		$packages_config_array = $this->getConfigMatch("/^package_/i");
+
+		$packages_to_scan = array();
+		if (!empty($gPreScan) && is_array($gPreScan)) {
+			# gPreScan may hold a list of packages that must be loaded first
+			$packages_to_scan = array_flip($gPreScan);
 			}
-		}
 
-		// load lib configs
-		if( empty( $gExclusiveScan ) && $pkgDir = opendir( BIT_ROOT_PATH ) ) {
-			// Make two passes through the root - 1. to define the DEFINES, and 2. to include the $pScanFile's
-			while( false !== ( $dirName = readdir( $pkgDir ) ) ) {
-				if( is_dir( BIT_ROOT_PATH . '/' . $dirName ) && ( $dirName != 'CVS' ) && ( preg_match( '/^\w/', $dirName ) ) ) {
-					$this->mRegisterCalled = FALSE;
-					$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
-					if( file_exists( $scanFile ) ) {
-						if( $pOnce ) {
-							include_once( $scanFile );
-						} else {
-							include( $scanFile );
-						}
-					}
-					// We auto-register and directory in the root as a package if it does not call registerPackage itself
-					if( $pScanFile == 'bit_setup_inc.php' ) {
-						if( ( !$this->mRegisterCalled || $dirName!='kernel' ) && empty( $this->mPackages[$dirName] ) && !file_exists( BIT_ROOT_PATH.$dirName.'/bit_setup_inc.php' ) ) {
-							$registerHash = array(
-								'package_name' => $dirName,
-								'package_path' => BIT_ROOT_PATH.$dirName.'/',
-								'activatable' => FALSE,
-							);
-							$this->registerPackage( $registerHash );
-						}
-					}
+		foreach ($packages_config_array as $package_name=>$config_setting) {
+			$work = $package_name;
+			$work = preg_replace( "/^package_/", '', $work,1 );			
+			# ingore if already in list
+			if (!empty($packages_to_scan[$work])) {
+				continue;
+				}
+			# add to list			
+			if ( ( !empty($pSelect) && $config_setting == $pSelect ) 
+			  || ( !empty($pSelect) && $pSelect == 'all' )
+			  || ( !empty($pSelect) && $pSelect == 'installed' && ( $config_setting == 'y' || $config_setting == 'i' ) )
+			  || ( !empty($pSelect) && $pSelect == 'active' && ( $config_setting == 'y' ) )
+			  || empty($pSelect) ) {
+				$packages_to_scan[$work] = 1;
 				}
 			}
 
-			if( !defined( 'ACTIVE_PACKAGE' ) ) {
-				define('ACTIVE_PACKAGE', 'kernel'); // when in doubt, assume the kernel
-			}
-
-			if( !defined( 'BIT_STYLES_PATH' ) && defined( 'THEMES_PKG_PATH' ) ) {
-				define( 'BIT_STYLES_PATH', THEMES_PKG_PATH . 'styles/' );
-			}
-			if( !defined( 'BIT_STYLES_URL' ) && defined( 'THEMES_PKG_PATH' ) ) {
-				define( 'BIT_STYLES_URL', THEMES_PKG_URL . 'styles/' );
-			}
+		#load the specified packages
+		foreach(array_keys($packages_to_scan) as $pkgName) {
+			$this->loadPackage($pkgName, $pScanFile, $autoRegister, $pOnce);
 		}
+
+		if ($fileSystemScan) {
+			// load lib configs
+			if( $pkgDir = opendir(BIT_ROOT_PATH) ) {
+				while (false !== ($dirName = readdir($pkgDir))) {
+					if (is_dir(BIT_ROOT_PATH . '/' . $dirName) && ($dirName != 'CVS') && ( preg_match( '/^\w/', $dirName)) ) {
+						if (!empty($packages_to_scan[$dirName])) {
+							continue;
+							}
+						$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
+						$this->loadPackage($dirName, $pScanFile, $autoRegister, $pOnce);
+					}
+				}
+
+			}
+		
+		}
+
+		#in case some defines not done
+		if (!defined('ACTIVE_PACKAGE')) {
+			define('ACTIVE_PACKAGE', 'kernel'); // when in doubt, assume the kernel
+		}
+
+		if( !defined( 'BIT_STYLES_PATH' ) && defined( 'THEMES_PKG_PATH' ) ) {
+			define('BIT_STYLES_PATH', THEMES_PKG_PATH . 'styles/');
+		}
+		if( !defined( 'BIT_STYLES_URL' ) && defined( 'THEMES_PKG_URL' ) ) {
+			define('BIT_STYLES_URL', THEMES_PKG_URL . 'styles/');
+		}
+
 		asort( $this->mAppMenu );
 	}
+
 	// >>>
 	// === verifyInstalledPackages
 	/**
@@ -996,9 +1151,11 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function verifyInstalledPackages() {
+	function verifyInstalledPackages($pSelect='installed',$fileSystemScan=FALSE) {
 		global $gBitDbType;
-		$this->scanPackages( 'admin/schema_inc.php' );
+		#load in any admin/schema_inc.php files that exist for each package
+		$this->scanPackages( 'admin/schema_inc.php',TRUE,$pSelect,FALSE,$fileSystemScan);
+
 		if( $this->isDatabaseValid() ) {
 			if (strlen(BIT_DB_PREFIX) > 0) {
 				$lastQuote = strrpos( BIT_DB_PREFIX, '`' );
@@ -1021,21 +1178,27 @@ class BitSystem extends BitBase {
 								$fullTable = $prefix.$table;
 							}
 							$tablePresent = in_array( $fullTable, $dbTables );
-							if( !$tablePresent && $this->isPackageActive( $package ) ) {
+							if( !$tablePresent ) {
 								// There is an incomplete table
-								if( isset( $this->mPackages[$package]['installed'] ) && $this->mPackages[$package]['installed'] ) {
-									vd( "Missing Table: $fullTable - Package $package deactivated" );
-								}
+								//	vd( "Missing Table: $fullTable" );
 							}
+/*
 							if( isset( $this->mPackages[$package]['installed'] ) ) {
 								$this->mPackages[$package]['installed'] &= $tablePresent;
 							} else {
 								$this->mPackages[$package]['installed'] = $tablePresent;
 							}
+*/
+							if( isset( $this->mPackages[$package]['db_tables_found'] ) ) {
+								$this->mPackages[$package]['db_tables_found'] &= $tablePresent;
+							} else {
+								$this->mPackages[$package]['db_tables_found'] = $tablePresent;
+							}
 						}
 					} else {
-						$this->mPackages[$package]['installed'] = TRUE;
+						$this->mPackages[$package]['db_tables_found'] = FALSE;
 					}
+					
 					$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
 					if( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['active_switch'] != 'y' ) {
 						// we have a disabled required package. turn it back on!
@@ -1044,17 +1207,23 @@ class BitSystem extends BitBase {
 					}
 				}
 			}
+
+//not clear what to do with this yet
+/*
+			foreach( array_keys( $this->mPackages ) as $package ) {
+				if (!empty( $this->mPackages[$package]['installed'] ) && $this->getConfig("package_".strtolower($package)) != 'y') {
+					$this->storeConfig('package_'.strtolower( $package ), 'n', $package);
+				} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
+					// Delete the package_<pkgname> row from kernel_config
+					$this->storeConfig('package_'.strtolower( $package ), NULL );
+				}
+			}
+*/
 		}
 
-		foreach( array_keys( $this->mPackages ) as $package ) {
-			if (!empty( $this->mPackages[$package]['installed'] ) && $this->getConfig("package_".strtolower($package)) != 'y') {
-				$this->storeConfig('package_'.strtolower( $package ), 'n', $package);
-			} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
-				// Delete the package_<pkgname> row from kernel_config
-				$this->storeConfig('package_'.strtolower( $package ), NULL );
-			}
-		}
 	}
+
+
 
 	// Allows a package to be selected as the homepage for the site (Admin->General Settings)
 	// Calls to this function should be made from each 'homeable' package's schema_inc.php
@@ -1065,6 +1234,7 @@ class BitSystem extends BitBase {
 	function getDefaultPage() {
 		global $userlib, $gBitUser, $gBitSystem;
 		$bit_index = $this->getConfig( "bit_index" );
+		$url = '';
 		if ( $bit_index == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
 			if( @$this->verifyId( $gBitUser->mInfo['default_group_id'] ) && ( $group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ) ) ) {
@@ -1105,9 +1275,15 @@ class BitSystem extends BitBase {
 				$url = USERS_PKG_URL . 'login.php';
 			}
 		} elseif( in_array( $bit_index, array_keys( $gBitSystem->mPackages ) ) ) {
-			$url = constant( strtoupper( $bit_index ).'_PKG_URL' );
-		} elseif( !empty( $bit_index ) ) {
-			$url = BIT_ROOT_URL.$bit_index;
+			$work = strtoupper( $bit_index ).'_PKG_URL';
+			if (defined("$work")) {
+				$url = constant( $work );
+			}
+
+//this sends requests to inactive packages so commented out				
+//for example if wiki is made not active, we can end up trying to go there
+//		} elseif( !empty( $bit_index ) ) {
+//			$url = BIT_ROOT_URL.$bit_index;
 		}
 
 		// if no special case was matched above, default to users' my page

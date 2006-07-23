@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.66 2006/07/17 00:06:37 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.67 2006/07/23 00:56:01 jht001 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -25,6 +25,10 @@ define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
 
 // These defines have to happen FIRST because core classes depend on them.
 // This means these packages *CANNOT* be renamed
+define('STORAGE_PKG_PATH', BIT_ROOT_PATH . 'storage/');
+define('STORAGE_PKG_URL', BIT_ROOT_URL . 'storage/');
+define('INSTALL_PKG_PATH', BIT_ROOT_PATH . 'install/');
+define('INSTALL_PKG_URL', BIT_ROOT_URL . 'install/');
 define('KERNEL_PKG_DIR', 'kernel');
 define('KERNEL_PKG_NAME', 'kernel');
 define('KERNEL_PKG_PATH', BIT_ROOT_PATH . 'kernel/');
@@ -85,6 +89,7 @@ if( strrpos( '/', $tempDir ) != strlen( $tempDir ) ) {
 }
 
 define( 'TEMP_PKG_PATH', $tempDir );
+define('TEMP_PKG_URL', BIT_ROOT_URL . 'temp/');
 
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');
@@ -134,7 +139,9 @@ if( $gBitSystem->isDatabaseValid() ) {
 		define( 'BIT_BASE_URI', 'http://'.$host );
 	}
 
-	$gBitSystem->scanPackages();
+	#load only installed and active packages
+	$gBitSystem->scanPackages('bit_setup_inc.php', TRUE, 'active', TRUE, FALSE);
+
 	// some plugins check for active packages, so we do this *after* package scanning
 	global $gLibertySystem;
 	$gLibertySystem->scanPlugins();

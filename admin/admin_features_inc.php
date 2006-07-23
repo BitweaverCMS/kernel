@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.18 2006/06/01 13:57:02 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.19 2006/07/23 00:56:01 jht001 Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -30,17 +30,22 @@ $formFeaturesBit = array(
 		'note' => 'Enables you to edit CSS files from within your browser to customise your site style according to your desires.',
 		'pkg' => THEMES_PKG_NAME,
 	),
-	'categories_objects' => array(
+);
+
+// all this package dependent stuff should get set on package registration or some other way in the 
+// package directory so we don't need all this special case code here
+if( $gBitSystem->isPackageActive( 'categories' ) ) {
+	$formFeaturesBit['categories_objects'] = array(
 		'label' => 'Show Category Objects',
 		'note' => 'Display a list of items that are part of a particular category at the bottom of the page.',
 		'pkg' => CATEGORIES_PKG_NAME,
-	),
-	'categories_path' => array(
+	);
+	$formFeaturesBit['categories_path'] = array(
 		'label' => 'Show Category Path',
 		'note' => 'Display the category path at the top of the page',
 		'pkg' => CATEGORIES_PKG_NAME,
-	),
-);
+	);
+}
 if( $gBitSystem->isPackageActive( 'stats' ) ) {
 	$formFeaturesBit['stats_referers'] = array(
 		'label' => 'Referer Statistics',
@@ -48,6 +53,7 @@ if( $gBitSystem->isPackageActive( 'stats' ) ) {
 		'pkg' => STATS_PKG_NAME,
 	);
 }
+
 $gBitSmarty->assign( 'formFeaturesBit',$formFeaturesBit );
 
 $formFeaturesHelp = array(

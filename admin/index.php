@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.13 2006/07/13 18:59:34 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.14 2006/07/23 00:56:01 jht001 Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -70,7 +70,7 @@ if (isset($page)) {
 				$package = 'users';
 				break;
 			default:
-				$package =$page;
+				$package = $page;
 				break;
 		}
 

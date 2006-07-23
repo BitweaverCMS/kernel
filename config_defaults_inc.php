@@ -64,7 +64,7 @@ if( !defined( 'ANONYMOUS_GROUP_ID' ) ) {
 // Any packages not specified in $gPreScan are processed in the traditional order
 global $gPreScan;
 if( empty( $gPreScan ) ) {
-	$gPreScan = array( 'kernel', 'users', 'liberty' );
+	$gPreScan = array( 'kernel', 'users', 'liberty', 'themes' );
 }
 
 // when running scripts

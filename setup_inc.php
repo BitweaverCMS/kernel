@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.67 2006/07/23 00:56:01 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.68 2006/07/23 07:43:00 jht001 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -140,7 +140,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	#load only installed and active packages
-	$gBitSystem->scanPackages('bit_setup_inc.php', TRUE, 'active', TRUE, FALSE);
+	$gBitSystem->scanPackages('bit_setup_inc.php', TRUE, 'active', TRUE, TRUE);
 
 	// some plugins check for active packages, so we do this *after* package scanning
 	global $gLibertySystem;

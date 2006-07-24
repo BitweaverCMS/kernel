@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.88 2006/07/23 04:49:25 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.89 2006/07/24 21:00:28 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1041,7 +1041,7 @@ class BitSystem extends BitBase {
 		$file_exists = 0;
 		if (file_exists( $scanFile )) {
 			$file_exists = 1;
-			global $gBitSystem, $gLibertySystem, $gBitSmarty;
+			global $gBitSystem, $gLibertySystem, $gBitSmarty, $gBitUser, $gBitLanguage;
 			if( $pOnce ) {
 				include_once( $scanFile );
 			} else {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.68 2006/07/23 07:43:00 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.69 2006/07/29 02:44:58 wakeworks Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -136,10 +136,10 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	$host = $gBitSystem->getConfig( 'kernel_server_name', $_SERVER['HTTP_HOST'] );
 	if( !defined('BIT_BASE_URI' ) ) {
-		define( 'BIT_BASE_URI', 'http://'.$host );
+		define( 'BIT_BASE_URI', 'http'.(!empty($_SERVER['HTTPS'])?'s':'').'://'.$host );
 	}
 
-	#load only installed and active packages
+	// load only installed and active packages
 	$gBitSystem->scanPackages('bit_setup_inc.php', TRUE, 'active', TRUE, TRUE);
 
 	// some plugins check for active packages, so we do this *after* package scanning

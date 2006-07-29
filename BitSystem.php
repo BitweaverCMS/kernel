@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.89 2006/07/24 21:00:28 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.90 2006/07/29 19:38:37 hash9 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -92,9 +92,9 @@ class BitSystem extends BitBase {
 		$this->mAppMenu = array();
 		$this->mTimer = $gBitTimer;
 		$this->mServerTimestamp = new BitDate();
-		
+
 		$this->loadConfig();
-		
+
 		// Critical Preflight Checks
 		$this->checkEnvironment();
 
@@ -183,7 +183,7 @@ class BitSystem extends BitBase {
 		}
 		return( empty( $this->mConfig[$pName] ) ? $pDefault : $this->mConfig[$pName] );
 	}
-	
+
 	// <<< getConfigMatch
 	/**
 	* retreive a group of config variables
@@ -200,13 +200,13 @@ class BitSystem extends BitBase {
 		$new_array = array();
 		foreach($matching_keys as $key=>$value) {
 			if ( empty($select_value) || ( !empty($select_value) && $this->mConfig[$value] == $select_value) ) {
-				$new_array[$value] = $this->mConfig[$value]; 
+				$new_array[$value] = $this->mConfig[$value];
 			}
-		}	
+		}
 		return( $new_array );
 	}
-	
-	
+
+
 	// deprecated method saved compatibility until all getPreference calls have been eliminated
 	function getPreference( $pName, $pDefault = '' ) {
 		deprecated( 'BitSystem::getConfig()' );
@@ -256,7 +256,7 @@ class BitSystem extends BitBase {
 						$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage ) ) );
 					}
 				}
-	
+
 				// Force the ADODB cache to flush
 				$isCaching = $this->mDb->isCachingActive();
 				$this->mDb->setCaching( FALSE );
@@ -788,7 +788,7 @@ class BitSystem extends BitBase {
 		else {
 			$this->mPackages[$pkgNameKey]['active_switch'] = FALSE;
 			}
-			
+
 		// set package installed flag (can be installed but not active)
 		if ($this->mPackages[$pkgNameKey]['active_switch'] || $this->mPackages[$pkgNameKey]['status'] == 'i') {
 			$this->mPackages[$pkgNameKey]['installed'] = TRUE;
@@ -1022,12 +1022,12 @@ class BitSystem extends BitBase {
 	*
 	* @param string $ pkgName = package name to load
 	* @param string $ pScanFile file to be looked for
-	* @param string $ autoRegister - TRUE = autoregister any packages that don't register on their own, FALSE = don't 
+	* @param string $ autoRegister - TRUE = autoregister any packages that don't register on their own, FALSE = don't
 	* @param string $ pOnce - TRUE = do include_once to load file FALSE = do include to load the file
 	* @return
 	* @access public
 	*/
-	function loadPackage ($pkgName, $pScanFile, $autoRegister=TRUE, $pOnce=TRUE) 
+	function loadPackage ($pkgName, $pScanFile, $autoRegister=TRUE, $pOnce=TRUE)
 	{
 
 		#check if already loaded, loading again won't work with 'include_once' since
@@ -1070,8 +1070,8 @@ class BitSystem extends BitBase {
 	*
 	* @param string $ pScanFile file to be looked for
 	* @param string $ pOnce - TRUE = do include_once to load file FALSE = do include to load the file
-	* @param string $ pSelect - empty or 'all' = load all packages, 'installed' = load installed, 'active' = load active, 'x' = load packages with status x 
-	* @param string $ autoRegister - TRUE = autoregister any packages that don't register on their own, FALSE = don't 
+	* @param string $ pSelect - empty or 'all' = load all packages, 'installed' = load installed, 'active' = load active, 'x' = load packages with status x
+	* @param string $ autoRegister - TRUE = autoregister any packages that don't register on their own, FALSE = don't
 	* @param string $ fileSystemScan - TRUE = scan file system for packages to load, False = don't
 	* @return none
 	* @access public
@@ -1091,13 +1091,13 @@ class BitSystem extends BitBase {
 
 		foreach ($packages_config_array as $package_name=>$config_setting) {
 			$work = $package_name;
-			$work = preg_replace( "/^package_/", '', $work,1 );			
+			$work = preg_replace( "/^package_/", '', $work,1 );
 			# ingore if already in list
 			if (!empty($packages_to_scan[$work])) {
 				continue;
 				}
-			# add to list			
-			if ( ( !empty($pSelect) && $config_setting == $pSelect ) 
+			# add to list
+			if ( ( !empty($pSelect) && $config_setting == $pSelect )
 			  || ( !empty($pSelect) && $pSelect == 'all' )
 			  || ( !empty($pSelect) && $pSelect == 'installed' && ( $config_setting == 'y' || $config_setting == 'i' ) )
 			  || ( !empty($pSelect) && $pSelect == 'active' && ( $config_setting == 'y' ) )
@@ -1125,7 +1125,7 @@ class BitSystem extends BitBase {
 				}
 
 			}
-		
+
 		}
 
 		#in case some defines not done
@@ -1199,7 +1199,7 @@ class BitSystem extends BitBase {
 					} else {
 						$this->mPackages[$package]['db_tables_found'] = FALSE;
 					}
-					
+
 					$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
 					if( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['active_switch'] != 'y' ) {
 						// we have a disabled required package. turn it back on!
@@ -1281,7 +1281,7 @@ class BitSystem extends BitBase {
 				$url = constant( $work );
 			}
 
-//this sends requests to inactive packages so commented out				
+//this sends requests to inactive packages so commented out
 //for example if wiki is made not active, we can end up trying to go there
 //		} elseif( !empty( $bit_index ) ) {
 //			$url = BIT_ROOT_URL.$bit_index;
@@ -1568,7 +1568,7 @@ class BitSystem extends BitBase {
 					// we're done! we've got all the non-DEFAULT_PACKAGE modules
 					break;
 				}
-				
+
 				if( !empty( $row["section_params"] ) ) {
 					$row['params'] = $row['section_params'];
 				}
@@ -1616,7 +1616,9 @@ class BitSystem extends BitBase {
 				if ($row['layout_position'] == CENTER_COLUMN) {
 					array_push($gCenterPieces, $row['module_rsrc']);
 				}
-				array_push($ret[$row['layout_position']], $row);
+				if (!empty($row["visible"])) {
+					array_push($ret[$row['layout_position']], $row);
+				}
 				$row = $result->fetchRow();
 			}
 		}
@@ -1762,7 +1764,7 @@ class BitSystem extends BitBase {
 
 		if (ini_get('session.save_handler') == 'files') {
 			$save_path = ini_get('session.save_path');
-			
+
 			if (empty($save_path)) {
 				$errors .= "The session.save_path variable is not setup correctly (its empty).\n";
 			} else {

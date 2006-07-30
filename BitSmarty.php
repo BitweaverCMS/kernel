@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.12 2006/05/31 17:59:35 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.13 2006/07/30 19:48:22 spiderr Exp $
  */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
@@ -185,7 +185,7 @@ function add_link_ticket($tpl_source, &$smarty) {
 		$to = 'href="\\1?\\2&amp;tk={$gBitUser->mTicket}&\\3"';
 		$tpl_source = preg_replace( $from, $to, $tpl_source );
 		$from = '#<form([^>]*)>#i';
-		$to = '<form\\1><div><input type="hidden" name="tk" value="{$gBitUser->mTicket}" /></div>';
+		$to = '<form\\1><input type="hidden" name="tk" value="{$gBitUser->mTicket}" />';
 		$tpl_source = preg_replace( $from, $to, $tpl_source );
 		if( strpos( $tpl_source, '{form}' ) ) {
 			$tpl_source = str_replace( '{form}', '{form}<input type="hidden" name="tk" value="{$gBitUser->mTicket}" />', $tpl_source );

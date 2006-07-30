@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.90 2006/07/29 19:38:37 hash9 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.91 2006/07/30 22:22:12 jht001 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -71,10 +71,13 @@ class BitSystem extends BitBase {
 	*/
 	var $mConfig;
 	/**
-	* Used to monitor if ::regiserPackage() was called. This is to prevent duplicate package registration for packages that have directory names different from their package name.
+	* Used to monitor if ::registerPackage() was called. This is used to determine whether to auto-register a package
 	* @private
 	*/
 	var $mRegisterCalled;
+
+	var $mPackageFileName;
+	
 	// >>>
 	// === BitSystem constructor
 	/**
@@ -207,6 +210,27 @@ class BitSystem extends BitBase {
 	}
 
 
+	/**
+	* set a group of config variables
+	*
+	* @access public
+	**/
+	function setConfigMatch( $pPattern, $pSelect_value="", $pNew_value=NULL, $pPackage=NULL ) {
+		if( empty( $this->mConfig ) ) {
+			$this->loadConfig();
+		}
+
+		$matching_keys = array();
+		$matching_keys = preg_grep($pPattern, array_keys($this->mConfig));
+		$new_array = array();
+		foreach($matching_keys as $key=>$config_name) {
+			if ( empty($pSelect_value) || ( !empty($pSelect_value) && $this->mConfig[$config_name] == $pSelect_value) ) {
+				$this->storeConfig($config_name, $pNew_value, $pPackage);
+			}
+		}
+	}
+
+
 	// deprecated method saved compatibility until all getPreference calls have been eliminated
 	function getPreference( $pName, $pDefault = '' ) {
 		deprecated( 'BitSystem::getConfig()' );
@@ -264,7 +288,7 @@ class BitSystem extends BitBase {
 				$this->mDb->setCaching( $isCaching );
 			}
 		}
-		$this->setPreference( $pName, $pValue );
+		$this->setConfig( $pName, $pValue );
 		return TRUE;
 	}
 	// >>>
@@ -762,6 +786,15 @@ class BitSystem extends BitBase {
 			$required_package = FALSE;
 		}
 
+		if( !isset( $package_name ) ) {
+			$this->fatalError( tra("Package name not set in ")."registerPackage: $this->mPackageFileName" );;
+		}
+
+		if( !isset( $package_path ) ) {
+			$this->fatalError( tra("Package path not set in ")."registerPackage: $this->mPackageFileName" );;
+		}
+
+
 		$this->mRegisterCalled = TRUE;
 		if( empty( $this->mPackages ) ) {
 			$this->mPackages = array();
@@ -1042,6 +1075,7 @@ class BitSystem extends BitBase {
 		if (file_exists( $scanFile )) {
 			$file_exists = 1;
 			global $gBitSystem, $gLibertySystem, $gBitSmarty, $gBitUser, $gBitLanguage;
+			$this->mPackageFileName = $scanFile;
 			if( $pOnce ) {
 				include_once( $scanFile );
 			} else {

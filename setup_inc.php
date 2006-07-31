@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.70 2006/07/30 22:22:12 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.71 2006/07/31 13:23:52 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -146,15 +146,14 @@ if( $gBitSystem->isDatabaseValid() ) {
 	global $gLibertySystem;
 
 	// load only the active plugins unless this is the first run after an install
-	$current_default_format_guid = $gBitSystem->getConfig('default_format');
-	$plugin_status = $gBitSystem->getConfig('liberty_plugin_status_' . $current_default_format_guid);
-	if ( empty($current_default_format_guid) || empty($plugin_status) || $plugin_status != 'y' ) {
+	$current_default_format_guid = $gBitSystem->getConfig( 'default_format' );
+	$plugin_status = $gBitSystem->getConfig( 'liberty_plugin_status_'.$current_default_format_guid );
+	if( empty( $current_default_format_guid ) || empty( $plugin_status ) || $plugin_status != 'y' ) {
 		$gLibertySystem->scanAllPlugins();
-	}
-	else {
+	} else {
 		$gLibertySystem->loadActivePlugins();
 	}
-	
+
 	$gBitSmarty->assign_by_ref( 'gLibertySystem', $gLibertySystem );
 
 	$gBitSmarty->assign_by_ref("gBitSystem", $gBitSystem);

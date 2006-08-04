@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.71 2006/07/31 13:23:52 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.72 2006/08/04 09:38:50 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -27,6 +27,7 @@ define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
 // This means these packages *CANNOT* be renamed
 define('STORAGE_PKG_PATH', BIT_ROOT_PATH . 'storage/');
 define('STORAGE_PKG_URL', BIT_ROOT_URL . 'storage/');
+define('STORAGE_PKG_NAME', 'storage');
 define('INSTALL_PKG_PATH', BIT_ROOT_PATH . 'install/');
 define('INSTALL_PKG_URL', BIT_ROOT_URL . 'install/');
 define('KERNEL_PKG_DIR', 'kernel');
@@ -34,7 +35,7 @@ define('KERNEL_PKG_NAME', 'kernel');
 define('KERNEL_PKG_PATH', BIT_ROOT_PATH . 'kernel/');
 define('KERNEL_PKG_URL', BIT_ROOT_URL . 'kernel/');
 
-require_once(KERNEL_PKG_PATH . 'preflight_inc.php');
+require_once( KERNEL_PKG_PATH . 'preflight_inc.php' );
 
 // clean up $_GET and make sure others are clean as well
 if( !empty( $_GET ) && is_array( $_GET ) ) {

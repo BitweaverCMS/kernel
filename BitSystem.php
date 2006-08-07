@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.91 2006/07/30 22:22:12 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.92 2006/08/07 07:52:33 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -422,7 +422,7 @@ class BitSystem extends BitBase {
 		$this->mStyles['footerIncFiles'] = $this->getTplIncludeFiles("footer_inc.tpl");
 		$this->mStyles['browserStyleSheet'] = $this->getBrowserStyleCss();
 		$this->mStyles['customStyleSheet'] = $this->getCustomStyleCss();
-		$this->mStyles['altStyleSheets'] = $this->getAltStyleCss();
+		//$this->mStyles['altStyleSheets'] = $this->getAltStyleCss();
 		define( 'THEMES_STYLE_URL', $this->getStyleUrl() );
 		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'jscalendar/' );
 		// dont forget to assign slideshow stylesheet if we are viewing page as slideshow

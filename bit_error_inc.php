@@ -81,6 +81,9 @@ function bit_error_string( $iDBParms ) {
 	if ( $iDBParms['sql'] ) {
 		$badSpace = array("\n", "\t");
 		$info .= $indent."#### SQL: ".str_replace($badSpace, ' ', $iDBParms['sql']).$separator;
+		if( is_array( $iDBParms['p2'] ) ) {
+			$info .= $indent.'['.implode( ', ', $iDBParms['p2'] ).']'.$separator;
+		}
 	}
 
 	$errno = ((int)$iDBParms['errno'] ? 'Errno: '.$iDBParms['errno'] : '');

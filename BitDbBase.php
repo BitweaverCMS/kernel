@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.24 2006/07/04 15:30:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.25 2006/08/16 06:03:54 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -229,6 +229,7 @@ class BitDb
 		if( $this->getDebugLevel() ) {
 			$style = ( $interval > .5 ) ? 'color:red;' : (( $interval > .15 ) ? 'color:orange;' : '');
 			print '<p style="'.$style.'">### Query: '.$num_queries.' Start time: '.$this->mQueryLap.' ### Query run time: '.$interval.'</p>';
+#vd(debug_backtrace());
 			flush();
 		}
 		$this->mQueryLap = 0;
@@ -921,5 +922,38 @@ class BitDb
 		// contribution that you have to install like: psql foo < /usr/share/pgsql/contrib/tablefunc.sql
 		return defined( 'ADVANCED_PGSQL' );
 	}
+
+
+	/**
+	 * Compatibility function for DBs with case insensitive searches
+	 * (like MySQL, see: http://dev.mysql.com/doc/refman/5.1/en/case-sensitivity.html)
+	 * How to use: 
+     * 	AND ".$this->mDb->getCaseLessColumn('lc.title')." = 'page title'
+     * The reason all this matters is that huge performane difference between:
+	 *   where title = 'PAGE TITLE'
+	 * and
+	 *   where UPPER(tittle) = 'PAGE TITTLE'
+     * The latter version will not make use of the index on page title (at least for MySQl)
+     * while the first vesion will use the index.  In a case insensitive search DB (MySQL) both
+     * forms of the query will give the same results, the only difference being the preformance.  
+	 * Spiderr suggested this solution and suppled the code below
+	 */
+	function getCaselessColumn( $pColumn ) {
+	  global $gBitDbType;
+	  switch( $gBitDbType ) {
+		  case "mysql":
+		  case "mysqli":
+		  $ret = $pColumn;
+		  break;
+
+		  default:
+		  $ret = " UPPER($pColumn) ";
+		  break;
+	  }
+	  return $ret;
+	}
+
+
+
 }
 ?>

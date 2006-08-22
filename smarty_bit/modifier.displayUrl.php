@@ -22,41 +22,75 @@
  * Example: {'My Page'|displayUrl}, {'admin'|displyUrl:BitUser}, {$gContent|displayUrl:MyObject}
  * -------------------------------------------------------------
  */
+
+function smarty_modifier_displayUrl_findLib(&$lib,$class_only=false) {
+	if (!class_exists($lib)) {
+		foreach ($gLibertySystem->mContentTypes as $type) {
+			if ($type['handler_class']==$lib) {
+				smarty_modifier_displayUrl_loadLib($type);
+				return true;
+			} elseif ((!$class_only) && ($type['content_type_guid']==$lib)) {
+				$lib = $type['handler_class'];
+				smarty_modifier_displayUrl_loadLib($type);
+				return true;
+			}
+		}
+		return false;
+	}
+	return true;
+}
+
+function smarty_modifier_displayUrl_loadLib($type) {
+	$path = constant(strtoupper($type['handler_package']).'_PKG_PATH');
+	require_once($path.$type['handler_file']);
+}
+
 function smarty_modifier_displayUrl($pMixed, $lib='') {
 	global  $gLibertySystem;
 	if (is_string($pMixed)) {
 		if (empty($lib)) $lib ='BitPage';
-		if (class_exists($lib)) {
-			call_user_func(array($lib, 'getDisplayUrl'),$pMixed);
+		if (smarty_modifier_displayUrl_findLib($lib)) {
+			$call =array($lib, 'getDisplayUrl');
+			if (is_callable($call)) {
+				return call_user_func($call,$pMixed);
+			}
+			$i = $lib();
+			if (method_exists($i,'getDisplayUrl')) {
+				return $i->getDisplayUrl($pMixed);
+			}
 		}
 	} elseif (is_object($pMixed)) {
 		if (!empty($lib)) {
-			if (class_exists($lib)) {
+			if (smarty_modifier_displayUrl_findLib($lib)) {
 				$i = $lib();
 				return $i->getDisplayUrl($pMixed);
 			}
-		} else {
-			if (method_exists($pMixed,'getDisplayUrl')) {
-				return $pMixed->getDisplayUrl();
-			}
+		}
+		if (method_exists($pMixed,'getDisplayUrl')) {
+			return $pMixed->getDisplayUrl();
 		}
 	} elseif (is_array($pMixed)) {
 		if (!empty($lib)) {
-			if (class_exists($lib)) {
+			if (smarty_modifier_displayUrl_findLib($lib)) {
 				$i = $lib();
 				return $i->getDisplayUrl($pMixed);
 			}
-		} elseif (!empty($pMixed['display_url'])) {
+		}
+		if (!empty($pMixed['display_url'])) {
 			return $pMixed['display_url'];
-		} elseif (!empty($pMixed['content_type_guid'])) {
-			$lib= $gLibertySystem->mContentTypes[$pContentType]['handler_class'];
-			if (class_exists($lib)) {
-				$i = $lib();
+		}
+		if (!empty($pMixed['content_type_guid'])) {
+			$type =$gLibertySystem->mContentTypes[$pContentType];
+			if (!empty($type)) {
+				$lib = $type['handler_class'];
+				smarty_modifier_displayUrl_loadLib($type);
+				$i = new $lib();
 				return $i->getDisplayUrl($pMixed);
 			}
-		} elseif (!empty($pMixed['handler_class'])) {
+		}
+		if (!empty($pMixed['handler_class'])) {
 			$lib= $pMixed['handler_class'];
-			if (class_exists($lib)) {
+			if (smarty_modifier_displayUrl_findLib($lib,true)) {
 				$i = $lib();
 				return $i->getDisplayUrl($pMixed);
 			}

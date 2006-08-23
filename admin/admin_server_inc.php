@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.7 2006/04/19 13:48:37 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.8 2006/08/23 19:35:17 sylvieg Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -60,7 +60,7 @@ if( $processForm ) {
 	}
 
 	// Special handling for centralissed_upload_dir, which has a default value
-	$centralDir = ( isset( $_REQUEST["site_upload_dir"] ) ? $_REQUEST["site_upload_dir"] : NULL );
+	$centralDir = ( !empty( $_REQUEST["site_upload_dir"] ) ? $_REQUEST["site_upload_dir"] : NULL );
 	$gBitSystem->storeConfig( "site_upload_dir", $centralDir , KERNEL_PKG_NAME );
 	$gBitSmarty->assign_by_ref( "site_upload_dir", $centralDir );
 

@@ -24,6 +24,7 @@
  */
 
 function smarty_modifier_displayUrl_findLib(&$lib,$class_only=false) {
+  global $gLibertySystem;
 	if (!class_exists($lib)) {
 		foreach ($gLibertySystem->mContentTypes as $type) {
 			if ($type['handler_class']==$lib) {

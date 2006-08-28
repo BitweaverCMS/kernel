@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.23 2006/07/23 04:48:36 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.24 2006/08/28 07:54:33 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -279,11 +279,8 @@ function unlink_r( $path,$followLinks = FALSE ) {
 	}
 }
 
-function tp_http_request($url, $reqmethod = NULL ) {
-	require_once( UTIL_PKG_PATH . 'pear/HTTP/Request.php' );
-	if( empty( $reqmethod ) ) {
-		$reqmethod = HTTP_REQUEST_METHOD_GET;
-	}
+function tp_http_request($url) {
+
 	global $site_use_proxy,$site_proxy_host,$site_proxy_port;
 
 	// test url :
@@ -295,25 +292,27 @@ function tp_http_request($url, $reqmethod = NULL ) {
 	if ( (substr($url,0,7) <> "http://") && (substr($url,0,8) <> "https://") ) {
 		$url = "http://" . $url;
 	}
-	// (cdx) params for HTTP_Request.
-	// The timeout may be defined by a DEFINE("HTTP_TIMEOUT",5) in some file...
-	$aSettingsRequest=array("method"=>$reqmethod,"timeout"=>5);
-
 	if (substr_count($url, "/") < 3) {
 		$url .= "/";
 	}
-	// Proxy settings
+
+	$curl_obj = curl_init();
+	curl_setopt($curl_obj, CURLOPT_URL, $url);
+	curl_setopt($curl_obj, CURLOPT_HEADER, 0);
+    curl_setopt($curl_obj, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+    curl_setopt($curl_obj, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($curl_obj, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl_obj, CURLOPT_TIMEOUT, 5);
+
+ 	// Proxy settings
 	if ($site_use_proxy == 'y') {
-		$aSettingsRequest["site_proxy_host"]=$site_proxy_host;
-		$aSettingsRequest["site_proxy_port"]=$site_proxy_port;
+        curl_setopt($curl_obj, CURLOPT_PROXY, $site_proxy_host);
+        curl_setopt($curl_obj, CURLOPT_PROXYPORT, $site_proxy_port);
+        curl_setopt($curl_obj, CURLOPT_HTTPPROXYTUNNEL, 1);
 	}
-	$req = &new HTTP_Request($url, $aSettingsRequest);
-	// (cdx) return false when can't connect
-	// I prefer throw a PEAR_Error. You decide ;)
-	if (PEAR::isError($oError=$req->sendRequest())) {
-		return false;
-	}
-	$data = $req->getResponseBody();
+
+    $data = curl_exec($curl_obj);
+    curl_close($curl_obj);
 
 	return $data;
 }

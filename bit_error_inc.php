@@ -107,7 +107,7 @@ function bit_error_string( $iDBParms ) {
 	$info .= $indent."-----------------------------------------------------------------------------------------------".$separator;
     $info .= $indent."#### USER AGENT: ".$_SERVER['HTTP_USER_AGENT'].$separator;
     $info .= $indent."#### ACCT: ".$acctStr.$separator;
-    $info .= $indent."#### URL: http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$separator;
+    $info .= $indent."#### URL: http://".$_SERVER['HTTP_HOST'].(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $_SERVER['SCRIPT_NAME']).$separator;
 	if( isset($_SERVER['HTTP_REFERER'] ) ) {
     	$info .= $indent."#### REFERRER: $_SERVER[HTTP_REFERER]".$separator;
 	}

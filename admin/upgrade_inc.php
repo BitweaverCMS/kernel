@@ -456,6 +456,8 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blogs_rss_max_records'    WHERE `config_name`='max_rss_blogs'",
 
 		"DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`='site_temp_dir'",
+		"DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`='cookie_path'",
+		"DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`='cookie_domain'",
 	)
 )),
 	)

@@ -1,7 +1,12 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.3 2005/10/29 17:53:55 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.4 2006/09/01 14:26:05 wolff_borg Exp $ *}
 {strip}
 
 <a name="editcreate"></a>
+{if $preview eq 'y'}
+<br />{tr}Preview{/tr}<br />
+{$preview_data}
+{/if}
+
 {form legend="Edit/Create module" id="editusr"}
 	<input type="hidden" name="page" value="{$page}" />
 
@@ -30,6 +35,7 @@
 	</div>
 
 	<div class="row submit">
+		<input type="submit" name="um_preview" value="{tr}Preview{/tr}" />
 		<input type="submit" name="um_update" value="{tr}Save{/tr}" />
 		{if $um_name ne ''}
 			<br /><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=custom_modules#editcreate">{tr}Create new custom module{/tr}</a>

@@ -1,11 +1,18 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.5 2006/02/03 17:28:22 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.6 2006/09/01 14:26:05 wolff_borg Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 require_once( '../../bit_setup_inc.php' );
+
+if (!$gBitUser->isAdmin()) {
+	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
+
+	$gBitSystem->display( 'error.tpl' );
+	die;
+}
 
 if( $gBitSystem->isPackageActive( 'dcs' ) ) {
 	include_once( DCS_PKG_PATH.'dcs_lib.php' );
@@ -46,12 +53,6 @@ if( $gBitSystem->isPackageActive( 'imagegals' ) ) {
 }
 $gBitSmarty->assign('wysiwyg', 'n');
 
-if (!$gBitUser->isAdmin()) {
-	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
-
-	$gBitSystem->display( 'error.tpl' );
-	die;
-}
 
 // Values for the user_module edit/create form
 $gBitSmarty->assign('um_name', '');
@@ -80,6 +81,16 @@ if (isset($_REQUEST["um_remove"])) {
 	$gBitSmarty->assign_by_ref('um_title', $um_info["title"]);
 	$gBitSmarty->assign_by_ref('um_data', $um_info["data"]);
 } elseif (isset($_REQUEST["um_update"])) {
+        if (empty($_REQUEST["um_name"])) {
+	    $gBitSmarty->assign('msg',tra("Cannot create or update module: You need to specify a name to the module"));
+	    $gBitSmarty->display("error.tpl");
+	    die;
+	}
+        if (empty($_REQUEST["um_data"])) {
+	    $gBitSmarty->assign('msg',tra("Cannot create or update module: You cannot leave the data field empty"));
+	    $gBitSmarty->display("error.tpl");
+	    die;
+	}
     
     $_REQUEST["um_update"] = urldecode($_REQUEST["um_update"]);
 
@@ -90,6 +101,28 @@ if (isset($_REQUEST["um_remove"])) {
     $gBitThemes->replaceCustomModule($_REQUEST["um_name"], $_REQUEST["um_title"], $_REQUEST["um_data"]);
 }
 
+$gBitSmarty->assign('preview', 'n');
+
+if (isset($_REQUEST["um_preview"])) {
+	$gBitSmarty->assign('preview', 'y');
+
+//	$info = $modlib->get_user_module($_REQUEST["um_name"]);
+	$info = $_REQUEST;
+	$gBitSmarty->assign_by_ref('user_module_name', $info["um_name"]);
+	$gBitSmarty->assign_by_ref('user_title', $info["um_title"]);
+//	if ($info["parse"] == "y") {
+//		$parse_data = $tikilib->parse_data($info["um_data"]);
+//		$smarty->assign_by_ref('user_data', $parse_data);
+//	} else {
+		$gBitSmarty->assign_by_ref('user_data', $info["um_data"]);
+//	}
+	$data = $gBitSmarty->fetch('bitpackage:users/user_module.tpl');
+
+	$gBitSmarty->assign_by_ref('preview_data', $data);
+    $gBitSmarty->assign_by_ref('um_name', $_REQUEST["um_name"]);
+    $gBitSmarty->assign_by_ref('um_title', $_REQUEST["um_title"]);
+    $gBitSmarty->assign_by_ref('um_data', $_REQUEST["um_data"]);
+}
 
 $user_modules = $gBitThemes->listCustomModules();
 $gBitSmarty->assign_by_ref('user_modules', $user_modules["data"]);

@@ -35,9 +35,14 @@ if (empty($_SERVER['PHP_SELF']))
 
 // this is broken if the virtual directory under the webserver is
 // not the same name as the physical directory on the drive - wolff_borg
+
+// Responding to Wolff, won't the following do what we want?
+//   dirname(dirname($_SERVER['PHP_SELF'])) . '/'
+// Am I missing something?  --drc
 if (!defined('BIT_ROOT_URL' )) {
-    preg_match('/.*'.basename(dirname(dirname(__FILE__ ) ) ).'\//', $_SERVER['PHP_SELF'], $match  );
-    $subpath = ( isset($match[0] ) ) ? $match[0] : '/';
+//     preg_match('/.*'.basename(dirname(dirname(__FILE__ ) ) ).'\//', $_SERVER['PHP_SELF'], $match  );
+//     $subpath = ( isset($match[0] ) ) ? $match[0] : '/';
+  $subpath =    dirname(dirname($_SERVER['PHP_SELF'])) . '/';
     define('BIT_ROOT_URL', $subpath );
 }
 

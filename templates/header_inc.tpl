@@ -10,8 +10,8 @@
 <link rel="help" title="{tr}Help{/tr}" href="http://www.bitweaver.org/" />
 
 <script type="text/javascript">/* <![CDATA[ */
-	var bitCookiePath = "{$gBitSystem->getConfig('cookie_path')|default:"`$smarty.const.BIT_ROOT_URL`"}";
-	var bitCookieDomain = "{$gBitSystem->getConfig('cookie_domain')|default:"`$smarty.server.SERVER_NAME`"}";
+	var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";
+	var bitCookieDomain = "";
 	var bitIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons/";
 	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 /* ]]> */</script>

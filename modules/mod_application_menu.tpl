@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.10 2006/03/01 21:19:33 starrrider Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.11 2006/09/02 04:31:12 wolff_borg Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -24,30 +24,31 @@
 				{else}
 					{if $menu.title}
 						{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-							<a class="head" href="javascript:flipIcon('{$key}menu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}
+							<a class="head" href="javascript:flipIcon('{$key}menu');">{biticon ipackage=liberty iname="collapsed" id="`$key`menuimg" iexplain="folder"}&nbsp;
 						{else}
-							<a class="head" href="javascript:toggle('{$key}menu');">
+							<a class="head" href="javascript:flipWithSign('{$key}menu');"><span id="flipper{$key}menu">&nbsp;</span>
 						{/if}
 						{tr}{$menu.title}{/tr}</a>
-						{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-							<script type="text/javascript">
-								flipIcon('{$key}menu');
-							</script>
-						{/if}
 					{/if}
 					<div id="{$key}menu">
 						{include file=$menu.template}
 					</div>
-					<script type="text/javascript">
-						$({$key}menu).style.display = '{$menu.display}';
-					</script>
+					{if $menu.title}
+						<script type="text/javascript">
+						{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
+							setFlipIcon('{$key}menu');
+						{else}
+							setFlipWithSign('{$key}menu');
+						{/if}
+						</script>
+					{/if}
 				{/if}
 			</li>
 		{/if}
 	{/foreach}
 
 {* =========================== User menu =========================== *}
-	{if $gBitSystem->isFeatureActive( 'usermenu' )and $usr_user_menus}
+	{if $gBitSystem->isFeatureActive( 'feature_usermenu' )and $usr_user_menus}
 		<li>
 			{if $gBitSystem->isFeatureActive( 'feature_cssmenus' )}
 				{if $menu.title}
@@ -62,23 +63,27 @@
 				{/if}
 			{else}
 				{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-					<a class="head" href="javascript:flipIcon('usrmenu');">{biticon ipackage=liberty iname="collapsed" id="usrmenu" iexplain="folder"}
+					<a class="head" href="javascript:flipIcon('usrmenu');">{biticon ipackage=liberty iname="collapsed" id="usrmenuimg" iexplain="folder"}&nbsp;
 				{else}
-					<a class="head" href="javascript:toggle('usrmenu');">
+					<a class="head" href="javascript:flipWithSign('usrmenu');"><span id="flipperusrmenu">&nbsp;</span>
 				{/if}
 				{tr}User Menu{/tr}</a>
-				<div id="usrmenu">
 					{* Show user menu contents only if there is something to display *}
 					{if count($usr_user_menus) gt 0}
+						<div id="usrmenu">
 						<ul>
 							{section name=ix loop=$usr_user_menus}
 								<li><a class="item" {if $usr_user_menus[ix].mode eq 'n'}onkeypress="popUpWin(this.href,'fullScreen',0,0);" onclick="popUpWin(this.href,'fullScreen',0,0);return false;"{/if} href="{$usr_user_menus[ix].url}">{$usr_user_menus[ix].name}</a></li>
 							{/section}
 						</ul>
+						</div>
 					{/if}
-				</div>
 				<script type="text/javascript">
-					$(usrmenu).style.display = '{$usrmenu.display}';
+					{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
+						setFlipIcon('usrmenu');
+					{else}
+						setFlipWithSign('usrmenu');
+					{/if}
 				</script>
 			{/if}
 		</li>

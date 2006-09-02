@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.7 2006/03/01 21:19:33 starrrider Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.8 2006/09/02 04:31:12 wolff_borg Exp $ *}
 {strip}
 {if $packageMenu}
 	{bitmodule title="$moduleTitle" name="package_menu"}
@@ -13,19 +13,18 @@
 				{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
 					<a class="head" href="javascript:flipIcon('{$key}admenu');">{biticon ipackage=liberty iname="collapsed" id="`$key`admenuimg" iexplain="folder"}&nbsp;
 				{else}
-					<a class="head" href="javascript:toggle('{$key}admenu');">
+					<a class="head" href="javascript:flipWithSign('{$key}admenu');"><span id="flipper{$key}admenu">&nbsp;</span>
 				{/if}
 				{tr}{$key|capitalize}{/tr}</a>
-				{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
-					<script type="text/javascript">
-						flipIcon('{$key}admenu');
-					</script>
-				{/if}
 				<div id="{$key}admenu">
 					{include file=`$menu.tpl`}
 				</div>
 				<script type="text/javascript">
-					$({$key}admenu).style.display = '{$menu.display}';
+					{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
+						setFlipIcon('{$key}admenu');
+					{else}
+						setFlipWithSign('{$key}admenu');
+					{/if}
 				</script>
 			</div>
 		{/foreach}

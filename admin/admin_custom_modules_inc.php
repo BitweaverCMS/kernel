@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.1.1.1.2.2 2006/09/02 12:14:24 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.1.1.1.2.3 2006/09/02 12:43:28 wolff_borg Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -121,7 +121,7 @@ if (isset($_REQUEST["um_preview"])) {
 //	} else {
 		$gBitSmarty->assign_by_ref('user_data', $info["um_data"]);
 //	}
-	$data = $gBitSmarty->fetch('bitpackage:users/user_module.tpl');
+	$data = $gBitSmarty->fetch(USERS_PKG_PATH . 'modules/user_module.tpl');
 
 	$gBitSmarty->assign_by_ref('preview_data', $data);
     $gBitSmarty->assign_by_ref('um_name', $_REQUEST["um_name"]);

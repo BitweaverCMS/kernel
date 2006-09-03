@@ -25,20 +25,32 @@ function smarty_function_formfeedback( $params, &$gBitSmarty ) {
 	$i = 0;
 	foreach( $hash as $key => $val ) {
 		if( $val ) {
-			require_once $gBitSmarty->_get_plugin_filepath('function','biticon');
+			require_once $gBitSmarty->_get_plugin_filepath( 'function', 'biticon' );
+
 			if( $key === 'warning' || $key === 'success' || $key === 'error' ) {
+				// remap warning, success and error to icon themes
+				if( $key === 'success' ) {
+					$iname = 'dialog-ok';
+				} elseif( $key === 'warning' ) {
+					$iname = 'dialog-warning';
+				} elseif( $key === 'error' ) {
+					$iname = 'dialog-error';
+				}
+
 				$biticon = array(
-					'ipackage' => 'liberty',
-					'iname' => $key,
+					'ipackage' => 'icons',
+					'iname' => $iname,
 					'iexplain' => $key,
 					'iforce' => 'icon',
 				);
 				if( !is_array( $val ) ) {
 					$val = array( $val );
 				}
+
 				foreach( $val as $valText ) {
-					$feedback .= '<p id="fat'.rand( 0, 10000 ).'" class="fade-000000 '.$key.'">'.smarty_function_biticon( $biticon,$gBitSmarty ).' '.$valText.'</p>';
+					$feedback .= '<p id="fat'.rand( 0, 10000 ).'" class="fade-000000 '.$key.'">'.smarty_function_biticon( $biticon, $gBitSmarty ).' '.$valText.'</p>';
 				}
+
 			} else {
 				$feedback .= '<p class="'.$key.'">'.$val.'</p>';
 			}

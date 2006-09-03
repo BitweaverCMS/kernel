@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.4 2006/09/01 14:26:05 wolff_borg Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.5 2006/09/03 20:09:42 squareing Exp $ *}
 {strip}
 
 <a name="editcreate"></a>
@@ -89,9 +89,9 @@
 			<td>{$user_modules[user].name}</td>
 			<td>{$user_modules[user].title}</td>
 			<td style="text-align:right">
-				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=layout&amp;module_name=_custom%3Acustom%2F{$user_modules[user].name}">{biticon ipackage=liberty iname=assign iexplain=assign}</a>
-				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=custom_modules&amp;um_edit={$user_modules[user].name}#editcreate">{biticon ipackage=liberty iname=edit iexplain=edit}</a>
-				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=custom_modules&amp;um_remove={$user_modules[user].name}">{biticon ipackage=liberty iname=delete iexplain=delete}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=layout&amp;module_name=_custom%3Acustom%2F{$user_modules[user].name}">{biticon ipackage="icons" iname="mail-attachment" iexplain=assign}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=custom_modules&amp;um_edit={$user_modules[user].name}#editcreate">{biticon ipackage="icons" iname="accessories-text-editor" iexplain=edit}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=custom_modules&amp;um_remove={$user_modules[user].name}">{biticon ipackage="icons" iname="edit-delete" iexplain=delete}</a>
 			</td>
 		</tr>
 	{sectionelse}

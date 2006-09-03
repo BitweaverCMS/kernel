@@ -31,6 +31,7 @@ function smarty_function_jspopup( $params, &$gBitSmarty ) {
 
 	if( !empty( $params['ibiticon'] ) ) {
 		require_once $gBitSmarty->_get_plugin_filepath( 'function','biticon' );
+
 		$tmp = explode( '/', $params['ibiticon'] );
 		$ibiticon = array(
 			'ipackage' => $tmp[0],

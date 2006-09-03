@@ -7,70 +7,71 @@
  */
 
 /**
-* get_first_match
-*/
-function get_first_match( $dir, $filename ) {
-	$ret = FALSE;
-	if( is_dir( $dir ) ) {
-		$dh = opendir( $dir );
+ * get_first_match 
+ * 
+ * @param string $pDir Directory in which we want to search for the icon
+ * @param array $pFilename Icon name without the extension
+ * @access public
+ * @return Icon name with extension on success, FALSE on failure
+ */
+function get_first_match( $pDir, $pFilename ) {
+	if( is_dir( $pDir ) ) {
+		$dh = opendir( $pDir );
 		$extensions = array( 'gif', 'png', 'jpg' );
 		foreach( $extensions as $ext ) {
-			if( is_file( $dir.$filename.'.'.$ext ) ) {
-				$ret = $filename.'.'.$ext;
+			if( is_file( $pDir.$pFilename.'.'.$ext ) ) {
+				return $pFilename.'.'.$ext;
 			}
 		}
-//		$pattern = strtolower( $filename ).'.';
-//		while( FALSE !== ( $curFile = readdir( $dh ) ) ) {
-//			if( ( strpos( strtolower( $curFile ), $pattern ) === 0 ) && is_file( $dir.$curFile ) ) {
-//				return $curFile;
-//			}
-//		}
 	}
-	return $ret;
+	return FALSE;
 }
 
 /**
-* output_icon
- ** iexplain
- ** iforce
- ** url
- ** or every param of an img
-*/
-function output_icon( $params, $file ) {
+ * Turn collected information into an html image
+ * 
+ * @param boolean $pParams['url'] set to TRUE if you only want the url and nothing else
+ * @param string $pParams['iexplain'] Explanation of what the icon represents
+ * @param string $pParams['iforce'] takes following optins: icon, icon_text, text - will override system settings
+ * @param string $pFile Path to icon file
+ * @access public
+ * @return Full <img> on success
+ */
+function output_icon( $pParams, $pFile ) {
 	global $gBitSystem, $gSniffer;
-	$iexplain = isset( $params["iexplain"] ) ? tra( $params["iexplain"] ) : 'please set iexplain';
+	$iexplain = isset( $pParams["iexplain"] ) ? tra( $pParams["iexplain"] ) : 'please set iexplain';
 
 	// text browsers don't need to see forced icons - usually part of menus or javascript stuff
-	if( !empty( $params['iforce'] ) && $params['iforce'] == 'icon' && ( $gSniffer->_browser_info['browser'] == 'lx' || $gSniffer->_browser_info['browser'] == 'li' ) ) {
+	if( !empty( $pParams['iforce'] ) && $pParams['iforce'] == 'icon' && ( $gSniffer->_browser_info['browser'] == 'lx' || $gSniffer->_browser_info['browser'] == 'li' ) ) {
 		return '';
 	}
 
-	if( isset( $params["url"] ) ) {
-		$outstr = $file;
+	if( isset( $pParams["url"] ) ) {
+		$outstr = $pFile;
 	} else {
-		if( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'text' && $params['iforce'] != 'icon' ) {
+		if( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'text' && $pParams['iforce'] != 'icon' ) {
 			$outstr = $iexplain;
 		} else {
-			$outstr='<img src="'.$file.'"';
-			if( isset( $params["iexplain"] ) ) {
-				$outstr .= ' alt="'.tra( $params["iexplain"] ).'" title="'.tra( $params["iexplain"] ).'"';
+			$outstr='<img src="'.$pFile.'"';
+			if( isset( $pParams["iexplain"] ) ) {
+				$outstr .= ' alt="'.tra( $pParams["iexplain"] ).'" title="'.tra( $pParams["iexplain"] ).'"';
 			} else {
 				$outstr .= ' alt=""';
 			}
 
 			$ommit = array( 'ipackage', 'ipath', 'iname', 'iexplain', 'iforce' );
-			foreach( $params as $name => $val ) {
+			foreach( $pParams as $name => $val ) {
 				if( !in_array( $name, $ommit ) ) {
 					$outstr .= ' '.$name.'="'.$val.'"';
 				}
 			}
 
-			if( !isset( $params["class"] ) ) {
+			if( !isset( $pParams["class"] ) ) {
 				$outstr .= ' class="icon"';
 			}
 
 			// insert image width and height
-			list( $width, $height, $type, $attr ) = @getimagesize( BIT_ROOT_PATH.$file );
+			list( $width, $height, $type, $attr ) = @getimagesize( BIT_ROOT_PATH.$pFile );
 			if( !empty( $width ) && !empty( $height ) ) {
 				$outstr .= ' width="'.$width.'" height="'.$height.'"';
 			}
@@ -78,7 +79,7 @@ function output_icon( $params, $file ) {
 			$outstr .= " />";
 		}
 
-		if( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'icon_text' && $params['iforce'] != 'icon' || $params['iforce'] == 'icon_text' ) {
+		if( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'icon_text' && $pParams['iforce'] != 'icon' || $pParams['iforce'] == 'icon_text' ) {
 			$outstr .= '&nbsp;'.$iexplain;
 		}
 	}
@@ -86,60 +87,71 @@ function output_icon( $params, $file ) {
 }
 
 /**
-* smarty_function_biticon
-*/
-function smarty_function_biticon($params, &$gBitSmarty) {
-	global $gBitSystem, $icon_style;
+ * smarty_function_biticon 
+ * 
+ * @param array $pParams['ipath'] subdirectory within icon directory
+ * @param array $pParams['iname'] name of the icon without extension
+ * @param array $pParams['ipackage'] package the icon should be searched for - if it's part of an icon theme, this should be set to 'icons'
+ * @param array $gBitSmarty Referenced object
+ * @access public
+ * @return final <img>
+ */
+function smarty_function_biticon( $pParams, &$gBitSmarty ) {
+	global $gBitSystem;
 
-	if( !isset( $params['ipath'] ) ) {
-		$params['ipath'] = '';
+	if( !isset( $pParams['ipath'] ) ) {
+		$pParams['ipath'] = '';
 	}
 
-	if( 0 ) {
-		print_r($params);
-		print("<br />");
-		print_r($gBitSystem->getConfig('style'));
-		print("<br />");
-		print_r($icon_style);
-		print("<br />");
+	if( isset( $pParams['ipackage'] ) ) {
+		$pParams['ipackage'] = strtolower( $pParams['ipackage'] );
 	}
 
-	if( isset( $params['ipackage'] ) ) {
-		$params['ipackage'] = strtolower( $params['ipackage'] );
-	}
-	//if we have icon styles, first look there
-	if( isset( $icon_style ) ) {
-		if( false !== ( $matchFile = get_first_match( THEMES_PKG_PATH."styles/$icon_style/icons/".$params['ipackage']."/".$params['ipath'],$params['iname'] ) ) ) {
-			return output_icon( $params, THEMES_PKG_URL."styles/$icon_style/icons/".$params['ipackage']."/".$params['ipath'].$matchFile );
+	// get the current icon style
+	$icon_style = $gBitSystem->getConfig( 'site_icon_style', 'tango' );
+
+	// Icon styles are treated differently
+	// we need to think about how we want to override these icon themes
+	if( $pParams['ipackage'] == 'icons' ) {
+		$pParams['ipath'] = ( empty( $pParams['ipath'] ) ? 'small' : $pParams['ipath'] );
+		if( FALSE !== ( $matchFile = get_first_match( THEMES_PKG_PATH."icon_styles/$icon_style/".$pParams['ipath']."/", $pParams['iname'] ) ) ) {
+			return output_icon( $pParams, THEMES_PKG_URL."icon_styles/$icon_style/".$pParams['ipath']."/".$matchFile );
 		}
+
+		if( FALSE !== ( $matchFile = get_first_match( THEMES_PKG_PATH."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/", $pParams['iname'] ) ) ) {
+			return output_icon( $pParams, THEMES_PKG_URL."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/".$matchFile );
+		}
+
+		// if that didn't work, we'll try liberty
+		$pParams['ipath'] = '';
+		$pParams['ipackage'] = 'liberty';
 	}
 
 	// first check themes/force
-	if( false !== ( $matchFile = get_first_match( THEMES_PKG_PATH."force/icons/".$params['ipackage'].'/'.$params['ipath'],$params['iname'] ) ) ) {
-		$ret = output_icon( $params, BIT_ROOT_URL."themes/force/icons/".$params['ipackage'].'/'.$params['ipath'].$matchFile );
-		return $ret;
+	if( FALSE !== ( $matchFile = get_first_match( THEMES_PKG_PATH."force/icons/".$pParams['ipackage'].'/'.$pParams['ipath'],$pParams['iname'] ) ) ) {
+		return output_icon( $pParams, BIT_ROOT_URL."themes/force/icons/".$pParams['ipackage'].'/'.$pParams['ipath'].$matchFile );
 	}
 
 	//if we have site styles, look there
-	if( false !== ( $matchFile = get_first_match( $gBitSystem->getStylePath().'/icons/'.$params['ipackage']."/".$params['ipath'],$params['iname'] ) ) ) {
-		return output_icon( $params, $gBitSystem->getStyleUrl().'/icons/'.$params['ipackage']."/".$params['ipath'].$matchFile );
+	if( FALSE !== ( $matchFile = get_first_match( $gBitSystem->getStylePath().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'],$pParams['iname'] ) ) ) {
+		return output_icon( $pParams, $gBitSystem->getStyleUrl().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'].$matchFile );
 	}
 
 	//Well, then lets look in the package location
-	if( false !== ( $matchFile = get_first_match( $gBitSystem->mPackages[$params['ipackage']]['path']."icons/".$params['ipath'],$params['iname'] ) ) ) {
-		return output_icon( $params, $gBitSystem->mPackages[$params['ipackage']]['url']."icons/".$params['ipath'].$matchFile );
+	if( FALSE !== ( $matchFile = get_first_match( $gBitSystem->mPackages[$pParams['ipackage']]['path']."icons/".$pParams['ipath'],$pParams['iname'] ) ) ) {
+		return output_icon( $pParams, $gBitSystem->mPackages[$pParams['ipackage']]['url']."icons/".$pParams['ipath'].$matchFile );
 	}
 
 	//Well, then lets look in the default location
-	if( false !== ( $matchFile = get_first_match( THEMES_PKG_PATH."styles/default/icons/".$params['ipackage']."/".$params['ipath'],$params['iname'] ) ) ) {
-		return output_icon( $params, THEMES_PKG_URL."styles/default/icons/".$params['ipackage']."/".$params['ipath'].$matchFile );
+	if( FALSE !== ( $matchFile = get_first_match( THEMES_PKG_PATH."styles/default/icons/".$pParams['ipackage']."/".$pParams['ipath'],$pParams['iname'] ) ) ) {
+		return output_icon( $pParams, THEMES_PKG_URL."styles/default/icons/".$pParams['ipackage']."/".$pParams['ipath'].$matchFile );
 	}
 
-	//Still didn't find it! Well lets output something (return false if only the url is requested)
-	if( isset( $params['url'] ) ) {
-		return false;
+	//Still didn't find it! Well lets output something (return FALSE if only the url is requested)
+	if( isset( $pParams['url'] ) ) {
+		return FALSE;
 	} else {
-		return output_icon($params, "broken.".$params['ipackage']."/".$params['ipath'].$params['iname']);
+		return output_icon($pParams, "broken.".$pParams['ipackage']."/".$pParams['ipath'].$pParams['iname']);
 	}
 }
 ?>

@@ -137,8 +137,8 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 					);
 
 					$biticon = array(
-						'ipackage' => 'liberty',
-						'iname' => 'info',
+						'ipackage' => 'icons',
+						'iname' => 'dialog-information',
 						'iforce' => 'icon',
 						'iexplain' => 'Extended Help',
 					);

@@ -95,16 +95,16 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		// check if sort_mode has anything to do with our link
 		if( $sort_asc == $isort_mode ) {
 			$sorticon = array(
-				'ipackage' => 'liberty',
-				'iname' => 'sort_asc',
+				'ipackage' => 'icons',
+				'iname' => 'view-sort-ascending',
 				'iexplain' => 'ascending',
 				'iforce' => 'icon',
 			);
 			$url_params .= $sort_desc;
 		} elseif( $sort_desc == $isort_mode ) {
 			$sorticon = array(
-				'ipackage' => 'liberty',
-				'iname' => 'sort_desc',
+				'ipackage' => 'icons',
+				'iname' => 'view-sort-descending',
 				'iexplain' => 'descending',
 				'iforce' => 'icon',
 			);

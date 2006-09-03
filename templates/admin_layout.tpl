@@ -48,7 +48,7 @@
 										{/if}
 										&nbsp;&nbsp;
 										{if $column[ix].type ne 'P'}
-											{smartlink ititle="Unassign" ibiticon="liberty/delete_small" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout fMove=unassign fPackage=$fPackage fModule=`$layout.$area[ix].module_id` nojs=true}
+											{smartlink ititle="Unassign" ibiticon="icons/edit-delete" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout fMove=unassign fPackage=$fPackage fModule=`$layout.$area[ix].module_id` nojs=true}
 										{/if}
 									</div>
 								</td>

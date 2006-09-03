@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.7 2006/07/05 15:18:18 windblown Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.8 2006/09/03 20:09:42 squareing Exp $ *}
 {strip}
 <div class="module box {$module_name|replace:"_":"-"}">
 	{if $module_title}
@@ -13,7 +13,7 @@
 					<a title="{tr}Move module to opposite side{/tr}" href="{$smarty.const.KERNEL_PKG_URL}module_controls_inc.php?fMove={$colkey}&fPackage={$module_layout}&fModule={$module_id}">
 						{biticon ipackage=liberty iname="move_left_right" iexplain="move left right"}</a>
 					<a title="{tr}Unassign this module{/tr}" href="{$smarty.const.KERNEL_PKG_URL}module_controls_inc.php?fMove=unassign&fPackage={$module_layout}&fModule={$module_id}" onclick="return confirm('{tr}Are you sure you want to unassign this module?{/tr}')">
-						{biticon ipackage=liberty iname="delete_small" iexplain="remove"}</a>
+						{biticon ipackage="icons" iname="edit-delete" iexplain="remove"}</a>
 				</div>
 			{/if}
 			{if $gBitSystem->isFeatureActive( 'themes_collapsible_modules' )}<a href="javascript:toggle('{$module_name}');">{/if}

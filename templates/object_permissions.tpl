@@ -15,7 +15,7 @@
 <tr class="{cycle}"><td>
 {$page_perms[pg].group_name}</td><td>
 {$page_perms[pg].perm_name}</td><td align="right">
-<a href="{$smarty.const.KERNEL_PKG_URL}object_permissions.php?referer={$referer}&amp;action=remove&amp;objectName={$objectName}&amp;object_id={$object_id}&amp;object_type={$object_type}&amp;permType={$permType}&amp;page_id={$pageInfo.page_id}&amp;perm={$page_perms[pg].perm_name}&amp;group={$page_perms[pg].group_name}">{biticon ipackage=liberty iname="delete" iexplain="remove"}</a>
+<a href="{$smarty.const.KERNEL_PKG_URL}object_permissions.php?referer={$referer}&amp;action=remove&amp;objectName={$objectName}&amp;object_id={$object_id}&amp;object_type={$object_type}&amp;permType={$permType}&amp;page_id={$pageInfo.page_id}&amp;perm={$page_perms[pg].perm_name}&amp;group={$page_perms[pg].group_name}">{biticon ipackage="icons" iname="edit-delete" iexplain="remove"}</a>
 </td></tr>
 {sectionelse}
 <tr class="norecords"><td colspan="3">{tr}No individual permissions, global permissions apply{/tr}</td></tr>

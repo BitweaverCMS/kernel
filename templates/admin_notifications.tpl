@@ -55,7 +55,7 @@
 					<td>{$channels[user].event}</td>
 					<td>{$channels[user].object}</td>
 					<td>{$channels[user].email}</td>
-					<td class="actionicon">{smartlink ititle="remove" ibiticon="liberty/delete" offset=$offset removeevent=`$channels[user].event` object=`$channels[user].object` email=`$channels[user].email`}</td>
+					<td class="actionicon">{smartlink ititle="remove" ibiticon="icons/edit-delete" offset=$offset removeevent=`$channels[user].event` object=`$channels[user].object` email=`$channels[user].email`}</td>
 				</tr>
 			{sectionelse}
 				<tr class="norecords"><td colspan="4">{tr}No records found{/tr}</td></tr>

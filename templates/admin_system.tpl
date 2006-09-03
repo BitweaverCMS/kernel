@@ -32,7 +32,7 @@
 						<td>{$item.url}</td>
 						<td style="text-align:right;">{tr}{$item.du.count} file(s){/tr}</td>
 						<td style="text-align:right;">{$item.du.size|kbsize}</td>
-						<td class="actionicon">{smartlink ititle=Empty ibiticon="liberty/delete" prune=$key}</td>
+						<td class="actionicon">{smartlink ititle=Empty ibiticon="icons/edit-delete" prune=$key}</td>
 					</tr>
 				{/foreach}
 			</table>
@@ -54,7 +54,7 @@
 						<td>{$item.url}{$key}</td>
 						<td style="text-align:right;">{tr}{$item.du.count} file(s){/tr}</td>
 						<td style="text-align:right;">{$item.du.size|kbsize}</td>
-						<td class="actionicon">{smartlink ititle="Compile Templates" ibiticon="liberty/edit" compiletemplates=$key}</td>
+						<td class="actionicon">{smartlink ititle="Compile Templates" ibiticon="icons/accessories-text-editor" compiletemplates=$key}</td>
 					</tr>
 				{/foreach}
 			</table>

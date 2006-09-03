@@ -5,7 +5,7 @@
 		{$title}
 		{if $closebutton}
 			<span class='closebutton'>
-				<a onclick='javascript:return cClick();'>{biticon ipackage="liberty" iname="close" iexplain="close" iforce="icon"}</a>
+				<a onclick='javascript:return cClick();'>{biticon ipackage="icons" iname="window-close" iexplain="close" iforce="icon"}</a>
 			</span>
 		{/if}
 	</div>

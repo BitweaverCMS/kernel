@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.72 2006/08/04 09:38:50 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.73 2006/09/03 20:09:39 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -55,6 +55,9 @@ define('USERS_PKG_PATH', BIT_ROOT_PATH . 'users/');
 define('USERS_PKG_URL', BIT_ROOT_URL . 'users/');
 define('LANGUAGES_PKG_PATH', BIT_ROOT_PATH . 'languages/');
 define('THEMES_PKG_PATH', BIT_ROOT_PATH . 'themes/');
+
+// define this for now
+define('DEFAULT_ICON_STYLE', 'tango');
 
 // this is evil stuff and causes hell for us
 ini_set ( 'session.use_trans_sid', 'Off' );

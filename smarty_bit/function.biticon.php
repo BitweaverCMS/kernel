@@ -107,12 +107,14 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 		$pParams['ipackage'] = strtolower( $pParams['ipackage'] );
 	}
 
-	// get the current icon style
-	$icon_style = $gBitSystem->getConfig( 'site_icon_style', 'tango' );
-
 	// Icon styles are treated differently
 	// we need to think about how we want to override these icon themes
 	if( $pParams['ipackage'] == 'icons' ) {
+		// get the current icon style
+		// istyle is a private parameter!!! - only used on theme manager page for icon preview!!!
+		// violators will be poked with soft cushions by the Cardinal himself!!!
+		$icon_style = !empty( $pParams['istyle'] ) ? $pParams['istyle'] : $gBitSystem->getConfig( 'site_icon_style', DEFAULT_ICON_STYLE );
+
 		if( !empty( $pParams['ipath'] ) ) {
 		} elseif( !strstr( $pParams['iname'], '/' ) ) {
 			$pParams['ipath'] = 'small';

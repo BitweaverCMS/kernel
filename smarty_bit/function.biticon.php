@@ -113,7 +113,11 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 	// Icon styles are treated differently
 	// we need to think about how we want to override these icon themes
 	if( $pParams['ipackage'] == 'icons' ) {
-		$pParams['ipath'] = ( empty( $pParams['ipath'] ) ? 'small' : $pParams['ipath'] );
+		if( !empty( $pParams['ipath'] ) ) {
+		} elseif( !strstr( $pParams['iname'], '/' ) ) {
+			$pParams['ipath'] = 'small';
+		}
+
 		if( FALSE !== ( $matchFile = get_first_match( THEMES_PKG_PATH."icon_styles/$icon_style/".$pParams['ipath']."/", $pParams['iname'] ) ) ) {
 			return output_icon( $pParams, THEMES_PKG_URL."icon_styles/$icon_style/".$pParams['ipath']."/".$matchFile );
 		}

@@ -42,7 +42,8 @@ if (empty($_SERVER['PHP_SELF']))
 if (!defined('BIT_ROOT_URL' )) {
 //     preg_match('/.*'.basename(dirname(dirname(__FILE__ ) ) ).'\//', $_SERVER['PHP_SELF'], $match  );
 //     $subpath = ( isset($match[0] ) ) ? $match[0] : '/';
-  $subpath =    dirname(dirname($_SERVER['PHP_SELF'])) . '/';
+  $subpath = dirname(dirname($_SERVER['PHP_SELF']));
+  $subpath .= (substr($subpath,-1,1)!='/') ? '/' : '';
     define('BIT_ROOT_URL', $subpath );
 }
 

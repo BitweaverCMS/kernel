@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.12 2006/09/03 20:09:39 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.13 2006/09/07 16:45:40 squareing Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -23,19 +23,21 @@
 					{include file=$menu.template}
 				{else}
 					{if $menu.title}
-						{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
+						{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
 							<a class="head" href="javascript:flipIcon('{$key}menu');">{biticon ipackage="icons" iname="list-add" id="`$key`menuimg" iexplain="folder"}&nbsp;
 						{else}
-							<a class="head" href="javascript:flipWithSign('{$key}menu');"><span id="flipper{$key}menu">&nbsp;</span>
+							<a class="head" href="javascript:flipWithSign('{$key}menu');"><span style="font-family:monospace;" id="flipper{$key}menu">&nbsp;</span>
 						{/if}
-						{tr}{$menu.title}{/tr}</a>
+						&nbsp;&nbsp;tr}{$menu.title}{/tr}</a>
 					{/if}
+
 					<div id="{$key}menu">
 						{include file=$menu.template}
 					</div>
+
 					{if $menu.title}
 						<script type="text/javascript">
-						{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
+						{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
 							setFlipIcon('{$key}menu');
 						{else}
 							setFlipWithSign('{$key}menu');
@@ -62,10 +64,10 @@
 					</ul>
 				{/if}
 			{else}
-				{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
+				{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
 					<a class="head" href="javascript:flipIcon('usrmenu');">{biticon ipackage="icons" iname="list-add" id="usrmenuimg" iexplain="folder"}&nbsp;
 				{else}
-					<a class="head" href="javascript:flipWithSign('usrmenu');"><span id="flipperusrmenu">&nbsp;</span>
+					<a class="head" href="javascript:flipWithSign('usrmenu');"><span style="font-family:monospace;" id="flipperusrmenu">&nbsp;</span>
 				{/if}
 				{tr}User Menu{/tr}</a>
 					{* Show user menu contents only if there is something to display *}
@@ -79,7 +81,7 @@
 						</div>
 					{/if}
 				<script type="text/javascript">
-					{if $gBitSystem->isFeatureActive( 'feature_menusfolderstyle' )}
+					{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
 						setFlipIcon('usrmenu');
 					{else}
 						setFlipWithSign('usrmenu');

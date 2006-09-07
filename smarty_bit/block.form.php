@@ -66,7 +66,9 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 				case 'secure':
 					break;
 				default:
-					$atts .= $key.'="'.$val.'" ';
+					if( !empty( $val ) ) {
+						$atts .= $key.'="'.$val.'" ';
+					}
 					break;
 			}
 		}

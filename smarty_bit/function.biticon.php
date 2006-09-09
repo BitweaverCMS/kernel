@@ -16,8 +16,15 @@
  */
 function get_first_match( $pDir, $pFilename ) {
 	if( is_dir( $pDir ) ) {
-		$dh = opendir( $pDir );
-		$extensions = array( 'gif', 'png', 'jpg' );
+		global $gSniffer;
+
+		// if this is MSIE, we try png last.
+		if( $gSniffer->_browser_info['browser'] == 'ie' && $gSniffer->_browser_info['maj_version'] < 7 ) {
+			$extensions = array( 'gif', 'jpg', 'png' );
+		} else {
+			$extensions = array( 'png', 'gif', 'jpg' );
+		}
+
 		foreach( $extensions as $ext ) {
 			if( is_file( $pDir.$pFilename.'.'.$ext ) ) {
 				return $pFilename.'.'.$ext;

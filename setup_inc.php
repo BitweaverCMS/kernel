@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.74 2006/09/06 07:59:49 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.75 2006/09/09 21:58:22 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -129,8 +129,8 @@ global $gBitUser, $gTicket, $userlib, $gBitDbType;
 
 if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSystem->loadConfig();
-	if ($gBitSystem->getConfig('site_output_obzip') == 'y') {
-		ob_start ("ob_gzhandler");
+	if( $gBitSystem->isFeatureActive( 'site_output_obzip' ) ) {
+		ob_start( "ob_gzhandler" );
 	}
 
 	if (empty($gPreScan) || !is_array($gPreScan)) {

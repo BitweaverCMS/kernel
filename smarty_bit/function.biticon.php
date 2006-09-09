@@ -59,7 +59,7 @@ function output_icon( $pParams, $pFile ) {
 				$outstr .= ' alt=""';
 			}
 
-			$ommit = array( 'ipackage', 'ipath', 'iname', 'iexplain', 'iforce' );
+			$ommit = array( 'ipackage', 'ipath', 'iname', 'iexplain', 'iforce', 'istyle' );
 			foreach( $pParams as $name => $val ) {
 				if( !in_array( $name, $ommit ) ) {
 					$outstr .= ' '.$name.'="'.$val.'"';

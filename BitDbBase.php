@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.25 2006/08/16 06:03:54 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.26 2006/09/10 08:40:49 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -486,12 +486,22 @@ class BitDb
 	* at the location identified in updateId which holds a name and value entry
 	* @param updateTable Name of the table to be updated
 	* @param updateData Array of data to be changed. Array keys provide the field names
+    * If an array key contains an '=' it will assumed to already be properly quoted.
+    * This allows use of keys like this: `column_name` = `column_name` + ?
 	* @param updateId Array identifying the record to update.
 	*		Array key 'name' provide the field name, and 'value' the record key
 	* @return Error status of the insert
 	*/
 	function associateUpdate( $updateTable, $updateData, $updateId ) {
-		$setSql = ( '`'.implode( array_keys( $updateData ), '`=?, `' ).'`=?' );
+		$setSql = '';
+		foreach( $updateData as $key=>$value ) {
+			if (strpos($key,'=') === false) {
+				$setSql .= ", `$key` = ?";
+			}
+			else
+				$setSql .= ', ' . $key;
+			}
+		$setSql = 	substr($setSql,1);
 		$bindVars = array_values( $updateData );
 		$keyNames = ( '`'.implode( array_keys( $updateId ), '`=? AND `' ).'`=?' );
 		$keyVars = array_values( $updateId );

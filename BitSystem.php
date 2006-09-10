@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.92 2006/08/07 07:52:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.93 2006/09/10 21:13:54 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -794,6 +794,10 @@ class BitSystem extends BitBase {
 			$this->fatalError( tra("Package path not set in ")."registerPackage: $this->mPackageFileName" );;
 		}
 
+		// make package homeable
+		if( !isset( $homeable ) ) {
+			$homeable = FALSE;
+		}
 
 		$this->mRegisterCalled = TRUE;
 		if( empty( $this->mPackages ) ) {
@@ -801,6 +805,9 @@ class BitSystem extends BitBase {
 		}
 		$pkgName = str_replace( ' ', '_', strtoupper( $package_name ) );
 		$pkgNameKey = strtolower( $pkgName );
+
+		// Set package homeable
+		$this->mPackages[$pkgNameKey]['homeable']  = $homeable;
 
 		// Set package required flag
 		$this->mPackages[$pkgNameKey]['required']  = $required_package;
@@ -817,18 +824,16 @@ class BitSystem extends BitBase {
 		// set package installed and active flag
 		if ($this->mPackages[$pkgNameKey]['status'] == 'a' || $this->mPackages[$pkgNameKey]['status'] == 'y') {
 			$this->mPackages[$pkgNameKey]['active_switch'] = TRUE;
-			}
-		else {
+		} else {
 			$this->mPackages[$pkgNameKey]['active_switch'] = FALSE;
-			}
+		}
 
 		// set package installed flag (can be installed but not active)
 		if ($this->mPackages[$pkgNameKey]['active_switch'] || $this->mPackages[$pkgNameKey]['status'] == 'i') {
 			$this->mPackages[$pkgNameKey]['installed'] = TRUE;
-			}
-		else {
+		} else {
 			$this->mPackages[$pkgNameKey]['installed'] = FALSE;
-			}
+		}
 
 		// Define <PACKAGE>_PKG_PATH
 		$pkgDefine = $pkgName.'_PKG_PATH';
@@ -876,7 +881,6 @@ class BitSystem extends BitBase {
 			define('ACTIVE_PACKAGE_DIR', $this->mPackages[$pkgNameKey]['dir'] );
 			$this->mActivePackage = $package_name;
 		}
-
 	}
 	// >>>
 	// === registerAppMenu
@@ -1263,6 +1267,7 @@ class BitSystem extends BitBase {
 	// Allows a package to be selected as the homepage for the site (Admin->General Settings)
 	// Calls to this function should be made from each 'homeable' package's schema_inc.php
 	function makePackageHomeable($package) {
+		deprecated( 'BitSystem::registerPackage( array( "homeable" => TRUE ) ) in your bit_setup_inc.php file' );
 		$this->mPackages[strtolower( $package )]['homeable'] = TRUE;
 	}
 

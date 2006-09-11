@@ -2,7 +2,6 @@
 <ul>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=packages" title="{tr}Packages{/tr}" >{tr}Packages{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=features" title="{tr}Features{/tr}" >{tr}Features{/tr}</a></li>
-	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=general" title="{tr}General{/tr}" >{tr}General Settings{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=server" title="{tr}Server{/tr}" >{tr}Server Settings{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/backup.php">{tr}Backups{/tr}</a></li>
 	{if $gBitSystem->isFeatureActive( 'banning' ) and ($gBitUser->hasPermission( 'p_tidbits_admin_banning' ))}

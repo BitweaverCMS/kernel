@@ -19,7 +19,7 @@ function get_first_match( $pDir, $pFilename ) {
 		global $gSniffer;
 
 		// if this is MSIE, we try png last.
-		if( $gSniffer->_browser_info['browser'] == 'ie' && $gSniffer->_browser_info['maj_version'] < 7 ) {
+		if( $gSniffer->_browser_info['browser'] == 'ie' ) {
 			$extensions = array( 'gif', 'jpg', 'png' );
 		} else {
 			$extensions = array( 'png', 'gif', 'jpg' );

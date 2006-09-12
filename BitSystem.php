@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.94 2006/09/12 20:02:07 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.95 2006/09/12 22:37:32 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -897,7 +897,7 @@ class BitSystem extends BitBase {
 
 			// prepare hash
 			$pMenuHash['style']       = 'display:'.( ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' );
-			$pMenuHash['is_disabled'] = ( $this->getConfig( 'menu_'.$pMenuHash ) == 'n' );
+			$pMenuHash['is_disabled'] = ( $this->getConfig( 'menu_'.$pkg ) == 'n' );
 			$pMenuHash['menu_title']  = $this->getConfig( $pkg.'_menu_text',
 				( !empty( $pMenuHash['menu_title'] )
 					? $pMenuHash['menu_title']

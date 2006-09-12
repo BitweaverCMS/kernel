@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.48 2006/06/18 09:28:41 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.5.2.49 2006/09/12 13:32:41 wjames5 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -74,7 +74,8 @@ $gBitSystem = new BitSystem();
 
 // array used to load stuff using <body onload="">
 global $gBodyOnload;
-$gBitSmarty->assign_by_ref( 'gBodyOnload', $gBodyOnload = array() );
+$gBodyOnload = array();
+$gBitSmarty->assign_by_ref( 'gBodyOnload', $gBodyOnload );
 
 global $gPreviewStyle;
 $gPreviewStyle = FALSE;

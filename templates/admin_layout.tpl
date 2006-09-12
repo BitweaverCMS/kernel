@@ -1,3 +1,29 @@
+{literal}
+<script type="text/javascript">//<![CDATA[
+	function initDragDrop() {
+		var list = $( "left" );
+		DragDrop.makeListContainer( list, 'side_columns' );
+		list.onDragOver = function() { this.style["background"] = "#feb"; };
+		list.onDragOut = function() {this.style["background"] = "none"; };
+
+		list = $( "center" );
+		DragDrop.makeListContainer( list, 'center_column' );
+		list.onDragOver = function() { this.style["background"] = "#dfe"; };
+		list.onDragOut = function() {this.style["background"] = "none"; };
+
+		list = $( "right" );
+		DragDrop.makeListContainer( list, 'side_columns' );
+		list.onDragOver = function() { this.style["background"] = "#feb"; };
+		list.onDragOut = function() {this.style["background"] = "none"; };
+	};
+	
+	function getSort( id ) {
+		order = $( id );
+		order.value = DragDrop.serData( id, null );
+	}
+//]]></script>
+{/literal}
+
 {strip}
 {formfeedback hash=$feedback}
 

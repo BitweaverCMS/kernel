@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.19 2006/07/13 18:59:34 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.20 2006/09/12 22:15:43 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -22,6 +22,7 @@ $layout = $gBitSystem->getLayout( ROOT_USER_ID, $_REQUEST['fPackage'], FALSE );
 
 if( empty( $_REQUEST['nojs'] ) ) {
 	// load the javascript to get everythign working
+	$gBitSystem->setOnloadScript('initDragDrop();');
 	$gBitSmarty->assign( 'loadDragDrop', TRUE );
 
 	// the layout has been moved around and we need to save it

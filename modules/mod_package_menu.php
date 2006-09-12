@@ -4,13 +4,14 @@
  * @subpackage modules
  */
 global $gBitSystem;
+
 if( ACTIVE_PACKAGE == 'messages' ) {
 	$active = 'users';
 } else {
 	$active = ACTIVE_PACKAGE;
 }
 
-if( !empty( $gBitSystem->mAppMenu[$active]['template'] ) ) {
+if( !empty( $gBitSystem->mAppMenu[$active]['menu_template'] ) ) {
 	$gBitSmarty->assign( 'packageMenu', $gBitSystem->mAppMenu[$active] );
 }
 

@@ -1,9 +1,9 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.10 2006/09/07 16:45:40 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.11 2006/09/12 20:02:07 squareing Exp $ *}
 {strip}
 {if $packageMenu}
 	{bitmodule title="$moduleTitle" name="package_menu"}
 		<div class="menu">
-			{include file=$packageMenu.template}
+			{include file=$packageMenu.menu_template}
 		</div>
 	{/bitmodule}
 {elseif $smarty.const.ACTIVE_PACKAGE and $gBitUser->isAdmin()}

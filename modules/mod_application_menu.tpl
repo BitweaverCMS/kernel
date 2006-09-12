@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.13 2006/09/07 16:45:40 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.14 2006/09/12 20:02:07 squareing Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -13,29 +13,29 @@
 </div>
 
 <ul id="nav2" class="{if $gBitSystem->isFeatureActive( 'feature_usecss' )}ver {/if}menu {$key}menu">
-	{foreach key=key item=menu from=$appMenu}
-		{if $menu.template}
+	{foreach key=key item=menu from=$gBitSystem->mAppMenu}
+		{if $menu.menu_template}
 			<li>
 				{if $gBitSystem->isFeatureActive( 'feature_cssmenus' )}
-					{if $menu.title}
-						<a class="head" href="{$menu.titleUrl}">{tr}{$menu.title}{/tr}</a>
+					{if $menu.menu_title}
+						<a class="head" href="{$menu.index_url}">{tr}{$menu.menu_title}{/tr}</a>
 					{/if}
-					{include file=$menu.template}
+					{include file=$menu.menu_template}
 				{else}
-					{if $menu.title}
+					{if $menu.menu_title}
 						{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
 							<a class="head" href="javascript:flipIcon('{$key}menu');">{biticon ipackage="icons" iname="list-add" id="`$key`menuimg" iexplain="folder"}&nbsp;
 						{else}
 							<a class="head" href="javascript:flipWithSign('{$key}menu');"><span style="font-family:monospace;" id="flipper{$key}menu">&nbsp;</span>
 						{/if}
-						&nbsp;&nbsp;tr}{$menu.title}{/tr}</a>
+						&nbsp;&nbsp;{tr}{$menu.menu_title}{/tr}</a>
 					{/if}
 
 					<div id="{$key}menu">
-						{include file=$menu.template}
+						{include file=$menu.menu_template}
 					</div>
 
-					{if $menu.title}
+					{if $menu.menu_title}
 						<script type="text/javascript">
 						{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
 							setFlipIcon('{$key}menu');

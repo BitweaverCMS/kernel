@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.75 2006/09/09 21:58:22 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.76 2006/09/12 20:02:07 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -169,7 +169,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 	$gBitSystem->setStyle($theme);
 
-	require(KERNEL_PKG_PATH . 'menu_register_inc.php');
+	require_once(KERNEL_PKG_PATH . 'menu_register_inc.php');
 	// added for wirtual hosting suport
 	if (!isset($bitdomain)) {
 		$bitdomain = "";

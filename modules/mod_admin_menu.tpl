@@ -7,7 +7,7 @@
 			{else}
 				<a class="head" href="javascript:flipWithSign('{$key}admenu');"><span style="font-family:monospace;" id="flipper{$key}admenu">&nbsp;</span>
 			{/if}
-			&nbsp;&nbsp;tr}{$key|capitalize}{/tr}</a>
+			&nbsp;&nbsp;{tr}{$key|capitalize}{/tr}</a>
 
 			<div id="{$key}admenu">
 				{include file=`$menu.tpl`}

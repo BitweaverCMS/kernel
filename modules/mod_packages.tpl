@@ -1,9 +1,9 @@
 {strip}
 {bitmodule title="$moduleTitle" name="packages_links"}
-	<ul id="nav2" class="menu">
+	<ul class="menu">
 		{foreach key=key item=menu from=$gBitSystem->mAppMenu}
-			{if $menu.template}
-				<li><a class="head" href="{$menu.titleUrl}">{$menu.title}</a></li>
+			{if $menu.menu_template}
+				<li><a class="head" href="{$menu.index_url}">{$menu.menu_title}</a></li>
 			{/if}
 		{/foreach}
 

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.93 2006/09/10 21:13:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.94 2006/09/12 20:02:07 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -445,7 +445,6 @@ class BitSystem extends BitBase {
 			unset($this->mLayout['c']);
 		}
 
-		require( KERNEL_PKG_PATH . 'menu_register_inc.php' );
 		require_once( KERNEL_PKG_PATH . 'modules_inc.php' );
 
 		/* force the session to close *before* displaying. Why? Note this very important comment from http://us4.php.net/exec
@@ -891,16 +890,32 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function registerAppMenu( $pKey, $pMenuTitle, $pTitleUrl, $pMenuTemplate, $pAdminPanel = false ) {
-		$this->mAppMenu[strtolower( $pKey )] = array(
-			'title' => $pMenuTitle,
-			'disabled' => ( $this->getConfig( 'menu_'.$pKey ) == 'n' ),
-			'titleUrl' => $pTitleUrl,
-			'template' => $pMenuTemplate,
-			'adminPanel' => $pAdminPanel,
-			'style' => 'display:'.( empty( $pMenuTitle ) || ( isset( $_COOKIE[$pKey.'menu'] ) && ( $_COOKIE[$pKey.'menu'] == 'o' ) ) ? 'block;' : 'none;' )
-			// TODO this display logic should maybe be moved to .tpl logic, but need to acces $_COOKIES in {$smartVar}
-		);
+	function registerAppMenu( $pMenuHash, $pMenuTitle = NULL, $pTitleUrl = NULL, $pMenuTemplate = NULL, $pAdminPanel = FALSE ) {
+		if( is_array( $pMenuHash ) ) {
+			// shorthand
+			$pkg = $pMenuHash['package_name'];
+
+			// prepare hash
+			$pMenuHash['style']       = 'display:'.( ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' );
+			$pMenuHash['is_disabled'] = ( $this->getConfig( 'menu_'.$pMenuHash ) == 'n' );
+			$pMenuHash['menu_title']  = $this->getConfig( $pkg.'_menu_text',
+				( !empty( $pMenuHash['menu_title'] )
+					? $pMenuHash['menu_title']
+					: ucfirst( constant( strtoupper( $pkg ).'_PKG_DIR' ) ) )
+			);
+
+			$this->mAppMenu[$pkg]     = $pMenuHash;
+		} else {
+			deprecated( 'Please use a menu registration hash instead of individual parameters: $gBitSystem->registerAppMenu( $menuHash )' );
+			$this->mAppMenu[strtolower( $pMenuHash )] = array(
+				'menu_title' => $pMenuTitle,
+				'is_disabled' => ( $this->getConfig( 'menu_'.$pMenuHash ) == 'n' ),
+				'index_url' => $pTitleUrl,
+				'menu_template' => $pMenuTemplate,
+				'admin_panel' => $pAdminPanel,
+				'style' => 'display:'.( empty( $pMenuTitle ) || ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' )
+			);
+		}
 	}
 	// >>>
 	// === registerSchemaTable

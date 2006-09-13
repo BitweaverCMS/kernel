@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.96 2006/09/13 16:13:43 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.97 2006/09/13 17:05:30 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2147,6 +2147,36 @@ class BitSystem extends BitBase {
 		return $this->mServerTimestamp->strftime($this->get_long_datetime_format(), $timestamp, $user);
 	}
 
+	/**
+	 * Fetch the contents of a file on a remote host
+	 * 
+	 * @param array $pHost Host
+	 * @param array $pFile path to file on the remote host including leading slash
+	 * @access public
+	 * @return TRUE on success, FALSE on failure
+	 */
+	function fetchRemoteFile( $pHost, $pFile ) {
+		$ret = '';
+		if( $fsock = @fsockopen( $pHost, 80, $error['number'], $error['string'], 5 ) ) {
+			@fwrite( $fsock, "GET $pFile HTTP/1.1\r\n" );
+			@fwrite( $fsock, "HOST: $pHost\r\n" );
+			@fwrite( $fsock, "Connection: close\r\n\r\n" );
+
+			$get_info = FALSE;
+			while( !@feof( $fsock ) ) {
+				if( $get_info ) {
+					$ret .= @fread( $fsock, 1024 );
+				} else {
+					if( @fgets( $fsock, 1024 ) == "\r\n" ) {
+						$get_info = TRUE;
+					}
+				}
+			}
+			@fclose( $fsock );
+		}
+		return $ret;
+	}
+
 	// Check for new version
 	// returns an array with information on bitweaver version
 	function checkBitVersion() {
@@ -2159,23 +2189,7 @@ class BitSystem extends BitBase {
 		// cache the bitversion.txt file locally and update only once a day
 		if( !is_file( TEMP_PKG_PATH.'bitversion.txt' ) || ( time() - filemtime( TEMP_PKG_PATH.'bitversion.txt' ) ) > 86400 ) {
 			if( $h = fopen( TEMP_PKG_PATH.'bitversion.txt', 'w' ) ) {
-				if( $fsock = @fsockopen( 'www.bitweaver.org', 80, $error['number'], $error['string'], 5 ) ) {
-					@fwrite( $fsock, "GET /bitversion.txt HTTP/1.1\r\n" );
-					@fwrite( $fsock, "HOST: www.bitweaver.org\r\n" );
-					@fwrite( $fsock, "Connection: close\r\n\r\n" );
-
-					$get_info = FALSE;
-					while( !@feof( $fsock ) ) {
-						if( $get_info ) {
-							$data .= @fread( $fsock, 1024 );
-						} else {
-							if( @fgets( $fsock, 1024 ) == "\r\n" ) {
-								$get_info = TRUE;
-							}
-						}
-					}
-					@fclose( $fsock );
-				}
+				$data = BitSystem::fetchRemoteFile( 'www.bitweaver.org', '/bitversion.txt' );
 				fwrite( $h, $data );
 				fclose( $h );
 			}

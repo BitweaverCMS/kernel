@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.10 2006/09/13 16:13:43 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.11 2006/09/13 17:32:00 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -31,7 +31,7 @@ if( $gBitUser->isAdmin() ) {
 
 function mAppMenu_sort( $a, $b ) {
 	if( is_numeric( $a['menu_position'] ) ) {
-		return( strcmp( $a['menu_position'], $b['menu_position'] ) );
+		return( ((int)$a['menu_position'] < (int)$b['menu_position'] ? $a['menu_position'] : $b['menu_position']) );
 	} else {
 		return( strcmp( $a['menu_title'], $b['menu_title'] ) );
 	}

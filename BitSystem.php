@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.97 2006/09/13 17:05:30 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.98 2006/09/13 21:23:39 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2174,7 +2174,12 @@ class BitSystem extends BitBase {
 			}
 			@fclose( $fsock );
 		}
-		return $ret;
+
+		if( empty( $error['string'] ) ) {
+			return $ret;
+		} else {
+			return FALSE;
+		}
 	}
 
 	// Check for new version
@@ -2190,8 +2195,10 @@ class BitSystem extends BitBase {
 		if( !is_file( TEMP_PKG_PATH.'bitversion.txt' ) || ( time() - filemtime( TEMP_PKG_PATH.'bitversion.txt' ) ) > 86400 ) {
 			if( $h = fopen( TEMP_PKG_PATH.'bitversion.txt', 'w' ) ) {
 				$data = BitSystem::fetchRemoteFile( 'www.bitweaver.org', '/bitversion.txt' );
-				fwrite( $h, $data );
-				fclose( $h );
+				if( !preg_match( "/not found/i", $data ) ) {
+					fwrite( $h, $data );
+					fclose( $h );
+				}
 			}
 		}
 

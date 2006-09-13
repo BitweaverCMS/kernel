@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.95 2006/09/12 22:37:32 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.96 2006/09/13 16:13:43 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -902,6 +902,11 @@ class BitSystem extends BitBase {
 				( !empty( $pMenuHash['menu_title'] )
 					? $pMenuHash['menu_title']
 					: ucfirst( constant( strtoupper( $pkg ).'_PKG_DIR' ) ) )
+			);
+			$pMenuHash['menu_position']  = $this->getConfig( $pkg.'_menu_position',
+				( !empty( $pMenuHash['menu_position'] )
+					? $pMenuHash['menu_position']
+					: NULL )
 			);
 
 			$this->mAppMenu[$pkg]     = $pMenuHash;

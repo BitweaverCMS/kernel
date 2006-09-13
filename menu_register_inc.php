@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.9 2006/09/12 20:02:07 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.10 2006/09/13 16:13:43 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -30,6 +30,10 @@ if( $gBitUser->isAdmin() ) {
 }
 
 function mAppMenu_sort( $a, $b ) {
-	return( strcmp( $a['menu_title'], $b['menu_title'] ) );
+	if( is_numeric( $a['menu_position'] ) ) {
+		return( strcmp( $a['menu_position'], $b['menu_position'] ) );
+	} else {
+		return( strcmp( $a['menu_title'], $b['menu_title'] ) );
+	}
 }
 ?>

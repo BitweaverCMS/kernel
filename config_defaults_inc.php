@@ -7,10 +7,10 @@
 /**
  * required setup
  */
-$config_file = empty($_SERVER['CONFIG_INC']) ? BIT_ROOT_PATH.'kernel/config_inc.php' : $_SERVER['CONFIG_INC'];
+$config_file = empty( $_SERVER['CONFIG_INC'] ) ? BIT_ROOT_PATH.'kernel/config_inc.php' : $_SERVER['CONFIG_INC'];
 
-if (file_exists($config_file ) ) {
-    include_once($config_file);
+if( file_exists( $config_file ) ) {
+	include_once( $config_file );
 }
 // If these weren't defined in config_inc, let's define the now
 if( !defined( 'BIT_DB_PREFIX' ) ) {
@@ -30,8 +30,9 @@ if( !defined( 'DISPLAY_ERRORS' ) ) {
 }
 
 // Empty PHP_SELF and incorrect SCRIPT_NAME due to php-cgiwrap - wolff_borg
-if (empty($_SERVER['PHP_SELF']))
+if( empty( $_SERVER['PHP_SELF'] ) ) {
 	$_SERVER['PHP_SELF'] = $_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_URL'];
+}
 
 // this is broken if the virtual directory under the webserver is
 // not the same name as the physical directory on the drive - wolff_borg
@@ -39,12 +40,20 @@ if (empty($_SERVER['PHP_SELF']))
 // Responding to Wolff, won't the following do what we want?
 //   dirname(dirname($_SERVER['PHP_SELF'])) . '/'
 // Am I missing something?  --drc
-if (!defined('BIT_ROOT_URL' )) {
-//     preg_match('/.*'.basename(dirname(dirname(__FILE__ ) ) ).'\//', $_SERVER['PHP_SELF'], $match  );
-//     $subpath = ( isset($match[0] ) ) ? $match[0] : '/';
-  $subpath = dirname(dirname($_SERVER['PHP_SELF']));
-  $subpath .= (substr($subpath,-1,1)!='/') ? '/' : '';
-    define('BIT_ROOT_URL', $subpath );
+//
+// The recent changes have caused problems during installation. i'll try 
+// combining both methods by applying the less successful one after the more 
+// successful one - xing
+if( !defined( 'BIT_ROOT_URL' ) ) {
+	// version one which seems to only cause problems seldomly
+	preg_match( '/.*'.basename( dirname( dirname( __FILE__ ) ) ).'\//', $_SERVER['PHP_SELF'], $match );
+	$subpath = ( isset($match[0] ) ) ? $match[0] : '/';
+	// version two which doesn't work well on it's own
+	if( $subpath == "/" ) {
+		$subpath = dirname( dirname( $_SERVER['PHP_SELF'] ) );
+		$subpath .= ( substr( $subpath,-1,1 )!='/' ) ? '/' : '';
+	}
+	define( 'BIT_ROOT_URL', $subpath );
 }
 
 if( !defined( 'BIT_SESSION_NAME' ) ) {
@@ -77,11 +86,11 @@ if( empty( $gPreScan ) ) {
 global $gShellScript;
 if( !empty( $gShellScript ) ) {
 	// keep notices quiet
-    $_SERVER['SCRIPT_URL'] = '';
-    $_SERVER['HTTP_HOST'] = 'localhost';
-    $_SERVER['HTTP_USER_AGENT'] = 'cron';
-    $_SERVER['SERVER_NAME'] = '';
-    $_SERVER['HTTP_SERVER_VARS'] = '';
+	$_SERVER['SCRIPT_URL'] = '';
+	$_SERVER['HTTP_HOST'] = 'localhost';
+	$_SERVER['HTTP_USER_AGENT'] = 'cron';
+	$_SERVER['SERVER_NAME'] = '';
+	$_SERVER['HTTP_SERVER_VARS'] = '';
 }
 
 // used to only load core packages

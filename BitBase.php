@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.24 2006/08/28 07:54:33 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.25 2006/09/14 09:32:08 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -366,7 +366,7 @@ function bit_redirect( $pUrl ) {
 		$pUrl = str_replace('&amp;', '&', $pUrl);
 	}
 	header('Location: ' . $pUrl);
-	session_close();
+	session_write_close();
 	exit();
 }
 

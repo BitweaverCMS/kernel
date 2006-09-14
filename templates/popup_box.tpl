@@ -1,14 +1,14 @@
 {strip}
 
 <div class='popup box'>
-	<div class='boxtitle'>
+	<h3 class='boxtitle'>
 		{$title}
 		{if $closebutton}
 			<span class='closebutton'>
 				<a onclick='javascript:return cClick();'>{biticon ipackage="icons" iname="window-close" iexplain="close" iforce="icon"}</a>
 			</span>
 		{/if}
-	</div>
+	</h3>
 
 	<div class='boxcontent'>
 		{$content}

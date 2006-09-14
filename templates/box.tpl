@@ -3,7 +3,7 @@
 <div class="{$class|default:"box"}" {$atts}>
 
 	{if $title or ($ipackage and $iname)}
-		<div class="boxtitle">
+		<h3 class="boxtitle">
 			{if $ipackage and $iname}
 				{if $idiv}
 					<div class="{$idiv}">
@@ -16,7 +16,7 @@
 				{/if}
 			{/if}
 			{$title}
-		</div>
+		</h3>
 	{/if}
 
 	<div class="boxcontent">

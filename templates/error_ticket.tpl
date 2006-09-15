@@ -25,7 +25,7 @@
     <div id="bitmainfx">
       <div class="error">
         <div class="admin box">
-          <h3 class="boxtitle">{tr}Error{/tr}</h3>
+          <h3>{tr}Error{/tr}</h3>
           <div class="boxcontent">
             {$msg}<br /><br />
             <form action="{$self}{if $query}?{$query|escape}{/if}" method="post">

@@ -1,8 +1,8 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.9 2006/09/14 20:23:48 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/module.tpl,v 1.10 2006/09/15 07:54:56 squareing Exp $ *}
 {strip}
 <div class="module box {$module_name|replace:"_":"-"}">
 	{if $module_title}
-		<h3 class="boxtitle">
+		<h3>
 		
 		{if $gBitSystem->isFeatureActive( 'themes_module_controls' )}
 				<div class="control">

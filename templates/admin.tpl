@@ -76,7 +76,7 @@
 			<table width="100%" class="menutable">
 				<tr>
 					<td style="width:25%;vertical-align:top;" rowspan="10">
-						{box class="kernelmenu menu box" ipackage=kernel iname="pkg_kernel" iexplain="kernel" idiv="menuicon" title="Kernel"}
+						{box class="kernelmenu menu box" ipackage=kernel iname="pkg_kernel" iexplain="kernel" iclass="menuicon" title="Kernel"}
 							{include file=$kernelTemplate}
 						{/box}
 					</td>
@@ -85,7 +85,7 @@
 					{foreach key=key item=template from=$adminTemplates}
 						{if $key ne "kernel"}
 							<td style="width:25%;vertical-align:top;">
-								{box class="`$key`menu menu box" ipackage=$key iname="pkg_`$key`" iexplain="$key" idiv="menuicon" title="$key"}
+								{box class="`$key`menu menu box" ipackage=$key iname="pkg_`$key`" iexplain="$key" iclass="menuicon" title="$key"}
 									{include file="bitpackage:`$key`/menu_`$key`_admin.tpl"}
 								{/box}
 							</td>

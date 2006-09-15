@@ -66,15 +66,17 @@ function output_icon( $pParams, $pFile ) {
 				$outstr .= ' alt=""';
 			}
 
-			$ommit = array( 'ipackage', 'ipath', 'iname', 'iexplain', 'iforce', 'istyle' );
+			$ommit = array( 'ipackage', 'ipath', 'iname', 'iexplain', 'iforce', 'istyle', 'iclass' );
 			foreach( $pParams as $name => $val ) {
 				if( !in_array( $name, $ommit ) ) {
 					$outstr .= ' '.$name.'="'.$val.'"';
 				}
 			}
 
-			if( !isset( $pParams["class"] ) ) {
+			if( !isset( $pParams["iclass"] ) ) {
 				$outstr .= ' class="icon"';
+			} else {
+				$outstr .=  ' class="'.$pParams["iclass"].'"';
 			}
 
 			// insert image width and height

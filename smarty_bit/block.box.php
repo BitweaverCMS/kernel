@@ -26,6 +26,7 @@ function smarty_block_box($params, $content, &$gBitSmarty) {
 				$gBitSmarty->assign( $key, tra( $val ) );
 				break;
 			case 'class':
+			case 'iclass':
 			case 'ipackage':
 			case 'iname':
 			case 'iexplain':

@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.25 2006/09/14 09:32:08 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.26 2006/09/15 21:43:14 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -72,7 +72,11 @@ class BitBase
     /**
     * Data hash that represents this classes row(s) in the db
     **/
-    var $mInfo;
+    var $mInfo = array();
+    /**
+    * Data hash that contains logging information relevant to database operations
+    **/
+    var $mLogs = array();
 
     /**
     * During initialisation, we assign a name which is used by the class.

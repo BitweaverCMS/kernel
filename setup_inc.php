@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.76 2006/09/12 20:02:07 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.77 2006/09/16 07:06:38 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -179,13 +179,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSystem->storeConfig('bitdomain', $bitdomain, KERNEL_PKG_NAME );
 
 	$gBitSmarty->assign("bitdomain", $bitdomain);
-	// The votes array stores the votes the user has made
-	if (!isset($_SESSION["votes"]))
-	{
-		$votes = array();
-		// session_register("votes");
-		$_SESSION["votes"] = $votes;
-	}
 	// Fix IIS servers not setting what they should set (ay ay IIS, ay ay)
 	if (!isset($_SERVER['QUERY_STRING']))
 	{

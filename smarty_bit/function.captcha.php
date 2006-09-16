@@ -6,7 +6,7 @@
  */
 function smarty_function_captcha( $pParams, &$gBitSmarty ) {
 	global $gBitSystem, $gBitUser;
-	if( empty( $_SESSION['captcha_verified'] ) && !$gBitUser->hasPermission( 'p_users_bypass_captcha' ) ) {
+	if( !empty( $pParams['force'] ) || empty( $_SESSION['captcha_verified'] ) && !$gBitUser->hasPermission( 'p_users_bypass_captcha' ) ) {
 		$pParams['size'] = !empty( $pParams['size'] ) ? $pParams['size'] : '5';
 		$pParams['variant'] = !empty( $pParams['variant'] ) ? $pParams['variant'] : 'condensed';
 

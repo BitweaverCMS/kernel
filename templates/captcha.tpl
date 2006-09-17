@@ -15,7 +15,7 @@ function reloadImage() {
 		<br />
 		<input type="text" name="captcha" id="captcha" size="{$params.size+3}"/>
 		<br />
-		<small><em>{tr}Please copy the code into the box.{/tr}</em><small>
+		<small><em>{tr}Please copy the code into the box. Reload if unreadable.{/tr}</em></small>
 	</span>
 	<br />
 {else}
@@ -25,7 +25,7 @@ function reloadImage() {
 			<img onclick="this.blur();reloadImage();return false;" src="{$params.source}" alt="{tr}Random Image{/tr}"/>
 			<br/>
 			<input type="text" name="captcha" id="captcha" size="{$params.size+3}"/>
-			{formhelp note="Please copy the code into the box."}
+			{formhelp note="Please copy the code into the box. Reload the page if image is unreadable."}
 		{/forminput}
 	</div>
 {/if}

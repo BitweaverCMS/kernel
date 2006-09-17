@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.26 2006/09/10 08:40:49 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.27 2006/09/17 09:16:08 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -945,25 +945,21 @@ class BitDb
 	 *   where UPPER(tittle) = 'PAGE TITTLE'
      * The latter version will not make use of the index on page title (at least for MySQl)
      * while the first vesion will use the index.  In a case insensitive search DB (MySQL) both
-     * forms of the query will give the same results, the only difference being the preformance.  
+     * forms of the query will give the same results, the only difference being the preformance.
 	 * Spiderr suggested this solution and suppled the code below
 	 */
 	function getCaselessColumn( $pColumn ) {
-	  global $gBitDbType;
-	  switch( $gBitDbType ) {
-		  case "mysql":
-		  case "mysqli":
-		  $ret = $pColumn;
-		  break;
-
-		  default:
-		  $ret = " UPPER($pColumn) ";
-		  break;
-	  }
-	  return $ret;
+		global $gBitDbType;
+		switch( $gBitDbType ) {
+			case "mysql":
+			case "mysqli":
+				$ret = $pColumn;
+				break;
+			default:
+				$ret = " UPPER($pColumn) ";
+				break;
+		}
+		return $ret;
 	}
-
-
-
 }
 ?>

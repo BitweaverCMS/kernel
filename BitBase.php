@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.26 2006/09/15 21:43:14 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.27 2006/09/20 17:02:16 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -283,40 +283,43 @@ function unlink_r( $path,$followLinks = FALSE ) {
 	}
 }
 
-function tp_http_request($url) {
-
+function tp_http_request( $pUrl ) {
 	global $site_use_proxy,$site_proxy_host,$site_proxy_port;
 
+	$data = FALSE;
+
 	// test url :
-	$url = trim( $url );
-	if (!preg_match("/^[-_a-zA-Z0-9:\/\.\?&;=\+]*$/",$url)) {
-		return false;
+	$pUrl = trim( $pUrl );
+	if (!preg_match("/^[-_a-zA-Z0-9:\/\.\?&;=\+]*$/",$pUrl)) {
+		return FALSE;
 	}
 	// rewrite url if sloppy # added a case for https urls
-	if ( (substr($url,0,7) <> "http://") && (substr($url,0,8) <> "https://") ) {
-		$url = "http://" . $url;
+	if ( (substr($pUrl,0,7) <> "http://") && (substr($pUrl,0,8) <> "https://") ) {
+		$pUrl = "http://" . $pUrl;
 	}
-	if (substr_count($url, "/") < 3) {
-		$url .= "/";
-	}
-
-	$curl_obj = curl_init();
-	curl_setopt($curl_obj, CURLOPT_URL, $url);
-	curl_setopt($curl_obj, CURLOPT_HEADER, 0);
-    curl_setopt($curl_obj, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-    curl_setopt($curl_obj, CURLOPT_FOLLOWLOCATION, 1);
-    curl_setopt($curl_obj, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl_obj, CURLOPT_TIMEOUT, 5);
-
- 	// Proxy settings
-	if ($site_use_proxy == 'y') {
-        curl_setopt($curl_obj, CURLOPT_PROXY, $site_proxy_host);
-        curl_setopt($curl_obj, CURLOPT_PROXYPORT, $site_proxy_port);
-        curl_setopt($curl_obj, CURLOPT_HTTPPROXYTUNNEL, 1);
+	if (substr_count($pUrl, "/") < 3) {
+		$pUrl .= "/";
 	}
 
-    $data = curl_exec($curl_obj);
-    curl_close($curl_obj);
+	if( function_exists( 'curl_init' ) ) {
+		$curl_obj = curl_init();
+		curl_setopt($curl_obj, CURLOPT_URL, $pUrl);
+		curl_setopt($curl_obj, CURLOPT_HEADER, 0);
+		curl_setopt($curl_obj, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+		curl_setopt($curl_obj, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($curl_obj, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl_obj, CURLOPT_TIMEOUT, 5);
+
+		// Proxy settings
+		if ($site_use_proxy == 'y') {
+			curl_setopt($curl_obj, CURLOPT_PROXY, $site_proxy_host);
+			curl_setopt($curl_obj, CURLOPT_PROXYPORT, $site_proxy_port);
+			curl_setopt($curl_obj, CURLOPT_HTTPPROXYTUNNEL, 1);
+		}
+
+		$data = curl_exec($curl_obj);
+		curl_close($curl_obj);
+	}
 
 	return $data;
 }
@@ -339,8 +342,7 @@ function parse_xml_attributes($str) {
 
 
 // XML Entity Mandatory Escape Characters
-function xmlentities($string, $quote_style=ENT_QUOTES)
-{
+function xmlentities($string, $quote_style=ENT_QUOTES) {
    static $trans;
    if (!isset($trans)) {
        $trans = get_html_translation_table(HTML_ENTITIES, $quote_style);

@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.27 2006/09/20 17:02:16 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.28 2006/09/20 17:55:35 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -32,98 +32,100 @@ define( 'STORAGE_IMAGE', 2 );
  *
  * @package kernel
  */
-class BitBase
-{
-    /**
-    * Error hash that will contain an error codes we encounter along
-    * the way this hash can be used by presentation layer ti give feedback
-    * to the user.
-    * @todo not used yet
-    * @private
-    */
-    var $mErrors;
+class BitBase {
+	/**
+	 * Error hash that will contain an error codes we encounter along
+	 * the way this hash can be used by presentation layer ti give feedback
+	 * to the user.
+	 * @todo not used yet
+	 * @private
+	 */
+	var $mErrors;
 
 	/**
-	* Same idea as the error hash but this is for successful operations
-	* @private
-	*/
+	 * Same idea as the error hash but this is for successful operations
+	 * @private
+	 */
 	var $mSuccess;
 
-    /**
-    * String used to refer to preference caching and database table
-    * @private
-    */
-    var $mName;
-    /**
-    * Used to store database mechanism
-    * @private
-    */
-    var $mDb;
-    /**
-    * Used to store database type
-    * @private
-    */
-    var $dType;
-    /**
-    * Standard Query Cache Time. Variable can be set to 0 to flush particular queries
-    * @private
-    */
-    var $mCacheTime;
-    /**
-    * Data hash that represents this classes row(s) in the db
-    **/
-    var $mInfo = array();
-    /**
-    * Data hash that contains logging information relevant to database operations
-    **/
-    var $mLogs = array();
+	/**
+	 * String used to refer to preference caching and database table
+	 * @private
+	 */
+	var $mName;
 
-    /**
-    * During initialisation, we assign a name which is used by the class.
-    * @param pName a unique identified used in caching and database
-    * mechanisms
-    **/
-    function BitBase($pName = '')
-    {
+	/**
+	 * Used to store database mechanism
+	 * @private
+	 */
+	var $mDb;
+
+	/**
+	 * Used to store database type
+	 * @private
+	 */
+	var $dType;
+
+	/**
+	 * Standard Query Cache Time. Variable can be set to 0 to flush particular queries
+	 * @private
+	 */
+	var $mCacheTime;
+
+	/**
+	 * Data hash that represents this classes row(s) in the db
+	 **/
+	var $mInfo = array();
+
+	/**
+	 * Data hash that contains logging information relevant to database operations
+	 **/
+	var $mLogs = array();
+
+	/**
+	 * During initialisation, we assign a name which is used by the class.
+	 * @param pName a unique identified used in caching and database
+	 * mechanisms
+	 **/
+	function BitBase( $pName = '' ) {
 		global $gBitDb;
 		$this->mName = $pName;
 		$this->mCacheTime = BIT_QUERY_CACHE_TIME;
-		if(is_object($gBitDb)) {
+		if( is_object( $gBitDb ) ) {
 			$this->setDatabase($gBitDb);
 		}
- 		$this->mErrors = array();
- 		$this->mInfo = array();
-    }
+		$this->mErrors = array();
+		$this->mInfo = array();
+	}
 
-    /**
-    * Sets database mechanism for the instance
-    * @param pDB the instance of the database mechanism
-    **/
-    function setDatabase(&$pDB)
-    {
-        // set internal db and retrieve values
-        $this->mDb = &$pDB;
+	/**
+	 * Sets database mechanism for the instance
+	 * @param pDB the instance of the database mechanism
+	 **/
+	function setDatabase( &$pDB ) {
+		// set internal db and retrieve values
+		$this->mDb = &$pDB;
 		$this->dType = $this->mDb->mType;
-    }
+	}
 
-    /**
-     * Determines if there is a valide database connection
-     **/
+	/**
+	 * Determines if there is a valide database connection
+	 **/
 	function isDatabaseValid() {
 		return( !empty( $this->mDb ) && $this->mDb->isValid() );
 	}
 
-    /**
-     * Return pointer to current Database
-     **/
+	/**
+	 * Return pointer to current Database
+	 **/
 	function getDb() {
 		return ( !empty( $this->mDb ) ? $this->mDb : NULL  );
 	}
 
-    /**
-     * Switch debug level in database
+	/**
+	 * Switch debug level in database
 	 *
-    **/
+	 **/
 	function debug( $pLevel = 99 ) {
 		if( is_object( $this->mDb ) ) {
 			$this->mDb->debug( $pLevel );
@@ -132,9 +134,9 @@ class BitBase
 
 	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=
 
-    /**
-    * Determines if any given variable exists and is a number
-    **/
+	/**
+	 * Determines if any given variable exists and is a number
+	 **/
 	function verifyId( $pId ) {
 		if ( empty( $pId ) ) {
 			return false;
@@ -149,15 +151,14 @@ class BitBase
 		return( is_numeric( $pId ) );
 	}
 
-    // {{{ display
-    /**
-	* This method should be THE method used to display a template. php files should not
-	* access $gBitSmarty directly.
-	*
-	* @param string pMsg error message to be displayed
-	* @return none this function will DIE DIE DIE!!!
-	* @access public
-	**/
+	/**
+	 * This method should be THE method used to display a template. php files should not
+	 * access $gBitSmarty directly.
+	 *
+	 * @param string pMsg error message to be displayed
+	 * @return none this function will DIE DIE DIE!!!
+	 * @access public
+	 **/
 	function display( $pPackage, $pTemplate ) {
 		global $gBitSmarty, $gBitLanguage, $style, $style_base;
 		if (isset($style) && isset($style_base)) {
@@ -176,27 +177,24 @@ class BitBase
 				$_smarty_tpl_file = BIT_STYLES_PATH."/$style_base/$_smarty_tpl_file";
 			}
 		}
-*/
+ */
 		$gBitSmarty->display( $_smarty_tpl_file );
-//		$gBitSmarty->display( 'bitpackage:'.$pPackage.$pTemplate );
+		//		$gBitSmarty->display( 'bitpackage:'.$pPackage.$pTemplate );
 	}
-    // }}}
 
-    /**
-    * Returns entry from the mInfo hash if field exists
-    * @param pFieldName the instance of the database mechanism
-    **/
-    function getField( $pFieldName, $pDefault = NULL ) {
-    	return( !empty( $this->mInfo[$pFieldName] ) ? $this->mInfo[$pFieldName] : $pDefault );
-    }
+	/**
+	 * Returns entry from the mInfo hash if field exists
+	 * @param pFieldName the instance of the database mechanism
+	 **/
+	function getField( $pFieldName, $pDefault = NULL ) {
+		return( !empty( $this->mInfo[$pFieldName] ) ? $this->mInfo[$pFieldName] : $pDefault );
+	}
 
-
-
-    /**
-    * Prepares parameters with default values for any getList function
-    * @param pParamHash hash of parameters for any getList() function
-    * @return the link to display the page.
-    */
+	/**
+	 * Prepares parameters with default values for any getList function
+	 * @param pParamHash hash of parameters for any getList() function
+	 * @return the link to display the page.
+	 */
 	function prepGetList( &$pListHash ) {
 		global $gBitSmarty, $gBitSystem;
 
@@ -217,7 +215,7 @@ class BitBase
 		}
 
 		if( !isset( $pListHash['offset'] ) ) {
-			if (isset($pListHash['page'])) {
+			if( isset($pListHash['page'] ) ) {
 				$pListHash['offset'] = ($pListHash['page'] - 1) * $pListHash['max_records'];
 			} else {
 				if ( isset( $_REQUEST["offset"] ) ) {
@@ -256,33 +254,55 @@ class BitBase
 		if( empty( $pListHash['parse_data'] ) ) {
 			$pListHash['parse_data'] = FALSE;
 		}
-
 	}
-
 }
 
-// translate a string
-function tra($content) {
+
+
+
+
+/**
+ * Translate a string
+ * 
+ * @param string $pString String that needs to be translated
+ * @access public
+ * @return void
+ */
+function tra( $pString ) {
 	global $gBitLanguage;
-	return( $gBitLanguage->translate( $content ) );
+	return( $gBitLanguage->translate( $pString ) );
 }
 
-// recursively remove files and directories
-function unlink_r( $path,$followLinks = FALSE ) {
-	if( is_dir( $path ) ) {
-		$dir = opendir( $path ) ;
+/**
+ * recursively remove files and directories
+ * 
+ * @param string $pPath directory we want to remove
+ * @param boolean $pFollowLinks follow symlinks or not
+ * @access public
+ * @return TRUE on success, FALSE on failure
+ */
+function unlink_r( $pPath, $pFollowLinks = FALSE ) {
+	if( is_dir( $pPath ) ) {
+		$dir = opendir( $pPath ) ;
 		while( FALSE !== ( $entry = readdir( $dir ) ) ) {
-			if( is_file( "$path/$entry" ) || ( !$followLinks && is_link( "$path/$entry" ) ) ) {
-				unlink( "$path/$entry" );
-			} elseif( is_dir( "$path/$entry" ) && $entry != '.' && $entry != '..' ) {
-				unlink_r( "$path/$entry" ) ;
+			if( is_file( "$pPath/$entry" ) || ( !$pFollowLinks && is_link( "$pPath/$entry" ) ) ) {
+				unlink( "$pPath/$entry" );
+			} elseif( is_dir( "$pPath/$entry" ) && $entry != '.' && $entry != '..' ) {
+				unlink_r( "$pPath/$entry" ) ;
 			}
 		}
 		closedir( $dir ) ;
-		return rmdir( $path );
+		return rmdir( $pPath );
 	}
 }
 
+/**
+ * tp_http_request 
+ * 
+ * @param array $pUrl 
+ * @access public
+ * @return TRUE on success, FALSE on failure
+ */
 function tp_http_request( $pUrl ) {
 	global $site_use_proxy,$site_proxy_host,$site_proxy_port;
 
@@ -325,75 +345,92 @@ function tp_http_request( $pUrl ) {
 }
 
 
-// this function has a whopper of a RegEx.
-// I nabbed it from http://www.phpbuilder.com/annotate/message.php3?id=1000234 - XOXO spiderr
-function parse_xml_attributes($str) {
-	$parameters = array('', '');
+/**
+ * Parse XML Attributes and return an array
+ *
+ * this function has a whopper of a RegEx.
+ * I nabbed it from http://www.phpbuilder.com/annotate/message.php3?id=1000234 - XOXO spiderr
+ * 
+ * @param array $pString XML type string of parameters
+ * @access public
+ * @return TRUE on success, FALSE on failure
+ */
+function parse_xml_attributes( $pString ) {
+	$parameters = array( '', '' );
 	$regexp_str = "/([A-Za-z0-9_-]+)(?:\\s*=\\s*(?:(\"|\')((?:[\\\\].|[^\\\\]?)*?)(?:\\2)|([^=\\s]*)))?/";
-	preg_match_all($regexp_str,$str,$matches,PREG_SET_ORDER);
-	while (list($key,$match) = each($matches)) {
+	preg_match_all( $regexp_str, $pString, $matches, PREG_SET_ORDER );
+	while( list( $key, $match ) = each( $matches ) ) {
 		$attrib = $match[1];
-		$value = $match[sizeof($match)-1]; // The value can be at different indexes because of optional quotes, but we know it's always at the end.
-		$value = preg_replace("/\\\\(.)/","\\1",$value);
+		$value = $match[sizeof( $match )-1];      // The value can be at different indexes because of optional quotes, but we know it's always at the end.
+		$value = preg_replace( "/\\\\(.)/","\\1",$value );
 		$parameters[$attrib] = trim( $value, '\"' );
 	}
 	return $parameters;
 }
 
 
-// XML Entity Mandatory Escape Characters
-function xmlentities($string, $quote_style=ENT_QUOTES) {
-   static $trans;
-   if (!isset($trans)) {
-       $trans = get_html_translation_table(HTML_ENTITIES, $quote_style);
-       foreach ($trans as $key => $value)
-           $trans[$key] = '&#'.ord($key).';';
-       // dont translate the '&' in case it is part of &xxx;
-       $trans[chr(38)] = '&';
-   }
-   // after the initial translation, _do_ map standalone '&' into '&#38;'
-   return preg_replace("/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,5};)/","&#38;" , strtr($string, $trans));
+/**
+ * XML Entity Mandatory Escape Characters
+ * 
+ * @param array $string 
+ * @param array $quote_style 
+ * @access public
+ * @return TRUE on success, FALSE on failure
+ */
+function xmlentities( $string, $quote_style=ENT_QUOTES ) {
+	static $trans;
+	if (!isset($trans)) {
+		$trans = get_html_translation_table(HTML_ENTITIES, $quote_style);
+		foreach ($trans as $key => $value)
+			$trans[$key] = '&#'.ord($key).';';
+		// dont translate the '&' in case it is part of &xxx;
+		$trans[chr(38)] = '&';
+	}
+	// after the initial translation, _do_ map standalone '&' into '&#38;'
+	return preg_replace("/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,5};)/","&#38;" , strtr($string, $trans));
 }
 
 /**
  * Redirect to another page or site
  * @param string The url to redirect to
-*/
+ */
 function bit_redirect( $pUrl ) {
 	// clean up URL before executing it
-	while (strstr($pUrl, '&&')) {
-		 $pUrl = str_replace('&&', '&', $pUrl);
+	while( strstr( $pUrl, '&&' ) ) {
+		$pUrl = str_replace( '&&', '&', $pUrl );
 	}
-	while (strstr($pUrl, '&amp;&amp;')) {
-		$pUrl = str_replace('&amp;&amp;', '&amp;', $pUrl);
+
+	while( strstr( $pUrl, '&amp;&amp;' ) ) {
+		$pUrl = str_replace( '&amp;&amp;', '&amp;', $pUrl );
 	}
+
 	// header locates should not have the &amp; in the address it breaks things
-	while (strstr($pUrl, '&amp;')) {
-		$pUrl = str_replace('&amp;', '&', $pUrl);
+	while( strstr( $pUrl, '&amp;' ) ) {
+		$pUrl = str_replace( '&amp;', '&', $pUrl );
 	}
+
 	header('Location: ' . $pUrl);
 	session_write_close();
 	exit();
 }
 
-function array_diff_keys()
-{
-   $args = func_get_args();
+function array_diff_keys() {
+	$args = func_get_args();
 
-   $res = $args[0];
-   if(!is_array($res)) {
-       return array();
-   }
+	$res = $args[0];
+	if(!is_array($res)) {
+		return array();
+	}
 
-   for($i=1;$i<count($args);$i++) {
-       if(!is_array($args[$i])) {
-           continue;
-       }
-       foreach ($args[$i] as $key => $data) {
-           unset($res[$key]);
-       }
-   }
-   return $res;
+	for($i=1;$i<count($args);$i++) {
+		if(!is_array($args[$i])) {
+			continue;
+		}
+		foreach ($args[$i] as $key => $data) {
+			unset($res[$key]);
+		}
+	}
+	return $res;
 }
 
 function trim_array( &$pArray ) {
@@ -406,119 +443,142 @@ function trim_array( &$pArray ) {
 	}
 }
 
-function clean_file_path($path) {
- 	$path = (!empty($_SERVER["SERVER_SOFTWARE"]) && strpos($_SERVER["SERVER_SOFTWARE"],"IIS") ? str_replace( '\/', '\\', $path) : $path);
-	return $path;
-}
-
-
-function compare_links($ar1, $ar2) {
-    return $ar1["links"] - $ar2["links"];
-}
-
-function compare_backlinks($ar1, $ar2) {
-    return $ar1["backlinks"] - $ar2["backlinks"];
-}
-
-function r_compare_links($ar1, $ar2) {
-    return $ar2["links"] - $ar1["links"];
-}
-
-function r_compare_backlinks($ar1, $ar2) {
-    return $ar2["backlinks"] - $ar1["backlinks"];
-}
-
-function compare_images($ar1, $ar2) {
-    return $ar1["images"] - $ar2["images"];
-}
-
-function r_compare_images($ar1, $ar2) {
-    return $ar2["images"] - $ar1["images"];
-}
-
-function compare_files($ar1, $ar2) {
-    return $ar1["files"] - $ar2["files"];
-}
-
-function r_compare_files($ar1, $ar2) {
-    return $ar2["files"] - $ar1["files"];
-}
-
-function compare_versions($ar1, $ar2) {
-    return $ar1["versions"] - $ar2["versions"];
-}
-
-function r_compare_versions($ar1, $ar2) {
-    return $ar2["versions"] - $ar1["versions"];
-}
-
-function compare_changed($ar1, $ar2) {
-    return $ar1["lastChanged"] - $ar2["lastChanged"];
-}
-
-function r_compare_changed($ar1, $ar2) {
-    return $ar2["lastChanged"] - $ar1["lastChanged"];
+/**
+ * Cleans file path according to system we're on
+ * 
+ * @param array $pPath 
+ * @access public
+ * @return TRUE on success, FALSE on failure
+ */
+function clean_file_path( $pPath ) {
+	$pPath = (!empty($_SERVER["SERVER_SOFTWARE"]) && strpos($_SERVER["SERVER_SOFTWARE"],"IIS") ? str_replace( '\/', '\\', $pPath) : $pPath);
+	return $pPath;
 }
 
 function chkgd2() {
-    if (!isset($_SESSION['havegd2'])) {
-#   TODO test this logic in PHP 4.3
-#   if (version_compare(phpversion(), "4.3.0") >= 0) {
-#	 $_SESSION['havegd2'] = true;
-#   } else {
-    ob_start();
+	if (!isset($_SESSION['havegd2'])) {
+#	TODO test this logic in PHP 4.3
+#	if (version_compare(phpversion(), "4.3.0") >= 0) {
+#		$_SESSION['havegd2'] = true;
+#	} else {
+		ob_start();
 
-    phpinfo (INFO_MODULES);
-    $_SESSION['havegd2'] = preg_match('/GD Version.*2.0/', ob_get_contents());
-    ob_end_clean();
+		phpinfo (INFO_MODULES);
+		$_SESSION['havegd2'] = preg_match('/GD Version.*2.0/', ob_get_contents());
+		ob_end_clean();
 #	}
-    }
+	}
 
-    return $_SESSION['havegd2'];
+	return $_SESSION['havegd2'];
 }
 
 function httpScheme() {
-    return 'http' . ((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) ? 's' : '');
+	return 'http'.( ( isset($_SERVER['HTTPS'] ) && ( $_SERVER['HTTPS'] == 'on' ) ) ? 's' : '' );
 }
 
 function httpPrefix() {
-    /*
-       if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) {
-       $rv = 'https://' . $_SERVER['HTTP_HOST'];
+/*
+	if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) {
+		$rv = 'https://' . $_SERVER['HTTP_HOST'];
 
-       if ($_SERVER['SERVER_PORT'] != 443)
-       $rv .= ':' . $_SERVER['SERVER_PORT'];
-       } else {
-       $rv = 'http://' . $_SERVER['HTTP_HOST'];
+		if ($_SERVER['SERVER_PORT'] != 443)
+			$rv .= ':' . $_SERVER['SERVER_PORT'];
+	} else {
+		$rv = 'http://' . $_SERVER['HTTP_HOST'];
 
-       if ($_SERVER['SERVER_PORT'] != 80)
-       $rv .= ':' . $_SERVER['SERVER_PORT'];
-       }
-
-       return $rv;
-     */
-    /* Warning by zaufi: as far as I saw in my apache 1.3.27
-     * there is no need to add port if it is non default --
-     * $_SERVER['HTTP_HOST'] already contain it ...
-     */
-    return 'http'.((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) ? 's' : '').'://'.$_SERVER['HTTP_HOST'];
-}
-
-if (!function_exists('file_get_contents')) {
-    function file_get_contents($f) {
-	ob_start();
-
-	$retval = @readfile($f);
-
-	if (false !== $retval) { // no readfile error
-	    $retval = ob_get_contents();
+		if ($_SERVER['SERVER_PORT'] != 80)
+			$rv .= ':' . $_SERVER['SERVER_PORT'];
 	}
 
-	ob_end_clean();
-	return $retval;
-    }
+	return $rv;
+*/
+	/* Warning by zaufi: as far as I saw in my apache 1.3.27
+	 * there is no need to add port if it is non default --
+	 * $_SERVER['HTTP_HOST'] already contain it ...
+	 */
+	return 'http'.((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) ? 's' : '').'://'.$_SERVER['HTTP_HOST'];
+}
+
+if( !function_exists( 'file_get_contents' ) ) {
+	/**
+	 * PHP version compatability function
+	 * 
+	 * @param array $pFile File
+	 * @access public
+	 * @return TRUE on success, FALSE on failure
+	 */
+	function file_get_contents( $pFile ) {
+		ob_start();
+
+		$retval = @readfile( $pFile );
+
+		if( false !== $retval ) { // no readfile error
+			$retval = ob_get_contents();
+		}
+
+		ob_end_clean();
+		return $retval;
+	}
 
 }
 
+
+
+/**
+ * A set of compare functions that can be used in conjunction with usort() 
+ * type functions
+ * 
+ * @param array $ar1 
+ * @param array $ar2 
+ * @access public
+ * @return TRUE on success, FALSE on failure
+ */
+function compare_links($ar1, $ar2) {
+	return $ar1["links"] - $ar2["links"];
+}
+
+function compare_backlinks($ar1, $ar2) {
+	return $ar1["backlinks"] - $ar2["backlinks"];
+}
+
+function r_compare_links($ar1, $ar2) {
+	return $ar2["links"] - $ar1["links"];
+}
+
+function r_compare_backlinks($ar1, $ar2) {
+	return $ar2["backlinks"] - $ar1["backlinks"];
+}
+
+function compare_images($ar1, $ar2) {
+	return $ar1["images"] - $ar2["images"];
+}
+
+function r_compare_images($ar1, $ar2) {
+	return $ar2["images"] - $ar1["images"];
+}
+
+function compare_files($ar1, $ar2) {
+	return $ar1["files"] - $ar2["files"];
+}
+
+function r_compare_files($ar1, $ar2) {
+	return $ar2["files"] - $ar1["files"];
+}
+
+function compare_versions($ar1, $ar2) {
+	return $ar1["versions"] - $ar2["versions"];
+}
+
+function r_compare_versions($ar1, $ar2) {
+	return $ar2["versions"] - $ar1["versions"];
+}
+
+function compare_changed($ar1, $ar2) {
+	return $ar1["lastChanged"] - $ar2["lastChanged"];
+}
+
+function r_compare_changed($ar1, $ar2) {
+	return $ar2["lastChanged"] - $ar1["lastChanged"];
+}
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.20 2006/09/12 22:15:43 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.21 2006/09/20 01:51:02 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -13,12 +13,12 @@ if( !isset($_REQUEST["groups"] ) ) {
 	$_REQUEST["groups"] = array();
 }
 
-if( empty( $_REQUEST['fPackage'] ) ) {
-	$_REQUEST['fPackage'] = DEFAULT_PACKAGE;
+if( empty( $_REQUEST['module_package'] ) ) {
+	$_REQUEST['module_package'] = DEFAULT_PACKAGE;
 }
 
 $gBitSmarty->assign_by_ref( 'feedback', $feedback = array() );
-$layout = $gBitSystem->getLayout( ROOT_USER_ID, $_REQUEST['fPackage'], FALSE );
+$layout = $gBitSystem->getLayout( ROOT_USER_ID, $_REQUEST['module_package'], FALSE );
 
 if( empty( $_REQUEST['nojs'] ) ) {
 	// load the javascript to get everythign working
@@ -29,7 +29,7 @@ if( empty( $_REQUEST['nojs'] ) ) {
 	if( !empty( $_REQUEST['apply_layout'] ) || !empty( $_REQUEST['unassign'] ) ) {
 		if( !empty( $_REQUEST['unassign'] ) ) {
 			$unassign = array_keys( $_REQUEST['unassign'] );
-			$gBitThemes->unassignModule( $unassign[0], ROOT_USER_ID, $_REQUEST['fPackage'] );
+			$gBitThemes->unassignModule( $unassign[0], ROOT_USER_ID, $_REQUEST['module_package'], $_REQUEST['ord'] );
 			unset( $_REQUEST['modules'][$unassign[0]] );
 		}
 		if( $gBitThemes->storeModulesBatch( $_REQUEST ) ) {
@@ -66,24 +66,24 @@ if( $processForm == 'Misc' ) {
 	foreach( array_keys( $formMiscFeatures ) as $item ) {
 		simple_set_toggle( $item, THEMES_PKG_NAME );
 	}
-} elseif( isset( $_REQUEST['fModule'] ) ) {
+} elseif( isset( $_REQUEST['module'] ) ) {
 
-	if( isset( $_REQUEST['fMove'] ) && isset(  $_REQUEST['fModule'] ) ) {
+	if( isset( $_REQUEST['fMove'] ) && isset(  $_REQUEST['module'] ) ) {
 		switch( $_REQUEST['fMove'] ) {
 			case "unassign":
-				$gBitThemes->unassignModule( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'] );
+				$gBitThemes->unassignModule( $_REQUEST['module'], ROOT_USER_ID, $_REQUEST['module_package'], $_REQUEST['ord'] );
 				break;
 			case "up":
-				$gBitThemes->moduleUp( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'] );
+				$gBitThemes->moduleUp( $_REQUEST['module'], ROOT_USER_ID, $_REQUEST['module_package'] );
 				break;
 			case "down":
-				$gBitThemes->moduleDown( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'] );
+				$gBitThemes->moduleDown( $_REQUEST['module'], ROOT_USER_ID, $_REQUEST['module_package'] );
 				break;
 			case "left":
-				$gBitThemes->modulePosition( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'], 'r' );
+				$gBitThemes->modulePosition( $_REQUEST['module'], ROOT_USER_ID, $_REQUEST['module_package'], 'r' );
 				break;
 			case "right":
-				$gBitThemes->modulePosition( $_REQUEST['fModule'], ROOT_USER_ID, $_REQUEST['fPackage'], 'l' );
+				$gBitThemes->modulePosition( $_REQUEST['module'], ROOT_USER_ID, $_REQUEST['module_package'], 'l' );
 				break;
 		}
 	}
@@ -133,10 +133,10 @@ if( $processForm == 'Misc' ) {
 		}
 	}
 	$fAssign = &$_REQUEST['fAssign'];
-	$fAssign['layout'] = $_REQUEST['fPackage'];
+	$fAssign['layout'] = $_REQUEST['module_package'];
 	$gBitThemes->storeModule( $fAssign );
 	$fAssign['user_id'] = ROOT_USER_ID;
-	$fAssign['layout'] = $_REQUEST['fPackage'];
+	$fAssign['layout'] = $_REQUEST['module_package'];
 	$gBitThemes->storeLayout( $fAssign );
 	$gBitSmarty->assign_by_ref( 'fAssign', $fAssign );
 }
@@ -144,9 +144,9 @@ if( $processForm == 'Misc' ) {
 $sortedPackages = $gBitSystem->mPackages;
 asort( $sortedPackages );
 $gBitSmarty->assign( 'sortedPackages', $sortedPackages );
-$gBitSmarty->assign( 'fPackage', $_REQUEST['fPackage'] );
+$gBitSmarty->assign( 'module_package', $_REQUEST['module_package'] );
 
-$layout = $gBitSystem->getLayout( ROOT_USER_ID, (isset( $_REQUEST['fPackage'] ) ? $_REQUEST['fPackage'] : NULL), FALSE );
+$layout = $gBitSystem->getLayout( ROOT_USER_ID, (isset( $_REQUEST['module_package'] ) ? $_REQUEST['module_package'] : NULL), FALSE );
 $gBitThemes->generateModuleNames( $layout );
 $gBitSmarty->assign_by_ref( 'layout', $layout );
 

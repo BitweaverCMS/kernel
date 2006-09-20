@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.13 2006/07/30 19:48:22 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.14 2006/09/20 01:51:02 spiderr Exp $
  */
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
@@ -139,9 +139,9 @@ class BitSmarty extends Smarty
 								parse_str( $moduleParams["params"], $module_params );
 							}
 							$module_title = ( isset( $moduleParams['title'] ) ? tra( $moduleParams['title'] ) : ( isset( $module_params['title'] ) ? $module_params['title'] : NULL ) );
-							$module_rows = $moduleParams['rows'];
+							$module_rows = $moduleParams['module_rows'];
 						}
-						include_once($modPhpFile);
+						include($modPhpFile);
 						$ret = true;
 					}
 				}

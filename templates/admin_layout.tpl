@@ -31,7 +31,7 @@
 {if $smarty.request.nojs}
 
 	<table style="width:100%" cellpadding="5" cellspacing="0" border="0">
-		<caption>{tr}Current Layout of '{if !$fPackage || $fPackage=='kernel'}Site Default{else}{$fPackage|capitalize}{/if}'{/tr}</caption>
+		<caption>{tr}Current Layout of '{if !$module_package || $module_package=='kernel'}Site Default{else}{$module_package|capitalize}{/if}'{/tr}</caption>
 		<tr>
 			{foreach from=$layoutAreas item=area key=colkey }
 				<td style="width:33%" valign="top">
@@ -54,15 +54,17 @@
 									{/if}
 									{if $layout.$area[ix].module_rows}
 										<strong>{tr}Rows{/tr}</strong>: {$layout.$area[ix].module_rows}<br />
+									{else}
+										<strong>{tr}Rows{/tr}</strong>: {$gBitSystem->getConfig('max_records')} <em>{tr}Default{/tr}</em><br />
 									{/if}
 									{if $layout.$area[ix].params}
 										<strong>{tr}Parameters{/tr}</strong>:<br />{$layout.$area[ix].params|replace:"&":"<br />"}
 									{/if}
 
 									<div style="text-align:center;">
-										{smartlink ititle="Up" ibiticon="liberty/move_up" iforce="icon" page=layout fMove=up fPackage=$fPackage fModule=`$layout.$area[ix].module_id` nojs=true}
+										{smartlink ititle="Up" ibiticon="liberty/move_up" iforce="icon" page=layout fMove=up module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
 										&nbsp;&nbsp;
-										{smartlink ititle="Down" ibiticon="liberty/move_down" iforce="icon" page=layout fMove=down fPackage=$fPackage fModule=`$layout.$area[ix].module_id` nojs=true}
+										{smartlink ititle="Down" ibiticon="liberty/move_down" iforce="icon" page=layout fMove=down module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
 										&nbsp;&nbsp;
 										{if $colkey ne 'center'}
 											{if $colkey == 'left'}
@@ -70,11 +72,11 @@
 											{elseif $colkey == 'right'}
 												{assign var=dir value=left}
 											{/if}
-											{smartlink ititle="Move to $dir" ibiticon="liberty/move_$dir" iforce="icon" page=layout fMove=$colkey fPackage=$fPackage fModule=`$layout.$area[ix].module_id` nojs=true}
+											{smartlink ititle="Move to $dir" ibiticon="liberty/move_$dir" iforce="icon" page=layout fMove=$colkey module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
 										{/if}
 										&nbsp;&nbsp;
 										{if $column[ix].type ne 'P'}
-											{smartlink ititle="Unassign" ibiticon="icons/edit-delete" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout fMove=unassign fPackage=$fPackage fModule=`$layout.$area[ix].module_id` nojs=true}
+											{smartlink ititle="Unassign" ibiticon="icons/edit-delete" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout fMove=unassign module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true ord=`$layout.$area[ix].ord`}
 										{/if}
 									</div>
 								</td>
@@ -97,7 +99,7 @@
 
 	{form}
 		<table class="layout" style="width:100%" cellpadding="5" cellspacing="0" border="0">
-			<caption>{tr}Current Layout of '{if !$fPackage || $fPackage=='kernel'}Site Default{else}{$fPackage|capitalize}{/if}'{/tr}</caption>
+			<caption>{tr}Current Layout of '{if !$module_package || $module_package=='kernel'}Site Default{else}{$module_package|capitalize}{/if}'{/tr}</caption>
 			<tr>
 				{foreach from=$layoutAreas item=area key=colkey}
 					<td style="width:33%" valign="top">
@@ -133,7 +135,7 @@
 
 		<input type="hidden" name="side_columns" id="side_columns" value="" />
 		<input type="hidden" name="center_column" id="center_column" value="" />
-		<input type="hidden" name="fPackage" value="{$fPackage}" />
+		<input type="hidden" name="module_package" value="{$module_package}" />
 		<input type="hidden" name="page" value="{$page}" />
 
 		<div class="row submit">
@@ -150,13 +152,13 @@
 	<input type="hidden" name="page" value="{$page}" />
 	<input type="hidden" name="nojs" value="{$smarty.request.nojs}" />
 	<div class="row">
-		{formlabel label="Create Customized layout for" for="fPackage"}
+		{formlabel label="Create Customized layout for" for="module_package"}
 		{forminput}
-			<select name="fPackage" id="fPackage" onchange="this.form.submit();">
-				<option value="home" {if $fPackage == 'home'}selected="selected"{/if}>{tr}User Homepages{/tr}</option>
+			<select name="module_package" id="module_package" onchange="this.form.submit();">
+				<option value="home" {if $module_package == 'home'}selected="selected"{/if}>{tr}User Homepages{/tr}</option>
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed and ($package.activatable or $package.tables)}
-							<option value="{$name}" {if $fPackage == $name}selected="selected"{/if}>{if $name eq 'kernel'}{tr}Site Default{/tr}{else}{tr}{$name|capitalize}{/tr}{/if}</option>
+							<option value="{$name}" {if $module_package == $name}selected="selected"{/if}>{if $name eq 'kernel'}{tr}Site Default{/tr}{else}{tr}{$name|capitalize}{/tr}{/if}</option>
 					{/if}
 				{/foreach}
 			</select>
@@ -178,11 +180,11 @@
 	{jstab title="Assign column module"}
 		{form action=$smarty.server.PHP_SELF legend="Assign column module"}
 			<input type="hidden" name="page" value="{$page}" />
-			<input type="hidden" name="fPackage" value="{$fPackage}" />
+			<input type="hidden" name="module_package" value="{$module_package}" />
 			<div class="row">
 				{formlabel label="Package"}
 				{forminput}
-					<span class="highlight">{tr}{if !$fPackage || $fPackage eq 'kernel'}Site Default{else}{$fPackage|capitalize}{/if}{/tr}</span>
+					<span class="highlight">{tr}{if !$module_package || $module_package eq 'kernel'}Site Default{else}{$module_package|capitalize}{/if}{/tr}</span>
 					{formhelp note="This is the package you are currently editing."}
 				{/forminput}
 			</div>
@@ -282,14 +284,14 @@
 	{jstab title="Assign center piece"}
 		{form action=$smarty.server.PHP_SELF legend="Assign center piece"}
 			<input type="hidden" name="page" value="{$page}" />
-			<input type="hidden" name="fPackage" value="{$fPackage}" />
+			<input type="hidden" name="module_package" value="{$module_package}" />
 			<input type="hidden" name="fAssign[pos]" value="c" />
 			<input type="hidden" name="nojs" value="{$smarty.request.nojs}" />
 
 			<div class="row">
 				{formlabel label="Package"}
 				{forminput}
-					<span class="highlight">{tr}{if !$fPackage || $fPackage eq 'kernel'}Site Default{else}{$fPackage|capitalize}{/if}{/tr}</span>
+					<span class="highlight">{tr}{if !$module_package || $module_package eq 'kernel'}Site Default{else}{$module_package|capitalize}{/if}{/tr}</span>
 					{formhelp note="This is the package you are currently editing."}
 				{/forminput}
 			</div>

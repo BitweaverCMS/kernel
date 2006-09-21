@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.98 2006/09/13 21:23:39 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.99 2006/09/21 15:27:23 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1563,16 +1563,20 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function loadLayout($pUserMixed = ROOT_USER_ID, $pLayout = ACTIVE_PACKAGE, $pFallbackLayout = DEFAULT_PACKAGE, $pForceReload = false)
-	{
+	function loadLayout($pUserMixed = ROOT_USER_ID, $pLayout = ACTIVE_PACKAGE, $pFallbackLayout = DEFAULT_PACKAGE, $pForceReload = FALSE) {
 		if( $pForceReload || empty($this->mLayout) || !count($this->mLayout) ){
 			unset($this->mLayout);
 			$this->mLayout = $this->getLayout($pUserMixed, $pLayout, $pLayout, $pFallbackLayout);
+			if( $this->isFeatureActive( ACTIVE_PACKAGE.'_hide_left_col' ) ) {
+				unset( $this->mLayout['l'] );
+			}
+			if( $this->isFeatureActive( ACTIVE_PACKAGE.'_hide_right_col' ) ) {
+				unset( $this->mLayout['r'] );
+			}
 		}
 	}
 
-	function getLayout($pUserMixed = null, $pLayout = ACTIVE_PACKAGE, $pFallback = true, $pFallbackLayout = DEFAULT_PACKAGE)
-	{
+	function getLayout($pUserMixed = null, $pLayout = ACTIVE_PACKAGE, $pFallback = TRUE, $pFallbackLayout = DEFAULT_PACKAGE) {
 		global $gCenterPieces, $gBitUser;
 		$ret = array( 'l' => NULL, 'c' => NULL, 'r' => NULL );
 		$layoutUserId = ROOT_USER_ID;

@@ -62,9 +62,9 @@
 									{/if}
 
 									<div style="text-align:center;">
-										{smartlink ititle="Up" ibiticon="liberty/move_up" iforce="icon" page=layout fMove=up module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
+										{smartlink ititle="Up" ibiticon="liberty/move_up" iforce="icon" page=layout move_module=up module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
 										&nbsp;&nbsp;
-										{smartlink ititle="Down" ibiticon="liberty/move_down" iforce="icon" page=layout fMove=down module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
+										{smartlink ititle="Down" ibiticon="liberty/move_down" iforce="icon" page=layout move_module=down module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
 										&nbsp;&nbsp;
 										{if $colkey ne 'center'}
 											{if $colkey == 'left'}
@@ -72,11 +72,11 @@
 											{elseif $colkey == 'right'}
 												{assign var=dir value=left}
 											{/if}
-											{smartlink ititle="Move to $dir" ibiticon="liberty/move_$dir" iforce="icon" page=layout fMove=$colkey module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
+											{smartlink ititle="Move to $dir" ibiticon="liberty/move_$dir" iforce="icon" page=layout move_module=$colkey module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
 										{/if}
 										&nbsp;&nbsp;
 										{if $column[ix].type ne 'P'}
-											{smartlink ititle="Unassign" ibiticon="icons/edit-delete" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout fMove=unassign module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true ord=`$layout.$area[ix].ord`}
+											{smartlink ititle="Unassign" ibiticon="icons/edit-delete" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout move_module=unassign module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true ord=`$layout.$area[ix].ord`}
 										{/if}
 									</div>
 								</td>
@@ -148,7 +148,7 @@
 	<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;nojs=true">{tr}Use non-javascript variant{/tr}</a>
 {/if}
 
-{form action=$smarty.server.PHP_SELF legend="Select Section"}
+{form legend="Select Section"}
 	<input type="hidden" name="page" value="{$page}" />
 	<input type="hidden" name="nojs" value="{$smarty.request.nojs}" />
 	<div class="row">
@@ -158,7 +158,13 @@
 				<option value="home" {if $module_package == 'home'}selected="selected"{/if}>{tr}User Homepages{/tr}</option>
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed and ($package.activatable or $package.tables)}
-							<option value="{$name}" {if $module_package == $name}selected="selected"{/if}>{if $name eq 'kernel'}{tr}Site Default{/tr}{else}{tr}{$name|capitalize}{/tr}{/if}</option>
+						<option value="{$name}" {if $module_package == $name}selected="selected"{/if}>
+							{if $name eq 'kernel'}
+								{tr}Site Default{/tr}
+							{else}
+								{tr}{$name|capitalize}{/tr}
+							{/if}
+						</option>
 					{/if}
 				{/foreach}
 			</select>
@@ -259,7 +265,7 @@
 			<div class="row">
 				{formlabel label="Groups" for="groups"}
 				{forminput}
-					<select multiple="multiple" name="groups[]" id="groups">
+					<select multiple="multiple" size="5" name="groups[]" id="groups">
 						{foreach from=$groups key=groupId item=group}
 							<option value="{$groupId}" {if $group.selected eq 'y'}selected="selected"{/if}>{$group.group_name}</option>
 						{/foreach}
@@ -354,7 +360,7 @@
 			<div class="row">
 				{formlabel label="Groups" for="c_groups"}
 				{forminput}
-					<select multiple="multiple" name="groups[]" id="c_groups">
+					<select multiple="multiple" size="5" name="groups[]" id="c_groups">
 						{section name=ix loop=$groups}
 							<option value="{$groups[ix].group_name|escape}" {if $groups[ix].selected eq 'y'}selected="selected"{/if}>{$groups[ix].group_name}</option>
 						{/section}
@@ -369,9 +375,10 @@
 		{/form}
 	{/jstab}
 
-	{jstab title="Miscellaneous Settings"}
-		{form action=$smarty.server.PHP_SELF legend="Miscellaneous Settings"}
+	{jstab title="Column Control"}
+		{form legend="Column Visibility"}
 			<input type="hidden" name="page" value="{$page}" />
+
 			{foreach from=$formMiscFeatures key=feature item=output}
 				<div class="row">
 					{formlabel label=`$output.label` for=$feature}
@@ -382,8 +389,23 @@
 				</div>
 			{/foreach}
 
+			{foreach from=$hideColumns item=name key=package}
+				<div class="row">
+					{formlabel label=$name}
+					{forminput}
+						<label>
+							<input type="checkbox" name="hide[{$package}_hide_left_col]" value="y" {if $gBitSystem->isFeatureActive("`$package`_hide_left_col")}checked="checked"{/if} /> {tr}Hide Left Column{/tr}
+						</label>
+						<br />
+						<label>
+							<input type="checkbox" name="hide[{$package}_hide_right_col]"  value="y" {if $gBitSystem->isFeatureActive("`$package`_hide_right_col")}checked="checked"{/if} /> {tr}Hide Right Column{/tr}
+						</label>
+					{/forminput}
+				</div>
+			{/foreach}
+
 			<div class="row submit">
-				<input type="submit" name="MiscTabSubmit" value="{tr}Change preferences{/tr}" />
+				<input type="submit" name="HideTabSubmit" value="{tr}Change preferences{/tr}" />
 			</div>
 		{/form}
 	{/jstab}

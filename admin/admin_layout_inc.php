@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.21 2006/09/20 01:51:02 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.22 2006/09/21 15:27:23 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -59,17 +59,49 @@ $formMiscFeatures = array(
 );
 $gBitSmarty->assign( 'formMiscFeatures',$formMiscFeatures );
 
+foreach( $gBitSystem->mPackages as $key => $package ) {
+	if( !empty( $package['installed'] ) && ( !empty( $package['activatable'] ) || !empty( $package['tables'] ) ) ) {
+		if( $package['name'] == 'kernel' ) {
+			$package['name'] = tra( 'Site Default' );
+		}
+		$hideColumns[strtolower( $key )] =  ucfirst( $package['name'] );
+	}
+}
+asort( $hideColumns );
+$gBitSmarty->assign( 'hideColumns', $hideColumns );
+
 // process form - check what tab was used and set it
 $processForm = set_tab();
 
-if( $processForm == 'Misc' ) {
+if( $processForm == 'Hide' ) {
 	foreach( array_keys( $formMiscFeatures ) as $item ) {
 		simple_set_toggle( $item, THEMES_PKG_NAME );
 	}
+
+	// evaluate what columns to hide
+	foreach( array_keys( $hideColumns ) as $package ) {
+		// left side first
+		$pref = $package."_hide_left_col";
+		if( isset( $_REQUEST['hide'][$pref] ) ) {
+			$gBitSystem->storeConfig( $pref, 'y', THEMES_PKG_NAME );
+		} else {
+			// remove the setting from the db if it's not set
+			$gBitSystem->storeConfig( $pref, NULL );
+		}
+
+		// now the right side
+		$pref = $package."_hide_right_col";
+		if( isset( $_REQUEST['hide'][$pref] ) ) {
+			$gBitSystem->storeConfig( $pref, 'y', THEMES_PKG_NAME );
+		} else {
+			// remove the setting from the db if it's not set
+			$gBitSystem->storeConfig( $pref, NULL );
+		}
+	}
 } elseif( isset( $_REQUEST['module'] ) ) {
 
-	if( isset( $_REQUEST['fMove'] ) && isset(  $_REQUEST['module'] ) ) {
-		switch( $_REQUEST['fMove'] ) {
+	if( isset( $_REQUEST['move_module'] ) && isset(  $_REQUEST['module'] ) ) {
+		switch( $_REQUEST['move_module'] ) {
 			case "unassign":
 				$gBitThemes->unassignModule( $_REQUEST['module'], ROOT_USER_ID, $_REQUEST['module_package'], $_REQUEST['ord'] );
 				break;
@@ -175,12 +207,7 @@ $gBitSmarty->assign_by_ref( 'allModulesHelp', $allModulesHelp );
 
 $allCenters = $gBitThemes->getAllModules( 'templates', 'center_' );
 ksort( $allCenters );
-$sections['kernel'] = tra( "Site Default" );
-foreach( array_keys( $allCenters ) as $pkg ) {
-	$sections[strtolower( $pkg )] = ucfirst( $pkg );
-}
 $gBitSmarty->assign_by_ref( 'allCenters', $allCenters );
-$gBitSmarty->assign_by_ref( 'sections', $sections );
 
 $orders = array();
 

@@ -29,7 +29,7 @@
 				{foreach from=$diskUsage key=key item=item}
 					<tr class="{cycle values='odd,even'}">
 						<td>{$item.title}</td>
-						<td>{$item.url}</td>
+						<td>{$item.path|replace:$smarty.const.BIT_ROOT_PATH:""|replace:"//":"/"}</td>
 						<td style="text-align:right;">{tr}{$item.du.count} file(s){/tr}</td>
 						<td style="text-align:right;">{$item.du.size|kbsize}</td>
 						<td class="actionicon">{smartlink ititle=Empty ibiticon="icons/edit-delete" prune=$key}</td>
@@ -51,7 +51,7 @@
 				{foreach from=$templates key=key item=item}
 					<tr class="{cycle values='odd,even'}">
 						<td>{$item.title}</td>
-						<td>{$item.url}{$key}</td>
+						<td>{$item.path|replace:$smarty.const.BIT_ROOT_PATH:""|replace:"//":"/"}{$key}</td>
 						<td style="text-align:right;">{tr}{$item.du.count} file(s){/tr}</td>
 						<td style="text-align:right;">{$item.du.size|kbsize}</td>
 						<td class="actionicon">{smartlink ititle="Compile Templates" ibiticon="icons/accessories-text-editor" compiletemplates=$key}</td>

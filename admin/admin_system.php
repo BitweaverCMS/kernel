@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.6 2006/06/20 11:15:03 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.7 2006/09/21 07:02:07 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -12,25 +12,25 @@ $feedback = array();
 
 $diskUsage = array(
 	'templates_c' => array(
-		'url' => TEMP_PKG_URL.'templates_c',
+		'path' => TEMP_PKG_PATH.'templates_c',
 		'title' => tra( 'Templates' ),
 	),
 	'lang' => array(
-		'url' => TEMP_PKG_URL.'lang',
+		'path' => TEMP_PKG_PATH.'lang',
 		'title' => tra( 'Language Files' ),
 	),
 	'modules' => array(
-		'url' => TEMP_PKG_URL.'modules/cache',
+		'path' => TEMP_PKG_PATH.'modules/cache',
 		'title' => tra( 'Modules' ),
 		'subdir' => $bitdomain,
 	),
 	'cache' => array(
-		'url' => TEMP_PKG_URL.'cache',
+		'path' => TEMP_PKG_PATH.'cache',
 		'title' => tra( 'System' ),
 		'subdir' => $bitdomain,
 	),
 	'liberty' => array(
-		'url' => LibertyContent::getCacheBaseUrl(),
+		'path' => LibertyContent::getCacheBasePath(),
 		'title' => tra( 'Liberty' ),
 	),
 );
@@ -38,9 +38,9 @@ $diskUsage = array(
 if( !empty( $_GET['prune'] ) ) {
 	foreach( $diskUsage as $key => $item ) {
 		if( $_GET['prune'] == $key || $_GET['prune'] == 'all' ) {
-			if( unlink_r( BIT_ROOT_PATH.$item['url'].( !empty( $item['subdir'] ) ? '/'.$item['subdir'] : '' ) ) ) {
+			if( unlink_r( $item['path'].( !empty( $item['subdir'] ) ? '/'.$item['subdir'] : '' ) ) ) {
 				$feedback['success'] = tra( 'The cache was successfully cleared.' );
-			} elseif( is_dir( BIT_ROOT_PATH.$item['url'].( !empty( $item['subdir'] ) ? '/'.$item['subdir'] : '' ) ) ) {
+			} elseif( is_dir( $item['path'].( !empty( $item['subdir'] ) ? '/'.$item['subdir'] : '' ) ) ) {
 				$feedback['error'] = tra( 'There was a problem clearing out the cache.' );
 			}
 		}
@@ -52,7 +52,7 @@ if( !empty( $_GET['compiletemplates'] ) ) {
 }
 
 foreach( $diskUsage as $key => $item ) {
-	$diskUsage[$key]['du'] = du( BIT_ROOT_PATH.$item['url'] );
+	$diskUsage[$key]['du'] = du( $item['path'] );
 }
 $gBitSmarty->assign( 'diskUsage', $diskUsage );
 
@@ -65,13 +65,13 @@ $langdir = TEMP_PKG_PATH."templates_c/".$gBitSystem->getConfig('style')."/";
 foreach( array_keys( $languages ) as $clang ) {
 	if( is_dir( $langdir.$clang ) ) {
 		$templates[$clang] = array(
-			'url'   => TEMP_PKG_URL."templates_c/".$gBitSystem->getConfig( 'style' )."/",
+			'path'   => TEMP_PKG_PATH."templates_c/".$gBitSystem->getConfig( 'style' )."/",
 			'title' => $languages[$clang]['full_name'],
 			'du'    => du( $langdir.$clang ),
 		);
 	} else {
 		$templates[$clang] = array(
-			'url'   => TEMP_PKG_URL."templates_c/".$gBitSystem->getConfig( 'style' )."/",
+			'path'   => TEMP_PKG_PATH."templates_c/".$gBitSystem->getConfig( 'style' )."/",
 			'title' => $languages[$clang]['full_name'],
 			'du'    => array(
 				"count" => 0,
@@ -88,35 +88,35 @@ $gBitSystem->display( 'bitpackage:kernel/admin_system.tpl', tra( "System Cache" 
 
 // ----------------------- Functions ----------------------- //
 function du( $path ) {
-    $size = $count = 0;
+	$size = $count = 0;
 
-    if( !$path or !is_dir( $path ) ) {
-        $ret['size'] = $size;
-        $ret['count'] = $count;
-        return $ret;
-    }
+	if( !$path or !is_dir( $path ) ) {
+		$ret['size'] = $size;
+		$ret['count'] = $count;
+		return $ret;
+	}
 
-    $all = opendir( $path );
-    while( FALSE !== ( $file = readdir( $all ) ) ) {
-        if( $file <> ".." and $file <> "." and $file <> "CVS" ) {
-            if( is_file( $path.'/'.$file ) ) {
-                $size += filesize( $path.'/'.$file );
-                $count++;
-                unset( $file );
-            } elseif( is_dir( $path.'/'.$file ) ) {
-                $du = du( $path.'/'.$file );
-                $size += $du['size'];
-                $count += $du['count'];
-                unset( $file );
-            }
-        }
-    }
-    closedir( $all );
-    unset( $all );
+	$all = opendir( $path );
+	while( FALSE !== ( $file = readdir( $all ) ) ) {
+		if( $file <> ".." and $file <> "." and $file <> "CVS" ) {
+			if( is_file( $path.'/'.$file ) ) {
+				$size += filesize( $path.'/'.$file );
+				$count++;
+				unset( $file );
+			} elseif( is_dir( $path.'/'.$file ) ) {
+				$du = du( $path.'/'.$file );
+				$size += $du['size'];
+				$count += $du['count'];
+				unset( $file );
+			}
+		}
+	}
+	closedir( $all );
+	unset( $all );
 
-    $ret['size'] = $size;
-    $ret['count'] = $count;
-    return $ret;
+	$ret['size'] = $size;
+	$ret['count'] = $count;
+	return $ret;
 }
 
 function cache_templates( $path, $oldlang, $newlang ) {

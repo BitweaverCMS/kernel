@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.22 2006/09/21 15:27:23 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.23 2006/09/21 15:31:42 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -29,7 +29,7 @@ if( empty( $_REQUEST['nojs'] ) ) {
 	if( !empty( $_REQUEST['apply_layout'] ) || !empty( $_REQUEST['unassign'] ) ) {
 		if( !empty( $_REQUEST['unassign'] ) ) {
 			$unassign = array_keys( $_REQUEST['unassign'] );
-			$gBitThemes->unassignModule( $unassign[0], ROOT_USER_ID, $_REQUEST['module_package'], $_REQUEST['ord'] );
+			$gBitThemes->unassignModule( $unassign[0], ROOT_USER_ID, $_REQUEST['module_package'], !empty( $_REQUEST['ord'] ) ? $_REQUEST['ord'] : NULL );
 			unset( $_REQUEST['modules'][$unassign[0]] );
 		}
 		if( $gBitThemes->storeModulesBatch( $_REQUEST ) ) {

@@ -9,17 +9,13 @@
  * required setup
  */
 global $gBitSmarty;
-require_once $gBitSmarty->_get_plugin_filepath('modifier','bit_date_format');
+require_once $gBitSmarty->_get_plugin_filepath( 'modifier', 'bit_date_format' );
 
 /**
  * smarty_modifier_bit_long_datetime
  */
-function smarty_modifier_bit_long_datetime($string)
-{
+function smarty_modifier_bit_long_datetime( $pString ) {
 	global $gBitSystem;
-	return smarty_modifier_bit_date_format($string, $gBitSystem->get_long_datetime_format(), null, "%Y-%m-%d %H:%M");
+	return smarty_modifier_bit_date_format( $pString, $gBitSystem->get_long_datetime_format(), '%A %d of %B, %Y [%H:%M:%S %Z]' );
 }
-
-/* vim: set expandtab: */
-
 ?>

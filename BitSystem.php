@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.99 2006/09/21 15:27:23 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.100 2006/09/22 11:00:06 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2068,18 +2068,19 @@ class BitSystem extends BitBase {
 	/**
 	 * Retrieves the user's preferred offset for displaying dates.
 	 */
-	function get_display_offset($_user = false) {
-		return $this->mServerTimestamp->get_display_offset($_user);
+	function get_display_offset( $pUser = FALSE ) {
+		return $this->mServerTimestamp->get_display_offset( $pUser );
 	}
 
 	/**
 	 * Retrieves the user's preferred long date format for displaying dates.
 	 */
 	function get_long_date_format() {
-		static $site_long_date_format = false;
+		static $site_long_date_format = FALSE;
 
-		if (!$site_long_date_format)
-		$site_long_date_format = $this->getConfig('site_long_date_format', '%A %d of %B, %Y');
+		if( !$site_long_date_format ) {
+			$site_long_date_format = $this->getConfig( 'site_long_date_format', '%A %d of %B, %Y' );
+		}
 
 		return $site_long_date_format;
 	}
@@ -2088,10 +2089,11 @@ class BitSystem extends BitBase {
 	 * Retrieves the user's preferred short date format for displaying dates.
 	 */
 	function get_short_date_format() {
-		static $site_short_date_format = false;
+		static $site_short_date_format = FALSE;
 
-		if (!$site_short_date_format)
-		$site_short_date_format = $this->getConfig('site_short_date_format', '%a %d of %b, %Y');
+		if( !$site_short_date_format ) {
+			$site_short_date_format = $this->getConfig( 'site_short_date_format', '%a %d of %b, %Y' );
+		}
 
 		return $site_short_date_format;
 	}
@@ -2100,10 +2102,11 @@ class BitSystem extends BitBase {
 	 * Retrieves the user's preferred long time format for displaying dates.
 	 */
 	function get_long_time_format() {
-		static $site_long_time_format = false;
+		static $site_long_time_format = FALSE;
 
-		if (!$site_long_time_format)
-		$site_long_time_format = $this->getConfig('site_long_time_format', '%H:%M:%S %Z');
+		if( !$site_long_time_format ) {
+			$site_long_time_format = $this->getConfig( 'site_long_time_format', '%H:%M:%S %Z' );
+		}
 
 		return $site_long_time_format;
 	}
@@ -2112,10 +2115,11 @@ class BitSystem extends BitBase {
 	 * Retrieves the user's preferred short time format for displaying dates.
 	 */
 	function get_short_time_format() {
-		static $site_short_time_format = false;
+		static $site_short_time_format = FALSE;
 
-		if (!$site_short_time_format)
-		$site_short_time_format = $this->getConfig('site_short_time_format', '%H:%M %Z');
+		if( !$site_short_time_format ) {
+			$site_short_time_format = $this->getConfig( 'site_short_time_format', '%H:%M %Z' );
+		}
 
 		return $site_short_time_format;
 	}
@@ -2124,10 +2128,11 @@ class BitSystem extends BitBase {
 	 * Retrieves the user's preferred long date/time format for displaying dates.
 	 */
 	function get_long_datetime_format() {
-		static $long_datetime_format = false;
+		static $long_datetime_format = FALSE;
 
-		if (!$long_datetime_format)
-		$long_datetime_format = $this->get_long_date_format(). ' [' . $this->get_long_time_format(). ']';
+		if( !$long_datetime_format ) {
+			$long_datetime_format = $this->get_long_date_format().' ['.$this->get_long_time_format().']';
+		}
 
 		return $long_datetime_format;
 	}
@@ -2136,10 +2141,11 @@ class BitSystem extends BitBase {
 	 * Retrieves the user's preferred short date/time format for displaying dates.
 	 */
 	function get_short_datetime_format() {
-		static $short_datetime_format = false;
+		static $short_datetime_format = FALSE;
 
-		if (!$short_datetime_format)
-		$short_datetime_format = $this->get_short_date_format(). ' [' . $this->get_short_time_format(). ']';
+		if( !$short_datetime_format ) {
+			$short_datetime_format = $this->get_short_date_format().' ['.$this->get_short_time_format().']';
+		}
 
 		return $short_datetime_format;
 	}
@@ -2147,8 +2153,8 @@ class BitSystem extends BitBase {
 	/*
 	 * Only used in rang_lib.php which needs tidying up to use smarty templates
 	 */
-	function get_long_datetime($timestamp, $user = false) {
-		return $this->mServerTimestamp->strftime($this->get_long_datetime_format(), $timestamp, $user);
+	function get_long_datetime( $pTimestamp, $pUser = FALSE ) {
+		return $this->mServerTimestamp->strftime( $this->get_long_datetime_format(), $pTimestamp, $pUser );
 	}
 
 	/**
@@ -2256,7 +2262,7 @@ class BitSystem extends BitBase {
 	* @access public
 	**/
 	function isAjaxRequest() {
-		return (!empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' ? true : false);
+		return (!empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' ? TRUE : FALSE);
 	}
 
 

@@ -14,12 +14,8 @@ require_once $gBitSmarty->_get_plugin_filepath('modifier','bit_date_format');
 /**
  * smarty_modifier_bit_short_date
  */
-function smarty_modifier_bit_short_date($string)
-{
+function smarty_modifier_bit_short_date( $pString ) {
 	global $gBitSystem;
-	return smarty_modifier_bit_date_format($string, $gBitSystem->get_short_date_format(), null, "%a %d ".tra('of')." %b, %Y");
+	return smarty_modifier_bit_date_format( $pString, $gBitSystem->get_short_date_format(), '%a %d of %b, %Y' );
 }
-
-/* vim: set expandtab: */
-
 ?>

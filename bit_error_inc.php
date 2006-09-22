@@ -36,7 +36,7 @@ function bit_log_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 		print "<pre>".$pLogMessage."</pre>";
 		print "</body></html>";
 	} elseif( $errorEmail ) {
-		mail( $errorEmail,  "$subject $pSubject", $pLogMessage );
+		mail( $errorEmail,  "$pSubject", $pLogMessage );
 		if( ( defined( 'AUTO_BUG_SUBMIT' ) && AUTO_BUG_SUBMIT ) ) {
 			mail( 'bugs@bitweaver.org',"$subject $pSubject",$pLogMessage );
 		}

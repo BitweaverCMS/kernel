@@ -35,7 +35,7 @@
 			</div>
 
 			<div class="row submit">
-				<input type="submit" name="add" value="{tr}add{/tr}" />
+				<input type="submit" name="add" value="{tr}Add{/tr}" />
 			</div>
 		{/form}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.13 2006/09/26 06:02:55 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.14 2006/09/26 06:51:19 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -152,6 +152,58 @@ function detoxify( &$pParamHash, $pHtml = FALSE ) {
 				}
 			}
 		}
+	}
+}
+
+/* \brief  substr with a utf8 string - works only with $start and $length positive or nuls
+* This function is the same as substr but works with multibyte
+* In a multybyte sequence, the first byte of a multibyte sequence that represents a non-ASCII character is always in the range 0xC0 to 0xFD
+* and it indicates how many bytes follow for this character.
+* All further bytes in a multibyte sequence are in the range 0x80 to 0xBF.
+*/
+/**
+ * Check mb_substr availability
+ */
+if( function_exists('mb_substr' ) ) {
+	mb_internal_encoding("UTF-8");
+} else {
+	function mb_substr( $str, $start, $len = '', $encoding = "UTF-8" ) {
+		$limit = strlen( $str );
+		for( $s = 0; $start > 0;--$start ) {
+			if( $s >= $limit ) {
+				break;
+			}
+
+			if( $str[$s] <= "\x7F" ) {
+				++$s;
+			} else {
+				++$s; // skip length
+				while( $str[$s] >= "\x80" && $str[$s] <= "\xBF" ) {
+					++$s;
+				}
+			}
+		}
+		if( $len == '' ) {
+			return substr( $str, $s );
+		}
+		else {
+			// found the real end
+			for( $e = $s; $len > 0; --$len ) {
+				if( $e >= $limit ) {
+					break;
+				}
+
+				if( $str[$e] <= "\x7F" ) {
+					++$e;
+				} else {
+					++$e; //skip length
+					while( $str[$e] >= "\x80" && $str[$e] <= "\xBF" && $e < $limit ) {
+						++$e;
+					}
+				}
+			}
+		}
+		return substr( $str, $s, $e - $s );
 	}
 }
 

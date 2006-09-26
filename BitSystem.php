@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.100 2006/09/22 11:00:06 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.101 2006/09/26 06:51:19 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -23,13 +23,13 @@
 /**
  * required setup
  */
-require_once(KERNEL_PKG_PATH . 'BitBase.php');
-require_once(KERNEL_PKG_PATH . 'BitDate.php');
-require_once(KERNEL_PKG_PATH . 'BitSmarty.php');
+require_once( KERNEL_PKG_PATH . 'BitBase.php' );
+require_once( KERNEL_PKG_PATH . 'BitDate.php' );
+require_once( KERNEL_PKG_PATH . 'BitSmarty.php' );
 
-define('DEFAULT_PACKAGE', 'kernel');
-define('CENTER_COLUMN', 'c');
-define('HOMEPAGE_LAYOUT', 'home');
+define( 'DEFAULT_PACKAGE', 'kernel' );
+define( 'CENTER_COLUMN', 'c' );
+define( 'HOMEPAGE_LAYOUT', 'home' );
 
 /**
  * kernel::BitSystem
@@ -49,36 +49,42 @@ define('HOMEPAGE_LAYOUT', 'home');
  * @package kernel
  */
 class BitSystem extends BitBase {
-	/**
-	* * Array of  *
-	*/
-	var $mAppMenu;
-	var $mPackages;
-	var $mLayout;
-	var $mStyle;
+
+	// Initiate class variables
+
+	// Information about package menus used in all menu modules and top bar
+	var $mAppMenu = array();
+
+	// Essential information about packages
+	var $mPackages = array();
+
+	// Array that contains a full description of the current layout
+	var $mLayout = array();
+
+	// Contains site style information
+	var $mStyle = array();
+
+	// The currently active page
 	var $mActivePackage;
+
+	// Modules that need to inserted during installation
 	var $mInstallModules = array();
-	/**
-	* Javascript to be added to the <body onload> attribute
-	* @private
-	*/
+
+	// Javascript to be added to the <body onload> attribute
 	var $mOnload = array();
+
 	// Used by packages to register notification events that can be subscribed to.
 	var $mNotifyEvents = array();
-	/**
-	* Used to store contents of kernel_config
-	* @private
-	*/
+
+	// Used to store contents of kernel_config
 	var $mConfig;
-	/**
-	* Used to monitor if ::registerPackage() was called. This is used to determine whether to auto-register a package
-	* @private
-	*/
+
+	// Used to monitor if ::registerPackage() was called. This is used to determine whether to auto-register a package
 	var $mRegisterCalled;
 
+	// The name of the package that is currently being processed
 	var $mPackageFileName;
-	
-	// >>>
+
 	// === BitSystem constructor
 	/**
 	* base constructor, auto assigns member db variable
@@ -86,8 +92,7 @@ class BitSystem extends BitBase {
 	* @access public
 	*/
 	// Constructor receiving a PEAR::Db database object.
-	function BitSystem()
-	{
+	function BitSystem() {
 		global $gBitTimer;
 		// Call DB constructor which will create the database member variable
 		BitBase::BitBase();
@@ -104,7 +109,7 @@ class BitSystem extends BitBase {
 		$this->initSmarty();
 		$this->mRegisterCalled = FALSE;
 	}
-	// >>>
+
 	// === initSmarty
 	/**
 	* Define and load Smarty components
@@ -113,24 +118,22 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access private
 	*/
-	function initSmarty()
-	{
+	function initSmarty() {
 		global $bitdomain, $_SERVER, $gBitSmarty;
 
 		// Set the separator for PHP generated tags to be &amp; instead of &
 		// This is necessary for XHTML compliance
-		ini_set("arg_separator.output", "&amp;");
+		ini_set( "arg_separator.output", "&amp;" );
 		// Remove automatic quotes added to POST/COOKIE by PHP
-		if (get_magic_quotes_gpc())
-		{
-			foreach ($_REQUEST as $k => $v)
-			{
-				if (!is_array($_REQUEST[$k])) $_REQUEST[$k] = stripslashes($v);
+		if( get_magic_quotes_gpc() ) {
+			foreach( $_REQUEST as $k => $v ) {
+				if( !is_array( $_REQUEST[$k] ) ) {
+					$_REQUEST[$k] = stripslashes( $v );
+				}
 			}
 		}
 
-		if (!isset($bitdomain))
-		{
+		if( !isset( $bitdomain ) ) {
 			$bitdomain = "";
 		}
 
@@ -138,11 +141,10 @@ class BitSystem extends BitBase {
 		if( !is_object( $gBitSmarty ) ) {
 			$gBitSmarty = new BitSmarty();
 			// set the default handler
-			$gBitSmarty->load_filter('pre', 'tr');
+			$gBitSmarty->load_filter( 'pre', 'tr' );
 			// $gBitSmarty->load_filter('output','trimwhitespace');
-			if (isset($_REQUEST['highlight']))
-			{
-				$gBitSmarty->load_filter('output', 'highlight');
+			if( isset( $_REQUEST['highlight'] ) ) {
+				$gBitSmarty->load_filter( 'output', 'highlight' );
 			}
 		}
 	}
@@ -152,12 +154,12 @@ class BitSystem extends BitBase {
 	*
 	* @param $pPackage optionally get preferences only for selected package
 	*/
-	function loadConfig($pPackage = null) {
+	function loadConfig( $pPackage = NULL ) {
 		$queryVars = array();
 		$whereClause = '';
 
-		if ($pPackage) {
-			array_push($queryVars, $pPackage);
+		if( $pPackage ) {
+			array_push( $queryVars, $pPackage );
 			$whereClause = ' WHERE `package`=? ';
 		}
 
@@ -193,22 +195,21 @@ class BitSystem extends BitBase {
 	*
 	* @access public
 	**/
-	function getConfigMatch( $pattern, $select_value="" ) {
+	function getConfigMatch( $pPattern, $pSelectValue="" ) {
 		if( empty( $this->mConfig ) ) {
 			$this->loadConfig();
 		}
 
 		$matching_keys = array();
-		$matching_keys = preg_grep($pattern, array_keys($this->mConfig));
+		$matching_keys = preg_grep( $pPattern, array_keys( $this->mConfig ) );
 		$new_array = array();
-		foreach($matching_keys as $key=>$value) {
-			if ( empty($select_value) || ( !empty($select_value) && $this->mConfig[$value] == $select_value) ) {
+		foreach( $matching_keys as $key=>$value ) {
+			if ( empty( $pSelectValue ) || ( !empty( $pSelectValue ) && $this->mConfig[$value] == $pSelectValue ) ) {
 				$new_array[$value] = $this->mConfig[$value];
 			}
 		}
 		return( $new_array );
 	}
-
 
 	/**
 	* set a group of config variables
@@ -230,10 +231,9 @@ class BitSystem extends BitBase {
 		}
 	}
 
-
 	// deprecated method saved compatibility until all getPreference calls have been eliminated
 	function getPreference( $pName, $pDefault = '' ) {
-		deprecated( 'BitSystem::getConfig()' );
+		deprecated( 'Please use: BitSystem::getConfig()' );
 		return $this->getConfig( $pName, $pDefault );
 	}
 
@@ -291,7 +291,6 @@ class BitSystem extends BitBase {
 		$this->setConfig( $pName, $pValue );
 		return TRUE;
 	}
-	// >>>
 
 	// <<< expungePackageConfig
 	/**
@@ -307,10 +306,7 @@ class BitSystem extends BitBase {
 			$this->loadConfig();
 		}
 	}
-	// >>>
 
-
-	// >>>
 	// === hasValidSenderEmail
 	/**
 	* Determines if this site has a legitimate sender address set.
@@ -324,9 +320,7 @@ class BitSystem extends BitBase {
 		}
 		return( !empty( $pSenderEmail ) && !preg_match( '/.*localhost$/', $pSenderEmail ) );
 	}
-	// >>>
 
-	// >>>
 	// === getErrorEmail
 	/**
 	* Smartly determines where error emails should go
@@ -344,10 +338,7 @@ class BitSystem extends BitBase {
 			$ret = 'root@localhost';
 		}
 	}
-	// >>>
 
-
-	// >>>
 	// === sendEmail
 	/**
 	* centralized function for send emails
@@ -370,9 +361,7 @@ class BitSystem extends BitBase {
 			"From: ".$this->getConfig( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
 		);
 	}
-	// >>>
 
-	// >>>
 	// === display
 	/**
 	* Display the main page template
@@ -401,7 +390,7 @@ class BitSystem extends BitBase {
 		$gBitSmarty->display( 'bitpackage:kernel/bitweaver.tpl' );
 		$this->postDisplay( $pMid );
 	}
-	// >>>
+
 	// === preDisplay
 	/**
 	* Take care of any processing that needs to happen just before the template is displayed
@@ -471,7 +460,6 @@ class BitSystem extends BitBase {
 		session_write_close();
 	}
 
-	// >>>
 	// === getTplIncludeFiles
 	/**
 	* scan packages for <pkg>/templates/header_inc.tpl or footer_inc.tpl files
@@ -504,7 +492,6 @@ class BitSystem extends BitBase {
 		return $ret;
 	}
 
-	// >>>
 	// === postDisplay
 	/**
 	* Take care of any processing that needs to happen just after the template is displayed
@@ -512,10 +499,9 @@ class BitSystem extends BitBase {
 	* @param none $
 	* @access private
 	*/
-	function postDisplay($pMid)
-	{
+	function postDisplay( $pMid ) {
 	}
-	// >>>
+
 	// === setHelpInfo
 	/**
 	* Set the smarty variables needed to display the help link for a page.
@@ -525,12 +511,10 @@ class BitSystem extends BitBase {
 	* @param  $desc Description of the help link (not the help itself)
 	* @access private
 	*/
-	function setHelpInfo($package, $context, $desc)
-	{
+	function setHelpInfo( $package, $context, $desc ) {
 		global $gBitSmarty;
-		$gBitSmarty->assign('TikiHelpInfo', array('URL' => 'http://doc.bitweaver.org/wiki/index.php?page=' . $package . $context , 'Desc' => $desc));
+		$gBitSmarty->assign( 'TikiHelpInfo', array( 'URL' => 'http://doc.bitweaver.org/wiki/index.php?page=' . $package . $context , 'Desc' => $desc ) );
 	}
-	// >>>
 
 	// === isPackageActive
 	/**
@@ -552,16 +536,16 @@ class BitSystem extends BitBase {
 	// and $this->getConfig('package_'.$name) == 'y'
 
 		$ret = FALSE;
-		if (defined( (strtoupper( $pPackageName ).'_PKG_NAME') ) ) {
-			$name = strtolower( @constant( (strtoupper( $pPackageName ).'_PKG_NAME') ) );
+		if( defined( strtoupper( $pPackageName ).'_PKG_NAME' ) ) {
+			$name = strtolower( @constant( ( strtoupper( $pPackageName ).'_PKG_NAME' ) ) );
 			if( $name ) {
 				// kernel always active
-				if ($name == 'kernel') {
+				if( $name == 'kernel' ) {
 					$ret = 1;
 				}
 				else {
 					// we have migrated the old tikiwiki feature_<pac
-					$ret = ($this->getConfig('package_'.$name) == 'y');
+					$ret = ( $this->getConfig( 'package_'.$name ) == 'y' );
 				}
 
 			}
@@ -610,7 +594,6 @@ class BitSystem extends BitBase {
 		return( $ret );
 	}
 
-
 	// === verifyPackage
 	/**
 	* It will verify that the given package is active or it will display the error template and die()
@@ -628,7 +611,6 @@ class BitSystem extends BitBase {
 
 		return( TRUE );
 	}
-
 
 	// === getPermissionInfo
 	/**
@@ -736,7 +718,6 @@ class BitSystem extends BitBase {
 		return( $ret );
 	}
 
-
 	// === verifyFeature
 	/**
 	* It will verify that the given feature is active or it will display the error template and die()
@@ -754,7 +735,6 @@ class BitSystem extends BitBase {
 
 		return( TRUE );
 	}
-
 
 	// === registerPackage
 	/**
@@ -881,7 +861,7 @@ class BitSystem extends BitBase {
 			$this->mActivePackage = $package_name;
 		}
 	}
-	// >>>
+
 	// === registerAppMenu
 	/**
 	* Define and load Smarty components
@@ -922,7 +902,7 @@ class BitSystem extends BitBase {
 			);
 		}
 	}
-	// >>>
+
 	// === registerSchemaTable
 	/**
 	* "Virtual" function stub - fully defined in BitInstaller
@@ -942,7 +922,7 @@ class BitSystem extends BitBase {
 			//$this->mPackages[$pPackage]['required'] = $pRequired | (isset( $this->mPackages[$pPackage]['required'] ) ? $this->mPackages[$pPackage]['required'] : 0 );
 		}
 	}
-	// >>>
+
 	// === registerPackageInfo
 	/**
 	* "Virtual" function stub - fully defined in BitInstaller
@@ -954,7 +934,7 @@ class BitSystem extends BitBase {
 		$pPackage = strtolower( $pPackage ); // lower case for uniformity
 		$this->mPackages[$pPackage]['info'] = $pInfoHash;
 	}
-	// >>>
+
 	// === registerSchemaSequences
 	/**
 	* accepts a sequence to be added to the install list
@@ -966,8 +946,7 @@ class BitSystem extends BitBase {
 		$pPackage = strtolower( $pPackage ); // lower case for uniformity
 		$this->mPackages[$pPackage]['sequences'] = $pSeqHash;
 	}
-	// >>>
-	// >>>
+
 	// === registerSchemaIndex
 	/**
 	* "Virtual" function stub - fully defined in BitInstaller
@@ -979,7 +958,7 @@ class BitSystem extends BitBase {
 		$pPackage = strtolower( $pPackage ); // lower case for uniformity
 		$this->mPackages[$pPackage]['indexes'] = $pIndexHash;
 	}
-	// >>>
+
 	// === registerSchemaDefault
 	/**
 	* "Virtual" function stub - fully defined in BitInstaller
@@ -1054,7 +1033,6 @@ class BitSystem extends BitBase {
 		$this->mNotifyEvents = array_merge( $this->mNotifyEvents, $pEventHash );
 	}
 
-	// >>>
 	// === fatalError
 	/**
 	* If an unrecoverable error has occurred, this method should be invoked. script exist occurs
@@ -1063,16 +1041,14 @@ class BitSystem extends BitBase {
 	* @return none this function will DIE DIE DIE!!!
 	* @access public
 	*/
-	function fatalError( $pMsg, $pTemplate='error.tpl', $pErrorTitle="Seems there's been a problem." )
-	{
+	function fatalError( $pMsg, $pTemplate='error.tpl', $pErrorTitle="Seems there's been a problem." ) {
 		global $gBitSmarty;
-		$gBitSmarty->assign('fatalTitle', tra($pErrorTitle) );
-		$gBitSmarty->assign('msg', tra($pMsg) );
+		$gBitSmarty->assign( 'fatalTitle', tra( $pErrorTitle ) );
+		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->display( $pTemplate );
 		die;
 	}
 
-	// >>>
 	// === loadPackage
 	/**
 	* Loads a package
@@ -1084,19 +1060,17 @@ class BitSystem extends BitBase {
 	* @return
 	* @access public
 	*/
-	function loadPackage ($pkgName, $pScanFile, $autoRegister=TRUE, $pOnce=TRUE)
-	{
-
+	function loadPackage( $pkgName, $pScanFile, $pAutoRegister=TRUE, $pOnce=TRUE ) { 
 		#check if already loaded, loading again won't work with 'include_once' since
 		#no register call will be done, so don't auto register.
-		if ($autoRegister && !empty($this->mPackages[$pkgName]['name'])) {
-			$autoRegister = FALSE;
-			}
+		if( $pAutoRegister && !empty( $this->mPackages[$pkgName]['name'] ) ) {
+			$pAutoRegister = FALSE;
+		}
 
 		$this->mRegisterCalled = FALSE;
 		$scanFile = BIT_ROOT_PATH.$pkgName.'/'.$pScanFile;
 		$file_exists = 0;
-		if (file_exists( $scanFile )) {
+		if( file_exists( $scanFile ) ) {
 			$file_exists = 1;
 			global $gBitSystem, $gLibertySystem, $gBitSmarty, $gBitUser, $gBitLanguage;
 			$this->mPackageFileName = $scanFile;
@@ -1107,21 +1081,19 @@ class BitSystem extends BitBase {
 			}
 		}
 
-		if( ($file_exists || $pkgName == 'kernel') && ($autoRegister && !$this->mRegisterCalled) ) {
+		if( ( $file_exists || $pkgName == 'kernel' ) && ( $pAutoRegister && !$this->mRegisterCalled ) ) {
 			$registerHash = array(
 				'package_name' => $pkgName,
 				'package_path' => BIT_ROOT_PATH.$pkgName.'/',
 				'activatable' => FALSE,
 			);
-			if ($pkgName == 'kernel') {
-				$registerHash = array_merge($registerHash, array('required_package'=>TRUE));
-				}
+			if( $pkgName == 'kernel' ) {
+				$registerHash = array_merge( $registerHash, array( 'required_package'=>TRUE ) );
+			}
 			$this->registerPackage( $registerHash );
 		}
-
 	}
 
-	// >>>
 	// === scanPackages
 	/**
 	* scan all available packages. This is an *expensive* function. DO NOT call this functionally regularly , or arbitrarily. Failure to comply is punishable by death by jello suffication!
@@ -1134,74 +1106,78 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $autoRegister=TRUE, $fileSystemScan=TRUE ) {
-
+	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $pAutoRegister=TRUE, $pFileSystemScan=TRUE ) {
 		global $gPreScan;
 
 		#get list of packages from DB
-		$packages_config_array = $this->getConfigMatch("/^package_/i");
+		$packages_config_array = $this->getConfigMatch( "/^package_/i" );
 
 		$packages_to_scan = array();
-		if (!empty($gPreScan) && is_array($gPreScan)) {
+		if( !empty( $gPreScan ) && is_array( $gPreScan ) ) {
 			# gPreScan may hold a list of packages that must be loaded first
-			$packages_to_scan = array_flip($gPreScan);
-			}
-
-		foreach ($packages_config_array as $package_name=>$config_setting) {
-			$work = $package_name;
-			$work = preg_replace( "/^package_/", '', $work,1 );
-			# ingore if already in list
-			if (!empty($packages_to_scan[$work])) {
-				continue;
-				}
-			# add to list
-			if ( ( !empty($pSelect) && $config_setting == $pSelect )
-			  || ( !empty($pSelect) && $pSelect == 'all' )
-			  || ( !empty($pSelect) && $pSelect == 'installed' && ( $config_setting == 'y' || $config_setting == 'i' ) )
-			  || ( !empty($pSelect) && $pSelect == 'active' && ( $config_setting == 'y' ) )
-			  || empty($pSelect) ) {
-				$packages_to_scan[$work] = 1;
-				}
-			}
-
-		#load the specified packages
-		foreach(array_keys($packages_to_scan) as $pkgName) {
-			$this->loadPackage($pkgName, $pScanFile, $autoRegister, $pOnce);
+			$packages_to_scan = array_flip( $gPreScan );
 		}
 
-		if ($fileSystemScan) {
-			// load lib configs
-			if( $pkgDir = opendir(BIT_ROOT_PATH) ) {
-				while (false !== ($dirName = readdir($pkgDir))) {
-					if (is_dir(BIT_ROOT_PATH . '/' . $dirName) && ($dirName != 'CVS') && ( preg_match( '/^\w/', $dirName)) ) {
-						if (!empty($packages_to_scan[$dirName])) {
-							continue;
-							}
-						$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
-						$this->loadPackage($dirName, $pScanFile, $autoRegister, $pOnce);
-					}
-				}
+		foreach( $packages_config_array as $package_name=>$config_setting ) {
+			$work = $package_name;
+			$work = preg_replace( "/^package_/", '', $work, 1 );
 
+			# ingore if already in list
+			if( !empty( $packages_to_scan[$work] ) ) {
+				continue;
 			}
 
+			# add to list
+			if(
+				( !empty( $pSelect ) && $config_setting == $pSelect ) ||
+				( !empty( $pSelect ) && $pSelect == 'all' ) ||
+				( !empty( $pSelect ) && $pSelect == 'installed' && ( $config_setting == 'y' || $config_setting == 'i' ) ) ||
+				( !empty( $pSelect ) && $pSelect == 'active' && ( $config_setting == 'y' ) ) ||
+				empty( $pSelect )
+			) {
+				$packages_to_scan[$work] = 1;
+			}
+		}
+
+		#load the specified packages
+		foreach( array_keys( $packages_to_scan ) as $pkgName ) {
+			$this->loadPackage( $pkgName, $pScanFile, $pAutoRegister, $pOnce );
+		}
+//		vd($pScanFile);
+//		vd($pOnce);
+//		vd($pAutoRegister);
+//		vd($pFileSystemScan);
+//		vd(array_keys($this->mPackages));
+
+		if( $pFileSystemScan ) {
+			// load lib configs
+			if( $pkgDir = opendir( BIT_ROOT_PATH ) ) {
+				while( FALSE !== ( $dirName = readdir( $pkgDir ) ) ) {
+					if( is_dir( BIT_ROOT_PATH . '/' . $dirName ) && ( $dirName != 'CVS' ) && ( preg_match( '/^\w/', $dirName ) ) ) {
+						if( !empty( $packages_to_scan[$dirName] ) ) {
+							continue;
+						}
+						$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
+						$this->loadPackage( $dirName, $pScanFile, $pAutoRegister, $pOnce );
+					}
+				}
+			}
 		}
 
 		#in case some defines not done
-		if (!defined('ACTIVE_PACKAGE')) {
-			define('ACTIVE_PACKAGE', 'kernel'); // when in doubt, assume the kernel
+		if( !defined( 'ACTIVE_PACKAGE' ) ) {
+			define( 'ACTIVE_PACKAGE', 'kernel' ); // when in doubt, assume the kernel
 		}
 
 		if( !defined( 'BIT_STYLES_PATH' ) && defined( 'THEMES_PKG_PATH' ) ) {
-			define('BIT_STYLES_PATH', THEMES_PKG_PATH . 'styles/');
-		}
-		if( !defined( 'BIT_STYLES_URL' ) && defined( 'THEMES_PKG_URL' ) ) {
-			define('BIT_STYLES_URL', THEMES_PKG_URL . 'styles/');
+			define( 'BIT_STYLES_PATH', THEMES_PKG_PATH . 'styles/' );
 		}
 
-		asort( $this->mAppMenu );
+		if( !defined( 'BIT_STYLES_URL' ) && defined( 'THEMES_PKG_URL' ) ) {
+			define( 'BIT_STYLES_URL', THEMES_PKG_URL . 'styles/' );
+		}
 	}
 
-	// >>>
 	// === verifyInstalledPackages
 	/**
 	* scan all available packages
@@ -1210,21 +1186,22 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function verifyInstalledPackages($pSelect='installed',$fileSystemScan=FALSE) {
+	function verifyInstalledPackages( $pSelect='installed', $pFileSystemScan=FALSE ) {
 		global $gBitDbType;
 		#load in any admin/schema_inc.php files that exist for each package
-		$this->scanPackages( 'admin/schema_inc.php',TRUE,$pSelect,FALSE,$fileSystemScan);
+		$this->scanPackages( 'admin/schema_inc.php', TRUE, $pSelect, FALSE, $pFileSystemScan );
 
 		if( $this->isDatabaseValid() ) {
-			if (strlen(BIT_DB_PREFIX) > 0) {
+			if( strlen( BIT_DB_PREFIX ) > 0 ) {
 				$lastQuote = strrpos( BIT_DB_PREFIX, '`' );
 				if( $lastQuote != FALSE ) {
 					$lastQuote++;
 				}
-				$prefix = substr( BIT_DB_PREFIX,  $lastQuote );
+				$prefix = substr( BIT_DB_PREFIX, $lastQuote );
 			} else {
 				$prefix = '';
 			}
+
 			$showTables = ( $prefix ? $prefix.'%' : NULL );
 			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $showTables ) ) {
 				foreach( array_keys( $this->mPackages ) as $package ) {
@@ -1282,12 +1259,10 @@ class BitSystem extends BitBase {
 
 	}
 
-
-
 	// Allows a package to be selected as the homepage for the site (Admin->General Settings)
 	// Calls to this function should be made from each 'homeable' package's schema_inc.php
-	function makePackageHomeable($package) {
-		deprecated( 'BitSystem::registerPackage( array( "homeable" => TRUE ) ) in your bit_setup_inc.php file' );
+	function makePackageHomeable( $package ) {
+		deprecated( 'Please use: BitSystem::registerPackage( array( "homeable" => TRUE ) ) in your bit_setup_inc.php file' );
 		$this->mPackages[strtolower( $package )]['homeable'] = TRUE;
 	}
 
@@ -1476,7 +1451,7 @@ class BitSystem extends BitBase {
 		}
 		return $ret;
 	}
-	// >>>
+
 	// === getBrowserStyleCss
 	/**
 	* get browser specific css file
@@ -1492,7 +1467,7 @@ class BitSystem extends BitBase {
 		}
 		return !empty( $ret ) ? $ret : NULL;
 	}
-	// >>>
+
 	// === getAltStyleCss
 	/**
 	* get alternate style sheets
@@ -1520,7 +1495,7 @@ class BitSystem extends BitBase {
 		}
 		return $ret;
 	}
-	// >>>
+
 	// === getStyleUrl
 	/**
 	* figure out the current style URL
@@ -1537,7 +1512,7 @@ class BitSystem extends BitBase {
 		}
 		return THEMES_PKG_URL . 'styles/' . $pStyle . '/';
 	}
-	// >>>
+
 	// === getStylePath
 	/**
 	* figure out the current style URL
@@ -1554,7 +1529,7 @@ class BitSystem extends BitBase {
 		}
 		return THEMES_PKG_PATH . 'styles/' . $pStyle . '/';
 	}
-	// >>>
+
 	// === loadModules
 	/**
 	* load all modules. LOAD functions imply getting data from database and putting in local member variable
@@ -1576,7 +1551,7 @@ class BitSystem extends BitBase {
 		}
 	}
 
-	function getLayout($pUserMixed = null, $pLayout = ACTIVE_PACKAGE, $pFallback = TRUE, $pFallbackLayout = DEFAULT_PACKAGE) {
+	function getLayout( $pUserMixed = null, $pLayout = ACTIVE_PACKAGE, $pFallback = TRUE, $pFallbackLayout = DEFAULT_PACKAGE ) {
 		global $gCenterPieces, $gBitUser;
 		$ret = array( 'l' => NULL, 'c' => NULL, 'r' => NULL );
 		$layoutUserId = ROOT_USER_ID;
@@ -1656,7 +1631,6 @@ class BitSystem extends BitBase {
 									}
 								}
 
-
 							}
 						} else {
 							$row["module_groups"] = explode( ' ', $row["groups"] );
@@ -1673,14 +1647,14 @@ class BitSystem extends BitBase {
 					$row["visible"] = TRUE;
 					$row["module_groups"] = array();
 				}
-				if (empty($ret[$row['layout_position']])) {
+				if( empty( $ret[$row['layout_position']] ) ) {
 					$ret[$row['layout_position']] = array();
 				}
-				if ($row['layout_position'] == CENTER_COLUMN) {
-					array_push($gCenterPieces, $row['module_rsrc']);
+				if( $row['layout_position'] == CENTER_COLUMN ) {
+					array_push( $gCenterPieces, $row['module_rsrc'] );
 				}
-				if (!empty($row["visible"])) {
-					array_push($ret[$row['layout_position']], $row);
+				if( !empty( $row["visible"] ) ) {
+					array_push( $ret[$row['layout_position']], $row );
 				}
 				$row = $result->fetchRow();
 			}
@@ -1693,11 +1667,11 @@ class BitSystem extends BitBase {
 		$vocales = "aeiou";
 		$consonantes = "bcdfghjklmnpqrstvwxyz123456789";
 		$r = '';
-		for ($i = 0; $i < 8; $i++) {
-			if ($i % 2) {
-				$r .= $vocales{rand(0, strlen($vocales) - 1)};
+		for( $i = 0; $i < 8; $i++ ) {
+			if( $i % 2 ) {
+				$r .= $vocales{rand( 0, strlen( $vocales ) - 1 )};
 			} else {
-				$r .= $consonantes{rand(0, strlen($consonantes) - 1)};
+				$r .= $consonantes{rand( 0, strlen( $consonantes ) - 1 )};
 			}
 		}
 		return $r;
@@ -1723,12 +1697,12 @@ class BitSystem extends BitBase {
 			$this->mMimeTypes = array();
 			if( $fp = fopen( $mimeFile,"r" ) ) {
 				while( false != ($line = fgets( $fp, 4096 ) ) ) {
-					if (!preg_match("/^\s*(?!#)\s*(\S+)\s+(?=\S)(.+)/",$line,$match)) {
+					if( !preg_match( "/^\s*(?!#)\s*(\S+)\s+(?=\S)(.+)/", $line, $match ) ) {
 						continue;
 					}
 					$tmp = preg_split( "/\s/",trim( $match[2] ) );
 					foreach( $tmp as $type ) {
-						$this->mMimeTypes[strtolower($type)] = $match[1];
+						$this->mMimeTypes[strtolower( $type )] = $match[1];
 					}
 				}
 				fclose( $fp );
@@ -1742,8 +1716,7 @@ class BitSystem extends BitBase {
 	* * Return 'windows' if windows, otherwise 'unix'
 	* \static
 	*/
-	function os()
-	{
+	function os() {
 		static $os;
 		if( !isset( $os ) ) {
 			if( preg_match( "/WIN/",PHP_OS ) ) {
@@ -1755,69 +1728,61 @@ class BitSystem extends BitBase {
 		return $os;
 	}
 
-
 	/**
-	* * Prepend $path to the include path
+	* * Prepend $pPath to the include path
 	* \static
 	*/
-	function prependIncludePath($path)
-	{
-		if(!function_exists("get_include_path"))
-			include_once(UTIL_PKG_PATH . "PHP_Compat/Compat/Function/get_include_path.php");
-		if(!defined("PATH_SEPARATOR"))
-			include_once(UTIL_PKG_PATH . "PHP_Compat/Compat/Constant/PATH_SEPARATOR.php");
-		if(!function_exists("set_include_path"))
-			include_once(UTIL_PKG_PATH . "PHP_Compat/Compat/Function/set_include_path.php");
+	function prependIncludePath( $pPath ) {
+		if( !function_exists( "get_include_path" ) ) {
+			include_once( UTIL_PKG_PATH . "PHP_Compat/Compat/Function/get_include_path.php" );
+		}
+		if( !defined( "PATH_SEPARATOR" ) ) {
+			include_once( UTIL_PKG_PATH . "PHP_Compat/Compat/Constant/PATH_SEPARATOR.php" );
+		}
+		if( !function_exists( "set_include_path" ) ) {
+			include_once( UTIL_PKG_PATH . "PHP_Compat/Compat/Function/set_include_path.php" );
+		}
 
 		$include_path = get_include_path();
-		if ($include_path)
-		{
-			$include_path = $path . PATH_SEPARATOR . $include_path;
+		if( $include_path ) {
+			$include_path = $pPath . PATH_SEPARATOR . $include_path;
+		} else {
+			$include_path = $pPath;
 		}
-		else
-		{
-			$include_path = $path;
-		}
-		return set_include_path($include_path);
+		return set_include_path( $include_path );
 	}
 
 	/**
-	* * Append $path to the include path
+	* * Append $pPath to the include path
 	* \static
 	*/
-	function appendIncludePath($path)
-	{
-		if(!function_exists("get_include_path"))
+	function appendIncludePath( $pPath ) {
+		if( !function_exists( "get_include_path" ) ) {
 			include_once(UTIL_PKG_PATH . "PHP_Compat/Compat/Function/get_include_path.php");
-		if(!defined("PATH_SEPARATOR"))
+		}
+		if( !defined("PATH_SEPARATOR" ) ) {
 			include_once(UTIL_PKG_PATH . "PHP_Compat/Compat/Constant/PATH_SEPARATOR.php");
-		if(!function_exists("set_include_path"))
+		}
+		if( !function_exists( "set_include_path" ) ) {
 			include_once(UTIL_PKG_PATH . "PHP_Compat/Compat/Function/set_include_path.php");
+		}
 
 		$include_path = get_include_path();
-		if ($include_path)
-		{
-			$include_path .= PATH_SEPARATOR . $path;
+		if( $include_path ) {
+			$include_path .= PATH_SEPARATOR . $pPath;
+		} else {
+			$include_path = $pPath;
 		}
-		else
-		{
-			$include_path = $path;
-		}
-		return set_include_path($include_path);
+		return set_include_path( $include_path );
 	}
 
-	/*!
-		Check that everything is set up properly
-
-		\static
+	/* Check that everything is set up properly
+	* \static
 	*/
-	function checkEnvironment()
-	{
-		static $checked;
-		global $gTempDirs;
+	function checkEnvironment() {
+		static $checked, $gTempDirs;
 
-		if ($checked)
-		{
+		if( $checked ) {
 			return;
 		}
 
@@ -1825,28 +1790,28 @@ class BitSystem extends BitBase {
 
 		$docroot = BIT_ROOT_PATH;
 
-		if (ini_get('session.save_handler') == 'files') {
-			$save_path = ini_get('session.save_path');
+		if( ini_get( 'session.save_handler' ) == 'files' ) {
+			$save_path = ini_get( 'session.save_path' );
 
-			if (empty($save_path)) {
+			if( empty( $save_path ) ) {
 				$errors .= "The session.save_path variable is not setup correctly (its empty).\n";
 			} else {
-				if (strpos ($save_path, ";") !== FALSE) {
-  					$save_path = substr ($save_path, strpos ($save_path, ";")+1);
+				if( strpos( $save_path, ";" ) !== FALSE ) {
+					$save_path = substr( $save_path, strpos( $save_path, ";" )+1 );
 				}
-				$open = ini_get('open_basedir');
-				if (!@is_dir($save_path) && empty($open)) {
+				$open = ini_get( 'open_basedir' );
+				if( !@is_dir( $save_path ) && empty( $open ) ) {
 					$errors .= "The directory '$save_path' does not exist or PHP is not allowed to access it (check open_basedir entry in php.ini).\n";
-				} else if (!bw_is_writeable($save_path)) {
+				} elseif( !bw_is_writeable( $save_path ) ) {
 					$errors .= "The directory '$save_path' is not writeable.\n";
 				}
 			}
 
-			if ($errors) {
+			if( $errors ) {
 				$save_path = getTempDir();
 
-				if (is_dir($save_path) && bw_is_writeable($save_path)) {
-					ini_set('session.save_path', $save_path);
+				if( is_dir( $save_path ) && bw_is_writeable( $save_path ) ) {
+					ini_set( 'session.save_path', $save_path );
 
 					$errors = '';
 				}
@@ -1856,8 +1821,8 @@ class BitSystem extends BitBase {
 		$wwwuser = '';
 		$wwwgroup = '';
 
-		if (isWindows()) {
-			if ( strpos($_SERVER["SERVER_SOFTWARE"],"IIS") && isset($_SERVER['COMPUTERNAME']) ) {
+		if( isWindows() ) {
+			if( strpos( $_SERVER["SERVER_SOFTWARE"],"IIS" ) && isset( $_SERVER['COMPUTERNAME'] ) ) {
 				$wwwuser = 'IUSR_'.$_SERVER['COMPUTERNAME'];
 				$wwwgroup = 'IUSR_'.$_SERVER['COMPUTERNAME'];
 			} else {
@@ -1866,19 +1831,19 @@ class BitSystem extends BitBase {
 			}
 		}
 
-		if (function_exists('posix_getuid')) {
-			$userhash = @posix_getpwuid(@posix_getuid());
+		if( function_exists( 'posix_getuid' ) ) {
+			$userhash = @posix_getpwuid( @posix_getuid() );
 
-			$group = @posix_getpwuid(@posix_getgid());
+			$group = @posix_getpwuid( @posix_getgid() );
 			$wwwuser = $userhash ? $userhash['name'] : false;
 			$wwwgroup = $group ? $group['name'] : false;
 		}
 
-		if (!$wwwuser) {
+		if( !$wwwuser ) {
 			$wwwuser = 'nobody (or the user account the web server is running under)';
 		}
 
-		if (!$wwwgroup) {
+		if( !$wwwgroup ) {
 			$wwwgroup = 'nobody (or the group account the web server is running under)';
 		}
 
@@ -2262,27 +2227,25 @@ class BitSystem extends BitBase {
 	* @access public
 	**/
 	function isAjaxRequest() {
-		return (!empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' ? TRUE : FALSE);
+		return( !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' ? TRUE : FALSE );
 	}
-
 
 	// should be moved somewhere else. unbreaking things for now - 25-JUN-2005 - spiderr
 	// \TODO remove html hardcoded in diff2
-	function diff2($page1, $page2) {
-		$page1 = split("\n", $page1);
-		$page2 = split("\n", $page2);
-		$z = new WikiDiff($page1, $page2);
-		if ($z->isEmpty()) {
-		$html = '<hr /><br />[' . tra("Versions are identical"). ']<br /><br />';
+	function diff2( $page1, $page2 ) {
+		$page1 = split( "\n", $page1 );
+		$page2 = split( "\n", $page2 );
+		$z = new WikiDiff( $page1, $page2 );
+		if( $z->isEmpty() ) {
+			$html = '<hr /><br />['.tra("Versions are identical").']<br /><br />';
 		} else {
-		//$fmt = new WikiDiffFormatter;
-		$fmt = new WikiUnifiedDiffFormatter;
-		$html = $fmt->format($z, $page1);
+			//$fmt = new WikiDiffFormatter;
+			$fmt = new WikiUnifiedDiffFormatter;
+			$html = $fmt->format( $z, $page1 );
 		}
 		return $html;
 	}
 }
-
 
 // === installError
 /**
@@ -2292,8 +2255,7 @@ class BitSystem extends BitBase {
 * @return none this function will DIE DIE DIE!!!
 * @access public
 */
-function installError($pMsg = null)
-{
+function installError( $pMsg = null ) {
 	global $gBitDbType;
 	// here we decide where to go. if there are no db settings yet, we go the welcome page.
 	if( isset( $gBitDbType ) ) {
@@ -2316,85 +2278,26 @@ function installError($pMsg = null)
  *
  * @package kernel
  */
-class BitTimer
-{
-	function parseMicro($micro)
-	{
-		list($micro, $sec) = explode(' ', microtime());
-
+class BitTimer {
+	function parseMicro( $micro ) {
+		list( $micro, $sec ) = explode( ' ', microtime() );
 		return $sec + $micro;
 	}
 
-	function start($timer = 'default')
-	{
-		$this->mTimer[$timer] = $this->parseMicro(microtime());
+	function start( $timer = 'default' ) {
+		$this->mTimer[$timer] = $this->parseMicro( microtime() );
 	}
 
-	function stop($timer = 'default')
-	{
-		return $this->current($timer);
+	function stop( $timer = 'default' ) {
+		return $this->current( $timer );
 	}
 
-	function elapsed($timer = 'default')
-	{
-		return $this->parseMicro(microtime()) - $this->mTimer[$timer];
+	function elapsed( $timer = 'default' ) {
+		return $this->parseMicro( microtime() ) - $this->mTimer[$timer];
 	}
 }
 
 global $gBitTimer;
 $gBitTimer = new BitTimer();
 $gBitTimer->start();
-
-/* \brief  substr with a utf8 string - works only with $start and $length positive or nuls
-* This function is the same as substr but works with multibyte
-* In a multybyte sequence, the first byte of a multibyte sequence that represents a non-ASCII character is always in the range 0xC0 to 0xFD
-* and it indicates how many bytes follow for this character.
-* All further bytes in a multibyte sequence are in the range 0x80 to 0xBF.
-*/
-/**
- * Check mb_substr availability
- */
-if (function_exists('mb_substr'))
-{
-	mb_internal_encoding("UTF-8");
-}
-else
-{
-	function mb_substr($str, $start, $len = '', $encoding = "UTF-8")
-	{
-		$limit = strlen($str);
-		for ($s = 0; $start > 0;--$start) // found the real start
-		{
-			if ($s >= $limit)
-				break;
-			if ($str[$s] <= "\x7F")
-				++$s;
-			else
-			{
-				++$s; // skip length
-				while ($str[$s] >= "\x80" && $str[$s] <= "\xBF")
-				++$s;
-			}
-		}
-		if ($len == '')
-			return substr($str, $s);
-		else
-			for ($e = $s; $len > 0; --$len) // found the real end
-		{
-			if ($e >= $limit)
-				break;
-			if ($str[$e] <= "\x7F")
-				++$e;
-			else
-			{
-				++$e; //skip length
-				while ($str[$e] >= "\x80" && $str[$e] <= "\xBF" && $e < $limit)
-				++$e;
-			}
-		}
-		return substr($str, $s, $e - $s);
-	}
-}
-
-
 ?>

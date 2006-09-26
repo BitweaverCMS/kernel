@@ -19,7 +19,7 @@
  *     If the array contains an element handler_class then lib becomes the handler_class and the array is passed as the parameter to (new <lib>)->getDisplayUrl
  * --
  * If all of the above tests fail then LibertyContent::getDisplayUrl with the argument to the modifier passed as the second argument
- * Example: {'My Page'|displayUrl}, {'admin'|displyUrl:BitUser}, {$gContent|displayUrl:MyObject}
+ * Example: {'My Page'|displayUrl}, {'admin'|displayUrl:BitUser}, {$gContent|displayUrl:MyObject}
  * -------------------------------------------------------------
  */
 
@@ -73,7 +73,7 @@ function smarty_modifier_displayUrl($pMixed, $lib='') {
 	} elseif (is_array($pMixed)) {
 		if (!empty($lib)) {
 			if (smarty_modifier_displayUrl_findLib($lib)) {
-				$i = $lib();
+				$i = new $lib();
 				return $i->getDisplayUrl($pMixed);
 			}
 		}

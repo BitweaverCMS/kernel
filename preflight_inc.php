@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.12 2006/04/28 15:25:55 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.13 2006/09/26 06:02:55 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -161,7 +161,7 @@ function deprecated( $pReplace = NULL ) {
 	//vd( $trace);
 	$out = "Deprecated function call:\n\tfunction: ".$trace[1]['class']."::".$trace[1]['function']."()\n\tfile: ".$trace[1]['file']."\n\tline: ".$trace[1]['line'];
 	if( !empty( $pReplace ) ) {
-		$out .= "\n\treplace with: ".$pReplace;
+		$out .= "\n\t".$pReplace;
 	}
 	vd( $out );
 }

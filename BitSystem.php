@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.101 2006/09/26 06:51:19 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.102 2006/09/30 11:45:14 jht001 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -57,6 +57,9 @@ class BitSystem extends BitBase {
 
 	// Essential information about packages
 	var $mPackages = array();
+
+	// Cross Reference Package Directory Name => Package Key used as index into $mPackages
+	var $mPackagesDirNameXref = array();
 
 	// Array that contains a full description of the current layout
 	var $mLayout = array();
@@ -520,6 +523,8 @@ class BitSystem extends BitBase {
 	/**
 	* check's if a package is active.
 	* @param $pPackageName the name of the package to test
+    *        where the package name is in the form used to index $mPackages
+    *        See comments in scanPackages for more information
 	* @return none
 	* @access public
 	*
@@ -558,6 +563,8 @@ class BitSystem extends BitBase {
 	/**
 	* check's if a package is Installed
 	* @param $pPackageName the name of the package to test
+    *        where the package name is in the form used to index $mPackages
+    *        See comments in scanPackages for more information
 	* @return none
 	* @access public
 	*
@@ -598,6 +605,8 @@ class BitSystem extends BitBase {
 	/**
 	* It will verify that the given package is active or it will display the error template and die()
 	* @param $pPackageName the name of the package to test
+    *        where the package name is in the form used to index $mPackages
+    *        See comments in scanPackages for more information
 	* @return none
 	*
 	* @param  $pKey hash key
@@ -747,7 +756,7 @@ class BitSystem extends BitBase {
 	function registerPackage( $pRegisterHash ) {
 		extract( $pRegisterHash );
 		#extract can set:
-		#  $package_name
+		#  $package_name (Registration Name) See scanPackages comments for more info)
 		#  $package_path
 		#  $activatable
 		#  $service
@@ -842,12 +851,16 @@ class BitSystem extends BitBase {
 		}
 		$this->mPackages[$pkgNameKey]['name'] = $package_name;
 
+		$package_dir_name = basename( $package_path );
+		
 		// Define <PACKAGE>_PKG_DIR
 		$pkgDefine = $pkgName.'_PKG_DIR';
 		if (!defined($pkgDefine)) {
-			define($pkgDefine, basename( $package_path ));
+			define($pkgDefine, $package_dir_name);
 		}
-		$this->mPackages[$pkgNameKey]['dir'] = basename( $package_path );
+		$this->mPackages[$pkgNameKey]['dir'] = $package_dir_name;
+
+		$this->mPackagesDirNameXref[$package_dir_name] = $pkgNameKey;
 
 		// Define the package we are currently in
 		// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
@@ -1053,22 +1066,22 @@ class BitSystem extends BitBase {
 	/**
 	* Loads a package
 	*
-	* @param string $ pkgName = package name to load
+	* @param string $ pkgDir = Directory Name of package to load
 	* @param string $ pScanFile file to be looked for
 	* @param string $ autoRegister - TRUE = autoregister any packages that don't register on their own, FALSE = don't
 	* @param string $ pOnce - TRUE = do include_once to load file FALSE = do include to load the file
 	* @return
 	* @access public
 	*/
-	function loadPackage( $pkgName, $pScanFile, $pAutoRegister=TRUE, $pOnce=TRUE ) { 
+	function loadPackage( $pPkgDir, $pScanFile, $pAutoRegister=TRUE, $pOnce=TRUE ) { 
 		#check if already loaded, loading again won't work with 'include_once' since
 		#no register call will be done, so don't auto register.
-		if( $pAutoRegister && !empty( $this->mPackages[$pkgName]['name'] ) ) {
+		if( $pAutoRegister && !empty( $this->mPackagesDirNameXref[$pPkgDir] ) ) {
 			$pAutoRegister = FALSE;
 		}
 
 		$this->mRegisterCalled = FALSE;
-		$scanFile = BIT_ROOT_PATH.$pkgName.'/'.$pScanFile;
+		$scanFile = BIT_ROOT_PATH.$pPkgDir.'/'.$pScanFile;
 		$file_exists = 0;
 		if( file_exists( $scanFile ) ) {
 			$file_exists = 1;
@@ -1081,13 +1094,14 @@ class BitSystem extends BitBase {
 			}
 		}
 
-		if( ( $file_exists || $pkgName == 'kernel' ) && ( $pAutoRegister && !$this->mRegisterCalled ) ) {
+		if( ( $file_exists || $pPkgDir == 'kernel' ) && ( $pAutoRegister && !$this->mRegisterCalled ) ) {
 			$registerHash = array(
-				'package_name' => $pkgName,
-				'package_path' => BIT_ROOT_PATH.$pkgName.'/',
+				#for auto registered packages Registration Package Name = Package Directory Name
+				'package_name' => $pPkgDir,
+				'package_path' => BIT_ROOT_PATH.$pPkgDir.'/',
 				'activatable' => FALSE,
 			);
-			if( $pkgName == 'kernel' ) {
+			if( $pPkgDir == 'kernel' ) {
 				$registerHash = array_merge( $registerHash, array( 'required_package'=>TRUE ) );
 			}
 			$this->registerPackage( $registerHash );
@@ -1096,6 +1110,7 @@ class BitSystem extends BitBase {
 
 	// === scanPackages
 	/**
+	*
 	* scan all available packages. This is an *expensive* function. DO NOT call this functionally regularly , or arbitrarily. Failure to comply is punishable by death by jello suffication!
 	*
 	* @param string $ pScanFile file to be looked for
@@ -1105,43 +1120,65 @@ class BitSystem extends BitBase {
 	* @param string $ fileSystemScan - TRUE = scan file system for packages to load, False = don't
 	* @return none
 	* @access public
+    *
+    * Packages have three different names:
+    *    The directory name where they reside on disk
+    *    The Name they register themselves as when they call registerPackage 
+    *    The Key for the array $this->mPackages
+    *    
+    * Example:
+    *    A package in directory 'stars' that registers itself with a name of 'Star Ratings'
+    *    would have these three names:
+    *    
+    *    Directory Name: 'stars'
+    *    Registered Name: Star Ratings'
+    *    $this->mPackages key: 'star_ratings'
+    *
+    *    Of course, its possible for all three names to be the same if the registered name
+    *    is all lower case without spaces and is the same as the diretory name.
+    *
+    *    Functions that expect a package name as a parameter should make clear which form
+    *    of the name they expect.
+    *    
 	*/
 	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $pAutoRegister=TRUE, $pFileSystemScan=TRUE ) {
 		global $gPreScan;
 
-		#get list of packages from DB
-		$packages_config_array = $this->getConfigMatch( "/^package_/i" );
+		#get list of package directory names from DB
+		$packages_config_array = $this->getConfigMatch( "/^packagedir_/i" );
 
+		# $packages_to_scan is a list of Package Directory Names
 		$packages_to_scan = array();
 		if( !empty( $gPreScan ) && is_array( $gPreScan ) ) {
 			# gPreScan may hold a list of packages that must be loaded first
 			$packages_to_scan = array_flip( $gPreScan );
 		}
 
-		foreach( $packages_config_array as $package_name=>$config_setting ) {
-			$work = $package_name;
-			$work = preg_replace( "/^package_/", '', $work, 1 );
-
+		foreach( $packages_config_array as $package_dir_name_key=>$package_dir_name ) {
+			$work = $package_dir_name_key;
+			$work = preg_replace( "/^packagedir_/", '', $work, 1 );
+			
 			# ingore if already in list
-			if( !empty( $packages_to_scan[$work] ) ) {
+			if( !empty( $packages_to_scan[$package_dir_name] ) ) {
 				continue;
 			}
 
 			# add to list
+			$package_config_status = $this->getConfig("package_" . $work);
 			if(
-				( !empty( $pSelect ) && $config_setting == $pSelect ) ||
+				( !empty( $pSelect ) && $package_config_status == $pSelect ) ||
 				( !empty( $pSelect ) && $pSelect == 'all' ) ||
-				( !empty( $pSelect ) && $pSelect == 'installed' && ( $config_setting == 'y' || $config_setting == 'i' ) ) ||
-				( !empty( $pSelect ) && $pSelect == 'active' && ( $config_setting == 'y' ) ) ||
+				( !empty( $pSelect ) && $pSelect == 'installed' && ( $package_config_status == 'y' || $package_config_status == 'i' ) ) ||
+				( !empty( $pSelect ) && $pSelect == 'active' && ( $package_config_status == 'y' ) ) ||
 				empty( $pSelect )
 			) {
-				$packages_to_scan[$work] = 1;
+				$packages_to_scan[$package_dir_name] = 1;
 			}
 		}
 
 		#load the specified packages
-		foreach( array_keys( $packages_to_scan ) as $pkgName ) {
-			$this->loadPackage( $pkgName, $pScanFile, $pAutoRegister, $pOnce );
+		foreach( array_keys( $packages_to_scan ) as $pkgDir ) {
+			$this->loadPackage( $pkgDir, $pScanFile, $pAutoRegister, $pOnce );
 		}
 //		vd($pScanFile);
 //		vd($pOnce);
@@ -1205,6 +1242,7 @@ class BitSystem extends BitBase {
 			$showTables = ( $prefix ? $prefix.'%' : NULL );
 			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $showTables ) ) {
 				foreach( array_keys( $this->mPackages ) as $package ) {
+					$packageDirName = $this->mPackages[$package]['dir'];
 					if( !empty( $this->mPackages[$package]['tables'] ) ) {
 						foreach( array_keys( $this->mPackages[$package]['tables'] ) as $table ) {
 							// painful hardcoded exception for bitcommerce
@@ -1238,8 +1276,8 @@ class BitSystem extends BitBase {
 					$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
 					if( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['active_switch'] != 'y' ) {
 						// we have a disabled required package. turn it back on!
-						$this->storeConfig( 'package_'.strtolower( $package ), 'y', $package );
-						$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
+						$this->storeConfig( 'package_' . $package, 'y', $package );
+						$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_' . $package );
 					}
 				}
 			}

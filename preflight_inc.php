@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.14 2006/09/26 06:51:19 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.15 2006/10/06 22:10:47 laetzer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -46,6 +46,12 @@ function isWindows() {
 
 function mkdir_p($target, $perms = 0777) {
 	global $gDebug;
+	
+	$target = trim($target);
+
+	if ($target == '/') {
+		return 1;
+	}
 
 	if (ini_get('safe_mode')) {
 		$target = preg_replace('/^\/tmp/', $_SERVER['DOCUMENT_ROOT'] . '/temp', $target);
@@ -79,10 +85,14 @@ function mkdir_p($target, $perms = 0777) {
 		if ($gDebug) {
 			echo "mkdir_p() - trying to create parent $parent<br>";
 		}
+
 		if (mkdir_p($parent, $perms)) {
 			// make the actual target!
-			@mkdir($target, $perms);
+			if(@mkdir($target, $perms)) {
 			return 1;
+			} else {
+				echo "\n<p>mkdir() - could not create $target</p>\n";
+			}
 		}
 	}
 }

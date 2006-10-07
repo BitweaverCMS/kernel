@@ -154,7 +154,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 
 	//Well, then lets look in the package location
 	if( FALSE !== ( $matchFile = get_first_match( $gBitSystem->mPackages[$pParams['ipackage']]['path']."icons/".$pParams['ipath'],$pParams['iname'] ) ) ) {
-		return output_icon( $pParams, $gBitSystem->mPackages[$pParams['ipackage']]['url']."icons/".$pParams['ipath'].$matchFile );
+		return output_icon( $pParams, constant( strtoupper( $pParams['ipackage'] ).'_PKG_URL' )."icons/".$pParams['ipath'].$matchFile );
 	}
 
 	//Well, then lets look in the default location

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.77 2006/09/16 07:06:38 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.78 2006/10/07 04:51:24 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -26,14 +26,12 @@ define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
 // These defines have to happen FIRST because core classes depend on them.
 // This means these packages *CANNOT* be renamed
 define('STORAGE_PKG_PATH', BIT_ROOT_PATH . 'storage/');
-define('STORAGE_PKG_URL', BIT_ROOT_URL . 'storage/');
 define('STORAGE_PKG_NAME', 'storage');
 define('INSTALL_PKG_PATH', BIT_ROOT_PATH . 'install/');
 define('INSTALL_PKG_URL', BIT_ROOT_URL . 'install/');
 define('KERNEL_PKG_DIR', 'kernel');
 define('KERNEL_PKG_NAME', 'kernel');
 define('KERNEL_PKG_PATH', BIT_ROOT_PATH . 'kernel/');
-define('KERNEL_PKG_URL', BIT_ROOT_URL . 'kernel/');
 
 require_once( KERNEL_PKG_PATH . 'preflight_inc.php' );
 
@@ -47,12 +45,9 @@ if( !empty( $_GET ) && is_array( $_GET ) ) {
 define('LIBERTY_PKG_DIR', 'liberty');
 define('LIBERTY_PKG_NAME', 'liberty');
 define('LIBERTY_PKG_PATH', BIT_ROOT_PATH . 'liberty/');
-define('LIBERTY_PKG_URL', BIT_ROOT_URL . 'liberty/');
 
 define('UTIL_PKG_PATH', BIT_ROOT_PATH . 'util/');
-define('UTIL_PKG_URL', BIT_ROOT_URL . 'util/');
 define('USERS_PKG_PATH', BIT_ROOT_PATH . 'users/');
-define('USERS_PKG_URL', BIT_ROOT_URL . 'users/');
 define('LANGUAGES_PKG_PATH', BIT_ROOT_PATH . 'languages/');
 define('THEMES_PKG_PATH', BIT_ROOT_PATH . 'themes/');
 
@@ -142,7 +137,16 @@ if( $gBitSystem->isDatabaseValid() ) {
 	if( !defined('BIT_BASE_URI' ) ) {
 		define( 'BIT_BASE_URI', 'http'.(!empty($_SERVER['HTTPS'])?'s':'').'://'.$host );
 	}
-
+	
+	// Force full URI's for offline or exported content (newsletters, etc.)
+	$root = !empty( $_REQUEST['uri_mode'] ) ? BIT_BASE_URI . '/' : BIT_ROOT_URL;
+	define('UTIL_PKG_URL', $root . 'util/');
+	define('LIBERTY_PKG_URL', $root . 'liberty/');
+/*
+	define('STORAGE_PKG_URL', BIT_ROOT_URL . 'storage/');
+	define('KERNEL_PKG_URL', BIT_ROOT_URL . 'kernel/');
+	define('USERS_PKG_URL', BIT_ROOT_URL . 'users/');
+*/
 	// load only installed and active packages
 	$gBitSystem->scanPackages('bit_setup_inc.php', TRUE, 'active', TRUE, TRUE);
 

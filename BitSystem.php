@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.104 2006/10/11 07:45:46 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.105 2006/10/11 08:34:05 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1238,7 +1238,6 @@ class BitSystem extends BitBase {
 			$showTables = ( $prefix ? $prefix.'%' : NULL );
 			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $showTables ) ) {
 				foreach( array_keys( $this->mPackages ) as $package ) {
-					$packageDirName = $this->mPackages[$package]['dir'];
 					// Default to true, &= will FALSE out
 					$this->mPackages[$package]['installed'] = TRUE;
 					if( !empty( $this->mPackages[$package]['tables'] ) ) {

@@ -117,8 +117,7 @@ array( 'RENAMECOLUMN' => array(
 	'tiki_programmed_content' => array(	'`pId`' => '`p_id` I4 AUTO',
 										'`contentId`' => '`content_id` I4',
 										'`publishDate`' => '`publish_date` I8' ),
-// Appears to be giving errors - wolff_borg 20050812
-//	'sessions' => array( '`data`' => '`session_data` X'	),
+	'sessions' => array( '`data`' => '`session_data` X'	),
 )),
 
 array( 'ALTER' => array(

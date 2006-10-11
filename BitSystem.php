@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.103 2006/10/07 04:51:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.104 2006/10/11 07:45:46 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1145,7 +1145,6 @@ class BitSystem extends BitBase {
 	*/
 	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $pAutoRegister=TRUE, $pFileSystemScan=TRUE ) {
 		global $gPreScan;
-
 		#get list of package directory names from DB
 		$packages_config_array = $this->getConfigMatch( "/^packagedir_/i" );
 
@@ -1182,11 +1181,6 @@ class BitSystem extends BitBase {
 		foreach( array_keys( $packages_to_scan ) as $pkgDir ) {
 			$this->loadPackage( $pkgDir, $pScanFile, $pAutoRegister, $pOnce );
 		}
-//		vd($pScanFile);
-//		vd($pOnce);
-//		vd($pAutoRegister);
-//		vd($pFileSystemScan);
-//		vd(array_keys($this->mPackages));
 
 		if( $pFileSystemScan ) {
 			// load lib configs
@@ -1225,10 +1219,10 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function verifyInstalledPackages( $pSelect='installed', $pFileSystemScan=FALSE ) {
+	function verifyInstalledPackages( $pSelect='installed' ) {
 		global $gBitDbType;
 		#load in any admin/schema_inc.php files that exist for each package
-		$this->scanPackages( 'admin/schema_inc.php', TRUE, $pSelect, FALSE, $pFileSystemScan );
+		$this->scanPackages( 'admin/schema_inc.php', TRUE, $pSelect, FALSE, TRUE );
 
 		if( $this->isDatabaseValid() ) {
 			if( strlen( BIT_DB_PREFIX ) > 0 ) {
@@ -1245,7 +1239,10 @@ class BitSystem extends BitBase {
 			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $showTables ) ) {
 				foreach( array_keys( $this->mPackages ) as $package ) {
 					$packageDirName = $this->mPackages[$package]['dir'];
+					// Default to true, &= will FALSE out
+					$this->mPackages[$package]['installed'] = TRUE;
 					if( !empty( $this->mPackages[$package]['tables'] ) ) {
+						$this->mPackages[$package]['db_tables_found'] = TRUE;
 						foreach( array_keys( $this->mPackages[$package]['tables'] ) as $table ) {
 							// painful hardcoded exception for bitcommerce
 							if( $package == 'bitcommerce' ) {
@@ -1256,30 +1253,24 @@ class BitSystem extends BitBase {
 							$tablePresent = in_array( $fullTable, $dbTables );
 							if( !$tablePresent ) {
 								// There is an incomplete table
-								//	vd( "Missing Table: $fullTable" );
+								// vd( "Missing Table: $fullTable" );
 							}
-/*
-							if( isset( $this->mPackages[$package]['installed'] ) ) {
-								$this->mPackages[$package]['installed'] &= $tablePresent;
-							} else {
-								$this->mPackages[$package]['installed'] = $tablePresent;
-							}
-*/
-							if( isset( $this->mPackages[$package]['db_tables_found'] ) ) {
-								$this->mPackages[$package]['db_tables_found'] &= $tablePresent;
-							} else {
-								$this->mPackages[$package]['db_tables_found'] = $tablePresent;
-							}
+
+							$this->mPackages[$package]['installed'] &= $tablePresent;
+							$this->mPackages[$package]['db_tables_found'] &= $tablePresent;
 						}
 					} else {
 						$this->mPackages[$package]['db_tables_found'] = FALSE;
 					}
+
 
 					$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
 					if( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['active_switch'] != 'y' ) {
 						// we have a disabled required package. turn it back on!
 						$this->storeConfig( 'package_' . $package, 'y', $package );
 						$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_' . $package );
+					} elseif( $this->mPackages[$package]['installed'] &&  $this->mConfig['package_'.$package] != 'i' &&  $this->mConfig['package_'.$package] != 'y' ) {
+						$this->storeConfig( 'package_' . $package, 'i', $package );
 					}
 				}
 			}

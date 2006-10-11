@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.8 2006/07/23 08:09:52 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.9 2006/10/11 07:45:46 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -25,15 +25,14 @@ if(!empty( $_REQUEST['features'] ) ) {
 			$pkgName = strtolower( $pkg['name'] );
 			#can only change already installed packages that are not required
 			if ($gBitSystem->isPackageInstalled($pkgName) && empty($pkg['required']) ) {
-
 				if( isset( $_REQUEST['fPackage'][$pkgName] ) ) {
 					#mark installed and active
-					$gBitSystem->storeConfig( 'package_'.$pkgName, 'y', KERNEL_PKG_NAME );
+					$gBitSystem->storeConfig( 'package_'.$pkgName, 'y', $pkgName );
 					unset( $pkgArray[$pkgKey] );
 				}
 				else {
 					#mark installed but not active
-					$gBitSystem->storeConfig( 'package_'.$pkgName, 'i', KERNEL_PKG_NAME );
+					$gBitSystem->storeConfig( 'package_'.$pkgName, 'i', $pkgName );
 					unset( $pkgArray[$pkgKey] );
 				}
 			}

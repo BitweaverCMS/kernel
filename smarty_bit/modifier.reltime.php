@@ -5,6 +5,9 @@
  * @subpackage plugins
  */
 
+/**
+ * smarty_modifier_reltime
+ */
 function smarty_modifier_reltime( $time, $mode='long' ) {
 	$m = 60;
 	$h = 3600;

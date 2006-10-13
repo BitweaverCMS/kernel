@@ -1,10 +1,13 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.13 2006/09/28 10:42:32 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.14 2006/10/13 12:44:00 lsces Exp $
  * @package kernel
  * @subpackage functions
  */
 
+/**
+ * Required setup
+ */
 global $gBitUser, $gBitSystem, $gBitSmarty;
 
 // Global menu
@@ -29,6 +32,9 @@ if( $gBitUser->isAdmin() ) {
 	$gBitSmarty->assign_by_ref( 'adminMenu', $adminMenu );
 }
 
+/**
+ * mAppMenu_sort
+ */
 function mAppMenu_sort( $a, $b ) {
 	if( @is_numeric( $a['menu_position'] ) ) {
 		return( (int)$a['menu_position'] > (int)$b['menu_position'] );

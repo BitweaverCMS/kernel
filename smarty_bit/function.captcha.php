@@ -4,6 +4,10 @@
  * @package Smarty
  * @subpackage plugins
  */
+
+/**
+ * smarty_function_captcha
+ */
 function smarty_function_captcha( $pParams, &$gBitSmarty ) {
 	global $gBitSystem, $gBitUser;
 	if( !empty( $pParams['force'] ) || empty( $_SESSION['captcha_verified'] ) && !$gBitUser->hasPermission( 'p_users_bypass_captcha' ) ) {

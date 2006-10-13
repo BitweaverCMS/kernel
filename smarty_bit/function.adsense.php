@@ -1,4 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+* smarty_function_adsense
+*/
 function smarty_function_adsense( $params, &$gBitSmarty ) {
 	global $gBitSystem, $gLibertySystem;
 	if( $gBitSystem->isFeatureActive( 'liberty_plugin_status_dataadsense' ) ) {

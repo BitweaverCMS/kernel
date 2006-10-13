@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.106 2006/10/13 09:22:47 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.107 2006/10/13 15:59:36 sylvieg Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1268,7 +1268,7 @@ class BitSystem extends BitBase {
 						// we have a disabled required package. turn it back on!
 						$this->storeConfig( 'package_' . $package, 'y', $package );
 						$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_' . $package );
-					} elseif( $this->mPackages[$package]['installed'] &&  $this->mConfig['package_'.$package] != 'i' &&  $this->mConfig['package_'.$package] != 'y' ) {
+					} elseif( $this->mPackages[$package]['installed'] &&  isset($this->mConfig['package_'.$package]) && $this->mConfig['package_'.$package] != 'i' &&  $this->mConfig['package_'.$package] != 'y' ) {
 						$this->storeConfig( 'package_' . $package, 'i', $package );
 					}
 				}

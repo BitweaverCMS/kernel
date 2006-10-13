@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.105 2006/10/11 08:34:05 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.106 2006/10/13 09:22:47 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1072,7 +1072,7 @@ class BitSystem extends BitBase {
 	* @param string $ pScanFile file to be looked for
 	* @param string $ autoRegister - TRUE = autoregister any packages that don't register on their own, FALSE = don't
 	* @param string $ pOnce - TRUE = do include_once to load file FALSE = do include to load the file
-	* @return
+	* @return none
 	* @access public
 	*/
 	function loadPackage( $pPkgDir, $pScanFile, $pAutoRegister=TRUE, $pOnce=TRUE ) { 
@@ -1121,8 +1121,7 @@ class BitSystem extends BitBase {
 	* @param string $ autoRegister - TRUE = autoregister any packages that don't register on their own, FALSE = don't
 	* @param string $ fileSystemScan - TRUE = scan file system for packages to load, False = don't
 	* @return none
-	* @access public
-    *
+	* 
     * Packages have three different names:
     *    The directory name where they reside on disk
     *    The Name they register themselves as when they call registerPackage 
@@ -1142,6 +1141,7 @@ class BitSystem extends BitBase {
     *    Functions that expect a package name as a parameter should make clear which form
     *    of the name they expect.
     *    
+	* @access public
 	*/
 	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $pAutoRegister=TRUE, $pFileSystemScan=TRUE ) {
 		global $gPreScan;

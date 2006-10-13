@@ -3,13 +3,16 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.14 2006/09/20 01:51:02 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.15 2006/10/13 09:22:47 lsces Exp $
+ *
+ * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
  */
 
-// Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
-// All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
-
+/**
+ * required setup
+ */
 if( file_exists( UTIL_PKG_PATH.'smarty/libs/Smarty.class.php' ) ) {
 	// set SMARTY_DIR that we have the absolute path
 	define( 'SMARTY_DIR', UTIL_PKG_PATH.'smarty/libs/' );
@@ -21,9 +24,6 @@ if( file_exists( UTIL_PKG_PATH.'smarty/libs/Smarty.class.php' ) ) {
 	$smartyIncFile = 'Smarty.class.php';
 }
 
-/**
- * required setup
- */
 require_once($smartyIncFile);
 
 /**

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.18 2006/06/10 19:00:55 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.19 2006/10/13 09:22:47 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -14,8 +14,10 @@
  * @author spider <spider@steelsun.com>
  */
 
-// This code must execute before adodb/adodb.inc.php runs
-// Otherwsie $ADODB_CACHE_DIR ends up being set to '/tmp'
+/**
+ * This code must execute before adodb/adodb.inc.php runs
+ * Otherwsie $ADODB_CACHE_DIR ends up being set to '/tmp'
+ */
 global $ADODB_CACHE_DIR;
 if( empty( $ADODB_CACHE_DIR ) ) {
 	$ADODB_CACHE_DIR = getTempDir().'/adodb/'.$_SERVER['HTTP_HOST'].'/';

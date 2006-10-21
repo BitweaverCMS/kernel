@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.27 2006/09/17 09:16:08 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.28 2006/10/21 14:23:28 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -573,7 +573,7 @@ class BitDb
 		global $gBitDbType;
 		switch( $gBitDbType ) {
 			case "firebird":
-				$ret = "'NOW'"; // SQL standard Literal
+				$ret = "NOW"; // SQL standard Literal
 				break;
 			default:
 				$ret = 'now()';

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.28 2006/10/21 14:23:28 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.29 2006/10/23 09:19:09 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -337,6 +337,10 @@ class BitDb
 	* ADODB compatibility functions for bitcommerce
 	*/
 	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=BIT_QUERY_DEFAULT) {
+		if ( $this->mType == "firebird") {
+			$pQuery = preg_replace("/\\\'/", "''", $pQuery);
+			$pQuery = preg_replace("/ NOW/", " 'NOW'", $pQuery);
+		}
 		return $this->query( $pQuery, NULL, $pNumRows, NULL, $pCacheTime );
 	}
 

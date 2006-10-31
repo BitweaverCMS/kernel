@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.20 2006/09/10 21:16:39 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.21 2006/10/31 10:20:41 lsces Exp $
 
 $formBit = array(
 	'pretty_urls' => array(
@@ -82,7 +82,7 @@ if( !empty( $_REQUEST['change_prefs'] ) ) {
 	);
 
 	foreach( $refValue as $britem ) {
-		byref_set_value( $britem, KERNEL_PKG_NAME );
+		byref_set_value( $britem, "", KERNEL_PKG_NAME );
 	}
 }
 

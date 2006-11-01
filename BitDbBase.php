@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.30 2006/11/01 16:41:53 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.31 2006/11/01 19:11:29 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -340,6 +340,7 @@ class BitDb
 		if ( $this->mType == "firebird") {
 			$pQuery = preg_replace("/\\\'/", "''", $pQuery);
 			$pQuery = preg_replace("/ NOW/", " 'NOW'", $pQuery);
+			$pQuery = preg_replace("/now\(\)/", "'NOW'", $pQuery);
 		}
 		return $this->query( $pQuery, NULL, $pNumRows, NULL, $pCacheTime );
 	}
@@ -578,6 +579,23 @@ class BitDb
 		switch( $gBitDbType ) {
 			case "firebird":
 				$ret = $gBitSystem->getUTCTimestamp(); // UTC time to get round server offsets
+				break;
+			default:
+				$ret = 'now()';
+		}
+		return $ret;
+	}
+
+	/**
+	 * Return the current timestamp literal relevent to the database type
+	 * @todo This needs extending to allow the use of GMT timestamp
+	 *		rather then the current server time
+	 */
+	function qtNOW() {
+		global $gBitDbType, $gBitSystem;
+		switch( $gBitDbType ) {
+			case "firebird":
+				$ret = "'".$gBitSystem->getUTCTimestamp()."'"; // UTC time to get round server offsets
 				break;
 			default:
 				$ret = 'now()';

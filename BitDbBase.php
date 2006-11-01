@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.29 2006/10/23 09:19:09 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.30 2006/11/01 16:41:53 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -574,10 +574,10 @@ class BitDb
 	 *		rather then the current server time
 	 */
 	function NOW() {
-		global $gBitDbType;
+		global $gBitDbType, $gBitSystem;
 		switch( $gBitDbType ) {
 			case "firebird":
-				$ret = "NOW"; // SQL standard Literal
+				$ret = $gBitSystem->getUTCTimestamp(); // UTC time to get round server offsets
 				break;
 			default:
 				$ret = 'now()';

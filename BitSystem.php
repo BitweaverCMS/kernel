@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.107 2006/10/13 15:59:36 sylvieg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.108 2006/11/01 16:41:53 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2058,6 +2058,14 @@ class BitSystem extends BitBase {
 	 */
 	function getUTCTime() {
 		return	$this->mServerTimestamp->getUTCTime();
+	}
+
+	/**
+	 * Retrieve a current UTC ISO timestamp
+	 * Simple map to BitDate object allowing tidy display elsewhere
+	 */
+	function getUTCTimestamp() {
+		return	$this->mServerTimestamp->getUTCTimestamp();
 	}
 
 	/**

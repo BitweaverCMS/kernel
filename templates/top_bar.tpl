@@ -58,4 +58,20 @@
 	</ul>
 	<div class="clear"></div>
 </div>
+
+{if $gBitSystem->isFeatureActive('site_top_bar_js') && $gBitSystem->isFeatureActive('site_top_bar_dropdown')}
+	<script type="text/javascript"> /*<![CDATA[*/
+		var listMenu = new FSMenu('listMenu', true, 'left', 'auto', '-999');
+		{if $gBitSystem->isFeatureActive( 'site_top_bar_js_fade' )}
+			listMenu.animations[listMenu.animations.length] = FSMenu.animFade;
+		{/if}
+		{if $gBitSystem->isFeatureActive( 'site_top_bar_js_swipe' )}
+			listMenu.animations[listMenu.animations.length] = FSMenu.animSwipeDown;
+		{/if}
+		{if $gBitSystem->isFeatureActive( 'site_top_bar_js_clip' )}
+			listMenu.animations[listMenu.animations.length] = FSMenu.animClipDown;
+		{/if}
+		addEvent(window, 'load', new Function('listMenu.activateMenu("nav")'));
+	/*]]>*/ </script>
+{/if}
 {/strip}

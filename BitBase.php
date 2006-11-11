@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.28 2006/09/20 17:55:35 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.29 2006/11/11 21:32:13 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -441,6 +441,26 @@ function trim_array( &$pArray ) {
 			}
 		}
 	}
+}
+
+
+function ordinalize( $num ) {
+	$ord = '';
+	if( is_numeric( $num ) ) {
+		if ($num >= 11 and $num <= 19) {
+		   $ord = tra( "th" );
+		} elseif ( $num % 10 == 1 ) {
+		   $ord = tra( "st" );
+		} elseif ( $num % 10 == 2 ) {
+		   $ord = tra( "nd" );
+		} elseif ( $num % 10 == 3 ) {
+		   $ord = tra( "rd" );
+		} else {
+		   $ord = tra( "th" );
+		}
+	}
+
+	return $num.$ord;
 }
 
 /**

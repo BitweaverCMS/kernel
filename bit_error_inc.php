@@ -28,12 +28,25 @@ function bit_log_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 
 	error_log( $pLogMessage );
 
-	if( ( !defined('IS_LIVE') || !IS_LIVE) ) {
-		print  '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><title>bitweaver - White Screen of Death</title></head><body>';
-		print "\n<p><a href='http://sourceforge.net/tracker/?func=add&amp;group_id=141358&amp;atid=749176'>Click here to log a bug</a>, if this appears to be an error with the application.</p>\n";
-		print "<p><a href='".BIT_ROOT_URL."install/install.php'>Go here to begin the installation process</a>, if you haven't done so already.</p>\n";
+	if( ( !defined( 'IS_LIVE' ) || !IS_LIVE ) ) {
+		print '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+			<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+			<head>
+				<title>bitweaver - White Screen of Death</title>
+			</head>
+			<body style="background:#fff; font-family:monospace;">';
 // 		print "<h1>Upgrade Beta 1 to Beta 2</h1>If you are getting this error because you just upgraded your bitweaver from Beta 1 to Beta 2, please follow this link to the installer, which will guide you through the upgrade process: <a href='".BIT_ROOT_URL."install/install.php?step=4'>Upgrade Beta 1 to Beta 2</a>";
+		print "<h1 style=\"color:#900; font-weight:bold;\">You are running bitweaver in TEST mode</h1>\n";
+		print "
+			<ul>
+				<li><a href='http://sourceforge.net/tracker/?func=add&amp;group_id=141358&amp;atid=749176'>Click here to log a bug</a>, if this appears to be an error with the application.</li>
+				<li><a href='".BIT_ROOT_URL."install/install.php'>Go here to begin the installation process</a>, if you haven't done so already.</li>
+				<li>To hide this message, please <strong>set the IS_LIVE constant to TRUE</strong> in your kernel/config_inc.php file.</li>
+			</ul>
+			<hr />
+		";
 		print "<pre>".$pLogMessage."</pre>";
+		print "<hr />";
 		print "</body></html>";
 	} elseif( $errorEmail ) {
 		mail( $errorEmail,  "$pSubject", $pLogMessage );

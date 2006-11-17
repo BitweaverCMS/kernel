@@ -39,11 +39,20 @@ if (empty($_SERVER['PHP_SELF']))
 // Responding to Wolff, won't the following do what we want?
 //   dirname(dirname($_SERVER['PHP_SELF'])) . '/'
 // Am I missing something?  --drc
-if (!defined('BIT_ROOT_URL' )) {
-//     preg_match('/.*'.basename(dirname(dirname(__FILE__ ) ) ).'\//', $_SERVER['PHP_SELF'], $match  );
-//     $subpath = ( isset($match[0] ) ) ? $match[0] : '/';
-  $subpath =    dirname(dirname($_SERVER['PHP_SELF'])) . '/';
-    define('BIT_ROOT_URL', $subpath );
+//
+// The recent changes have caused problems during installation. i'll try 
+// combining both methods by applying the less successful one after the more 
+// successful one - xing
+if( !defined( 'BIT_ROOT_URL' ) ) {
+	// version one which seems to only cause problems seldomly
+	preg_match( '/.*'.basename( dirname( dirname( __FILE__ ) ) ).'\//', $_SERVER['PHP_SELF'], $match );
+	$subpath = ( isset($match[0] ) ) ? $match[0] : '/';
+	// version two which doesn't work well on it's own
+	if( $subpath == "/" ) {
+		$subpath = dirname( dirname( $_SERVER['PHP_SELF'] ) );
+		$subpath .= ( substr( $subpath,-1,1 )!='/' ) ? '/' : '';
+	}
+	define( 'BIT_ROOT_URL', $subpath );
 }
 
 if( !defined( 'BIT_SESSION_NAME' ) ) {

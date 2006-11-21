@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.8 2006/02/17 22:44:34 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.9 2006/11/21 21:50:51 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.8 2006/02/17 22:44:34 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.9 2006/11/21 21:50:51 squareing Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -15,6 +15,7 @@ global $gBitSmarty, $gBitSystem, $gBitThemes, $gBitUser;
 clearstatcache();
 $now = $gBitSystem->getUTCTime();
 
+/* this doesn't seem to used anywhere - xing
 if (!$gBitUser->isAdmin() ) {
     $user_groups = $gBitUser->getGroups();
 } else {
@@ -27,7 +28,7 @@ if (!$gBitUser->isAdmin() ) {
         $user_groups[] = $grp["group_name"];
     }
 }
-
+*/
 
 global $module_column, $gHideModules;
 if( $gBitSystem->mLayout && empty( $gHideModules ) ) {

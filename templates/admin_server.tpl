@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.12 2006/07/02 18:02:53 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.13 2006/11/22 02:37:13 spiderr Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -36,6 +36,14 @@
 					{forminput}
 						<textarea cols="50" rows="5" name="site_keywords" id="site_keywords">{$gBitSystem->getConfig('site_keywords')|escape}</textarea>
 						{formhelp note="Keywords are used to tell search engines what your page is for. Based on these keywords, your site can be categorised better and searches will give you higher rankings.<br />The text you enter here will not be visible anywhere.<br />The Limit for search engines is <strong>900</strong> characters.<br />(due to db restrictions, this list of words will be cut off at 250 chars)."}
+					{/forminput}
+				</div>
+
+				<div class="row">
+					{formlabel label="Site Notice" for="site_notice"}
+					{forminput}
+						<input size="50" type="text" name="site_notice" id="site_notice" maxlength="180" value="{$gBitSystem->getConfig('site_notice')|escape}" />
+						{formhelp note="This is a global notice used mostly for emergencies or times of importance as this message will appear on all pages."}
 					{/forminput}
 				</div>
 

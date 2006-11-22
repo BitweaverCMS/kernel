@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.8 2006/08/23 19:35:17 sylvieg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.9 2006/11/22 02:37:12 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -41,6 +41,7 @@ if( $processForm ) {
 		"site_slogan",
 		"site_description",
 		"site_keywords",
+		"site_notice",
 	);
 
 	foreach ($pref_byref_values as $britem) {

@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.14 2006/04/19 13:48:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.15 2006/11/23 15:18:18 squareing Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -1038,64 +1038,6 @@ class BitDate {
 
 			default:
 				assert( FALSE );
-		}
-	}
-
-	/**
-	* Convert the time into managable chunks to display: ... hour(s) ... minute(s) ago
-	* @param $pTimeStamp timestamp that should be converted
-	* @param $pThreshold the threshold at which it should stop converting
-	* @return translated array with strings for each time unit
-	* @access public
-	**/
-	function calculateTimeDifference( $pTimeStart, $pTimeStop=NULL, $pThreshold=NULL ) {
-		global $gBitSystem;
-
-		$timeUnits = array(
-			// number of seconds for each tine unit
-			'always' => 315569260000, // 10000 years
-			'year'   => 31556926,     // taken from http://www.google.com/search?num=50&hs=i64&hl=en&lr=&client=opera&rls=en&q=seconds+in+year&btnG=Search
-			'month'  => 2629743,      // taken from http://www.google.com/search?num=50&hs=nkP&hl=en&lr=&client=opera&rls=en&q=seconds+in+month&btnG=Search
-			'week'   => 604800,
-			'day'    => 86400,
-			'hour'   => 3600,
-			'minute' => 60,
-			'second' => 1,
-		);
-
-		$timeDiff = ( !empty( $pTimeStop ) ? $pTimeStop : $gBitSystem->mServerTimestamp->getUTCTime() ) - $pTimeStart;
-
-		// work out if we're looking ahead or back in time
-		if( $timeDiff <= 0 ) {
-			$timeDiff = 0 - $timeDiff;
-			$ret['orientation'] = 'future';
-		} else {
-			$ret['orientation'] = 'past';
-		}
-
-		if( !empty( $pThreshold ) && in_array( $pThreshold, array_keys( $timeUnits ) ) ) {
-			if( $timeDiff >= $timeUnits[$pThreshold] ) {
-				return FALSE;
-			} elseif( $timeDiff == 0 ) {
-				$ret['strings'] = tra( 'now' );
-			} else {
-				foreach( $timeUnits as $name => $unit ) {
-					if( $name != 'always' ) {
-						// return array of units with count
-						$ret['units'][$name] = floor( $timeDiff / $unit );
-					}
-
-					if( $timeDiff >= $unit || !empty( $ret['strings'] ) ) {
-						// return translated string
-						$ret['strings'][] = floor( $timeDiff / $unit ).' '.tra( $name.'(s)' );
-						// set $timeDiff for next loop
-						$timeDiff = fmod( $timeDiff, $unit );
-					}
-				}
-			}
-			return $ret;
-		} else {
-			return NULL;
 		}
 	}
 

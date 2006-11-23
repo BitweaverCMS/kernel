@@ -67,6 +67,7 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 	array(KERNEL_PKG_NAME,'site_long_time_format','%H:%M:%S %Z'),
 	array(KERNEL_PKG_NAME,'site_left_column','y'),
 	array(KERNEL_PKG_NAME,'site_right_column','y'),
+	array(KERNEL_PKG_NAME,'site_display_reltime','y'),
 	array(KERNEL_PKG_NAME,'max_records','10'),
 	array(KERNEL_PKG_NAME,'language','en'),
 	array(KERNEL_PKG_NAME,'site_sender_email',''),

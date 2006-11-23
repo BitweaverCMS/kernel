@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.10 2006/09/10 21:16:39 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.11 2006/11/23 15:18:18 squareing Exp $ *}
 {strip}
 {form}
 	{jstabs}
@@ -68,10 +68,18 @@
 		{jstab title="Miscellaneous"}
 			{legend legend="Date and Time Formats"}
 				<div class="row">
+					{formlabel label="Relative Time Display" for="site_display_reltime"}
+					{forminput}
+						<input type="checkbox" name="site_display_reltime" id="site_display_reltime" {if $gBitSystem->isFeatureActive('site_display_reltime')}checked="checked"{/if} />
+						{formhelp note="When you enable this, the date and time display in some areas will change to the relative time since the post has been made instead of using the absolute date."}
+					{/forminput}
+				</div>
+
+				<div class="row">
 					{formlabel label="Long date format" for="site_long_date_format"}
 					{forminput}
 						<input type="text" name="site_long_date_format" id="site_long_date_format" value="{$gBitSystem->getConfig('site_long_date_format')|escape}" size="50"/>
-						{formhelp note="Default: %A %d {tr}of{/tr} %B, %Y"}
+						{formhelp note="Default: %A %d of %B, %Y"}
 					{/forminput}
 				</div>
 
@@ -79,7 +87,7 @@
 					{formlabel label="Short date format" for="site_short_date_format"}
 					{forminput}
 						<input type="text" name="site_short_date_format" id="site_short_date_format" value="{$gBitSystem->getConfig('site_short_date_format')|escape}" size="50"/>
-						{formhelp note="Default: %a %d {tr}of{/tr} %b, %Y"}
+						{formhelp note="Default: %a %d of %b, %Y"}
 					{/forminput}
 				</div>
 

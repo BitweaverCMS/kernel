@@ -8,65 +8,75 @@
 /**
  * smarty_modifier_reltime
  */
-function smarty_modifier_reltime( $time, $mode='long' ) {
-	$m = 60;
-	$h = 3600;
-	$d = $h * 24;
-	$w = $d * 7;
-	$M = $w * 4;
-	$L = $M * 2;
+function smarty_modifier_reltime( $pTimeStamp, $pMode = 'long', $pFallback = 'bit_short_datetime' ) {
+	global $gBitSystem, $gBitSmarty;
 
-	if (! is_numeric($time)) return $time;
-	$delta = (time() - $time);
-	if ($delta < 0) {
-		$delta = -$delta;
-		return tra("In the future!");
+	// if this feature is not desired, we simply don't use it.
+	if( !$gBitSystem->isFeatureActive( 'site_display_reltime' ) ) {
+		require_once $gBitSmarty->_get_plugin_filepath( 'modifier', $pFallback );
+		$pFallback = "smarty_modifier_$pFallback";
+		return $pFallback( $pTimeStamp );
 	}
 
-	if ($delta<1) {
-		return tra("within the last second");
-	} elseif ($delta<$m) {
-		return round($delta)." seconds ago";
-		//return tra("within the last minute");
-	} elseif ($delta<$h) {
-		if ($delta<$m*2) {
-			return "one minute ago";
+	$min   = 60;
+	$hour  = $min  * 60;
+	$day   = $hour * 24;
+	$week  = $day  * 7;
+
+	$strf  = "H:i";
+
+	if( !is_numeric( $pTimeStamp ) ) {
+		return $pTimeStamp;
+	}
+
+	$delta = $gBitSystem->mServerTimestamp->getUTCTime() - $pTimeStamp;
+
+	if( $delta < 0 ) {
+		$delta = -$delta;
+		return tra( "In the future" ).": ";
+	}
+
+	if( $delta < 1 ) {
+		// seconds
+		return tra( "within the last second" );
+	} elseif( $delta < $min ) {
+		// minutes
+		return tra( "within the last minute" );
+	} elseif( $delta < $hour ) {
+		// hours
+		if( $delta < $min * 2 ) {
+			return tra( "one minute ago" );
 		} else {
-			return round($delta/$m)." minutes ago";
+			return round( $delta / $min )." ".tra( "minutes ago" );
 		}
-	} elseif ($delta<($d)) {
-		if ($delta<$h*1.1) {
-			return "one hour ago";
-		} elseif ($delta<$d) {
-			$delta_hours = floor(($delta-(floor($delta/($h))*($h)))/$m);
-			return round($delta/($h))." hours " . $delta_hours . " minutes ago";
-		} else {
-			return round($delta/$h)." hours ago";
-		}
-	} elseif ($delta<($w)) {
-		if ($delta<($d*1.7)) {
-			return "Yesterday " .date('h:i:s A',$time);
-		} else {
-			if ($mode='short') {
-				return date('D H:i:s',$time);
+	} elseif( $delta < $day ) {
+		// up to a day
+		if( $delta < $hour * 1.1 ) {
+			return tra( "one hour ago" );
+		} elseif( $delta < $day ) {
+			$delta_hours = floor( ( $delta - ( floor( $delta / $hour ) * $hour ) ) / $min );
+			if( $pMode == 'short' ) {
+				return floor( $delta / $hour )."h {$delta_hours}m ago";
 			}
-			return date('l h:i:s A',$time);
+			return floor( $delta / $hour )." hour(s) {$delta_hours} minute(s) ago";
+		} else {
+			return round( $delta / $hour )." ".tra( "hour(s) ago" );
 		}
-	} elseif ($delta<($M)) {
-		if ($mode='short') {
-			return date('D d, H:i',$time);
+	} elseif( $delta < $week ) {
+		// up to a week
+		if( $delta < $day * 2 ) {
+			return tra( "Yesterday" )." ".date( $strf, $pTimeStamp );
+		} else {
+			if( $pMode == 'short' ) {
+				return date( 'D '.$strf, $pTimeStamp );
+			}
+			return tra( date( 'l' ) )." ".date( $strf, $pTimeStamp );
 		}
-		return date('l dS \a\t h:i A',$time);
-	} elseif ($delta<($L)) {
-		if ($mode='short') {
-			return date('M d, H:i',$time);
-		}
-		return date('l dS \of F h:i A',$time);
 	} else {
-		if ($mode='short') {
-			return date('M d, Y H:i',$time);
-		}
-		return date('l dS \of F Y h:i A',$time);
+		// anything longer than a week
+		require_once $gBitSmarty->_get_plugin_filepath( 'modifier', $pFallback );
+		$pFallback = "smarty_modifier_$pFallback";
+		return $pFallback( $pTimeStamp );
 	}
 }
 ?>

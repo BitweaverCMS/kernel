@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_modules.tpl,v 1.5 2006/03/01 21:12:29 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_modules.tpl,v 1.6 2006/11/25 18:08:40 squareing Exp $ *}
 
 {$moduleJavascript}
 
@@ -82,7 +82,7 @@
 			<div class="row">
 				{formlabel label="Groups" for="grp"}
 				{forminput}
-					<select multiple="multiple" name="groups[]" onchange="OnTextChange()" id="grp">
+					<select size="5" multiple="multiple" name="groups[]" onchange="OnTextChange()" id="grp">
 						{foreach name=groupList key=groupId from=$groups item=group}
 							<option value="{$groupId}" id="fGroup{math equation="x - 1" x=$smarty.foreach.groupList.iteration }" >{$group.group_name}</option>
 						{/foreach}

@@ -262,24 +262,23 @@
 				{/forminput}
 			</div>
 
-			<div class="row">
-				{formlabel label="Groups" for="groups"}
-				{forminput}
-					<select multiple="multiple" size="5" name="groups[]" id="groups">
-						{foreach from=$groups key=groupId item=group}
-							<option value="{$groupId}" {if $group.selected eq 'y'}selected="selected"{/if}>{$group.group_name}</option>
-						{/foreach}
-					</select>
-					{formhelp note="
-						Select the groups of users who can see this module.
-						<ul>
-							<li>If you select none, the module will be visisble to all groups.</li>
-							<li>If you select groups, please make sure you have disabled the setting: 'Display modules to all groups always' in
-								<br />Admin --&gt; Layout --&gt; Modules --&gt; Module Settings</li>
-						</ul>
-					"}
-				{/forminput}
-			</div>
+			{if $gBitSystem->isFeatureActive( 'site_show_all_modules_always' )}
+				<div class="row">
+					{formhelp link="kernel/admin/index.php?page=modules/Module Settings" note="If you wish to restrict modules by group, please disable 'Display modules to all groups always'"}
+				</div>
+			{else}
+				<div class="row">
+					{formlabel label="Groups" for="groups"}
+					{forminput}
+						<select multiple="multiple" size="5" name="groups[]" id="groups">
+							{foreach from=$groups key=groupId item=group}
+								<option value="{$groupId}" {if $group.selected eq 'y'}selected="selected"{/if}>{$group.group_name}</option>
+							{/foreach}
+						</select>
+						{formhelp note="Select the groups of users who can see this module. If you select no group, the module will be visible to all users."}
+					{/forminput}
+				</div>
+			{/if}
 
 			<div class="row submit">
 				<input type="submit" name="ColumnTabSubmit" value="{tr}Assign{/tr}" />

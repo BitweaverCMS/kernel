@@ -18,6 +18,6 @@
 			{$smarty.now|bit_short_datetime}
 		{/if}
 	</div>
-	<h1>{$gBitSystem->getConfig('site_title')}</h1>
+	<h1><a href="{$smarty.const.BIT_ROOT_URL}">{$gBitSystem->getConfig('site_title')}</a></h1>
 	<h3>{$gBitSystem->getConfig('site_slogan')}</h3>
 </div>

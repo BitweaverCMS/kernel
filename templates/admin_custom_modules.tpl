@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.5 2006/09/03 20:09:42 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.7 2006/12/02 17:13:01 spiderr Exp $ *}
 {strip}
 
 <a name="editcreate"></a>
@@ -10,7 +10,9 @@
 {form legend="Edit/Create module" id="editusr"}
 	<input type="hidden" name="page" value="{$page}" />
 
+
 	<div class="row">
+{formfeedback error=$errorHash.um_name}
 		{formlabel label="Name" for="um_name"}
 		{forminput}
 			<input type="text" name="um_name" id="um_name" value="{$um_name|escape}" />
@@ -27,6 +29,7 @@
 	</div>
 
 	<div class="row">
+{formfeedback error=$errorHash.um_data}
 		{formlabel label="Data" for="usermoduledata"}
 		{forminput}
 			<textarea id="usermoduledata" name="um_data" rows="10" cols="50">{$um_data|escape}</textarea>

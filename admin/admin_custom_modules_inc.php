@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.6 2006/09/01 14:26:05 wolff_borg Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_custom_modules_inc.php,v 1.7 2006/12/02 16:50:11 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -8,10 +8,7 @@
 require_once( '../../bit_setup_inc.php' );
 
 if (!$gBitUser->isAdmin()) {
-	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
-
-	$gBitSystem->display( 'error.tpl' );
-	die;
+	$gBitSystem->fatalError( "You dont have permission to use this feature" );
 }
 
 if( $gBitSystem->isPackageActive( 'dcs' ) ) {
@@ -81,24 +78,23 @@ if (isset($_REQUEST["um_remove"])) {
 	$gBitSmarty->assign_by_ref('um_title', $um_info["title"]);
 	$gBitSmarty->assign_by_ref('um_data', $um_info["data"]);
 } elseif (isset($_REQUEST["um_update"])) {
-        if (empty($_REQUEST["um_name"])) {
-	    $gBitSmarty->assign('msg',tra("Cannot create or update module: You need to specify a name to the module"));
-	    $gBitSmarty->display("error.tpl");
-	    die;
+	if (empty($_REQUEST["um_name"])) {
+		$errors['um_name'] = tra( "Cannot create or update module: You need to specify a name to the module" );
 	}
-        if (empty($_REQUEST["um_data"])) {
-	    $gBitSmarty->assign('msg',tra("Cannot create or update module: You cannot leave the data field empty"));
-	    $gBitSmarty->display("error.tpl");
-	    die;
+	if (empty($_REQUEST["um_data"])) {
+		$errors['um_data'] = tra( "Cannot create or update module: You cannot leave the data field empty" );
 	}
-    
-    $_REQUEST["um_update"] = urldecode($_REQUEST["um_update"]);
 
-    $_REQUEST["um_name"] = ereg_replace( ' |-','_',$_REQUEST["um_name"] );
+	if( empty( $errors ) ) {
+		$_REQUEST["um_update"] = urldecode($_REQUEST["um_update"]);
+		$_REQUEST["um_name"] = ereg_replace( ' |-','_',$_REQUEST["um_name"] );
+		$gBitThemes->replaceCustomModule($_REQUEST["um_name"], $_REQUEST["um_title"], $_REQUEST["um_data"]);
+	} else {
+		$gBitSmarty->assign( 'errorHash', $errors );
+	}
     $gBitSmarty->assign_by_ref('um_name', $_REQUEST["um_name"]);
     $gBitSmarty->assign_by_ref('um_title', $_REQUEST["um_title"]);
     $gBitSmarty->assign_by_ref('um_data', $_REQUEST["um_data"]);
-    $gBitThemes->replaceCustomModule($_REQUEST["um_name"], $_REQUEST["um_title"], $_REQUEST["um_data"]);
 }
 
 $gBitSmarty->assign('preview', 'n');

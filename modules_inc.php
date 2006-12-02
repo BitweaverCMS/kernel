@@ -1,11 +1,11 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.9 2006/11/21 21:50:51 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.10 2006/12/02 17:13:00 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.9 2006/11/21 21:50:51 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/Attic/modules_inc.php,v 1.10 2006/12/02 17:13:00 spiderr Exp $
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
@@ -62,7 +62,7 @@ if( $gBitSystem->mLayout && empty( $gHideModules ) ) {
 								$gBitSmarty->assign_by_ref('user_title', $info["title"]);
 								$gBitSmarty->assign_by_ref('user_data', $info["data"]);
 								$gBitSmarty->assign_by_ref('user_module_name', $info["name"]);
-								$data = $gBitSmarty->fetch( USERS_PKG_PATH.'modules/user_module.tpl' );
+								$data = $gBitSmarty->fetch( 'bitpackage:themes/custom_module.tpl' );
 								$fp = fopen($cachefile, "w+");
 								fwrite($fp, $data, strlen($data));
 								fclose ($fp);

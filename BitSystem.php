@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.109 2006/11/08 05:49:42 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.110 2006/12/07 13:07:46 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2095,7 +2095,7 @@ class BitSystem extends BitBase {
 		static $site_short_date_format = FALSE;
 
 		if( !$site_short_date_format ) {
-			$site_short_date_format = $this->getConfig( 'site_short_date_format', '%a %d of %b, %Y' );
+			$site_short_date_format = $this->getConfig( 'site_short_date_format', '%d %b %Y' );
 		}
 
 		return $site_short_date_format;

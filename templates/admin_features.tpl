@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.11 2006/11/23 15:18:18 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.12 2006/12/07 13:05:34 squareing Exp $ *}
 {strip}
 {form}
 	{jstabs}
@@ -87,7 +87,7 @@
 					{formlabel label="Short date format" for="site_short_date_format"}
 					{forminput}
 						<input type="text" name="site_short_date_format" id="site_short_date_format" value="{$gBitSystem->getConfig('site_short_date_format')|escape}" size="50"/>
-						{formhelp note="Default: %a %d of %b, %Y"}
+						{formhelp note="Default: %d %b %Y"}
 					{/forminput}
 				</div>
 

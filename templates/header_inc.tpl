@@ -9,6 +9,10 @@
 <link rel="start" title="{$gBitSystem->getConfig('site_title')} {tr}Home Page{/tr}" href="{$smarty.const.BIT_ROOT_URL}" />
 <link rel="help" title="{tr}Help{/tr}" href="http://www.bitweaver.org/" />
 
+{if $gBitSystem->isPackageActive( 'rss' )}
+	<link rel="rss feeds" title="{tr}RSS Syndication{/tr}" href="{$smarty.const.RSS_PKG_URL}" />
+{/if}
+
 <script type="text/javascript">/* <![CDATA[ */
 	var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";
 	var bitCookieDomain = "";

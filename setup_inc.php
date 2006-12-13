@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.78 2006/10/07 04:51:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.79 2006/12/13 05:31:24 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -36,7 +36,7 @@ define('KERNEL_PKG_PATH', BIT_ROOT_PATH . 'kernel/');
 require_once( KERNEL_PKG_PATH . 'preflight_inc.php' );
 
 // clean up $_GET and make sure others are clean as well
-if( !empty( $_GET ) && is_array( $_GET ) ) {
+if( !empty( $_GET ) && is_array( $_GET ) && empty( $gNoToxify ) ) {
 	detoxify( $_GET, TRUE );
 	$_REQUEST = array_merge( $_REQUEST, $_GET );
 }

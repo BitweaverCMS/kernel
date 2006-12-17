@@ -51,6 +51,8 @@ function output_icon( $pParams, $pFile ) {
 	// text browsers don't need to see forced icons - usually part of menus or javascript stuff
 	if( !empty( $pParams['iforce'] ) && $pParams['iforce'] == 'icon' && ( $gSniffer->_browser_info['browser'] == 'lx' || $gSniffer->_browser_info['browser'] == 'li' ) ) {
 		return '';
+	} elseif( empty( $pParams['iforce'] ) ) {
+		$pParams['iforce'] = NULL;
 	}
 
 	if( isset( $pParams["url"] ) ) {

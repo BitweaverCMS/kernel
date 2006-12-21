@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.15 2006/10/06 22:10:47 laetzer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.16 2006/12/21 09:29:48 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -83,7 +83,7 @@ function mkdir_p($target, $perms = 0777) {
 		umask($oldu);
 		$parent = substr($target, 0, (strrpos($target, '/')));
 		if ($gDebug) {
-			echo "mkdir_p() - trying to create parent $parent<br>";
+			error_log( "mkdir_p() - trying to create parent $parent" );
 		}
 
 		if (mkdir_p($parent, $perms)) {
@@ -91,7 +91,7 @@ function mkdir_p($target, $perms = 0777) {
 			if(@mkdir($target, $perms)) {
 			return 1;
 			} else {
-				echo "\n<p>mkdir() - could not create $target</p>\n";
+				error_log( "mkdir() - could not create $target" );
 			}
 		}
 	}

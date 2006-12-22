@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.29 2006/11/11 21:32:13 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.30 2006/12/22 23:30:56 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -230,10 +230,9 @@ class BitBase {
 			}
 		}
 
+// Don't use  $_REQUEST["find"] as it can really screw with modules on search pages
 		if( !empty( $pListHash["find"] ) ) {
 			$pListHash['find']= $pListHash["find"];
-		} elseif( isset( $_REQUEST["find"] ) ) {
-			$pListHash['find']= $_REQUEST["find"];
 		} else {
 			$pListHash['find'] = NULL;
 		}

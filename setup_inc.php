@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.79 2006/12/13 05:31:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.80 2006/12/22 23:12:11 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -153,8 +153,9 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// some plugins check for active packages, so we do this *after* package scanning
 	$gBitSmarty->assign_by_ref("gBitSystem", $gBitSystem);
 	// XSS security check
-	if( !empty( $_REQUEST['tk'] ) ) {
+	if( !empty( $_REQUEST['tk'] ) && empty( $_SERVER['bot'] ) ) {
 //		$gBitUser->verifyTicket();
+	} elseif( !empty( $_SERVER['bot'] ) ) {
 	}
 
 	// setStyle first, in case package decides it wants to reset the style in it's own <package>/bit_setup_inc.php
@@ -199,6 +200,10 @@ if( $gBitSystem->isDatabaseValid() ) {
 	global $gHideModules;
 	$gBitSmarty->assign_by_ref( 'gHideModules', $gHideModules );
 
+/*
+	================================
+	this is apparently ancient TW junk. Will be removed unless a purpose is found for this apparent nonsense. - spiderr
+
 	$ownurl = httpPrefix() . $_SERVER["REQUEST_URI"];
 	$parsed = parse_url($_SERVER["REQUEST_URI"]);
 
@@ -226,6 +231,8 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 	$ownurl_father = $father;
 	$gBitSmarty->assign('ownurl', httpPrefix() . $_SERVER["REQUEST_URI"]);
+	==================================
+*/
 	// **********  KERNEL  ************
 	$gBitSmarty->assign_by_ref("gBitSystemPackages", $gBitSystem->mPackages);
 

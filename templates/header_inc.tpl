@@ -26,6 +26,9 @@
     {if $loadAjax == 'mochikit'}
         <script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Base.js"></script>
         <script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Async.js"></script>
+		{foreach from=$mochikitLibs item=mLib}
+        <script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/{$mLib}"></script>
+		{/foreach}
     {else}
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/prototype.js"></script>
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/ajax.js"></script>

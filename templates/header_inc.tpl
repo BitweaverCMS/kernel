@@ -23,13 +23,13 @@
 {* the order of the js files is crucial *}
 <script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/bitweaver.js"></script>
 {if $loadAjax && !$loadDragDrop}
-    {if $loadAjax == 'mochikit'}
-        <script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Base.js"></script>
-        <script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Async.js"></script>
+	{if $loadAjax == 'mochikit'}
+		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Base.js"></script>
+		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Async.js"></script>
 		{foreach from=$mochikitLibs item=mLib}
-        <script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/{$mLib}"></script>
+			<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/{$mLib}"></script>
 		{/foreach}
-    {else}
+	{else}
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/prototype.js"></script>
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/ajax.js"></script>
 		{if $loadDebug}

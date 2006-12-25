@@ -32,6 +32,9 @@ function smarty_prefilter_tr( $source ) {
  * @param array $pKey[2] flosing {/tr} tag
  * @access protected
  * @return translated string
+ *
+ * Note: If you want to have a {tr} block interpreted AFTER variable substitution, add a parameter to {tr}
+ * e.g.: {tr post=1}text {$that} needs to be {$evaluated}{/tr}
  */
 function _translate_lang( $pKey ) {
 	global $gBitLanguage, $lang;
@@ -57,11 +60,6 @@ function _translate_lang( $pKey ) {
 	//    waiting for 5 ratings
 	//    waiting for 6 ratings
 	//
-	//    if we were to return:
-	//    return $pKey[1].$trans."{/tr}";
-	//    we would end up with a worse situation where translated strings would 
-	//    be added to the master string database
-	//
 	//  - case 2
 	//    this should be fine since it has been translated and the {tr} blocks 
 	//    have been removed i.e. block.tr.php won't be called anymore
@@ -72,9 +70,12 @@ function _translate_lang( $pKey ) {
 	// --- xing
 
 
-	// the following has case 1 removed from the above situation. not sure if 
-	// this caters for all situations, but seems to work for now
-	if( $pKey[1] == "{tr}" ) {
+	// if the entire string in {tr} is a variable, we pass it on to block.tr.php
+	// e.g. {tr}{$menu.menu_title}{/tr} in top_bar.tpl
+	// if you change this regexp, please modify the one in languages/BitLanguage.php as well (approx line 256)
+	if( preg_match( '!^(\{\$[^\}]*\})+$!', $pKey[2] ) ) {
+		return $pKey[1].$pKey[2]."{/tr}";
+	} elseif( $pKey[1] == "{tr}" ) {
 		// no parameters set for block.tr.php
 		return $trans;
 	} else {

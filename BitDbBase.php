@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.31 2006/11/01 19:11:29 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.32 2006/12/28 23:39:48 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -482,6 +482,8 @@ class BitDb
 		$query = "INSERT INTO $insertTable ( $setSql ) VALUES ( $valueSql )";
 
 		$result = $this->query( $query, array_values( $insertData ) );
+
+		return( $result );
 	}
 
 	/**
@@ -517,6 +519,8 @@ class BitDb
 
 		$query = "UPDATE $updateTable SET $setSql WHERE $keyNames";
 		$result = $this->query( $query, $bindVars );
+
+		return( $result );
 	}
 
 	/**

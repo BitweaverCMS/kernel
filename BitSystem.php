@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.110 2006/12/07 13:07:46 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.111 2006/12/29 05:17:50 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1143,61 +1143,26 @@ class BitSystem extends BitBase {
     *    
 	* @access public
 	*/
-	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $pAutoRegister=TRUE, $pFileSystemScan=TRUE ) {
+	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $pAutoRegister=TRUE ) {
 		global $gPreScan;
-		#get list of package directory names from DB
-		$packages_config_array = $this->getConfigMatch( "/^packagedir_/i" );
-
-		# $packages_to_scan is a list of Package Directory Names
-		$packages_to_scan = array();
 		if( !empty( $gPreScan ) && is_array( $gPreScan ) ) {
-			# gPreScan may hold a list of packages that must be loaded first
-			$packages_to_scan = array_flip( $gPreScan );
-		}
-
-		foreach( $packages_config_array as $package_dir_name_key=>$package_dir_name ) {
-			$work = $package_dir_name_key;
-			$work = preg_replace( "/^packagedir_/", '', $work, 1 );
-			
-			# ingore if already in list
-			if( !empty( $packages_to_scan[$package_dir_name] ) ) {
-				continue;
-			}
-
-			# add to list
-			$package_config_status = $this->getConfig("package_" . $work);
-			if(
-				( !empty( $pSelect ) && $package_config_status == $pSelect ) ||
-				( !empty( $pSelect ) && $pSelect == 'all' ) ||
-				( !empty( $pSelect ) && $pSelect == 'installed' && ( $package_config_status == 'y' || $package_config_status == 'i' ) ) ||
-				( !empty( $pSelect ) && $pSelect == 'active' && ( $package_config_status == 'y' ) ) ||
-				empty( $pSelect )
-			) {
-				$packages_to_scan[$package_dir_name] = 1;
+			// gPreScan may hold a list of packages that must be loaded first
+			foreach( $gPreScan as $pkgDir ) {
+				$this->loadPackage( $pkgDir, $pScanFile, $pAutoRegister, $pOnce );
 			}
 		}
 
-		#load the specified packages
-		foreach( array_keys( $packages_to_scan ) as $pkgDir ) {
-			$this->loadPackage( $pkgDir, $pScanFile, $pAutoRegister, $pOnce );
-		}
-
-		if( $pFileSystemScan ) {
-			// load lib configs
-			if( $pkgDir = opendir( BIT_ROOT_PATH ) ) {
-				while( FALSE !== ( $dirName = readdir( $pkgDir ) ) ) {
-					if( is_dir( BIT_ROOT_PATH . '/' . $dirName ) && ( $dirName != 'CVS' ) && ( preg_match( '/^\w/', $dirName ) ) ) {
-						if( !empty( $packages_to_scan[$dirName] ) ) {
-							continue;
-						}
-						$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
-						$this->loadPackage( $dirName, $pScanFile, $pAutoRegister, $pOnce );
-					}
+		// load lib configs
+		if( $pkgDir = opendir( BIT_ROOT_PATH ) ) {
+			while( FALSE !== ( $dirName = readdir( $pkgDir ) ) ) {
+				if( is_dir( BIT_ROOT_PATH . '/' . $dirName ) && ( $dirName != 'CVS' ) && ( preg_match( '/^\w/', $dirName ) ) ) {
+					$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
+					$this->loadPackage( $dirName, $pScanFile, $pAutoRegister, $pOnce );
 				}
 			}
 		}
 
-		#in case some defines not done
+		//in case some defines not done
 		if( !defined( 'ACTIVE_PACKAGE' ) ) {
 			define( 'ACTIVE_PACKAGE', 'kernel' ); // when in doubt, assume the kernel
 		}
@@ -1268,7 +1233,7 @@ class BitSystem extends BitBase {
 						// we have a disabled required package. turn it back on!
 						$this->storeConfig( 'package_' . $package, 'y', $package );
 						$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_' . $package );
-					} elseif( $this->mPackages[$package]['installed'] &&  $this->getConfig( 'package_'.$package ) != 'i' &&  $this->getConfig( 'package_'.$package ) != 'y' ) {
+					} elseif( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['installed'] &&  $this->mConfig['package_'.$package] != 'i' &&  $this->mConfig['package_'.$package] != 'y' ) {
 						$this->storeConfig( 'package_' . $package, 'i', $package );
 					}
 				}

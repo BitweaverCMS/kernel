@@ -64,7 +64,9 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 			$i = 0;
 			// Wrap all the highlight words with a colourful span
 			$wordArr = split( " ", urldecode( $words ) );
+			$wordList = '';
 			foreach( $wordArr as $word ) {
+				$wordList .= '<span style="font-weight:bold;padding:0 0.3em;color:black;background-color:'.$colorArr[$i].';">'.$word.'</span> ';
 				$highlight = preg_replace( "'($word)'si", '<span style="font-weight:bold;padding:0 0.3em;color:black;background-color:'.$colorArr[$i++].';">$1</span>', $highlight ); 
 			}
 
@@ -76,6 +78,7 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 				}
 			}
 
+			$highlight = '<div class="wordlist">'.$wordList.'</div>'.$highlight;
 			$ret[] = $highlight;
 		}
 	}
@@ -85,6 +88,6 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 		$source = preg_replace( "!@@@SMARTY:TRIM:HIGHLIGHT@@@!", $highlight, $source, 1 );
 	}
 
-	return $source; 
+	return $source;
 }
 ?>

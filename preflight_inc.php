@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.17 2006/12/30 20:59:22 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.18 2006/12/30 22:08:32 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -156,7 +156,7 @@ function detoxify( &$pParamHash, $pHtml = FALSE ) {
 				detoxify( $value );
 			} else {
 				if( $pHtml ) {
-					$pParamHash[$key] = htmlspecialchars( urldecode( $value ) );
+					$pParamHash[$key] = htmlspecialchars( urldecode( $value ), ENT_NOQUOTES );
 				} elseif( preg_match( "/<script[^>]*>/i", urldecode( $value ) ) ) {
 					unset( $pParamHash[$key] );
 				}

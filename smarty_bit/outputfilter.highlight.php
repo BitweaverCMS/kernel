@@ -67,7 +67,7 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 			$wordList = tra( "Highlighted words" ).': ';
 			foreach( $wordArr as $word ) {
 				$wordList .= '<span style="font-weight:bold;padding:0 0.3em;color:black;background-color:'.$colorArr[$i].';">'.$word.'</span> ';
-				$highlight = preg_replace( "'($word)'si", '<span style="font-weight:bold;padding:0 0.3em;color:black;background-color:'.$colorArr[$i++].';">$1</span>', $highlight ); 
+				$highlight = preg_replace( "'($word)'si", '<span style="font-weight:bold;color:black;background-color:'.$colorArr[$i++].';">$1</span>', $highlight ); 
 			}
 
 			krsort( $patterns );

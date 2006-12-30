@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.16 2006/12/21 09:29:48 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.17 2006/12/30 20:59:22 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -226,6 +226,101 @@ function deprecated( $pReplace = NULL ) {
 		$out .= "\n\t".$pReplace;
 	}
 	vd( $out );
+}
+
+define( 'EMAIL_ADDRESS_REGEX', '\w[-.\w]*\@[-.\w]+\.\w{2,3}' );
+// html encode all characters
+// taken from: http://www.bbsinc.com/iso8859.html
+function encode_email_addresses( $pData ) {
+	$trans = array(
+		// Upper case
+		'A' => '&#065;',
+		'B' => '&#066;',
+		'C' => '&#067;',
+		'D' => '&#068;',
+		'E' => '&#069;',
+		'F' => '&#070;',
+		'G' => '&#071;',
+		'H' => '&#072;',
+		'I' => '&#073;',
+		'J' => '&#074;',
+		'K' => '&#075;',
+		'L' => '&#076;',
+		'M' => '&#077;',
+		'N' => '&#078;',
+		'O' => '&#079;',
+		'P' => '&#080;',
+		'Q' => '&#081;',
+		'R' => '&#082;',
+		'S' => '&#083;',
+		'T' => '&#084;',
+		'U' => '&#085;',
+		'V' => '&#086;',
+		'W' => '&#087;',
+		'X' => '&#088;',
+		'Y' => '&#089;',
+		'Z' => '&#090;',
+
+		// lower case
+		'a' => '&#097;',
+		'b' => '&#098;',
+		'c' => '&#099;',
+		'd' => '&#100;',
+		'e' => '&#101;',
+		'f' => '&#102;',
+		'g' => '&#103;',
+		'h' => '&#104;',
+		'i' => '&#105;',
+		'j' => '&#106;',
+		'k' => '&#107;',
+		'l' => '&#108;',
+		'm' => '&#109;',
+		'n' => '&#110;',
+		'o' => '&#111;',
+		'p' => '&#112;',
+		'q' => '&#113;',
+		'r' => '&#114;',
+		's' => '&#115;',
+		't' => '&#116;',
+		'u' => '&#117;',
+		'v' => '&#118;',
+		'w' => '&#119;',
+		'x' => '&#120;',
+		'y' => '&#121;',
+		'z' => '&#122;',
+
+		// digits
+		'0' => '&#048;',
+		'1' => '&#049;',
+		'2' => '&#050;',
+		'3' => '&#051;',
+		'4' => '&#052;',
+		'5' => '&#053;',
+		'6' => '&#054;',
+		'7' => '&#055;',
+		'8' => '&#056;',
+		'9' => '&#057;',
+
+		// special chars
+		'_' => '&#095;',
+		'-' => '&#045;',
+		'.' => '&#046;',
+		'@' => '&#064;',
+
+		//'[' => '&#091;',
+		//']' => '&#093;',
+		//'|' => '&#124;',
+		//'{' => '&#123;',
+		//'}' => '&#125;',
+		//'~' => '&#126;',
+	);
+	preg_match_all( "!\b".EMAIL_ADDRESS_REGEX."\b!", $pData, $addresses );
+	foreach( $addresses[0] as $address ) {
+		$encoded = strtr( $address, $trans );
+		$pData = preg_replace( "/\b".preg_quote( $address )."\b/", $encoded, $pData );
+	}
+
+	return $pData;
 }
 
 ?>

@@ -30,7 +30,7 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 	// This array is used to choose colours for supplied highlight terms
 	$colorArr = array( '#ffff66', '#ff9999', '#a0ffff', '#ff66ff', '#99ff99' );
 
-	$words = $_REQUEST['highlight'];
+	$words = urldecode( $_REQUEST['highlight'] );
 	if( empty( $words ) ) {
 		return $source;
 	}
@@ -61,13 +61,27 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 				$highlight = preg_replace( $pattern, $replace, $highlight );
 			}
 
-			$i = 0;
 			// Wrap all the highlight words with a colourful span
-			$wordArr = split( " ", urldecode( $words ) );
+			$wordArr = array();
+			$pattern = '#"([^"]*)"#';
+			if( preg_match_all( $pattern, $words, $ms ) ) {
+				$wordArr = $ms[1];
+				// remove the words we've just dealt with
+				$words = preg_replace( $pattern, "", $words );
+			}
+
+			$words = preg_replace( "!\s+!", " ", $words );
+			if( !empty( $words ) ) {
+				$wordArr = array_merge( $wordArr, split( ' ', $words ) );
+			}
+
+			//$wordArr = split( " ", urldecode( $words ) );
+			//vd($wordArr);
+			$i = 0;
 			$wordList = tra( "Highlighted words" ).': ';
 			foreach( $wordArr as $word ) {
 				$wordList .= '<span style="font-weight:bold;padding:0 0.3em;color:black;background-color:'.$colorArr[$i].';">'.$word.'</span> ';
-				$highlight = preg_replace( "'($word)'si", '<span style="font-weight:bold;color:black;background-color:'.$colorArr[$i++].';">$1</span>', $highlight ); 
+				$highlight = preg_replace( "/(".preg_quote( $word ).")/si", '<span style="font-weight:bold;color:black;background-color:'.$colorArr[$i++].';">$1</span>', $highlight ); 
 			}
 
 			krsort( $patterns );

@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.21 2006/01/09 04:40:08 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.1.1.1.2.22 2007/01/04 22:42:41 mej Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -282,7 +282,8 @@ function tp_http_request($url, $reqmethod = NULL ) {
 
 	// test url :
 	$url = trim( $url );
-	if (!preg_match("/^[-_a-zA-Z0-9:\/\.\?&;=\+]*$/",$url)) {
+	if (!preg_match("/^[-_a-zA-Z0-9:\/\.\?&;=\+,%]*$/",$url)) {
+		error_log(sprintf("Invalid URL:  \"%s\"", quotemeta($url)));
 		return false;
 	}
 	// rewrite url if sloppy # added a case for https urls
@@ -301,12 +302,18 @@ function tp_http_request($url, $reqmethod = NULL ) {
 		$aSettingsRequest["proxy_host"]=$proxy_host;
 		$aSettingsRequest["proxy_port"]=$proxy_port;
 	}
-	$req = &new HTTP_Request($url, $aSettingsRequest);
+	$req =& new HTTP_Request($url, $aSettingsRequest);
 	// (cdx) return false when can't connect
 	// I prefer throw a PEAR_Error. You decide ;)
-	if (PEAR::isError($oError=$req->sendRequest())) {
-		return false;
-	}
+	$oError = $req->sendRequest();
+	if (PEAR::isError($oError)) {
+		error_log(sprintf("Error fetching $url -- %s", $oError->toString()));
+		return $oError;
+	} else if (substr($req->getResponseCode(), 0, 1) != '2') {
+		error_log(sprintf("Error %d fetching $url", $req->getResponseCode()));
+        $oError =& new PEAR_Error("Error " . $req->getResponseCode(), $req->getResponseCode());
+		return $oError;
+    }
 	$data = $req->getResponseBody();
 
 	return $data;

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.14 2006/09/12 20:02:07 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.15 2007/01/05 08:31:21 squareing Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -18,7 +18,7 @@
 			<li>
 				{if $gBitSystem->isFeatureActive( 'feature_cssmenus' )}
 					{if $menu.menu_title}
-						<a class="head" href="{$menu.index_url}">{tr}{$menu.menu_title}{/tr}</a>
+						<a class="head" href="{$menu.index_url}">{tr}{$menu.menu_title|escape}{/tr}</a>
 					{/if}
 					{include file=$menu.menu_template}
 				{else}
@@ -28,7 +28,7 @@
 						{else}
 							<a class="head" href="javascript:flipWithSign('{$key}menu');"><span style="font-family:monospace;" id="flipper{$key}menu">&nbsp;</span>
 						{/if}
-						&nbsp;&nbsp;{tr}{$menu.menu_title}{/tr}</a>
+						&nbsp;&nbsp;{tr}{$menu.menu_title|escape}{/tr}</a>
 					{/if}
 
 					<div id="{$key}menu">
@@ -53,7 +53,7 @@
 	{if $gBitSystem->isFeatureActive( 'feature_usermenu' )and $usr_user_menus}
 		<li>
 			{if $gBitSystem->isFeatureActive( 'feature_cssmenus' )}
-				{if $menu.title}
+				{if $menu.title|escape}
 					<a class="head" href="{$smarty.const.USERS_PKG_URL}menu.php">{tr}User Menu{/tr}</a>
 				{/if}
 				{if count($usr_user_menus) gt 0}

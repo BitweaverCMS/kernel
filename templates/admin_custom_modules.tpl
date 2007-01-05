@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.7 2006/12/02 17:13:01 spiderr Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/Attic/admin_custom_modules.tpl,v 1.8 2007/01/05 08:31:22 squareing Exp $ *}
 {strip}
 
 <a name="editcreate"></a>
@@ -89,8 +89,8 @@
 
 	{section name=user loop=$user_modules}
 		<tr class="{cycle values="odd,even"}">
-			<td>{$user_modules[user].name}</td>
-			<td>{$user_modules[user].title}</td>
+			<td>{$user_modules[user].name|escape}</td>
+			<td>{$user_modules[user].title|escape}</td>
 			<td style="text-align:right">
 				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=layout&amp;module_name=_custom%3Acustom%2F{$user_modules[user].name}">{biticon ipackage="icons" iname="mail-attachment" iexplain=assign}</a>
 				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=custom_modules&amp;um_edit={$user_modules[user].name}#editcreate">{biticon ipackage="icons" iname="accessories-text-editor" iexplain=edit}</a>

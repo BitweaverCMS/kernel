@@ -47,7 +47,7 @@
 									<br />
 
 									{if $layout.$area[ix].title}
-										<strong>{tr}Title{/tr}</strong>: {$layout.$area[ix].title}<br />
+										<strong>{tr}Title{/tr}</strong>: {$layout.$area[ix].title|escape}<br />
 									{/if}
 									{if $layout.$area[ix].cache_time}
 										<strong>{tr}Cache Time{/tr}</strong>: {$layout.$area[ix].cache_time}<br />

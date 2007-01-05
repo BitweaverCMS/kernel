@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.32 2006/12/28 23:39:48 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.33 2007/01/05 10:34:15 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -717,15 +717,18 @@ class BitDb
 		}
 	}
 
-	/** Converts field sorting abbreviation to SQL
-	* @param pSortMode fieldname and sort order string (eg name_asc)
-	* @return the correctly quoted SQL ORDER statement
-	*/
+	/**
+	 * Converts field sorting abbreviation to SQL - you can pass in a single string or an entire array of sortmodes
+	 * 
+	 * @param string or array $pSortMode fieldname and sort order string (eg name_asc)
+	 * @access public
+	 * @return the correctly quoted SQL ORDER statement
+	 */
 	function convert_sortmode( $pSortMode ) {
-		if ( is_array( $pSortMode ) ) {
+		if( is_array( $pSortMode ) ) {
 			$sql = '';
-			foreach ($pSortMode as $sortMode) {
-				if (!empty( $sql )) {
+			foreach( $pSortMode as $sortMode ) {
+				if( !empty( $sql ) ) {
 					$sql .= ',';
 				}
 				$sql .= $this->convert_sortmode_one_item( $sortMode );
@@ -735,83 +738,94 @@ class BitDb
 			return $this->convert_sortmode_one_item( $pSortMode );
 		}
 	}
+
+	/**
+	 * Converts field sorting abbreviation to SQL and it also allows us to do things like sort by random rows.
+	 * 
+	 * @param array $pSortMode If pSortMode is 'random' it will insert the properly named db-specific function to achieve this.
+	 * @access public
+	 * @return valid, database-specific sortmode - if sortmode is not valid, NULL is returned
+	 */
 	function convert_sortmode_one_item( $pSortMode ) {
-		/* functionMap allows us to things like sort by random rows. If the
-			sortMode requested is 'random' it will insert the properly named
-			db-specific function to achieve this. - ATS
-		*/
+		// check $sort_mode for evil stuff
+		if( $pSortMode = preg_replace('/[^.A-Za-z_,]/', '', $pSortMode) ) {
 
-		// parse $sort_mode for evil stuff
-		$pSortMode = preg_replace('/[^.A-Za-z_,]/', '', $pSortMode);
-
-		if( $sep = strrpos($pSortMode, '_') ) {
-			$order = substr($pSortMode, $sep);
-			// force ending to either _asc or _desc
-			if ( $order !='_asc' && $order != '_desc' ) {
-				$pSortMode = substr($pSortMode, 0, $sep) . '_desc';
+			if( $sep = strrpos( $pSortMode, '_' ) ) {
+				$order = substr( $pSortMode, $sep );
+				// force ending to neither _asc or _desc
+				if ( $order !='_asc' && $order != '_desc' ) {
+					$pSortMode = substr( $pSortMode, 0, $sep ) . '_desc';
+				}
+			} elseif( $pSortMode != 'random' ) {
+				$pSortMode .= '_desc';
 			}
-		} elseif( $pSortMode != 'random' ) {
-			$pSortMode .= '_desc';
-		}
 
-		$pSortMode = preg_replace( '/lastModif/', 'last_modified', $pSortMode );
-		$pSortMode = preg_replace( '/pageName/', 'title', $pSortMode );
-		$pSortMode = preg_replace( '/^user_(asc|desc)/', 'login_\1', $pSortMode );
+			$pSortMode = preg_replace( '/lastModif/', 'last_modified', $pSortMode );
+			$pSortMode = preg_replace( '/pageName/', 'title', $pSortMode );
+			$pSortMode = preg_replace( '/^user_(asc|desc)/', 'login_\1', $pSortMode );
 
-		$bIsFunction = FALSE;
-		$functionMap = array( 'random' => array("postgres" => "RANDOM()",
-												"pgsql" => "RANDOM()",
-												"mysql3" => "RAND()",
-												"mysql" => "RAND()",
-												"mssql" => "NEWID()",
-												"firebird" => "RAND()"));
-												//"oci8" => "" STILL NEEDED
-												//"sqlite" => "" STILL NEEDED
-												//"sybase" => "" STILL NEEDED
-		foreach ($functionMap as $funcName=>$funcMethods) {
-			if ($pSortMode == $funcName) {
-				if	(in_array($this->mType, array_keys($funcMethods))) {
-					$pSortMode = $funcMethods[$this->mType];
-					$bIsFunction = TRUE;
+			$bIsFunction = FALSE;
+			$functionMap = array(
+				'random' => array(
+					"postgres" => "RANDOM()",
+					"pgsql"    => "RANDOM()",
+					"mysql3"   => "RAND()",
+					"mysql"    => "RAND()",
+					"mssql"    => "NEWID()",
+					"firebird" => "RAND()",
+					// TODO: get the correct function names for these databases:
+					//"oci8"     => "",
+					//"sqlite"   => "",
+					//"sybase"   => "",
+				)
+			);
+
+			foreach( $functionMap as $funcName => $funcMethods ) {
+				if( $pSortMode == $funcName ) {
+					if( in_array( $this->mType, array_keys( $funcMethods ))) {
+						$pSortMode = $funcMethods[$this->mType];
+						$bIsFunction = TRUE;
+					}
 				}
 			}
-		}
 
-		if (!$bIsFunction) {
-			switch ($this->mType)
-			{
-				case "firebird":
-					// Use of alias in order by is not supported because of optimizer processing
-					if ( $pSortMode == 'page_name_asc' ) $pSortMode = 'title_asc';
-					if ( $pSortMode == 'page_name_desc' ) $pSortMode = 'title_desc';
-					if ( $pSortMode == 'content_id_asc' ) $pSortMode = 'lc.content_id_asc';
-					if ( $pSortMode == 'content_id_desc' ) $pSortMode = 'lc.content_id_desc';
-					if ( $pSortMode == 'creator_user_asc' ) $pSortMode = 'uuc.login_asc';
-					if ( $pSortMode == 'creator_user_desc' ) $pSortMode = 'uuc.login_desc';
-					if ( $pSortMode == 'creator_real_name_asc' ) $pSortMode = 'uuc.real_name_asc';
-					if ( $pSortMode == 'creator_real_name_desc' ) $pSortMode = 'uuc.real_name_desc';
-					if ( $pSortMode == 'modifier_user_asc' ) $pSortMode = 'uue.login_asc';
-					if ( $pSortMode == 'modifier_user_desc' ) $pSortMode = 'uue.login_desc';
-					if ( $pSortMode == 'modifier_real_name_asc' ) $pSortMode = 'uue.real_name_asc';
-					if ( $pSortMode == 'modifier_real_name_desc' ) $pSortMode = 'uue.real_name_desc';
-				case "oci8":
-				case "sybase":
-				case "mssql":
-				case "sqlite":
-				case "mysql3":
-				case "postgres":
-				case "mysql":
-				default:
-					$pSortMode = preg_replace("/_asc$/", "` ASC", $pSortMode);
-					$pSortMode = preg_replace("/_desc$/", "` DESC", $pSortMode);
-					$pSortMode = str_replace(",", "`,`",$pSortMode);
-					if( strpos( $pSortMode, '.' ) ) {
-						$pSortMode = str_replace(".", ".`",$pSortMode);
-					} else {
-						$pSortMode = "`" . $pSortMode;
-					}
-				break;
+			if( !$bIsFunction ) {
+				switch( $this->mType ) {
+					case "firebird":
+						// Use of alias in order by is not supported because of optimizer processing
+						if ( $pSortMode == 'page_name_asc' )           $pSortMode = 'title_asc';
+						if ( $pSortMode == 'page_name_desc' )          $pSortMode = 'title_desc';
+						if ( $pSortMode == 'content_id_asc' )          $pSortMode = 'lc.content_id_asc';
+						if ( $pSortMode == 'content_id_desc' )         $pSortMode = 'lc.content_id_desc';
+						if ( $pSortMode == 'creator_user_asc' )        $pSortMode = 'uuc.login_asc';
+						if ( $pSortMode == 'creator_user_desc' )       $pSortMode = 'uuc.login_desc';
+						if ( $pSortMode == 'creator_real_name_asc' )   $pSortMode = 'uuc.real_name_asc';
+						if ( $pSortMode == 'creator_real_name_desc' )  $pSortMode = 'uuc.real_name_desc';
+						if ( $pSortMode == 'modifier_user_asc' )       $pSortMode = 'uue.login_asc';
+						if ( $pSortMode == 'modifier_user_desc' )      $pSortMode = 'uue.login_desc';
+						if ( $pSortMode == 'modifier_real_name_asc' )  $pSortMode = 'uue.real_name_asc';
+						if ( $pSortMode == 'modifier_real_name_desc' ) $pSortMode = 'uue.real_name_desc';
+					case "oci8":
+					case "sybase":
+					case "mssql":
+					case "sqlite":
+					case "mysql3":
+					case "postgres":
+					case "mysql":
+					default:
+						$pSortMode = preg_replace( "/_asc$/", "` ASC", $pSortMode );
+						$pSortMode = preg_replace( "/_desc$/", "` DESC", $pSortMode );
+						$pSortMode = str_replace( ",", "`,`",$pSortMode );
+						if( strpos( $pSortMode, '.' ) ) {
+							$pSortMode = str_replace( ".", ".`",$pSortMode );
+						} else {
+							$pSortMode = "`" . $pSortMode;
+						}
+						break;
+				}
 			}
+		} else {
+			$pSortMode = NULL;
 		}
 		return $pSortMode;
 	}

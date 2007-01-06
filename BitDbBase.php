@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.33 2007/01/05 10:34:15 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.34 2007/01/06 09:46:16 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -31,8 +31,7 @@ define( 'BIT_QUERY_DEFAULT', -1 );
  *
  * @package kernel
  */
-class BitDb
-{
+class BitDb {
 	/**
 	* Used to store the ADODB db object used to access the database.
 	* This is just a pointer to a single global variable used by all classes.
@@ -89,8 +88,7 @@ class BitDb
 	* During initialisation, database parameters are passed to the class.
 	* If these parameters are not valid, class will not be initialised.
 	*/
-	function BitDb()
-	{
+	function BitDb() {
 		global $gDebug;
 		$this->mDebug = $gDebug;
 		$this->mCacheFlag = FALSE;
@@ -105,13 +103,11 @@ class BitDb
 	* @private
 	* @todo investigate if this is the correct way to do it.
 	*/
-	function preDBConnection()
-	{
+	function preDBConnection() {
 		// Pre connection setup
 		if(isset($this->mType)) {
 			// we have a db we're gonna try to load
-			switch ($this->mType)
-			{
+			switch ($this->mType) {
 				case "sybase":
 				// avoid database change messages
 				ini_set("sybct.min_server_severity", "11");
@@ -128,19 +124,16 @@ class BitDb
 	* @todo remove the BIT_DB_PREFIX, change to a member variable
 	* @todo get spiderr to explain the schema line
 	*/
-	function postDBConnection()
-	{
+	function postDBConnection() {
 		// Post connection setup
-		switch ($this->mType)
-		{
+		switch ($this->mType) {
 			case "sybase":
 			case "mssql":
 			$this->mDb->Execute("set quoted_identifier on");
 			break;
 			case "postgres":
 			// Do a little prep work for postgres, no break, cause we want default case too
-			if (defined("BIT_DB_PREFIX") && preg_match( "/\./", BIT_DB_PREFIX) )
-			{
+			if (defined("BIT_DB_PREFIX") && preg_match( "/\./", BIT_DB_PREFIX) ) {
 				$schema = preg_replace("/[`\.]/", "", BIT_DB_PREFIX);
 				// Assume we want to dump in a schema, so set the search path and nuke the prefix here.
 				// $result = $this->mDb->Execute( "SET search_path TO $schema,public" );
@@ -244,8 +237,7 @@ class BitDb
 	* @return true|false
 	* true if created with no errors | false if errors are stored in $this->mFailed
 	*/
-	function createTables($pTables, $pOptions = array())
-	{
+	function createTables($pTables, $pOptions = array()) {
 		// PURE VIRTUAL
 	}
 
@@ -255,8 +247,7 @@ class BitDb
 	* @param pTable the table name
 	* @return true if table already exists
 	*/
-	function tableExists($pTable)
-	{
+	function tableExists($pTable) {
 		// PURE VIRTUAL
 	}
 
@@ -268,8 +259,7 @@ class BitDb
 	* true if dropped with no errors |
 	* false if errors are stored in $this->mFailed
 	*/
-	function dropTables($pTables)
-	{
+	function dropTables($pTables) {
 		// PURE VIRTUAL
 	}
 
@@ -296,8 +286,7 @@ class BitDb
 	* @param pStr string to be quotes
 	* @return quoted string using AdoDB->qstr()
 	*/
-	function qstr($pStr)
-	{
+	function qstr($pStr) {
 		// PURE VIRTUAL
 	}
 
@@ -313,8 +302,7 @@ class BitDb
 	* conjunction with $pNumRows
 	* @todo currently not used anywhere.
 	*/
-	function queryError( $pQuery, &$pError, $pValues = NULL, $pNumRows = -1, $pOffset = -1 )
-	{
+	function queryError( $pQuery, &$pError, $pValues = NULL, $pNumRows = -1, $pOffset = -1 ) {
 		// PURE VIRTUAL
 	}
 
@@ -328,8 +316,7 @@ class BitDb
 	* conjunction with $pNumRows
 	* @return an AdoDB RecordSet object
 	*/
-	function query($query, $values = null, $numrows = BIT_QUERY_DEFAULT, $offset = BIT_QUERY_DEFAULT, $pCacheTime=BIT_QUERY_DEFAULT )
-	{
+	function query($query, $values = null, $numrows = BIT_QUERY_DEFAULT, $offset = BIT_QUERY_DEFAULT, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		// PURE VIRTUAL
 	}
 
@@ -401,8 +388,7 @@ class BitDb
 	* @todo not currently used anywhere
 	*/
 
-	function getCol( $pQuery, $pValues=FALSE, $pTrim=FALSE )
-	{
+	function getCol( $pQuery, $pValues=FALSE, $pTrim=FALSE ) {
 		// PURE VIRTUAL
 	}
 	/** Returns an associative array for the given query.
@@ -414,8 +400,7 @@ class BitDb
 	* @param pFirst2Cols if set to true, only returns the first two columns
 	* @return the associative array, or false if an error occurs
 	*/
-	function getArray( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT )
-	{
+	function getArray( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		// PURE VIRTUAL
 	}
 
@@ -428,8 +413,7 @@ class BitDb
 	* @param pFirst2Cols if set to true, only returns the first two columns
 	* @return the associative array, or false if an error occurs
 	*/
-	function getAssoc( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT )
-	{
+	function getAssoc( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		// PURE VIRTUAL
 	}
 
@@ -440,8 +424,7 @@ class BitDb
 	* @param pValues an array of values used in a parameterised query
 	* @return returns the first row as an array, or false if an error occurs
 	*/
-	function getRow( $pQuery, $pValues=FALSE, $pCacheTime=BIT_QUERY_DEFAULT )
-	{
+	function getRow( $pQuery, $pValues=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		// PURE VIRTUAL
 	}
 
@@ -453,8 +436,7 @@ class BitDb
 	* @param pOffset the row number to begin returning rows from.
 	* @return the associative array, or false if an error occurs
 	*/
-	function getOne($pQuery, $pValues=NULL, $pNumRows=NULL, $pOffset=NULL, $pCacheTime = BIT_QUERY_DEFAULT )
-	{
+	function getOne($pQuery, $pValues=NULL, $pNumRows=NULL, $pOffset=NULL, $pCacheTime = BIT_QUERY_DEFAULT ) {
 		// PURE VIRTUAL
 	}
 
@@ -543,8 +525,7 @@ class BitDb
 	* @return		0 if not supported, otherwise a sequence id
 	* @todo	To be combined with GenID
 	*/
-	function CreateSequence($seqname='adodbseq',$startID=1)
-	{
+	function CreateSequence($seqname='adodbseq',$startID=1) {
 		// PURE VIRTUAL
 	}
 
@@ -557,8 +538,7 @@ class BitDb
 	* $pField is NULL for the given database, and if NULL, change the
 	* value returned to $pNullRepl.
 	*/
-	function ifNull($pField, $pNullRepl)
-	{
+	function ifNull($pField, $pNullRepl) {
 		// PURE VIRTUAL
 	}
 
@@ -568,8 +548,7 @@ class BitDb
 	* @todo could be used to later convert all int timestamps into db
 	* timestamps. Currently not used anywhere.
 	*/
-	function ls($pDate)
-	{
+	function ls($pDate) {
 		// PURE VIRTUAL
 	}
 
@@ -689,8 +668,7 @@ class BitDb
 	* @return the correctly quoted SQL statement
 	* @todo investigate replacement by AdoDB NameQuote() function
 	*/
-	function convertQuery(&$pQuery)
-	{
+	function convertQuery(&$pQuery) {
 		if( !empty( $this->mType ) ) {
 			switch ($this->mType) {
 				case "oci8":
@@ -724,18 +702,18 @@ class BitDb
 	 * @access public
 	 * @return the correctly quoted SQL ORDER statement
 	 */
-	function convert_sortmode( $pSortMode ) {
+	function convertSortmode( $pSortMode ) {
 		if( is_array( $pSortMode ) ) {
 			$sql = '';
 			foreach( $pSortMode as $sortMode ) {
 				if( !empty( $sql ) ) {
 					$sql .= ',';
 				}
-				$sql .= $this->convert_sortmode_one_item( $sortMode );
+				$sql .= $this->convertSortmodeOneItem( $sortMode );
 			}
 			return $sql;
 		} else {
-			return $this->convert_sortmode_one_item( $pSortMode );
+			return $this->convertSortmodeOneItem( $pSortMode );
 		}
 	}
 
@@ -746,10 +724,9 @@ class BitDb
 	 * @access public
 	 * @return valid, database-specific sortmode - if sortmode is not valid, NULL is returned
 	 */
-	function convert_sortmode_one_item( $pSortMode ) {
+	function convertSortmodeOneItem( $pSortMode ) {
 		// check $sort_mode for evil stuff
 		if( $pSortMode = preg_replace('/[^.A-Za-z_,]/', '', $pSortMode) ) {
-
 			if( $sep = strrpos( $pSortMode, '_' ) ) {
 				$order = substr( $pSortMode, $sep );
 				// force ending to neither _asc or _desc
@@ -835,10 +812,8 @@ class BitDb
 	* @return the SQL keyword
 	* @todo only used in gBitSystem and users_lib to compare login names
 	*/
-	function convert_binary()
-	{
-		switch ($this->mType)
-		{
+	function convertBinary() {
+		switch ($this->mType) {
 			case "oci8":
 			case "firebird":
 			case "sqlite":
@@ -855,14 +830,11 @@ class BitDb
 	* @param pType the current variable type
 	* @return the SQL casting statement
 	*/
-	function sql_cast($pVar,$pType)
-	{
-		switch ($this->mType)
-		{
+	function sqlCast($pVar,$pType) {
+		switch ($this->mType) {
 			case "sybase":
 			case "mssql":
-			switch ($pType)
-			{
+			switch ($pType) {
 				case "int":
 				return " CONVERT(numeric(14,0),$pVar) ";
 				break;
@@ -886,7 +858,7 @@ class BitDb
 	* @param pData a string of raw blob data
 	* @return escaped blob data
 	*/
-	function db_byte_encode( &$pData ) {
+	function dbByteEncode( &$pData ) {
 		// need to use this global so as not to break static calls
 		global $gBitDbType;
 		switch ( $gBitDbType ) {
@@ -909,7 +881,7 @@ class BitDb
 	* @param pData escaped blob data
 	* @return a string of raw blob data
 	*/
-	function db_byte_decode( &$pData ) {
+	function dbByteDecode( &$pData ) {
 		switch ($this->mDb->mType) {
 			case "postgres":
 				$ret = stripcslashes( $pData );
@@ -1000,6 +972,46 @@ class BitDb
 				break;
 		}
 		return $ret;
+	}
+
+	/**
+	 * Renamed a few functions - these are the temporary backward compatability calls with the deprecated note
+	 * These funcitons will be removed in due course
+	 */
+	function convert_sortmode( $pSortMode ) {
+		deprecated( $this->depText( 'convert_sortmode', 'convertSortmode' ) );
+		return $this->convertSortmode( $pSortMode );
+	}
+
+	function convert_sortmode_one_item( $pSortMode ) {
+		deprecated( $this->depText( 'convert_sortmode_one_item', 'convertSortmodeOneItem' ) );
+		return $this->convertSortmode( $pSortMode );
+	}
+
+	function convert_binary() {
+		deprecated( $this->depText( 'convert_binary', 'convertBinary' ) );
+		return $this->convertBinary();
+	}
+
+	function sql_cast( $pVar, $pType ) {
+		deprecated( $this->depText( 'sql_cast', 'sqlCast' ) );
+		return $this->sqlCast( $pVar, $pType );
+	}
+
+	function db_byte_encode( &$pData ) {
+		deprecated( $this->depText( 'db_byte_encode', 'dbByteEncode' ) );
+		return $this->dbByteEncode( &$pData );
+	}
+
+	function db_byte_decode( &$pData ) {
+		deprecated( $this->depText( 'db_byte_decode', 'dbByteDecode' ) );
+		return $this->dbByteDecode( &$pData );
+	}
+
+	function depText( $pFrom, $pTo ) {
+		return "We have changed this method to BitDbBase::{$pTo}().
+	Please update your code accordingly - you can try using the following (please back up your code before applying this):
+	find <your package>/ -name \"*.php\" -exec perl -i -wpe 's/\b{$pFrom}\b/{$pTo}/g' {} \;";
 	}
 }
 ?>

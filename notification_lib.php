@@ -3,7 +3,7 @@
  * eMail Notification Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.8 2006/04/19 13:48:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.9 2007/01/06 09:46:16 squareing Exp $
  * @author awcolley
  *
  * created 2003/06/03
@@ -54,7 +54,7 @@ class NotificationLib extends BitBase
             $mid = " ";
             $bindvars=array();
         }
-        $query = "select * from `".BIT_DB_PREFIX."mail_notifications` $mid order by ".$this->mDb->convert_sortmode($sort_mode);
+        $query = "select * from `".BIT_DB_PREFIX."mail_notifications` $mid order by ".$this->mDb->convertSortmode($sort_mode);
         $query_cant = "select count(*) from `".BIT_DB_PREFIX."mail_notifications` $mid";
         $result = $this->mDb->query($query,$bindvars,$max_records,$offset);
         $cant = $this->mDb->getOne($query_cant,$bindvars);

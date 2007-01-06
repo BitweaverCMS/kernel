@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.34 2007/01/06 09:46:16 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.35 2007/01/06 18:02:04 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -1000,12 +1000,12 @@ class BitDb {
 
 	function db_byte_encode( &$pData ) {
 		deprecated( $this->depText( 'db_byte_encode', 'dbByteEncode' ) );
-		return $this->dbByteEncode( &$pData );
+		return $this->dbByteEncode( $pData );
 	}
 
 	function db_byte_decode( &$pData ) {
 		deprecated( $this->depText( 'db_byte_decode', 'dbByteDecode' ) );
-		return $this->dbByteDecode( &$pData );
+		return $this->dbByteDecode( $pData );
 	}
 
 	function depText( $pFrom, $pTo ) {

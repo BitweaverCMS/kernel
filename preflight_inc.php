@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.18 2006/12/30 22:08:32 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.19 2007/01/06 17:34:55 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -225,7 +225,11 @@ function deprecated( $pReplace = NULL ) {
 	if( !empty( $pReplace ) ) {
 		$out .= "\n\t".$pReplace;
 	}
-	vd( $out );
+	if( !defined( 'IS_LIVE' ) ) {
+		vd( $out );
+	} else {
+		error_log( $out );
+	}
 }
 
 define( 'EMAIL_ADDRESS_REGEX', '\w[-.\w]*\@[-.\w]+\.\w{2,3}' );

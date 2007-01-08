@@ -19,6 +19,9 @@
 	{if $gBitSystem->isFeatureActive( 'site_header_contents' )}
 		<link rel="contents" title="{tr}Contents{/tr}" href="{$gBitSystem->getConfig('site_header_contents')}" />
 	{/if}
+	{if $gBitSystem->isFeatureActive( 'site_header_index' )}
+		<link rel="index" title="{tr}Index{/tr}" href="{$gBitSystem->getConfig('site_header_index')}" />
+	{/if}
 	{if $gBitSystem->isFeatureActive( 'site_header_glossary' )}
 		<link rel="glossary" title="{tr}Glossary{/tr}" href="{$gBitSystem->getConfig('site_header_glossary')}" />
 	{/if}

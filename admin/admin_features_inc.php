@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.23 2007/01/08 09:48:09 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.24 2007/01/08 10:02:03 squareing Exp $
 
 $formBit = array(
 	'pretty_urls' => array(
@@ -44,6 +44,11 @@ $extendedHeader = array(
 	'site_header_help' => array(
 		'label' => 'Help Link',
 		'note' => 'Enter the URL of where you want the help link to point to.',
+		'type' => 'text',
+	),
+	'site_header_index' => array(
+		'label' => 'Site Index',
+		'note' => 'This URL should point to a site index of your website.',
 		'type' => 'text',
 	),
 	'site_header_contents' => array(

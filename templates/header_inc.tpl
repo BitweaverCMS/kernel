@@ -6,8 +6,32 @@
 
 <link rel="shortcut icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
 <link rel="icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
-<link rel="start" title="{$gBitSystem->getConfig('site_title')} {tr}Home Page{/tr}" href="{$smarty.const.BIT_ROOT_URL}" />
-<link rel="help" title="{tr}Help{/tr}" href="http://www.bitweaver.org/" />
+
+{if $gBitSystem->isFeatureActive( 'site_header_extended_nav' )}
+	<link rel="start" title="{$gBitSystem->getConfig('site_title')} {tr}Home{/tr}" href="{$smarty.const.BIT_ROOT_URL}" />
+
+	{if $gBitSystem->isFeatureActive( 'site_header_help' )}
+		<link rel="help" title="{tr}Help{/tr}" href="{$gBitSystem->getConfig('site_header_help')}" />
+	{/if}
+	{if $gBitSystem->isFeatureActive( 'site_header_copyright' )}
+		<link rel="copyright" title="{tr}Copyright{/tr}" href="{$gBitSystem->getConfig('site_header_copyright')}" />
+	{/if}
+	{if $gBitSystem->isFeatureActive( 'site_header_contents' )}
+		<link rel="contents" title="{tr}Contents{/tr}" href="{$gBitSystem->getConfig('site_header_contents')}" />
+	{/if}
+	{if $gBitSystem->isFeatureActive( 'site_header_glossary' )}
+		<link rel="glossary" title="{tr}Glossary{/tr}" href="{$gBitSystem->getConfig('site_header_glossary')}" />
+	{/if}
+
+	{if $listInfo.current_page > 1}
+		<link rel="first" title="{tr}First page{/tr}" href="{$pageUrl}&amp;list_page=1" />
+		<link rel="previous" title="{tr}Previous page{/tr}" href="{$pageUrl}&amp;list_page={$listInfo.current_page-1}" />
+	{/if}
+	{if $listInfo.current_page < $listInfo.total_pages}
+		<link rel="next" title="{tr}Next page{/tr}" href="{$pageUrl}&amp;list_page={$listInfo.current_page+1}" />
+		<link rel="last" title="{tr}Last page{/tr}" href="{$pageUrl}&amp;list_page={$listInfo.total_pages}" />
+	{/if}
+{/if}
 
 <script type="text/javascript">/* <![CDATA[ */
 	var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";

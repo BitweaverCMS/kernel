@@ -1,6 +1,5 @@
 <?php
-
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.22 2006/11/23 15:18:18 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.23 2007/01/08 09:48:09 squareing Exp $
 
 $formBit = array(
 	'pretty_urls' => array(
@@ -36,6 +35,35 @@ $formHelp = array(
 );
 $gBitSmarty->assign( 'formHelp',$formHelp );
 
+$extendedHeader = array(
+	'site_header_extended_nav' => array(
+		'label' => 'Enable Header Navigation',
+		'note' => 'This feature will add a number of useful links to the &lt;head&gt; section. These will help improve accessibility on this site.',
+		'type' => 'checkbox',
+	),
+	'site_header_help' => array(
+		'label' => 'Help Link',
+		'note' => 'Enter the URL of where you want the help link to point to.',
+		'type' => 'text',
+	),
+	'site_header_contents' => array(
+		'label' => 'Site Contents',
+		'note' => 'This URL should point to a site map of your website.',
+		'type' => 'text',
+	),
+	'site_header_copyright' => array(
+		'label' => 'Site Copyright',
+		'note' => 'This link should point to a page with copyright information.',
+		'type' => 'text',
+	),
+	'site_header_glossary' => array(
+		'label' => 'Site Glossary',
+		'note' => 'This link should point to a page with a glossary of terms.',
+		'type' => 'text',
+	),
+);
+$gBitSmarty->assign( 'extendedHeader',$extendedHeader );
+
 $formMisc = array(
 	'site_direct_pagination' => array(
 		'label' => 'Use direct pagination links',
@@ -54,9 +82,13 @@ $formMisc = array(
 $gBitSmarty->assign( 'formMisc',$formMisc );
 
 if( !empty( $_REQUEST['change_prefs'] ) ) {
-	$featureToggles = array_merge( $formBit, $formHelp, $formMisc );
+	$featureToggles = array_merge( $formBit, $formHelp, $formMisc, $extendedHeader );
 	foreach( $featureToggles as $item => $info ) {
-		simple_set_toggle( $item, KERNEL_PKG_NAME );
+		if( empty( $info['type'] ) || $info['type'] == 'checkbox' ) {
+			simple_set_toggle( $item, KERNEL_PKG_NAME );
+		} elseif( $info['type'] == 'text' ) {
+			simple_set_value( $item, KERNEL_PKG_NAME );
+		}
 	}
 
 	$simpleValues = array(

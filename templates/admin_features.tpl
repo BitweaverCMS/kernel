@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.12 2006/12/07 13:05:34 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.13 2007/01/08 09:48:09 squareing Exp $ *}
 {strip}
 {form}
 	{jstabs}
@@ -109,7 +109,25 @@
 				</div>
 			{/legend}
 
-			{legend legend="Date and other stuff"}
+			{legend legend="Extended Header"}
+				<p class="help">{tr}To improve accessibility on your website further, you can activate the following feature. Most of these settings will not be visible to the common user but if you are using a browser such as <a class="external" href="http://elinks.or.cz">Elinks</a> or have the navigation bar active in <a class="external" href="http://www.opera.com">Opera</a> or the <a class="external" href="http://cdn.mozdev.org/linkToolbar/">linkToolbar</a> extension installed in <a class="external" href="http://www.mozilla.org">Firefox</a> these features will be visible to you. Any values left blank will not be inserted.{/tr}</p>
+
+				{foreach from=$extendedHeader key=feature item=output}
+					<div class="row">
+						{formlabel label=`$output.label` for=$feature}
+						{forminput}
+							{if $output.type == 'checkbox'}
+								{html_checkboxes name="$feature" values="y" checked=$gBitSystem->getConfig($feature) labels=false id=$feature}
+							{elseif $output.type == 'text'}
+								<input size="50" type="text" name="{$feature}" id="{$feature}" value="{$gBitSystem->getConfig($feature)|escape}" />
+							{/if}
+							{formhelp note=`$output.note` page=`$output.page`}
+						{/forminput}
+					</div>
+				{/foreach}
+			{/legend}
+
+			{legend legend="Other stuff"}
 				<div class="row">
 					{formlabel label="Maximum records" for="max_records"}
 					{forminput}
@@ -128,6 +146,7 @@
 					</div>
 				{/foreach}
 			{/legend}
+
 		{/jstab}
 	{/jstabs}
 

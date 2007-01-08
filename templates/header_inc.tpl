@@ -26,13 +26,14 @@
 		<link rel="glossary" title="{tr}Glossary{/tr}" href="{$gBitSystem->getConfig('site_header_glossary')}" />
 	{/if}
 
+	{assign var=headPageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find`"}
 	{if $listInfo.current_page > 1}
-		<link rel="first" title="{tr}First page{/tr}" href="{$pageUrl}&amp;list_page=1" />
-		<link rel="previous" title="{tr}Previous page{/tr}" href="{$pageUrl}&amp;list_page={$listInfo.current_page-1}" />
+		<link rel="first" title="{tr}First page{/tr}" href="{$headPageUrl}&amp;list_page=1" />
+		<link rel="previous" title="{tr}Previous page{/tr}" href="{$headPageUrl}&amp;list_page={$listInfo.current_page-1}" />
 	{/if}
 	{if $listInfo.current_page < $listInfo.total_pages}
-		<link rel="next" title="{tr}Next page{/tr}" href="{$pageUrl}&amp;list_page={$listInfo.current_page+1}" />
-		<link rel="last" title="{tr}Last page{/tr}" href="{$pageUrl}&amp;list_page={$listInfo.total_pages}" />
+		<link rel="next" title="{tr}Next page{/tr}" href="{$headPageUrl}&amp;list_page={$listInfo.current_page+1}" />
+		<link rel="last" title="{tr}Last page{/tr}" href="{$headPageUrl}&amp;list_page={$listInfo.total_pages}" />
 	{/if}
 {/if}
 

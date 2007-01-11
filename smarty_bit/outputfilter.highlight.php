@@ -28,7 +28,7 @@
  */
 function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 	// This array is used to choose colours for supplied highlight terms
-	$colorArr = array( '#ffff66', '#ff9999', '#a0ffff', '#ff66ff', '#99ff99' );
+	$colorArr = array( '#2b877e', '#a8c0cf', '#eab239', '#e7371a', '#b03c0d', '#662b2d', '#193d55' );
 
 	$words = urldecode( $_REQUEST['highlight'] );
 	if( empty( $words ) ) {

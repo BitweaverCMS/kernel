@@ -18,8 +18,8 @@ function biticon_first_match( $pDir, $pFilename ) {
 	if( is_dir( $pDir ) ) {
 		global $gSniffer;
 
-		// if this is MSIE, we try png last.
-		if( $gSniffer->_browser_info['browser'] == 'ie' ) {
+		// if this is MSIE < 7, we try png last.
+		if( $gSniffer->_browser_info['browser'] == 'ie' && $gSniffer->_browser_info['maj_ver'] < 7 ) {
 			$extensions = array( 'gif', 'jpg', 'png' );
 		} else {
 			$extensions = array( 'png', 'gif', 'jpg' );
@@ -252,8 +252,8 @@ function biticon_get_cache_file( $pParams ) {
 		}
 	}
 
-	// finally we append browser since we have browser-specific stuff in biticon
+	// finally we append browser with its major version since we have browser-specific stuff in biticon
 	// we also append bitversion to invalidate cache in case somethang has changed since the last release
-	return $tempdir.md5( $hashstring ).'_'.BIT_MAJOR_VERSION.BIT_MINOR_VERSION.BIT_SUB_VERSION."_".$gSniffer->_browser_info['browser'];
+	return $tempdir.md5( $hashstring ).'_'.BIT_MAJOR_VERSION.BIT_MINOR_VERSION.BIT_SUB_VERSION."_".$gSniffer->_browser_info['browser'].$gSniffer->_browser_info['maj_ver'];
 }
 ?>

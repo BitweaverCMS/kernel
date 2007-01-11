@@ -33,7 +33,7 @@ function smarty_modifier_reltime( $pTimeStamp, $pMode = 'long', $pFallback = 'bi
 
 	if( $delta < 0 ) {
 		$delta = -$delta;
-		return tra( "In the future" ).": ";
+		return tra( "In der Zukunft" ).": ";
 	}
 
 	if( $delta < 1 ) {
@@ -56,11 +56,14 @@ function smarty_modifier_reltime( $pTimeStamp, $pMode = 'long', $pFallback = 'bi
 		} elseif( $delta < $day ) {
 			$delta_hours = floor( ( $delta - ( floor( $delta / $hour ) * $hour ) ) / $min );
 			if( $pMode == 'short' ) {
-				return floor( $delta / $hour )."h {$delta_hours}m ago";
+				return 'vor '.floor( $delta / $hour )."h {$delta_hours}m";
+				//return floor( $delta / $hour )."h {$delta_hours}m ago";
 			}
-			return floor( $delta / $hour )." hour(s) {$delta_hours} minute(s) ago";
+			return 'vor '.floor( $delta / $hour )." Stunde(n) {$delta_hours} Minute(n)";
+			//return floor( $delta / $hour )." hour(s) {$delta_hours} minute(s) ago";
 		} else {
-			return round( $delta / $hour )." ".tra( "hour(s) ago" );
+			return 'vor '.round( $delta / $hour )." Stunde(n)";
+			//return round( $delta / $hour )." ".tra( "hour(s) ago" );
 		}
 	} elseif( $delta < $week ) {
 		// up to a week

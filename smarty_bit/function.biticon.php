@@ -95,8 +95,10 @@ function biticon_output( $pParams, $pFile ) {
 		}
 	}
 
-	if( !biticon_write_cache( $pParams, $outstr )) {
-		echo tra( 'There was a problem writing the icon cache file' );
+	if( !preg_match( "#^broken\.#", $pFile )) {
+		if( !biticon_write_cache( $pParams, $outstr )) {
+			echo tra( 'There was a problem writing the icon cache file' );
+		}
 	}
 
 	return $outstr;

@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.31 2006/12/30 08:56:02 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.32 2007/01/11 09:18:10 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -557,5 +557,53 @@ function usort_by_title( $ar1, $ar2 ) {
 	} else {
 		return 0;
 	}
+}
+
+function compare_links( $ar1, $ar2 ) {
+	return $ar1["links"] - $ar2["links"];
+}
+
+function compare_backlinks( $ar1, $ar2 ) {
+	return $ar1["backlinks"] - $ar2["backlinks"];
+}
+
+function r_compare_links( $ar1, $ar2 ) {
+	return $ar2["links"] - $ar1["links"];
+}
+
+function r_compare_backlinks( $ar1, $ar2 ) {
+	return $ar2["backlinks"] - $ar1["backlinks"];
+}
+
+function compare_images( $ar1, $ar2 ) {
+	return $ar1["images"] - $ar2["images"];
+}
+
+function r_compare_images( $ar1, $ar2 ) {
+	return $ar2["images"] - $ar1["images"];
+}
+
+function compare_files( $ar1, $ar2 ) {
+	return $ar1["files"] - $ar2["files"];
+}
+
+function r_compare_files( $ar1, $ar2 ) {
+	return $ar2["files"] - $ar1["files"];
+}
+
+function compare_versions( $ar1, $ar2 ) {
+	return $ar1["versions"] - $ar2["versions"];
+}
+
+function r_compare_versions( $ar1, $ar2 ) {
+	return $ar2["versions"] - $ar1["versions"];
+}
+
+function compare_changed( $ar1, $ar2 ) {
+	return $ar1["lastChanged"] - $ar2["lastChanged"];
+}
+
+function r_compare_changed( $ar1, $ar2 ) {
+	return $ar2["lastChanged"] - $ar1["lastChanged"];
 }
 ?>

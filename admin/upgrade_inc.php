@@ -435,6 +435,7 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='users_pass_chr_num' WHERE `config_name`='pass_chr_num'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='users_eponymous_groups' WHERE `config_name`='eponymous_groups'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='users_display_name' WHERE `config_name`='display_name'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_use_jscalendar' WHERE `config_name`='feature_jscalendar'",
 
 		// rss config rename
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='articles_rss'             WHERE `config_name`='rss_articles'",

@@ -22,7 +22,7 @@
 */
 function smarty_function_jscalendar($params, &$gBitSmarty) {
 	global $gBitSystem;
-	if( $gBitSystem->isFeatureActive( 'feature_jscalendar' ) ) {
+	if( $gBitSystem->isFeatureActive( 'site_use_jscalendar' ) ) {
 		//require_once $gBitSmarty->_get_plugin_filepath('shared', 'make_timestamp');
 		//require_once $gBitSmarty->_get_plugin_filepath('function', 'html_options');
 

@@ -62,7 +62,7 @@
 	{/if}
 {/if}
 
-{if $gBitSystem->isFeatureActive( 'feature_jscalendar' )}
+{if $gBitSystem->isFeatureActive( 'site_use_jscalendar' )}
 	<link rel="stylesheet" title="{$style}" type="text/css" href="{$smarty.const.JSCALENDAR_PKG_URL}calendar-bitweaver.css" media="all" />
 	<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}calendar.js"></script>
 	<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}lang/calendar-en.js"></script>

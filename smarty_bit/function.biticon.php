@@ -231,11 +231,8 @@ function biticon_write_cache( $pParams, $pCacheString ) {
  * @return full path to cachefile
  */
 function biticon_get_cache_file( $pParams ) {
-	global $gSniffer;
-	$tempdir = TEMP_PKG_PATH.'themes/biticon/';
-	if( !is_dir( $tempdir )) {
-		mkdir_p( $tempdir );
-	}
+	global $gSniffer, $gBitThemes, $gBitSystem;
+	$cachedir = $gBitThemes->getIconCachePath();
 
 	if( !empty( $pParams['ipackage'] ) && $pParams['ipackage'] == 'icons' ) {
 		if( !strstr( $pParams['iname'], '/' ) ) {
@@ -245,15 +242,17 @@ function biticon_get_cache_file( $pParams ) {
 
 	// create a hash filename based on the parameters given
 	$hashstring = '';
-	$ihash = array( 'ipath', 'iname', 'iexplain', 'ipackage', 'url' );
+	$ihash = array( 'iforce', 'ipath', 'iname', 'iexplain', 'ipackage', 'url' );
 	foreach( $pParams as $param => $value ) {
 		if( in_array( $param, $ihash )) {
 			$hashstring .= strtolower( $value );
 		}
 	}
 
+	$hashstring .= $gBitSystem->getConfig( 'site_biticon_display_style' );
+
 	// finally we append browser with its major version since we have browser-specific stuff in biticon
 	// we also append bitversion to invalidate cache in case somethang has changed since the last release
-	return $tempdir.md5( $hashstring ).'_'.BIT_MAJOR_VERSION.BIT_MINOR_VERSION.BIT_SUB_VERSION."_".$gSniffer->_browser_info['browser'].$gSniffer->_browser_info['maj_ver'];
+	return $cachedir.md5( $hashstring ).'_'.BIT_MAJOR_VERSION.BIT_MINOR_VERSION.BIT_SUB_VERSION."_".$gSniffer->_browser_info['browser'].$gSniffer->_browser_info['maj_ver'];
 }
 ?>

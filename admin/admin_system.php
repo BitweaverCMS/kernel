@@ -1,12 +1,11 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.8 2007/01/11 18:27:38 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.9 2007/01/12 19:42:18 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
 
 require_once( '../../bit_setup_inc.php' );
-require_once $gBitSmarty->_get_plugin_filepath( 'function', 'biticon' );
 
 $gBitSystem->verifyPermission( 'p_admin' );
 $feedback = array();
@@ -31,7 +30,8 @@ $diskUsage = array(
 		'subdir' => $bitdomain,
 	),
 	'icons' => array(
-		'path' => dirname( biticon_get_cache_file( array() )),
+		// we dirname() this to get the top level icon cache dir that nuking icons will remove all cached icons
+		'path' => dirname( $gBitThemes->getIconCachePath() ),
 		'title' => tra( 'Icons' ),
 	),
 	'liberty' => array(

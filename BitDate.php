@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.15 2006/11/23 15:18:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.16 2007/01/12 20:47:06 hiranchaudhuri Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -71,8 +71,9 @@ class BitDate {
 
 	/**
 	 * Convert a UTC timestamp to the preferred display offset.
-	 * $timestamp: UTC timestamp to convert.
-	 * returns: Display-offset timestamp.
+	 * @param timestamp ISO format date<br>
+	 *	yYYY-mM-dD hH:mM:sS.s ( Lower case letters optional, but should be 0 )
+	 * @return integer Seconds count based on 1st Jan 1970<br>
 	 */
 	function getDisplayDateFromUTC($_timestamp) {
 		return $this->getTimestampFromISO($_timestamp) + $this->display_offset;
@@ -80,8 +81,9 @@ class BitDate {
 
 	/**
 	 * Convert a display-offset timestamp to UTC.
-	 * $timestamp: Display timestamp to convert.
-	 * returns: UTC timestamp.
+	 * @paramtimestamp ISO format date<br>
+	 *	yYYY-mM-dD hH:mM:sS.s ( Lower case letters optional, but should be 0 )
+	 * @return integer Seconds count based on 1st Jan 1970<br>
 	 */
 	function getUTCFromDisplayDate($_timestamp) {
 		return $this->getTimestampFromISO($_timestamp) - $this->display_offset;

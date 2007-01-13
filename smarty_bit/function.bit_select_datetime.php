@@ -3,7 +3,7 @@
  * Smarty plugin
  * @package Smarty
  * @subpackage plugins
- *  @version $Id: function.bit_select_datetime.php,v 1.1 2007/01/12 23:18:30 hiranchaudhuri Exp $
+ *  @version $Id: function.bit_select_datetime.php,v 1.2 2007/01/13 20:09:12 hiranchaudhuri Exp $
  * @author hiran  
  */
  
@@ -74,14 +74,16 @@ function smarty_function_bit_select_datetime($params, &$gBitSmarty) {
 		//On every change a hidden field will be updated via javascript.
 		//it's the hidden field that is evaluated back on the server.
 		
+		$nname = str_replace('[', '_', str_replace(']', '_', $name));
+		
 		$pDate = array (
-			'prefix' => $name,
-			'all_extra' => "onchange=\"bit_select_datetime_${name}()\"",
+			'prefix' => $nname,
+			'all_extra' => "onchange=\"bit_select_datetime_${nname}()\"",
 			'time' => $time
 		);
 		$pTime = array (
-			'prefix' => $name,
-			'all_extra' => "onchange=\"bit_select_datetime_${name}()\"",
+			'prefix' => $nname,
+			'all_extra' => "onchange=\"bit_select_datetime_${nname}()\"",
 			'display_seconds' => false,
 			'time' => $time
 		);
@@ -91,14 +93,14 @@ function smarty_function_bit_select_datetime($params, &$gBitSmarty) {
 		if($showtime=='true') {
 			$html_result = $html_result . smarty_function_html_select_time( $pTime, $gBitSmarty );
 			$html_result = $html_result . "<script type=\"text/javascript\">\n";
-			$html_result = $html_result . "    function bit_select_datetime_${name} () {\n";
-			$html_result = $html_result . "        document.getElementsByName(\"${name}\")[0].value = document.getElementsByName(\"${name}Year\")[0].value+\"-\"+document.getElementsByName(\"${name}Month\")[0].value+\"-\"+document.getElementsByName(\"${name}Day\")[0].value+\" \"+document.getElementsByName(\"${name}Hour\")[0].value+\":\"+document.getElementsByName(\"${name}Minute\")[0].value;\n";
+			$html_result = $html_result . "    function bit_select_datetime_${nname} () {\n";
+			$html_result = $html_result . "        document.getElementsByName(\"${name}\")[0].value = document.getElementsByName(\"${nname}Year\")[0].value+\"-\"+document.getElementsByName(\"${nname}Month\")[0].value+\"-\"+document.getElementsByName(\"${nname}Day\")[0].value+\" \"+document.getElementsByName(\"${nname}Hour\")[0].value+\":\"+document.getElementsByName(\"${nname}Minute\")[0].value;\n";
 			$html_result = $html_result . "    }\n";
 			$html_result = $html_result . "</script>\n";
 		} else {
 			$html_result = $html_result . "<script type=\"text/javascript\">\n";
 			$html_result = $html_result . "    function bit_select_datetime_${name} () {\n";
-			$html_result = $html_result . "        document.getElementsByName(\"${name}\")[0].value = document.getElementsByName(\"${name}Year\")[0].value+\"-\"+document.getElementsByName(\"${name}Month\")[0].value+\"-\"+document.getElementsByName(\"${name}Day\")[0].value;\n";
+			$html_result = $html_result . "        document.getElementsByName(\"${name}\")[0].value = document.getElementsByName(\"${nname}Year\")[0].value+\"-\"+document.getElementsByName(\"${nname}Month\")[0].value+\"-\"+document.getElementsByName(\"${nname}Day\")[0].value;\n";
 			$html_result = $html_result . "    }\n";
 			$html_result = $html_result . "</script>\n";
 		}

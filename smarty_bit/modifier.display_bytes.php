@@ -14,18 +14,13 @@
  * Example:  {$someFile|filesize|display_bytes:2}
  * -------------------------------------------------------------
  */
-function smarty_modifier_display_bytes( $pBytes, $pDecimalPlaces=1 )
-{
-	if( $pBytes >= 1073741824 ) {
-		$ret = round( ($pBytes / 1073741824), $pDecimalPlaces ).' GB';
-	} elseif( $pBytes >= 1048576 ) {
-		$ret = round( ($pBytes / 1048576), $pDecimalPlaces ).' MB';
-	} elseif( $pBytes >= 1024 ) {
-		$ret = round( ($pBytes / 1024), $pDecimalPlaces ).' KB';
-	} else {
-		$ret = $pBytes.' '.tra( 'Bytes' );
+function smarty_modifier_display_bytes( $pSize, $pDecimalPlaces = 1 ) {
+	$i = 0;
+	$iec = array( "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" );
+	while( ( $pSize / 1024 ) > 1 ) {
+		$pSize = $pSize / 1024;
+		$i++;
 	}
-	return $ret;	
+	return substr( $pSize, 0, strpos( $pSize, '.' ) + $pDecimalPlaces + 1 )." ".$iec[$i];
 }
-
 ?>

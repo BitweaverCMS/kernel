@@ -31,7 +31,7 @@
 						<td>{$item.title}</td>
 						<td>{$item.path|replace:$smarty.const.BIT_ROOT_PATH:""|replace:"//":"/"}</td>
 						<td style="text-align:right;">{tr}{$item.du.count} file(s){/tr}</td>
-						<td style="text-align:right;">{$item.du.size|kbsize}</td>
+						<td style="text-align:right;">{$item.du.size|display_bytes}</td>
 						<td class="actionicon">{smartlink ititle=Empty ibiticon="icons/edit-delete" prune=$key}</td>
 					</tr>
 				{/foreach}
@@ -53,7 +53,7 @@
 						<td>{$item.title}</td>
 						<td>{$item.path|replace:$smarty.const.BIT_ROOT_PATH:""|replace:"//":"/"}{$key}</td>
 						<td style="text-align:right;">{tr}{$item.du.count} file(s){/tr}</td>
-						<td style="text-align:right;">{$item.du.size|kbsize}</td>
+						<td style="text-align:right;">{$item.du.size|display_bytes}</td>
 						<td class="actionicon">{smartlink ititle="Compile Templates" ibiticon="icons/accessories-text-editor" compiletemplates=$key}</td>
 					</tr>
 				{/foreach}

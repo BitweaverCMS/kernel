@@ -15,7 +15,7 @@
  */
 function smarty_modifier_kbsize( $pSize ) {
 	$i = 0;
-	$iec = array( "b", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb" );
+	$iec = array( "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" );
 	while( ( $pSize / 1024 ) > 1 ) {
 		$pSize = $pSize / 1024;
 		$i++;

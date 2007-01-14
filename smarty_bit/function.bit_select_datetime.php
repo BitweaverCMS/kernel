@@ -3,7 +3,7 @@
  * Smarty plugin
  * @package Smarty
  * @subpackage plugins
- *  @version $Id: function.bit_select_datetime.php,v 1.2 2007/01/13 20:09:12 hiranchaudhuri Exp $
+ *  @version $Id: function.bit_select_datetime.php,v 1.3 2007/01/14 10:16:07 hiranchaudhuri Exp $
  * @author hiran  
  */
  
@@ -36,36 +36,40 @@
 	*/
 function smarty_function_bit_select_datetime($params, &$gBitSmarty) {
 	global $gBitSystem;
+	global $gBitUser;
 
 	// Default values
 	$name         = 'date';                   // ID of the input field
-	$format       = $gBitSystem->getConfig( 'site_short_date_format' ).' '.$gBitSystem->getConfig( 'site_short_time_format' );      // date format used
+	// unsupported as of now $format       = $gBitSystem->getConfig( 'site_short_date_format' ).' '.$gBitSystem->getConfig( 'site_short_time_format' );      // date format used
 	$showtime     = 'true';                   //true: show time; false: pick date only
 	$time         = time();                   // override the currently set date
 	
 	//extract actual parameters from the params hashmap.
 	extract( $params );
-	
+
+	//calculate a name we can use for additional (internal) fields
+	$nname = str_replace('[', '_', str_replace(']', '_', $name));
+		
 	if( $gBitSystem->isFeatureActive( 'site_use_jscalendar' ) ) {
 	
 		// A readonly field will be used to display the currently selected value.
 		//A button besides the field will bring up the calendar (style similar to other PIM rich client applications)
 		//It is the readonly input field that will be evaluated back on the server
 	
-		$format = preg_replace( "/%Z/", "", $format );  // JSCalendar does not know about time zones
-		$html_result = "<input type=\"text\" name=\"$name\" id=\"${name}_id\" value=\"$time\" readonly /><button type=\"reset\" id=\"${name}_button\">...</button>\n";
+		//unsupported $format = preg_replace( "/%Z/", "", $format );  // JSCalendar does not know about time zones
+		$html_result = "<input type=\"text\" name=\"$name\" id=\"${nname}_id\" value=\"$time\" readonly />\n";
+		$html_result = $html_result . "<button type=\"reset\" id=\"${nname}_button\">...</button>\n";
 		$html_result = $html_result . "<script type=\"text/javascript\">\n";
 		$html_result = $html_result . "    Calendar.setup({\n";
 		$html_result = $html_result . "        date        : \"$time\",\n";
-		$html_result = $html_result . "        inputField  :    \"${name}_id\",      // id of the input field\n";
-		$html_result = $html_result . "        ifFormat    :    \"${format}\",       // format of the input field\n";
+		$html_result = $html_result . "        inputField  :    \"${nname}_id\",      // id of the input field\n";
+		$html_result = $html_result . "        ifFormat    :    \"%Y-%m-%d %H:%M\",       // format of the input field\n";
 		$html_result = $html_result . "        showsTime   :    $showtime,            // will display a time selector\n";
-		$html_result = $html_result . "        button      :    \"${name}_button\",   // trigger for the calendar (button ID)\n";
+		$html_result = $html_result . "        button      :    \"${nname}_button\",   // trigger for the calendar (button ID)\n";
 		$html_result = $html_result . "        singleClick :    true,           // double-click mode\n";
 		$html_result = $html_result . "        step        :    1                // show all years in drop-down boxes (instead of every other year as default)\n";
 		$html_result = $html_result . "    });\n";
 		$html_result = $html_result . "</script>\n";
-		return $html_result;
 	} else {
 		require_once $gBitSmarty->_get_plugin_filepath( 'function', 'html_select_date' );
 		require_once $gBitSmarty->_get_plugin_filepath( 'function', 'html_select_time' );
@@ -73,8 +77,6 @@ function smarty_function_bit_select_datetime($params, &$gBitSmarty) {
 		// we use html_select_date and html_select_time to pick a date, which generate a number of select fields.
 		//On every change a hidden field will be updated via javascript.
 		//it's the hidden field that is evaluated back on the server.
-		
-		$nname = str_replace('[', '_', str_replace(']', '_', $name));
 		
 		$pDate = array (
 			'prefix' => $nname,
@@ -88,7 +90,7 @@ function smarty_function_bit_select_datetime($params, &$gBitSmarty) {
 			'time' => $time
 		);
 		
-		$html_result = "<input type=\"hidden\" name=\"$name\" value=\"$time\">";
+		$html_result = "<input type=\"hidden\" name=\"$name\" value=\"${time}\">";
 		$html_result = $html_result . smarty_function_html_select_date( $pDate, $gBitSmarty );
 		if($showtime=='true') {
 			$html_result = $html_result . smarty_function_html_select_time( $pTime, $gBitSmarty );
@@ -104,7 +106,9 @@ function smarty_function_bit_select_datetime($params, &$gBitSmarty) {
 			$html_result = $html_result . "    }\n";
 			$html_result = $html_result . "</script>\n";
 		}
-		return $html_result;
 	}
+
+	$html_result = $html_result . "(" . $gBitUser->getPreference('site_display_timezone') .")\n";
+	return $html_result;
 }
 ?>

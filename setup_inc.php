@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.80 2006/12/22 23:12:11 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.81 2007/01/15 17:28:07 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -83,12 +83,12 @@ global $gBitSmarty, $gBitSystem;
 $gBitSystem = new BitSystem();
 
 $tempDir = $gBitSystem->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
-if( strrpos( '/', $tempDir ) != strlen( $tempDir ) ) {
+if( strrpos( $tempDir, '/' ) + 1 != strlen( $tempDir ) ) {
 	$tempDir .= '/';
 }
 
 define( 'TEMP_PKG_PATH', $tempDir );
-define('TEMP_PKG_URL', BIT_ROOT_URL . 'temp/');
+define( 'TEMP_PKG_URL', BIT_ROOT_URL . 'temp/' );
 
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');

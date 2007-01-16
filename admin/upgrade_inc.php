@@ -313,7 +313,7 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='messages_site_contact' WHERE `config_name`='site_contact'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='messages_contact_user' WHERE `config_name`='contact_user'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='chatterbox_prune_threshold' WHERE `config_name`='prune_threshold'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='languages_record_untranslated' WHERE `config_name`='record_untranslated'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='i18n_record_untranslated' WHERE `config_name`='record_untranslated'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='hotwords_new_window' WHERE `config_name`='hotwords_nw'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='blog_posts_comments' WHERE `config_name`='blogposts_comments'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='pigeonholes_display_members' WHERE `config_name`='display_pigeonhole_members'",
@@ -436,6 +436,12 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='users_eponymous_groups' WHERE `config_name`='eponymous_groups'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='users_display_name' WHERE `config_name`='display_name'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_use_jscalendar' WHERE `config_name`='feature_jscalendar'",
+
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='i18n_browser_languages'          WHERE `config_name`='browser_languages';            ",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='i18n_interactive_translation'    WHERE `config_name`='interactive_translation';      ",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='i18n_interactive_bittranslation' WHERE `config_name`='interactive_bittranslation';   ",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='i18n_record_untranslated'        WHERE `config_name`='languages_record_untranslated';",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='i18n_track_translation_usage'    WHERE `config_name`='track_translation_usage';      ",
 
 		// rss config rename
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='articles_rss'             WHERE `config_name`='rss_articles'",

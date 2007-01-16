@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.81 2007/01/15 17:28:07 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.82 2007/01/16 11:40:35 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -389,11 +389,11 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	// if we are interactively translating the website, we force template caching on every page load.
-	if( $gBitSystem->isFeatureActive( 'interactive_translation' ) && $gBitUser->hasPermission( 'p_languages_edit' ) ) {
+	if( $gBitSystem->isFeatureActive( 'i18n_interactive_translation' ) && $gBitUser->hasPermission( 'p_languages_edit' ) ) {
 		$gBitSmarty->assign_by_ref( "gBitTranslationHash", $gBitTranslationHash );
 	} else {
 		// this has to be done since the permission can't be checked in BitLanguage::translate() as it's called too soon by prefilter.tr
-		$gBitSystem->setPreference( 'interactive_translation', 'n' );
+		$gBitSystem->setPreference( 'i18n_interactive_translation', 'n' );
 	}
 }
 

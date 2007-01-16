@@ -41,6 +41,7 @@ function biticon_first_match( $pDir, $pFilename ) {
  * @param string $pParams['iexplain'] Explanation of what the icon represents
  * @param string $pParams['iforce'] takes following optins: icon, icon_text, text - will override system settings
  * @param string $pFile Path to icon file
+ * @param string iforce  override site-wide setting how to display icons (can be set to 'icon', 'text' or 'icon_text')
  * @access public
  * @return Full <img> on success
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.82 2007/01/16 11:40:35 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.83 2007/01/24 09:05:57 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -129,8 +129,8 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	if (empty($gPreScan) || !is_array($gPreScan)) {
-		require_once( BIT_ROOT_PATH.'users/bit_setup_inc.php' );
-		require_once( BIT_ROOT_PATH.'liberty/bit_setup_inc.php' );
+		require_once( USERS_PKG_PATH.'bit_setup_inc.php' );
+		require_once( LIBERTY_PKG_PATH.'bit_setup_inc.php' );
 	}
 
 	$host = $gBitSystem->getConfig( 'kernel_server_name', $_SERVER['HTTP_HOST'] );

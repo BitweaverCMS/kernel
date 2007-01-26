@@ -53,6 +53,7 @@ if( !defined( 'BIT_ROOT_URL' ) ) {
 		$subpath = dirname( dirname( $_SERVER['PHP_SELF'] ) );
 		$subpath .= ( substr( $subpath,-1,1 )!='/' ) ? '/' : '';
 	}
+	$subpath = str_replace( '//', '/', str_replace( "\\", '/', $subpath ) ); // do some de-windows-ification
 	define( 'BIT_ROOT_URL', $subpath );
 }
 

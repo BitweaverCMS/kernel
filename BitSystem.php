@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.112 2007/01/06 09:46:16 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.113 2007/01/27 19:18:31 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1265,13 +1265,14 @@ class BitSystem extends BitBase {
 		global $userlib, $gBitUser, $gBitSystem;
 		$bit_index = $this->getConfig( "bit_index" );
 		$url = '';
-		if ( $bit_index == 'group_home') {
+		if( $bit_index == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
-			if( @$this->verifyId( $gBitUser->mInfo['default_group_id'] ) && ( $group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ) ) ) {
-			} elseif( $this->getConfig( 'default_home_group' ) && ( $group_home = $gBitUser->getGroupHome( $this->getConfig( 'default_home_group' ) ) ) ) {
+			if( !$gBitUser->isRegistered() && ( $group_home = $gBitUser->getGroupHome( ANONYMOUS_GROUP_ID ))) {
+			} elseif( @$this->verifyId( $gBitUser->mInfo['default_group_id'] ) && ( $group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ))) {
+			} elseif( $this->getConfig( 'default_home_group' ) && ( $group_home = $gBitUser->getGroupHome( $this->getConfig( 'default_home_group' )))) {
 			}
 
-			if( !empty( $group_home ) ) {
+			if( !empty( $group_home )) {
 				if( $this->verifyId( $group_home ) ) {
 					$url = BIT_ROOT_URL."index.php".( !empty( $group_home ) ? "?content_id=".$group_home : "" );
 				} elseif( strpos( $group_home, '/' ) === FALSE ) {

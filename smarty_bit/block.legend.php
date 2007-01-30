@@ -15,7 +15,7 @@
  */
 function smarty_block_legend($params, $content, &$gBitSmarty) {
 	if( $content ) {
-		$ret = '<fieldset><legend>'.$params['legend'].'</legend>';
+		$ret = '<fieldset><legend>'.tra( $params['legend'] ).'</legend>';
 		$ret .= $content;
 		$ret .= '<div class="clear"></div></fieldset>';
 		return $ret;

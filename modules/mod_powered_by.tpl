@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.3 2006/05/31 18:41:25 lsces Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.4 2007/02/04 15:42:58 lsces Exp $ *}
 {strip}
 {bitmodule title="$moduleTitle" name="powered_by"}
 	<div style="text-align:center;">
@@ -9,7 +9,7 @@
 		<a href="http://adodb.sourceforge.net/">{biticon ipackage="liberty" iname="adodb" ipath="bitweaver/" iexplain="Powered by Adodb" iforce=icon}</a>
 		{if $gDbType eq 'firebird'}
 			<br /><br />
-			<a href="http://firebird.sourceforge.net/">{biticon ipackage="liberty" iname="firebird" ipath="bitweaver/" iexplain="Powered by Firebird" iforce=icon}</a>
+			<a href="http://www.firebirdsql.org/">{biticon ipackage="liberty" iname="firebird" ipath="bitweaver/" iexplain="Powered by Firebird" iforce=icon}</a>
 		{/if}
 		{if $gDbType eq 'mysql'}
 			<br /><br />

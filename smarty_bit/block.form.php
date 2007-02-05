@@ -38,7 +38,7 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 			switch( $key ) {
 				case 'ifile':
 				case 'ipackage':
-					if( $key == ipackage ) {
+					if( $key == 'ipackage' ) {
 						if( $val == 'root' ) {
 							$url .= BIT_ROOT_URL.$params['ifile'];
 						} else {

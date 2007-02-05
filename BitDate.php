@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.16 2007/01/12 20:47:06 hiranchaudhuri Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.17 2007/02/05 11:13:47 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -28,17 +28,19 @@
 class BitDate {
 	/**
 	 * UTC offset to use for display
+	 * @var int
 	 */
 	var $display_offset;
 
 	/**
 	 * Current UTC offset of server
+	 * @var int
 	 */
 	var $server_offset;
 
 	/**
 	 * Default constructor
-	 * $_display_offset: desired offset for date display, in minutes
+	 * @param int desired offset for date display, in minutes
 	 */
 	function BitDate($_display_offset = 0) {
 		$this->display_offset = $_display_offset;
@@ -48,8 +50,8 @@ class BitDate {
 	/**
 	 * Retrieves the user's preferred offset for displaying dates.
 	 *
-	 * $user: the logged-in user.
-	 * returns: the preferred offset to UTC or 0 for straight UTC display
+	 * @param int the logged-in user.
+	 * @return int the preferred offset to UTC or 0 for straight UTC display
 	 */
 	function get_display_offset($_user = false) {
 		global $gBitUser;
@@ -71,9 +73,9 @@ class BitDate {
 
 	/**
 	 * Convert a UTC timestamp to the preferred display offset.
-	 * @param timestamp ISO format date<br>
+	 * @param timestamp ISO format date
 	 *	yYYY-mM-dD hH:mM:sS.s ( Lower case letters optional, but should be 0 )
-	 * @return integer Seconds count based on 1st Jan 1970<br>
+	 * @return int Seconds count based on 1st Jan 1970<br>
 	 */
 	function getDisplayDateFromUTC($_timestamp) {
 		return $this->getTimestampFromISO($_timestamp) + $this->display_offset;
@@ -81,9 +83,9 @@ class BitDate {
 
 	/**
 	 * Convert a display-offset timestamp to UTC.
-	 * @paramtimestamp ISO format date<br>
+	 * @param timestamp ISO format date
 	 *	yYYY-mM-dD hH:mM:sS.s ( Lower case letters optional, but should be 0 )
-	 * @return integer Seconds count based on 1st Jan 1970<br>
+	 * @return int Seconds count based on 1st Jan 1970<br>
 	 */
 	function getUTCFromDisplayDate($_timestamp) {
 		return $this->getTimestampFromISO($_timestamp) - $this->display_offset;
@@ -91,8 +93,8 @@ class BitDate {
 
 	/**
 	 * Convert a UTC timestamp to the local server time.
-	 * $timestamp: UTC timestamp to convert.
-	 * returns: Server timestamp.
+	 * @param  timestamp UTC timestamp to convert.
+	 * @return timestamp Server timestamp.
 	 */
 	function getServerDateFromUTC($_timestamp) {
 		return $this->getTimestampFromISO($_timestamp) + $this->server_offset;
@@ -100,8 +102,8 @@ class BitDate {
 
 	/**
 	 * Convert a local server timestamp to UTC.
-	 * $timestamp: Server timestamp to convert.
-	 * returns: UTC timestamp.
+	 * @param  timestamp Server timestamp to convert.
+	 * @return timestamp UTC timestamp.
 	 */
 	function getUTCFromServerDate($_timestamp) {
 		return $this->getTimestampFromISO($_timestamp) - $this->server_offset;
@@ -109,6 +111,7 @@ class BitDate {
 
 	/**
 	 * Retrieve a current UTC timestamp as Unix epoch.
+	 * @return int Unix epoch
 	 */
 	function getUTCTime() {
 		return time();
@@ -116,6 +119,7 @@ class BitDate {
 
 	/**
 	 * Retrieve a current UTC Timestamp as an ISO formated date/time.
+	 * @return string Current ISO formated date/time
 	 */
 	function getUTCTimestamp() {
 		return $this->date("Y-m-d H:i:s",time(),true);
@@ -123,6 +127,7 @@ class BitDate {
 
 	/**
 	 * Retrieve a current UTC Date as an ISO formated date
+	 * @return string Current ISO formated date
 	 */
 	function getUTCDate() {
 		return $this->date("Y-m-d",time(),true);
@@ -130,8 +135,8 @@ class BitDate {
 
 	/**
 	 * Get the name of the current timezone.
-	 *
 	 * Currently, only "UTC" or an empty string (Local).
+	 * @return string Current timezone
 	 */
 	function getTzName() {
 		if ($this->display_offset == 0)
@@ -143,9 +148,9 @@ class BitDate {
 	/**
 	 * Convert ISO date to numberic timestamp.
 	 *
-	 * @param string ISO format date<br>
+	 * @param string ISO format date
 	 *	yYYY-mM-dD hH:mM:sS.s ( Lower case letters optional, but should be 0 )
-	 * @return integer Seconds count based on 1st Jan 1970<br>
+	 * @return int Seconds count based on 1st Jan 1970<br>
 	 * returns $iso_date if it is a number, or 0 if format invalid
 	 */
 	function getTimestampFromISO($iso_date) {
@@ -164,6 +169,10 @@ class BitDate {
 	/**
 	 * Returns day of week, 0 = Sunday,... 6=Saturday.
 	 * Algorithm from PEAR::Date_Calc
+	 * @param int
+	 * @param int
+	 * @param int
+	 * @return int
 	 */
 	function dayOfWeek($year, $month, $day)
 	{
@@ -202,6 +211,10 @@ class BitDate {
 	 *	Returns week of year, 1 = first week of year.
 	 *	Algorithm from PEAR::Date_Calc
 	 * This needs to be checked out for both start day and early date rules
+	 * @param int
+	 * @param int
+	 * @param int
+	 * @return int
 	 */
 	function weekOfYear($year, $month, $day)
 	{
@@ -215,6 +228,8 @@ class BitDate {
 	/**
 	 * Checks for leap year, returns true if it is. No 2-digit year check. Also
 	 * handles julian calendar correctly.
+	 * @param int
+	 * @return boolean
 	 */
 	function _is_leap_year($year)
 	{
@@ -232,6 +247,8 @@ class BitDate {
 
 	/**
 	 * checks for leap year, returns true if it is. Has 2-digit year check
+	 * @param int
+	 * @return boolean
 	 */
 	function is_leap_year($year)
 	{
@@ -242,6 +259,8 @@ class BitDate {
 	 * Fix 2-digit years. Works for any century.
 	 * Assumes that if 2-digit is more than 30 years in future, then previous century.
 	 * @todo This needs to be disabled when dates prior to 100AD are required in ISO format
+	 * @param int
+	 * @return int
 	 */
 	function year_digit_check($y)
 	{
@@ -268,6 +287,9 @@ class BitDate {
 
 	/**
 	 *Returns an array with date info.
+	 * @param boolean
+	 * @param boolean
+	 * @return array
 	 */
 	function getDate($d=false,$fast=false)
 	{
@@ -304,6 +326,10 @@ class BitDate {
 	 * Low-level function that returns the getdate() array. We have a special
 	 * $fast flag, which if set to true, will return fewer array values,
 	 * and is much faster as it does not calculate dow, etc.
+	 * @param int Date to be converted in Unix epochs
+	 * @param boolean Return short format array ( less weekday and month )
+	 * @param boolean Ignore timezone
+	 * @return array
 	 */
 	function _getDate($origd=false,$fast=false,$is_gmt=false)
 	{
@@ -481,7 +507,12 @@ class BitDate {
 	}
 
 	/*
-	 * accepts unix timestamp and iso date format in $d
+	 * Accepts unix timestamp and iso date format
+	 * ISO format date is converted into unix timestamp before calling date()
+	 * @param string Format of date output
+	 * @param int/string Date to be converted
+	 * @param boolean Ignore timezone
+	 * @return string In the format specified by $fmt
 	 */
 	function date2($fmt, $d=false, $is_gmt=false)
 	{	if ( is_numeric($d) ) $this->date($fmt,$d,$is_gmt);
@@ -504,6 +535,10 @@ class BitDate {
 
 	/**
 	 * Return formatted date based on timestamp $d
+	 * @param string Format of date output
+	 * @param int Date to be converted
+	 * @param boolean Ignore timezone
+	 * @return string In the format specified by $fmt
 	 */
 	function date($fmt,$d=false,$is_gmt=false)
 	{
@@ -642,7 +677,14 @@ class BitDate {
 
 	/**
 	 * Returns a timestamp given a GMT/UTC time.
-	 * Note that $is_dst is not implemented and is ignored.
+	 * @param int Hour
+	 * @param int Minute
+	 * @param int Second
+	 * @param int Month
+	 * @param int Day
+	 * @param int Year
+	 * @param int $is_dst is not implemented and is ignored
+	 * @return int 
 	 */
 	function gmmktime($hr,$min,$sec,$mon=false,$day=false,$year=false,$is_dst=false)
 	{
@@ -651,9 +693,15 @@ class BitDate {
 
 	/**
 	 * Return a timestamp given a local time. Originally by jackbbs.
-	 * Note that $is_dst is not implemented and is ignored.
-
 	 * Not a very fast algorithm - O(n) operation. Could be optimized to O(1).
+	 * @param int Hour
+	 * @param int Minute
+	 * @param int Second
+	 * @param int Month
+	 * @param int Day
+	 * @param int Year
+	 * @param int $is_dst is not implemented and is ignored
+	 * @return int 
 	 */
 	function mktime($hr,$min,$sec,$mon=false,$day=false,$year=false,$is_dst=false,$is_gmt=false)
 	{
@@ -962,7 +1010,7 @@ class BitDate {
 	}
 
 	/**
-	  Per http://www.w3.org/TR/NOTE-datetime
+	 * Per http://www.w3.org/TR/NOTE-datetime
 	 */
 	function get_iso8601_datetime($timestamp, $user = false) {
 		return $this->strftime('%Y-%m-%dT%H:%M:%S%O', $timestamp, $user);

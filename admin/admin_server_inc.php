@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.9 2006/11/22 02:37:12 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.10 2007/02/06 22:39:32 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -9,7 +9,7 @@
 $processForm = set_tab();
 
 if( $processForm ) {
-	
+
 	$pref_toggles = array(
 		"site_closed",
 		"site_use_load_threshold",
@@ -17,8 +17,8 @@ if( $processForm ) {
 		"site_store_session_db"
 	);
 
-	foreach ($pref_toggles as $toggle) {
-		simple_set_toggle ($toggle, KERNEL_PKG_NAME);
+	foreach( $pref_toggles as $item ) {
+		simple_set_toggle( $item, KERNEL_PKG_NAME );
 	}
 
 	$pref_simple_values = array(
@@ -32,40 +32,53 @@ if( $processForm ) {
 		"site_closed_msg"
 	);
 
-	foreach ($pref_simple_values as $svitem) {
-		simple_set_value ($svitem, KERNEL_PKG_NAME);
+	foreach( $pref_simple_values as $item ) {
+		simple_set_value( $item, KERNEL_PKG_NAME );
 	}
 
 	$pref_byref_values = array(
 		"site_title",
 		"site_slogan",
 		"site_description",
-		"site_keywords",
 		"site_notice",
 	);
 
-	foreach ($pref_byref_values as $britem) {
-		byref_set_value ($britem);
+	foreach( $pref_byref_values as $item ) {
+		$_REQUEST['site_description'] = substr( $_REQUEST['site_description'], 0, 180 );
+		byref_set_value( $item );
+	}
+
+	if( !empty( $_REQUEST['site_keywords'] )) {
+		$_REQUEST['site_keywords'] = substr( $_REQUEST['site_keywords'], 0, 900 );
+		$keywords = str_split( $_REQUEST['site_keywords'], 250 );
+		foreach( $keywords as $key => $chunk ) {
+			$gBitSystem->storeConfig( "site_keywords".( !empty( $key ) ? '_'.$key : '' ), $chunk, KERNEL_PKG_NAME );
+		}
+
+		// join keywords back together
+		$gBitSystem->setConfig( 'site_keywords',
+			$gBitSystem->getConfig( 'site_keywords' ).
+			$gBitSystem->getConfig( 'site_keywords_1' ).
+			$gBitSystem->getConfig( 'site_keywords_2' ).
+			$gBitSystem->getConfig( 'site_keywords_3' )
+		);
 	}
 
 	// Special handling for site_temp_dir, which has a default value
-	if (isset($_REQUEST["site_temp_dir"])) {
-		$gBitSystem->storeConfig("site_temp_dir", $_REQUEST["site_temp_dir"], KERNEL_PKG_NAME );
+	if( isset( $_REQUEST["site_temp_dir"] )) {
+		$gBitSystem->storeConfig( "site_temp_dir", $_REQUEST["site_temp_dir"], KERNEL_PKG_NAME );
 
-		$gBitSmarty->assign_by_ref("site_temp_dir", $_REQUEST["site_temp_dir"]);
+		$gBitSmarty->assign_by_ref( "site_temp_dir", $_REQUEST["site_temp_dir"] );
 	} else {
 		$tdir = BitSystem::tempdir();
 
-		$gBitSystem->storeConfig("site_temp_dir", $tdir, KERNEL_PKG_NAME );
-		$gBitSmarty->assign("site_temp_dir", $tdir);
+		$gBitSystem->storeConfig( "site_temp_dir", $tdir, KERNEL_PKG_NAME );
+		$gBitSmarty->assign( "site_temp_dir", $tdir );
 	}
 
 	// Special handling for centralissed_upload_dir, which has a default value
 	$centralDir = ( !empty( $_REQUEST["site_upload_dir"] ) ? $_REQUEST["site_upload_dir"] : NULL );
 	$gBitSystem->storeConfig( "site_upload_dir", $centralDir , KERNEL_PKG_NAME );
 	$gBitSmarty->assign_by_ref( "site_upload_dir", $centralDir );
-
 }
-
-
 ?>

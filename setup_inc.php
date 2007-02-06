@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.83 2007/01/24 09:05:57 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.84 2007/02/06 22:39:32 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -124,6 +124,15 @@ global $gBitUser, $gTicket, $userlib, $gBitDbType;
 
 if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSystem->loadConfig();
+
+	// we need to allow up to 900 chars for this value in our 250 char table column
+	$gBitSystem->setConfig( 'site_keywords',
+		$gBitSystem->getConfig( 'site_keywords' ).
+		$gBitSystem->getConfig( 'site_keywords_1' ).
+		$gBitSystem->getConfig( 'site_keywords_2' ).
+		$gBitSystem->getConfig( 'site_keywords_3' )
+	);
+
 	if( $gBitSystem->isFeatureActive( 'site_output_obzip' ) ) {
 		ob_start( "ob_gzhandler" );
 	}
@@ -137,7 +146,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	if( !defined('BIT_BASE_URI' ) ) {
 		define( 'BIT_BASE_URI', 'http'.(!empty($_SERVER['HTTPS'])?'s':'').'://'.$host );
 	}
-	
+
 	// Force full URI's for offline or exported content (newsletters, etc.)
 	$root = !empty( $_REQUEST['uri_mode'] ) ? BIT_BASE_URI . '/' : BIT_ROOT_URL;
 	define('UTIL_PKG_URL', $root . 'util/');

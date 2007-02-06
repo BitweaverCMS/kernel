@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.10 2007/02/06 22:39:32 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.11 2007/02/06 22:56:24 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -51,6 +51,12 @@ if( $processForm ) {
 	if( !empty( $_REQUEST['site_keywords'] )) {
 		$_REQUEST['site_keywords'] = substr( $_REQUEST['site_keywords'], 0, 900 );
 		$keywords = str_split( $_REQUEST['site_keywords'], 250 );
+
+		// we need to make sure we remove all settings for site_keywords first in case the new value is considerably shorter than the previous one
+		$gBitSystem->storeConfig( 'site_keywords_1', NULL );
+		$gBitSystem->storeConfig( 'site_keywords_2', NULL );
+		$gBitSystem->storeConfig( 'site_keywords_3', NULL );
+
 		foreach( $keywords as $key => $chunk ) {
 			$gBitSystem->storeConfig( "site_keywords".( !empty( $key ) ? '_'.$key : '' ), $chunk, KERNEL_PKG_NAME );
 		}

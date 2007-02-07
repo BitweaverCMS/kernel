@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.84 2007/02/06 22:39:32 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.85 2007/02/07 04:21:36 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -402,7 +402,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$gBitSmarty->assign_by_ref( "gBitTranslationHash", $gBitTranslationHash );
 	} else {
 		// this has to be done since the permission can't be checked in BitLanguage::translate() as it's called too soon by prefilter.tr
-		$gBitSystem->setPreference( 'i18n_interactive_translation', 'n' );
+		$gBitSystem->setConfig( 'i18n_interactive_translation', 'n' );
 	}
 }
 

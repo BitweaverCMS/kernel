@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.24 2007/01/08 10:02:03 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.25 2007/02/07 15:09:12 squareing Exp $
 
 $formBit = array(
 	'pretty_urls' => array(
@@ -105,7 +105,7 @@ if( !empty( $_REQUEST['change_prefs'] ) ) {
 		simple_set_value( $svitem, KERNEL_PKG_NAME );
 	}
 
-	simple_set_value( 'site_display_reltime', KERNEL_PKG_NAME );
+	simple_set_toggle( 'site_display_reltime', KERNEL_PKG_NAME );
 
 	// Special handling for tied fields: bit_index and site_url_index
 	if (!empty($_REQUEST["site_url_index"]) && $_REQUEST["bit_index"] == 'users_custom_home') {

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.115 2007/02/07 16:45:36 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.116 2007/02/11 04:20:03 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -282,7 +282,8 @@ class BitSystem extends BitBase {
 				} else {
 					$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`=?";
 					$result = $this->mDb->query( $query, array( $pName ) );
-					if( isset( $pValue ) ) {
+					// make sure only non-empty values get saved, including '0'
+					if( isset( $pValue ) && ( !empty( $pValue )  || is_numeric( $pValue ) ) ) {
 						$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_config`(`config_name`,`config_value`,`package`) VALUES (?,?,?)";
 						$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage ) ) );
 					}

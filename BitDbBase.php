@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.35 2007/01/06 18:02:04 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.36 2007/02/15 09:15:38 phoenixandy Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -130,6 +130,9 @@ class BitDb {
 			case "sybase":
 			case "mssql":
 			$this->mDb->Execute("set quoted_identifier on");
+			break;
+			case "mysql":
+			$this->mDb->Execute("set session sql_mode='PIPES_AS_CONCAT'");
 			break;
 			case "postgres":
 			// Do a little prep work for postgres, no break, cause we want default case too

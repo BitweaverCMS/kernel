@@ -1,5 +1,10 @@
 <?php
 /**
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
  * basic function to convert a number of seconds into a human readable format
  * 
  * @param array $pDuration Duration of event in seconds

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.116 2007/02/11 04:20:03 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.117 2007/02/23 15:36:41 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1357,11 +1357,10 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function getStyle()
-	{
-		if (empty($this->mStyle))
-		{
-			$this->mStyle = $this->getConfig('style');
+	function getStyle() {
+		global $gBitUser;
+		if( empty( $this->mStyle )) {
+			$this->mStyle = $this->getConfig( 'style' );
 		}
 		return $this->mStyle;
 	}

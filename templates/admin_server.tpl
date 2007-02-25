@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.14 2007/02/06 22:39:32 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.15 2007/02/25 22:58:17 tekimaki Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -75,18 +75,20 @@
 					{/forminput}
 				</div>
 
+{* defaults to STORAGE_PKG_NAME now
 				<div class="row">
 					{formlabel label="Centralized user upload directory" for="site_upload_dir"}
 					{forminput}
 						<input size="50" type="text" name="site_upload_dir" id="site_upload_dir" value="{$gBitSystem->getConfig('site_upload_dir',$smarty.const.STORAGE_PKG_URL)|escape}" />
 					{/forminput}
 				</div>
+*}
 
 				<div class="row">
 					{formlabel label="Temporary directory" for="site_temp_dir"}
 					{forminput}
 						<input size="50" type="text" name="site_temp_dir" id="site_temp_dir" value="{$gBitSystem->getConfig('site_temp_dir',$smarty.const.TEMP_PKG_PATH)|escape}" />
-						{formhelp note="Use the full path to the directory where you want to store the temporary data in. Make sure the server has write access to the directory and the trailing slash is required. e.g.: /tmp/bitweaver/"}
+						{formhelp note="Here you can set the temp directory to a non web-accessible path for maximum security. Specify the full path to the directory where you want to store the temporary data. Make sure the server has write access to the directory and the trailing slash is required. e.g.: /tmp/bitweaver/"}
 					{/forminput}
 				</div>
 

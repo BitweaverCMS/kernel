@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.85 2007/02/07 04:21:36 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.86 2007/02/25 22:58:17 tekimaki Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -82,13 +82,16 @@ require_once(KERNEL_PKG_PATH . 'BitSystem.php');
 global $gBitSmarty, $gBitSystem;
 $gBitSystem = new BitSystem();
 
-$tempDir = $gBitSystem->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
-if( strrpos( $tempDir, '/' ) + 1 != strlen( $tempDir ) ) {
-	$tempDir .= '/';
-}
+// allow for overridden TEMP_PKG_PATH
+if( !defined( 'TEMP_PKG_PATH' ) ) {
+	$tempDir = $gBitSystem->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
+	if( strrpos( $tempDir, '/' ) + 1 != strlen( $tempDir ) ) {
+		$tempDir .= '/';
+	}
 
-define( 'TEMP_PKG_PATH', $tempDir );
-define( 'TEMP_PKG_URL', BIT_ROOT_URL . 'temp/' );
+	define( 'TEMP_PKG_PATH', $tempDir );
+	define( 'TEMP_PKG_URL', BIT_ROOT_URL . 'temp/' );
+}
 
 BitSystem::prependIncludePath(UTIL_PKG_PATH . '/');
 BitSystem::prependIncludePath(UTIL_PKG_PATH . 'pear/');
@@ -277,34 +280,10 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$site_https_port = 443;
 	}
 
-	$title = $gBitSystem->getConfig("title", "");
 	$site_https_port = $gBitSystem->getConfig('site_https_port', $site_https_port);
 	$site_https_prefix = $gBitSystem->getConfig('site_https_prefix', '/');
 	// we need this for backwards compatibility - use $gBitSystem->getPrerference( 'max_records' ) if you need it, or else the spanish inquisition will come and poke you with a soft cushion
 	$max_records = $gBitSystem->getConfig("max_records", 10);
-
-	/* this stuff isn't really needed here - xing - 2006-02-06
-	$site_http_domain = $gBitSystem->getConfig('site_http_domain', '');
-	$site_http_port = $gBitSystem->getConfig('site_http_port', $site_http_port);
-	$site_http_prefix = $gBitSystem->getConfig('site_http_prefix', '/');
-	$site_show_all_modules_always = $gBitSystem->getConfig("site_show_all_modules_always", 'y');
-	$modseparateanon = $gBitSystem->getConfig("modseparateanon", 'n');
-
-	$gBitSmarty->assign('site_http_domain', $site_http_domain);
-	$gBitSmarty->assign('site_http_port', $site_http_port);
-	$gBitSmarty->assign('site_http_prefix', $site_http_prefix);
-	$gBitSmarty->assign('site_https_domain', $site_https_domain);
-	$gBitSmarty->assign('site_https_port', $site_https_port);
-	$gBitSmarty->assign('site_https_prefix', $site_https_prefix);
-
-	$gBitSmarty->assign('kernel_server_name', $gBitSystem->getConfig( 'kernel_server_name', $_SERVER["SERVER_NAME"] ));
-	$gBitSmarty->assign('users_count_admin_pageviews', 'y');
-	$gBitSmarty->assign('site_show_all_modules_always', $site_show_all_modules_always);
-	$gBitSmarty->assign('modseparateanon', $modseparateanon);
-	$gBitSmarty->assign('max_records', $max_records);
-	$gBitSmarty->assign_by_ref('num_queries', $num_queries);
-	$gBitSmarty->assign('site_direct_pagination', 'n');
-	*/
 
 	if (ini_get('zlib.output_compression') == 1) {
 		$gBitSmarty->assign('gzip', 'Enabled');
@@ -314,24 +293,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$gBitSmarty->assign('gzip', 'Disabled');
 	}
 
-	// can't figure out if we can nuke these
-	$gBitSmarty->assign('title', $title);
-	$gBitSmarty->assign('site_temp_dir', getTempDir());
-
-	$gBitSmarty->assign_by_ref( 'gBitSystemPrefs', $gBitSystem->mPrefs );
-
-//	======================= HOPEFULLY WE CAN SURVIVE WITHOUT THIS PREFERENCE ASSIGNEMENT STUFF =================
-//	$prefs = &$gBitSystem->mPrefs; // TODO $prefs is only for backward compatibility, need to remove entirely
-//	foreach ($prefs as $name => $val) {
-//		$$name = $val;
-//		$gBitSmarty->assign("$name", $val);
-//	}
-//	============================================================================================================
-
-	/* # not implemented
-	$http_basic_auth = $gBitSystem->getConfig('http_basic_auth', '/');
-	$gBitSmarty->assign('http_basic_auth',$http_basic_auth);
-	*/
 	$gBitSmarty->assign('site_https_login', $gBitSystem->getConfig( 'site_https_login' ) );
 	$gBitSmarty->assign('site_https_login_required', $gBitSystem->getConfig( 'site_https_login_required' ) );
 

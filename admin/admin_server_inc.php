@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.12 2007/02/25 07:24:20 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.13 2007/02/25 22:58:17 tekimaki Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -73,15 +73,9 @@ if( $processForm ) {
 	}
 
 	// Special handling for site_temp_dir, which has a default value
-	if( isset( $_REQUEST["site_temp_dir"] )) {
+	if( isset( $_REQUEST["site_temp_dir"] ) && $_REQUEST["site_temp_dir"] != TEMP_PKG_PATH ) {
 		$gBitSystem->storeConfig( "site_temp_dir", $_REQUEST["site_temp_dir"], KERNEL_PKG_NAME );
-
 		$gBitSmarty->assign_by_ref( "site_temp_dir", $_REQUEST["site_temp_dir"] );
-	} else {
-		$tdir = BitSystem::tempdir();
-
-		$gBitSystem->storeConfig( "site_temp_dir", $tdir, KERNEL_PKG_NAME );
-		$gBitSmarty->assign( "site_temp_dir", $tdir );
 	}
 
 	// Special handling for centralissed_upload_dir, which has a default value

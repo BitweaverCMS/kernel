@@ -24,19 +24,17 @@ require_once $gBitSmarty->_get_plugin_filepath('shared','make_timestamp');
  */
 function smarty_modifier_cal_date_format($string, $format = "%b %e, %Y", $default_date=null, $tra_format=null)
 {
-	global $gCalendar, $gBitSystem;
+	$mDate = new BitDate(0);
+	if ( $mDate->get_display_offset()) $format = preg_replace("/ ?%Z/","",$format);
+   	else $format = preg_replace("/%Z/","UTC",$format);
 
-	if ( $gCalendar->mDate->get_display_offset()) $format = preg_replace("/ ?%Z/","",$format);
-    else $format = preg_replace("/%Z/","UTC",$format);
+	$disptime = $mDate->getTimestampFromISO($string);
 
-	$disptime = $gCalendar->mDate->getTimestampFromISO($string);
-
-	global $gBitLanguage; //$gBitLanguage->mLanguage= $gBitSystem->getConfig("language", "en");
+	global $gBitSystem, $gBitLanguage; //$gBitLanguage->mLanguage= $gBitSystem->getConfig("language", "en");
 	if ($gBitSystem->getConfig("language", "en") != $gBitLanguage->mLanguage && $tra_format) {
 		$format = $tra_format;
 	}
-
-	return $gCalendar->mDate->strftime($format, $disptime, true);
+	return $mDate->strftime($format, $disptime, true);
 }
 
 /* vim: set expandtab: */

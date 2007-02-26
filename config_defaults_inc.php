@@ -94,10 +94,16 @@ if( !empty( $gShellScript ) ) {
 	$_SERVER['HTTP_SERVER_VARS'] = '';
 }
 
-// used to only load core packages
-global $gExclusiveScan;
-if( empty( $gExclusiveScan ) ) {
-	$gExclusiveScan = FALSE;
+// here we set the default thumbsizes we use in bitweaver.
+// you can override these by populating this hash in your kernel/config_inc.php
+global $gThumbSizes;
+if( empty( $gThumbSizes )) {
+	$gThumbSizes = array(
+		'icon'   => array( 'width' => 48,  'height' => 48 ),
+		'avatar' => array( 'width' => 100, 'height' => 100 ),
+		'small'  => array( 'width' => 160, 'height' => 120 ),
+		'medium' => array( 'width' => 400, 'height' => 300 ),
+		'large'  => array( 'width' => 800, 'height' => 600 ),
+	);
 }
-
 ?>

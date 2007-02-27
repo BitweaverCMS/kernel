@@ -381,7 +381,7 @@ array( 'QUERY' =>
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_long_time_format' WHERE `config_name`='long_time_format'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_short_date_format' WHERE `config_name`='short_date_format'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_short_time_format' WHERE `config_name`='short_time_format'",
-		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_display_timezone' WHERE `config_name`='display_timezone'",
+		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_display_utc' WHERE `config_name`='display_timezone'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_upload_dir' WHERE `config_name`='centralized_upload_dir'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_http_port' WHERE `config_name`='http_port'",
 		"UPDATE `".BIT_DB_PREFIX."kernel_config` SET `config_name`='site_http_prefix' WHERE `config_name`='http_prefix'",

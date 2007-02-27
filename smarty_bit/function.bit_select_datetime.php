@@ -3,7 +3,7 @@
  * Smarty plugin
  * @package Smarty
  * @subpackage plugins
- *  @version $Id: function.bit_select_datetime.php,v 1.3 2007/01/14 10:16:07 hiranchaudhuri Exp $
+ *  @version $Id: function.bit_select_datetime.php,v 1.4 2007/02/27 17:30:20 lsces Exp $
  * @author hiran  
  */
  
@@ -108,7 +108,7 @@ function smarty_function_bit_select_datetime($params, &$gBitSmarty) {
 		}
 	}
 
-	$html_result = $html_result . "(" . $gBitUser->getPreference('site_display_timezone') .")\n";
+	$html_result = $html_result . "(" . $gBitUser->getPreference('site_display_utc') .")\n";
 	return $html_result;
 }
 ?>

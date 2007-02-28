@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.87 2007/02/28 16:57:31 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.88 2007/02/28 20:15:45 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -33,6 +33,8 @@ define( 'INSTALL_PKG_URL', BIT_ROOT_URL . 'install/' );
 define( 'KERNEL_PKG_DIR', 'kernel' );
 define( 'KERNEL_PKG_NAME', 'kernel' );
 define( 'KERNEL_PKG_PATH', BIT_ROOT_PATH . 'kernel/' );
+define( 'USERS_PKG_PATH', BIT_ROOT_PATH . 'users/' );
+
 
 require_once( KERNEL_PKG_PATH . 'preflight_inc.php' );
 
@@ -50,9 +52,6 @@ define( 'LIBERTY_PKG_PATH', BIT_ROOT_PATH.'liberty/' );
 define( 'UTIL_PKG_PATH', BIT_ROOT_PATH.'util/' );
 define( 'LANGUAGES_PKG_PATH', BIT_ROOT_PATH.'languages/' );
 define( 'THEMES_PKG_PATH', BIT_ROOT_PATH.'themes/' );
-
-// this is only needed when gPreScan is empty, which it never is...
-//define('USERS_PKG_PATH', BIT_ROOT_PATH . 'users/');
 
 // this is evil stuff and causes hell for us
 ini_set ( 'session.use_trans_sid', 'Off' );

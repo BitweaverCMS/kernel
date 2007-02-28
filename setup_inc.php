@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.88 2007/02/28 20:15:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.89 2007/02/28 22:35:17 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -13,48 +13,19 @@
  */
 
 require_once( BIT_ROOT_PATH.'kernel/config_defaults_inc.php' );
+require_once( KERNEL_PKG_PATH.'preflight_inc.php' );
 
+// set error reporting
 error_reporting( BIT_PHP_ERROR_REPORTING );
 
-define( 'BIT_MAJOR_VERSION',	'2' );
-define( 'BIT_MINOR_VERSION',	'0' );
-define( 'BIT_SUB_VERSION',		'0' );
-define( 'BIT_LEVEL',			'pre alpha' ); // 'beta' or 'dev' or 'rc' etc..
-
-// this doesn't seem to used - xing
-//define( 'BIT_PKG_PATH', BIT_ROOT_PATH );
-
-// These defines have to happen FIRST because core classes depend on them.
-// This means these packages *CANNOT* be renamed
-define( 'STORAGE_PKG_PATH', BIT_ROOT_PATH . 'storage/' );
-define( 'STORAGE_PKG_NAME', 'storage' );
-define( 'INSTALL_PKG_PATH', BIT_ROOT_PATH . 'install/' );
-define( 'INSTALL_PKG_URL', BIT_ROOT_URL . 'install/' );
-define( 'KERNEL_PKG_DIR', 'kernel' );
-define( 'KERNEL_PKG_NAME', 'kernel' );
-define( 'KERNEL_PKG_PATH', BIT_ROOT_PATH . 'kernel/' );
-define( 'USERS_PKG_PATH', BIT_ROOT_PATH . 'users/' );
-
-
-require_once( KERNEL_PKG_PATH . 'preflight_inc.php' );
+// this is evil stuff and causes hell for us
+ini_set ( 'session.use_trans_sid', 'Off' );
 
 // clean up $_GET and make sure others are clean as well
 if( !empty( $_GET ) && is_array( $_GET ) && empty( $gNoToxify ) ) {
 	detoxify( $_GET, TRUE );
 	$_REQUEST = array_merge( $_REQUEST, $_GET );
 }
-
-// These are manually setup here because it's good to have a gBitUser setup prior to scanPackages
-define( 'LIBERTY_PKG_DIR', 'liberty' );
-define( 'LIBERTY_PKG_NAME', 'liberty' );
-define( 'LIBERTY_PKG_PATH', BIT_ROOT_PATH.'liberty/' );
-
-define( 'UTIL_PKG_PATH', BIT_ROOT_PATH.'util/' );
-define( 'LANGUAGES_PKG_PATH', BIT_ROOT_PATH.'languages/' );
-define( 'THEMES_PKG_PATH', BIT_ROOT_PATH.'themes/' );
-
-// this is evil stuff and causes hell for us
-ini_set ( 'session.use_trans_sid', 'Off' );
 
 // Force a global ADODB db object so all classes share the same connection
 switch( @$gBitDbSystem ) {
@@ -67,17 +38,17 @@ switch( @$gBitDbSystem ) {
 }
 // the installer and select admin pages required DataDict to verify package installation
 global $gForceAdodb;
-if( !empty( $gForceAdodb ) ) {
+if( !empty( $gForceAdodb )) {
 	$dbClass = 'BitDbAdodb';
 }
-require_once( KERNEL_PKG_PATH . $dbClass.'.php' );
+require_once( KERNEL_PKG_PATH.$dbClass.'.php' );
 
-// ================== INITATE GLOBAL CLASSES ==================
-require_once( KERNEL_PKG_PATH . 'BitCache.php' );
+// =================== Global Classes ===================
+require_once( KERNEL_PKG_PATH.'BitCache.php' );
 global $gBitDb;
 $gBitDb = new $dbClass();
 
-require_once( KERNEL_PKG_PATH . 'BitSystem.php' );
+require_once( KERNEL_PKG_PATH.'BitSystem.php' );
 global $gBitSmarty, $gBitSystem;
 $gBitSystem = new BitSystem();
 
@@ -89,11 +60,11 @@ if( !defined( 'TEMP_PKG_PATH' ) ) {
 	}
 
 	define( 'TEMP_PKG_PATH', $tempDir );
-	define( 'TEMP_PKG_URL', BIT_ROOT_URL . 'temp/' );
+	define( 'TEMP_PKG_URL', BIT_ROOT_URL.'temp/' );
 }
 
-BitSystem::prependIncludePath( UTIL_PKG_PATH . '/' );
-BitSystem::prependIncludePath( UTIL_PKG_PATH . 'pear/' );
+BitSystem::prependIncludePath( UTIL_PKG_PATH.'/' );
+BitSystem::prependIncludePath( UTIL_PKG_PATH.'pear/' );
 
 // this is used to override the currently set site theme. when this is set everything else is ignored
 global $gPreviewStyle;
@@ -148,18 +119,15 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// Force full URI's for offline or exported content (newsletters, etc.)
 	$root = !empty( $_REQUEST['uri_mode'] ) ? BIT_BASE_URI . '/' : BIT_ROOT_URL;
-	define( 'UTIL_PKG_URL', $root . 'util/' );
-	define( 'LIBERTY_PKG_URL', $root . 'liberty/' );
-/*
-	define('STORAGE_PKG_URL', BIT_ROOT_URL . 'storage/');
-	define('KERNEL_PKG_URL', BIT_ROOT_URL . 'kernel/');
-	define('USERS_PKG_URL', BIT_ROOT_URL . 'users/');
-*/
+	define( 'UTIL_PKG_URL', $root.'util/' );
+	define( 'LIBERTY_PKG_URL', $root.'liberty/' );
+
 	// load only installed and active packages
-	$gBitSystem->scanPackages('bit_setup_inc.php', TRUE, 'active', TRUE, TRUE);
+	$gBitSystem->scanPackages( 'bit_setup_inc.php', TRUE, 'active', TRUE, TRUE );
 
 	// some plugins check for active packages, so we do this *after* package scanning
-	$gBitSmarty->assign_by_ref("gBitSystem", $gBitSystem);
+	$gBitSmarty->assign_by_ref( "gBitSystem", $gBitSystem );
+
 	// XSS security check
 	if( !empty( $_REQUEST['tk'] ) && empty( $_SERVER['bot'] ) ) {
 //		$gBitUser->verifyTicket();
@@ -168,7 +136,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// setStyle first, in case package decides it wants to reset the style in it's own <package>/bit_setup_inc.php
 	$theme = $gBitSystem->getStyle();
-	$theme = !empty($theme) ? $theme : 'basic';
+	$theme = !empty( $theme ) ? $theme : DEFAULT_THEME;
 	// users_themes='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
 	if( $gBitSystem->getConfig('users_themes') == 'y' ) {
 		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'users_preferences' ) ) {
@@ -182,16 +150,18 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 	$gBitSystem->setStyle( $theme );
 
-	require_once(KERNEL_PKG_PATH . 'menu_register_inc.php');
-	// added for wirtual hosting suport
-	if (!isset($bitdomain)) {
+	// this will register and set up the dropdown menus and the application menus in modules
+	require_once( KERNEL_PKG_PATH.'menu_register_inc.php' );
+
+	// added for virtual hosting suport
+	if( !isset( $bitdomain )) {
 		$bitdomain = "";
 	} else {
 		$bitdomain .= "/";
 	}
-	$gBitSystem->storeConfig('bitdomain', $bitdomain, KERNEL_PKG_NAME );
+	$gBitSystem->storeConfig( 'bitdomain', $bitdomain, KERNEL_PKG_NAME );
 
-	$gBitSmarty->assign("bitdomain", $bitdomain);
+	$gBitSmarty->assign( "bitdomain", $bitdomain );
 	// Fix IIS servers not setting what they should set (ay ay IIS, ay ay)
 	if( !isset( $_SERVER['QUERY_STRING'] )) {
 		$_SERVER['QUERY_STRING'] = '';
@@ -206,7 +176,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign_by_ref( 'gHideModules', $gHideModules );
 
 
-	// **********  KERNEL  ************
+	// =================== Kernel ===================
 	//$gBitSmarty->assign_by_ref( "gBitSystemPackages", $gBitSystem->mPackages ); doesn't seem to be used - xing
 
 	// check to see if admin has closed the site

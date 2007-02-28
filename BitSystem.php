@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.117 2007/02/23 15:36:41 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.118 2007/02/28 23:15:08 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1811,7 +1811,7 @@ class BitSystem extends BitBase {
 			}
 
 			if( $errors ) {
-				$save_path = getTempDir();
+				$save_path = get_temp_dir();
 
 				if( is_dir( $save_path ) && bw_is_writeable( $save_path ) ) {
 					ini_set( 'session.save_path', $save_path );
@@ -1824,7 +1824,7 @@ class BitSystem extends BitBase {
 		$wwwuser = '';
 		$wwwgroup = '';
 
-		if( isWindows() ) {
+		if( is_windows() ) {
 			if( strpos( $_SERVER["SERVER_SOFTWARE"],"IIS" ) && isset( $_SERVER['COMPUTERNAME'] ) ) {
 				$wwwuser = 'IUSR_'.$_SERVER['COMPUTERNAME'];
 				$wwwgroup = 'IUSR_'.$_SERVER['COMPUTERNAME'];
@@ -1863,7 +1863,7 @@ class BitSystem extends BitBase {
 				}
 			// Check again and report problems
 				if( !is_dir( $target ) ) {
-					if( !isWindows() ) {
+					if( !is_windows() ) {
 						$errors .= "
 							<p>The directory <strong style='color:red;'>$target</strong> does not exist. To create the directory, execute a command such as:</p>
 							<pre>\$ mkdir -m 777 $target</pre>
@@ -1875,7 +1875,7 @@ class BitSystem extends BitBase {
 					$present = TRUE;
 				}
 			} elseif( !file_exists( $target ) ) {
-				if( !isWindows()) {
+				if( !is_windows()) {
 					$errors .= "<p>The file <b style='color:red;'>$target</b> does not exist. To create the file, execute a command such as:</p>
 						<pre>
 							\$ touch $target
@@ -1891,7 +1891,7 @@ class BitSystem extends BitBase {
 
 			// chmod( $target, 02775 );
 			if( $present && ( !bw_is_writeable( $target ) ) ) {
-				if (!isWindows())
+				if (!is_windows())
 				{ $errors .= "<p><strong style='color:red;'>$target</strong> is not writeable by $wwwuser. To give $wwwuser write permission, execute a command such as:</p>
 					<pre>\$ chmod 777 $target</pre>";
 				} else {
@@ -1934,7 +1934,7 @@ class BitSystem extends BitBase {
 			";
 
 			if( !defined( 'IS_LIVE' ) || !IS_LIVE ) {
-				if (!isWindows()) {
+				if (!is_windows()) {
 					print "
 						<p>Proceed to the installer <strong>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></strong> after you run the command.
 						<br />Consult the bitweaver<a href='http://www.bitweaver.org/wiki/index.php?page=Technical_Documentation'>Technical Documentation</a> if you need more help.</p>

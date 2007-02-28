@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.19 2006/10/13 09:22:47 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.20 2007/02/28 23:15:08 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -20,7 +20,7 @@
  */
 global $ADODB_CACHE_DIR;
 if( empty( $ADODB_CACHE_DIR ) ) {
-	$ADODB_CACHE_DIR = getTempDir().'/adodb/'.$_SERVER['HTTP_HOST'].'/';
+	$ADODB_CACHE_DIR = get_temp_dir().'/adodb/'.$_SERVER['HTTP_HOST'].'/';
 }
 mkdir_p( $ADODB_CACHE_DIR );
 

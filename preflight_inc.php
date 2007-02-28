@@ -1,31 +1,33 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.19 2007/01/06 17:34:55 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.20 2007/02/28 23:15:08 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
 
 /**
- * * Return system defined temporary directory.
+ * Return system defined temporary directory.
  * In Unix, this is usually /tmp
  * In Windows, this is usually c:\windows\temp or c:\winnt\temp
- * \static
+ * 
+ * @access public
+ * @return system defined temporary directory.
  */
-function getTempDir() {
+function get_temp_dir() {
 	static $tempdir;
-	if (!$tempdir) {
+	if( !$tempdir ) {
 		global $gTempDir;
 		if( !empty( $gTempDir ) ) {
 			$tempdir = $gTempDir;
 		} else {
-			if (!isWindows()) {
-				$tempfile = tempnam(((@ini_get('safe_mode'))
-							? ($_SERVER['DOCUMENT_ROOT'] . '/temp/')
-							: (false)), 'foo');
-				$tempdir = dirname($tempfile);
-				@unlink($tempfile);
+			if( !is_windows() ) {
+				$tempfile = tempnam((( @ini_get( 'safe_mode' ))
+							?( $_SERVER['DOCUMENT_ROOT'] . '/temp/' )
+							:( FALSE )), 'foo' );
+				$tempdir = dirname( $tempfile );
+				@unlink( $tempfile );
 			} else {
-				$tempdir = getenv("TMP");
+				$tempdir = getenv( "TMP" );
 			}
 		}
 	}
@@ -33,122 +35,118 @@ function getTempDir() {
 }
 
 /**
- * * Return true if windows, otherwise false
- * \static
+ * is_windows 
+ * 
+ * @access public
+ * @return TRUE if we are on windows, FALSE otherwise
  */
-function isWindows() {
+function is_windows() {
 	static $windows;
-	if (!isset($windows)) {
+	if( !isset( $windows )) {
 		$windows = substr(PHP_OS, 0, 3) == 'WIN';
 	}
 	return $windows;
 }
 
-function mkdir_p($target, $perms = 0777) {
+/**
+ * Recursively create directories
+ * 
+ * @param array $pTarget target directory
+ * @param float $pPerms octal permissions
+ * @access public
+ * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+ */
+function mkdir_p( $pTarget, $pPerms = 0777 ) {
 	global $gDebug;
-	
-	$target = trim($target);
 
-	if ($target == '/') {
+	$pTarget = trim( $pTarget );
+
+	if( $pTarget == '/' ) {
 		return 1;
 	}
 
-	if (ini_get('safe_mode')) {
-		$target = preg_replace('/^\/tmp/', $_SERVER['DOCUMENT_ROOT'] . '/temp', $target);
+	if( ini_get( 'safe_mode' )) {
+		$pTarget = preg_replace('/^\/tmp/', $_SERVER['DOCUMENT_ROOT'] . '/temp', $pTarget);
 	}
-	//echo "mkdir_p($target, $perms)<br />\n";
-	if (file_exists($target) || is_dir($target)) {
-		if ($gDebug) echo "mkdir_p() - file already exists $target<br>";
+
+	//echo "mkdir_p($pTarget, $pPerms)<br />\n";
+	if( file_exists( $pTarget ) || is_dir( $pTarget )) {
+		if( $gDebug ) echo "mkdir_p() - file already exists $pTarget<br>";
 		return 0;
 	}
 
-	if (isWindows()) {
-	} else {
-		if (substr($target, 0, 1) != '/') {
-			if ($gDebug) echo "mkdir_p() - prepending with a /<br>";
-			$target = "/$target";
+	if( !is_windows() ) {
+		if( substr( $pTarget, 0, 1 ) != '/' ) {
+			if( $gDebug ) echo "mkdir_p() - prepending with a /<br>";
+			$pTarget = "/$pTarget";
 		}
-		if( ereg('\.\.', $target) ) {
-			if ($gDebug) echo "mkdir_p() - invalid Unix path $target<br>";
+		if( ereg( '\.\.', $pTarget )) {
+			if( $gDebug ) echo "mkdir_p() - invalid Unix path $pTarget<br>";
 			return 0;
 		}
 	}
 
-	$oldu = umask(0);
-	if (@mkdir($target, $perms)) {
-		umask($oldu);
-		if ($gDebug) echo "mkdir_p() - creating $target<br>";
+	$oldu = umask( 0 );
+	if( @mkdir( $pTarget, $pPerms )) {
+		if( $gDebug ) echo "mkdir_p() - creating $pTarget<br>";
+		umask( $oldu );
 		return 1;
 	} else {
-		umask($oldu);
-		$parent = substr($target, 0, (strrpos($target, '/')));
-		if ($gDebug) {
-			error_log( "mkdir_p() - trying to create parent $parent" );
-		}
+		if( $gDebug ) error_log( "mkdir_p() - trying to create parent $parent" );
+		umask( $oldu );
+		$parent = substr( $pTarget, 0, ( strrpos( $pTarget, '/' )));
 
-		if (mkdir_p($parent, $perms)) {
+		if( mkdir_p( $parent, $pPerms )) {
 			// make the actual target!
-			if(@mkdir($target, $perms)) {
-			return 1;
+			if( @mkdir( $pTarget, $pPerms )) {
+				return 1;
 			} else {
-				error_log( "mkdir() - could not create $target" );
+				error_log( "mkdir() - could not create $pTarget" );
 			}
 		}
 	}
-}
-
-/**
- * Used to check php.ini settings
- * @param pName setting name
- * @param pValue setting value
- * @param pComp setting comparison
-**/
-function chkPhpSetting($pName, $pValue, $pComp='') {
-	$actual = ini_get($pName);
-	eregi("^([0-9]+)[KMG]$", $actual, $x);
-	$actual = (isset($x)) ? $x[1] : $actual;
-	switch($pComp) {
-		case ">=":
-			$success = ($actual >= $pValue) ? 1 : 0;
-			break;
-		default:
-			$success = ($actual == $pValue) ? 1 : 0;
-	}
-	return $success;
-	// redundant $data = serialize(array("check" => $pValue, "actual" => $actual));
 }
 
 // added check for Windows - wolff_borg - see http://bugs.php.net/bug.php?id=27609
-function bw_is_writeable($filename) {
-	if (!isWindows()) {
-		return is_writeable($filename);
+/**
+ * check to see if particular directories are wroteable by bitweaver
+ * 
+ * @param array $pPath path to file or dir
+ * @access public
+ * @return TRUE on success, FALSE on failure
+ */
+function bw_is_writeable( $pPath ) {
+	if( !is_windows() ) {
+		return is_writeable( $pPath );
 	} else {
 		$writeable = FALSE;
-		if (is_dir($filename)) {
+		if( is_dir( $pPath )) {
 			$rnd = rand();
-			$writeable = @fopen($filename."/".$rnd,"a");
-			if ($writeable) {
-				fclose($writeable);
-				unlink($filename."/".$rnd);
-				$writeable = true;
+			$writeable = @fopen( $pPath."/".$rnd, "a" );
+			if( $writeable ) {
+				fclose( $writeable );
+				unlink( $pPath."/".$rnd );
+				$writeable = TRUE;
 			}
 		} else {
-			$writeable = @fopen($filename,"a");
-			if ($writeable) {
-				fclose($writeable);
-				$writeable = true;
+			$writeable = @fopen( $pPath,"a" );
+			if( $writeable ) {
+				fclose( $writeable );
+				$writeable = TRUE;
 			}
 		}
 		return $writeable;
 	}
 }
 
-// for PHP<4.2.0
-if (!function_exists('array_fill')) {
-	require_once(KERNEL_PKG_PATH . 'array_fill.func.php');
-}
-
-// if you have a situation where you simply print any $_REQUEST on screen, use this to remove any malicious stuff
+/**
+ * clean up an array of values and remove any dangerous html - particularly useful for cleaning up $_GET and $_REQUEST
+ * 
+ * @param array $pParamHash array to be cleaned
+ * @param boolean $pHtml set true to escape HTML code as well
+ * @access public
+ * @return void
+ */
 function detoxify( &$pParamHash, $pHtml = FALSE ) {
 	if( !empty( $pParamHash ) && is_array( $pParamHash ) ) {
 		foreach( $pParamHash as $key => $value ) {
@@ -217,7 +215,13 @@ if( function_exists('mb_substr' ) ) {
 	}
 }
 
-// simple function to include in deprecated function calls. makes the developer replace with newer code
+/**
+ * simple function to include in deprecated function calls. makes the developer replace with newer code
+ * 
+ * @param array $pReplace code that needs replacing
+ * @access public
+ * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+ */
 function deprecated( $pReplace = NULL ) {
 	$trace = debug_backtrace();
 	//vd( $trace);
@@ -232,9 +236,15 @@ function deprecated( $pReplace = NULL ) {
 	}
 }
 
+/**
+ * html encode all characters
+ * taken from: http://www.bbsinc.com/iso8859.html
+ * 
+ * @param sting $pData string that might contain an email address
+ * @access public
+ * @return encoded email address
+ */
 define( 'EMAIL_ADDRESS_REGEX', '\w[-.\w]*\@[-.\w]+\.\w{2,3}' );
-// html encode all characters
-// taken from: http://www.bbsinc.com/iso8859.html
 function encode_email_addresses( $pData ) {
 	$trans = array(
 		// Upper case
@@ -326,5 +336,33 @@ function encode_email_addresses( $pData ) {
 
 	return $pData;
 }
+
+// for PHP < 4.2.0
+if( !function_exists( 'array_fill' )) {
+	require_once( KERNEL_PKG_PATH.'array_fill.func.php' );
+}
+
+// --------------- apparently not in use anymore
+// we do this in the installer only and we have our own functions in there
+/**
+ * Used to check php.ini settings
+ * @param pName setting name
+ * @param pValue setting value
+ * @param pComp setting comparison
+**/
+#function chkPhpSetting($pName, $pValue, $pComp='') {
+#	$actual = ini_get($pName);
+#	eregi("^([0-9]+)[KMG]$", $actual, $x);
+#	$actual = (isset($x)) ? $x[1] : $actual;
+#	switch($pComp) {
+#		case ">=":
+#			$success = ($actual >= $pValue) ? 1 : 0;
+#			break;
+#		default:
+#			$success = ($actual == $pValue) ? 1 : 0;
+#	}
+#	return $success;
+#	// redundant $data = serialize(array("check" => $pValue, "actual" => $actual));
+#}
 
 ?>

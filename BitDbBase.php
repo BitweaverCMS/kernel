@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.36 2007/02/15 09:15:38 phoenixandy Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.37 2007/02/28 16:57:30 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -20,6 +20,10 @@
 require_once( KERNEL_PKG_PATH.'bit_error_inc.php' );
 
 define( 'BIT_QUERY_DEFAULT', -1 );
+
+// num queries has to be global
+global $gNumQueries;
+$gNumQueries = 0;
 
 
 /**
@@ -215,16 +219,16 @@ class BitDb {
 	* Used to stop query tracking and output results if in debug mode
 	*/
 	function queryComplete() {
-		global $num_queries;
+		global $gNumQueries;
 		//count the number of queries made
-		$num_queries++;
+		$gNumQueries++;
 		$this->mNumQueries++;
 		global $gBitTimer;
 		$interval = $gBitTimer->elapsed() - $this->mQueryLap;
 		$this->mQueryTime += $interval;
 		if( $this->getDebugLevel() ) {
 			$style = ( $interval > .5 ) ? 'color:red;' : (( $interval > .15 ) ? 'color:orange;' : '');
-			print '<p style="'.$style.'">### Query: '.$num_queries.' Start time: '.$this->mQueryLap.' ### Query run time: '.$interval.'</p>';
+			print '<p style="'.$style.'">### Query: '.$gNumQueries.' Start time: '.$this->mQueryLap.' ### Query run time: '.$interval.'</p>';
 #vd(debug_backtrace());
 			flush();
 		}

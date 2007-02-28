@@ -22,6 +22,9 @@ if( (!isset($gBitDbHost)) || empty($gBitDbHost) ) {
 if( !defined( 'DEFAULT_THEME' ) ) {
 	define( 'DEFAULT_THEME', 'basic' );
 }
+if( !defined( 'DEFAULT_ICON_STYLE' ) ) {
+	define( 'DEFAULT_ICON_STYLE', 'tango' );
+}
 if( !defined( 'BIT_QUERY_CACHE_TIME' ) ) {
 	define( 'BIT_QUERY_CACHE_TIME', 86400 );
 }

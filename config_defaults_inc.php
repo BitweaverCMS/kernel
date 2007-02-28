@@ -1,5 +1,6 @@
 <?php
 /**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.19 2007/02/28 22:38:34 squareing Exp $
  * @package kernel
  * @subpackage functions
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.20 2007/02/28 23:15:08 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.21 2007/03/03 15:09:39 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -56,11 +56,11 @@ function is_windows() {
  * @access public
  * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
  */
-function mkdir_p( $pTarget, $pPerms = 0777 ) {
+function mkdir_p( $pTarget, $pPerms = 0755 ) {
 	global $gDebug;
+	//$gDebug = TRUE
 
 	$pTarget = trim( $pTarget );
-
 	if( $pTarget == '/' ) {
 		return 1;
 	}
@@ -69,33 +69,33 @@ function mkdir_p( $pTarget, $pPerms = 0777 ) {
 		$pTarget = preg_replace('/^\/tmp/', $_SERVER['DOCUMENT_ROOT'] . '/temp', $pTarget);
 	}
 
-	//echo "mkdir_p($pTarget, $pPerms)<br />\n";
 	if( file_exists( $pTarget ) || is_dir( $pTarget )) {
-		if( $gDebug ) echo "mkdir_p() - file already exists $pTarget<br>";
+		if( $gDebug ) echo "mkdir_p() - file already exists $pTarget<br />";
 		return 0;
 	}
 
 	if( !is_windows() ) {
 		if( substr( $pTarget, 0, 1 ) != '/' ) {
-			if( $gDebug ) echo "mkdir_p() - prepending with a /<br>";
+			if( $gDebug ) echo "mkdir_p() - prepending with a /<br />";
 			$pTarget = "/$pTarget";
 		}
 		if( ereg( '\.\.', $pTarget )) {
-			if( $gDebug ) echo "mkdir_p() - invalid Unix path $pTarget<br>";
+			if( $gDebug ) echo "mkdir_p() - invalid Unix path $pTarget<br />";
 			return 0;
 		}
 	}
 
 	$oldu = umask( 0 );
 	if( @mkdir( $pTarget, $pPerms )) {
-		if( $gDebug ) echo "mkdir_p() - creating $pTarget<br>";
+		if( $gDebug ) echo "mkdir_p() - creating $pTarget<br />";
 		umask( $oldu );
 		return 1;
 	} else {
-		if( $gDebug ) error_log( "mkdir_p() - trying to create parent $parent" );
+		if( $gDebug ) echo "mkdir_p() - trying to create parent $parent<br />";
 		umask( $oldu );
 		$parent = substr( $pTarget, 0, ( strrpos( $pTarget, '/' )));
 
+		// recursively create parents
 		if( mkdir_p( $parent, $pPerms )) {
 			// make the actual target!
 			if( @mkdir( $pTarget, $pPerms )) {
@@ -107,9 +107,9 @@ function mkdir_p( $pTarget, $pPerms = 0777 ) {
 	}
 }
 
-// added check for Windows - wolff_borg - see http://bugs.php.net/bug.php?id=27609
 /**
  * check to see if particular directories are wroteable by bitweaver
+ * added check for Windows - wolff_borg - see http://bugs.php.net/bug.php?id=27609
  * 
  * @param array $pPath path to file or dir
  * @access public
@@ -173,7 +173,7 @@ function detoxify( &$pParamHash, $pHtml = FALSE ) {
  * Check mb_substr availability
  */
 if( function_exists('mb_substr' ) ) {
-	mb_internal_encoding("UTF-8");
+	mb_internal_encoding( "UTF-8" );
 } else {
 	function mb_substr( $str, $start, $len = '', $encoding = "UTF-8" ) {
 		$limit = strlen( $str );

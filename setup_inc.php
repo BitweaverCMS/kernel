@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.89 2007/02/28 22:35:17 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.90 2007/03/05 08:22:05 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -102,10 +102,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$gBitSystem->getConfig( 'site_keywords_3' )
 	);
 
-	if( $gBitSystem->isFeatureActive( 'site_output_obzip' ) ) {
-		ob_start( "ob_gzhandler" );
-	}
-
 	// gPreScan is set in config_defaults_inc.php which is called before this - xing
 //	if (empty($gPreScan) || !is_array($gPreScan)) {
 //		require_once( USERS_PKG_PATH.'bit_setup_inc.php' );
@@ -205,13 +201,14 @@ if( $gBitSystem->isDatabaseValid() ) {
 		}
 	}
 
-	// gzip compression
+	// gzip output compression
 	if( ini_get( 'zlib.output_compression' ) == 1 ) {
-		$gBitSmarty->assign( 'gzip', 'Enabled' );
+		$gBitSmarty->assign( 'gzip', tra( 'Enabled' ));
 	} elseif( $gBitSystem->isFeatureActive( 'site_output_obzip' )) {
-		$gBitSmarty->assign( 'gzip', 'Enabled' );
+		ob_start( "ob_gzhandler" );
+		$gBitSmarty->assign( 'gzip', tra( 'Enabled' ));
 	} else {
-		$gBitSmarty->assign( 'gzip', 'Disabled' );
+		$gBitSmarty->assign( 'gzip', tra( 'Disabled' ));
 	}
 
 	// if we are interactively translating the website, we force template caching on every page load.

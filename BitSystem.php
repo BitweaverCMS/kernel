@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.119 2007/03/02 10:51:52 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.120 2007/03/07 09:55:21 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1193,6 +1193,7 @@ class BitSystem extends BitBase {
 		global $gBitDbType;
 		#load in any admin/schema_inc.php files that exist for each package
 		$this->scanPackages( 'admin/schema_inc.php', TRUE, $pSelect, FALSE, TRUE );
+		$ret = array();
 
 		if( $this->isDatabaseValid() ) {
 			if( strlen( BIT_DB_PREFIX ) > 0 ) {
@@ -1220,9 +1221,10 @@ class BitSystem extends BitBase {
 								$fullTable = $prefix.$table;
 							}
 							$tablePresent = in_array( $fullTable, $dbTables );
-							if( !$tablePresent ) {
-								// There is an incomplete table
-								// vd( "Missing Table: $fullTable" );
+							if( $tablePresent ) {
+								$ret['present'][$package][] = $table;
+							} else {
+								$ret['missing'][$package][] = $table;
 							}
 
 							$this->mPackages[$package]['installed'] &= $tablePresent;
@@ -1246,20 +1248,8 @@ class BitSystem extends BitBase {
 					}
 				}
 			}
-
-//not clear what to do with this yet
-/*
-			foreach( array_keys( $this->mPackages ) as $package ) {
-				if (!empty( $this->mPackages[$package]['installed'] ) && $this->getConfig("package_".strtolower($package)) != 'y') {
-					$this->storeConfig('package_'.strtolower( $package ), 'n', $package);
-				} elseif( empty( $this->mPackages[$package]['installed'] ) ) {
-					// Delete the package_<pkgname> row from kernel_config
-					$this->storeConfig('package_'.strtolower( $package ), NULL );
-				}
-			}
-*/
 		}
-
+		return $ret;
 	}
 
 	// Allows a package to be selected as the homepage for the site (Admin->General Settings)

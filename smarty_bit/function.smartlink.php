@@ -110,14 +110,6 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 			);
 			$url_params .= $sort_asc;
 		} else {
-/*
-			$sorticon = array(
-				'ipackage' => 'liberty',
-				'iname' => 'sort_none',
-				'iexplain' => 'sort',
-				'iforce' => 'icon',
-			);
-*/
 			$url_params .= $hash['isort'].'_'.( isset( $hash['iorder'] ) ? $hash['iorder'] : 'asc' );
 		}
 	}
@@ -136,6 +128,14 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		$url_params .= !empty( $hash['icontrol']['current_page'] ) ? $sep.'list_page='.$hash['icontrol']['current_page'] : '';
 		$sep = empty( $url_params ) ? '?' : '&amp;';
 		$url_params .= !empty( $hash['icontrol']['find'] ) ? $sep.'find='.$hash['icontrol']['find'] : '';
+		if( !empty( $hash['icontrol']['parameters'] ) && is_array( $hash['icontrol']['parameters'] ) ) {
+			foreach( $hash['icontrol']['parameters'] as $key => $value ) {
+				if( !empty( $value )) {
+					$sep = empty( $url_params ) ? '?' : '&amp;';
+					$url_params .= $sep.$key."=".$value;
+				}
+			}
+		}
 	}
 
 	require_once $gBitSmarty->_get_plugin_filepath( 'function','biticon' );

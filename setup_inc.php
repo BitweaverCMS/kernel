@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.90 2007/03/05 08:22:05 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.91 2007/03/08 03:48:13 nickpalmer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -93,6 +93,16 @@ global $gBitUser, $gTicket, $userlib, $gBitDbType;
 
 if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSystem->loadConfig();
+
+	// gzip output compression
+	if( ini_get( 'zlib.output_compression' ) == 1 ) {
+		$gBitSmarty->assign( 'gzip', tra( 'Enabled' ));
+	} elseif( $gBitSystem->isFeatureActive( 'site_output_obzip' )) {
+		ob_start( "ob_gzhandler" );
+		$gBitSmarty->assign( 'gzip', tra( 'Enabled' ));
+	} else {
+		$gBitSmarty->assign( 'gzip', tra( 'Disabled' ));
+	}
 
 	// we need to allow up to 900 chars for this value in our 250 char table column
 	$gBitSystem->setConfig( 'site_keywords',
@@ -199,16 +209,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 				exit;
 			}
 		}
-	}
-
-	// gzip output compression
-	if( ini_get( 'zlib.output_compression' ) == 1 ) {
-		$gBitSmarty->assign( 'gzip', tra( 'Enabled' ));
-	} elseif( $gBitSystem->isFeatureActive( 'site_output_obzip' )) {
-		ob_start( "ob_gzhandler" );
-		$gBitSmarty->assign( 'gzip', tra( 'Enabled' ));
-	} else {
-		$gBitSmarty->assign( 'gzip', tra( 'Disabled' ));
 	}
 
 	// if we are interactively translating the website, we force template caching on every page load.

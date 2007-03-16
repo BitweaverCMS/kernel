@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.37 2007/02/28 16:57:30 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.38 2007/03/16 06:41:54 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -676,6 +676,7 @@ class BitDb {
 	* @todo investigate replacement by AdoDB NameQuote() function
 	*/
 	function convertQuery(&$pQuery) {
+		trim( $pQuery );
 		if( !empty( $this->mType ) ) {
 			switch ($this->mType) {
 				case "oci8":

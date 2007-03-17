@@ -1,9 +1,17 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.21 2007/03/03 15:09:39 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.22 2007/03/17 14:39:09 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
+
+// some PHP compatability issues need to be dealt with
+// array_fill
+if( !function_exists( 'array_fill' )) {
+	require_once( KERNEL_PKG_PATH.'array_fill.func.php' );
+}
+// str_split
+include_once( UTIL_PKG_PATH.'PHP_Compat/Compat/Function/str_split.php' );
 
 /**
  * Return system defined temporary directory.
@@ -335,11 +343,6 @@ function encode_email_addresses( $pData ) {
 	}
 
 	return $pData;
-}
-
-// for PHP < 4.2.0
-if( !function_exists( 'array_fill' )) {
-	require_once( KERNEL_PKG_PATH.'array_fill.func.php' );
 }
 
 // --------------- apparently not in use anymore

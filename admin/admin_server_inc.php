@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.13 2007/02/25 22:58:17 tekimaki Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.14 2007/03/17 14:39:09 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -7,8 +7,6 @@
 
 // Handle Update
 $processForm = set_tab();
-
-include_once( UTIL_PKG_PATH.'PHP_Compat/Compat/Function/str_split.php' );
 
 if( $processForm ) {
 

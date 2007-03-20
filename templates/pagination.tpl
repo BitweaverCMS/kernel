@@ -44,13 +44,6 @@
 		{/capture}
 		{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find``$smarty.capture.string`"}
 		{math equation="offset + 1 * max" offset=$listInfo.offset max=$listInfo.max_records assign=to}
-		{if $listInfo.current_page > 1}
-			&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page-1}">&laquo;</a>&nbsp;
-		{/if}
-		{tr}Page <strong>{$listInfo.current_page}</strong> of <strong>{$listInfo.total_pages}</strong>{/tr}
-		{if $listInfo.current_page < $listInfo.total_pages}
-			&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page+1}">&raquo;</a>&nbsp;
-		{/if}
 {*
 		<br />
 		{tr}Items <strong>{$listInfo.offset+1}</strong> to <strong>{if $to > $listInfo.total_records}{$listInfo.total_records}{else}{$to}{/if}</strong> (of <strong>{$listInfo.total_records}</strong>){/tr}
@@ -64,11 +57,16 @@
 						&nbsp;
 					{/foreach}
 
-					{if $listInfo.current_page > 1}&laquo;{/if}
+					{if $listInfo.current_page > 1}
+						&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page-1}">&laquo;</a>&nbsp;
+					{/if}
+					{tr}Page <strong>{$listInfo.current_page}</strong> of <strong>{$listInfo.total_pages}</strong>{/tr}
 				</span>
 
 				<span class="right" style="float:right; width:48%; text-align:left;">
-					{if $listInfo.current_page < $listInfo.total_pages}&raquo;{/if}
+					{if $listInfo.current_page < $listInfo.total_pages}
+						&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page+1}">&raquo;</a>&nbsp;
+					{/if}
 
 					{foreach from=$listInfo.block.next key=list_page item=next}
 						&nbsp;<a href="{$pageUrl}&amp;list_page={$list_page}">{$next}</a>&nbsp;
@@ -78,6 +76,13 @@
 				</span>
 			</div>
 		{else}
+			{if $listInfo.current_page > 1}
+				&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page-1}">&laquo;</a>&nbsp;
+			{/if}
+			{tr}Page <strong>{$listInfo.current_page}</strong> of <strong>{$listInfo.total_pages}</strong>{/tr}
+			{if $listInfo.current_page < $listInfo.total_pages}
+				&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page+1}">&raquo;</a>&nbsp;
+			{/if}
 			{form action="$pageUrl"}
 				<input type="hidden" name="find" value="{$find|default:$smarty.request.find}" />
 				<input type="hidden" name="sort_mode" value="{$sort_mode}" />

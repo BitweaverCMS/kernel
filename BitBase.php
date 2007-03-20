@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.32 2007/01/11 09:18:10 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.33 2007/03/20 07:51:15 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -198,59 +198,71 @@ class BitBase {
 	function prepGetList( &$pListHash ) {
 		global $gBitSmarty, $gBitSystem;
 
-		// If offset is set use it if not then use offset =0
-		// use the max_records php variable to set the limit
-		// if sortMode is not set then use last_modified_desc
-		if ( empty( $pListHash['sort_mode'] ) ) {
-			if ( empty( $_REQUEST["sort_mode"] ) ) {
+		// if sort_mode is not set then use last_modified_desc
+		if( empty( $pListHash['sort_mode'] )) {
+			if( empty( $_REQUEST["sort_mode"] )) {
 				$pListHash['sort_mode'] = 'last_modified_desc';
 			} else {
 				$pListHash['sort_mode'] = $_REQUEST['sort_mode'];
 			}
 		}
 
-		if( empty( $pListHash['max_records'] ) ) {
+		// sort_modes are set, we check them against our selected sort_mode
+		if( !empty( $pListHash['sort_modes'] ) && is_array( $pListHash['sort_modes'] )) {
+			$is_valid = FALSE;
+			foreach( $pListHash['sort_modes'] as $mode ) {
+				if( preg_match( "/^{$mode}_(desc|asc)$/", $pListHash['sort_mode'] )) {
+					$is_valid = TRUE;
+				}
+			}
+
+			if( !$is_valid ) {
+				$pListHash['sort_mode'] = '';
+			}
+		}
+
+		if( empty( $pListHash['max_records'] )) {
 			global $gBitSystem;
 			$pListHash['max_records'] = $gBitSystem->getConfig( "max_records", 10 );
 		}
 
-		if( !isset( $pListHash['offset'] ) ) {
-			if( isset($pListHash['page'] ) ) {
+		if( !isset( $pListHash['offset'] )) {
+			if( isset($pListHash['page'] )) {
 				$pListHash['offset'] = ($pListHash['page'] - 1) * $pListHash['max_records'];
 			} else {
-				if ( isset( $_REQUEST["offset"] ) ) {
+				if( isset( $_REQUEST["offset"] )) {
 					$pListHash['offset'] = $_REQUEST['offset'];
-				} elseif( isset( $_REQUEST['page'] ) && is_numeric( $_REQUEST['page'] ) ) {
+				} elseif( isset( $_REQUEST['page'] ) && is_numeric( $_REQUEST['page'] )) {
 					$pListHash['offset'] = ($_REQUEST['page'] - 1) * $pListHash['max_records'];
-				} elseif( isset($_REQUEST['list_page']) && is_numeric( $_REQUEST['list_page'] ) ) {
-					$pListHash['offset'] = ($_REQUEST['list_page'] - 1) * $pListHash['max_records'];
+				} elseif( isset( $_REQUEST['list_page'] ) && is_numeric( $_REQUEST['list_page'] )) {
+					$pListHash['offset'] = ( $_REQUEST['list_page'] - 1 ) * $pListHash['max_records'];
 				} else {
 					$pListHash['offset'] = 0;
 				}
 			}
 		}
 
-// Don't use  $_REQUEST["find"] as it can really screw with modules on search pages
-		if( !empty( $pListHash["find"] ) ) {
+		// Don't use  $_REQUEST["find"] as it can really screw with modules on search pages
+		if( !empty( $pListHash["find"] )) {
 			$pListHash['find']= $pListHash["find"];
 		} else {
 			$pListHash['find'] = NULL;
 		}
 		$gBitSmarty->assign( 'find', $pListHash['find'] );
 
-		if( isset( $_REQUEST['date'] ) ) {
+		if( isset( $_REQUEST['date'] )) {
 			$pListHash['date']= $_REQUEST['date'];
 		} else {
 			$pListHash['date'] = $gBitSystem->getUTCTime();
 		}
 
-		if( empty( $pListHash['load_comments'] ) ) {
+		if( empty( $pListHash['load_comments'] )) {
 			$pListHash['load_comments'] = FALSE;
 		}
-		if( empty( $pListHash['load_num_comments'] ) ) {
+		if( empty( $pListHash['load_num_comments'] )) {
 			$pListHash['load_num_comments'] = FALSE;
 		}
-		if( empty( $pListHash['parse_data'] ) ) {
+		if( empty( $pListHash['parse_data'] )) {
 			$pListHash['parse_data'] = FALSE;
 		}
 	}

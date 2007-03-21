@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.6 2006/03/01 18:35:14 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.7 2007/03/21 08:58:14 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -23,7 +23,7 @@ if($gBitSystem->getConfig('wiki_list_pages') != 'y') {
 }
 */
 if (isset($_REQUEST['url'])) {
-	$id = $wikilib->isCached($_REQUEST['url']);
+	$id = $wikilib->isUrlCached($_REQUEST['url']);
 
 	if (!$id) {
 		$gBitSmarty->assign('msg', tra("No cache information available"));

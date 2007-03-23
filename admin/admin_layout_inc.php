@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.23 2006/09/21 15:31:42 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.24 2007/03/23 19:01:49 laetzer Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -50,11 +50,11 @@ if( !empty( $_REQUEST['module_name'] ) ) {
 $formMiscFeatures = array(
 	'site_right_column' => array(
 		'label' => 'Right Module Column',
-		'note' => 'Here you can disable the right column site-wide.',
+		'note' => 'Check to enable the right column site-wide.',
 	),
 	'site_left_column' => array(
 		'label' => 'Left Module Column',
-		'note' => 'Here you can disable the left column site-wide.',
+		'note' => 'Check to enable the left column site-wide.',
 	),
 );
 $gBitSmarty->assign( 'formMiscFeatures',$formMiscFeatures );

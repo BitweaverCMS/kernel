@@ -388,24 +388,34 @@
 				</div>
 			{/foreach}
 
-			{foreach from=$hideColumns item=name key=package}
-				<div class="row">
-					{formlabel label=$name}
-					{forminput}
-						<label>
-							<input type="checkbox" name="hide[{$package}_hide_left_col]" value="y" {if $gBitSystem->isFeatureActive("`$package`_hide_left_col")}checked="checked"{/if} /> {tr}Hide Left Column{/tr}
-						</label>
-						<br />
-						<label>
-							<input type="checkbox" name="hide[{$package}_hide_right_col]"  value="y" {if $gBitSystem->isFeatureActive("`$package`_hide_right_col")}checked="checked"{/if} /> {tr}Hide Right Column{/tr}
-						</label>
-					{/forminput}
-				</div>
-			{/foreach}
-
-			<div class="row submit">
-				<input type="submit" name="HideTabSubmit" value="{tr}Change preferences{/tr}" />
-			</div>
+			<table id="hidecolumns">
+				<caption>{tr}Hide columns in selected packages.{/tr}</caption>
+				<thead>
+					<tr>
+						<th>{tr}Package{/tr}</th>
+						<th>{tr}hide left column{/tr}</th>
+						<th>{tr}hide right column{/tr}</th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<td colspan="3">
+							<div class="row submit">
+								<input type="submit" name="HideTabSubmit" value="{tr}Change preferences{/tr}" />
+							</div>
+						</td>
+					</tr>
+				</tfoot>
+				<tbody>
+					{foreach from=$hideColumns item=name key=package}
+					<tr class="{cycle values="odd,even"}">
+						<td>{$name}</td>
+						<td><input type="checkbox" name="hide[{$package}_hide_left_col]" value="y" {if $gBitSystem->isFeatureActive("`$package`_hide_left_col")}checked="checked"{/if} /></td>
+						<td><input type="checkbox" name="hide[{$package}_hide_right_col]"  value="y" {if $gBitSystem->isFeatureActive("`$package`_hide_right_col")}checked="checked"{/if} /></td>
+					</tr>
+					{/foreach}
+				</tbody>
+			</table>
 		{/form}
 	{/jstab}
 {/jstabs}

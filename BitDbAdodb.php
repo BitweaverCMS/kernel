@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.20 2007/02/28 23:15:08 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.21 2007/03/26 19:50:54 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -658,7 +658,7 @@ function bit_error_handler( $dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnect
 		$fatal = TRUE;
 	}
 
-	bit_log_error( $logString, $dbParams['db_msg'], $fatal );
+	bit_display_error( $logString, $dbParams['db_msg'], $fatal );
 }
 
 ?>

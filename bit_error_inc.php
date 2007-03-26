@@ -22,7 +22,11 @@ if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
 	define( 'ADODB_ERROR_HANDLER', 'bit_error_handler' );
 }
 
-function bit_log_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
+function bit_log_error( $pLogMessage ) {
+	error_log( $pLogMessage );
+}
+
+function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config_inc.php
 	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : (!empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL);
 

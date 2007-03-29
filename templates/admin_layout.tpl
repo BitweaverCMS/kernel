@@ -410,8 +410,8 @@
 					{foreach from=$hideColumns item=name key=package}
 					<tr class="{cycle values="odd,even"}">
 						<td>{$name}</td>
-						<td><input type="checkbox" name="hide[{$package}_hide_left_col]" value="y" {if $gBitSystem->isFeatureActive("`$package`_hide_left_col")}checked="checked"{/if} /></td>
-						<td><input type="checkbox" name="hide[{$package}_hide_right_col]"  value="y" {if $gBitSystem->isFeatureActive("`$package`_hide_right_col")}checked="checked"{/if} /></td>
+						<td style="text-align:center;"><input type="checkbox" name="hide[{$package}_hide_left_col]" value="y" {if $gBitSystem->isFeatureActive("`$package`_hide_left_col")}checked="checked"{/if} /></td>
+						<td style="text-align:center;"><input type="checkbox" name="hide[{$package}_hide_right_col]"  value="y" {if $gBitSystem->isFeatureActive("`$package`_hide_right_col")}checked="checked"{/if} /></td>
 					</tr>
 					{/foreach}
 				</tbody>

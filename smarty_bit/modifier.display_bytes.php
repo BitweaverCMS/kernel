@@ -21,6 +21,6 @@ function smarty_modifier_display_bytes( $pSize, $pDecimalPlaces = 1 ) {
 		$pSize = $pSize / 1024;
 		$i++;
 	}
-	return substr( $pSize, 0, strpos( $pSize, '.' ) + $pDecimalPlaces + 1 )." ".$iec[$i];
+	return round( $pSize, $pDecimalPlaces )." ".$iec[$i];
 }
 ?>

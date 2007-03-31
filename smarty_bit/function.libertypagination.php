@@ -14,7 +14,7 @@
  *			- ianchor (optional)	set an anchor<br>
  *			- ihash   (optional)	you can pass in all the above as an array called ihash or secondary * items common to all links<br>
  *			The ihash option allow the inclusion of additional link values as provided for smartlink navigation<br>
- * Output:   url of the form: $PHP_SELF?attribute1=value1&attribute2=value2
+ * Output:   url of the form: $REQUEST_URI?attribute1=value1&attribute2=value2
  * 
  * @package Smarty
  * @subpackage plugins
@@ -46,13 +46,12 @@ function smarty_function_libertypagination($params, &$gBitSmarty) {
 		}
 	}
 	$pgnVars .= ( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' );
-
     for( $pageCount = 1; $pageCount < $params['numPages']+1; $pageCount++ ) {
 		if( $pageCount != $params[$pgnName] ) {
 			if( $params['ajaxId'] ) {
-				$pages[] = '<a href="javascript:ajax_updater(\''.$params['ajaxId']."','".$_SERVER['PHP_SELF']."','".$pgnName.'='.$pageCount.$pgnVars.'\')'.'">'.( $pageCount ).'</a>';
+				$pages[] = '<a href="javascript:ajax_updater(\''.$params['ajaxId']."','".$_SERVER['REQUEST_URI']."','".$pgnName.'='.$pageCount.$pgnVars.'\')'.'">'.( $pageCount ).'</a>';
 			} else {
-				$pages[] = '<a href="'.$_SERVER['PHP_SELF'].'?'.$pgnName.'='.$pageCount.$pgnVars.'">'.( $pageCount ).'</a>';
+				$pages[] = '<a href="'.$_SERVER['REQUEST_URI'].'?'.$pgnName.'='.$pageCount.$pgnVars.'">'.( $pageCount ).'</a>';
 			}
 		} else {
 			$pages[] = '<strong>'.$pageCount.'</strong>';

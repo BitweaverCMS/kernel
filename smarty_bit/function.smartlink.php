@@ -54,7 +54,7 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 	}
 
 	if( !isset( $hash['ititle'] ) ) {
-		return 'You need to supply  "ititle" for {smartlink} to work.';
+		return 'You need to supply "ititle" for {smartlink} to work.';
 	}
 
 	// work out what the url is
@@ -89,7 +89,7 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		$sort_asc = $hash['isort'].'_asc';
 		$sort_desc = $hash['isort'].'_desc';
 
-		$atitle = 'title="'.tra( 'Sort by' ).": ".ititle.'"';
+		$atitle = 'title="'.tra( 'Sort by' ).": ".$ititle.'"';
 		$url .= '?';
 		$url_params .= 'sort_mode=';
 
@@ -164,7 +164,7 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 			}
 			$ret .= smarty_function_biticon( $ibiticon, $gBitSmarty );
 		} else {
-			$ret .= ititle;
+			$ret .= $ititle;
 		}
 
 		if( isset( $sorticon ) ) {

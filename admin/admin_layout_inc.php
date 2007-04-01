@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.24 2007/03/23 19:01:49 laetzer Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/Attic/admin_layout_inc.php,v 1.25 2007/04/01 10:03:54 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -20,6 +20,7 @@ if( empty( $_REQUEST['module_package'] ) ) {
 $gBitSmarty->assign_by_ref( 'feedback', $feedback = array() );
 $layout = $gBitSystem->getLayout( ROOT_USER_ID, $_REQUEST['module_package'], FALSE );
 
+/* disable drag and drop for now - xing
 if( empty( $_REQUEST['nojs'] ) ) {
 	// load the javascript to get everythign working
 	$gBitSystem->setOnloadScript('initDragDrop();');
@@ -37,6 +38,17 @@ if( empty( $_REQUEST['nojs'] ) ) {
 		} else {
 			$feedback['error'] = tra( "There was a problem storing the layout." );
 		}
+	}
+}
+ */
+
+if( !empty( $_REQUEST['update_modules'] ) && is_array( $_REQUEST['modules'] )) {
+	foreach( $_REQUEST['modules'] as $module_id => $module ) {
+		$module['module_id'] = $module_id;
+		$module['layout']    = $_REQUEST['module_package'];
+		$module['user_id']   = ROOT_USER_ID;
+		$gBitThemes->storeModule( $module );
+		//$gBitThemes->storeLayout( $module );
 	}
 }
 

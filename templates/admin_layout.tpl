@@ -16,7 +16,7 @@
 		list.onDragOver = function() { this.style["background"] = "#feb"; };
 		list.onDragOut = function() {this.style["background"] = "none"; };
 	};
-	
+
 	function getSort( id ) {
 		order = $( id );
 		order.value = DragDrop.serData( id, null );
@@ -28,7 +28,11 @@
 {formfeedback hash=$feedback}
 
 {* keep old layout option available for non js browsers *}
-{if $smarty.request.nojs}
+{if !$loadDragDrop}
+
+{form}
+	<input type="hidden" name="module_package" value="{$module_package}" />
+	<input type="hidden" name="page" value="{$page}" />
 
 	<table style="width:100%" cellpadding="5" cellspacing="0" border="0">
 		<caption>{tr}Current Layout of '{if !$module_package || $module_package=='kernel'}Site Default{else}{$module_package|capitalize}{/if}'{/tr}</caption>
@@ -42,6 +46,59 @@
 						{section name=ix loop=$layout.$area}
 							<tr class="{cycle values="even,odd"}">
 								<td>
+									<table>
+										<tr>
+											<th colspan="2">
+												{$layout.$area[ix].name}
+												<input type="hidden" name="modules[{$layout.$area[ix].module_id}][pos]" value="{$area}" />
+												<input type="hidden" name="modules[{$layout.$area[ix].module_id}][ord]" value="{$layout.$area[ix].ord}" />
+											</th>
+										</tr>
+										<tr>
+											<td style="text-align:right">{tr}Position{/tr}</td>
+											<td>
+												{smartlink ititle="Up" ibiticon="icons/go-up" iforce="icon" page=layout move_module=up module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
+												&nbsp;&nbsp;
+												{smartlink ititle="Down" ibiticon="icons/go-down" iforce="icon" page=layout move_module=down module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
+												&nbsp;&nbsp;
+												{$layout.$area[ix].ord}
+											</td>
+										</tr>
+										<tr>
+											<td style="text-align:right">{tr}Title{/tr}</td>
+											<td><input type="text" size="15" name="modules[{$layout.$area[ix].module_id}][title]" value="{$layout.$area[ix].title|escape}" /></td>
+										</tr>
+										<tr>
+											<td style="text-align:right">{tr}Cache Time{/tr}</td>
+											<td><input type="text" size="15" name="modules[{$layout.$area[ix].module_id}][cache_time]" value="{$layout.$area[ix].cache_time}" /></td>
+										</tr>
+										<tr>
+											<td style="text-align:right">{tr}Rows{/tr}</td>
+											<td><input type="text" size="15" name="modules[{$layout.$area[ix].module_id}][module_rows]" value="{$layout.$area[ix].module_rows}" /></td>
+										</tr>
+										<tr>
+											<td style="text-align:right">{tr}Parameters{/tr}</td>
+											<td><input type="text" size="15" name="modules[{$layout.$area[ix].module_id}][params]" value="{$layout.$area[ix].params}" /></td>
+										</tr>
+										<tr>
+											<td style="text-align:right"></td>
+											<td>
+												{if $colkey ne 'center'}
+													{if $colkey == 'left'}
+														{assign var=dir value=next}
+													{elseif $colkey == 'right'}
+														{assign var=dir value=previous}
+													{/if}
+													{smartlink ititle="Move module" ibiticon="icons/go-$dir" iforce="icon" page=layout move_module=$colkey module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
+												{/if}
+												&nbsp;&nbsp;
+												{if $column[ix].type ne 'P'}
+													{smartlink ititle="Unassign" ibiticon="icons/edit-delete" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout move_module=unassign module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true ord=`$layout.$area[ix].ord`}
+												{/if}
+											</td>
+										</tr>
+									</table>
+									{*
 									<div class="highlight">{$layout.$area[ix].name}</div>
 									<strong>{tr}Position{/tr}</strong>: {$layout.$area[ix].ord}
 									<br />
@@ -62,23 +119,24 @@
 									{/if}
 
 									<div style="text-align:center;">
-										{smartlink ititle="Up" ibiticon="liberty/move_up" iforce="icon" page=layout move_module=up module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
+										{smartlink ititle="Up" ibiticon="icons/go-up" iforce="icon" page=layout move_module=up module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
 										&nbsp;&nbsp;
-										{smartlink ititle="Down" ibiticon="liberty/move_down" iforce="icon" page=layout move_module=down module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
+										{smartlink ititle="Down" ibiticon="icons/go-down" iforce="icon" page=layout move_module=down module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
 										&nbsp;&nbsp;
 										{if $colkey ne 'center'}
 											{if $colkey == 'left'}
-												{assign var=dir value=right}
+												{assign var=dir value=next}
 											{elseif $colkey == 'right'}
-												{assign var=dir value=left}
+												{assign var=dir value=previous}
 											{/if}
-											{smartlink ititle="Move to $dir" ibiticon="liberty/move_$dir" iforce="icon" page=layout move_module=$colkey module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
+											{smartlink ititle="Move module" ibiticon="icons/go-$dir" iforce="icon" page=layout move_module=$colkey module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true}
 										{/if}
 										&nbsp;&nbsp;
 										{if $column[ix].type ne 'P'}
 											{smartlink ititle="Unassign" ibiticon="icons/edit-delete" iforce=icon ionclick="return confirm('Are you sure you want to remove `$layout.$area[ix].name`?');" page=layout move_module=unassign module_package=$module_package module=`$layout.$area[ix].module_id` nojs=true ord=`$layout.$area[ix].ord`}
 										{/if}
 									</div>
+									*}
 								</td>
 							</tr>
 						{sectionelse}
@@ -94,7 +152,12 @@
 		</tr>
 	</table>
 
-	<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}">{tr}Use javascript variant{/tr}</a>
+	<div class="submit">
+		<input type="submit" name="update_modules" value="{tr}Update Module Settings{/tr}" />
+	</div>
+{/form}
+
+{*	<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}">{tr}Use javascript variant{/tr}</a> *}
 {else}
 
 	{form}

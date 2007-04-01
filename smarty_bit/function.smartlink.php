@@ -75,7 +75,13 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 	}
 
 	$url_params = NULL;
-	$atitle = 'title="'.tra( $hash['ititle'] ).'"';
+	if( !empty( $hash['itra'] ) || $hash['itra'] === FALSE ) {
+		$ititle = $hash['ititle'];
+	} else {
+		$ititle = tra( $hash['ititle'] );
+	}
+
+	$atitle = 'title="'.$ititle.'"';
 
 	// if isort is set, we need to deal with all the sorting stuff
 	if( !empty( $hash['isort'] ) ) {
@@ -83,7 +89,7 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		$sort_asc = $hash['isort'].'_asc';
 		$sort_desc = $hash['isort'].'_desc';
 
-		$atitle = 'title="'.tra( 'sort by: ' ).tra( $hash['ititle'] ).'"';
+		$atitle = 'title="'.tra( 'Sort by' ).": ".ititle.'"';
 		$url .= '?';
 		$url_params .= 'sort_mode=';
 
@@ -114,7 +120,7 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		}
 	}
 
-	$ignore = array( 'icontrol', 'isort', 'ianchor', 'isort_mode', 'iorder', 'ititle', 'idefault', 'ifile', 'ipackage', 'itype', 'iurl', 'ionclick', 'ibiticon', 'iforce' );
+	$ignore = array( 'icontrol', 'isort', 'ianchor', 'isort_mode', 'iorder', 'ititle', 'idefault', 'ifile', 'ipackage', 'itype', 'iurl', 'ionclick', 'ibiticon', 'iforce', 'itra' );
 	// append any other paramters that were passed in
 	foreach( $hash as $key => $val ) {
 		if( !empty( $val ) && !in_array( $key, $ignore ) ) {
@@ -151,14 +157,14 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 			$ibiticon = array(
 				'ipackage' => $tmp[0],
 				'iname' => $tmp[1],
-				'iexplain' => $hash['ititle'],
+				'iexplain' => $hash['ititle'], // use untranslated ititle - biticon has a tra()
 			);
 			if( !empty( $hash['iforce'] ) ) {
 				$ibiticon['iforce'] = $hash['iforce'];
 			}
 			$ret .= smarty_function_biticon( $ibiticon, $gBitSmarty );
 		} else {
-			$ret .= tra( $hash['ititle'] );
+			$ret .= ititle;
 		}
 
 		if( isset( $sorticon ) ) {

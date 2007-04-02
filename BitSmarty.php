@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.15 2006/10/13 09:22:47 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.16 2007/04/02 18:55:00 squareing Exp $
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -112,36 +112,23 @@ class BitSmarty extends Smarty
 	* @return TRUE if a sibling php file was included
 	* @access private
 	*/
-	function includeSiblingPhp($pRsrc)
-	{
+	function includeSiblingPhp( $pRsrc ) {
 		$ret = false;
-		if (strpos($pRsrc, ':'))
-		{
-			list($resource, $location) = split(':', $pRsrc);
-			if ($resource == 'bitpackage')
-			{
-				list($package, $template) = split('/', $location);
+		if( strpos( $pRsrc, ':' )) {
+			list( $resource, $location ) = split( ':', $pRsrc );
+			if( $resource == 'bitpackage' ) {
+				list( $package, $template ) = split( '/', $location );
 				// print "( $resource, $location )  ( $package, $template )<br/>";
-				$subdir = preg_match('/mod_/', $template) ? 'modules' : 'templates';
-				if (preg_match('/mod_/', $template) || preg_match('/center_/', $template))
-				{
+				$subdir = preg_match( '/mod_/', $template ) ? 'modules' : 'templates';
+				if( preg_match('/mod_/', $template ) || preg_match( '/center_/', $template )) {
 					global $gBitSystem;
 					$path = $gBitSystem->mPackages[$package]['path'];
-					$modPhpFile = str_replace('.tpl', '.php', "$path$subdir/$template");
-					if (file_exists($modPhpFile))
-					{
-						global $gBitSmarty, $gBitSystem, $gBitUser, $user, $smarty, $gQueryUserId, $module_rows, $module_params, $module_column;
+					$modPhpFile = str_replace( '.tpl', '.php', "$path$subdir/$template" );
+					if( file_exists( $modPhpFile )) {
+						global $gBitSmarty, $gBitSystem, $gBitUser, $gQueryUserId, $moduleParams;
 						// Module Params were passed in from the template, like kernel/dynamic.tpl
-						if( $moduleParams = $this->get_template_vars('moduleParams') ) {
-							if( strpos( trim( $moduleParams['params'] ), ' ' ) ) {
-								$module_params = parse_xml_attributes( $moduleParams['params'] );
-							} else {
-								parse_str( $moduleParams["params"], $module_params );
-							}
-							$module_title = ( isset( $moduleParams['title'] ) ? tra( $moduleParams['title'] ) : ( isset( $module_params['title'] ) ? $module_params['title'] : NULL ) );
-							$module_rows = $moduleParams['module_rows'];
-						}
-						include($modPhpFile);
+						$moduleParams = $this->get_template_vars( 'moduleParams' );
+						include( $modPhpFile );
 						$ret = true;
 					}
 				}

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.120 2007/03/07 09:55:21 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.121 2007/04/02 18:55:00 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -60,9 +60,6 @@ class BitSystem extends BitBase {
 
 	// Cross Reference Package Directory Name => Package Key used as index into $mPackages
 	var $mPackagesDirNameXref = array();
-
-	// Array that contains a full description of the current layout
-	var $mLayout = array();
 
 	// Contains site style information
 	var $mStyle = array();
@@ -407,7 +404,7 @@ class BitSystem extends BitBase {
 	* @access private
 	*/
 	function preDisplay( $pMid ) {
-		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gPreviewStyle, $gQueryUser, $gQueryUserId;
+		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gBitThemes, $gPreviewStyle, $gQueryUser, $gQueryUserId;
 		// setup our theme style and check if a preview theme has been picked
 		if( $gPreviewStyle !== FALSE ) {
 			$this->setStyle( $gPreviewStyle );
@@ -422,27 +419,18 @@ class BitSystem extends BitBase {
 		//$this->mStyles['altStyleSheets'] = $this->getAltStyleCss();
 		define( 'THEMES_STYLE_URL', $this->getStyleUrl() );
 		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'jscalendar/' );
-		// dont forget to assign slideshow stylesheet if we are viewing page as slideshow
-//		$gBitSmarty->assign('site_slide_style', $this->getStyleCss("site_slide_style"));
 
-		$customHome = NULL;
-		if( !empty( $gQueryUser ) && $gQueryUser->canCustomizeLayout() && @$this->verifyId( $gQueryUserId ) ) {
-			$customHome = $gQueryUserId;
-		} elseif( $this->getConfig( 'users_layouts' ) == 'y' ) {
-			// user_layouts can have 3 falues - 'y', 'h', or 'n'/null. isFeatureActice cannot be called here.
-			$customHome = $gBitUser->mUsername;
-		}
+		$gBitThemes->loadLayout();
 
-		$this->loadLayout( $customHome );
-
+		// check to see if we are working with a dynamic center area
 		if( $pMid == 'bitpackage:kernel/dynamic.tpl' ) {
-			$gBitSmarty->assign_by_ref('gCenterPieces', $gCenterPieces);
+			$gBitSmarty->assign_by_ref( 'gCenterPieces', $gCenterPieces );
 		} else {
-			// we don't want to render the centers if we aren't on a dynamic page
-			unset($this->mLayout['c']);
+			unset( $gBitThemes->mLayout['c'] );
 		}
 
-		require_once( KERNEL_PKG_PATH . 'modules_inc.php' );
+		// process layout
+		require_once( THEMES_PKG_PATH.'modules_inc.php' );
 
 		/* force the session to close *before* displaying. Why? Note this very important comment from http://us4.php.net/exec
 			edwin at bit dot nl
@@ -1497,10 +1485,8 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function getStyleUrl($pStyle = null)
-	{
-		if (empty($pStyle))
-		{
+	function getStyleUrl($pStyle = null) {
+		if (empty($pStyle)) {
 			$pStyle = $this->getStyle();
 		}
 		return THEMES_PKG_URL . 'styles/' . $pStyle . '/';
@@ -1514,145 +1500,11 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function getStylePath($pStyle = null)
-	{
-		if (empty($pStyle))
-		{
+	function getStylePath($pStyle = null) {
+		if (empty($pStyle)) {
 			$pStyle = $this->getStyle();
 		}
 		return THEMES_PKG_PATH . 'styles/' . $pStyle . '/';
-	}
-
-	// === loadModules
-	/**
-	* load all modules. LOAD functions imply getting data from database and putting in local member variable
-	*
-	* @param  $pLayout can be either the username for user assigned modules, or
-	* @return none
-	* @access public
-	*/
-	function loadLayout($pUserMixed = ROOT_USER_ID, $pLayout = ACTIVE_PACKAGE, $pFallbackLayout = DEFAULT_PACKAGE, $pForceReload = FALSE) {
-		if( $pForceReload || empty($this->mLayout) || !count($this->mLayout) ){
-			unset($this->mLayout);
-			$this->mLayout = $this->getLayout($pUserMixed, $pLayout, $pLayout, $pFallbackLayout);
-			if( $this->isFeatureActive( ACTIVE_PACKAGE.'_hide_left_col' ) ) {
-				unset( $this->mLayout['l'] );
-			}
-			if( $this->isFeatureActive( ACTIVE_PACKAGE.'_hide_right_col' ) ) {
-				unset( $this->mLayout['r'] );
-			}
-		}
-	}
-
-	function getLayout( $pUserMixed = null, $pLayout = ACTIVE_PACKAGE, $pFallback = TRUE, $pFallbackLayout = DEFAULT_PACKAGE ) {
-		global $gCenterPieces, $gBitUser;
-		$ret = array( 'l' => NULL, 'c' => NULL, 'r' => NULL );
-		$layoutUserId = ROOT_USER_ID;
-
-		if( !empty($pUserMixed) ) {
-			if( $this->verifyId( $pUserMixed ) ) {
-				$whereClause = " WHERE tl.`user_id`=?";
-			} else {
-				$whereClause = ", `" . BIT_DB_PREFIX . "users_users` uu WHERE tl.`user_id`=uu.`user_id` AND uu.`login`=?";
-			}
-			$query = "SELECT tl.`user_id` FROM `" . BIT_DB_PREFIX . "themes_layouts` tl
-					$whereClause ";
-			if( $userId = $this->mDb->getOne($query, array($pUserMixed)) ) {
-				$layoutUserId = $userId;
-			}
-		}
-		$whereClause = 'AND ';
-		$bindVars = array($layoutUserId);
-		// This query will always pull ALL of the ACTIVE_PACKAGE _and_ DEFAULT_PACKAGE modules (in that order)
-		// This saves a count() query to see if the ACTIVE_PACKAGE has a layout, since it usually probably doesn't
-		// I don't know if it's better or not to save the count() query and retrieve more data - my gut says so,
-		// but i've done no research - spiderr
-		if ($pLayout != DEFAULT_PACKAGE && $pFallback && $this->dType != 'firebird' && $this->dType != 'mssql'  && $this->dType != 'oci8'  && $this->dType != 'oci8po' ) {
-			// ORDER BY comparison is crucial so current layout modules come up first
-			$whereClause .= " (tl.`layout`=? OR tl.`layout`=? ) ORDER BY tl.`layout`=? DESC, ";
-			array_push($bindVars, $pLayout);
-			array_push($bindVars, $pFallbackLayout);
-			array_push($bindVars, $pLayout);
-		} elseif ($pLayout != DEFAULT_PACKAGE && $pFallback) {
-			// ORDER BY comparison is crucial so current layout modules come up first
-			$whereClause .= " (tl.`layout`=? OR tl.`layout`=? ) ORDER BY tl.`layout` DESC, ";
-			array_push($bindVars, $pLayout);
-			array_push($bindVars, $pFallbackLayout);
-		} elseif ($pLayout) {
-			$whereClause .= " tl.`layout`=? ORDER BY ";
-			array_push($bindVars, $pLayout);
-		}
-		$query = "SELECT tl.`ord`, tl.`user_id`, tl.`layout`, tl.`layout_position`, tl.`params` AS `section_params`, tlm.*, tmm.`module_rsrc` FROM `" . BIT_DB_PREFIX . "themes_layouts` tl, `" . BIT_DB_PREFIX . "themes_layouts_modules` tlm, `" . BIT_DB_PREFIX . "themes_module_map` tmm
-				WHERE tl.`module_id`=tlm.`module_id` AND tl.`user_id`=? AND tmm.`module_id`=tlm.`module_id` $whereClause  " . $this->mDb->convertSortmode("ord_asc");
-		if( $result = $this->mDb->query($query, $bindVars) ) {
-			$row = $result->fetchRow();
-			// CHeck to see if we have ACTIVE_PACKAGE modules at the top of the results
-			if (isset($row['layout']) && ($row['layout'] != DEFAULT_PACKAGE) && (ACTIVE_PACKAGE != DEFAULT_PACKAGE)) {
-				$skipDefaults = true;
-			} else {
-				$skipDefaults = false;
-			}
-
-			$gCenterPieces = array();
-			while( $row ) {
-				if ($skipDefaults && $row['layout'] == DEFAULT_PACKAGE) {
-					// we're done! we've got all the non-DEFAULT_PACKAGE modules
-					break;
-				}
-
-				if( !empty( $row["section_params"] ) ) {
-					$row['params'] = $row['section_params'];
-				}
-				if( !empty( $row["groups"] ) ) {
-					if( $this->isFeatureActive( 'site_show_all_modules_always' ) || $gBitUser->isAdmin() ) {
-						$row["visible"] = TRUE;
-					} else {
-						if( preg_match( '/[A-Za-z]/', $row["groups"] ) ) {
-							// old style serialized group names
-							$row["module_groups"] = array();
-							if( $grps = @unserialize($row["groups"]) ) {
-								foreach ($grps as $grp) {
-									global $gBitUser;
-									if( !($groupId = array_search( $grp, $gBitUser->mGroups )) ) {
-										if( $gBitUser->isAdmin() ) {
-											$row["module_groups"][] = $gBitUser->groupExists( $grp, '*' );
-										}
-									}
-
-									if( @$this->verifyId( $groupId ) ) {
-										$row["module_groups"][] = $groupId;
-									}
-								}
-
-							}
-						} else {
-							$row["module_groups"] = explode( ' ', $row["groups"] );
-						}
-						// Check for the right groups
-						foreach( $row["module_groups"] as $modGroupId ) {
-							if( $gBitUser->isInGroup( $modGroupId ) ) {
-								$row["visible"] = TRUE;
-								break; // no need to continue looping
-							}
-						}
-					}
-				} else {
-					$row["visible"] = TRUE;
-					$row["module_groups"] = array();
-				}
-				if( empty( $ret[$row['layout_position']] ) ) {
-					$ret[$row['layout_position']] = array();
-				}
-				if( $row['layout_position'] == CENTER_COLUMN ) {
-					array_push( $gCenterPieces, $row['module_rsrc'] );
-				}
-				if( !empty( $row["visible"] ) ) {
-					array_push( $ret[$row['layout_position']], $row );
-				}
-				$row = $result->fetchRow();
-			}
-		}
-		return $ret;
 	}
 
 	/*static*/

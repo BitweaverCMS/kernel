@@ -464,6 +464,7 @@ array( 'QUERY' =>
 		"DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`='site_temp_dir'",
 		"DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`='cookie_path'",
 		"DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`='cookie_domain'",
+		"DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`='site_show_all_modules_always'",
 	)
 )),
 	)

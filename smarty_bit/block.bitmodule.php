@@ -4,7 +4,7 @@
  * @package Smarty
  * @subpackage plugins
  */
-// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.3 2005/08/01 18:40:36 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.4 2007/04/02 18:55:00 squareing Exp $
 /**
  * \brief Smarty {bitmodule}{/bitmodule} block handler
  *
@@ -26,20 +26,31 @@ error was used only in case the name was not there.
 I fixed that error case. -- mose
  
  */
-function smarty_block_bitmodule($params, $content, &$gBitSmarty) {
-	extract($params);
-	if (!isset($content))   return "";
-	if (!isset($title))     $title = substr($content,0,12)."...";
-	if (!isset($name))      $name  = ereg_replace("[^-_a-zA-Z0-9]","",$title);
-	$gBitSmarty->assign('module_title', $title);
-	$gBitSmarty->assign('module_name', $name);
-	$gBitSmarty->assign_by_ref('module_content', $content);
-	if ($_COOKIE[$name] == 'c') {
-		$toggle_state = 'none';
+function smarty_block_bitmodule( $pParams, $pContent, &$gBitSmarty) {
+	if( empty( $pContent )) {
+		return '';
 	} else {
-		$toggle_state = 'block';
+		$pParams['data'] = $pContent;
 	}
-	$gBitSmarty->assign('toggle_state', $toggle_state);
+
+	if( empty( $pParams['title'] )) {
+		$pParams['title'] = substr( $pContent, 0, 12 )."&hellip;";
+	}
+
+	if( empty( $pParams['name'] )) {
+		$pParams['name'] = ereg_replace( "[^-_a-zA-Z0-9]", "", $pParams['title'] );
+	}
+
+	// this is outdated and will not work with our serialised cookies - xing
+	/*
+	if( $_COOKIE[$name] == 'c' ) {
+		$pParams['toggle_state'] = 'none';
+	} else {
+		$pParams['toggle_state'] = 'block';
+	}
+	 */
+
+	$gBitSmarty->assign( 'modInfo', $pParams );
 	return $gBitSmarty->fetch('bitpackage:kernel/module.tpl');
 }
 ?>

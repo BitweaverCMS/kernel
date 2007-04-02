@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.33 2007/03/20 07:51:15 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.34 2007/04/02 18:55:00 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -367,7 +367,8 @@ function tp_http_request( $pUrl ) {
  * @return TRUE on success, FALSE on failure
  */
 function parse_xml_attributes( $pString ) {
-	$parameters = array( '', '' );
+	//$parameters = array( '', '' );
+	$parameters = array();
 	$regexp_str = "/([A-Za-z0-9_-]+)(?:\\s*=\\s*(?:(\"|\')((?:[\\\\].|[^\\\\]?)*?)(?:\\2)|([^=\\s]*)))?/";
 	preg_match_all( $regexp_str, $pString, $matches, PREG_SET_ORDER );
 	while( list( $key, $match ) = each( $matches ) ) {

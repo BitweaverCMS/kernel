@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.91 2007/03/08 03:48:13 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.92 2007/04/02 18:55:00 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -112,12 +112,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$gBitSystem->getConfig( 'site_keywords_3' )
 	);
 
-	// gPreScan is set in config_defaults_inc.php which is called before this - xing
-//	if (empty($gPreScan) || !is_array($gPreScan)) {
-//		require_once( USERS_PKG_PATH.'bit_setup_inc.php' );
-//		require_once( LIBERTY_PKG_PATH.'bit_setup_inc.php' );
-//	}
-
 	$host = $gBitSystem->getConfig( 'kernel_server_name', $_SERVER['HTTP_HOST'] );
 	if( !defined('BIT_BASE_URI' ) ) {
 		define( 'BIT_BASE_URI', 'http'.(!empty($_SERVER['HTTPS'])?'s':'').'://'.$host );
@@ -136,7 +130,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// XSS security check
 	if( !empty( $_REQUEST['tk'] ) && empty( $_SERVER['bot'] ) ) {
-//		$gBitUser->verifyTicket();
+		//$gBitUser->verifyTicket();
 	} elseif( !empty( $_SERVER['bot'] ) ) {
 	}
 

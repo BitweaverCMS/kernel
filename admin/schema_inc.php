@@ -78,31 +78,30 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 $moduleHash = array(
 	'mod_bitweaver_info' => array(
 		'title' => 'bitweaver',
-		'ord' => 1,
-		'pos' => 'r',
+		'pos' => 1,
+		'layout_area' => 'r',
 		'module_rsrc' => 'bitpackage:kernel/mod_bitweaver_info.tpl'
 	),
 	'mod_server_stats' => array(
 		'title' => 'Server Statistics',
 		'groups' => array( 'Admin' ),
-		'ord' => 2,
-		'pos' => 'r',
+		'pos' => 2,
+		'layout_area' => 'r',
 		'module_rsrc' => 'bitpackage:kernel/mod_server_stats.tpl'
 	),
 	'mod_powered_by' => array(
 		'title' => 'Powered by',
-		'ord' => 4,
-		'pos' => 'r',
+		'pos' => 4,
+		'layout_area' => 'r',
 		'module_rsrc' => 'bitpackage:kernel/mod_powered_by.tpl'
 	),
 	'mod_package_menu' => array(
 		'title' => NULL,
-		'ord' => 1,
-		'pos' => 'l',
+		'pos' => 1,
+		'layout_area' => 'l',
 		'module_rsrc' => 'bitpackage:kernel/mod_package_menu.tpl'
 	)
 );
-
 $gBitInstaller->registerModules( $moduleHash );
 
 // ### Default UserPermissions

@@ -4,7 +4,7 @@
  * @package Smarty
  * @subpackage plugins
  */
-// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.4 2007/04/02 18:55:00 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.5 2007/04/02 21:17:15 squareing Exp $
 /**
  * \brief Smarty {bitmodule}{/bitmodule} block handler
  *
@@ -51,6 +51,6 @@ function smarty_block_bitmodule( $pParams, $pContent, &$gBitSmarty) {
 	 */
 
 	$gBitSmarty->assign( 'modInfo', $pParams );
-	return $gBitSmarty->fetch('bitpackage:kernel/module.tpl');
+	return $gBitSmarty->fetch('bitpackage:themes/module.tpl');
 }
 ?>

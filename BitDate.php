@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.18 2007/02/27 17:30:19 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.19 2007/04/03 06:21:41 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -707,9 +707,10 @@ class BitDate {
 	 */
 	function mktime($hr,$min,$sec,$mon=false,$day=false,$year=false,$is_dst=false,$is_gmt=false)
 	{
-			if ($mon === false) {
-				return $is_gmt? @gmmktime($hr,$min,$sec): @mktime($hr,$min,$sec);
+		if ($mon === false) {
+			return $is_gmt? @gmmktime($hr,$min,$sec): @mktime($hr,$min,$sec);
 
+/* Need to check if this can be deleted
 			// for windows, we don't check 1970 because with timezone differences,
 			// 1 Jan 1970 could generate negative timestamp, which is illegal
 			if (1971 < $year && $year < 2038
@@ -719,6 +720,7 @@ class BitDate {
 						@gmmktime($hr,$min,$sec,$mon,$day,$year):
 						@mktime($hr,$min,$sec,$mon,$day,$year);
 				}
+*/
 		}
 
 		$gmt_different = ($is_gmt) ? 0 : $this->server_offset;

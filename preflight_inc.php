@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.22 2007/03/17 14:39:09 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.23 2007/04/03 14:28:45 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -237,7 +237,7 @@ function deprecated( $pReplace = NULL ) {
 	if( !empty( $pReplace ) ) {
 		$out .= "\n\t".$pReplace;
 	}
-	if( !defined( 'IS_LIVE' ) ) {
+	if( !defined( 'IS_LIVE' ) || IS_LIVE == FALSE ) {
 		vd( $out );
 	} else {
 		error_log( $out );

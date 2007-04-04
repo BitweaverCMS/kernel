@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.15 2007/04/02 18:55:00 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.16 2007/04/04 18:07:15 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -59,6 +59,7 @@ if (isset($page)) {
 				$package = 'kernel';
 				break;
 			case 'layout':
+			case 'layout_overview':
 			case 'modules':
 			case 'custom_modules':
 				$package = 'themes';

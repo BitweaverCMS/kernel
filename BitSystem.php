@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.121 2007/04/02 18:55:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.122 2007/04/04 07:48:59 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2099,58 +2099,4 @@ class BitSystem extends BitBase {
 		return $html;
 	}
 }
-
-// === installError
-/**
-* If an unrecoverable error has occurred, this method should be invoked. script exist occurs
-*
-* @param string $ pMsg error message to be displayed
-* @return none this function will DIE DIE DIE!!!
-* @access public
-*/
-function installError( $pMsg = null ) {
-	global $gBitDbType;
-	// here we decide where to go. if there are no db settings yet, we go the welcome page.
-	if( isset( $gBitDbType ) ) {
-		$step = 1;
-	} else {
-		$step = 0;
-	}
-
-	header( "Location: http://".$_SERVER['HTTP_HOST'].BIT_ROOT_URL."install/install.php?step=".$step );
-/*	// figure out our subdirectories, if any.
-	echo '<html><head><meta http-equiv="pragma" content="no-cache"><meta http-equiv="expires" content="1" /></head><body>';
-	echo "<p>$pMsg</p>";
-	echo "<p>Run <a href=\"" . BIT_ROOT_URL . "install/install.php\">install/install.php</a> to begin the installation process.</p>";
-	echo "</body></html>";*/
-	die;
-}
-
-/**
- * Basic processes timer
- *
- * @package kernel
- */
-class BitTimer {
-	function parseMicro( $micro ) {
-		list( $micro, $sec ) = explode( ' ', microtime() );
-		return $sec + $micro;
-	}
-
-	function start( $timer = 'default' ) {
-		$this->mTimer[$timer] = $this->parseMicro( microtime() );
-	}
-
-	function stop( $timer = 'default' ) {
-		return $this->current( $timer );
-	}
-
-	function elapsed( $timer = 'default' ) {
-		return $this->parseMicro( microtime() ) - $this->mTimer[$timer];
-	}
-}
-
-global $gBitTimer;
-$gBitTimer = new BitTimer();
-$gBitTimer->start();
 ?>

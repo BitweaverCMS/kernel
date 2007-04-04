@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.34 2007/04/02 18:55:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.35 2007/04/04 07:48:59 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -270,6 +270,8 @@ class BitBase {
 
 
 
+// ====================================== Functions ======================================
+
 
 
 /**
@@ -355,7 +357,6 @@ function tp_http_request( $pUrl ) {
 	return $data;
 }
 
-
 /**
  * Parse XML Attributes and return an array
  *
@@ -379,7 +380,6 @@ function parse_xml_attributes( $pString ) {
 	}
 	return $parameters;
 }
-
 
 /**
  * XML Entity Mandatory Escape Characters
@@ -426,6 +426,11 @@ function bit_redirect( $pUrl ) {
 	exit();
 }
 
+/**
+ * array_diff_keys 
+ * 
+ * @access public
+ */
 function array_diff_keys() {
 	$args = func_get_args();
 
@@ -445,6 +450,12 @@ function array_diff_keys() {
 	return $res;
 }
 
+/**
+ * trim_array 
+ * 
+ * @param array $pArray 
+ * @access public
+ */
 function trim_array( &$pArray ) {
 	if( is_array( $pArray ) ) {
 		foreach( array_keys( $pArray ) as $key ) {
@@ -456,19 +467,25 @@ function trim_array( &$pArray ) {
 }
 
 
+/**
+ * ordinalize 
+ * 
+ * @param numeric $num Number to append th, st, nd, rd to - only makes sense when languages is english
+ * @access public
+ */
 function ordinalize( $num ) {
 	$ord = '';
 	if( is_numeric( $num ) ) {
-		if ($num >= 11 and $num <= 19) {
-		   $ord = tra( "th" );
-		} elseif ( $num % 10 == 1 ) {
-		   $ord = tra( "st" );
-		} elseif ( $num % 10 == 2 ) {
-		   $ord = tra( "nd" );
-		} elseif ( $num % 10 == 3 ) {
-		   $ord = tra( "rd" );
+		if( $num >= 11 and $num <= 19 ) {
+			$ord = tra( "th" );
+		} elseif( $num % 10 == 1 ) {
+			$ord = tra( "st" );
+		} elseif( $num % 10 == 2 ) {
+			$ord = tra( "nd" );
+		} elseif( $num % 10 == 3 ) {
+			$ord = tra( "rd" );
 		} else {
-		   $ord = tra( "th" );
+			$ord = tra( "th" );
 		}
 	}
 
@@ -554,7 +571,26 @@ if( !function_exists( 'file_get_contents' ) ) {
 
 }
 
+// === installError
+/**
+* If an unrecoverable error has occurred, this method should be invoked. script exist occurs
+*
+* @param string $ pMsg error message to be displayed
+* @return none this function will DIE DIE DIE!!!
+* @access public
+*/
+function install_error( $pMsg = null ) {
+	global $gBitDbType;
+	// here we decide where to go. if there are no db settings yet, we go the welcome page.
+	if( isset( $gBitDbType ) ) {
+		$step = 1;
+	} else {
+		$step = 0;
+	}
 
+	header( "Location: http://".$_SERVER['HTTP_HOST'].BIT_ROOT_URL."install/install.php?step=".$step );
+	die;
+}
 
 /**
  * A set of compare functions that can be used in conjunction with usort() type functions
@@ -619,4 +655,33 @@ function compare_changed( $ar1, $ar2 ) {
 function r_compare_changed( $ar1, $ar2 ) {
 	return $ar2["lastChanged"] - $ar1["lastChanged"];
 }
+
+/**
+ * Basic processes timer
+ *
+ * @package kernel
+ */
+class BitTimer {
+	function parseMicro( $micro ) {
+		list( $micro, $sec ) = explode( ' ', microtime() );
+		return $sec + $micro;
+	}
+
+	function start( $timer = 'default' ) {
+		$this->mTimer[$timer] = $this->parseMicro( microtime() );
+	}
+
+	function stop( $timer = 'default' ) {
+		return $this->current( $timer );
+	}
+
+	function elapsed( $timer = 'default' ) {
+		return $this->parseMicro( microtime() ) - $this->mTimer[$timer];
+	}
+}
+
+global $gBitTimer;
+$gBitTimer = new BitTimer();
+$gBitTimer->start();
+
 ?>

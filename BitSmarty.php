@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.16 2007/04/02 18:55:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.17 2007/04/04 14:31:30 squareing Exp $
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -138,13 +138,13 @@ class BitSmarty extends Smarty
 
 	function verifyCompileDir()
 	{
-		global $gBitSystem, $gBitLanguage, $bitdomain;
+		global $gBitSystem, $gBitLanguage, $bitdomain, $gBitThemes;
 		if (!defined("TEMP_PKG_PATH")) {
 			$temp = BIT_ROOT_PATH . "temp/";
 		} else {
 			$temp = TEMP_PKG_PATH;
 		}
-		$style = $gBitSystem->getStyle();
+		$style = $gBitThemes->getStyle();
 		$endPath = "$bitdomain/$style/".$gBitLanguage->mLanguage;
 
 		// Compile directory

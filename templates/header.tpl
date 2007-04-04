@@ -5,7 +5,7 @@
 	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
 
 	{* get custom header files from individual packages *}
-	{foreach from=$gBitSystem->mStyles.headerIncFiles item=file}
+	{foreach from=$gBitThemes->mStyles.headerIncFiles item=file}
 		{include file=$file}
 	{/foreach}
 </head>

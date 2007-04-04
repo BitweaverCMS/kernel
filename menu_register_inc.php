@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.14 2006/10/13 12:44:00 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.15 2007/04/04 14:31:31 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -23,7 +23,7 @@ if( $gBitUser->isAdmin() ) {
 	foreach( array_keys( $gBitSystem->mPackages ) as $package ) {
 		$package = strtolower( $package );
 		$tpl = "bitpackage:$package/menu_".$package."_admin.tpl";
-		if( ($gBitSystem->isPackageActive( $package ) || $package == 'kernel') && @$gBitSmarty->template_exists( $tpl ) ) {
+		if(( $gBitSystem->isPackageActive( $package ) || $package == 'kernel') && @$gBitSmarty->template_exists( $tpl )) {
 			$adminMenu[$package]['tpl'] = $tpl;
 			$adminMenu[$package]['display'] = 'display:'.( empty( $package ) || ( isset( $_COOKIE[$package.'admenu'] ) && ( $_COOKIE[$package.'admenu'] == 'o' ) ) ? 'block;' : 'none;' );
 		}

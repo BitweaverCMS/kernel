@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.92 2007/04/02 18:55:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.93 2007/04/04 14:31:31 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -87,6 +87,7 @@ $gBitLanguage = new BitLanguage();
 require_once( THEMES_PKG_PATH."BitThemes.php" );
 global $gBitThemes;
 $gBitThemes = new BitThemes();
+$gBitSmarty->assign_by_ref( 'gBitThemes', $gBitThemes );
 
 // set various classes global
 global $gBitUser, $gTicket, $userlib, $gBitDbType;
@@ -135,7 +136,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	// setStyle first, in case package decides it wants to reset the style in it's own <package>/bit_setup_inc.php
-	$theme = $gBitSystem->getStyle();
+	$theme = $gBitThemes->getStyle();
 	$theme = !empty( $theme ) ? $theme : DEFAULT_THEME;
 	// users_themes='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
 	if( $gBitSystem->getConfig('users_themes') == 'y' ) {
@@ -148,7 +149,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 			$theme = $_COOKIE['tiki-theme'];
 		}
 	}
-	$gBitSystem->setStyle( $theme );
+	$gBitThemes->setStyle( $theme );
 
 	// this will register and set up the dropdown menus and the application menus in modules
 	require_once( KERNEL_PKG_PATH.'menu_register_inc.php' );

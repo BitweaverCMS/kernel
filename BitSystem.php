@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.122 2007/04/04 07:48:59 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.123 2007/04/04 14:31:31 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -404,22 +404,10 @@ class BitSystem extends BitBase {
 	* @access private
 	*/
 	function preDisplay( $pMid ) {
-		global $gCenterPieces, $fHomepage, $gBitSmarty, $gBitUser, $gBitThemes, $gPreviewStyle, $gQueryUser, $gQueryUserId;
-		// setup our theme style and check if a preview theme has been picked
-		if( $gPreviewStyle !== FALSE ) {
-			$this->setStyle( $gPreviewStyle );
-		}
-		if( empty( $this->mStyles['styleSheet'] ) ) {
-			$this->mStyles['styleSheet'] = $this->getStyleCss();
-		}
-		$this->mStyles['headerIncFiles'] = $this->getTplIncludeFiles("header_inc.tpl");
-		$this->mStyles['footerIncFiles'] = $this->getTplIncludeFiles("footer_inc.tpl");
-		$this->mStyles['browserStyleSheet'] = $this->getBrowserStyleCss();
-		$this->mStyles['customStyleSheet'] = $this->getCustomStyleCss();
-		//$this->mStyles['altStyleSheets'] = $this->getAltStyleCss();
-		define( 'THEMES_STYLE_URL', $this->getStyleUrl() );
+		global $gCenterPieces, $gBitSmarty, $gBitThemes;
 		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'jscalendar/' );
 
+		$gBitThemes->loadStyle();
 		$gBitThemes->loadLayout();
 
 		// check to see if we are working with a dynamic center area
@@ -454,38 +442,6 @@ class BitSystem extends BitBase {
 			... and a similar issue can happen for very long display times.
 		*/
 		session_write_close();
-	}
-
-	// === getTplIncludeFiles
-	/**
-	* scan packages for <pkg>/templates/header_inc.tpl or footer_inc.tpl files
-	*
-	* @param none $
-	* @access private
-	* @return array of paths to existing header_inc.tpl files
-	*/
-	function getTplIncludeFiles( $pFilename ) {
-		// these package templates will be included last
-		$prepend = array( 'kernel' );
-		$append = array( 'themes' );
-		$anti = $mid = $post = array();
-		foreach( $this->mPackages as $package => $info ) {
-			if( !empty( $info['path'] ) ) {
-				$file = $info['path'].'templates/'.$pFilename;
-				$out = "bitpackage:{$package}/{$pFilename}";
-				if( is_readable( $file ) ) {
-					if( in_array( $package, $prepend ) ) {
-						$anti[] = $out;
-					} elseif( in_array( $package, $append ) ) {
-						$post[] = $out;
-					} else {
-						$mid[] = $out;
-					}
-				}
-			}
-		}
-		$ret = array_merge( $anti, $mid, $post );
-		return $ret;
 	}
 
 	// === postDisplay
@@ -1327,35 +1283,6 @@ class BitSystem extends BitBase {
 	{
 		array_push( $this->mOnload, $pJavscript );
 	}
-	// === getStyle
-	/**
-	* figure out the current style
-	*
-	* @param string $ pScanFile file to be looked for
-	* @return none
-	* @access public
-	*/
-	function getStyle() {
-		global $gBitUser;
-		if( empty( $this->mStyle )) {
-			$this->mStyle = $this->getConfig( 'style' );
-		}
-		return $this->mStyle;
-	}
-	// === setStyle
-	/**
-	* figure out the current style
-	*
-	* @param string $ pScanFile file to be looked for
-	* @return none
-	* @access public
-	*/
-	function setStyle($pStyle)
-	{
-		global $gBitSmarty;
-		$this->mStyle = $pStyle;
-		$gBitSmarty->assign( 'style', $pStyle );
-	}
 	// === setBrowserTitle
 	/**
 	* set the title of the browser
@@ -1383,128 +1310,6 @@ class BitSystem extends BitBase {
 		$gPageTitle = $pTitle;
 		$gBitSmarty->assign('browserTitle', $pTitle);
 		$gBitSmarty->assign('gPageTitle', $pTitle);
-	}
-	// === getStyleCss
-	/**
-	* figure out the current style
-	*
-	* @param string $ pScanFile file to be looked for
-	* @return none
-	* @access public
-	*/
-	function getStyleCss($pStyle = NULL, $pUserId = NULL) {
-		global $gBitUser, $gBitSystem;
-		if( empty( $pStyle ) ) {
-			$pStyle = $this->getStyle();
-		}
-		$ret = '';
-		if( $pStyle == 'custom' ) {
-			// This is a page which uses a user-customized theme
-			// The user who owns the page (whose custom theme is being requested)
-			$homepageUser = new BitUser($pUserId);
-			$homepageUser->load();
-			// Path to the user-customized css file
-			$cssPath = $homepageUser->getStoragePath( 'theme', $homepageUser->mUserId, NULL ).'custom.css';
-			if( file_exists( $cssPath ) ) {
-				$ret = $homepageUser->getStorageURL( 'theme', $homepageUser->mUserId, NULL ).'custom.css';
-			}
-		} else {
-			if( $gBitSystem->getConfig( 'style_variation' ) && is_readable( THEMES_PKG_PATH.'styles/'.$pStyle.'/alternate/'.$gBitSystem->getConfig( 'style_variation' ).'.css' ) ) {
-				$ret = THEMES_PKG_URL.'styles/'.$pStyle.'/alternate/'.$gBitSystem->getConfig( 'style_variation' ).'.css';
-			} elseif( is_readable( THEMES_PKG_PATH.'styles/'.$pStyle.'/'.$pStyle.'.css' ) ) {
-				$ret = THEMES_PKG_URL.'styles/'.$pStyle.'/'.$pStyle.'.css';
-			}
-		}
-		return $ret;
-	}
-	// === getCustomStyleCss
-	/**
-	* get the users custom.css file if there is one
-	*
-	* @param pStyle style the custom.css is part of
-	* @return path to custom.css file
-	* @access public
-	*/
-	function getCustomStyleCss( $pStyle = null ) {
-		$ret = null;
-		if( empty( $pStyle ) ) {
-			$pStyle = $this->getStyle();
-		}
-		return $ret;
-	}
-
-	// === getBrowserStyleCss
-	/**
-	* get browser specific css file
-	*
-	* @param none
-	* @return path to browser specific css file
-	* @access public
-	*/
-	function getBrowserStyleCss() {
-		global $gSniffer;
-		if( file_exists( $this->getStylePath().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css' ) ) {
-			$ret = $this->getStyleUrl().$this->getStyle().'_'.$gSniffer->property( 'browser' ).'.css';
-		}
-		return !empty( $ret ) ? $ret : NULL;
-	}
-
-	// === getAltStyleCss
-	/**
-	* get alternate style sheets
-	*
-	* @param none
-	* @return array of style sheets with name of stylesheet as array
-	* @access public
-	*/
-	function getAltStyleCss() {
-		$ret = NULL;
-		$alt_path = $this->getStylePath().'alternate/';
-		$alt_url = $this->getStyleUrl().'alternate/';
-		if( is_dir( $alt_path ) && $handle = opendir( $alt_path ) ) {
-			while( FALSE !== ( $file = readdir( $handle ) ) ) {
-				if( ( $file != '.' || $file != '..' ) && preg_match( "/\.css$/i", $file ) ) {
-					$p[0] = "/_/";
-					$r[0] = " ";
-					$p[1] = "/\.css$/i";
-					$r[1] = "";
-					$name = preg_replace( $p, $r, $file );
-					$ret[$name] = $alt_url.$file;
-				}
-			}
-			closedir( $handle );
-		}
-		return $ret;
-	}
-
-	// === getStyleUrl
-	/**
-	* figure out the current style URL
-	*
-	* @param string $ pScanFile file to be looked for
-	* @return none
-	* @access public
-	*/
-	function getStyleUrl($pStyle = null) {
-		if (empty($pStyle)) {
-			$pStyle = $this->getStyle();
-		}
-		return THEMES_PKG_URL . 'styles/' . $pStyle . '/';
-	}
-
-	// === getStylePath
-	/**
-	* figure out the current style URL
-	*
-	* @param string $ pScanFile file to be looked for
-	* @return none
-	* @access public
-	*/
-	function getStylePath($pStyle = null) {
-		if (empty($pStyle)) {
-			$pStyle = $this->getStyle();
-		}
-		return THEMES_PKG_PATH . 'styles/' . $pStyle . '/';
 	}
 
 	/*static*/
@@ -2097,6 +1902,52 @@ class BitSystem extends BitBase {
 			$html = $fmt->format( $z, $page1 );
 		}
 		return $html;
+	}
+
+
+
+
+
+	// ==================== deprecated methods - will be removed soon ====================
+	function getTplIncludeFiles( $pFilename ) {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return $gBitThemes->getTplIncludeFiles( $pFilename );
+	}
+	function getStyle() {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return $gBitThemes->getStyle( $pStyle );
+	}
+	function setStyle( $pStyle ) {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return $gBitThemes->setStyle( $pStyle );
+	}
+	function getStyleCss( $pStyle = NULL, $pUserId = NULL ) {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return $gBitThemes->getStyleCss( $pStyle, $pUserId );
+	}
+	function getCustomStyleCss( $pStyle = null ) {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return $gBitThemes->getCustomStyleCss( $pStyle );
+	}
+	function getBrowserStyleCss() {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return $gBitThemes->getBrowserStyleCss();
+	}
+	function getStyleUrl( $pStyle = NULL ) {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return $gBitThemes->getStyleUrl( $pStyle );
+	}
+	function getStylePath( $pStyle = NULL ) {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return $gBitThemes->getStylePath( $pStyle );
 	}
 }
 ?>

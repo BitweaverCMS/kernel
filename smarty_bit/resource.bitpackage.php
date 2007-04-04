@@ -80,7 +80,7 @@ function smarty_resource_bitpackage_trusted( $pTplName, &$gBitSmarty ) {
 }
 
 function smarty_get_bitweaver_resources( $pTplName ) {
-	global $gBitSystem;
+	global $gBitSystem, $gBitThemes;
 
 	$path = explode( '/', $pTplName );
 	$package = array_shift( $path );
@@ -97,8 +97,8 @@ function smarty_get_bitweaver_resources( $pTplName ) {
 	$ret['force_simple']     = THEMES_PKG_PATH."/force/$template";
 
 	// look in themes/style/<stylename>/
-	$ret['override']         = $gBitSystem->getStylePath()."/$package/$template";
-	$ret['override_simple']  = $gBitSystem->getStylePath().$template;
+	$ret['override']         = $gBitThemes->getStylePath()."/$package/$template";
+	$ret['override_simple']  = $gBitThemes->getStylePath().$template;
 
 	// look for default package template
 	// This needs to use the _PKG_PATH constant since the temp dir isn't defined in mPackages

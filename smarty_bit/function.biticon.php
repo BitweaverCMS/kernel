@@ -116,7 +116,7 @@ function biticon_output( $pParams, $pFile ) {
  * @return final <img>
  */
 function smarty_function_biticon( $pParams, &$gBitSmarty ) {
-	global $gBitSystem;
+	global $gBitSystem, $gBitThemes;
 
 	if( !isset( $pParams['ipath'] ) ) {
 		$pParams['ipath'] = '';
@@ -163,8 +163,8 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 	}
 
 	//if we have site styles, look there
-	if( FALSE !== ( $matchFile = biticon_first_match( $gBitSystem->getStylePath().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'],$pParams['iname'] ) ) ) {
-		return biticon_output( $pParams, $gBitSystem->getStyleUrl().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'].$matchFile );
+	if( FALSE !== ( $matchFile = biticon_first_match( $gBitThemes->getStylePath().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'],$pParams['iname'] ) ) ) {
+		return biticon_output( $pParams, $gBitThemes->getStyleUrl().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'].$matchFile );
 	}
 
 	//Well, then lets look in the package location

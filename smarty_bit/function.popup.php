@@ -22,6 +22,7 @@ function smarty_function_popup($params, &$gBitSmarty) {
 	$append = '';
 	foreach ($params as $_key=>$_value) {
 		switch ($_key) {
+			case 'target':
 			case 'text':
 			case 'trigger':
 				$$_key = (string)$_value;
@@ -90,15 +91,24 @@ function smarty_function_popup($params, &$gBitSmarty) {
 		}
 	}
 
-	if (empty($text) && !isset($inarray) && empty($function)) {
-		$gBitSmarty->trigger_error("overlib: attribute 'text' or 'inarray' or 'function' required");
+	if (empty($target) && empty($text) && !isset($inarray) && empty($function)) {
+		$gBitSmarty->trigger_error("overlib: attribute 'target' or 'text' or 'inarray' or 'function' required");
 		return false;
+	}
+
+	if (!empty($target) && !empty($text)) {
+		$gBitSmarty->trigger_error("overlib: attribute 'target' and 'text' no allowed in same popup.");
 	}
 
 	if (empty($trigger)) { $trigger = "onmouseover"; }
 
-	$retval = $trigger . '="return overlib(\''.preg_replace(array("!'!","![\r\n]!"),array("\'",'\r'),$text).'\'';
-	$retval .= $append . ');" onmouseout="nd();"';
+	if (!empty($text)) {
+		$retval = $trigger . '="return overlib(\''.preg_replace(array("!'!","![\r\n]!"),array("\'",'\r'),$text).'\'';
+		$retval .= $append . ');" onmouseout="nd();"';
+	}
+	else {
+		$retval = $trigger . '="of=function(t){overlib(t'.$append.');};ajax_get_and_call(this,of,\''.$target.'\');" onmouseout="nd();"';
+	}
 
 	return $retval;
 }

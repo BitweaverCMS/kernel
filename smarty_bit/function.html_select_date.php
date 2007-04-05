@@ -32,6 +32,7 @@
  */
 function smarty_function_html_select_date($params, &$gBitSmarty)
 {
+    global $gBitSystem;
     require_once $gBitSmarty->_get_plugin_filepath('shared','make_timestamp');
     require_once $gBitSmarty->_get_plugin_filepath('function','html_options');
     /* Default values. */
@@ -75,12 +76,14 @@ function smarty_function_html_select_date($params, &$gBitSmarty)
 
 
     extract($params);
-
   	// If $time is not in format yyyy-mm-dd
   	if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $time)) {
   		// then $time is empty or unix timestamp or mysql timestamp
   		// using smarty_make_timestamp to get an unix timestamp and
   		// strftime to make yyyy-mm-dd
+	  	// Just in case the offset moves us into another day.
+		$time = smarty_make_timestamp($time);
+	  	$time = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC($time);
   		$time = strftime('%Y-%m-%d', smarty_make_timestamp($time));
   	}
   	// Now split this in pieces, which later can be used to set the select

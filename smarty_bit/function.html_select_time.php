@@ -21,6 +21,7 @@
  */
 function smarty_function_html_select_time($params, &$gBitSmarty)
 {
+    global $gBitSystem;
     require_once $gBitSmarty->_get_plugin_filepath('shared','make_timestamp');
     require_once $gBitSmarty->_get_plugin_filepath('function','html_options');
     /* Default values. */
@@ -47,12 +48,13 @@ function smarty_function_html_select_time($params, &$gBitSmarty)
     extract($params);
 
     $time = smarty_make_timestamp($time);
-
+    $disptime = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC( $time );
     $html_result = '';
 
     if ($display_hours) {
         $hours       = $use_24_hours ? range(0, 23) : range(1, 12);
         $hour_fmt = $use_24_hours ? '%H' : '%I';
+	$selected = $gBitSystem->mServerTimestamp->strftime($hour_fmt, $disptime, TRUE);
         for ($i = 0, $for_max = count($hours); $i < $for_max; $i++)
             $hours[$i] = sprintf('%02d', $hours[$i]);
         $html_result .= '<select name=';
@@ -70,7 +72,7 @@ function smarty_function_html_select_time($params, &$gBitSmarty)
         $html_result .= '>'."\n";
         $html_result .= smarty_function_html_options(array('output'          => $hours,
                                                            'values'          => $hours,
-                                                           'selected'      => strftime($hour_fmt, $time),
+                                                           'selected'      => $selected,
                                                            'print_result' => false),
                                                      $gBitSmarty);
         $html_result .= "</select>\n";
@@ -80,7 +82,7 @@ function smarty_function_html_select_time($params, &$gBitSmarty)
         $all_minutes = range(0, 59);
         for ($i = 0, $for_max = count($all_minutes); $i < $for_max; $i+= $minute_interval)
             $minutes[] = sprintf('%02d', $all_minutes[$i]);
-        $selected = intval(floor(strftime('%M', $time) / $minute_interval) * $minute_interval);
+        $selected = intval(floor($gBitSystem->mServerTimestamp->strftime('%M', $disptime, TRUE) / $minute_interval) * $minute_interval);
         $html_result .= '<select name=';
         if (null !== $field_array) {
             $html_result .= '"' . $field_array . '[' . $prefix . 'Minute]"';
@@ -107,7 +109,7 @@ function smarty_function_html_select_time($params, &$gBitSmarty)
         $all_seconds = range(0, 59);
         for ($i = 0, $for_max = count($all_seconds); $i < $for_max; $i+= $second_interval)
             $seconds[] = sprintf('%02d', $all_seconds[$i]);
-        $selected = intval(floor(strftime('%S', $time) / $second_interval) * $second_interval);
+        $selected = intval(floor($gBitSystem->mServerTimestamp->strftime('%S', $disptime, TRUE) / $second_interval) * $second_interval);
         $html_result .= '<select name=';
         if (null !== $field_array) {
             $html_result .= '"' . $field_array . '[' . $prefix . 'Second]"';
@@ -133,6 +135,7 @@ function smarty_function_html_select_time($params, &$gBitSmarty)
 
     if ($display_meridian && !$use_24_hours) {
         $html_result .= '<select name=';
+	$selected = strtolower($gBitSystem->mServerTimestamp->strftime('%p', $disptime, TRUE));
         if (null !== $field_array) {
             $html_result .= '"' . $field_array . '[' . $prefix . 'Meridian]"';
         } else {
@@ -149,7 +152,7 @@ function smarty_function_html_select_time($params, &$gBitSmarty)
         
         $html_result .= smarty_function_html_options(array('output'          => array('AM', 'PM'),
                                                            'values'          => array('am', 'pm'),
-                                                           'selected'      => strtolower(strftime('%p', $time)),
+                                                           'selected'      => $selected,
                                                            'print_result' => false),
                                                      $gBitSmarty);
         $html_result .= "</select>\n";

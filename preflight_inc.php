@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.23 2007/04/03 14:28:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/Attic/preflight_inc.php,v 1.24 2007/04/06 14:06:42 nickpalmer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -343,6 +343,23 @@ function encode_email_addresses( $pData ) {
 	}
 
 	return $pData;
+}
+/**
+ * get_include_contents -- handy function for getting the contents of a
+ * php include as a string
+ *
+ * @param $pFile the file to include
+ * @return a string with the results of the file
+ **/
+function get_include_contents($pFile) {
+  if (is_file($pFile)) {
+    ob_start();
+    include $pFile;
+    $contents = ob_get_contents();
+    ob_end_clean();
+    return $contents;
+  }
+  return false;
 }
 
 // --------------- apparently not in use anymore

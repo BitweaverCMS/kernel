@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.123 2007/04/04 14:31:31 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.124 2007/04/06 14:06:42 nickpalmer Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -84,6 +84,9 @@ class BitSystem extends BitBase {
 
 	// The name of the package that is currently being processed
 	var $mPackageFileName;
+
+	// Display full page or just contents?
+	var $mDisplayOnlyContent;
 
 	// === BitSystem constructor
 	/**
@@ -369,6 +372,16 @@ class BitSystem extends BitBase {
 
 	// === display
 	/**
+	 * Tell bitsystem to only render the 'mid' when doing a display.
+	 *
+	 * @param $pOnlyRender flag defaulting to true
+	 * @access public
+	 */
+	function onlyRenderContent($pOnlyRender = true) {
+		$this->mDisplayOnlyContent = $pOnlyRender;
+	}
+
+	/**
 	* Display the main page template
 	*
 	* @param  $mid the name of the template for the page content
@@ -377,6 +390,12 @@ class BitSystem extends BitBase {
 	function display( $pMid, $pBrowserTitle=NULL ) {
 		global $gBitSmarty;
 		$gBitSmarty->verifyCompileDir();
+
+		if ($this->mDisplayOnlyContent) {
+			$gBitSmarty->assign_by_ref('gBitSystem', $this);
+			$gBitSmarty->display($pMid);
+			return;
+		}
 
 		header( 'Content-Type: text/html; charset=utf-8' );
 		if( !empty( $pBrowserTitle ) ) {

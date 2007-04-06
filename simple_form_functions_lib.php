@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.9 2006/03/01 20:16:13 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.10 2007/04/06 11:48:56 nickpalmer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -17,6 +17,18 @@ function simple_set_toggle( $pFeature, $pPackageName = NULL ) {
 		$_REQUEST[$pFeature] = $_REQUEST[$pFeature][0];
 	}
 	toggle_preference( $pFeature, ( isset( $_REQUEST[$pFeature] ) ? $_REQUEST[$pFeature] : NULL ), $pPackageName );
+}
+
+/**
+ * Store or update a boolean value in the database - automatically collects data from $_REQUEST[$pArray] Handy for an array from html_checkboxes when options is used.
+ * @param $pArray name of the array to check for features in
+ * @param $pFeatures feature to check
+ * @param $pPackageName name of the package the feature belongs to
+ * @return none
+ */
+function simple_set_toggle_array( $pArray, $pFeature, $pPackageName = NULL ) {
+  	$flipped = array_flip($_REQUEST[$pArray]);
+	toggle_preference( $pFeature, ( isset( $flipped[$pFeature] ) ? 'y' : NULL ), $pPackageName );
 }
 
 /**

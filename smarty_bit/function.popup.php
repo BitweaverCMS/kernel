@@ -18,6 +18,8 @@
  * @param Smarty
  * @return string
  */
+require_once(LIBERTY_PKG_PATH."LibertyContent.php");
+
 function smarty_function_popup($params, &$gBitSmarty) {
 	$append = '';
 	foreach ($params as $_key=>$_value) {
@@ -25,6 +27,7 @@ function smarty_function_popup($params, &$gBitSmarty) {
 			case 'target':
 			case 'text':
 			case 'trigger':
+			case 'content_id':
 				$$_key = (string)$_value;
 				break;
 
@@ -82,8 +85,11 @@ function smarty_function_popup($params, &$gBitSmarty) {
 			case 'hauto':
 			case 'vauto':
 			case 'mouseoff':
+				if ($_value) $append .= ',' . strtoupper($_key);
+				break;
 			case 'closeclick':
 				if ($_value) $append .= ',' . strtoupper($_key);
+				if ($_value) $target_append = $_key.'=1';
 				break;
 
 			default:
@@ -91,16 +97,29 @@ function smarty_function_popup($params, &$gBitSmarty) {
 		}
 	}
 
-	if (empty($target) && empty($text) && !isset($inarray) && empty($function)) {
+	if (empty($target) && empty($text) && empty($content_id) && !isset($inarray) && empty($function)) {
 		$gBitSmarty->trigger_error("overlib: attribute 'target' or 'text' or 'inarray' or 'function' required");
 		return false;
 	}
 
-	if (!empty($target) && !empty($text)) {
-		$gBitSmarty->trigger_error("overlib: attribute 'target' and 'text' no allowed in same popup.");
+	if ((!empty($target) && !empty($text)) || (!empty($target) && !empty($content_id)) || (!empty($text) && !empty($content_id)) ) {
+		$gBitSmarty->trigger_error("overlib: You may only specify one of 'target', 'text' and 'content_id'..");
 	}
 
 	if (empty($trigger)) { $trigger = "onmouseover"; }
+
+	if (!empty($content_id)) {
+		$target = LibertyContent::getPreviewUrl($content_id);
+	}
+
+	if (!empty($target) && !empty($target_append)) {
+	  if (strstr($target, "?")) {
+	    $target .= "&".$target_append;
+	  }
+	  else {
+	    $target .= "?".$target_append;
+	  }
+	}
 
 	if (!empty($text)) {
 		$retval = $trigger . '="return overlib(\''.preg_replace(array("!'!","![\r\n]!"),array("\'",'\r'),$text).'\'';

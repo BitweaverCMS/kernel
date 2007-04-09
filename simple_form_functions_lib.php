@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.10 2007/04/06 11:48:56 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.11 2007/04/09 01:41:18 nickpalmer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -27,8 +27,10 @@ function simple_set_toggle( $pFeature, $pPackageName = NULL ) {
  * @return none
  */
 function simple_set_toggle_array( $pArray, $pFeature, $pPackageName = NULL ) {
-  	$flipped = array_flip($_REQUEST[$pArray]);
-	toggle_preference( $pFeature, ( isset( $flipped[$pFeature] ) ? 'y' : NULL ), $pPackageName );
+	if (!empty($_REQUEST[$pArray]) && is_array($_REQUEST[$pArray])) {
+		$flipped = array_flip($_REQUEST[$pArray]);
+		toggle_preference( $pFeature, ( isset( $flipped[$pFeature] ) ? 'y' : NULL ), $pPackageName );
+	}
 }
 
 /**

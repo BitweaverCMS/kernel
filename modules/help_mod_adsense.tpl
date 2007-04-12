@@ -1,4 +1,4 @@
-{tr}<strong>Summary</strong>: Display an Google adsense block<br>Note that the client parameter is required and the liberty adsense data plugin must be active for this module to work.{/tr}<br />
+{tr}<strong>Summary</strong>: Display an Google adsense block<br />Note that the client parameter is required and the liberty adsense data plugin must be active for this module to work.{/tr}<br />
 <table class="data">
 	<tr>
 		<th style="width:20%;">{tr}Parameter{/tr}</th>

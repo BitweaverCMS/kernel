@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.35 2007/04/04 07:48:59 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.36 2007/04/15 09:53:49 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -310,51 +310,74 @@ function unlink_r( $pPath, $pFollowLinks = FALSE ) {
 }
 
 /**
- * tp_http_request 
+ * Fetch the contents of a file on a remote host
  * 
- * @param array $pUrl 
+ * @param array $pUrl url to file to fetch
  * @access public
- * @return TRUE on success, FALSE on failure
+ * @return FALSE on failure, contents of file on success
  */
-function tp_http_request( $pUrl ) {
-	global $site_use_proxy,$site_proxy_host,$site_proxy_port;
+function bit_http_request( $pUrl ) {
+	global $gBitSystem;
+	$ret = FALSE;
 
-	$data = FALSE;
+	if( !empty( $pUrl )) {
+		$pUrl = trim( $pUrl );
 
-	// test url :
-	$pUrl = trim( $pUrl );
-	if (!preg_match("/^[-_a-zA-Z0-9:\/\.\?&;=\+]*$/",$pUrl)) {
-		return FALSE;
-	}
-	// rewrite url if sloppy # added a case for https urls
-	if ( (substr($pUrl,0,7) <> "http://") && (substr($pUrl,0,8) <> "https://") ) {
-		$pUrl = "http://" . $pUrl;
-	}
-	if (substr_count($pUrl, "/") < 3) {
-		$pUrl .= "/";
-	}
-
-	if( function_exists( 'curl_init' ) ) {
-		$curl_obj = curl_init();
-		curl_setopt($curl_obj, CURLOPT_URL, $pUrl);
-		curl_setopt($curl_obj, CURLOPT_HEADER, 0);
-		curl_setopt($curl_obj, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
-		curl_setopt($curl_obj, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt($curl_obj, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($curl_obj, CURLOPT_TIMEOUT, 5);
-
-		// Proxy settings
-		if ($site_use_proxy == 'y') {
-			curl_setopt($curl_obj, CURLOPT_PROXY, $site_proxy_host);
-			curl_setopt($curl_obj, CURLOPT_PROXYPORT, $site_proxy_port);
-			curl_setopt($curl_obj, CURLOPT_HTTPPROXYTUNNEL, 1);
+		// rewrite url if sloppy # added a case for https urls
+		if( !preg_match( "!^https?://!", $pUrl )) {
+			$pUrl = "http://".$pUrl;
 		}
 
-		$data = curl_exec($curl_obj);
-		curl_close($curl_obj);
+		if( !preg_match("/^[-_a-zA-Z0-9:\/\.\?&;=\+]*$/", $pUrl )) {
+			return FALSE;
+		}
+
+		// try using curl first as it allows the use of a proxy
+		if( function_exists( 'curl_init' )) {
+			$curl = curl_init();
+			curl_setopt( $curl, CURLOPT_URL, $pUrl );
+			curl_setopt( $curl, CURLOPT_HEADER, 0 );
+			curl_setopt( $curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT'] );
+			curl_setopt( $curl, CURLOPT_FOLLOWLOCATION, 1 );
+			curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+			curl_setopt( $curl, CURLOPT_TIMEOUT, 5 );
+
+			// Proxy settings
+			if( $gBitSystem->isFeatureActive( 'site_use_proxy' )) {
+				curl_setopt( $curl, CURLOPT_PROXY, $gBitSystem->getConfig( 'site_proxy_host' ));
+				curl_setopt( $curl, CURLOPT_PROXYPORT, $gBitSystem->getConfig( 'site_proxy_port' ));
+				curl_setopt( $curl, CURLOPT_HTTPPROXYTUNNEL, 1);
+			}
+
+			$ret = curl_exec( $curl );
+			curl_close( $curl );
+		} else {
+			// try using fsock now
+			$parsed = parse_url( $pUrl );
+			if( $fsock = @fsockopen( $parsed['host'], 80, $error['number'], $error['string'], 5 ) ) {
+				@fwrite( $fsock, "GET {$parsed['path']} HTTP/1.1\r\n" );
+				@fwrite( $fsock, "HOST: {$parsed['host']}\r\n" );
+				@fwrite( $fsock, "Connection: close\r\n\r\n" );
+
+				$get_info = FALSE;
+				while( !@feof( $fsock ) ) {
+					if( $get_info ) {
+						$ret .= @fread( $fsock, 1024 );
+					} else {
+						if( @fgets( $fsock, 1024 ) == "\r\n" ) {
+							$get_info = TRUE;
+						}
+					}
+				}
+				@fclose( $fsock );
+				if( !empty( $error['string'] )) {
+					return FALSE;
+				}
+			}
+		}
 	}
 
-	return $data;
+	return $ret;
 }
 
 /**

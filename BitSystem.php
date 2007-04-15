@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.124 2007/04/06 14:06:42 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.125 2007/04/15 09:53:49 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1664,7 +1664,7 @@ class BitSystem extends BitBase {
 		where `cache_id`=?";
 
 		$url = $this->mDb->getOne($query, array( $cache_id ) );
-		$data = tp_http_request($url);
+		$data = bit_http_request($url);
 		$refresh = $gBitSystem->getUTCTime();
 		$query = "update `".BIT_DB_PREFIX."liberty_link_cache`
 		set `data`=?, `refresh`=?
@@ -1799,41 +1799,6 @@ class BitSystem extends BitBase {
 		return $this->mServerTimestamp->strftime( $this->get_long_datetime_format(), $pTimestamp, $pUser );
 	}
 
-	/**
-	 * Fetch the contents of a file on a remote host
-	 * 
-	 * @param array $pHost Host
-	 * @param array $pFile path to file on the remote host including leading slash
-	 * @access public
-	 * @return TRUE on success, FALSE on failure
-	 */
-	function fetchRemoteFile( $pHost, $pFile ) {
-		$ret = '';
-		if( $fsock = @fsockopen( $pHost, 80, $error['number'], $error['string'], 5 ) ) {
-			@fwrite( $fsock, "GET $pFile HTTP/1.1\r\n" );
-			@fwrite( $fsock, "HOST: $pHost\r\n" );
-			@fwrite( $fsock, "Connection: close\r\n\r\n" );
-
-			$get_info = FALSE;
-			while( !@feof( $fsock ) ) {
-				if( $get_info ) {
-					$ret .= @fread( $fsock, 1024 );
-				} else {
-					if( @fgets( $fsock, 1024 ) == "\r\n" ) {
-						$get_info = TRUE;
-					}
-				}
-			}
-			@fclose( $fsock );
-		}
-
-		if( empty( $error['string'] ) ) {
-			return $ret;
-		} else {
-			return FALSE;
-		}
-	}
-
 	// Check for new version
 	// returns an array with information on bitweaver version
 	function checkBitVersion() {
@@ -1844,10 +1809,10 @@ class BitSystem extends BitBase {
 		$error['string'] = $data = '';
 
 		// cache the bitversion.txt file locally and update only once a day
-		if( !is_file( TEMP_PKG_PATH.'bitversion.txt' ) || ( time() - filemtime( TEMP_PKG_PATH.'bitversion.txt' ) ) > 86400 ) {
-			if( $h = fopen( TEMP_PKG_PATH.'bitversion.txt', 'w' ) ) {
-				$data = BitSystem::fetchRemoteFile( 'www.bitweaver.org', '/bitversion.txt' );
-				if( !preg_match( "/not found/i", $data ) ) {
+		if( !is_file( TEMP_PKG_PATH.'bitversion.txt' ) || ( time() - filemtime( TEMP_PKG_PATH.'bitversion.txt' )) > 86400 ) {
+			if( $h = fopen( TEMP_PKG_PATH.'bitversion.txt', 'w' )) {
+				$data = bit_http_request( 'http://www.bitweaver.org/bitversion.txt' );
+				if( !preg_match( "/not found/i", $data )) {
 					fwrite( $h, $data );
 					fclose( $h );
 				}

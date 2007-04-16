@@ -4,9 +4,13 @@ function smarty_function_required( $pParams, &$gBitSmarty ) {
 	$biticon = array(
 		'ipackage' => 'icons',
 		'iname'    => 'emblem-important',
-		'iforce'   => 'icon',
 		'iexplain' => 'Required',
 	);
-	echo smarty_function_biticon( $biticon, $gBitSmarty );
+	$ret = smarty_function_biticon( $biticon, $gBitSmarty );
+
+	if( !empty( $pParams['legend'] )) {
+		$ret = "<p>$ret ".tra( "Items marked with this symbol are required." )."</p>";
+	}
+	return $ret;
 }
 ?>

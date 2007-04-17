@@ -12,6 +12,9 @@
 	*   hash=fooHash is a short cut to specifying each parameter by hand
 */
 function smarty_function_displayname($params, &$gBitSmarty) {
+	$nolink = ( empty( $params['nolink'] ));
+	unset( $params['nolink'] );
+
 	if( !empty( $params['hash'] ) ) {
 		$hash = $params['hash'];
 	} elseif( !empty( $params ) ) {
@@ -40,7 +43,7 @@ function smarty_function_displayname($params, &$gBitSmarty) {
 			$hash = $user->mInfo;
 		}
 	}
-	return( BitUser::getDisplayName( empty( $params['nolink'] ), $hash ) );
+	return( BitUser::getDisplayName( $nolink, $hash ) );
 }
 
 

@@ -9,7 +9,7 @@ function smarty_function_required( $pParams, &$gBitSmarty ) {
 	$ret = smarty_function_biticon( $biticon, $gBitSmarty );
 
 	if( !empty( $pParams['legend'] )) {
-		$ret = "<p>$ret ".tra( "Items marked with this symbol are required." )."</p>";
+		$ret = "<p>$ret ".tra( "Elements marked with this symbol are required." )."</p>";
 	}
 	return $ret;
 }

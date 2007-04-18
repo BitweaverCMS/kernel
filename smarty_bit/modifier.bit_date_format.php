@@ -24,6 +24,10 @@ require_once $gBitSmarty->_get_plugin_filepath('shared','make_timestamp');
 function smarty_modifier_bit_date_format( $pString, $format = "%b %e, %Y", $pTraFormat = "%b %e, %Y" ) {
 	global $gBitSystem, $user, $gBitLanguage;
 
+	if( empty( $pString )) {
+		return '';
+	}
+
 	// we translate the entire date format string for total control
 	if( $gBitSystem->getConfig( "language", "en" ) != $gBitLanguage->mLanguage ) {
 		$format = tra( $pTraFormat );
@@ -36,7 +40,6 @@ function smarty_modifier_bit_date_format( $pString, $format = "%b %e, %Y", $pTra
 	}
 
 	$disptime = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC( $pString );
-
 	return $gBitSystem->mServerTimestamp->strftime( $format, $disptime, TRUE );
 }
 ?>

@@ -154,6 +154,9 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		// if we want to display an icon instead of text, do that
 		if( isset( $hash['ibiticon'] ) ) {
 			$tmp = explode( '/', $hash['ibiticon'] );
+			if( !empty( $tmp[2] )) {
+				$tmp[1] .= "/".$tmp[2];
+			}
 			$ibiticon = array(
 				'ipackage' => $tmp[0],
 				'iname' => $tmp[1],

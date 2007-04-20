@@ -16,6 +16,9 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 	if (empty($pParams['cols'])) {
 		$pParams['cols'] = (empty($_COOKIE['cols']) ? $gBitSystem->getConfig('liberty_textarea_width', 35) : $_COOKIE['rows']);
 	}
+	if (empty($pParams['id'])) {
+		$pParams['id'] = LIBERTY_TEXT_AREA;
+	}
 	foreach ($pParams as $_key=>$_value) {
 		switch ($_key) {
 		case 'name':

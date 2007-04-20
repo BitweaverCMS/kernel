@@ -16,7 +16,7 @@ function smarty_function_spellchecker( $params, &$gBitSmarty ) {
 	$rows = !empty($params['rows']) ? $params['rows'] : '20';
 
 	if( $gBitSystem->isPackageActive( 'bnspell' ) ) {
-		echo 'title="spellcheck_icons" accesskey="'.BNSPELL_PKG_URL.'spell_checker.php" style="height:'.( !empty( $_COOKIE['rows'] ) ? $_COOKIE['rows'] : $rows ).'em"';
+		echo 'title="spellcheck_icons" accesskey="'.BNSPELL_PKG_URL.'spell_checker.php"';
 	}
 }
 ?>

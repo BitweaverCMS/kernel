@@ -124,6 +124,8 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 
 	if( isset( $pParams['ipackage'] ) ) {
 		$pParams['ipackage'] = strtolower( $pParams['ipackage'] );
+	} else {
+		$pParams['ipackage'] = 'icons';
 	}
 
 	// get out of here as quickly as possible if we've already cached the icon information before

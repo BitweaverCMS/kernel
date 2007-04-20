@@ -7,39 +7,55 @@
  */
 
 function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
-	global $gBitSystem;
+	global $gBitSystem, $gContent;
 	$attributes = '';
 	$style = '';
-	$rows = $gBitSystem->getConfig('liberty_textarea_height', 20);
-	$cols = $gBitSystem->getConfig('liberty_textarea_width', 35);
+	if (empty($pParams['rows'])) {
+		$pParams['rows'] = (empty($_COOKIE['rows']) ? $gBitSystem->getConfig('liberty_textarea_height', 20) : $_COOKIE['rows']);
+	}
+	if (empty($pParams['cols'])) {
+		$pParams['cols'] = (empty($_COOKIE['cols']) ? $gBitSystem->getConfig('liberty_textarea_width', 35) : $_COOKIE['rows']);
+	}
 	foreach ($pParams as $_key=>$_value) {
 		switch ($_key) {
 		case 'name':
 		case 'id':
-			$gBitSmarty->assign("textarea_".$_key, $_value);
-			break;
+		case 'help':
+		case 'noformat':
+		case 'label':
 		case 'cols':
 		case 'rows':
-			$$_key = $_value;
+			$gBitSmarty->assign("textarea_".$_key, $_value);
 			break;
 		case 'style':
 			$style .= $_key;
+			break;
+		case 'gContent':
+			// Trick out gContent
+			$oldContent = $gContent;
+			$gContent = $_value;
+			$gBitSmarty->assign('gContent', $_value);
 			break;
 		default:
 			$attributes .= $_key.'="'.$_value.'"';
 			break;
 		}
 	}
-	$style .= (empty($style) ? '' : ';').'height:'.( !empty( $_COOKIE['rows'] ) ? $_COOKIE['rows'] : $rows ).'em;'.'width:'.(!empty($_COOKIE['cols']) ? $_COOKIE['cols'] : $cols).'em;';
+	$style .= (empty($style) ? '' : ';').'height:'.$pParams['rows'].'em;'.'width:'.$pParams['cols'].'em;';
 	$gBitSmarty->assign('textarea_attributes', $attributes);
 	$gBitSmarty->assign('textarea_data', $pContent);
 	if (!empty($style)) {
 		$gBitSmarty->assign('textarea_style', 'style="'.$style.'"');
 	}
-	$gBitSmarty->assign('textarea_cols', $cols);
-	$gBitSmarty->assign('textarea_rows', $rows);
 
+	$ret = $gBitSmarty->fetch("bitpackage:liberty/edit_textarea.tpl");
 
-	return $gBitSmarty->fetch("bitpackage:liberty/edit_textarea.tpl");
+	// Restore gContent
+	if (isset($oldContent)) {
+		$gContent = $oldContent;
+		$gBitSmarty->assign('gContent', $oldContent);
+	}
+
+	return $ret;
 }
 ?>

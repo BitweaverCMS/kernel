@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.125 2007/04/15 09:53:49 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.126 2007/04/21 14:08:40 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -904,6 +904,17 @@ class BitSystem extends BitBase {
 			// A package is required if _any_ of it's tables are required
 			//$this->mPackages[$pPackage]['required'] = $pRequired | (isset( $this->mPackages[$pPackage]['required'] ) ? $this->mPackages[$pPackage]['required'] : 0 );
 		}
+	}
+
+	/**
+	 * Holds the package version - required by packager - the bitweaver package manager
+	 *
+	 * @return none
+	 * @access public
+	 */
+	function registerPackageVersion( $pPackage, $pVersion ) {
+		$pPackage = strtolower( $pPackage ); // lower case for uniformity
+		$this->mPackages[$pPackage]['version'] = $pVersion;
 	}
 
 	// === registerPackageInfo
@@ -1886,6 +1897,20 @@ class BitSystem extends BitBase {
 			$html = $fmt->format( $z, $page1 );
 		}
 		return $html;
+	}
+
+	function storeVersion( $pPackage, $pVersion ) {
+		global $gBitSystem;
+		if( !empty( $gBitSystem->mPackages[$pPackage] )) {
+			$gBitSystem->storeConfig( "package_".$pPackage."_version", $pVersion, $pPackage );
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	function getVersion( $pPackage, $pDefault = NULL ) {
+		global $gBitSystem;
+		return $gBitSystem->getConfig( "package_".$pPackage."_version", $pDefault );
 	}
 
 

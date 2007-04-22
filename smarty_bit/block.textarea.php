@@ -44,13 +44,17 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 			break;
 		}
 	}
-	$style .= (empty($style) ? '' : ';').'height:'.$pParams['rows'].'em;'.'width:'.$pParams['cols'].'em;';
+	// We control hieght here when bnspell is on so as to be able to not
+	// lose the rest of the style on the textarea.
+	if ($gBitSystem->isPackageActive('bnspell')) {
+		$style .= (empty($style) ? '' : ';').'height:'.$pParams['rows'].'em;';
+	}
 	$gBitSmarty->assign('textarea_attributes', $attributes);
 	$gBitSmarty->assign('textarea_data', $pContent);
 	if (!empty($style)) {
 		$gBitSmarty->assign('textarea_style', 'style="'.$style.'"');
 	}
-
+	
 	$ret = $gBitSmarty->fetch("bitpackage:liberty/edit_textarea.tpl");
 
 	// Restore gContent

@@ -26,8 +26,6 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 		case 'help':
 		case 'noformat':
 		case 'label':
-		case 'cols':
-		case 'rows':
 			$gBitSmarty->assign("textarea_".$_key, $_value);
 			break;
 		case 'style':

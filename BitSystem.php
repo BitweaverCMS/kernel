@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.126 2007/04/21 14:08:40 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.127 2007/04/23 09:36:31 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1038,7 +1038,7 @@ class BitSystem extends BitBase {
 	function fatalError( $pMsg, $pTemplate='error.tpl', $pErrorTitle="Seems there's been a problem." ) {
 		global $gBitSmarty;
 		$gBitSmarty->assign( 'fatalTitle', tra( $pErrorTitle ) );
-		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
+		$gBitSmarty->assign( 'msg', $pMsg );
 		$this->display( $pTemplate );
 		die;
 	}

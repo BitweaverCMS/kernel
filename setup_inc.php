@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.93 2007/04/04 14:31:31 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.94 2007/04/24 07:00:56 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -13,7 +13,8 @@
  */
 
 require_once( BIT_ROOT_PATH.'kernel/config_defaults_inc.php' );
-require_once( KERNEL_PKG_PATH.'preflight_inc.php' );
+require_once( KERNEL_PKG_PATH.'kernel_lib.php' );
+require_once( KERNEL_PKG_PATH.'BitTimer.php' );
 
 // set error reporting
 error_reporting( BIT_PHP_ERROR_REPORTING );

@@ -6,10 +6,11 @@
  */
 
 /**** smarty_function_displayName
-	*	This is a smarty function which will allow different values to be
-	*	output to identify users (real_name, user, user_id) as opposed todo
-	*	only allowing the 'login' to be output.
-	*   hash=fooHash is a short cut to specifying each parameter by hand
+	* This is a smarty function which will allow different values to be
+	* output to identify users (real_name, user, user_id) as opposed todo
+	* only allowing the 'login' to be output.
+	* hash=fooHash is a short cut to specifying each parameter by hand
+	* usage: {displayname user= user_id= real_name= link_title=}
 */
 function smarty_function_displayname($params, &$gBitSmarty) {
 	$nolink = ( empty( $params['nolink'] ));
@@ -43,6 +44,12 @@ function smarty_function_displayname($params, &$gBitSmarty) {
 			$hash = $user->mInfo;
 		}
 	}
+	
+	// if link_title not provided, use default
+	if( empty( $hash['link_title'] ) ) {
+		$hash['link_title'] = tra( 'Visit the userpage of' ).': '.$displayName;
+	}
+	
 	return( BitUser::getDisplayName( $nolink, $hash ) );
 }
 

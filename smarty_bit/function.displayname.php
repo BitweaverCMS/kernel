@@ -12,46 +12,36 @@
 	* hash=fooHash is a short cut to specifying each parameter by hand
 	* usage: {displayname user= user_id= real_name= link_title=}
 */
-function smarty_function_displayname($params, &$gBitSmarty) {
-	$nolink = ( empty( $params['nolink'] ));
-	unset( $params['nolink'] );
-
-	if( !empty( $params['hash'] ) ) {
-		$hash = $params['hash'];
-	} elseif( !empty( $params ) ) {
+function smarty_function_displayname( $pParams, &$gBitSmarty ) {
+	if( !empty( $pParams['hash'] )) {
+		$hash = array_merge( $pParams, $pParams['hash'] );
+		unset( $hash['hash'] );
+	} elseif( !empty( $pParams['user_id'] ) || !empty( $pParams['login'] ) || !empty( $pParams['user'] ) || !empty( $pParams['real_name'] )) {
 		// maybe params were passed in separately
-		$hash = $params;
+		$hash = $pParams;
 	} else {
 		global $gBitUser;
-		$hash = &$gBitUser->mInfo;
+		$hash = array_merge( $pParams, &$gBitUser->mInfo );
 	}
 
-	$iHomepage = NULL;	// Used to create the URL to the user's homepage
-	if (!(is_array($hash))) {
+	if( !( is_array( $hash ))) {
 		// We were probably just passed the 'login' due to legacy code which has yet to be converted
 		$user = new BitUser();
-		$user->load(TRUE, $hash);
+		$user->load( TRUE, $hash );
 		$hash = $user->mInfo;
-	} elseif (empty($hash['real_name']) && empty($hash['user']) && empty($hash['login']) && empty($hash['email'])) {
-		if (empty($hash['user_id'])) {
+	} elseif( empty( $hash['real_name'] ) && empty( $hash['user'] ) && empty( $hash['login'] ) && empty( $hash['email'] )) {
+		if( empty( $hash['user_id'] )) {
 			// Now we're really in trouble. We don't even have a user_id to work with
 			$displayName = "Unknown";
 		} else {
 			// Maybe we just weren't passed enuf info in $hash. We'll load up a BitUser instance to make sure we get the right display name
-			$user = new BitUser($hash['user_id']);
-			$user->load(TRUE);
+			$user = new BitUser( $hash['user_id'] );
+			$user->load( TRUE );
 			$displayName = $user->mInfo['display_name'];
 			$hash = $user->mInfo;
 		}
 	}
-	
-	// if link_title not provided, use default
-	if( empty( $hash['link_title'] ) ) {
-		$hash['link_title'] = tra( 'Visit the userpage of' ).': '.$displayName;
-	}
-	
-	return( BitUser::getDisplayName( $nolink, $hash ) );
+
+	return( BitUser::getDisplayName( empty( $pParams['nolink'] ), $hash ));
 }
-
-
 ?>

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.38 2007/03/16 06:41:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.39 2007/05/05 06:36:51 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -133,19 +133,19 @@ class BitDb {
 		switch ($this->mType) {
 			case "sybase":
 			case "mssql":
-			$this->mDb->Execute("set quoted_identifier on");
-			break;
+				$this->mDb->Execute("set quoted_identifier on");
+				break;
 			case "mysql":
-			$this->mDb->Execute("set session sql_mode='PIPES_AS_CONCAT'");
-			break;
+				$this->mDb->Execute("set session sql_mode='PIPES_AS_CONCAT'");
+				break;
 			case "postgres":
-			// Do a little prep work for postgres, no break, cause we want default case too
-			if (defined("BIT_DB_PREFIX") && preg_match( "/\./", BIT_DB_PREFIX) ) {
-				$schema = preg_replace("/[`\.]/", "", BIT_DB_PREFIX);
-				// Assume we want to dump in a schema, so set the search path and nuke the prefix here.
-				// $result = $this->mDb->Execute( "SET search_path TO $schema,public" );
-			}
-			break;
+				// Do a little prep work for postgres, no break, cause we want default case too
+				if (defined("BIT_DB_PREFIX") && preg_match( "/\./", BIT_DB_PREFIX) ) {
+					$schema = preg_replace("/[`\.]/", "", BIT_DB_PREFIX);
+					// Assume we want to dump in a schema, so set the search path and nuke the prefix here.
+					// $result = $this->mDb->Execute( "SET search_path TO $schema,public" );
+				}
+				break;
 		}
 	}
 

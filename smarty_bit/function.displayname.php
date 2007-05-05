@@ -21,7 +21,7 @@ function smarty_function_displayname( $pParams, &$gBitSmarty ) {
 		$hash = $pParams;
 	} else {
 		global $gBitUser;
-		$hash = array_merge( $pParams, &$gBitUser->mInfo );
+		$hash = array_merge( $pParams, $gBitUser->mInfo );
 	}
 
 	if( !( is_array( $hash ))) {

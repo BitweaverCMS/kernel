@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.37 2007/04/24 07:00:55 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.38 2007/05/05 06:39:55 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -240,6 +240,11 @@ class BitBase {
 					$pListHash['offset'] = 0;
 				}
 			}
+		}
+
+		// migrate towards a safer hash key
+		if( empty( $pListHash['user_id'] ) && !empty( $pListHash['lookup_user_id'] ) ) {
+			$pListHash['user_id'] = $pListHash['lookup_user_id'];
 		}
 
 		// Don't use  $_REQUEST["find"] as it can really screw with modules on search pages

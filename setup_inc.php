@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.94 2007/04/24 07:00:56 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.95 2007/05/05 06:39:56 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -120,7 +120,10 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	// Force full URI's for offline or exported content (newsletters, etc.)
-	$root = !empty( $_REQUEST['uri_mode'] ) ? BIT_BASE_URI . '/' : BIT_ROOT_URL;
+	$root = !empty( $_REQUEST['uri_mode'] ) ? BIT_BASE_URI : BIT_ROOT_URL;
+	if( $root[strlen($root)-1] != '/' ) {
+		$root .= '/';
+	}
 	define( 'UTIL_PKG_URL', $root.'util/' );
 	define( 'LIBERTY_PKG_URL', $root.'liberty/' );
 
@@ -140,7 +143,9 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$theme = $gBitThemes->getStyle();
 	$theme = !empty( $theme ) ? $theme : DEFAULT_THEME;
 	// users_themes='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
-	if( $gBitSystem->getConfig('users_themes') == 'y' ) {
+	if(  !empty( $gBitSystem->mDomainInfo['domain_style'] ) ) {
+		$theme = $gBitSystem->mDomainInfo['domain_style'];
+	} elseif( $gBitSystem->getConfig('users_themes') == 'y' ) {
 		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'users_preferences' ) ) {
 			if( $userStyle = $gBitUser->getPreference('theme') ) {
 				$theme = $userStyle;

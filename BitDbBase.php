@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.39 2007/05/05 06:36:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.40 2007/05/07 02:42:26 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -229,7 +229,6 @@ class BitDb {
 		if( $this->getDebugLevel() ) {
 			$style = ( $interval > .5 ) ? 'color:red;' : (( $interval > .15 ) ? 'color:orange;' : '');
 			print '<p style="'.$style.'">### Query: '.$gNumQueries.' Start time: '.$this->mQueryLap.' ### Query run time: '.$interval.'</p>';
-#vd(debug_backtrace());
 			flush();
 		}
 		$this->mQueryLap = 0;

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.127 2007/04/23 09:36:31 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.128 2007/05/10 17:58:08 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1134,7 +1134,7 @@ class BitSystem extends BitBase {
 		// load lib configs
 		if( $pkgDir = opendir( BIT_ROOT_PATH ) ) {
 			while( FALSE !== ( $dirName = readdir( $pkgDir ) ) ) {
-				if( is_dir( BIT_ROOT_PATH . '/' . $dirName ) && ( $dirName != 'CVS' ) && ( preg_match( '/^\w/', $dirName ) ) ) {
+				if( ($dirName != '..')  && ($dirName != '.') && is_dir(BIT_ROOT_PATH . '/' . $dirName) && ($dirName != 'CVS') && (preg_match( '/^\w/', $dirName )) ) {
 					$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
 					$this->loadPackage( $dirName, $pScanFile, $pAutoRegister, $pOnce );
 				}

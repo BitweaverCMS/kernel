@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.128 2007/05/10 17:58:08 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.129 2007/05/11 16:59:40 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -87,6 +87,12 @@ class BitSystem extends BitBase {
 
 	// Display full page or just contents?
 	var $mDisplayOnlyContent;
+
+	// Ajax framework that will be used for current page view
+	var $mAjax = NULL;
+
+	// Ajax libraries needed by current Ajax framework (MochiKit libs, etc.)
+	var $mAjaxLibs = array();
 
 	// === BitSystem constructor
 	/**
@@ -379,6 +385,20 @@ class BitSystem extends BitBase {
 	 */
 	function onlyRenderContent($pOnlyRender = true) {
 		$this->mDisplayOnlyContent = $pOnlyRender;
+	}
+
+	function loadAjax( $pAjaxLib, $pLibHash=NULL ) {
+		global $gBitSmarty, $gSniffer;
+		$ret = FALSE;
+		$ajaxLib = strtolower( $pAjaxLib );
+		if( $gSniffer->_browser_info['javascript'] ) {
+			if( $ret = ( empty( $this->mAjaxLib ) || $this->mAjaxLib == $ajaxLib ) ) {
+				$gBitSmarty->assign( 'loadAjax', $ajaxLib );
+				$this->mAjax = $ajaxLib;
+				$this->mAjaxLibs = array_merge( $this->mAjaxLibs, $pLibHash );
+			}
+		}
+		return $ret;
 	}
 
 	/**

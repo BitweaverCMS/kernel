@@ -5,6 +5,9 @@
 	{jstabs}
 		{jstab title="Installed Packages"}
 			{legend legend="bitweaver Packages that are installed on your system"}
+				<p>
+				{tr}Packages with checkmarks are currently enabled, packages without are disabled.  To enable or disable a package, check or uncheck it, and click the 'Modify Activation' button. {/tr}
+				</p>
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service}
 						<div class="row">
@@ -54,7 +57,7 @@
 			{/legend}
 
 			<div class="row submit">
-				<input type="submit" name="features" value="{tr}Activate bitweaver Packages{/tr}"/>
+				<input type="submit" name="features" value="{tr}Modify Activation{/tr}"/>
 			</div>
 		{/jstab}
 
@@ -88,7 +91,7 @@
 			{box title="How to install bitweaver Packages"}
 				{tr}To install more packages, please run the <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>installer</a> to choose your desired packages.{/tr}
 				<br />
-				<small><strong>{tr}Note{/tr}</strong> : {tr}you might have to rename your 'install/install.done' file back to 'install/install.php' to be able to install more packages{/tr}</small>
+				<small><strong>{tr}Note{/tr}</strong> : {tr}if you renamed your 'install/install.php' or changed the CHMOD permissions, you'll have to revert those changes to proceed.{/tr}</small>
 			{/box}
 		{/jstab}
 	{/jstabs}

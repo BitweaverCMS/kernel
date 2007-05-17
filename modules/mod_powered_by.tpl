@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.4 2007/02/04 15:42:58 lsces Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.5 2007/05/17 14:17:20 nickpalmer Exp $ *}
 {strip}
 {bitmodule title="$moduleTitle" name="powered_by"}
 	<div style="text-align:center;">
@@ -22,6 +22,10 @@
 		{if $gDbType eq 'oracle'}
 			<br /><br />
 			<a href="http://www.oracle.com/">{biticon ipackage="liberty" iname="oracle" ipath="bitweaver/" iexplain="Powered by Oracle" iforce=icon}</a>
+		{/if}
+		{if $gBitSystem->getConfig('liberty_html_purifier') == 'htmlpurifier'}
+			<br /><br />
+			<a href="http://htmlpurifier.org">{biticon ipackage="liberty" iname="htmlpurifier" ipath="bitweaver/" iexplain="Powered by HTMLPurifier" iforce=icon}</a>
 		{/if}
 	</div>
 {/bitmodule}

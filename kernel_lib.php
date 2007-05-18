@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.1 2007/04/24 07:00:56 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.2 2007/05/18 07:36:01 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -458,13 +458,13 @@ function bit_http_request( $pUrl ) {
 		} else {
 			// try using fsock now
 			$parsed = parse_url( $pUrl );
-			if( $fsock = @fsockopen( $parsed['host'], 80, $error['number'], $error['string'], 5 ) ) {
-				@fwrite( $fsock, "GET {$parsed['path']} HTTP/1.1\r\n" );
+			if( $fsock = @fsockopen( $parsed['host'], 80, $error['number'], $error['string'], 5 )) {
+				@fwrite( $fsock, "GET ".$parsed['path'].( !empty( $parsed['query'] ) ? '?'.$parsed['query'] : '' )." HTTP/1.1\r\n" );
 				@fwrite( $fsock, "HOST: {$parsed['host']}\r\n" );
 				@fwrite( $fsock, "Connection: close\r\n\r\n" );
 
 				$get_info = FALSE;
-				while( !@feof( $fsock ) ) {
+				while( !@feof( $fsock )) {
 					if( $get_info ) {
 						$ret .= @fread( $fsock, 1024 );
 					} else {

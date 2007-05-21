@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.130 2007/05/21 03:18:55 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.131 2007/05/21 21:15:14 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -395,7 +395,9 @@ class BitSystem extends BitBase {
 			if( $ret = ( empty( $this->mAjaxLib ) || $this->mAjaxLib == $ajaxLib ) ) {
 				$gBitSmarty->assign( 'loadAjax', $ajaxLib );
 				$this->mAjax = $ajaxLib;
-				$this->mAjaxLibs = array_merge( $this->mAjaxLibs, $pLibHash );
+				if( is_array( $pLibHash ) ) {
+					$this->mAjaxLibs = array_merge( $this->mAjaxLibs, $pLibHash );
+				}
 			}
 		}
 		return $ret;
@@ -1865,7 +1867,7 @@ class BitSystem extends BitBase {
 	* @access public
 	**/
 	function isAjaxRequest() {
-		return( !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' ? TRUE : FALSE );
+		return( (!empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') || !empty( $_REQUEST['ajax_xml'] ) );
 	}
 
 	// should be moved somewhere else. unbreaking things for now - 25-JUN-2005 - spiderr

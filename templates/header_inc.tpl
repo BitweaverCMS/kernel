@@ -47,18 +47,22 @@
 {* the order of the js files is crucial *}
 <script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/bitweaver.js"></script>
 {if $loadAjax && !$loadDragDrop}
-	{if $loadAjax == 1 || $loadAjax == 'prototype'}
+	{if $loadAjax == 1 || $loadAjax == 'prototype' || $gBitSystem->mAjax == 'prototype'}
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/prototype.js"></script>
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/ajax.js"></script>
 		{if $loadDebug}
 			<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/debugger.js"></script>
 		{/if}
-	{else}
+	{elseif $gBitSystem->mAjax == 'mochikit'}
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Base.js"></script>
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Async.js"></script>
-		{foreach from=$mochikitLibs item=mLib}
-			<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/{$mLib}"></script>
+		{foreach from=$gBitSystem->mAjaxLibs item=ajaxLib}
+			<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/{$ajaxLib}"></script>
+			{if $ajaxLib=='ThickBox.js' || $ajaxLib=='Controls.js'}
+				<link rel="stylesheet" type="text/css" href="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/{$ajaxLib|replace:'.js':'.css'}" />
+			{/if}
 		{/foreach}
+
 	{/if}
 {/if}
 

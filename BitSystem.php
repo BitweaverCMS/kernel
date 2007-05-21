@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.129 2007/05/11 16:59:40 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.130 2007/05/21 03:18:55 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -535,8 +535,7 @@ class BitSystem extends BitBase {
 				// kernel always active
 				if( $name == 'kernel' ) {
 					$ret = 1;
-				}
-				else {
+				} else {
 					// we have migrated the old tikiwiki feature_<pac
 					$ret = ( $this->getConfig( 'package_'.$name ) == 'y' );
 				}
@@ -742,70 +741,44 @@ class BitSystem extends BitBase {
 	* @access public
 	*/
 	function registerPackage( $pRegisterHash ) {
-		extract( $pRegisterHash );
-		#extract can set:
-		#  $package_name (Registration Name) See scanPackages comments for more info)
-		#  $package_path
-		#  $activatable
-		#  $service
-		#  $required_package
-
-		if( !isset( $activatable ) ) {
-			$activatable = TRUE;
-		}
-
-		if( !isset( $service ) ) {
-			$service = FALSE;
-		}
-
-		if( !isset( $required_package ) ) {
-			$required_package = FALSE;
-		}
-
-		if( !isset( $package_name ) ) {
+		if( !isset( $pRegisterHash['package_name'] )) {
 			$this->fatalError( tra("Package name not set in ")."registerPackage: $this->mPackageFileName" );;
+		} else {
+			$name = $pRegisterHash['package_name'];
 		}
 
-		if( !isset( $package_path ) ) {
+		if( !isset( $pRegisterHash['package_path'] )) {
 			$this->fatalError( tra("Package path not set in ")."registerPackage: $this->mPackageFileName" );;
-		}
-
-		// make package homeable
-		if( !isset( $homeable ) ) {
-			$homeable = FALSE;
+		} else {
+			$path = $pRegisterHash['package_path'];
 		}
 
 		$this->mRegisterCalled = TRUE;
-		if( empty( $this->mPackages ) ) {
+		if( empty( $this->mPackages )) {
 			$this->mPackages = array();
 		}
-		$pkgName = str_replace( ' ', '_', strtoupper( $package_name ) );
+		$pkgName = str_replace( ' ', '_', strtoupper( $name ));
 		$pkgNameKey = strtolower( $pkgName );
 
-		// Set package homeable
-		$this->mPackages[$pkgNameKey]['homeable']  = $homeable;
+		// Some package settings
+		$this->mPackages[$pkgNameKey]['homeable'] = !empty( $pRegisterHash['homeable'] );
+		$this->mPackages[$pkgNameKey]['required'] = !empty( $pRegisterHash['required_package'] );
+		$this->mPackages[$pkgNameKey]['service']  = !empty( $pRegisterHash['service'] ) ? $pRegisterHash['service'] : FALSE;
+		$this->mPackages[$pkgNameKey]['status']   = $this->getConfig( 'package_'.$pkgNameKey, 'n');
 
-		// Set package required flag
-		$this->mPackages[$pkgNameKey]['required']  = $required_package;
-
-		// indicate if this package is a service or not
-		$this->mPackages[$pkgNameKey]['service'] = $service;
-
-		// set package status flag
-		$this->mPackages[$pkgNameKey]['status'] = $this->getConfig( 'package_'.$pkgNameKey, 'n');
 		# y = Active
 		# i = Installed
 		# n (or empty/null) = Not Active and Not Installed
 
 		// set package installed and active flag
-		if ($this->mPackages[$pkgNameKey]['status'] == 'a' || $this->mPackages[$pkgNameKey]['status'] == 'y') {
+		if( $this->mPackages[$pkgNameKey]['status'] == 'a' || $this->mPackages[$pkgNameKey]['status'] == 'y' ) {
 			$this->mPackages[$pkgNameKey]['active_switch'] = TRUE;
 		} else {
 			$this->mPackages[$pkgNameKey]['active_switch'] = FALSE;
 		}
 
 		// set package installed flag (can be installed but not active)
-		if ($this->mPackages[$pkgNameKey]['active_switch'] || $this->mPackages[$pkgNameKey]['status'] == 'i') {
+		if( $this->mPackages[$pkgNameKey]['active_switch'] || $this->mPackages[$pkgNameKey]['status'] == 'i' ) {
 			$this->mPackages[$pkgNameKey]['installed'] = TRUE;
 		} else {
 			$this->mPackages[$pkgNameKey]['installed'] = FALSE;
@@ -813,55 +786,52 @@ class BitSystem extends BitBase {
 
 		// Define <PACKAGE>_PKG_PATH
 		$pkgDefine = $pkgName.'_PKG_PATH';
-		if (!defined($pkgDefine)) {
-			define($pkgDefine, $package_path);
+		if( !defined( $pkgDefine )) {
+			define( $pkgDefine, $path );
 		}
-		$this->mPackages[$pkgNameKey]['url']  = BIT_ROOT_URL . basename( $package_path ) . '/';
-		$this->mPackages[$pkgNameKey]['path']  = BIT_ROOT_PATH . basename( $package_path ) . '/';
+		$this->mPackages[$pkgNameKey]['url']  = BIT_ROOT_URL . basename( $path ) . '/';
+		$this->mPackages[$pkgNameKey]['path']  = BIT_ROOT_PATH . basename( $path ) . '/';
 
 		// Define <PACKAGE>_PKG_URL
 		$pkgDefine = $pkgName.'_PKG_URL';
-		if (!defined($pkgDefine)) {
+		if( !defined( $pkgDefine )) {
 			// Force full URI's for offline or exported content (newsletters, etc.)
 			$root = !empty( $_REQUEST['uri_mode'] ) ? BIT_BASE_URI . '/' : BIT_ROOT_URL;
-			define($pkgDefine, $root . basename( $package_path ) . '/');
+			define( $pkgDefine, $root . basename( $path ) . '/' );
 		}
 
 		// Define <PACKAGE>_PKG_URI
 		$pkgDefine = $pkgName.'_PKG_URI';
-		if (!defined($pkgDefine) && defined( 'BIT_BASE_URI' ) ) {
-			define($pkgDefine, BIT_BASE_URI . '/' . basename( $package_path ) . '/');
+		if( !defined( $pkgDefine ) && defined( 'BIT_BASE_URI' )) {
+			define( $pkgDefine, BIT_BASE_URI . '/' . basename( $path ) . '/' );
 		}
 
 		// Define <PACKAGE>_PKG_NAME
 		$pkgDefine = $pkgName.'_PKG_NAME';
-		if (!defined($pkgDefine)) {
-			define($pkgDefine, $package_name);
-			$this->mPackages[$pkgNameKey]['activatable'] = $activatable;
+		if( !defined( $pkgDefine )) {
+			define( $pkgDefine, $name );
+			$this->mPackages[$pkgNameKey]['activatable']  = isset( $pRegisterHash['activatable'] ) ? $pRegisterHash['activatable'] : TRUE;
 		}
-		$this->mPackages[$pkgNameKey]['name'] = $package_name;
+		$this->mPackages[$pkgNameKey]['name'] = $name;
 
-		$package_dir_name = basename( $package_path );
-		
 		// Define <PACKAGE>_PKG_DIR
+		$package_dir_name = basename( $path );
 		$pkgDefine = $pkgName.'_PKG_DIR';
-		if (!defined($pkgDefine)) {
-			define($pkgDefine, $package_dir_name);
+		if( !defined( $pkgDefine )) {
+			define( $pkgDefine, $package_dir_name );
 		}
 		$this->mPackages[$pkgNameKey]['dir'] = $package_dir_name;
-
 		$this->mPackagesDirNameXref[$package_dir_name] = $pkgNameKey;
 
 		// Define the package we are currently in
 		// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
-		if( !defined('ACTIVE_PACKAGE') && (isset($_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '/\/'.$this->mPackages[$pkgNameKey]['dir'].'\//', $_SERVER['PHP_SELF'] ) || preg_match( '/\/' . $package_name . '\//', $_SERVER['PHP_SELF'] )) ) {
-			if( isset($_SERVER['ACTIVE_PACKAGE'] ) ) {
+		if( !defined( 'ACTIVE_PACKAGE' ) && ( isset( $_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '!/'.$this->mPackages[$pkgNameKey]['dir'].'/!', $_SERVER['PHP_SELF'] ) || preg_match( '!/'.$pkgNameKey.'/!', $_SERVER['PHP_SELF'] ))) {
+			if( isset( $_SERVER['ACTIVE_PACKAGE'] )) {
 				// perhaps the webserver told us the active package (probably because of mod_rewrites)
-				$package_name = $_SERVER['ACTIVE_PACKAGE'];
+				$pkgNameKey = $_SERVER['ACTIVE_PACKAGE'];
 			}
-			define('ACTIVE_PACKAGE', $package_name);
-			define('ACTIVE_PACKAGE_DIR', $this->mPackages[$pkgNameKey]['dir'] );
-			$this->mActivePackage = $package_name;
+			define( 'ACTIVE_PACKAGE', $pkgNameKey );
+			$this->mActivePackage = $pkgNameKey;
 		}
 	}
 
@@ -884,24 +854,24 @@ class BitSystem extends BitBase {
 			$pMenuHash['menu_title']  = $this->getConfig( $pkg.'_menu_text',
 				( !empty( $pMenuHash['menu_title'] )
 					? $pMenuHash['menu_title']
-					: ucfirst( constant( strtoupper( $pkg ).'_PKG_DIR' ) ) )
+					: ucfirst( constant( strtoupper( $pkg ).'_PKG_DIR' )))
 			);
-			$pMenuHash['menu_position']  = $this->getConfig( $pkg.'_menu_position',
+			$pMenuHash['menu_position'] = $this->getConfig( $pkg.'_menu_position',
 				( !empty( $pMenuHash['menu_position'] )
 					? $pMenuHash['menu_position']
 					: NULL )
 			);
 
-			$this->mAppMenu[$pkg]     = $pMenuHash;
+			$this->mAppMenu[$pkg] = $pMenuHash;
 		} else {
 			deprecated( 'Please use a menu registration hash instead of individual parameters: $gBitSystem->registerAppMenu( $menuHash )' );
 			$this->mAppMenu[strtolower( $pMenuHash )] = array(
-				'menu_title' => $pMenuTitle,
-				'is_disabled' => ( $this->getConfig( 'menu_'.$pMenuHash ) == 'n' ),
-				'index_url' => $pTitleUrl,
+				'menu_title'    => $pMenuTitle,
+				'is_disabled'   => ( $this->getConfig( 'menu_'.$pMenuHash ) == 'n' ),
+				'index_url'     => $pTitleUrl,
 				'menu_template' => $pMenuTemplate,
-				'admin_panel' => $pAdminPanel,
-				'style' => 'display:'.( empty( $pMenuTitle ) || ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' )
+				'admin_panel'   => $pAdminPanel,
+				'style'         => 'display:'.( empty( $pMenuTitle ) || ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' )
 			);
 		}
 	}
@@ -1159,11 +1129,6 @@ class BitSystem extends BitBase {
 					$this->loadPackage( $dirName, $pScanFile, $pAutoRegister, $pOnce );
 				}
 			}
-		}
-
-		//in case some defines not done
-		if( !defined( 'ACTIVE_PACKAGE' ) ) {
-			define( 'ACTIVE_PACKAGE', 'kernel' ); // when in doubt, assume the kernel
 		}
 
 		if( !defined( 'BIT_STYLES_PATH' ) && defined( 'THEMES_PKG_PATH' ) ) {

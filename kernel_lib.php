@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.2 2007/05/18 07:36:01 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.3 2007/05/21 21:12:48 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -370,6 +370,7 @@ function encode_email_addresses( $pData ) {
 function get_include_contents($pFile) {
   if (is_file($pFile)) {
     ob_start();
+	global $gContent,$gBitSystem, $gBitSmarty, $gLibertySystem, $gBitUser;
     include $pFile;
     $contents = ob_get_contents();
     ob_end_clean();

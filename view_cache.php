@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.7 2007/03/21 08:58:14 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.8 2007/06/02 12:08:52 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -54,6 +54,5 @@ if (substr($info["url"], -4, 4) == ".txt") {
 $gBitSmarty->assign('ggcacheurl', $ggcacheurl);
 $gBitSmarty->assign_by_ref('info', $info);
 $gBitSystem->display( 'bitpackage:kernel/view_cache.tpl');
-$gBitSmarty->display('bitpackage:kernel/view_cache.tpl');
 
 ?>

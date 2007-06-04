@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.131 2007/05/21 21:15:14 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.132 2007/06/04 05:17:23 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1201,7 +1201,7 @@ class BitSystem extends BitBase {
 						// we have a disabled required package. turn it back on!
 						$this->storeConfig( 'package_' . $package, 'y', $package );
 						$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_' . $package );
-					} elseif( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['installed'] &&  $this->mConfig['package_'.$package] != 'i' &&  $this->mConfig['package_'.$package] != 'y' ) {
+					} elseif( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['installed'] &&  $this->getConfig( 'package_'.$package ) != 'i' &&  $this->getConfig( 'package_'.$package ) != 'y' ) {
 						$this->storeConfig( 'package_' . $package, 'i', $package );
 					} elseif( !empty( $this->mPackages[$package]['installed'] ) && !$this->isFeatureActive( 'package_'.strtolower( $package ) ) ) {
 						// set package to i if it is installed but not isFeatureActive (common when re-installing packages)
@@ -1378,6 +1378,64 @@ class BitSystem extends BitBase {
 
 		return( !empty( $this->mMimeTypes[$pExtension] ) ? $this->mMimeTypes[$pExtension] : 'application/binary' );
 	}
+
+
+	// === verifyFileExtension
+	/**
+	* given a file and optionally desired name, return the correctly extensioned file and mime type
+	*
+	* @param string $pFile is the actual file to inspect for magic numbers to determine type
+	* @param string $pFileName is the desired name the file. This is optional in the even the pFile is non-extensioned, as is the case with file uploads
+	* @return corrected file name and mime type
+	* @access public
+	*/
+	function verifyFileExtension( $pFile, $pFileName=NULL ) {
+		if( empty( $pFileName ) ) {
+			$pFileName = basename( $pFile );
+			$ret = $pFile;
+		} else {
+			$ret = $pFileName;
+		}
+		$extension = substr( $pFileName, strrpos( $pFileName, '.' ) + 1 );
+		$lookupMime = $this->lookupMimeType( $extension );
+		$verifyMime = $this->verifyMimeType( $pFile );
+		if( $lookupMime != $verifyMime ) {
+			if( $mimeExt = array_search( $verifyMime, $this->mMimeTypes ) ) {
+				$ret = substr( $pFileName, 0, strrpos( $pFileName, '.' ) + 1 ).$mimeExt;
+			}
+		}
+		return array( $ret, $verifyMime );
+	}
+
+
+	// === verifyMimeType
+	/**
+	* given a file, return the mime type
+	*
+	* @param string $pExtension is the extension of the file or the complete file name
+	* @return mime type of entry and populates $this->mMimeTypes with existing mime types
+	* @access public
+	*/
+	function verifyMimeType( $pFile ) {
+		$mime = NULL;
+		if( file_exists( $pFile ) ) {
+			if( function_exists( 'finfo_open' ) ) {
+				$finfo = finfo_open( FILEINFO_MIME );
+				$mime = finfo_file( $finfo, $pFile );
+				finfo_close( $finfo );
+			} else {
+				$mime = exec( trim( 'file -bi ' . escapeshellarg ( $pFile ) ) );
+			}
+			if( empty( $mime ) ) {
+				$mime = $this->lookupMimeType( substr( $pFile, strrpos( $pFile, '.' ) + 1 ) );
+			}
+			if( $len = strpos( $mime, ';' ) || $len = strpos( $mime, ';' ) ) {
+				$mime = substr( $mime, 0, $len );
+			}
+		}
+		return $mime;
+	}
+
 
 	/**
 	* * Return 'windows' if windows, otherwise 'unix'

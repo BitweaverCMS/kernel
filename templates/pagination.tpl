@@ -30,18 +30,31 @@
 		{/if}
 	</div> <!-- end .pagination -->
 {elseif $listInfo && $listInfo.total_pages > 1}
+	{capture name=string}
+		{foreach from=$listInfo.parameters key=param item=value}
+			{if $value|is_array}
+				{foreach from=$value item=v}&amp;{$param}[]={$v}{/foreach}
+			{else}
+				&amp;{$param}={$value}
+			{/if}
+		{/foreach}
+		{foreach from=$listInfo.ihash key=param item=value}
+			{if $value|is_array}
+				{foreach from=$value item=v}&amp;{$param}[]={$v}{/foreach}
+			{else}
+				&amp;{$param}={$value}
+			{/if}
+		{/foreach}
+		{foreach from=$pgnHidden key=param item=value}
+			{if $value|is_array}
+				{foreach from=$value item=v}&amp;{$param}[]={$v}{/foreach}
+			{else}
+				&amp;{$param}={$value}
+			{/if}
+		{/foreach}
+	{/capture}
+
 	<div class="pagination">
-		{capture name=string}
-			{foreach from=$listInfo.parameters key=param item=value}
-				&amp;{$param}={$value}
-			{/foreach}
-			{foreach from=$listInfo.ihash key=param item=value}
-				&amp;{$param}={$value}
-			{/foreach}
-			{foreach from=$pgnHidden key=name item=value}
-				&amp;{$name}={$value}
-			{/foreach}
-		{/capture}
 		{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find``$smarty.capture.string`"}
 		{math equation="offset + 1 * max" offset=$listInfo.offset max=$listInfo.max_records assign=to}
 {*

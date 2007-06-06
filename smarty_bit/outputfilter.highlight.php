@@ -99,6 +99,8 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 
 	// insert the highlighted code back into the source
 	foreach( $ret as $highlight ) {
+	    // Escape dollars in highlight so they don't back reference
+	    $highlight = preg_replace('!\$!','\\\$', $highlight);
 		$source = preg_replace( "!@@@SMARTY:TRIM:HIGHLIGHT@@@!", $highlight, $source, 1 );
 	}
 

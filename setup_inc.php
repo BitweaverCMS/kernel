@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.95 2007/05/05 06:39:56 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.96 2007/06/08 18:51:58 nickpalmer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -99,7 +99,8 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// gzip output compression
 	if( ini_get( 'zlib.output_compression' ) == 1 ) {
 		$gBitSmarty->assign( 'gzip', tra( 'Enabled' ));
-	} elseif( $gBitSystem->isFeatureActive( 'site_output_obzip' )) {
+	} elseif( $gBitSystem->isFeatureActive( 'site_output_obzip' ) && !empty($_SERVER['SCRIPT_FILENAME']) && 
+		  !preg_match('!/download.php$!', $_SERVER['SCRIPT_FILENAME'])) {
 		ob_start( "ob_gzhandler" );
 		$gBitSmarty->assign( 'gzip', tra( 'Enabled' ));
 	} else {

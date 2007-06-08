@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.40 2007/05/07 02:42:26 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.41 2007/06/08 16:17:22 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -136,7 +136,10 @@ class BitDb {
 				$this->mDb->Execute("set quoted_identifier on");
 				break;
 			case "mysql":
-				$this->mDb->Execute("set session sql_mode='PIPES_AS_CONCAT'");
+				$version = $this->getDatabaseVersion();
+				if( ($version['major'] >= 4 && $version['minor'] >=1) || ($version['major'] >= 5) ) {	
+					$this->mDb->Execute("set session sql_mode='PIPES_AS_CONCAT'");
+				}
 				break;
 			case "postgres":
 				// Do a little prep work for postgres, no break, cause we want default case too
@@ -950,6 +953,20 @@ class BitDb {
 		// This code makes use of the badass /usr/share/pgsql/contrib/tablefunc.sql
 		// contribution that you have to install like: psql foo < /usr/share/pgsql/contrib/tablefunc.sql
 		return defined( 'ADVANCED_PGSQL' );
+	}
+
+
+	/**
+	 * determine current version of the databse
+	 * @return # hash including 'description', 'version' full string, 'major', 'minor', and 'revsion' 
+	 */
+	function getDatabaseVersion() {
+		$ret = $this->mDb->ServerInfo();
+		$versionHash = explode( '.', $ret['version'] );
+		$ret['major'] = !empty( $versionHash[0] ) ? $versionHash[0] : 0;
+		$ret['minor'] = !empty( $versionHash[1] ) ? $versionHash[1] : 0;
+		$ret['revision'] = !empty( $versionHash[2] ) ? $versionHash[2] : 0;
+		return $ret;
 	}
 
 

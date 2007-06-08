@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.21 2007/03/26 19:50:54 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.22 2007/06/08 16:23:48 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -654,7 +654,7 @@ function bit_error_handler( $dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnect
 	$subject = isset( $_SERVER['SERVER_NAME'] ) ? $_SERVER['SERVER_NAME'] : 'BITWEAVER';
 
 	$fatal = FALSE;
-	if( ( $fn == 'EXECUTE' ) && ( $thisConnection->MetaError() != -5 ) && $gBitDb->isFatalActive() ) {
+	if( ( $fn == 'EXECUTE' ) && ( $thisConnection->MetaError() != -5 ) && (empty( $gBitDb ) || $gBitDb->isFatalActive()) ) {
 		$fatal = TRUE;
 	}
 

@@ -1,12 +1,18 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.6 2007/05/18 10:02:31 nickpalmer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.7 2007/06/09 23:58:32 laetzer Exp $ *}
 {strip}
 {bitmodule title="$moduleTitle" name="powered_by"}
 	<div style="text-align:center;">
 		<a href="http://www.bitweaver.org/">{biticon ipackage="liberty" iname="bitweaver" ipath="bitweaver/" iexplain="Powered by bitweaver" iforce=icon}</a>
 		<br /><br />
 		<a href="http://smarty.php.net/">{biticon ipackage="liberty" iname="smarty" ipath="bitweaver/" iexplain="Powered by Smarty" iforce=icon}</a>
-		<br /><br />
-		<a href="http://adodb.sourceforge.net/">{biticon ipackage="liberty" iname="adodb" ipath="bitweaver/" iexplain="Powered by Adodb" iforce=icon}</a>
+		{if $gDbSystem eq 'pear'}
+			<br /><br />
+			<a href="http://pear.php.net/">{biticon ipackage="liberty" iname="pear" ipath="bitweaver/" iexplain="Powered by PEAR" iforce=icon}</a>
+		{/if}
+		{if $gDbSystem eq 'adodb'}
+			<br /><br />
+			<a href="http://adodb.sourceforge.net/">{biticon ipackage="liberty" iname="adodb" ipath="bitweaver/" iexplain="Powered by Adodb" iforce=icon}</a>
+		{/if}
 		{if $gDbType eq 'firebird'}
 			<br /><br />
 			<a href="http://www.firebirdsql.org/">{biticon ipackage="liberty" iname="firebird" ipath="bitweaver/" iexplain="Powered by Firebird" iforce=icon}</a>

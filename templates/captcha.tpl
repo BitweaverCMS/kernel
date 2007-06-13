@@ -1,13 +1,11 @@
 {literal}
-<script language="javascript">
-/* <![CDATA[ */
+<script type="text/javascript"> /* <![CDATA[ */
 function reloadImage() {
 	thesrc = $("captcha_img").src;
 	thesrc = thesrc.substring(0,thesrc.lastIndexOf(".")+4);
 	$("captcha_img").src = thesrc+"?"+Math.round(Math.random()*100000);
 }
-/* ]]> */
-</script>
+/* ]]> */ </script>
 {/literal}
 {if $params.variant == "condensed"}
 	<span class="captcha">

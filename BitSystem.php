@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.132 2007/06/04 05:17:23 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.133 2007/06/13 11:33:58 nickpalmer Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -895,6 +895,13 @@ class BitSystem extends BitBase {
 			// Package required now set in register package function
 			// A package is required if _any_ of it's tables are required
 			//$this->mPackages[$pPackage]['required'] = $pRequired | (isset( $this->mPackages[$pPackage]['required'] ) ? $this->mPackages[$pPackage]['required'] : 0 );
+		}
+	}
+
+	function registerSchemaConstraints( $pPackage, $pTableName, $pConstraints ) {
+		$pPackage = strtolower( $pPackage);
+		if( !empty( $pTableName ) ) {
+			$this->mPackages[$pPackage]['constraints'][$pTableName] = $pConstraints;
 		}
 	}
 

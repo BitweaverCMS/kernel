@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.133 2007/06/13 11:33:58 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.134 2007/06/13 15:18:56 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1934,6 +1934,16 @@ class BitSystem extends BitBase {
 	function isAjaxRequest() {
 		return( (!empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') || !empty( $_REQUEST['ajax_xml'] ) );
 	}
+
+	/**
+	* Statically callable function to see if browser supports javascript
+	* determined by cookie set in bitweaver.js
+	* @access public
+	**/
+	function isJavascriptEnabled(){
+		return (!empty($_COOKIE['javascript_enabled']) && $_COOKIE['javascript_enabled'] == 'y');
+	}
+	
 
 	// should be moved somewhere else. unbreaking things for now - 25-JUN-2005 - spiderr
 	// \TODO remove html hardcoded in diff2

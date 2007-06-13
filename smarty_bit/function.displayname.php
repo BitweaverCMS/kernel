@@ -13,7 +13,7 @@
 	* usage: {displayname user= user_id= real_name= link_title=}
 */
 function smarty_function_displayname( $pParams, &$gBitSmarty ) {
-	if( !empty( $pParams['hash'] )) {
+	if( !empty( $pParams['hash'] ) && is_array($pParams['hash']) ) {
 		$hash = array_merge( $pParams, $pParams['hash'] );
 		unset( $hash['hash'] );
 	} elseif( !empty( $pParams['user_id'] ) || !empty( $pParams['login'] ) || !empty( $pParams['user'] ) || !empty( $pParams['real_name'] )) {

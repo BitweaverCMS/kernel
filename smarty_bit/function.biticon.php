@@ -128,62 +128,66 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 		$pParams['ipackage'] = 'icons';
 	}
 
-	// get out of here as quickly as possible if we've already cached the icon information before
-	if(( $ret = biticon_get_cached( $pParams )) && !( defined( 'TEMPLATE_DEBUG') && TEMPLATE_DEBUG == TRUE )) {
-		return $ret;
-	}
-
-	// Icon styles are treated differently
-	// we need to think about how we want to override these icon themes
-	if( $pParams['ipackage'] == 'icons' ) {
-		// get the current icon style
-		// istyle is a private parameter!!! - only used on theme manager page for icon preview!!!
-		// violators will be poked with soft cushions by the Cardinal himself!!!
-		$icon_style = !empty( $pParams['istyle'] ) ? $pParams['istyle'] : $gBitSystem->getConfig( 'site_icon_style', DEFAULT_ICON_STYLE );
-
-		if( !empty( $pParams['ipath'] ) ) {
-		} elseif( !strstr( $pParams['iname'], '/' ) ) {
-			$pParams['ipath'] = 'small';
+	// Make sure we have an icon to get
+	if( isset( $pParams['iname'] ) ){
+		// get out of here as quickly as possible if we've already cached the icon information before
+		if(( $ret = biticon_get_cached( $pParams )) && !( defined( 'TEMPLATE_DEBUG') && TEMPLATE_DEBUG == TRUE )) {
+			return $ret;
+		}
+		
+		// Icon styles are treated differently
+		// we need to think about how we want to override these icon themes
+		if( $pParams['ipackage'] == 'icons' ) {
+			// get the current icon style
+			// istyle is a private parameter!!! - only used on theme manager page for icon preview!!!
+			// violators will be poked with soft cushions by the Cardinal himself!!!
+			$icon_style = !empty( $pParams['istyle'] ) ? $pParams['istyle'] : $gBitSystem->getConfig( 'site_icon_style', DEFAULT_ICON_STYLE );
+			
+			if( !empty( $pParams['ipath'] ) ) {
+			} elseif( !strstr( $pParams['iname'], '/' ) ) {
+				$pParams['ipath'] = 'small';
+			}
+			
+			if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/$icon_style/".$pParams['ipath']."/", $pParams['iname'] ) ) ) {
+				return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/$icon_style/".$pParams['ipath']."/".$matchFile );
+			}
+			
+			if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/", $pParams['iname'] ) ) ) {
+				return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/".$matchFile );
+			}
+			
+			// if that didn't work, we'll try liberty
+			$pParams['ipath'] = '';
+			$pParams['ipackage'] = 'liberty';
+		}
+		
+		// first check themes/force
+		if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."force/icons/".$pParams['ipackage'].'/'.$pParams['ipath'],$pParams['iname'] ) ) ) {
+			return biticon_output( $pParams, BIT_ROOT_URL."themes/force/icons/".$pParams['ipackage'].'/'.$pParams['ipath'].$matchFile );
+		}
+		
+		//if we have site styles, look there
+		if( FALSE !== ( $matchFile = biticon_first_match( $gBitThemes->getStylePath().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'],$pParams['iname'] ) ) ) {
+			return biticon_output( $pParams, $gBitThemes->getStyleUrl().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'].$matchFile );
+		}
+		
+		//Well, then lets look in the package location
+		if( FALSE !== ( $matchFile = biticon_first_match( $gBitSystem->mPackages[$pParams['ipackage']]['path']."icons/".$pParams['ipath'],$pParams['iname'] ) ) ) {
+			return biticon_output( $pParams, constant( strtoupper( $pParams['ipackage'] ).'_PKG_URL' )."icons/".$pParams['ipath'].$matchFile );
 		}
 
-		if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/$icon_style/".$pParams['ipath']."/", $pParams['iname'] ) ) ) {
-			return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/$icon_style/".$pParams['ipath']."/".$matchFile );
+		//Well, then lets look in the default location
+		if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."styles/default/icons/".$pParams['ipackage']."/".$pParams['ipath'],$pParams['iname'] ) ) ) {
+			return biticon_output( $pParams, THEMES_PKG_URL."styles/default/icons/".$pParams['ipackage']."/".$pParams['ipath'].$matchFile );
 		}
-
-		if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/", $pParams['iname'] ) ) ) {
-			return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/".$matchFile );
-		}
-
-		// if that didn't work, we'll try liberty
-		$pParams['ipath'] = '';
-		$pParams['ipackage'] = 'liberty';
-	}
-
-	// first check themes/force
-	if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."force/icons/".$pParams['ipackage'].'/'.$pParams['ipath'],$pParams['iname'] ) ) ) {
-		return biticon_output( $pParams, BIT_ROOT_URL."themes/force/icons/".$pParams['ipackage'].'/'.$pParams['ipath'].$matchFile );
-	}
-
-	//if we have site styles, look there
-	if( FALSE !== ( $matchFile = biticon_first_match( $gBitThemes->getStylePath().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'],$pParams['iname'] ) ) ) {
-		return biticon_output( $pParams, $gBitThemes->getStyleUrl().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'].$matchFile );
-	}
-
-	//Well, then lets look in the package location
-	if( FALSE !== ( $matchFile = biticon_first_match( $gBitSystem->mPackages[$pParams['ipackage']]['path']."icons/".$pParams['ipath'],$pParams['iname'] ) ) ) {
-		return biticon_output( $pParams, constant( strtoupper( $pParams['ipackage'] ).'_PKG_URL' )."icons/".$pParams['ipath'].$matchFile );
-	}
-
-	//Well, then lets look in the default location
-	if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."styles/default/icons/".$pParams['ipackage']."/".$pParams['ipath'],$pParams['iname'] ) ) ) {
-		return biticon_output( $pParams, THEMES_PKG_URL."styles/default/icons/".$pParams['ipackage']."/".$pParams['ipath'].$matchFile );
 	}
 
 	//Still didn't find it! Well lets output something (return FALSE if only the url is requested)
 	if( isset( $pParams['url'] ) ) {
 		return FALSE;
 	} else {
-		return biticon_output($pParams, "broken.".$pParams['ipackage']."/".$pParams['ipath'].$pParams['iname']);
+		return biticon_output($pParams, "broken.".$pParams['ipackage']."/".$pParams['ipath'].
+							  (empty($pParams['iname']) ? 'missing-iname' : $pParams['iname']));
 	}
 }
 

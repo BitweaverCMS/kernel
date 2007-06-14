@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.135 2007/06/13 22:08:55 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.136 2007/06/14 06:21:29 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1194,9 +1194,9 @@ class BitSystem extends BitBase {
 							} else {
 								$ret['missing'][$package][] = $table;
 // This is a crude but highly effective means of blurting out a very bad situation when an installed package is missing a table
-if( !defined( 'IS_LIVE' ) || !IS_LIVE ) {
-	vd( "Table Missing => $package : $table" );
-}
+// if( !defined( 'IS_LIVE' ) || !IS_LIVE ) {
+// 	vd( "Table Missing => $package : $table" );
+// }
 							}
 
 							$this->mPackages[$package]['installed'] &= $tablePresent;

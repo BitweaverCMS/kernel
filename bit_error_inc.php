@@ -110,11 +110,25 @@ function bit_error_string( $iDBParms ) {
 	$stackTrace = bt( 9999, FALSE );
 
 	//multiline expressions matched
-	if ( preg_match_all("/.*adodb_error_handler\([^\}]*\)(.+\}.+)/ms", $stackTrace, $match) ) {
+	if( preg_match_all( "/.*adodb_error_handler\([^\}]*\)(.+\}.+)/ms", $stackTrace, $match )) {
 		$stackTrace = $match[1][0];
 	}
 
-	$ret = $info.$separator.$separator.$stackTrace;
+	$globals = array(
+		'$_POST'   => $_POST,
+		'$_GET'    => $_GET,
+		'$_COOKIE' => $_COOKIE,
+	);
+
+	$parameters = '';
+	foreach( $globals as $global => $hash ) {
+		if( !empty( $hash )) {
+			$parameters .= $separator.$separator.$global.': '.$separator.var_export( $hash, TRUE );
+		}
+	}
+	$parameters = preg_replace( "/\n/", $separator.$indent, $parameters );
+
+	$ret = $info.$separator.$separator.$stackTrace.$parameters;
 
 	return $ret;
 }
@@ -184,7 +198,6 @@ function vd( $iVar ) {
 
 // var capture variable in something nicely readable in web browser
 function vc( $iVar, $pHtml=TRUE ) {
-	
 	ob_start();
 	if( is_object( $iVar ) ) {
 		if( isset( $iVar->mDb ) ) {

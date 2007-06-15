@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.41 2007/06/08 16:17:22 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.42 2007/06/15 08:55:41 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -677,10 +677,10 @@ class BitDb {
 	* @return the correctly quoted SQL statement
 	* @todo investigate replacement by AdoDB NameQuote() function
 	*/
-	function convertQuery(&$pQuery) {
-		trim( $pQuery );
+	function convertQuery( &$pQuery ) {
+		$pQuery = preg_replace( "!(^\s+)|(\s+$)!s", "", $pQuery );
 		if( !empty( $this->mType ) ) {
-			switch ($this->mType) {
+			switch( $this->mType ) {
 				case "oci8":
 				case "oci8po":
 					// Force Oracle to always be insensitive

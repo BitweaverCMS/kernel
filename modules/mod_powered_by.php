@@ -10,20 +10,12 @@
  * @subpackage modules
  */
 
-$flag = '';
-if ( isset($moduleParams['module_params']['powered_by_DB_Logo']) ) {
+if( !isset( $moduleParams['module_params']['no_dblogo'] )) {
 	global $gBitDbType;
-	$flag = $gBitDbType;
+	$gBitSmarty->assign( 'gBitDbType', $gBitDbType );
 }
-$gBitSmarty->assign( 'gDbType', $flag );
+
 if ( isset($moduleParams['module_params']['large']) ) {
 	$gBitSmarty->assign( 'size', 'large' );
-} else {
-	$gBitSmarty->assign( 'size', '' );
-}
-if ( isset( $moduleParams['module_params']['htmlpurifier'] ) ) {
-	$gBitSmarty->assign( 'htmlpurify', $moduleParams['module_params']['htmlpurifier'] );
-} else {
-	$gBitSmarty->assign( 'htmlpurifier', 'y' );
 }
 ?>

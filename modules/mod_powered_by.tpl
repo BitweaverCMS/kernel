@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.10 2007/06/15 11:50:23 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.11 2007/06/16 17:45:24 squareing Exp $ *}
 {strip}
 {bitmodule title="$moduleTitle" name="powered_by"}
 	<ul style="text-align:center;">
@@ -10,7 +10,7 @@
 				<a href="http://pear.php.net/">{biticon ipackage="liberty" iname="pear" ipath="bitweaver$size/" iexplain="Powered by PEAR" iforce=icon}</a>
 			{elseif $gBitDbType eq 'firebird'}
 				<a href="http://www.firebirdsql.org/">{biticon ipackage="liberty" iname="firebird" ipath="bitweaver$size/" iexplain="Powered by Firebird" iforce=icon}</a>
-			{elseif $gBitDbType eq 'mysql'}
+			{elseif $gBitDbType eq 'mysql' or $gBitDbType eq 'mysqli'}
 				<a href="http://www.mysql.com/">{biticon ipackage="liberty" iname="mysql" ipath="bitweaver$size/" iexplain="Powered by MySQL" iforce=icon}</a>
 			{elseif $gBitDbType eq 'postgres'}
 				<a href="http://www.postgresql.org/">{biticon ipackage="liberty" iname="postgresql" ipath="bitweaver$size/" iexplain="Powered by PostgreSQL" iforce=icon}</a>

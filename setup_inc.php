@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.96 2007/06/08 18:51:58 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.97 2007/06/16 20:55:25 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -67,6 +67,7 @@ if( !defined( 'TEMP_PKG_PATH' ) ) {
 BitSystem::prependIncludePath( UTIL_PKG_PATH.'/' );
 BitSystem::prependIncludePath( UTIL_PKG_PATH.'pear/' );
 
+// the use of gPreviewStyle is deprecated and will be replaced by using $gBitThemes->setStyle();
 // this is used to override the currently set site theme. when this is set everything else is ignored
 global $gPreviewStyle;
 $gPreviewStyle = FALSE;
@@ -78,7 +79,7 @@ $gSniffer = new phpSniff;
 $gBitSmarty->assign_by_ref( 'gBrowserInfo', $gSniffer->_browser_info );
 // if we're viewing this site with a text-browser, we force the text-browser theme
 if( !$gSniffer->_feature_set['css1'] && !$gSniffer->_feature_set['css2'] ) {
-	$gPreviewStyle = 'lynx';
+	$gBitThemes->setStyle( 'lynx' );
 }
 
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );

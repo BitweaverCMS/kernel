@@ -25,11 +25,11 @@
 function smarty_function_jspopup( $pParams, &$gBitSmarty ) {
 	$ret = '';
 	if( empty( $pParams['href'] ) ) {
-		$gBitSmarty->trigger_error( 'assign: missing "href" parameter' );
+		return( 'assign: missing "href" parameter' );
 	}
 
 	if( empty( $pParams['title'] ) ) {
-		$gBitSmarty->trigger_error( 'assign: missing "title" parameter' );
+		return( 'assign: missing "title" parameter' );
 	} else {
 		$title = empty( $pParams['notra'] ) ? $pParams['title'] : tra( $pParams['title'] );
 	}

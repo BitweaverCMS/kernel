@@ -16,6 +16,8 @@ if( !empty( $gBitSystem->mAppMenu[$active]['menu_template'] ) ) {
 }
 
 if( empty( $module_title )) {
-	$gBitSmarty->assign( 'moduleTitle', ucfirst(( constant( strtoupper( ACTIVE_PACKAGE ).'_PKG_NAME' ) == 'kernel' ) ? 'Adminstration' : constant( strtoupper( ACTIVE_PACKAGE ).'_PKG_NAME' )));
+	$pkgName = constant( strtoupper( ACTIVE_PACKAGE ).'_PKG_NAME' );
+	$title = $gBitSystem->getConfig( $pkgName."_menu_text", ucfirst( $pkgName ));
+	$gBitSmarty->assign( 'moduleTitle', $title );
 }
 ?>

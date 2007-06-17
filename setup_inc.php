@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.97 2007/06/16 20:55:25 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.98 2007/06/17 08:19:31 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -45,7 +45,6 @@ if( !empty( $gForceAdodb )) {
 require_once( KERNEL_PKG_PATH.$dbClass.'.php' );
 
 // =================== Global Classes ===================
-require_once( KERNEL_PKG_PATH.'BitCache.php' );
 global $gBitDb;
 $gBitDb = new $dbClass();
 

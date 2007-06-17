@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.38 2007/05/05 06:39:55 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.39 2007/06/17 08:19:31 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -21,7 +21,6 @@
  * required setup
  */
 require_once ( KERNEL_PKG_PATH.'BitDbBase.php' );
-include_once ( KERNEL_PKG_PATH.'BitCache.php' );
 
 define( 'STORAGE_BINARY', 1 );
 define( 'STORAGE_IMAGE', 2 );

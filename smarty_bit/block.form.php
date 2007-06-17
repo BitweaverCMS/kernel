@@ -33,7 +33,8 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 		} else {
 			$url = '';
 		}
-
+		// We need an onsubmit handler in safari to show all tabs again so uploads in hidden tabs work
+		$onsubmit="disposeAllTabs();";
 		foreach( $params as $key => $val ) {
 			switch( $key ) {
 				case 'ifile':
@@ -65,6 +66,9 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 				case 'ianchor':
 				case 'secure':
 					break;
+				case 'onsubmit':
+					$onsubmit .= "; ".$val;
+					break;
 				default:
 					if( !empty( $val ) ) {
 						$atts .= $key.'="'.$val.'" ';
@@ -77,7 +81,7 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 		} else if( $url == 'https://' . $_SERVER['HTTP_HOST'] ) {
 			$url .= $_SERVER['PHP_SELF'];
 		}
-		$ret = '<form action="'.$url.( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' ).'" '.$atts.'>';
+		$ret = '<form action="'.$url.( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' ).'" '.$atts.' onsubmit="'.$onsubmit.'">';
 		$ret .= isset( $legend ) ? '<fieldset>'.$legend : '<div>';		// adding the div makes it easier to be xhtml compliant
 		$ret .= $content;
 		$ret .= '<div class="clear"></div>';							// needed to avoid rendering issues

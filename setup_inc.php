@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.98 2007/06/17 08:19:31 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.99 2007/06/19 00:02:42 nickpalmer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -71,6 +71,15 @@ BitSystem::prependIncludePath( UTIL_PKG_PATH.'pear/' );
 global $gPreviewStyle;
 $gPreviewStyle = FALSE;
 
+require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
+global $gBitLanguage;
+$gBitLanguage = new BitLanguage();
+
+require_once( THEMES_PKG_PATH."BitThemes.php" );
+global $gBitThemes;
+$gBitThemes = new BitThemes();
+$gBitSmarty->assign_by_ref( 'gBitThemes', $gBitThemes );
+
 // collects information about the browser - needed for various browser specific theme settings
 require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
@@ -80,15 +89,6 @@ $gBitSmarty->assign_by_ref( 'gBrowserInfo', $gSniffer->_browser_info );
 if( !$gSniffer->_feature_set['css1'] && !$gSniffer->_feature_set['css2'] ) {
 	$gBitThemes->setStyle( 'lynx' );
 }
-
-require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
-global $gBitLanguage;
-$gBitLanguage = new BitLanguage();
-
-require_once( THEMES_PKG_PATH."BitThemes.php" );
-global $gBitThemes;
-$gBitThemes = new BitThemes();
-$gBitSmarty->assign_by_ref( 'gBitThemes', $gBitThemes );
 
 // set various classes global
 global $gBitUser, $gTicket, $userlib, $gBitDbType;

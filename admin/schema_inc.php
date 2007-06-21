@@ -23,7 +23,13 @@ $tables = array(
 	email C(200)
 ",
 
-
+'sessions' => "
+	   sesskey C(32) PRIMARY,
+	   expire I NOTNULL,
+	   expireref C(64),
+	   session_data X not null
+",
+  
 );
 
 global $gBitInstaller;

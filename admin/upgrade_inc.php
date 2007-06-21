@@ -153,6 +153,14 @@ array( 'DATADICT' => array(
 'BWR1' => array(
 	'BWR2' => array(
 array( 'DATADICT' => array(
+	array( 'CREATE' => array (
+		'sessions' => "
+			sesskey C(32) PRIMARY,
+			expiry I NOTNULL,
+			expireref C(64),
+			session_data X not null
+		",
+	)),
 	// RENAME
 	array( 'RENAMETABLE' => array(
 		'tiki_preferences'       => 'kernel_config',

@@ -24,10 +24,10 @@ $tables = array(
 ",
 
 'sessions' => "
-	   sesskey C(32) PRIMARY,
-	   expire I NOTNULL,
-	   expireref C(64),
-	   session_data X not null
+	sesskey C(32) PRIMARY,
+	expiry I NOTNULL,
+	expireref C(64),
+	session_data X not null
 ",
   
 );

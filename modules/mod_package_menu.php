@@ -3,10 +3,12 @@
  * @package kernel
  * @subpackage modules
  */
-global $gBitSystem;
+global $gBitSystem, $gBitUser;
 
 // if we're on any page in an admin/ dir, we'll simply set this to kernel
-$admin = preg_match( "!/admin/!", $_SERVER['PHP_SELF'] );
+if( $gBitUser->isAdmin() ) {
+	$admin = preg_match( "!/admin/!", $_SERVER['PHP_SELF'] );
+}
 
 if( !empty( $gBitSystem->mAppMenu[ACTIVE_PACKAGE]['menu_template'] ) && !$admin ) {
 	$gBitSmarty->assign( 'packageMenu', $gBitSystem->mAppMenu[ACTIVE_PACKAGE] );

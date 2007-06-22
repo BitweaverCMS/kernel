@@ -4,6 +4,10 @@
  * @package Smarty
  * @subpackage plugins
  */
+ 
+/**
+* smarty_function_attachmenthelp
+*/
 function smarty_function_attachhelp( $pParams, &$gBitSmarty ) {
 	global $gBitSystem;
 

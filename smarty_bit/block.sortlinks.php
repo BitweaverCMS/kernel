@@ -8,13 +8,9 @@
 /** 
  * Smarty plugin 
  * ------------------------------------------------------------- 
- * File: block.repeat.php 
+ * File: block.sortlinks.php 
  * Type: block 
- * Name: repeat 
- * Purpose: repeat a template block a given number of times 
- * Parameters: count [required] - number of times to repeat 
- * assign [optional] - variable to collect output 
- * Author: Scott Matthewman <scott@matthewman.net> 
+ * Name: sortlinks 
  * ------------------------------------------------------------- 
  */ 
 function smarty_block_sortlinks($params, $content, &$gBitSmarty) 

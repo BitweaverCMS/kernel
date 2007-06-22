@@ -1,4 +1,13 @@
 <?php
+/**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
+ * smarty_function_required
+ */
 function smarty_function_required( $pParams, &$gBitSmarty ) {
 	require_once $gBitSmarty->_get_plugin_filepath('function','biticon');
 	$biticon = array(

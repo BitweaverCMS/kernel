@@ -6,6 +6,14 @@
  * @link http://www.bitweaver.org/wiki/block_textarea block_textarea
  */
 
+/** 
+ * Smarty plugin 
+ * ------------------------------------------------------------- 
+ * File: block.textarea.php 
+ * Type: block 
+ * Name: textarea 
+ * ------------------------------------------------------------- 
+ */ 
 function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 	global $gBitSystem, $gContent;
 	$attributes = '';

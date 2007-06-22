@@ -1,7 +1,12 @@
 <?php
 /**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitTimer.php,v 1.2 2007/06/22 10:15:51 lsces Exp $
  * Basic processes timer
  *
+ * @package kernel
+ */
+ 
+/**
  * @package kernel
  */
 class BitTimer {
@@ -23,6 +28,9 @@ class BitTimer {
 	}
 }
 
+/**
+ * Create timer
+ */
 global $gBitTimer;
 $gBitTimer = new BitTimer();
 $gBitTimer->start();

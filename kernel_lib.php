@@ -1,12 +1,14 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.3 2007/05/21 21:12:48 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.4 2007/06/22 10:15:51 lsces Exp $
  * @package kernel
  * @subpackage functions
  */
 
-// some PHP compatability issues need to be dealt with
-// array_fill
+/**
+ * some PHP compatability issues need to be dealt with
+ * array_fill
+ */
 if( !function_exists( 'array_fill' )) {
 	require_once( KERNEL_PKG_PATH.'array_fill.func.php' );
 }
@@ -14,12 +16,12 @@ if( !function_exists( 'array_fill' )) {
 // str_split
 include_once( UTIL_PKG_PATH.'PHP_Compat/Compat/Function/str_split.php' );
 
-/* \brief  substr with a utf8 string - works only with $start and $length positive or nuls
-* This function is the same as substr but works with multibyte
-* In a multybyte sequence, the first byte of a multibyte sequence that represents a non-ASCII character is always in the range 0xC0 to 0xFD
-* and it indicates how many bytes follow for this character.
-* All further bytes in a multibyte sequence are in the range 0x80 to 0xBF.
-*/
+/** \brief  substr with a utf8 string - works only with $start and $length positive or nuls
+ * This function is the same as substr but works with multibyte
+ * In a multybyte sequence, the first byte of a multibyte sequence that represents a non-ASCII character is always in the range 0xC0 to 0xFD
+ * and it indicates how many bytes follow for this character.
+ * All further bytes in a multibyte sequence are in the range 0x80 to 0xBF.
+ */
 /**
  * Check mb_substr availability
  */

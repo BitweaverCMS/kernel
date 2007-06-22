@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.136 2007/06/14 06:21:29 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.137 2007/06/22 11:55:33 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1977,6 +1977,37 @@ class BitSystem extends BitBase {
 	function getVersion( $pPackage, $pDefault = NULL ) {
 		global $gBitSystem;
 		return $gBitSystem->getConfig( "package_".$pPackage."_version", $pDefault );
+	}
+
+	/**
+	 * getIncludeFiles will get a set of available files with a given filename
+	 * 
+	 * @param array $pPhpFile name of php file
+	 * @param array $pTplFile name of tpl file
+	 * @access public
+	 * @return array of includable files
+	 */
+	function getIncludeFiles( $pPhpFile = NULL, $pTplFile = NULL ) {
+		$ret = array();
+		global $gBitSystem;
+		foreach( $gBitSystem->mPackages as $package ) {
+			if( $gBitSystem->isPackageActive( $package['name'] )) {
+				if( !empty( $pPhpFile )) {
+					$php_file = $package['path'].$pPhpFile;
+					if( is_readable( $php_file ))  {
+						$ret[$package['name']]['php'] = $php_file;
+					}
+				}
+
+				if( !empty( $pTplFile )) {
+					$tpl_file = $package['path'].'templates/'.$pTplFile;
+					if( is_readable( $tpl_file )) {
+						$ret[$package['name']]['tpl'] = 'bitpackage:'.$package['name'].'/'.$pTplFile;
+					}
+				}
+			}
+		}
+		return $ret;
 	}
 
 

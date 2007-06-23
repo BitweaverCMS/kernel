@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.137 2007/06/22 11:55:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.138 2007/06/23 09:28:04 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -249,16 +249,6 @@ class BitSystem extends BitBase {
 	function setConfig( $pName, $pValue ) {
 		$this->mConfig[$pName] = $pValue;
 		return( TRUE );
-	}
-
-	// deprecated method saved compatibility until all getPreference calls have been eliminated
-	function getPreference( $pName, $pDefault = '' ) {
-		deprecated( 'Please use: BitSystem::getConfig()' );
-		return $this->getConfig( $pName, $pDefault );
-	}
-	function setPreference( $pPrefName, $pPrefValue ) {
-		deprecated( 'Please use: BitSystem::setConfig()' );
-		$this->setConfig( $pPrefName, $pPrefValue );
 	}
 
 	// <<< storeConfig
@@ -1224,13 +1214,6 @@ class BitSystem extends BitBase {
 		return $ret;
 	}
 
-	// Allows a package to be selected as the homepage for the site (Admin->General Settings)
-	// Calls to this function should be made from each 'homeable' package's schema_inc.php
-	function makePackageHomeable( $package ) {
-		deprecated( 'Please use: BitSystem::registerPackage( array( "homeable" => TRUE ) ) in your bit_setup_inc.php file' );
-		$this->mPackages[strtolower( $package )]['homeable'] = TRUE;
-	}
-
 	function getDefaultPage() {
 		global $userlib, $gBitUser, $gBitSystem;
 		$bit_index = $this->getConfig( "bit_index" );
@@ -2015,6 +1998,19 @@ class BitSystem extends BitBase {
 
 
 	// ==================== deprecated methods - will be removed soon ====================
+	// deprecated method saved compatibility until all getPreference calls have been eliminated
+	function getPreference( $pName, $pDefault = '' ) {
+		deprecated( 'Please use: BitSystem::getConfig()' );
+		return $this->getConfig( $pName, $pDefault );
+	}
+	function setPreference( $pPrefName, $pPrefValue ) {
+		deprecated( 'Please use: BitSystem::setConfig()' );
+		$this->setConfig( $pPrefName, $pPrefValue );
+	}
+	function makePackageHomeable( $package ) {
+		deprecated( 'Please use: BitSystem::registerPackage( array( "homeable" => TRUE ) ) in your bit_setup_inc.php file' );
+		$this->mPackages[strtolower( $package )]['homeable'] = TRUE;
+	}
 	function getTplIncludeFiles( $pFilename ) {
 		global $gBitThemes;
 		deprecated( 'This is now in BitThemes instead of BitSystem.' );

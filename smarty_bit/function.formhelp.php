@@ -74,7 +74,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 	if( $gBitSystem->isFeatureActive( 'site_online_help' ) || $gBitSystem->isFeatureActive( 'site_form_help' ) || $force == 'y' ) {
 		if( !empty( $rawHash ) ) {
 			if( !empty( $rawHash['page'] ) && ( $gBitSystem->isFeatureActive('site_online_help') || $force == 'y' ) ) {
-				$ret_page = '<strong>'.tra( 'Online help' ).'</strong>: <a class=\'external\' href=\'http://doc.bitweaver.org/wiki/index.php?page='.$rawHash['page'].'\'>'.$rawHash['page'].'</a><br />';
+				$ret_page = '<br /><strong>'.tra( 'Online help' ).'</strong>: <a class=\'external\' href=\'http://doc.bitweaver.org/wiki/index.php?page='.$rawHash['page'].'\'>'.$rawHash['page'].'</a>';
 			}
 
 			if( !empty( $rawHash['link'] ) && ( $gBitSystem->isFeatureActive('site_online_help') || $force == 'y' ) ) {
@@ -96,7 +96,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 							$ret_install .= constant( strtoupper( $value['package'] ).'_PKG_URL' ).$value['file'];
 							$ret_install .= '\'>'.ucfirst( $value['package'] ).'</a>';
 						} else {
-							$ret_note .= '<strong>'.ucfirst( tra( $name ) ).'</strong>: '.tra( $value ).'<br />';
+							$ret_note .= '<strong>'.ucfirst( tra( $name ) ).'</strong>: '.tra( $value );
 						}
 					}
 				} else {
@@ -109,8 +109,9 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 			}
 
 			// join all the output content into one string
-			$content  = $ret_page;
+			$content  = '';
 			$content .= $ret_note;
+			$content .= $ret_page;
 			$content .= $ret_link;
 			$content .= $ret_install;
 

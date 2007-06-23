@@ -74,12 +74,12 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 	if( $gBitSystem->isFeatureActive( 'site_online_help' ) || $gBitSystem->isFeatureActive( 'site_form_help' ) || $force == 'y' ) {
 		if( !empty( $rawHash ) ) {
 			if( !empty( $rawHash['page'] ) && ( $gBitSystem->isFeatureActive('site_online_help') || $force == 'y' ) ) {
-				$ret_page = '<br /><strong>'.tra( 'Online help' ).'</strong>: <a class=\'external\' href=\'http://doc.bitweaver.org/wiki/index.php?page='.$rawHash['page'].'\'>'.$rawHash['page'].'</a>';
+				$ret_page = '<strong>'.tra( 'Online help' ).'</strong>: <a class=\'external\' href=\'http://doc.bitweaver.org/wiki/index.php?page='.$rawHash['page'].'\'>'.$rawHash['page'].'</a><br />';
 			}
 
 			if( !empty( $rawHash['link'] ) && ( $gBitSystem->isFeatureActive('site_online_help') || $force == 'y' ) ) {
 				if( is_array( $rawHash['link'] ) ) {
-					$ret_link  = '<br /><strong>'.tra( 'IntraLink' ).'</strong>: ';
+					$ret_link  = '<strong>'.tra( 'IntraLink' ).'</strong>: ';
 					$ret_link .= '<a href=\'';
 					$ret_link .= constant( strtoupper( $rawHash['link']['package'] ).'_PKG_URL' ).$rawHash['link']['file'];
 					$ret_link .= '\'>'.tra( $rawHash['link']['title'] ).'</a>';
@@ -96,7 +96,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 							$ret_install .= constant( strtoupper( $value['package'] ).'_PKG_URL' ).$value['file'];
 							$ret_install .= '\'>'.ucfirst( $value['package'] ).'</a>';
 						} else {
-							$ret_note .= '<strong>'.ucfirst( tra( $name ) ).'</strong>: '.tra( $value );
+							$ret_note .= '<strong>'.ucfirst( tra( $name ) ).'</strong>: '.tra( $value ).'<br />';
 						}
 					}
 				} else {
@@ -105,7 +105,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 			}
 
 			if( !empty( $rawHash['warning'] ) ) {
-				$ret_note .= '<br /><span class="warning">'.tra( $rawHash['warning'] ).'</span>';
+				$ret_note .= '<span class="warning">'.tra( $rawHash['warning'] ).'</span><br />';
 			}
 
 			// join all the output content into one string

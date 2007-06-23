@@ -256,7 +256,7 @@ function biticon_get_cache_file( $pParams ) {
 		}
 	}
 
-	$hashstring .= $gBitSystem->getConfig( 'site_biticon_display_style' ).$gBitSystem->getConfig( 'site_icon_size', 'small' );
+	$hashstring .= $gBitSystem->getConfig( 'site_biticon_display_style' );
 
 	// finally we append browser with its major version since we have browser-specific stuff in biticon
 	// we also append bitversion to invalidate cache in case somethang has changed since the last release

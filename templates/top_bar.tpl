@@ -9,20 +9,9 @@
 		{foreach key=key item=menu from=$gBitSystem->mAppMenu}
 			{if $menu.menu_title && $menu.index_url && $menu.menu_template && !$menu.is_disabled}
 				<li class="m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.active_package} current{/if}">
-					{* crazy MSIE stuff *}
-					{if $gBrowserInfo.browser eq 'ie' and $gBrowserInfo.maj_ver lt 7}
-						<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} selected{/if}" href="{$menu.index_url}">{tr}{$menu.menu_title}{/tr}
-							{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}
-								<table><tr><td>
-									{include file="`$menu.menu_template`"}
-								</td></tr></table>
-							{/if}
-						</a>
-					{else}
-						<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} selected{/if}" href="{$menu.index_url}">{tr}{$menu.menu_title}{/tr}</a>
-						{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}
-							{include file="`$menu.menu_template`"}
-						{/if}
+					<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} selected{/if}" href="{$menu.index_url}">{tr}{$menu.menu_title}{/tr}</a>
+					{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}
+						{include file="`$menu.menu_template`"}
 					{/if}
 				</li>
 			{/if}

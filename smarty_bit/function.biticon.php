@@ -145,9 +145,9 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 			
 			if( !empty( $pParams['ipath'] ) ) {
 			} elseif( !strstr( $pParams['iname'], '/' ) ) {
-				$pParams['ipath'] = 'small';
+				$pParams['ipath'] = $gBitSystem->getConfig( 'site_icon_size', 'small' );
 			}
-			
+
 			if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/$icon_style/".$pParams['ipath']."/", $pParams['iname'] ) ) ) {
 				return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/$icon_style/".$pParams['ipath']."/".$matchFile );
 			}
@@ -243,7 +243,7 @@ function biticon_get_cache_file( $pParams ) {
 
 	if( !empty( $pParams['ipackage'] ) && $pParams['ipackage'] == 'icons' ) {
 		if( !strstr( $pParams['iname'], '/' ) ) {
-			$pParams['ipath'] = 'small';
+			$pParams['ipath'] = $gBitSystem->getConfig( 'site_icon_size', 'small' );
 		}
 	}
 
@@ -256,7 +256,7 @@ function biticon_get_cache_file( $pParams ) {
 		}
 	}
 
-	$hashstring .= $gBitSystem->getConfig( 'site_biticon_display_style' );
+	$hashstring .= $gBitSystem->getConfig( 'site_biticon_display_style' ).$gBitSystem->getConfig( 'site_icon_size', 'small' );
 
 	// finally we append browser with its major version since we have browser-specific stuff in biticon
 	// we also append bitversion to invalidate cache in case somethang has changed since the last release

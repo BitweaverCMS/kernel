@@ -134,7 +134,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 	if( isset( $pParams['ipackage'] ) ) {
 		$pParams['ipackage'] = strtolower( $pParams['ipackage'] );
 		// drop extension for bitweaver liberty icons
-		if ( $pParams['ipackage'] == 'liberty' || preg_match( '/pkg_/i', $pParams['iname'] ) ) $size = false;
+		if ( $pParams['ipackage'] == 'liberty' || $pParams['ipackage'] == 'smileys' || $pParams['ipackage'] == 'quicktags' || preg_match( '/pkg_/i', $pParams['iname'] ) ) $size = false;
 	} else {
 		$pParams['ipackage'] = 'icons';
 	}

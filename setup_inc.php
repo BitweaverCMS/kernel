@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.99 2007/06/19 00:02:42 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.100 2007/06/24 03:53:51 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -144,8 +144,8 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$theme = $gBitThemes->getStyle();
 	$theme = !empty( $theme ) ? $theme : DEFAULT_THEME;
 	// users_themes='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
-	if(  !empty( $gBitSystem->mDomainInfo['domain_style'] ) ) {
-		$theme = $gBitSystem->mDomainInfo['domain_style'];
+	if( !empty( $gBitSystem->mDomainInfo['style'] ) ) {
+		$theme = $gBitSystem->mDomainInfo['style'];
 	} elseif( $gBitSystem->getConfig('users_themes') == 'y' ) {
 		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'users_preferences' ) ) {
 			if( $userStyle = $gBitUser->getPreference('theme') ) {

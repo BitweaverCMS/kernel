@@ -180,7 +180,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 			return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/$icon_style".$pParams['ipath'].$matchFile );
 		}
 
-		if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/".DEFAULT_ICON_STYLE.$pParams['ipath'], $pParams['iname'] ))) {
+		if( $icon_style != DEFAULT_ICON_STYLE && FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/".DEFAULT_ICON_STYLE.$pParams['ipath'], $pParams['iname'] ))) {
 			return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/".DEFAULT_ICON_STYLE.$pParams['ipath'].$matchFile );
 		}
 

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.11 2007/06/17 16:59:38 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.12 2007/06/24 14:46:05 lsces Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -48,7 +48,7 @@ if( $gBitSystem->isPackageActive( 'nexus' )) {
 	);
 }
 
-// nexus menu cache
+// rss feed cache
 if( $gBitSystem->isPackageActive( 'rss' )) {
 	$diskUsage['rss'] = array(
 		'path' => TEMP_PKG_PATH.'rss',

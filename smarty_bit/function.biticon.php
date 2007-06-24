@@ -14,7 +14,7 @@
  * @access public
  * @return Icon name with extension on success, FALSE on failure
  */
-function biticon_first_match( $pDir, $pFilename ) {
+function biticon_first_match( $pDir, $pFilename, $size = true ) {
 	if( is_dir( $pDir ) ) {
 		global $gSniffer, $gBitSystem;
 
@@ -23,6 +23,13 @@ function biticon_first_match( $pDir, $pFilename ) {
 			$extensions = array( 'gif', 'jpg', 'png' );
 		} else {
 			$extensions = array( 'png', 'gif', 'jpg' );
+		}
+		
+		// Add other icon sizes but extending the icon name with the size
+		// Default is small icons
+		$icon_size = $gBitSystem->getConfig( 'site_icon_size', 'small' );
+		if ( $size && $icon_size != 'small' ) {
+			$pFilename .= '_'.$icon_size;
 		}
 
 		foreach( $extensions as $ext ) {
@@ -122,8 +129,12 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 		$pParams['ipath'] = '';
 	}
 
+	$size = true;
+	// use '_medium' or '_large' for extra scaled icons
 	if( isset( $pParams['ipackage'] ) ) {
 		$pParams['ipackage'] = strtolower( $pParams['ipackage'] );
+		// drop extension for bitweaver liberty icons
+		if ( $pParams['ipackage'] == 'liberty') $size = false;
 	} else {
 		$pParams['ipackage'] = 'icons';
 	}
@@ -148,11 +159,11 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 				$pParams['ipath'] = $gBitSystem->getConfig( 'site_icon_size', 'small' );
 			}
 
-			if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/$icon_style/".$pParams['ipath']."/", $pParams['iname'] ) ) ) {
+			if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/$icon_style/".$pParams['ipath']."/", $pParams['iname'], false ) ) ) {
 				return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/$icon_style/".$pParams['ipath']."/".$matchFile );
 			}
 
-			if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/", $pParams['iname'] ) ) ) {
+			if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/", $pParams['iname'], false ) ) ) {
 				return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/".$matchFile );
 			}
 
@@ -172,7 +183,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
 		}
 
 		//Well, then lets look in the package location
-		if( FALSE !== ( $matchFile = biticon_first_match( $gBitSystem->mPackages[$pParams['ipackage']]['path']."icons/".$pParams['ipath'],$pParams['iname'] ) ) ) {
+		if( FALSE !== ( $matchFile = biticon_first_match( $gBitSystem->mPackages[$pParams['ipackage']]['path']."icons/".$pParams['ipath'],$pParams['iname'], $size ) ) ) {
 			return biticon_output( $pParams, constant( strtoupper( $pParams['ipackage'] ).'_PKG_URL' )."icons/".$pParams['ipath'].$matchFile );
 		}
 
@@ -200,7 +211,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty ) {
  */
 function biticon_get_cached( $pParams ) {
 	$ret = FALSE;
-	$cacheFile = biticon_get_cache_file( $pParams );
+//	$cacheFile = biticon_get_cache_file( $pParams );
 	if( is_readable( $cacheFile )) {
 		if( $h = fopen( $cacheFile, 'r' )) {
 			$ret = fread( $h, filesize( $cacheFile ));
@@ -257,6 +268,8 @@ function biticon_get_cache_file( $pParams ) {
 	}
 
 	$hashstring .= $gBitSystem->getConfig( 'site_biticon_display_style' );
+	// needed to correctly cache icon size changes for non-theme set icons
+	$hashstring .= $gBitSystem->getConfig( 'site_icon_size', 'small' );
 
 	// finally we append browser with its major version since we have browser-specific stuff in biticon
 	// we also append bitversion to invalidate cache in case something has changed since the last release

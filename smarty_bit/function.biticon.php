@@ -7,29 +7,22 @@
  */
 
 /**
- * biticon_first_match
- *
+ * biticon_first_match 
+ * 
  * @param string $pDir Directory in which we want to search for the icon
  * @param array $pFilename Icon name without the extension
  * @access public
  * @return Icon name with extension on success, FALSE on failure
  */
-function biticon_first_match( $pDir, $pFilename, $size = true ) {
-	if( is_dir( $pDir ) ) {
-		global $gSniffer, $gBitSystem;
+function biticon_first_match( $pDir, $pFilename ) {
+	if( is_dir( $pDir )) {
+		global $gSniffer;
 
 		// if this is MSIE < 7, we try png last.
-		if( !$gBitSystem->isFeatureActive( 'themes_use_msie_png_hack' ) && $gSniffer->_browser_info['browser'] == 'ie' && $gSniffer->_browser_info['maj_ver'] < 7 ) {
+		if( $gSniffer->_browser_info['browser'] == 'ie' && $gSniffer->_browser_info['maj_ver'] < 7 ) {
 			$extensions = array( 'gif', 'jpg', 'png' );
 		} else {
 			$extensions = array( 'png', 'gif', 'jpg' );
-		}
-		
-		// Add other icon sizes but extending the icon name with the size
-		// Default is small icons
-		$icon_size = $gBitSystem->getConfig( 'site_icon_size', 'small' );
-		if ( $size && $icon_size != 'small' ) {
-			$pFilename .= '_'.$icon_size;
 		}
 
 		foreach( $extensions as $ext ) {
@@ -43,7 +36,7 @@ function biticon_first_match( $pDir, $pFilename, $size = true ) {
 
 /**
  * Turn collected information into an html image
- *
+ * 
  * @param boolean $pParams['url'] set to TRUE if you only want the url and nothing else
  * @param string $pParams['iexplain'] Explanation of what the icon represents
  * @param string $pParams['iforce'] takes following optins: icon, icon_text, text - will override system settings
@@ -113,8 +106,8 @@ function biticon_output( $pParams, $pFile ) {
 }
 
 /**
- * smarty_function_biticon
- *
+ * smarty_function_biticon 
+ * 
  * @param array $pParams['ipath'] subdirectory within icon directory
  * @param array $pParams['iname'] name of the icon without extension
  * @param array $pParams['ipackage'] package the icon should be searched for - if it's part of an icon theme, this should be set to 'icons'
@@ -122,96 +115,122 @@ function biticon_output( $pParams, $pFile ) {
  * @access public
  * @return final <img>
  */
-function smarty_function_biticon( $pParams, &$gBitSmarty ) {
+function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE ) {
 	global $gBitSystem, $gBitThemes;
 
-	if( !isset( $pParams['ipath'] ) ) {
-		$pParams['ipath'] = '';
+	// this is needed in case everything goes horribly wrong
+	$copyParams = $pParams;
+
+	// ensure that ipath has a leading and trailing slash
+	if( !empty( $pParams['ipath'] )) {
+		$pParams['ipath'] = str_replace( "//", "/", "/".$pParams['ipath']."/" );
+	} else {
+		$pParams['ipath'] = '/';
 	}
 
-	$size = true;
-	// use '_medium' or '_large' for extra scaled icons
-	if( isset( $pParams['ipackage'] ) ) {
+	// try to separate iname from ipath if we've been given some sloppy naming
+	if( strstr( $pParams['iname'], '/' )) {
+		if( !empty( $pParams['ipath'] )) {
+			$pParams['iname'] = $pParams['ipath'].$pParams['iname'];
+		}
+		$boom = explode( '/', $pParams['iname'] );
+		$pParams['iname'] = array_pop( $boom );
+		$pParams['ipath'] = implode( $boom, '/' ).'/';
+	}
+
+	// if we don't have an ipath yet, we will set it here
+	if( $pParams['ipath'] == '/' ) {
+		// iforce is generally only set in menus - we might need a parameter to identify menus more accurately
+		if( $pParams['ilocation'] == 'menu' ) {
+			$pParams['ipath'] .= 'small/';
+		} else {
+			$pParams['ipath'] .= $gBitSystem->getConfig( 'site_icon_size', 'small' ).'/';
+		}
+	}
+
+	if( $pCheckSmall ) {
+		$pParams['ipath'] = preg_replace( "!large/?$!", "small/", $pParams['ipath'] );
+	}
+
+	// we have one special case: pkg_icons don't have a large variant
+	if( strstr( $pParams['iname'], 'pkg_' ) && strstr( $pParams['ipath'], 'large' )) {
+		$pParams['ipath'] = preg_replace( "!large/?$!", "", $pParams['ipath'] );
+	}
+
+	// make sure ipackage is set correctly
+	if( !empty( $pParams['ipackage'] )) {
 		$pParams['ipackage'] = strtolower( $pParams['ipackage'] );
-		// drop extension for bitweaver liberty icons
-		if ( ($pParams['ipackage'] == 'liberty' && $pParams['ipath'] != '') || $pParams['ipackage'] == 'smileys' || $pParams['ipackage'] == 'quicktags' || preg_match( '/pkg_/i', $pParams['iname'] ) ) $size = false;
 	} else {
 		$pParams['ipackage'] = 'icons';
 	}
 
-	// Make sure we have an icon to get
-	if( isset( $pParams['iname'] ) ){
-		// get out of here as quickly as possible if we've already cached the icon information before
-		if(( $ret = biticon_get_cached( $pParams )) && !( defined( 'TEMPLATE_DEBUG') && TEMPLATE_DEBUG == TRUE )) {
-			return $ret;
-		}
-
-		// Icon styles are treated differently
-		// we need to think about how we want to override these icon themes
-		if( $pParams['ipackage'] == 'icons' ) {
-			// get the current icon style
-			// istyle is a private parameter!!! - only used on theme manager page for icon preview!!!
-			// violators will be poked with soft cushions by the Cardinal himself!!!
-			$icon_style = !empty( $pParams['istyle'] ) ? $pParams['istyle'] : $gBitSystem->getConfig( 'site_icon_style', DEFAULT_ICON_STYLE );
-
-			if( !empty( $pParams['ipath'] ) ) {
-			} elseif( !strstr( $pParams['iname'], '/' ) ) {
-				$pParams['ipath'] = $gBitSystem->getConfig( 'site_icon_size', 'small' );
-			}
-
-			if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/$icon_style/".$pParams['ipath']."/", $pParams['iname'], false ) ) ) {
-				return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/$icon_style/".$pParams['ipath']."/".$matchFile );
-			}
-
-			if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/", $pParams['iname'], false ) ) ) {
-				return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/".DEFAULT_ICON_STYLE."/".$pParams['ipath']."/".$matchFile );
-			}
-
-			// if that didn't work, we'll try liberty
-			$pParams['ipath'] = '';
-			$pParams['ipackage'] = 'liberty';
-		}
-
-		// first check themes/force
-		if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."force/icons/".$pParams['ipackage'].'/'.$pParams['ipath'],$pParams['iname'] ) ) ) {
-			return biticon_output( $pParams, BIT_ROOT_URL."themes/force/icons/".$pParams['ipackage'].'/'.$pParams['ipath'].$matchFile );
-		}
-
-		//if we have site styles, look there
-		if( FALSE !== ( $matchFile = biticon_first_match( $gBitThemes->getStylePath().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'],$pParams['iname'] ) ) ) {
-			return biticon_output( $pParams, $gBitThemes->getStyleUrl().'/icons/'.$pParams['ipackage']."/".$pParams['ipath'].$matchFile );
-		}
-
-		//Well, then lets look in the package location
-		if( FALSE !== ( $matchFile = biticon_first_match( $gBitSystem->mPackages[$pParams['ipackage']]['path']."icons/".$pParams['ipath'],$pParams['iname'], $size ) ) ) {
-			return biticon_output( $pParams, constant( strtoupper( $pParams['ipackage'] ).'_PKG_URL' )."icons/".$pParams['ipath'].$matchFile );
-		}
-
-		//Well, then lets look in the default location
-		if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."styles/default/icons/".$pParams['ipackage']."/".$pParams['ipath'],$pParams['iname'] ) ) ) {
-			return biticon_output( $pParams, THEMES_PKG_URL."styles/default/icons/".$pParams['ipackage']."/".$pParams['ipath'].$matchFile );
-		}
+	// get out of here as quickly as possible if we've already cached the icon information before
+	if(( $ret = biticon_get_cached( $pParams )) && !( defined( 'TEMPLATE_DEBUG') && TEMPLATE_DEBUG == TRUE )) {
+		return $ret;
 	}
 
-	//Still didn't find it! Well lets output something (return FALSE if only the url is requested)
-	if( isset( $pParams['url'] ) ) {
+	// first deal with most common scenario: icon themes
+	if( $pParams['ipackage'] == 'icons' ) {
+		// get the current icon style
+		// istyle is a private parameter!!! - only used on theme manager page for icon preview!!!
+		// violators will be poked with soft cushions by the Cardinal himself!!!
+		$icon_style = !empty( $pParams['istyle'] ) ? $pParams['istyle'] : $gBitSystem->getConfig( 'site_icon_style', DEFAULT_ICON_STYLE );
+
+		if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/$icon_style".$pParams['ipath'], $pParams['iname'] ))) {
+			return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/$icon_style".$pParams['ipath'].$matchFile );
+		}
+
+		if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."icon_styles/".DEFAULT_ICON_STYLE.$pParams['ipath'], $pParams['iname'] ))) {
+			return biticon_output( $pParams, THEMES_PKG_URL."icon_styles/".DEFAULT_ICON_STYLE.$pParams['ipath'].$matchFile );
+		}
+
+		// if that didn't work, we'll try liberty
+		$pParams['ipath'] = $gBitSystem->getConfig( 'site_icon_size', 'small' ).'/';
+		$pParams['ipackage'] = 'liberty';
+	}
+
+	// since package icons reside in <pkg>/icons/ we don't need the small/ subdir
+	$pParams['ipath'] = preg_replace( "!small/?$!", "", $pParams['ipath'] );
+
+
+	// first check themes/force
+	if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."force/icons/".$pParams['ipackage'].$pParams['ipath'], $pParams['iname'] ))) {
+		return biticon_output( $pParams, BIT_ROOT_URL."themes/force/icons/".$pParams['ipackage'].$pParams['ipath'].$matchFile );
+	}
+
+	//if we have site styles, look there
+	if( FALSE !== ( $matchFile = biticon_first_match( $gBitThemes->getStylePath().'/icons/'.$pParams['ipackage'].$pParams['ipath'], $pParams['iname'] ))) {
+		return biticon_output( $pParams, $gBitThemes->getStyleUrl().'/icons/'.$pParams['ipackage'].$pParams['ipath'].$matchFile );
+	}
+
+	//Well, then lets look in the package location
+	if( FALSE !== ( $matchFile = biticon_first_match( $gBitSystem->mPackages[$pParams['ipackage']]['path']."icons".$pParams['ipath'], $pParams['iname'] ))) {
+		return biticon_output( $pParams, constant( strtoupper( $pParams['ipackage'] ).'_PKG_URL' )."icons".$pParams['ipath'].$matchFile );
+	}
+
+	// Still didn't find it! Well lets output something (return FALSE if only the url is requested)
+	if( isset( $pParams['url'] )) {
 		return FALSE;
 	} else {
-		return biticon_output($pParams, "broken.".$pParams['ipackage']."/".$pParams['ipath'].
-							  (empty($pParams['iname']) ? 'missing-iname' : $pParams['iname']));
+		// if we were looking for the large icon, we'll try the whole kaboodle again, looking for the small icon
+		if( preg_match( "!large/?$!", $pParams['ipath'] )) {
+			return smarty_function_biticon( $copyParams, $gBitSmarty, TRUE );
+		} else {
+			return biticon_output( $pParams, "broken.".$pParams['ipackage']."/".$pParams['ipath'].$pParams['iname'] );
+		}
 	}
 }
 
 /**
- * biticon_cache
- *
- * @param array $pParams
+ * biticon_cache 
+ * 
+ * @param array $pParams 
  * @access public
  * @return cached icon string on sucess, FALSE on failure
  */
 function biticon_get_cached( $pParams ) {
 	$ret = FALSE;
-//	$cacheFile = biticon_get_cache_file( $pParams );
+	$cacheFile = biticon_get_cache_file( $pParams );
 	if( is_readable( $cacheFile )) {
 		if( $h = fopen( $cacheFile, 'r' )) {
 			$ret = fread( $h, filesize( $cacheFile ));
@@ -223,9 +242,9 @@ function biticon_get_cached( $pParams ) {
 }
 
 /**
- * biticon_write_cache
- *
- * @param array $pParams
+ * biticon_write_cache 
+ * 
+ * @param array $pParams 
  * @access public
  * @return TRUE on success, FALSE on failure
  */
@@ -243,36 +262,24 @@ function biticon_write_cache( $pParams, $pCacheString ) {
 
 /**
  * will get the path to the cache files based on the stuff in $pParams
- *
- * @param array $pParams
+ * 
+ * @param array $pParams 
  * @access public
  * @return full path to cachefile
  */
 function biticon_get_cache_file( $pParams ) {
-	global $gSniffer, $gBitThemes, $gBitSystem, $gBitLanguage;
-	$cachedir = $gBitThemes->getIconCachePath();
-
-	if( !empty( $pParams['ipackage'] ) && $pParams['ipackage'] == 'icons' ) {
-		if( !strstr( $pParams['iname'], '/' ) ) {
-			$pParams['ipath'] = $gBitSystem->getConfig( 'site_icon_size', 'small' );
-		}
-	}
+	global $gBitThemes;
 
 	// create a hash filename based on the parameters given
 	$hashstring = '';
-	$ihash = array( 'iforce', 'ipath', 'iname', 'iexplain', 'ipackage', 'url', 'istyle' );
+	$ihash = array( 'iforce', 'ipath', 'iname', 'iexplain', 'ipackage', 'url' );
 	foreach( $pParams as $param => $value ) {
 		if( in_array( $param, $ihash )) {
 			$hashstring .= strtolower( $value );
 		}
 	}
 
-	$hashstring .= $gBitSystem->getConfig( 'site_biticon_display_style' );
-	// needed to correctly cache icon size changes for non-theme set icons
-	$hashstring .= $gBitSystem->getConfig( 'site_icon_size', 'small' );
-
-	// finally we append browser with its major version since we have browser-specific stuff in biticon
-	// we also append bitversion to invalidate cache in case something has changed since the last release
-	return $cachedir.md5( $hashstring ).'_'.$gBitLanguage->getLanguage()."_".BIT_MAJOR_VERSION.BIT_MINOR_VERSION.BIT_SUB_VERSION."_".$gSniffer->_browser_info['browser'].$gSniffer->_browser_info['maj_ver'];
+	// return path to cache file
+	return $gBitThemes->getIconCachePath().md5( $hashstring );
 }
 ?>

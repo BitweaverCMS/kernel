@@ -130,12 +130,10 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 
 	// try to separate iname from ipath if we've been given some sloppy naming
 	if( strstr( $pParams['iname'], '/' )) {
-		if( !empty( $pParams['ipath'] )) {
-			$pParams['iname'] = $pParams['ipath'].$pParams['iname'];
-		}
+		$pParams['iname'] = $pParams['ipath'].$pParams['iname'];
 		$boom = explode( '/', $pParams['iname'] );
 		$pParams['iname'] = array_pop( $boom );
-		$pParams['ipath'] = implode( $boom, '/' ).'/';
+		$pParams['ipath'] = str_replace( "//", "/", "/".implode( $boom, '/' )."/" );
 	}
 
 	// if we don't have an ipath yet, we will set it here
@@ -148,13 +146,14 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 		}
 	}
 
+	// this only happens when we haven't found the original icon we've been looking for
 	if( $pCheckSmall ) {
-		$pParams['ipath'] = preg_replace( "!large/?$!", "small/", $pParams['ipath'] );
+		$pParams['ipath'] = preg_replace( "!/.*?/$!", "/small/", $pParams['ipath'] );
 	}
 
-	// we have one special case: pkg_icons don't have a large variant
-	if( strstr( $pParams['iname'], 'pkg_' ) && strstr( $pParams['ipath'], 'large' )) {
-		$pParams['ipath'] = preg_replace( "!large/?$!", "", $pParams['ipath'] );
+	// we have one special case: pkg_icons don't have a size variant
+	if( strstr( $pParams['iname'], 'pkg_' ) && !strstr( $pParams['ipath'], 'small' )) {
+		$pParams['ipath'] = preg_replace( "!/.*?/$!", "/", $pParams['ipath'] );
 	}
 
 	// make sure ipackage is set correctly
@@ -165,7 +164,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 	}
 
 	// get out of here as quickly as possible if we've already cached the icon information before
-	if(( $ret = biticon_get_cached( $pParams )) && !( defined( 'TEMPLATE_DEBUG') && TEMPLATE_DEBUG == TRUE )) {
+	if(( $ret = biticon_get_cached( $pParams )) && !( defined( 'TEMPLATE_DEBUG' ) && TEMPLATE_DEBUG == TRUE )) {
 		return $ret;
 	}
 
@@ -190,8 +189,10 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 	}
 
 	// since package icons reside in <pkg>/icons/ we don't need the small/ subdir
-	$pParams['ipath'] = preg_replace( "!small/?$!", "", $pParams['ipath'] );
-
+	if( strstr( "/small/", $pParams['ipath'] )) {
+		$pParams['ipath'] = preg_replace( "!/small/$!", "/", $pParams['ipath'] );
+		$small = TRUE;
+	}
 
 	// first check themes/force
 	if( FALSE !== ( $matchFile = biticon_first_match( THEMES_PKG_PATH."force/icons/".$pParams['ipackage'].$pParams['ipath'], $pParams['iname'] ))) {
@@ -213,7 +214,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 		return FALSE;
 	} else {
 		// if we were looking for the large icon, we'll try the whole kaboodle again, looking for the small icon
-		if( preg_match( "!large/?$!", $pParams['ipath'] )) {
+		if( empty( $small )) {
 			return smarty_function_biticon( $copyParams, $gBitSmarty, TRUE );
 		} else {
 			return biticon_output( $pParams, "broken.".$pParams['ipackage']."/".$pParams['ipath'].$pParams['iname'] );

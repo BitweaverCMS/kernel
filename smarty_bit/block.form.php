@@ -34,7 +34,7 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 			$url = '';
 		}
 		// We need an onsubmit handler in safari to show all tabs again so uploads in hidden tabs work
-		$onsubmit="disposeAllTabs();";
+		$onsubmit="disposeAllTabs()";
 		foreach( $params as $key => $val ) {
 			switch( $key ) {
 				case 'ifile':

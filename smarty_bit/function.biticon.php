@@ -184,7 +184,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 		}
 
 		// if that didn't work, we'll try liberty
-		$pParams['ipath'] = $gBitSystem->getConfig( 'site_icon_size', 'small' ).'/';
+		$pParams['ipath'] = '/'.$gBitSystem->getConfig( 'site_icon_size', 'small' ).'/';
 		$pParams['ipackage'] = 'liberty';
 	}
 

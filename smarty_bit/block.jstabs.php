@@ -29,19 +29,18 @@ function smarty_block_jstabs( $pParams, $pContent, &$gBitSmarty ) {
 	if( $gBitSystem->isFeatureActive( 'site_disable_jstabs' ) ) {
 		$ret .= '<div class="tabpane">'.$pContent.'</div>';
 	} else {
-		if( !empty( $tab ) || !empty( $_REQUEST['jstab'] ) ) {
+		if( isset( $tab ) || isset( $_REQUEST['jstab'] ) ) {
 			// make sure we aren't passed any evil shit
-			if( empty( $tab ) && !empty( $_REQUEST['jstab'] ) && preg_match( "!^\d+$!", $_REQUEST['jstab'] ) ) {
+			if( !isset( $tab ) && isset( $_REQUEST['jstab'] ) && preg_match( "!^\d+$!", $_REQUEST['jstab'] ) ) {
 				$tab = $_REQUEST['jstab'];
 			}
-			$id = 1000000 * microtime();
-			$ret .= '<div class="tabpane" id="id_'.$id.'">';
-			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ tabPane = new WebFXTabPane( $( 'id_".$id."' ), true ); /*]]>*/</script>";
+			$ret .= '<div class="tabpane"'.(empty($id)?'':' id="'.$id.'"').'>';
+			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ WebFXTabPane.setCookie( 'webfxtab_".(empty($id)?'':$id)."', $tab );/*]]>*/</script>";
 			$ret .= $pContent;
-			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();var tabPane;tabPane.setSelectedIndex( $tab );/*]]>*/</script>";
+			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs(); /*]]>*/</script>";
 			$ret .= '</div>';
 		} else {
-			$ret .= '<div class="tabpane">';
+			$ret .= '<div class="tabpane"'.(empty($id)?'':' id="'.$id.'"').'>';
 			$ret .= $pContent;
 			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();var tabPane; /*]]>*/</script>";
 			$ret .= '</div>';

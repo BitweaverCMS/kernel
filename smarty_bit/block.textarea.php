@@ -18,6 +18,7 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 	global $gBitSystem, $gContent;
 	$attributes = '';
 	$style = '';
+	$class = 'wysiwyg';
 	if (empty($pParams['rows'])) {
 		$pParams['rows'] = (empty($_COOKIE['rows']) ? $gBitSystem->getConfig('liberty_textarea_height', 20) : $_COOKIE['rows']);
 	}
@@ -35,6 +36,9 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 		case 'noformat':
 		case 'label':
 			$gBitSmarty->assign("textarea_".$_key, $_value);
+			break;
+		case 'class':
+			$class .= ' '.$_key;
 			break;
 		case 'style':
 			$style .= $_key;
@@ -60,7 +64,7 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 	if (!empty($style)) {
 		$gBitSmarty->assign('textarea_style', 'style="'.$style.'"');
 	}
-	
+	$gBitSmarty->assign('textarea_class', 'class="'.$class.'"');
 	$ret = $gBitSmarty->fetch("bitpackage:liberty/edit_textarea.tpl");
 
 	// Restore gContent

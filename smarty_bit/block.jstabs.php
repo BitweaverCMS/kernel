@@ -27,20 +27,20 @@ function smarty_block_jstabs( $pParams, $pContent, &$gBitSmarty ) {
 
 	// When tabs are disabled, we simply wrap the tabs with the appropriate div for styling
 	if( $gBitSystem->isFeatureActive( 'site_disable_jstabs' ) ) {
-		$ret .= '<div class="tabpane">'.$pContent.'</div>';
+		$ret = '<div class="tabpane">'.$pContent.'</div>';
 	} else {
 		if( isset( $tab ) || isset( $_REQUEST['jstab'] ) ) {
 			// make sure we aren't passed any evil shit
 			if( !isset( $tab ) && isset( $_REQUEST['jstab'] ) && preg_match( "!^\d+$!", $_REQUEST['jstab'] ) ) {
 				$tab = $_REQUEST['jstab'];
 			}
-			$ret .= '<div class="tabpane"'.(empty($id)?'':' id="'.$id.'"').'>';
+			$ret = '<div class="tabpane"'.(empty($id)?'':' id="'.$id.'"').'>';
 			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ WebFXTabPane.setCookie( 'webfxtab_".(empty($id)?'':$id)."', $tab );/*]]>*/</script>";
 			$ret .= $pContent;
 			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs(); /*]]>*/</script>";
 			$ret .= '</div>';
 		} else {
-			$ret .= '<div class="tabpane"'.(empty($id)?'':' id="'.$id.'"').'>';
+			$ret = '<div class="tabpane"'.(empty($id)?'':' id="'.$id.'"').'>';
 			$ret .= $pContent;
 			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();var tabPane; /*]]>*/</script>";
 			$ret .= '</div>';

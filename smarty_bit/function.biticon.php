@@ -139,7 +139,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 	// if we don't have an ipath yet, we will set it here
 	if( $pParams['ipath'] == '/' ) {
 		// iforce is generally only set in menus - we might need a parameter to identify menus more accurately
-		if( $pParams['ilocation'] == 'menu' ) {
+		if( !empty( $pParams['ilocation'] ) && $pParams['ilocation'] == 'menu' ) {
 			$pParams['ipath'] .= 'small/';
 		} else {
 			$pParams['ipath'] .= $gBitSystem->getConfig( 'site_icon_size', 'small' ).'/';

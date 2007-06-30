@@ -214,7 +214,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 		return FALSE;
 	} else {
 		// if we were looking for the large icon, we'll try the whole kaboodle again, looking for the small icon
-		if( empty( $small )) {
+		if( empty( $small ) && !$pCheckSmall ) {
 			return smarty_function_biticon( $copyParams, $gBitSmarty, TRUE );
 		} else {
 			return biticon_output( $pParams, "broken.".$pParams['ipackage']."/".$pParams['ipath'].$pParams['iname'] );

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.4 2007/06/22 10:15:51 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.5 2007/07/01 14:56:55 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -634,23 +634,6 @@ function clean_file_path( $pPath ) {
 	return $pPath;
 }
 
-function chkgd2() {
-	if (!isset($_SESSION['havegd2'])) {
-#	TODO test this logic in PHP 4.3
-#	if (version_compare(phpversion(), "4.3.0") >= 0) {
-#		$_SESSION['havegd2'] = true;
-#	} else {
-		ob_start();
-
-		phpinfo (INFO_MODULES);
-		$_SESSION['havegd2'] = preg_match('/GD Version.*2.0/', ob_get_contents());
-		ob_end_clean();
-#	}
-	}
-
-	return $_SESSION['havegd2'];
-}
-
 function httpScheme() {
 	return 'http'.( ( isset($_SERVER['HTTPS'] ) && ( $_SERVER['HTTPS'] == 'on' ) ) ? 's' : '' );
 }
@@ -741,6 +724,12 @@ function compare_changed( $ar1, $ar2 ) {
 
 function r_compare_changed( $ar1, $ar2 ) {
 	return $ar2["lastChanged"] - $ar1["lastChanged"];
+}
+
+
+// ======================= deprecated functions =======================
+function chkgd2() {
+	deprecated( 'Please use get_gd_version() instead' );
 }
 
 ?>

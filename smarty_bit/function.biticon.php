@@ -46,20 +46,17 @@ function biticon_first_match( $pDir, $pFilename ) {
  * @return Full <img> on success
  */
 function biticon_output( $pParams, $pFile ) {
-	global $gBitSystem, $gSniffer;
+	global $gBitSystem;
 	$iexplain = isset( $pParams["iexplain"] ) ? tra( $pParams["iexplain"] ) : 'please set iexplain';
 
-	// text browsers don't need to see forced icons - usually part of menus or javascript stuff
-	if( !empty( $pParams['iforce'] ) && $pParams['iforce'] == 'icon' && ( $gSniffer->_browser_info['browser'] == 'lx' || $gSniffer->_browser_info['browser'] == 'li' ) ) {
-		return '';
-	} elseif( empty( $pParams['iforce'] ) ) {
+	if( empty( $pParams['iforce'] )) {
 		$pParams['iforce'] = NULL;
 	}
 
-	if( isset( $pParams["url"] ) ) {
+	if( isset( $pParams["url"] )) {
 		$outstr = $pFile;
 	} else {
-		if( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'text' && $pParams['iforce'] != 'icon' ) {
+		if(( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'text' || $pParams['iforce'] == 'text' ) && $pParams['iforce'] != 'icon' ) {
 			$outstr = $iexplain;
 		} else {
 			$outstr='<img src="'.$pFile.'"';
@@ -116,7 +113,7 @@ function biticon_output( $pParams, $pFile ) {
  * @return final <img>
  */
 function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE ) {
-	global $gBitSystem, $gBitThemes;
+	global $gBitSystem, $gBitThemes, $gSniffer;
 
 	// this is needed in case everything goes horribly wrong
 	$copyParams = $pParams;
@@ -141,6 +138,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 		// iforce is generally only set in menus - we might need a parameter to identify menus more accurately
 		if( !empty( $pParams['ilocation'] ) && $pParams['ilocation'] == 'menu' ) {
 			$pParams['ipath'] .= 'small/';
+			$pParams['iforce'] = 'icon_text';
 		} else {
 			$pParams['ipath'] .= $gBitSystem->getConfig( 'site_icon_size', 'small' ).'/';
 		}
@@ -163,8 +161,13 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 		$pParams['ipackage'] = 'icons';
 	}
 
+	// if the user is using a text-browser we force text instead of icons
+	if( $gSniffer->_browser_info['browser'] == 'lx' || $gSniffer->_browser_info['browser'] == 'li' ) {
+		$pParams['iforce'] = 'text';
+	}
+
 	// get out of here as quickly as possible if we've already cached the icon information before
-	if(( $ret = biticon_get_cached( $pParams )) && !( defined( 'TEMPLATE_DEBUG' ) && TEMPLATE_DEBUG == TRUE )) {
+	if(( $ret = biticon_read_cache( $pParams )) && !( defined( 'TEMPLATE_DEBUG' ) && TEMPLATE_DEBUG == TRUE )) {
 		return $ret;
 	}
 
@@ -190,7 +193,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
 
 	// since package icons reside in <pkg>/icons/ we don't need the small/ subdir
 	if( strstr( "/small/", $pParams['ipath'] )) {
-		$pParams['ipath'] = preg_replace( "!/small/$!", "/", $pParams['ipath'] );
+		$pParams['ipath'] = str_replace( "small/", "", $pParams['ipath'] );
 		$small = TRUE;
 	}
 
@@ -229,7 +232,7 @@ function smarty_function_biticon( $pParams, &$gBitSmarty, $pCheckSmall = FALSE )
  * @access public
  * @return cached icon string on sucess, FALSE on failure
  */
-function biticon_get_cached( $pParams ) {
+function biticon_read_cache( $pParams ) {
 	$ret = FALSE;
 	$cacheFile = biticon_get_cache_file( $pParams );
 	if( is_readable( $cacheFile )) {

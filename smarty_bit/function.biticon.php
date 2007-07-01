@@ -66,7 +66,7 @@ function biticon_output( $pParams, $pFile ) {
 				$outstr .= ' alt=""';
 			}
 
-			$ommit = array( 'ipackage', 'ipath', 'iname', 'iexplain', 'iforce', 'istyle', 'iclass' );
+			$ommit = array( 'ilocation', 'ipackage', 'ipath', 'iname', 'iexplain', 'iforce', 'istyle', 'iclass' );
 			foreach( $pParams as $name => $val ) {
 				if( !in_array( $name, $ommit ) ) {
 					$outstr .= ' '.$name.'="'.$val.'"';

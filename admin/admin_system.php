@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.12 2007/06/24 14:46:05 lsces Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.13 2007/07/01 20:10:39 bitweaver Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -31,7 +31,7 @@ $diskUsage = array(
 	),
 	'icons' => array(
 		// we dirname() this to get the top level icon cache dir that nuking icons will remove all cached icons
-		'path' => dirname( $gBitThemes->getIconCachePath() ),
+		'path' => TEMP_PKG_PATH.'themes/biticon',
 		'title' => tra( 'Icons' ),
 	),
 	'liberty' => array(

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.138 2007/06/23 09:28:04 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.139 2007/07/02 06:03:43 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -817,7 +817,8 @@ class BitSystem extends BitBase {
 
 		// Define the package we are currently in
 		// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
-		if( !defined( 'ACTIVE_PACKAGE' ) && ( isset( $_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '!/'.$this->mPackages[$pkgNameKey]['dir'].'/!', $_SERVER['PHP_SELF'] ) || preg_match( '!/'.$pkgNameKey.'/!', $_SERVER['PHP_SELF'] ))) {
+		$scriptDir = ( basename( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );
+		if( !defined( 'ACTIVE_PACKAGE' ) && ( $scriptDir == constant( $pkgName.'_PKG_DIR' ) || isset( $_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '!/'.$this->mPackages[$pkgNameKey]['dir'].'/!', $_SERVER['PHP_SELF'] ) || preg_match( '!/'.$pkgNameKey.'/!', $_SERVER['PHP_SELF'] ))) {
 			if( isset( $_SERVER['ACTIVE_PACKAGE'] )) {
 				// perhaps the webserver told us the active package (probably because of mod_rewrites)
 				$pkgNameKey = $_SERVER['ACTIVE_PACKAGE'];

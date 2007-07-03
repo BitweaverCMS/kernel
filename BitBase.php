@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.39 2007/06/17 08:19:31 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.40 2007/07/03 20:42:50 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -270,5 +270,99 @@ class BitBase {
 			$pListHash['parse_data'] = FALSE;
 		}
 	}
+
+
+	/**
+	* Updates results from any getList function to provide the control set
+	* displaying in the smarty template
+	* @param array hash of parameters returned by any getList() function
+	* @return - none the hash is updated via the reference
+	*/
+	function postGetList( &$pListHash ) {
+		global $gBitSystem;
+		$pListHash['listInfo']['total_records'] = $pListHash["cant"];
+		$pListHash['listInfo']['total_pages'] = ceil( $pListHash["cant"] / $pListHash['max_records'] );
+		$pListHash['listInfo']['current_page'] = 1 + ( $pListHash['offset'] / $pListHash['max_records'] );
+
+		if( $pListHash["cant"] > ( $pListHash['offset'] + $pListHash['max_records'] ) ) {
+			$pListHash['listInfo']['next_offset'] = $pListHash['offset'] + $pListHash['max_records'];
+		} else {
+			$pListHash['listInfo']['next_offset'] = -1;
+		}
+
+		// If offset is > 0 then prev_offset
+		if( $pListHash['offset'] > 0 ) {
+			$pListHash['listInfo']['prev_offset'] = $pListHash['offset'] - $pListHash['max_records'];
+		} else {
+			$pListHash['listInfo']['prev_offset'] = -1;
+		}
+
+		$pListHash['listInfo']['offset'] = $pListHash['offset'];
+		$pListHash['listInfo']['find'] = $pListHash['find'];
+		$pListHash['listInfo']['sort_mode'] = $pListHash['sort_mode'];
+		$pListHash['listInfo']['max_records'] = $pListHash['max_records'];
+
+		// calculate what links to show
+		if( $gBitSystem->isFeatureActive( 'site_direct_pagination' ) ) {
+			// number of continuous links to display on either side
+			$continuous = 5;
+			// number of skipping links to display on either side
+			$skipping = 5;
+
+			// size of steps to take when skipping
+			// if you have more than 1000 pages, you should consider not using the pagination form
+			if( $pListHash['listInfo']['total_pages'] < 50 ) {
+				$step = 5;
+			} elseif( $pListHash['listInfo']['total_pages'] < 100 ) {
+				$step = 10;
+			} elseif( $pListHash['listInfo']['total_pages'] < 250 ) {
+				$step = 25;
+			} elseif( $pListHash['listInfo']['total_pages'] < 500 ) {
+				$step = 50;
+			} else {
+				$step = 100;
+			}
+
+			$prev  = ( $pListHash['listInfo']['current_page'] - $continuous > 0 ) ? $pListHash['listInfo']['current_page'] - $continuous : 1;
+			$next  = ( $pListHash['listInfo']['current_page'] + $continuous < $pListHash['listInfo']['total_pages'] ) ? $pListHash['listInfo']['current_page'] + $continuous : $pListHash['listInfo']['total_pages'];
+			for( $i = $pListHash['listInfo']['current_page'] - 1; $i >= $prev; $i -= 1 ) {
+				$pListHash['listInfo']['block']['prev'][$i] = $i;
+			}
+			if( $prev != 1 ) {
+				// replace the last of the continuous links with a ...
+				$pListHash['listInfo']['block']['prev'][$i + 1] = "&hellip;";
+				// add $skipping links to pages separated by $step pages
+				if( ( $min = $pListHash['listInfo']['current_page'] - $continuous - ( $step * $skipping ) ) < 0 ) {
+					$min = 0;
+				}
+				for( $j = ( floor( $i / $step ) * $step ); $j > $min; $j -= $step ) {
+					$pListHash['listInfo']['block']['prev'][$j] = $j;
+				}
+				$pListHash['listInfo']['block']['prev'][1] = 1;
+			}
+			// reverse array that links are in the correct order
+			if( !empty( $pListHash['listInfo']['block']['prev'] ) ) {
+				$pListHash['listInfo']['block']['prev'] = array_reverse( $pListHash['listInfo']['block']['prev'], TRUE );
+			}
+
+			// here we start adding next links
+			for( $i = $pListHash['listInfo']['current_page'] + 1; $i <= $next; $i += 1 ) {
+				$pListHash['listInfo']['block']['next'][$i] = $i;
+			}
+			if( $next != $pListHash['listInfo']['total_pages'] ) {
+				// replace the last of the continuous links with a ...
+				$pListHash['listInfo']['block']['next'][$i - 1] = "&hellip;";
+				// add $skipping links to pages separated by $step pages
+				if( ( $max = $pListHash['listInfo']['current_page'] + $continuous + ( $step * $skipping ) ) > $pListHash['listInfo']['total_pages'] ) {
+					$max = $pListHash['listInfo']['total_pages'];
+				}
+				for( $j = ( ceil( $i / $step ) * $step ); $j < $max; $j += $step ) {
+					$pListHash['listInfo']['block']['next'][$j] = $j;
+				}
+				$pListHash['listInfo']['block']['next'][$pListHash['listInfo']['total_pages']] = $pListHash['listInfo']['total_pages'];
+			}
+		}
+	}
+
 }
 ?>

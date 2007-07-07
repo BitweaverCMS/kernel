@@ -3,7 +3,7 @@
  * Basic cache handling
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.8 2007/06/30 15:18:10 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.9 2007/07/07 17:22:58 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -127,6 +127,20 @@ class BitCache {
 		if( $this->isCached( $pFile )) {
 			unlink( $this->getCacheFile( $pFile ));
 		}
+	}
+
+	/**
+	 * remove the entire cache in the cache folder
+	 * 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure
+	 */
+	function expungeCache() {
+		$ret = unlink_r( $this->mFolder );
+		if( !is_dir( $this->mFolder )) {
+			mkdir_p( $this->mFolder );
+		}
+		return $ret;
 	}
 
 	/**

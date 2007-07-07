@@ -100,7 +100,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 						}
 					}
 				} else {
-					$ret_note .= tra( $rawHash['note'] );
+					$ret_note .= tra( $rawHash['note'] ).'<br />';
 				}
 			}
 
@@ -109,11 +109,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 			}
 
 			// join all the output content into one string
-			$content  = '';
-			$content .= $ret_note;
-			$content .= $ret_page;
-			$content .= $ret_link;
-			$content .= $ret_install;
+			$content = $ret_note.$ret_page.$ret_link.$ret_install;
 
 			$html = '';
 			// using the overlib popup system
@@ -150,9 +146,7 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 					$html .= '</a>';
 					$html .= '</span>';
 				} else {
-					$html .= '<div class="formhelp" '.$atts.'>';
-					$html .= $content;
-					$html .= '</div>';
+					$html .= '<div class="formhelp" '.$atts.'>'.$content.'</div>';
 				}
 			}
 

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.13 2007/07/01 20:10:39 bitweaver Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.14 2007/07/07 18:17:40 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -19,6 +19,10 @@ $diskUsage = array(
 		'path' => TEMP_PKG_PATH.'lang',
 		'title' => tra( 'Language Files' ),
 	),
+	'shoutbox' => array(
+		'path' => TEMP_PKG_PATH.'shoutbox',
+		'title' => tra( 'Shoutbox' ),
+	),
 	'modules' => array(
 		'path' => TEMP_PKG_PATH.'modules/cache',
 		'title' => tra( 'Modules' ),
@@ -30,7 +34,6 @@ $diskUsage = array(
 		'subdir' => $bitdomain,
 	),
 	'icons' => array(
-		// we dirname() this to get the top level icon cache dir that nuking icons will remove all cached icons
 		'path' => TEMP_PKG_PATH.'themes/biticon',
 		'title' => tra( 'Icons' ),
 	),
@@ -38,22 +41,21 @@ $diskUsage = array(
 		'path' => LibertyContent::getCacheBasePath(),
 		'title' => tra( 'Liberty' ),
 	),
-);
-
-// nexus menu cache
-if( $gBitSystem->isPackageActive( 'nexus' )) {
-	$diskUsage['nexus'] = array(
+	'nexus' => array(
 		'path' => TEMP_PKG_PATH.'nexus',
 		'title' => tra( 'Nexus Menus' ),
-	);
-}
-
-// rss feed cache
-if( $gBitSystem->isPackageActive( 'rss' )) {
-	$diskUsage['rss'] = array(
+	),
+	'rss' => array(
 		'path' => TEMP_PKG_PATH.'rss',
 		'title' => tra( 'RSS Feed Cache' ),
-	);
+	),
+);
+
+// make sure we only display paths that exist
+foreach( $diskUsage as $key => $item ) {
+	if( !is_dir( $item['path'] )) {
+		unset( $diskUsage[$key] );
+	}
 }
 
 if( !empty( $_GET['prune'] ) ) {

@@ -1,30 +1,11 @@
 <?php
 /**
- * Basic cache handling
- *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.9 2007/07/07 17:22:58 squareing Exp $
- *
- * Copyright (c) 2004 bitweaver.org
- * Copyright (c) 2003 tikwiki.org
- * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
- * All Rights Reserved. See copyright.txt for details and a complete list of authors.
- * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
- *
- * A basic library to handle caching of some Tiki Objects. Usage is simple and feel free to improve it.
- *
- * Currently used to cache user permissions only. Could be used to store blobs to files and other static
- * database intensive queries.
- *
- * created 2003/11/25
- *
- * @author lrargerich <lrargerich@yahoo.com>
- *
- * @todo Need to implement in more places
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.10 2007/07/08 07:01:30 squareing Exp $
  */
 
 /**
- * A basic library to handle caching of some Tiki Objects. Usage is simple and feel free to improve it.
+ * A basic library to handle caching of various data
  *
  * @package kernel
  */

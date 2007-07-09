@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.14 2007/07/07 18:17:40 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.15 2007/07/09 18:04:50 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -48,6 +48,10 @@ $diskUsage = array(
 	'rss' => array(
 		'path' => TEMP_PKG_PATH.'rss',
 		'title' => tra( 'RSS Feed Cache' ),
+	),
+	'javascript' => array(
+		'path' => STORAGE_PKG_PATH.'javascript',
+		'title' => tra( 'Javascript files' ),
 	),
 );
 

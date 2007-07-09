@@ -45,7 +45,7 @@
 /* ]]> */</script>
 
 {* the order of the js files is crucial *}
-<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/bitweaver.js"></script>
+{jspack ifile=bitweaver.js}
 {if $loadAjax && !$loadDragDrop}
 	{if $loadAjax == 1 || $loadAjax == 'prototype' || $gBitSystem->mAjax == 'prototype'}
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/prototype.js"></script>

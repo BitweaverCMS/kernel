@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.140 2007/07/03 16:49:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.141 2007/07/09 22:03:19 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -377,13 +377,20 @@ class BitSystem extends BitBase {
 		$this->mDisplayOnlyContent = $pOnlyRender;
 	}
 
+	/**
+	 * Load Ajax libraries
+	 * 
+	 * @param array $pAjaxLib Name of the library we want to use e.g.: prototype or mochikit
+	 * @param array $pLibHash Array of additional libraries we need to load
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
 	function loadAjax( $pAjaxLib, $pLibHash=NULL ) {
 		global $gBitSmarty, $gSniffer;
 		$ret = FALSE;
 		$ajaxLib = strtolower( $pAjaxLib );
 		if( $gSniffer->_browser_info['javascript'] ) {
 			if( $ret = ( empty( $this->mAjaxLib ) || $this->mAjaxLib == $ajaxLib ) ) {
-				$gBitSmarty->assign( 'loadAjax', $ajaxLib );
 				$this->mAjax = $ajaxLib;
 				if( is_array( $pLibHash ) ) {
 					$this->mAjaxLibs = array_merge( $this->mAjaxLibs, $pLibHash );

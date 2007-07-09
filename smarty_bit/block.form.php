@@ -20,7 +20,7 @@
  * @todo somehow make the variable that is contained within $iselect global --> this will allow importing of outside variables not set in $_REQUEST
  */
 function smarty_block_form($params, $content, &$gBitSmarty) {
-	global $gBitSystem;
+	global $gBitSystem, $gSniffer;
 
 	if( $content ) {
 		if( !isset( $params['method'] ) ) {
@@ -34,7 +34,9 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 			$url = '';
 		}
 		// We need an onsubmit handler in safari to show all tabs again so uploads in hidden tabs work
-		$onsubmit="disposeAllTabs()";
+		if( $gSniffer->_browser_info['browser'] == 'sf' ) {
+			$onsubmit="disposeAllTabs()";
+		}
 		foreach( $params as $key => $val ) {
 			switch( $key ) {
 				case 'ifile':

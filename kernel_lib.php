@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.5 2007/07/01 14:56:55 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.6 2007/07/10 16:14:32 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -270,7 +270,7 @@ function deprecated( $pReplace = NULL ) {
  * @access public
  * @return encoded email address
  */
-define( 'EMAIL_ADDRESS_REGEX', '\w[-.\w]*\@[-.\w]+\.\w{2,3}' );
+define( 'EMAIL_ADDRESS_REGEX', '\w[+-.\w]*\@[-.\w]+\.\w{2,3}' );
 function encode_email_addresses( $pData ) {
 	$trans = array(
 		// Upper case

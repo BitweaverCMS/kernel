@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.141 2007/07/09 22:03:19 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.142 2007/07/10 16:58:21 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1297,8 +1297,7 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function setOnloadScript( $pJavscript )
-	{
+	function setOnloadScript( $pJavscript ) {
 		array_push( $this->mOnload, $pJavscript );
 	}
 	// === setBrowserTitle
@@ -1309,8 +1308,7 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function getBrowserTitle()
-	{
+	function getBrowserTitle() {
 		global $gPageTitle;
 		return( $gPageTitle );
 	}
@@ -1322,12 +1320,11 @@ class BitSystem extends BitBase {
 	* @return none
 	* @access public
 	*/
-	function setBrowserTitle($pTitle)
-	{
+	function setBrowserTitle( $pTitle ) {
 		global $gBitSmarty, $gPageTitle;
 		$gPageTitle = $pTitle;
-		$gBitSmarty->assign('browserTitle', $pTitle);
-		$gBitSmarty->assign('gPageTitle', $pTitle);
+		$gBitSmarty->assign( 'browserTitle', $pTitle );
+		$gBitSmarty->assign( 'gPageTitle', $pTitle );
 	}
 
 	/*static*/
@@ -1437,22 +1434,6 @@ class BitSystem extends BitBase {
 		return $mime;
 	}
 
-
-	/**
-	* * Return 'windows' if windows, otherwise 'unix'
-	* \static
-	*/
-	function os() {
-		static $os;
-		if( !isset( $os ) ) {
-			if( preg_match( "/WIN/",PHP_OS ) ) {
-				$os = 'windows';
-			} else {
-				$os = 'unix';
-			}
-		}
-		return $os;
-	}
 
 	/**
 	* * Prepend $pPath to the include path
@@ -1677,75 +1658,6 @@ class BitSystem extends BitBase {
 		$checked = true;
 	}
 
-	function pagination_url($find, $sort_mode, $name1 = "", $value1 = "", $name2 = "", $value2 = "") {
-		$url = ($_SERVER['PHP_SELF']);
-		$url .= "?find=$find&amp;sort_mode=$sort_mode";
-		($name1) ? ($url .= "&amp;$name1=$value1") : ("");
-		($name2) ? ($url .= "&amp;$name2=$value2") : ("");
-		return $url;
-	}
-
-	//********************* CACHE METHODS **************************//
-
-	function list_cache($offset, $max_records, $sort_mode, $find) {
-
-		if ($find) {
-		$findesc = '%' . $find . '%';
-
-		$mid = " where (`url` like ?) ";
-		$bindvars=array($findesc);
-		} else {
-		$mid = "";
-		$bindvars=array();
-		}
-
-		$query = "select `cache_id` ,`url`,`refresh` from `".BIT_DB_PREFIX."liberty_link_cache` $mid order by ".$this->mDb->convertSortmode($sort_mode);
-		$query_cant = "select count(*) from `".BIT_DB_PREFIX."liberty_link_cache` $mid";
-		$result = $this->mDb->query($query,$bindvars,$max_records,$offset);
-		$cant = $this->mDb->getOne($query_cant,$bindvars);
-		$ret = array();
-
-		while ($res = $result->fetchRow()) {
-		$ret[] = $res;
-		}
-
-		$retval = array();
-		$retval["data"] = $ret;
-		$retval["cant"] = $cant;
-		return $retval;
-	}
-
-	function refresh_cache($cache_id) {
-		global $gBitSystem;
-		$query = "select `url`  from `".BIT_DB_PREFIX."liberty_link_cache`
-		where `cache_id`=?";
-
-		$url = $this->mDb->getOne($query, array( $cache_id ) );
-		$data = bit_http_request($url);
-		$refresh = $gBitSystem->getUTCTime();
-		$query = "update `".BIT_DB_PREFIX."liberty_link_cache`
-		set `data`=?, `refresh`=?
-		where `cache_id`=? ";
-		$result = $this->mDb->query($query, array( $data, $refresh, $cache_id) );
-		return true;
-	}
-
-	function remove_cache($cache_id) {
-		$query = "delete from `".BIT_DB_PREFIX."liberty_link_cache` where `cache_id`=?";
-
-		$result = $this->mDb->query($query, array( $cache_id ) );
-		return true;
-	}
-
-	function get_cache($cache_id) {
-		$query = "select * from `".BIT_DB_PREFIX."liberty_link_cache`
-		where `cache_id`=?";
-
-		$result = $this->mDb->query($query, array( $cache_id ) );
-		$res = $result->fetchRow();
-		return $res;
-	}
-
 	//********************* DATE AND TIME METHODS **************************//
 
 	/**
@@ -1920,25 +1832,6 @@ class BitSystem extends BitBase {
 		return $ret;
 	}
 
-	/**
-	* Statically callable function to determine if the current call was made using Ajax
-	*
-	* @access public
-	**/
-	function isAjaxRequest() {
-		return( (!empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') || !empty( $_REQUEST['ajax_xml'] ) );
-	}
-
-	/**
-	* Statically callable function to see if browser supports javascript
-	* determined by cookie set in bitweaver.js
-	* @access public
-	**/
-	function isJavascriptEnabled(){
-		return (!empty($_COOKIE['javascript_enabled']) && $_COOKIE['javascript_enabled'] == 'y');
-	}
-	
-
 	// should be moved somewhere else. unbreaking things for now - 25-JUN-2005 - spiderr
 	// \TODO remove html hardcoded in diff2
 	function diff2( $page1, $page2 ) {
@@ -2057,6 +1950,16 @@ class BitSystem extends BitBase {
 		global $gBitThemes;
 		deprecated( 'This is now in BitThemes instead of BitSystem.' );
 		return $gBitThemes->getStylePath( $pStyle );
+	}
+	function isJavascriptEnabled() {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return BitThemes::isJavascriptEnabled();
+	}
+	function isAjaxRequest() {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return BitThemes::isAjaxRequest();
 	}
 }
 ?>

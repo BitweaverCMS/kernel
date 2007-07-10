@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.15 2007/02/25 22:58:17 tekimaki Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.16 2007/07/10 21:52:59 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -164,21 +164,21 @@
 				<div class="row">
 					{formlabel label="Use proxy" for="site_use_proxy"}
 					{forminput}
-						{html_checkboxes name="site_use_proxy" values="y" checked=$site_use_proxy labels=false id="site_use_proxy"}
+						{html_checkboxes name="site_use_proxy" values="y" checked=$gBitSystem->getConfig('site_use_proxy') labels=false id="site_use_proxy"}
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Proxy Host" for="site_proxy_host"}
 					{forminput}
-						<input type="text" name="site_proxy_host" id="site_proxy_host" value="{$site_proxy_host|escape}" size="50" />
+						<input type="text" name="site_proxy_host" id="site_proxy_host" value="{$gBitSystem->getConfig('site_proxy_host')|escape}" size="50" />
 					{/forminput}
 				</div>
 
 				<div class="row">
 					{formlabel label="Proxy port" for="site_proxy_port"}
 					{forminput}
-						<input type="text" name="site_proxy_port" id="site_proxy_port" value="{$site_proxy_port|escape}" size="50" />
+						<input type="text" name="site_proxy_port" id="site_proxy_port" value="{$gBitSystem->getConfig('site_proxy_port')|escape}" size="50" />
 					{/forminput}
 				</div>
 

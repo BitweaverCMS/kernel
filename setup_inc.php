@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.101 2007/07/10 19:23:49 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.102 2007/07/10 21:52:59 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -21,6 +21,10 @@ error_reporting( BIT_PHP_ERROR_REPORTING );
 
 // this is evil stuff and causes hell for us
 ini_set ( 'session.use_trans_sid', 'Off' );
+
+if( ini_get( 'safe_mode' ) && ini_get( 'safe_mode_gid' )) {
+	umask( 0007 );
+}
 
 // clean up $_GET and make sure others are clean as well
 if( !empty( $_GET ) && is_array( $_GET ) && empty( $gNoToxify ) ) {

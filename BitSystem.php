@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.142 2007/07/10 16:58:21 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.143 2007/07/10 19:00:20 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -87,12 +87,6 @@ class BitSystem extends BitBase {
 
 	// Display full page or just contents?
 	var $mDisplayOnlyContent;
-
-	// Ajax framework that will be used for current page view
-	var $mAjax = NULL;
-
-	// Ajax libraries needed by current Ajax framework (MochiKit libs, etc.)
-	var $mAjaxLibs = array();
 
 	// === BitSystem constructor
 	/**
@@ -375,29 +369,6 @@ class BitSystem extends BitBase {
 	 */
 	function onlyRenderContent($pOnlyRender = true) {
 		$this->mDisplayOnlyContent = $pOnlyRender;
-	}
-
-	/**
-	 * Load Ajax libraries
-	 * 
-	 * @param array $pAjaxLib Name of the library we want to use e.g.: prototype or mochikit
-	 * @param array $pLibHash Array of additional libraries we need to load
-	 * @access public
-	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
-	 */
-	function loadAjax( $pAjaxLib, $pLibHash=NULL ) {
-		global $gBitSmarty, $gSniffer;
-		$ret = FALSE;
-		$ajaxLib = strtolower( $pAjaxLib );
-		if( $gSniffer->_browser_info['javascript'] ) {
-			if( $ret = ( empty( $this->mAjaxLib ) || $this->mAjaxLib == $ajaxLib ) ) {
-				$this->mAjax = $ajaxLib;
-				if( is_array( $pLibHash ) ) {
-					$this->mAjaxLibs = array_merge( $this->mAjaxLibs, $pLibHash );
-				}
-			}
-		}
-		return $ret;
 	}
 
 	/**
@@ -1952,14 +1923,17 @@ class BitSystem extends BitBase {
 		return $gBitThemes->getStylePath( $pStyle );
 	}
 	function isJavascriptEnabled() {
-		global $gBitThemes;
 		deprecated( 'This is now in BitThemes instead of BitSystem.' );
 		return BitThemes::isJavascriptEnabled();
 	}
 	function isAjaxRequest() {
-		global $gBitThemes;
 		deprecated( 'This is now in BitThemes instead of BitSystem.' );
 		return BitThemes::isAjaxRequest();
+	}
+	function loadAjax( $pAjaxLib, $pLibHash=NULL ) {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return $gBitThemes->loadAjax( $pAjaxLib, $pLibHash );
 	}
 }
 ?>

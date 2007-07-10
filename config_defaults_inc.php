@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.21 2007/07/03 16:49:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.22 2007/07/10 19:23:49 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -113,7 +113,7 @@ if( empty( $gBitDbHost ) ) {
 // specified in $gPreScan are processed in the traditional order
 global $gPreScan;
 if( empty( $gPreScan ) ) {
-	$gPreScan = array( 'kernel', 'users', 'liberty', 'themes' );
+	$gPreScan = array( 'kernel', 'themes', 'users', 'liberty' );
 }
 
 // when running scripts

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.100 2007/06/24 03:53:51 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.101 2007/07/10 19:23:49 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -66,29 +66,15 @@ if( !defined( 'TEMP_PKG_PATH' ) ) {
 BitSystem::prependIncludePath( UTIL_PKG_PATH.'/' );
 BitSystem::prependIncludePath( UTIL_PKG_PATH.'pear/' );
 
-// the use of gPreviewStyle is deprecated and will be replaced by using $gBitThemes->setStyle();
-// this is used to override the currently set site theme. when this is set everything else is ignored
-global $gPreviewStyle;
-$gPreviewStyle = FALSE;
-
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 global $gBitLanguage;
 $gBitLanguage = new BitLanguage();
-
-require_once( THEMES_PKG_PATH."BitThemes.php" );
-global $gBitThemes;
-$gBitThemes = new BitThemes();
-$gBitSmarty->assign_by_ref( 'gBitThemes', $gBitThemes );
 
 // collects information about the browser - needed for various browser specific theme settings
 require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
 $gSniffer = new phpSniff;
 $gBitSmarty->assign_by_ref( 'gBrowserInfo', $gSniffer->_browser_info );
-// if we're viewing this site with a text-browser, we force the text-browser theme
-if( !$gSniffer->_feature_set['css1'] && !$gSniffer->_feature_set['css2'] ) {
-	$gBitThemes->setStyle( 'lynx' );
-}
 
 // set various classes global
 global $gBitUser, $gTicket, $userlib, $gBitDbType;
@@ -139,24 +125,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 		//$gBitUser->verifyTicket();
 	} elseif( !empty( $_SERVER['bot'] ) ) {
 	}
-
-	// setStyle first, in case package decides it wants to reset the style in it's own <package>/bit_setup_inc.php
-	$theme = $gBitThemes->getStyle();
-	$theme = !empty( $theme ) ? $theme : DEFAULT_THEME;
-	// users_themes='y' is for the entire site, 'h' is just for users homepage and is dealt with on users/index.php
-	if( !empty( $gBitSystem->mDomainInfo['style'] ) ) {
-		$theme = $gBitSystem->mDomainInfo['style'];
-	} elseif( $gBitSystem->getConfig('users_themes') == 'y' ) {
-		if ( $gBitUser->isRegistered() && $gBitSystem->isFeatureActive( 'users_preferences' ) ) {
-			if( $userStyle = $gBitUser->getPreference('theme') ) {
-				$theme = $userStyle;
-			}
-		}
-		if( isset( $_COOKIE['tiki-theme'] )) {
-			$theme = $_COOKIE['tiki-theme'];
-		}
-	}
-	$gBitThemes->setStyle( $theme );
 
 	// this will register and set up the dropdown menus and the application menus in modules
 	require_once( KERNEL_PKG_PATH.'menu_register_inc.php' );

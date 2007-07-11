@@ -10,7 +10,8 @@
  *
  * Type:		block
  * Name:		jstabs
- * Input:		
+ * Input:		you can use {jstab tab=<tab number>} (staring with 0) to select a given tab
+ *              or you can use the url to do so: page.php?jstab=<tab number>
  * Abstract:	Used to enclose a set of tabs
  */
 function smarty_block_jstabs( $pParams, $pContent, &$gBitSmarty ) {
@@ -34,13 +35,13 @@ function smarty_block_jstabs( $pParams, $pContent, &$gBitSmarty ) {
 			if( !isset( $tab ) && isset( $_REQUEST['jstab'] ) && preg_match( "!^\d+$!", $_REQUEST['jstab'] ) ) {
 				$tab = $_REQUEST['jstab'];
 			}
-			$ret = '<div class="tabpane"'.(empty($id)?'':' id="'.$id.'"').'>';
-			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ WebFXTabPane.setCookie( 'webfxtab_".(empty($id)?'':$id)."', $tab );/*]]>*/</script>";
+			$ret = '<div class="tabpane" id="jstabs">';
+			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ tabPane = new WebFXTabPane( $( 'jstabs' ), true ); /*]]>*/</script>";
 			$ret .= $pContent;
-			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs(); /*]]>*/</script>";
+			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();".( !empty( $tab ) ? "var tabPane; tabPane.setSelectedIndex( $tab );" : "" )."/*]]>*/</script>";
 			$ret .= '</div>';
 		} else {
-			$ret = '<div class="tabpane"'.(empty($id)?'':' id="'.$id.'"').'>';
+			$ret = '<div class="tabpane" id="jstabs">';
 			$ret .= $pContent;
 			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();var tabPane; /*]]>*/</script>";
 			$ret .= '</div>';

@@ -15,10 +15,15 @@
  * ------------------------------------------------------------- 
  */ 
 function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
-	global $gBitSystem, $gContent;
+	global $gBitSystem, $gContent, $gLibertySystem;
 	$attributes = '';
 	$style = '';
-	$class = 'wysiwyg';
+	$class = '';
+	if ((!empty($gLibertySystem->mPlugins['bithtml']) && $gLibertySystem->mPlugins['bithtml']['is_active'] == 'y') ||
+		(!empty($gLibertySystem->mPlugins['tikiwiki']) && $gLibertySystem->mPlugins['tikiwiki']['is_active'] == 'y' &&
+		 $gBitSystem->isFeatureActive('content_force_allow_html')) ) {
+		$class = 'wysiwyg';
+	}
 	if (empty($pParams['rows'])) {
 		$pParams['rows'] = (empty($_COOKIE['rows']) ? $gBitSystem->getConfig('liberty_textarea_height', 20) : $_COOKIE['rows']);
 	}

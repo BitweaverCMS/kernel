@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.102 2007/07/10 21:52:59 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.103 2007/07/13 23:18:55 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -194,17 +194,15 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	// All of the below deals with HTTPS - perhaps we should move this to a separate file
-	$https_mode = isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on';
-	if( $https_mode ) {
+	if( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) {
 		$site_http_port = 80;
 		$site_https_port = isset( $_SERVER['SERVER_PORT'] ) ? $_SERVER['SERVER_PORT'] : 443;
 	} else {
-		$site_http_port = isset( $_SERVER['SERVER_PORT'] ) ? $_SERVER['SERVER_PORT'] : 80;
 		$site_https_port = 443;
+		$site_http_port = isset( $_SERVER['SERVER_PORT'] ) ? $_SERVER['SERVER_PORT'] : 80;
 	}
 
 	$site_https_port = $gBitSystem->getConfig( 'site_https_port', $site_https_port );
-	$site_https_prefix = $gBitSystem->getConfig( 'site_https_prefix', '/' );
 	// we need this for backwards compatibility - use $gBitSystem->getPrerference( 'max_records' ) if you need it, or else the spanish inquisition will come and poke you with a soft cushion
 	$max_records = $gBitSystem->getConfig( "max_records", 10 );
 
@@ -212,66 +210,37 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign('site_https_login_required', $gBitSystem->getConfig( 'site_https_login_required' ) );
 
 	$login_url = USERS_PKG_URL . 'validate.php';
-	$gBitSmarty->assign('login_url', $login_url);
+	$gBitSmarty->assign( 'login_url', $login_url );
 
 	if( $gBitSystem->isFeatureActive( 'site_https_login' ) || $gBitSystem->isFeatureActive( 'site_https_login_required' ) )	{
-		$site_https_domain = $gBitSystem->getConfig('site_https_domain', '');
-		$site_http_domain = $gBitSystem->getConfig('site_http_domain', '');
-		$site_http_prefix = $gBitSystem->getConfig('site_http_prefix', '');
+		$http_login_url = 'http://' . $gBitSystem->getConfig( 'site_http_domain', '' );
+		if( $site_http_port != 80 ) {
+			$http_login_url .= ':'.$site_http_port;
+		}
+		$http_login_url .= $gBitSystem->getConfig( 'site_http_prefix', '' ).$gBitSystem->getDefaultPage();
 
-		$http_login_url = 'http://' . $site_http_domain;
+		$https_login_url = 'https://'.$gBitSystem->getConfig( 'site_https_domain', '' );
+		if( $site_https_port != 443 ) {
+			$https_login_url .= ':'.$site_https_port;
+		}
+		$https_login_url .= $gBitSystem->getConfig( 'site_https_prefix', '/' ).$gBitSystem->getDefaultPage();
 
-		if ($site_http_port != 80)
-			$http_login_url .= ':' . $site_http_port;
-
-		$http_login_url .= $site_http_prefix . $gBitSystem->getDefaultPage();
-
-		if (SID)
-			$http_login_url .= '?' . SID;
-
-		$edit_data = htmlentities(isset($_REQUEST["edit"]) ? $_REQUEST["edit"] : '', ENT_QUOTES);
-
-		$https_login_url = 'https://' . $site_https_domain;
-
-		if ($site_https_port != 443)
-			$https_login_url .= ':' . $site_https_port;
-
-		$https_login_url .= $site_https_prefix . $gBitSystem->getDefaultPage();
-
-		if (SID)
+		// append SID
+		if( SID ) {
+			$http_login_url .= '?'.SID;
 			$https_login_url .= '?' . SID;
+		}
 
-		$stay_in_ssl_mode = isset($_REQUEST['stay_in_ssl_mode']) ? $_REQUEST['stay_in_ssl_mode'] : '';
-
+		$gBitSystem->setConfig( 'http_login_url', $http_login_url );
 		if( $gBitSystem->isFeatureActive('site_https_login_required') ) {
-			// only show "Stay in SSL checkbox if we're not already in HTTPS mode"
-			$show_stay_in_ssl_mode = !$https_mode ? 'y' : 'n';
-			$gBitSmarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
-			if (!$https_mode) {
-				$https_login_url = 'https://' . $site_https_domain;
-				if ($site_https_port != 443)
-					$https_login_url .= ':' . $site_https_port;
-
-				$https_login_url .= $site_https_prefix . $login_url;
-
-				if (SID) {
-					$https_login_url .= '?' . SID;
-				}
-
-				$gBitSmarty->assign('login_url', $https_login_url);
-			} else {
-				// We're already in HTTPS mode, so let's stay there
-				$stay_in_ssl_mode = 'on';
+			// force the login_url to the https_login_url if needed
+			if( !( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' )) {
+				$gBitSmarty->assign( 'login_url', $https_login_url );
 			}
 		} else {
-			$gBitSmarty->assign('http_login_url', $http_login_url);
-			$gBitSmarty->assign('https_login_url', $https_login_url);
-			// only show "Stay in SSL checkbox if we're not already in HTTPS mode"
-			$show_stay_in_ssl_mode = $https_mode ? 'y' : 'n';
+			$gBitSystem->setConfig( 'http_login_url', $http_login_url );
+			$gBitSystem->setConfig( 'https_login_url', $https_login_url );
 		}
-		$gBitSmarty->assign('show_stay_in_ssl_mode', $show_stay_in_ssl_mode);
-		$gBitSmarty->assign('stay_in_ssl_mode', $stay_in_ssl_mode);
 	}
 }
-
 ?>

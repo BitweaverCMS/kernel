@@ -78,6 +78,9 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 		$gBitSmarty->assign('gContent', $oldContent);
 	}
 
+	// since we have the funky {textarea} in play, we'll display the edit help tab
+	$gBitSmarty->assign( 'display_help_tab', TRUE );
+
 	return $ret;
 }
 ?>

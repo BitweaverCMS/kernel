@@ -1,7 +1,7 @@
 <?php
 /**
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.12 2007/07/15 08:52:57 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.13 2007/07/15 09:05:13 squareing Exp $
  */
 
 /**
@@ -72,25 +72,17 @@ class BitCache {
 	 * Used to check if an object is cached.
 	 * 
 	 * @param string $pFile name of the file we want to check for
-	 * @param boolean $pModTime this setting has 3 options:
-	 *                          1. Set to TRUE - this will check filemtime() agains the file calling isCached()
-	 *                          2. Set to FALSE - no time check is performed
-	 *                          3. Pass in the modification time you wish to check against
+	 * @param numeric $pModTime Pass in the modification time you wish to check against
 	 * @access public
 	 * @return true if cached object exists
 	 */
 	function isCached( $pFile, $pModTime = FALSE ) {
-		if( !empty( $pFile )) {
-			// compare the filemtime of the calling file to the cache file. if it's newer, we know that the file has been modified since the last cache
+		if( !empty( $pFile ) && is_readable( $this->getCacheFile( $pFile ))) {
+			// compare the cache filemtime to the desired file
 			if( is_numeric( $pModTime )) {
-				$isModified = ( $pModTime < filemtime( $trace[0]['file'] ));
-			} elseif( $pModTime ) {
-				$trace = debug_backtrace();
-				$isModified = ( filemtime( $this->getCacheFile( $pFile )) < filemtime( $trace[0]['file'] ));
-			} else {
-				$isModified = FALSE;
+				$isModified = ( filemtime( $this->getCacheFile( $pFile )) < $pModTime );
 			}
-			return( is_readable( $this->getCacheFile( $pFile )) && !$isModified );
+			return( empty( $isModified ));
 		} else {
 			return FALSE;
 		}

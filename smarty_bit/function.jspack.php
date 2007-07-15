@@ -23,8 +23,8 @@ function smarty_function_jspack( $pParams, &$gBitSmarty ) {
 	$jsfile = constant( strtoupper( $pParams['ipackage'] ).'_PKG_PATH' ).(( $pParams['ipackage'] == 'util' ) ? 'javascript/' : '' ).$pParams['ifile'];
 
 	if( is_file( $jsfile )) {
-		// get a name for the cache file we're going to store - include version number in case something has changed
-		$cachefile = $pParams['ipackage'].'_'.preg_replace( "!^.*/!", "", $pParams['ifile'] );
+		// get a name for the cache file we're going to store
+		$cachefile = $pParams['ipackage'].'_'.str_replace( '/', '_', $pParams['ifile'] );
 
 		require_once( KERNEL_PKG_PATH.'BitCache.php' );
 		$bitCache = new BitCache( 'javascript', TRUE );

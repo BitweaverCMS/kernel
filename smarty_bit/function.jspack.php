@@ -24,14 +24,13 @@ function smarty_function_jspack( $pParams, &$gBitSmarty ) {
 
 	if( is_file( $jsfile )) {
 		// get a name for the cache file we're going to store - include version number in case something has changed
-		$version = BIT_MAJOR_VERSION.BIT_MINOR_VERSION.BIT_SUB_VERSION;
-		$cachefile = $version.'_'.$pParams['ipackage'].'_'.preg_replace( "!^.*/!", "", $pParams['ifile'] );
+		$cachefile = $pParams['ipackage'].'_'.preg_replace( "!^.*/!", "", $pParams['ifile'] );
 
 		require_once( KERNEL_PKG_PATH.'BitCache.php' );
 		$bitCache = new BitCache( 'javascript', TRUE );
 
 		// if the file hasn't been packed and cached yet, we do that now.
-		if( !$bitCache->isCached( $cachefile )) {
+		if( !$bitCache->isCached( $cachefile, filemtime( $jsfile ))) {
 			/*
 			 * params of the constructor :
 			 * $script:       the JavaScript to pack, string.

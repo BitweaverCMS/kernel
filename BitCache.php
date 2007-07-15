@@ -1,7 +1,7 @@
 <?php
 /**
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.10 2007/07/08 07:01:30 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.11 2007/07/15 08:43:18 squareing Exp $
  */
 
 /**
@@ -69,14 +69,28 @@ class BitCache {
 	}
 
 	/**
-	* Used to check if an object is cached.
-	*
-	* @param pKey the unique identifier used to retrieve the cached item
-	* @return true if cached object exists
-	*/
-	function isCached( $pFile ) {
+	 * Used to check if an object is cached.
+	 * 
+	 * @param string $pFile name of the file we want to check for
+	 * @param boolean $pModTime this setting has 3 options:
+	 *                          1. Set to TRUE - this will check filemtime() agains the file calling isCached()
+	 *                          2. Set to FALSE - no time check is performed
+	 *                          3. Pass in the modification time you wish to check against
+	 * @access public
+	 * @return true if cached object exists
+	 */
+	function isCached( $pFile, $pModTime = FALSE ) {
 		if( !empty( $pFile )) {
-			return( is_readable( $this->getCacheFile( $pFile )));
+			// compare the filemtime of the calling file to the cache file. if it's newer, we know that the file has been modified since the last cache
+			if( is_numeric( $pModTime )) {
+				$isModified = ( $pModTime < filemtime( $trace[0]['file'] ));
+			} elseif( $pModTime ) {
+				$trace = debug_backtrace();
+				$isModified = ( filemtime( $this->getCacheFile( $pFile )) < filemtime( $trace[0]['file'] ));
+			} else {
+				$isModified = FALSE;
+			}
+			return( is_readable( $this->getCacheFile( $pFile )) && !$isModified );
 		} else {
 			return FALSE;
 		}
@@ -96,7 +110,14 @@ class BitCache {
 				fclose( $h );
 			}
 		}
-		return( !empty( $ret ) ? $ret : NULL );
+
+		// this is for backwards compatability since we only recently started serialising all input.
+		// we can probably remove this at some point though
+		// we use the preg_match that we don't have to unserialize every string twice - xing - Sunday Jul 15, 2007   10:27:53 CEST
+		if( !preg_match( "!^[a-z]:\d+:!", $ret ) && !unserialize( $ret )) {
+			$ret = serialize( $ret );
+		}
+		return( !empty( $ret ) ? unserialize( $ret ) : NULL );
 	}
 
 	/**
@@ -128,14 +149,14 @@ class BitCache {
 	 * writeCacheFile 
 	 * 
 	 * @param string $pFile file to write to
-	 * @param string $pData data to write to file
+	 * @param string $pData data to write to file - this will be serialized so if can be any format including object, array or string
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
 	function writeCacheFile( $pFile, $pData ) {
 		if( !empty( $pData )) {
 			if( $h = fopen( $this->getCacheFile( $pFile ), 'w' )) {
-				fwrite( $h, $pData );
+				fwrite( $h, serialize( $pData ));
 				fclose( $h );
 			}
 		}

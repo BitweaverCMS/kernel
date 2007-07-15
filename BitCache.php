@@ -1,7 +1,7 @@
 <?php
 /**
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.11 2007/07/15 08:43:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.12 2007/07/15 08:52:57 squareing Exp $
  */
 
 /**
@@ -111,13 +111,7 @@ class BitCache {
 			}
 		}
 
-		// this is for backwards compatability since we only recently started serialising all input.
-		// we can probably remove this at some point though
-		// we use the preg_match that we don't have to unserialize every string twice - xing - Sunday Jul 15, 2007   10:27:53 CEST
-		if( !preg_match( "!^[a-z]:\d+:!", $ret ) && !unserialize( $ret )) {
-			$ret = serialize( $ret );
-		}
-		return( !empty( $ret ) ? unserialize( $ret ) : NULL );
+		return( !empty( $ret ) ? $ret : NULL );
 	}
 
 	/**
@@ -149,14 +143,14 @@ class BitCache {
 	 * writeCacheFile 
 	 * 
 	 * @param string $pFile file to write to
-	 * @param string $pData data to write to file - this will be serialized so if can be any format including object, array or string
+	 * @param string $pData string to write to file
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
 	function writeCacheFile( $pFile, $pData ) {
 		if( !empty( $pData )) {
 			if( $h = fopen( $this->getCacheFile( $pFile ), 'w' )) {
-				fwrite( $h, serialize( $pData ));
+				fwrite( $h, $pData );
 				fclose( $h );
 			}
 		}

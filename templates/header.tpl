@@ -13,4 +13,7 @@
 {if $gBitSystem->isFeatureActive( 'site_help_popup' )}
 	{popup_init src="`$smarty.const.UTIL_PKG_URL`javascript/libs/overlib.js"}
 {/if}
+{if $gBitThemes->mAjax == 'prototype'}
+	<script type="text/javascript">/*<![CDATA[*/ show_spinner('spinner'); /*]]>*/</script>
+{/if}
 {/strip}

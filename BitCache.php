@@ -1,7 +1,7 @@
 <?php
 /**
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.13 2007/07/15 09:05:13 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.14 2007/07/16 15:23:10 squareing Exp $
  */
 
 /**
@@ -35,8 +35,8 @@ class BitCache {
 			$this->mFolder = "/tmp/".$pSubdir;
 		}
 
-		if( !is_dir( $this->mFolder )) {
-			mkdir_p( $this->mFolder );
+		if( !is_dir( $this->mFolder ) && !mkdir_p( $this->mFolder )) {
+			vd( 'Can not create the cache directory: '.$this->mFolder );
 		}
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.17 2007/07/18 20:38:38 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.18 2007/07/18 21:17:16 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -12,17 +12,12 @@ $gForceAdodb = TRUE;
 require_once( '../../bit_setup_inc.php' );
 require_once( KERNEL_PKG_PATH.'simple_form_functions_lib.php' );
 
+// only admins may use this page
 $gBitSystem->verifyPermission( 'p_admin' );
 
-if( isset( $_REQUEST["page"] )) {
+if( !empty( $_REQUEST["page"] )) {
 	$page = $_REQUEST["page"];
-	$pageName = preg_replace( '/_/', ' ', $page );
-	$gBitSystem->setBrowserTitle( "$pageName Settings" );
-} else {
-	$gBitSystem->setBrowserTitle( 'Administration' );
-}
 
-if( !empty( $page )) {
 	if( preg_match( '/\.php/', $page )) {
 		$adminPage = $page;
 	} else {
@@ -58,6 +53,9 @@ if( !empty( $page )) {
 	}
 	$gBitSmarty->assign( 'package', $package );
 	$gBitSmarty->assign( 'file', $file );
+	$gBitSmarty->assign( 'page', $page );
+	$gBitSystem->setBrowserTitle( preg_replace( '/_/', ' ', $page )." Settings" );
+
 	include_once ( $adminPage );
 
 	// Spiderr - a bit hackish, but need to force preferences refresh
@@ -75,6 +73,8 @@ if( !empty( $page )) {
 			$adminTemplates[$package] = $tpl;
 		}
 	}
+
+	$gBitSystem->setBrowserTitle( 'Administration' );
 	$gBitSmarty->assign_by_ref( 'adminTemplates', $adminTemplates );
 }
 

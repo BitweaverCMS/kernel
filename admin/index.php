@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.18 2007/07/18 21:17:16 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.19 2007/07/19 05:00:27 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -14,6 +14,9 @@ require_once( KERNEL_PKG_PATH.'simple_form_functions_lib.php' );
 
 // only admins may use this page
 $gBitSystem->verifyPermission( 'p_admin' );
+
+//make an alias in case anyone decides to verifyInstalledPackages
+$gBitInstaller = &$gBitSystem;
 
 if( !empty( $_REQUEST["page"] )) {
 	$page = $_REQUEST["page"];

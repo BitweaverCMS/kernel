@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.6 2007/07/10 16:14:32 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.7 2007/07/26 20:52:35 lsces Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -169,9 +169,9 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 		umask( $oldu );
 		return 1;
 	} else {
-		if( $gDebug ) echo "mkdir_p() - trying to create parent $parent<br />";
 		umask( $oldu );
 		$parent = substr( $pTarget, 0, ( strrpos( $pTarget, '/' )));
+		if( $gDebug ) echo "mkdir_p() - trying to create parent $parent<br />";
 
 		// recursively create parents
 		if( mkdir_p( $parent, $pPerms )) {

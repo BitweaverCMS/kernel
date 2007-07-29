@@ -55,7 +55,7 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 			$gBitSmarty->assign('gContent', $_value);
 			break;
 		default:
-			$attributes .= $_key.'="'.$_value.'"';
+			$attributes .= $_key.'="'.$_value.'" ';
 			break;
 		}
 	}

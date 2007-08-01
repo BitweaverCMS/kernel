@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.7 2007/07/26 20:52:35 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.8 2007/08/01 07:52:10 lsces Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -412,7 +412,7 @@ function unlink_r( $pPath, $pFollowLinks = FALSE ) {
 			}
 		}
 		closedir( $dir ) ;
-		return rmdir( $pPath );
+		return @rmdir( $pPath );
 	}
 }
 

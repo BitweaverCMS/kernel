@@ -10,6 +10,9 @@
  * @subpackage modules
  */
 
+global $gBitDbSystem;
+$gBitSmarty->assign( 'gBitDbSystem', $gBitDbSystem );
+
 if( !isset( $moduleParams['module_params']['no_dblogo'] )) {
 	global $gBitDbType;
 	$gBitSmarty->assign( 'gBitDbType', $gBitDbType );

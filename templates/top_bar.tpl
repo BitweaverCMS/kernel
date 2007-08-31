@@ -6,6 +6,38 @@
 			{include file="bitpackage:kernel/menu_global.tpl"}
 		</li>
 
+		{if $gBitUser->isAdmin()}
+			<li class="m-admin{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} current{/if}">
+				<a accesskey="A" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} selected{/if}" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">
+					<strong>{tr}Administration{/tr}</strong>
+				</a>
+				{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}
+					<ul>
+						{foreach key=key item=menu from=$adminMenu}
+							{if $key eq 'kernel' or $key eq 'liberty' or $key eq 'languages' or $key eq 'users' or $key eq 'themes'}
+								<li>
+									<a class="head" style="cursor:default" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">
+										<strong>{tr}{$key|capitalize}{/tr}</strong>
+									</a>
+									{include file=`$menu.tpl`}
+								</li>
+							{/if}
+						{/foreach}
+						{foreach key=key item=menu from=$adminMenu}
+							{if $key neq 'kernel' and $key neq 'liberty' and $key neq 'languages' and $key neq 'users' and $key neq 'themes'}
+								<li>
+									<a class="head" style="cursor:default" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">
+										{tr}{$key|capitalize}{/tr}
+									</a>
+									{include file=`$menu.tpl`}
+								</li>
+							{/if}
+						{/foreach}
+					</ul>
+				{/if}
+			</li>
+		{/if}
+		
 		{foreach key=key item=menu from=$gBitSystem->mAppMenu}
 			{if $menu.menu_title && $menu.index_url && $menu.menu_template && !$menu.is_disabled}
 				<li class="m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.active_package} current{/if}">
@@ -16,22 +48,6 @@
 				</li>
 			{/if}
 		{/foreach}
-
-		{if $gBitUser->isAdmin()}
-			<li class="m-admin{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} current{/if}">
-				<a accesskey="A" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} selected{/if}" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">{tr}Administration{/tr}</a>
-				{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}
-					<ul>
-						{foreach key=key item=menu from=$adminMenu}
-							<li>
-								<a class="head" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">{tr}{$key|capitalize}{/tr}</a>
-								{include file=`$menu.tpl`}
-							</li>
-						{/foreach}
-					</ul>
-				{/if}
-			</li>
-		{/if}
 	</ul>
 	<div class="clear"></div>
 </div>

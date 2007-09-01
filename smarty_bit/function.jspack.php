@@ -5,6 +5,7 @@
  * 
  * @param string $pParams[ipackage] package the javascript file is in. this will default to: 'util'. e.g.: wiki
  * @param string $pParams[ifile] subdir and filename of the file you wish to pack and cache. e.g.: libs/jsfile.js
+ * @param string $pParams[defer] includes defer='defer'
  * @param object $gBitSmarty 
  * @access public
  * @return URL to cached javascript file
@@ -17,6 +18,10 @@ function smarty_function_jspack( $pParams, &$gBitSmarty ) {
 
 	if( empty( $pParams['ipackage'] )) {
 		$pParams['ipackage'] = 'util';
+	}
+
+	if( isset( $pParams['defer'] )) {
+		$defer = "defer='" . $pParams['defer'] . "'";
 	}
 
 	// get the full path to the file we want to pack - insert javasscript/ into path when we're getting stuff in util
@@ -48,9 +53,10 @@ function smarty_function_jspack( $pParams, &$gBitSmarty ) {
 			$bitCache->writeCacheFile( $cachefile, $packer->pack() );
 		}
 
-		return '<script type="text/javascript" src="'.$bitCache->getCacheUrl( $cachefile ).'"></script>';
+		return '<script ' . $defer . ' type="text/javascript" src="'.$bitCache->getCacheUrl( $cachefile ).'"></script>';
 	} else {
-		return "You didn't provide a valid javascript file.";
+		$errormessage = tra('not a valid file: ');
+		return "<!-- " . $errormessage . $pParams['ifile'] . " -->";
 	}
 }
 ?>

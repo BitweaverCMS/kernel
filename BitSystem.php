@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.143 2007/07/10 19:00:20 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.144 2007/09/04 00:31:17 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -73,6 +73,9 @@ class BitSystem extends BitBase {
 	// Javascript to be added to the <body onload> attribute
 	var $mOnload = array();
 
+	// Javascript to be added to the <body onunload> attribute
+	var $mOnunload = array();
+	
 	// Used by packages to register notification events that can be subscribed to.
 	var $mNotifyEvents = array();
 
@@ -1262,21 +1265,31 @@ class BitSystem extends BitBase {
 	}
 	// === setOnloadScript
 	/**
-	* set the title of the browser
+	* add javascript to the <body onload> attribute 
 	*
-	* @param string $ pScanFile file to be looked for
+	* @param string $pJavascript javascript to be added
 	* @return none
 	* @access public
 	*/
 	function setOnloadScript( $pJavscript ) {
 		array_push( $this->mOnload, $pJavscript );
 	}
-	// === setBrowserTitle
+	// === setOnunloadScript
 	/**
-	* set the title of the browser
+	* add javascript to the <body onunload> attribute 
 	*
-	* @param string $ pScanFile file to be looked for
+	* @param string $pJavascript javascript to be added
 	* @return none
+	* @access public
+	*/
+	function setOnunloadScript( $pJavscript ) {
+		array_push( $this->mOnunload, $pJavscript );
+	}
+	// === getBrowserTitle
+	/**
+	* get the title of the browser
+	*
+	* @return title string
 	* @access public
 	*/
 	function getBrowserTitle() {
@@ -1287,7 +1300,7 @@ class BitSystem extends BitBase {
 	/**
 	* set the title of the browser
 	*
-	* @param string $ pScanFile file to be looked for
+	* @param string $ pTitle title to be used
 	* @return none
 	* @access public
 	*/

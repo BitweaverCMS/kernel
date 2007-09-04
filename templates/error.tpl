@@ -1,7 +1,7 @@
 {strip}
 <div class="display errorpage">
 	<div class="header">
-		<h1>{tr}Oops!{/tr}</h1>
+		<h1>{tr}{$errorHeading|default:'Oops!'}{/tr}</h1>
 	</div>
 
 	<div class="body">

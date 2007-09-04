@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.145 2007/09/04 16:38:45 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.146 2007/09/04 16:51:18 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -634,9 +634,12 @@ class BitSystem extends BitBase {
 	function fatalPermission( $pPermission, $pMsg=NULL ) {
 		global $gBitUser, $gBitSmarty;
 		if( !$gBitUser->isRegistered() ) {
+			$gBitSmarty->assign( 'errorHeading', 'Please login...' );
+			$title = 'Please login...';
 			$pMsg .= '</p><p>You must be logged in. Please <a href="'.USERS_PKG_URL.'login.php">login</a> or <a href="'.USERS_PKG_URL.'register.php">register</a>.';
 			$gBitSmarty->assign( 'template', 'bitpackage:users/login_inc.tpl' );
 		} else {
+			$title = 'Oops!';
 			if( empty( $pMsg ) ) {
 				$permDesc = $this->getPermissionInfo( $pPermission );
 				$pMsg = "You do not have the required permissions ";

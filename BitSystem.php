@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.144 2007/09/04 00:31:17 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.145 2007/09/04 16:38:45 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -620,24 +620,36 @@ class BitSystem extends BitBase {
 		}
 	}
 
+	// === fatalPermission
+	/**
+	* Interupt code execution and show a permission denied message.
+	* This does not show a big nasty denied message if user is simply not logged in.
+	* This *could* lead to a user seeing a denied message twice, however this is 
+	* unlikely as logic permission checks should prevent access to non-permed page REQUEST in the first place
+	* @param $pPermission value of a given permission
+	* @param $pMsg optional additional information to present to user
+	* @return none
+	* @access public
+	*/
 	function fatalPermission( $pPermission, $pMsg=NULL ) {
 		global $gBitUser, $gBitSmarty;
-		if( empty( $pMsg ) ) {
-			$permDesc = $this->getPermissionInfo( $pPermission );
-			$pMsg = "You do not have the required permissions ";
-			if( !empty( $permDesc[$pPermission]['perm_desc'] ) ) {
-				if( preg_match( '/administrator,/i', $permDesc[$pPermission]['perm_desc'] ) ) {
-					$pMsg .= preg_replace( '/^administrator, can/i', ' to ', $permDesc[$pPermission]['perm_desc'] );
-				} else {
-					$pMsg .= preg_replace( '/^can /i', ' to ', $permDesc[$pPermission]['perm_desc'] );
-				}
-			}
-		}
 		if( !$gBitUser->isRegistered() ) {
 			$pMsg .= '</p><p>You must be logged in. Please <a href="'.USERS_PKG_URL.'login.php">login</a> or <a href="'.USERS_PKG_URL.'register.php">register</a>.';
 			$gBitSmarty->assign( 'template', 'bitpackage:users/login_inc.tpl' );
+		} else {
+			if( empty( $pMsg ) ) {
+				$permDesc = $this->getPermissionInfo( $pPermission );
+				$pMsg = "You do not have the required permissions ";
+				if( !empty( $permDesc[$pPermission]['perm_desc'] ) ) {
+					if( preg_match( '/administrator,/i', $permDesc[$pPermission]['perm_desc'] ) ) {
+						$pMsg .= preg_replace( '/^administrator, can/i', ' to ', $permDesc[$pPermission]['perm_desc'] );
+					} else {
+						$pMsg .= preg_replace( '/^can /i', ' to ', $permDesc[$pPermission]['perm_desc'] );
+					}
+				}
+			}
+			$gBitSmarty->assign( 'fatalTitle', tra( "Permission denied." ) );
 		}
-		$gBitSmarty->assign( 'fatalTitle', tra( "Permission denied." ) );
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->display( "error.tpl" );
 		die;

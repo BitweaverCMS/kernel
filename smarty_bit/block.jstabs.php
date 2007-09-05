@@ -41,7 +41,7 @@ function smarty_block_jstabs( $pParams, $pContent, &$gBitSmarty ) {
 			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();".( !empty( $tab ) ? "var tabPane; tabPane.setSelectedIndex( $tab );" : "" )."/*]]>*/</script>";
 			$ret .= '</div>';
 		} else {
-			$ret = '<div class="tabpane" id="jstabs">';
+			$ret = '<div class="tabpane">';
 			$ret .= $pContent;
 			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();var tabPane; /*]]>*/</script>";
 			$ret .= '</div>';

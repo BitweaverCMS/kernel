@@ -20,10 +20,6 @@ function smarty_function_jspack( $pParams, &$gBitSmarty ) {
 		$pParams['ipackage'] = 'util';
 	}
 
-	if( isset( $pParams['defer'] )) {
-		$defer = "defer='" . $pParams['defer'] . "'";
-	}
-
 	// get the full path to the file we want to pack - insert javasscript/ into path when we're getting stuff in util
 	$jsfile = constant( strtoupper( $pParams['ipackage'] ).'_PKG_PATH' ).(( $pParams['ipackage'] == 'util' ) ? 'javascript/' : '' ).$pParams['ifile'];
 
@@ -53,10 +49,10 @@ function smarty_function_jspack( $pParams, &$gBitSmarty ) {
 			$bitCache->writeCacheFile( $cachefile, $packer->pack() );
 		}
 
-		return '<script ' . $defer . ' type="text/javascript" src="'.$bitCache->getCacheUrl( $cachefile ).'"></script>';
+		$defer = !empty( $pParams['defer'] ) ? " defer='".$pParams['defer']."'" : "";
+		return '<script'.$defer.' type="text/javascript" src="'.$bitCache->getCacheUrl( $cachefile ).'"></script>';
 	} else {
-		$errormessage = tra('not a valid file: ');
-		return "<!-- " . $errormessage . $pParams['ifile'] . " -->";
+		return "<!-- ".tra( 'not a valid file: ' ).$pParams['ifile']." -->";
 	}
 }
 ?>

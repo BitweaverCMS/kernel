@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.148 2007/09/09 22:29:42 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.149 2007/09/09 22:39:01 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -422,7 +422,9 @@ class BitSystem extends BitBase {
 
 		if( empty( $this->mFormatHeader )) {
 			$this->setFormatHeader( $pFormat );
-		} elseif( $this->mFormatHeader == "center_only" ) {
+		} 
+		
+		if( $this->mFormatHeader == "center_only" ) {
 			$gBitSmarty->assign_by_ref( 'gBitSystem', $this );
 			$gBitSmarty->display( $pMid );
 			return;

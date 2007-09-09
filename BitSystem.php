@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.149 2007/09/09 22:39:01 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.150 2007/09/09 23:10:36 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -376,6 +376,7 @@ class BitSystem extends BitBase {
 	
 		switch( $pFormat ) {
 			case "xml" :
+				$this->mDisplayOnlyContent = true;
 				//since we are returning xml we must report so in the header
 				//we also need to tell the browser not to cache the page
 				//see: http://mapki.com/index.php?title=Dynamic_XML
@@ -393,15 +394,18 @@ class BitSystem extends BitBase {
 				break;
 	
 			case "json" :
+				$this->mDisplayOnlyContent = true;
 				header( 'Content-type: application/json' );
 				break;
 	
 			case "center_only" :
 			case "none" :
+				$this->mDisplayOnlyContent = true;
 				break;
 	
 			case "html" :
 			default :
+				$this->mDisplayOnlyContent = false;
 				header( 'Content-Type: text/html; charset=utf-8' );
 				break;
 		}
@@ -424,7 +428,7 @@ class BitSystem extends BitBase {
 			$this->setFormatHeader( $pFormat );
 		} 
 		
-		if( $this->mFormatHeader == "center_only" ) {
+		if( $this->mDisplayOnlyContent == true ) {
 			$gBitSmarty->assign_by_ref( 'gBitSystem', $this );
 			$gBitSmarty->display( $pMid );
 			return;

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.146 2007/09/04 16:51:18 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.147 2007/09/09 22:23:11 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -363,34 +363,71 @@ class BitSystem extends BitBase {
 		);
 	}
 
-	// === display
+
 	/**
-	 * Tell bitsystem to only render the 'mid' when doing a display.
-	 *
-	 * @param $pOnlyRender flag defaulting to true
-	 * @access public
-	 */
-	function onlyRenderContent($pOnlyRender = true) {
-		$this->mDisplayOnlyContent = $pOnlyRender;
+	* Set the proper headers for requested output
+	*
+	* @param  $pFormat the output headers. Available options include: html, json, xml, center_only
+	* @access public
+	*/
+	function setFormatHeader( $pFormat = 'html' ) {
+		// this will indicate to BitSystem::display that the headers have already been set
+		$this->mFormatHeader = $pFormat;
+	
+		switch( $pFormat ) {
+			case "xml" :
+				//since we are returning xml we must report so in the header
+				//we also need to tell the browser not to cache the page
+				//see: http://mapki.com/index.php?title=Dynamic_XML
+				// Date in the past
+				header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" );
+				// always modified
+				header( "Last-Modified: " . gmdate( "D, d M Y H:i:s" )." GMT" );
+				// HTTP/1.1
+				header( "Cache-Control: no-store, no-cache, must-revalidate" );
+				header( "Cache-Control: post-check=0, pre-check=0", FALSE );
+				// HTTP/1.0
+				header( "Pragma: no-cache" );
+				//XML Header
+				header( "Content-Type: text/xml" );
+				break;
+	
+			case "json" :
+				header( 'Content-type: application/json' );
+				break;
+	
+			case "center_only" :
+			case "none" :
+				break;
+	
+			case "html" :
+			default :
+				header( 'Content-Type: text/html; charset=utf-8' );
+				break;
+		}
 	}
+
 
 	/**
 	* Display the main page template
 	*
 	* @param  $mid the name of the template for the page content
+	* @param  $browserTitle a string to be displayed in the top browser bar
+	* @param  $format the output format - xml, ajax, content, full - relays to setRenderFormat
 	* @access public
 	*/
-	function display( $pMid, $pBrowserTitle=NULL ) {
+	function display( $pMid, $pBrowserTitle = NULL, $pFormat = 'html' ) {
 		global $gBitSmarty;
 		$gBitSmarty->verifyCompileDir();
 
-		if ($this->mDisplayOnlyContent) {
-			$gBitSmarty->assign_by_ref('gBitSystem', $this);
-			$gBitSmarty->display($pMid);
+		if( empty( $this->mFormatHeader )) {
+			$this->setFormatHeader( $pFormat );
+		} elseif( $this->mFormatHeader == "center_only" ) {
+			$gBitSmarty->assign_by_ref( 'gBitSystem', $this );
+			$gBitSmarty->display( $pMid );
 			return;
 		}
 
-		header( 'Content-Type: text/html; charset=utf-8' );
 		if( !empty( $pBrowserTitle ) ) {
 			$this->setBrowserTitle( $pBrowserTitle );
 		}
@@ -407,6 +444,7 @@ class BitSystem extends BitBase {
 		$gBitSmarty->display( 'bitpackage:kernel/bitweaver.tpl' );
 		$this->postDisplay( $pMid );
 	}
+
 
 	// === preDisplay
 	/**
@@ -1962,6 +2000,14 @@ class BitSystem extends BitBase {
 		global $gBitThemes;
 		deprecated( 'This is now in BitThemes instead of BitSystem.' );
 		return $gBitThemes->loadAjax( $pAjaxLib, $pLibHash );
+	}
+	function onlyRenderContent($pOnlyRender = true) {
+		deprecated( 'Please use: BitSystem::setRenderFormat( [xml,json,content,full] )' );
+		if ( $pOnlyRender == true ){
+			function setRenderFormat( "content_only" );
+		}else{
+			function setRenderFormat( "html" );
+		}
 	}
 }
 ?>

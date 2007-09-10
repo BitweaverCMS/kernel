@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.150 2007/09/09 23:10:36 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.151 2007/09/10 06:30:56 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -89,7 +89,7 @@ class BitSystem extends BitBase {
 	var $mPackageFileName;
 
 	// Display full page or just contents?
-	var $mDisplayOnlyContent;
+	var $mFormatHeader;
 
 	// === BitSystem constructor
 	/**
@@ -367,16 +367,15 @@ class BitSystem extends BitBase {
 	/**
 	* Set the proper headers for requested output
 	*
-	* @param  $pFormat the output headers. Available options include: html, json, xml, center_only
+	* @param  $pFormat the output headers. Available options include: html, json, xml or none
 	* @access public
 	*/
 	function setFormatHeader( $pFormat = 'html' ) {
-		// this will indicate to BitSystem::display that the headers have already been set
+		// this will tell BitSystem::display what headers have been set in case it's been called independently
 		$this->mFormatHeader = $pFormat;
-	
+
 		switch( $pFormat ) {
 			case "xml" :
-				$this->mDisplayOnlyContent = true;
 				//since we are returning xml we must report so in the header
 				//we also need to tell the browser not to cache the page
 				//see: http://mapki.com/index.php?title=Dynamic_XML
@@ -392,20 +391,17 @@ class BitSystem extends BitBase {
 				//XML Header
 				header( "Content-Type: text/xml" );
 				break;
-	
+
 			case "json" :
-				$this->mDisplayOnlyContent = true;
 				header( 'Content-type: application/json' );
 				break;
-	
-			case "center_only" :
+
 			case "none" :
-				$this->mDisplayOnlyContent = true;
+			case "center_only" :
 				break;
-	
+
 			case "html" :
 			default :
-				$this->mDisplayOnlyContent = false;
 				header( 'Content-Type: text/html; charset=utf-8' );
 				break;
 		}
@@ -424,11 +420,13 @@ class BitSystem extends BitBase {
 		global $gBitSmarty;
 		$gBitSmarty->verifyCompileDir();
 
+		// set the correct headers if it hasn't been done yet
 		if( empty( $this->mFormatHeader )) {
 			$this->setFormatHeader( $pFormat );
-		} 
-		
-		if( $this->mDisplayOnlyContent == true ) {
+		}
+
+		// only using the default html header will print modules and all the rest of it.
+		if( $this->mFormatHeader != 'html' ) {
 			$gBitSmarty->assign_by_ref( 'gBitSystem', $this );
 			$gBitSmarty->display( $pMid );
 			return;
@@ -437,6 +435,7 @@ class BitSystem extends BitBase {
 		if( !empty( $pBrowserTitle ) ) {
 			$this->setBrowserTitle( $pBrowserTitle );
 		}
+
 		if( $pMid == 'error.tpl' ) {
 			$this->setBrowserTitle( !empty( $pBrowserTitle ) ? $pBrowserTitle : tra( 'Error' ) );
 			$pMid = 'bitpackage:kernel/error.tpl';

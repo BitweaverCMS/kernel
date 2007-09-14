@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.40 2007/07/03 20:42:50 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.41 2007/09/14 07:05:08 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -206,17 +206,19 @@ class BitBase {
 			}
 		}
 
-		// sort_modes are set, we check them against our selected sort_mode
-		if( !empty( $pListHash['sort_modes'] ) && is_array( $pListHash['sort_modes'] )) {
-			$is_valid = FALSE;
-			foreach( $pListHash['sort_modes'] as $mode ) {
-				if( preg_match( "/^{$mode}_(desc|asc)$/", $pListHash['sort_mode'] )) {
-					$is_valid = TRUE;
+		// valid_sort_modes are set, we check them against our selected sort_mode
+		if( !empty( $pListHash['sort_mode'] ) && !empty( $pListHash['valid_sort_modes'] ) && is_array( $pListHash['valid_sort_modes'] )) {
+			if( is_string( $pListHash['sort_mode'] )) {
+				if( !$this->verifySortMode( $pListHash['sort_mode'], $pListHash['valid_sort_modes'] )) {
+					$pListHash['sort_mode'] = '';
 				}
-			}
-
-			if( !$is_valid ) {
-				$pListHash['sort_mode'] = '';
+			} elseif( is_array( $pListHash['sort_mode'] )) {
+				// make sure all values of the sort_mode array match something in the valid valid_sort_modes hash
+				foreach( $pListHash['sort_mode'] as $key => $mode ) {
+					if( !$this->verifySortMode( $mode, $pListHash['valid_sort_modes'] )) {
+						unset( $pListHash['sort_mode'][$key] );
+					}
+				}
 			}
 		}
 
@@ -269,6 +271,27 @@ class BitBase {
 		if( empty( $pListHash['parse_data'] )) {
 			$pListHash['parse_data'] = FALSE;
 		}
+	}
+
+	/**
+	 * verifySortMode is used to validate a given sort_mode agains an array of valid sort modes
+	 * 
+	 * @param string $pSortMode sort mode to check
+	 * @param array $pValidSortModes array of available sort modes
+	 * @access public
+	 * @return TRUE on success, FALSE on failure
+	 */
+	function verifySortMode( $pSortMode, $pValidSortModes ) {
+		if( !empty( $pSortMode ) && is_string( $pSortMode ) && !empty( $pValidSortModes ) && is_array( $pValidSortModes )) {
+			foreach( $pValidSortModes as $mode ) {
+				// we will not check the table - that would just be too complicated...
+				if( preg_match( "/^(\w+\.)?{$mode}_(desc|asc)$/", $pSortMode )) {
+					return TRUE;
+				}
+			}
+		}
+
+		return FALSE;
 	}
 
 

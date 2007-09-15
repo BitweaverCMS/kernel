@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.151 2007/09/10 06:30:56 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.152 2007/09/15 18:32:55 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -425,6 +425,11 @@ class BitSystem extends BitBase {
 			$this->setFormatHeader( $pFormat );
 		}
 
+		if( $pMid == 'error.tpl' ) {
+			$this->setBrowserTitle( !empty( $pBrowserTitle ) ? $pBrowserTitle : tra( 'Error' ) );
+			$pMid = 'bitpackage:kernel/error.tpl';
+		}
+
 		// only using the default html header will print modules and all the rest of it.
 		if( $this->mFormatHeader != 'html' ) {
 			$gBitSmarty->assign_by_ref( 'gBitSystem', $this );
@@ -434,11 +439,6 @@ class BitSystem extends BitBase {
 
 		if( !empty( $pBrowserTitle ) ) {
 			$this->setBrowserTitle( $pBrowserTitle );
-		}
-
-		if( $pMid == 'error.tpl' ) {
-			$this->setBrowserTitle( !empty( $pBrowserTitle ) ? $pBrowserTitle : tra( 'Error' ) );
-			$pMid = 'bitpackage:kernel/error.tpl';
 		}
 
 		$this->preDisplay( $pMid );

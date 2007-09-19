@@ -1,3 +1,4 @@
+<div {if $pageCssId}id="{$pageCssId}"{/if}>
 {foreach from=$gCenterPieces item=centerPiece}
 	{assign var=moduleParams value=$centerPiece}
 	{include file=$centerPiece.module_rsrc}
@@ -6,6 +7,7 @@
 		{include file=$gDefaultCenter}
 	{/if}
 {/foreach}
+</div>
 
 {*
 {section name=inc loop=$gCenterPieces}

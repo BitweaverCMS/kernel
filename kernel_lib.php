@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.8 2007/08/01 07:52:10 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.9 2007/09/20 06:57:52 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -178,7 +178,7 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 			// make the actual target!
 			if( @mkdir( $pTarget, $pPerms )) {
 				return 1;
-			} else {
+			} elseif( !is_dir( $pTarget ) ) {
 				error_log( "mkdir() - could not create $pTarget" );
 			}
 		}

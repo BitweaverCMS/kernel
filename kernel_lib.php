@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.9 2007/09/20 06:57:52 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.10 2007/09/22 21:37:41 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -240,6 +240,21 @@ function detoxify( &$pParamHash, $pHtml = FALSE ) {
 		}
 	}
 }
+
+function file_name_to_title( $pFileName ) {
+	if( preg_match( '/^[A-Z]:\\\/', $pFileName ) ) {
+			// MSIE shit file names if passthrough via gigaupload, etc.
+			// basename will not work - see http://us3.php.net/manual/en/function.basename.php
+			$tmp = preg_split("[\\\]",$pFileName);
+			$defaultName = $tmp[count($tmp) - 1];
+	} elseif( strpos( '.', $pFileName ) ) {
+			list( $defaultName, $ext ) = explode( '.', $pFileName );
+	} else {
+			$defaultName = $pFileName;
+	}
+	return( str_replace( '_', ' ', substr( $defaultName, 0, strrpos( $defaultName, '.' ) ) ) );
+}
+
 
 /**
  * simple function to include in deprecated function calls. makes the developer replace with newer code

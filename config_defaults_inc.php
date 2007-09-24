@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.23 2007/08/02 13:52:01 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.24 2007/09/24 11:52:29 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -75,6 +75,14 @@ if( !defined( 'BIT_ROOT_URL' ) ) {
 	}
 	$subpath = str_replace( '//', '/', str_replace( "\\", '/', $subpath ) ); // do some de-windows-ification
 	define( 'BIT_ROOT_URL', $subpath );
+}
+
+// If BIT_ROOT_URI hasn't been set yet, we'll try to get one from the super global $_SERVER. 
+// This works with apache - not sure about other servers.
+if( !defined( 'BIT_ROOT_URI' )) {
+	if( !empty( $_SERVER['HTTP_HOST'] )) {
+		define( 'BIT_ROOT_URI', 'http'.( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == TRUE ? 's': '' ).'://'.$_SERVER['HTTP_HOST'] );
+	}
 }
 
 // set the currect version of bitweaver

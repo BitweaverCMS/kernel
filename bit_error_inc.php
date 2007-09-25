@@ -118,6 +118,7 @@ function bit_error_string( $iDBParms ) {
 		'$_POST'   => $_POST,
 		'$_GET'    => $_GET,
 		'$_COOKIE' => $_COOKIE,
+		'$_FILES'  => $_FILES,
 	);
 
 	$parameters = '';

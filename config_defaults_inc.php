@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.25 2007/09/25 14:13:42 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.26 2007/09/26 21:49:23 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -81,7 +81,7 @@ if( !defined( 'BIT_ROOT_URL' ) ) {
 // This works with apache - not sure about other servers.
 if( !defined( 'BIT_ROOT_URI' )) {
 	if( !empty( $_SERVER['HTTP_HOST'] )) {
-		define( 'BIT_ROOT_URI', 'http'.( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == TRUE ? 's': '' ).'://'.$_SERVER['HTTP_HOST'].'/' );
+		define( 'BIT_ROOT_URI', 'http'.( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == TRUE ? 's': '' ).'://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL );
 	}
 }
 

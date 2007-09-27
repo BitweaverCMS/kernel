@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.152 2007/09/15 18:32:55 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.153 2007/09/27 10:10:32 nickpalmer Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2009,7 +2009,7 @@ class BitSystem extends BitBase {
 	function onlyRenderContent($pOnlyRender = true) {
 		deprecated( 'Please use: BitSystem::setRenderFormat( [xml,json,content,full] )' );
 		if ( $pOnlyRender == true ){
-			$this->setRenderFormat( "content_only" );
+			$this->setRenderFormat( "center_only" );
 		}else{
 			$this->setRenderFormat( "html" );
 		}

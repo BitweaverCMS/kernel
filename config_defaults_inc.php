@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.26 2007/09/26 21:49:23 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.27 2007/09/27 07:25:30 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -83,6 +83,11 @@ if( !defined( 'BIT_ROOT_URI' )) {
 	if( !empty( $_SERVER['HTTP_HOST'] )) {
 		define( 'BIT_ROOT_URI', 'http'.( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == TRUE ? 's': '' ).'://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL );
 	}
+}
+
+// custom storage host
+if( !defined( 'STORAGE_HOST_URI' ) ) {
+	define( 'STORAGE_HOST_URI', BIT_ROOT_URI );
 }
 
 // set the currect version of bitweaver

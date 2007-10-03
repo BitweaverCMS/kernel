@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.42 2007/06/15 08:55:41 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.43 2007/10/03 07:45:56 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -758,6 +758,7 @@ class BitDb {
 					"pgsql"    => "RANDOM()",
 					"mysql3"   => "RAND()",
 					"mysql"    => "RAND()",
+					"mysqli"   => "RAND()",
 					"mssql"    => "NEWID()",
 					"firebird" => "RAND()",
 					// TODO: get the correct function names for these databases:

@@ -6,15 +6,13 @@
 <div class="floaticon">{bithelp}</div>
 
 <div class="admin {$package}">
-	{if $package}
-		<div class="header">
-			<h1>{tr}Configure {$pageName|default:$page|capitalize}{/tr}</h1>
-		</div>
-	{else}
-		<div class="header">
+	<div class="header">
+		{if $package}
+			<h1>{tr}Configure{/tr}: {tr}{$pageName|default:$page|replace:"_":" "|capitalize}{/tr}</h1>
+		{else}
 			<h1>{tr}Administration{/tr}</h1>
-		</div>
-	{/if}
+		{/if}
+	</div>
 
 	{* The rest determines which page to include using "page" GET parameter. Default: list-sections
 	Add a value in first check when you create a new admin page. *}

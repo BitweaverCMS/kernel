@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.10 2007/09/22 21:37:41 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.11 2007/10/04 15:43:36 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -428,6 +428,38 @@ function unlink_r( $pPath, $pFollowLinks = FALSE ) {
 		}
 		closedir( $dir ) ;
 		return @rmdir( $pPath );
+	}
+}
+
+/**
+ * recursively copy the contents of a directory to a new location akin to copy -r
+ * 
+ * @param array $pSource source directory
+ * @param array $pTarget target directory
+ * @access public
+ * @return void
+ */
+function copy_r( $pSource, $pTarget ) {
+	if( is_dir( $pSource )) {
+		@mkdir_p( $pTarget );
+		$d = dir( $pSource );
+
+		while( FALSE !== ( $entry = $d->read() )) {
+			if( $entry == '.' || $entry == '..' ) {
+				continue;
+			}
+
+			$source = $pSource.'/'.$entry;
+			if( is_dir( $source )) {
+				copy_r( $source, $pTarget.'/'.$entry );
+				continue;
+			}
+			copy( $source, $pTarget.'/'.$entry );
+		}
+
+		$d->close();
+	} else {
+		copy( $pSource, $pTarget );
 	}
 }
 

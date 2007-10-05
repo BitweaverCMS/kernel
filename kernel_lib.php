@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.11 2007/10/04 15:43:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.12 2007/10/05 17:25:05 nickpalmer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -686,7 +686,7 @@ function httpScheme() {
 }
 
 function httpPrefix() {
-	return 'http'.((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) ? 's' : '').'://'.$_SERVER['HTTP_HOST'];
+	return httpScheme().'://'.$_SERVER['HTTP_HOST'];
 }
 
 /**
@@ -705,7 +705,7 @@ function install_error( $pMsg = null ) {
 		$step = 0;
 	}
 
-	header( "Location: http://".$_SERVER['HTTP_HOST'].BIT_ROOT_URL."install/install.php?step=".$step );
+	header( "Location: ".httpPrefix().BIT_ROOT_URL."install/install.php?step=".$step );
 	die;
 }
 

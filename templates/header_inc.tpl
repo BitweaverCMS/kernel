@@ -48,13 +48,13 @@
 {jspack ifile=bitweaver.js}
 {if $gBitThemes->mAjax == 'prototype'}
 	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/prototype.js"></script>
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/ajax.js"></script>
 	{foreach from=$gBitThemes->mAjaxLibs item=ajaxLib}
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/{$ajaxLib}"></script>
 	{/foreach}
 	{elseif $gBitThemes->mAjax == 'mochikit'}
 	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Base.js"></script>
 	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Async.js"></script>
+	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/ajax.js"></script>
 	{foreach from=$gBitThemes->mAjaxLibs item=ajaxLib}
 		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/{$ajaxLib}"></script>
 		{if $ajaxLib == 'ThickBox.js' || $ajaxLib == 'Controls.js'}

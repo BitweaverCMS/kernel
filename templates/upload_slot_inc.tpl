@@ -21,7 +21,7 @@
 	<div id="upload-slot-{$id+1}">
 		<div class="row">
 			{forminput}
-				<a href="javascript:ajax_updater('upload-slot-{$id+1}', '{$smarty.const.KERNEL_PKG_URL}upload_slot_inc.php', 'upload_id={$id+1}&amp;hash_key={$hash_key}')">
+				<a href="javascript:void(0);" onclick="BitAjax.updater('upload-slot-{$id+1}', '{$smarty.const.KERNEL_PKG_URL}upload_slot_inc.php', 'upload_id={$id+1}&amp;hash_key={$hash_key}')">
 					{biticon iname=large/list-add iexplain="Add upload slot" iforce="icon"}
 				</a>
 			{/forminput}

@@ -126,7 +126,7 @@ function smarty_function_popup($params, &$gBitSmarty) {
 		$retval .= $append . ');" onmouseout="nd();"';
 	}
 	else {
-		$retval = $trigger . '="of=function(t){overlib(t'.$append.');};ajax_get_and_call(this,of,\''.$target.'\');" onmouseout="nd();"';
+		$retval = $trigger . '="of=function(t){overlib(t'.$append.');};BitAjax.getAndCall(this,of,\''.$target.'\');" onmouseout="nd();"';
 	}
 
 	return $retval;

@@ -55,7 +55,7 @@
 	{/capture}
 
 	<div class="pagination">
-		{assign var=pageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find``$smarty.capture.string`"}
+		{assign var=pageUrl value="`$pgnUrl`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find``$smarty.capture.string`"}
 		{math equation="offset + 1 * max" offset=$listInfo.offset max=$listInfo.max_records assign=to}
 {*
 		<br />

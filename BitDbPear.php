@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.17 2007/03/26 19:50:54 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbPear.php,v 1.18 2007/10/25 17:14:14 nickpalmer Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -430,8 +430,7 @@ class BitDbPear extends BitDb
 	 * @return  array of tables for current database.
 	 */
 	function MetaTables( $ttype = false, $showSchema = false, $mask=false ) {
-bt();
-vd( '$gForceAdodb = TRUE; is need on the page: '.$_SERVER['SCRIPT_FILENAME'] );
+        error_log( '$gForceAdodb = TRUE; is need on the page: '.$_SERVER['SCRIPT_FILENAME'] );
 		 return array();
 	}
 

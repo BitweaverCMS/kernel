@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.153 2007/09/27 10:10:32 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.154 2007/10/25 16:31:11 nickpalmer Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1068,6 +1068,7 @@ class BitSystem extends BitBase {
 		global $gBitSmarty;
 		$gBitSmarty->assign( 'fatalTitle', tra( $pErrorTitle ) );
 		$gBitSmarty->assign( 'msg', $pMsg );
+		error_log("Fatal Error: " . $pMsg );
 		$this->display( $pTemplate );
 		die;
 	}

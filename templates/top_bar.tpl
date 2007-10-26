@@ -67,10 +67,4 @@
 		addEvent(window, 'load', new Function('listMenu.activateMenu("nav")'));
 	/*]]>*/ </script>
 {/if}
-
-{if $gBitSystem->isFeatureActive( 'site_top_column' ) && $t_modules && !$gHideModules}
-	{section name=homeix loop=$t_modules}
-		{$t_modules[homeix].data}
-	{/section}
-{/if}
 {/strip}

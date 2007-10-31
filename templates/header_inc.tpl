@@ -67,12 +67,6 @@
 	{/foreach}
 {/if}
 
-{if $gBitThemes->isAjaxLib('custom')}
-	{foreach from=$gBitThemes->mAjaxLibs.bitpackage item=ajaxLib}
-		<script type="text/javascript" src="{$ajaxLib}"></script>
-	{/foreach}
-{/if}
-
 {* We could require a context var to turn this on. *}
 <script type="text/javascript">/* <![CDATA[ */
 	addLoadHook(setupShowHide);

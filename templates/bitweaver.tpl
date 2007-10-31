@@ -52,11 +52,17 @@
 			</div>
 		{/if}
 
-		{if $gBitSystem->isFeatureActive( 'site_bot_bar' )}
-			<div id="footer">
+		<div id="footer">
+			{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && $b_modules && !$gHideModules}
+				{section name=homeix loop=$b_modules}
+					{$b_modules[homeix].data}
+				{/section}
+			{/if}
+
+			{if $gBitSystem->isFeatureActive( 'site_bot_bar' )}
 				{include file="bitpackage:kernel/bot_bar.tpl"}
-			</div>
-		{/if}
+			{/if}
+		</div>
 
 	</div>
 

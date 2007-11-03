@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.41 2007/09/14 07:05:08 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.42 2007/11/03 13:59:16 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -204,6 +204,11 @@ class BitBase {
 			} else {
 				$pListHash['sort_mode'] = $_REQUEST['sort_mode'];
 			}
+		}
+
+		// immediately die on request to hack our database
+		if( strpos( $pListHash['sort_mode'], 'http' ) !== FALSE || ( !empty( $_REQUEST['PGV_BASE_DIRECTORY'] ) && strpos( $_REQUEST['PGV_BASE_DIRECTORY'], 'http' ) !== FALSE )) {
+			die;
 		}
 
 		// valid_sort_modes are set, we check them against our selected sort_mode

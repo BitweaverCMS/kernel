@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.104 2007/10/09 18:51:49 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.105 2007/11/03 14:08:02 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -12,6 +12,11 @@
  * required setup
  */
 
+// immediately die on request to hack our database
+if(( !empty( $_REQUEST['sort_mode'] ) && strpos( $_REQUEST['sort_mode'], 'http' ) !== FALSE ) || ( !empty( $_REQUEST['PGV_BASE_DIRECTORY'] ) && strpos( $_REQUEST['PGV_BASE_DIRECTORY'], 'http' ) !== FALSE )) {
+	die;
+}
+
 require_once( BIT_ROOT_PATH.'kernel/config_defaults_inc.php' );
 require_once( KERNEL_PKG_PATH.'kernel_lib.php' );
 require_once( KERNEL_PKG_PATH.'BitTimer.php' );
@@ -20,7 +25,7 @@ require_once( KERNEL_PKG_PATH.'BitTimer.php' );
 error_reporting( BIT_PHP_ERROR_REPORTING );
 
 // this is evil stuff and causes hell for us
-ini_set ( 'session.use_trans_sid', 'Off' );
+ini_set( 'session.use_trans_sid', 'Off' );
 
 if( ini_get( 'safe_mode' ) && ini_get( 'safe_mode_gid' )) {
 	umask( 0007 );

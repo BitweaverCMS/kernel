@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.43 2007/10/03 07:45:56 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.44 2007/11/05 04:11:31 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -591,6 +591,35 @@ class BitDb {
 				break;
 			default:
 				$ret = 'now()';
+		}
+		return $ret;
+	}
+
+	/** Return the sql to cast the given column from a time stamp to a Unix epoch
+	* this is most useful for the many places bitweaver stores time as epoch integers
+	* ADODB has no native support for this, see http://phplens.com/lens/lensforum/msgs.php?id=13661&x=1
+	* @param pColumn name of an integer, or long integer column
+	* @return the timestamp as a quoted string.
+	* @todo could be used to later convert all int timestamps into db
+	* timestamps. Currently not used anywhere.
+	*/
+	function SQLTimestampToInt( $pColumn ) {
+		global $gBitDbType;
+		switch( $gBitDbType ) {
+			case "firebird":
+				$ret = "CAST `$pColumn` AS TIMESTAMP";
+				break;
+			case "mysql":
+			case "mysqli":
+				$ret = "UNIX_TIMESTAMP( `$pColumn` )";
+				break;
+			case "pgsql":
+			case "postgres":
+			case "postgres7":
+				$ret = $pColumn.'::abstime::integer';
+				break;
+			default:
+				$ret = $pColumn;
 		}
 		return $ret;
 	}

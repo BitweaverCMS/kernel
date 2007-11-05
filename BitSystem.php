@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.155 2007/11/05 06:06:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.156 2007/11/05 06:21:33 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1080,14 +1080,21 @@ class BitSystem extends BitBase {
 	* If an unrecoverable error has occurred, this method should be invoked. script exist occurs
 	*
 	* @param string $ pMsg error message to be displayed
+	* @param string template file used to display error
+	* @param string error dialog title. default gets site_error_title config, passing '' will result in no title
 	* @return none this function will DIE DIE DIE!!!
 	* @access public
 	*/
-	function fatalError( $pMsg, $pTemplate='error.tpl', $pErrorTitle="Seems there's been a problem." ) {
+	function fatalError( $pMsg, $pTemplate='error.tpl', $pErrorTitle=NULL ) {
 		global $gBitSmarty;
+		if( is_null( $pErrorTitle ) ) {
+			$pErrorTitle = $this->getConfig( 'site_error_title', 'Seems there has been a problem.' );
+		}
 		$gBitSmarty->assign( 'fatalTitle', tra( $pErrorTitle ) );
 		$gBitSmarty->assign( 'msg', $pMsg );
-		error_log("Fatal Error: " . $pMsg );
+		if( !isset( $this->mHttpStatus ) || $this->mHttpStatus != 404 ) {
+			error_log("Fatal Error: " . $pMsg );
+		}
 		$this->display( $pTemplate );
 		die;
 	}

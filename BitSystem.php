@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.154 2007/10/25 16:31:11 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.155 2007/11/05 06:06:24 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -365,6 +365,16 @@ class BitSystem extends BitBase {
 
 
 	/**
+	* Set the http status, most notably for 404 not found for deleted content
+	*
+	* @param  $pHttpStatus numerical HTTP status, most typically 404
+	* @access public
+	*/
+	function setHttpStatus( $pHttpStatus ) {
+		$this->mHttpStatus = $pHttpStatus;
+	}
+
+	/**
 	* Set the proper headers for requested output
 	*
 	* @param  $pFormat the output headers. Available options include: html, json, xml or none
@@ -419,6 +429,15 @@ class BitSystem extends BitBase {
 	function display( $pMid, $pBrowserTitle = NULL, $pFormat = 'html' ) {
 		global $gBitSmarty;
 		$gBitSmarty->verifyCompileDir();
+
+		// see if we have a custom status other than 200 OK
+		if( isset( $this->mHttpStatus ) ) {
+			switch( $this->mHttpStatus ) {
+				case 404:
+					header("HTTP/1.0 404 Not Found");
+					break;
+			}
+		}
 
 		// set the correct headers if it hasn't been done yet
 		if( empty( $this->mFormatHeader )) {

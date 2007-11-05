@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.12 2007/10/05 17:25:05 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.13 2007/11/05 06:22:16 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -583,7 +583,7 @@ function xmlentities( $string, $quote_style=ENT_QUOTES ) {
  * Redirect to another page or site
  * @param string The url to redirect to
  */
-function bit_redirect( $pUrl ) {
+function bit_redirect( $pUrl, $pStatusCode=NULL ) {
 	// clean up URL before executing it
 	while( strstr( $pUrl, '&&' ) ) {
 		$pUrl = str_replace( '&&', '&', $pUrl );
@@ -598,7 +598,11 @@ function bit_redirect( $pUrl ) {
 		$pUrl = str_replace( '&amp;', '&', $pUrl );
 	}
 
-	header('Location: ' . $pUrl);
+	if( $pStatusCode ) {
+		header('Location: ' . $pUrl, TRUE, $pStatusCode );
+	} else {
+		header('Location: ' . $pUrl );
+	}
 	session_write_close();
 	exit();
 }

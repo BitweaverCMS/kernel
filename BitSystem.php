@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.156 2007/11/05 06:21:33 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.157 2007/11/05 06:40:17 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -367,7 +367,7 @@ class BitSystem extends BitBase {
 	/**
 	* Set the http status, most notably for 404 not found for deleted content
 	*
-	* @param  $pHttpStatus numerical HTTP status, most typically 404
+	* @param  $pHttpStatus numerical HTTP status, most typically 404 (not found) or 403 (forbidden)
 	* @access public
 	*/
 	function setHttpStatus( $pHttpStatus ) {
@@ -433,8 +433,12 @@ class BitSystem extends BitBase {
 		// see if we have a custom status other than 200 OK
 		if( isset( $this->mHttpStatus ) ) {
 			switch( $this->mHttpStatus ) {
+				// before you can spunky and decide to enter every HTTP status code under the sun here, please have the code needed someplace first
+				case '403':
+					header( "HTTP/1.0 403 Forbidden" );
+					break;
 				case 404:
-					header("HTTP/1.0 404 Not Found");
+					header( "HTTP/1.0 404 Not Found" );
 					break;
 			}
 		}
@@ -1092,7 +1096,8 @@ class BitSystem extends BitBase {
 		}
 		$gBitSmarty->assign( 'fatalTitle', tra( $pErrorTitle ) );
 		$gBitSmarty->assign( 'msg', $pMsg );
-		if( !isset( $this->mHttpStatus ) || $this->mHttpStatus != 404 ) {
+		// if mHttpStatus is set, we can assume this was an expected fatal, such as a 404 or 403
+		if( !isset( $this->mHttpStatus ) ) {
 			error_log("Fatal Error: " . $pMsg );
 		}
 		$this->display( $pTemplate );

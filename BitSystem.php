@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.158 2007/11/06 04:13:11 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.159 2007/11/06 14:43:52 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -493,6 +493,24 @@ class BitSystem extends BitBase {
 			$gBitSmarty->assign_by_ref( 'gCenterPieces', $gCenterPieces );
 		} else {
 			unset( $gBitThemes->mLayout['c'] );
+		}
+
+		/* @TODO - fetch module php files before rendering tpls.
+		 * The basic problem here is center_list and module files are 
+		 * processed during page rendering, which means code in those
+		 * files can not set <head> information before rendering. Kinda sucks.
+		 *
+		 * So what this does is, this calls on a service function allowing any
+		 * package to check if its center or other module file is going to be 
+		 * called and gives it a chance to set any information for <head> first.
+		 * 
+		 * Remove when TOOD is complete. -wjames5
+		 */
+		global $gContent, $gBitUser;
+		if ( isset( $gContent ) ){
+			$gContent->invokeServices( 'module_display_function' );
+		}elseif ( isset( $gBitUser ) ){
+ 			$gBitUser->invokeServices( 'module_display_function' );		
 		}
 
 		// process layout

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.159 2007/11/06 14:43:52 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.160 2007/11/06 16:32:18 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -506,10 +506,8 @@ class BitSystem extends BitBase {
 		 * 
 		 * Remove when TOOD is complete. -wjames5
 		 */
-		global $gContent, $gBitUser;
-		if ( isset( $gContent ) ){
-			$gContent->invokeServices( 'module_display_function' );
-		}elseif ( isset( $gBitUser ) ){
+		global $gBitUser;
+		if ( isset( $gBitUser ) ){
  			$gBitUser->invokeServices( 'module_display_function' );		
 		}
 

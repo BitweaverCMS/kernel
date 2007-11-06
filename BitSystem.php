@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.157 2007/11/05 06:40:17 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.158 2007/11/06 04:13:11 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1098,7 +1098,7 @@ class BitSystem extends BitBase {
 		$gBitSmarty->assign( 'msg', $pMsg );
 		// if mHttpStatus is set, we can assume this was an expected fatal, such as a 404 or 403
 		if( !isset( $this->mHttpStatus ) ) {
-			error_log("Fatal Error: " . $pMsg );
+			error_log( "Fatal Error: $pMsg http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
 		}
 		$this->display( $pTemplate );
 		die;

@@ -1,0 +1,1 @@
+{include file="bitpackage:kernel/top_bar.tpl"}

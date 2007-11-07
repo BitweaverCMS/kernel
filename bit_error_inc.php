@@ -27,6 +27,8 @@ function bit_log_error( $pLogMessage ) {
 }
 
 function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
+	global $gBitSystem;
+
 	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config_inc.php
 	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : (!empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL);
 
@@ -54,7 +56,7 @@ function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 		print "</body></html>";
 	} elseif( $errorEmail ) {
 		mail( $errorEmail,  "$pSubject", $pLogMessage );
-		if( ( defined( 'AUTO_BUG_SUBMIT' ) && AUTO_BUG_SUBMIT ) ) {
+		if( defined( 'AUTO_BUG_SUBMIT' ) && AUTO_BUG_SUBMIT && !empty( $gBitSystem ) && $gBitSystem->isDatabaseValid() ) {
 			mail( 'bugs@bitweaver.org',"$subject $pSubject",$pLogMessage );
 		}
 	}

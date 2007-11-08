@@ -8,10 +8,6 @@
 
 {include file="bitpackage:kernel/top.tpl"}
 
-{if $gBitSystem->isFeatureActive( 'site_top_bar' )}
-    {include file="bitpackage:kernel/top_bar.tpl"}
-{/if}
-
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr>
 {if $gBitSystem->isFeatureActive( 'site_left_column' ) && $l_modules}

@@ -44,28 +44,7 @@
 	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 /* ]]> */</script>
 
-{* the order of the js files is crucial *}
-{jspack ifile=bitweaver.js}
-
-{* load up various ajax libraries *}
-{if $gBitThemes->isAjaxLib('prototype')}
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/prototype.js"></script>
-	{foreach from=$gBitThemes->mAjaxLibs.prototype item=ajaxLib}
-		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/{$ajaxLib}"></script>
-	{/foreach}
-{/if}
-
-{if $gBitThemes->isAjaxLib('mochikit')}
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/MochiKitBitAjax.js"></script>
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Base.js"></script>
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/Async.js"></script>
-	{foreach from=$gBitThemes->mAjaxLibs.mochikit item=ajaxLib}
-		<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/{$ajaxLib}"></script>
-		{if $ajaxLib == 'ThickBox.js' || $ajaxLib == 'Controls.js'}
-			<link rel="stylesheet" type="text/css" href="{$smarty.const.UTIL_PKG_URL}javascript/libs/MochiKit/{$ajaxLib|replace:'.js':'.css'}" />
-		{/if}
-	{/foreach}
-{/if}
+<script type="text/javascript" src="{$gBitThemes->mStyles.joined_javascript}"></script>
 
 {* We could require a context var to turn this on. *}
 <script type="text/javascript">/* <![CDATA[ */

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.27 2007/09/27 07:25:30 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.28 2007/11/08 17:49:29 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -93,8 +93,8 @@ if( !defined( 'STORAGE_HOST_URI' ) ) {
 // set the currect version of bitweaver
 define( 'BIT_MAJOR_VERSION',	'2' );
 define( 'BIT_MINOR_VERSION',	'0' );
-define( 'BIT_SUB_VERSION',		'0' );
-define( 'BIT_LEVEL',			'' ); // dev < alpha < beta < '' < pl
+define( 'BIT_SUB_VERSION',		'1' );
+define( 'BIT_LEVEL',			'alpha' ); // dev < alpha < beta < '' < pl
 
 // These defines have to happen FIRST because core classes depend on them.
 // This means these packages *CANNOT* be renamed

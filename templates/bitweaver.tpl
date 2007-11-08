@@ -16,15 +16,6 @@
 	}">
 
 		<div id="header">
-			{if $popupPage}
-				{include file="bitpackage:kernel/poptop.tpl"}
-			{else}
-				{include file="bitpackage:kernel/top.tpl"}
-				{if $gBitSystem->isFeatureActive( 'site_top_bar' )}
-					{include file="bitpackage:kernel/top_bar.tpl"}
-				{/if}
-			{/if}
-
 			{if $gBitSystem->isFeatureActive( 'site_top_column' ) && $t_modules && !$gHideModules}
 				{section name=homeix loop=$t_modules}
 					{$t_modules[homeix].data}
@@ -57,10 +48,6 @@
 				{section name=homeix loop=$b_modules}
 					{$b_modules[homeix].data}
 				{/section}
-			{/if}
-
-			{if $gBitSystem->isFeatureActive( 'site_bot_bar' )}
-				{include file="bitpackage:kernel/bot_bar.tpl"}
 			{/if}
 		</div>
 

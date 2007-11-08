@@ -72,8 +72,10 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 	array(KERNEL_PKG_NAME,'site_display_timezone',0),
 	array(KERNEL_PKG_NAME,'site_long_date_format','%A %d of %B, %Y'),
 	array(KERNEL_PKG_NAME,'site_long_time_format','%H:%M:%S %Z'),
-	array(KERNEL_PKG_NAME,'site_left_column','y'),
+	array(KERNEL_PKG_NAME,'site_top_column','y'),
 	array(KERNEL_PKG_NAME,'site_right_column','y'),
+	array(KERNEL_PKG_NAME,'site_left_column','y'),
+	array(KERNEL_PKG_NAME,'site_bottom_column','y'),
 	array(KERNEL_PKG_NAME,'site_display_reltime','y'),
 	array(KERNEL_PKG_NAME,'max_records','10'),
 	array(KERNEL_PKG_NAME,'language','en'),
@@ -82,31 +84,49 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 ) );
 
 $moduleHash = array(
-	'mod_bitweaver_info' => array(
-		'title' => 'bitweaver',
-		'pos' => 1,
-		'layout_area' => 'r',
-		'module_rsrc' => 'bitpackage:kernel/mod_bitweaver_info.tpl'
+	array(
+		'title' => NULL,
+		'pos' => 5,
+		'layout_area' => 't',
+		'module_rsrc' => 'bitpackage:kernel/mod_site_title.tpl',
 	),
-	'mod_server_stats' => array(
+	array(
+		'title' => NULL,
+		'pos' => 10,
+		'layout_area' => 't',
+		'module_rsrc' => 'bitpackage:kernel/mod_top_menu.tpl',
+	),
+	array(
+		'title' => NULL,
+		'pos' => 5,
+		'layout_area' => 'l',
+		'module_rsrc' => 'bitpackage:kernel/mod_package_menu.tpl',
+	),
+	array(
+		'title' => 'bitweaver',
+		'pos' => 5,
+		'layout_area' => 'r',
+		'module_rsrc' => 'bitpackage:kernel/mod_bitweaver_info.tpl',
+	),
+	array(
 		'title' => 'Server Statistics',
 		'groups' => array( 'Admin' ),
-		'pos' => 2,
+		'pos' => 10,
 		'layout_area' => 'r',
-		'module_rsrc' => 'bitpackage:kernel/mod_server_stats.tpl'
+		'module_rsrc' => 'bitpackage:kernel/mod_server_stats.tpl',
 	),
-	'mod_powered_by' => array(
+	array(
 		'title' => 'Powered by',
-		'pos' => 4,
+		'pos' => 15,
 		'layout_area' => 'r',
-		'module_rsrc' => 'bitpackage:kernel/mod_powered_by.tpl'
+		'module_rsrc' => 'bitpackage:kernel/mod_powered_by.tpl',
 	),
-	'mod_package_menu' => array(
+	array(
 		'title' => NULL,
-		'pos' => 1,
-		'layout_area' => 'l',
-		'module_rsrc' => 'bitpackage:kernel/mod_package_menu.tpl'
-	)
+		'pos' => 5,
+		'layout_area' => 'b',
+		'module_rsrc' => 'bitpackage:kernel/mod_bottom_bar.tpl',
+	),
 );
 $gBitInstaller->registerModules( $moduleHash );
 

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.161 2007/11/11 02:58:44 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.162 2007/11/11 12:45:07 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -491,7 +491,10 @@ class BitSystem extends BitBase {
 		if( $pMid == 'bitpackage:kernel/dynamic.tpl' ) {
 			$gBitSmarty->assign_by_ref( 'gCenterPieces', $gCenterPieces );
 		} else {
-			unset( $gBitThemes->mLayout['c'] );
+			// i don't think there is a need for this anymore
+			// if we don't unset this, it's easier for us to scan for assigned modules and will eventually allow us to have 
+			// all modules in all areas and have more than 3 columns - xing - Sunday Nov 11, 2007   13:38:37 CET
+			//unset( $gBitThemes->mLayout['c'] );
 		}
 
 		/* @TODO - fetch module php files before rendering tpls.
@@ -503,11 +506,11 @@ class BitSystem extends BitBase {
 		 * package to check if its center or other module file is going to be 
 		 * called and gives it a chance to set any information for <head> first.
 		 * 
-		 * Remove when TOOD is complete. -wjames5
+		 * Remove when TODO is complete. -wjames5
 		 */
 		global $gBitUser;
-		if ( isset( $gBitUser ) ){
- 			$gBitUser->invokeServices( 'module_display_function' );		
+		if( isset( $gBitUser )) {
+			$gBitUser->invokeServices( 'module_display_function' );
 		}
 
 		$gBitThemes->loadStyle();

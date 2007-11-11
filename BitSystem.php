@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.160 2007/11/06 16:32:18 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.161 2007/11/11 02:58:44 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -485,7 +485,6 @@ class BitSystem extends BitBase {
 		global $gCenterPieces, $gBitSmarty, $gBitThemes;
 		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'jscalendar/' );
 
-		$gBitThemes->loadStyle();
 		$gBitThemes->loadLayout();
 
 		// check to see if we are working with a dynamic center area
@@ -510,6 +509,8 @@ class BitSystem extends BitBase {
 		if ( isset( $gBitUser ) ){
  			$gBitUser->invokeServices( 'module_display_function' );		
 		}
+
+		$gBitThemes->loadStyle();
 
 		// process layout
 		require_once( THEMES_PKG_PATH.'modules_inc.php' );

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.13 2007/11/05 06:22:16 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.14 2007/11/13 19:01:46 joasch Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -377,6 +377,26 @@ function encode_email_addresses( $pData ) {
 
 	return $pData;
 }
+
+/**
+ * validate email sysntax
+ * php include as a string
+ *
+ * @param $pEmail the file to include
+ * @return a string with the results of the file
+ **/
+function validate_email_syntax( $pEmail ) {
+	if( !eregi (
+		'^[-!#$%&\`*+\\./0-9=?A-Z^_`a-z{|}~]+'.'@'.
+		'(localhost|[-!$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\.'.
+		'[-!$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+)$'
+		, $pEmail ) ) {
+			return false;
+	} else {
+		return true;
+	}
+}
+
 /**
  * get_include_contents -- handy function for getting the contents of a
  * php include as a string

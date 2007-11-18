@@ -1,5 +1,11 @@
 <?php
 /**
+ * Smarty plugin
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+/**
  * this function will output the URL to a given compressed and cached js file.
  * NOTE: if you use the util package, it will automatically insert the javascript/ subdir
  * 

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.22 2007/06/08 16:23:48 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.23 2007/11/22 01:25:26 joasch Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -53,8 +53,6 @@ class BitDbAdodb extends BitDb
 		parent::BitDb();
 
 		// Get all the ADODB stuff included
-		if (!defined("ADODB_FORCE_NULLS"))
-			define("ADODB_FORCE_NULLS", 1);
 		if (!defined("ADODB_ASSOC_CASE"))
 			define("ADODB_ASSOC_CASE", 0);
 		if (!defined("ADODB_FETCH_MODE")) {
@@ -104,7 +102,8 @@ class BitDbAdodb extends BitDb
 		{
 			case "mysql":
 			// SHOULD HANDLE INNODB so foreign keys are cool - XOXO spiderr
-			$pOptions['mysql'] = 'TYPE=INNODB';
+			//$pOptions['mysql'] = 'TYPE=INNODB';
+			$pOptions = array('REPLACE','mysql' => 'ENGINE=INNODB', 'oci8' => 'TABLESPACE USERS');
 			default:
 			//$pOptions[] = 'REPLACE';
 		}
@@ -225,7 +224,7 @@ class BitDbAdodb extends BitDb
 	* conjunction with $pNumRows
 	* @return an AdoDB RecordSet object
 	*/
-	function query($query, $values = null, $numrows = BIT_QUERY_DEFAULT, $offset = BIT_QUERY_DEFAULT, $pCacheTime=BIT_QUERY_DEFAULT )
+	function query($query, $values = false, $numrows = BIT_QUERY_DEFAULT, $offset = BIT_QUERY_DEFAULT, $pCacheTime=BIT_QUERY_DEFAULT )
 	{
 		$this->convertQuery($query);
 		if( empty( $this->mDb ) ) {

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.11 2006/09/12 20:02:07 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_package_menu.tpl,v 1.12 2007/11/23 11:24:53 squareing Exp $ *}
 {strip}
 {if $packageMenu}
 	{bitmodule title="$moduleTitle" name="package_menu"}
@@ -13,7 +13,7 @@
 				{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
 					<a class="head" href="javascript:flipIcon('{$key}admenu');">{biticon ipackage="icons" iname="list-add" id="`$key`admenuimg" iexplain="folder"}&nbsp;
 				{else}
-					<a class="head" href="javascript:flipWithSign('{$key}admenu');"><span style="font-family:monospace;" id="flipper{$key}admenu">&nbsp;</span>
+					<a class="head" href="javascript:flipWithSign('{$key}admenu',1);"><span style="font-family:monospace;" id="flipper{$key}admenu">&nbsp;</span>
 				{/if}
 				&nbsp;&nbsp;{tr}{$key|capitalize}{/tr}</a>
 

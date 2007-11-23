@@ -5,7 +5,7 @@
 			{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
 				<a class="head" href="javascript:flipIcon('{$key}admenu');">{biticon ipackage="icons" iname="list-add" id="`$key`admenuimg" iexplain="folder"}&nbsp;
 			{else}
-				<a class="head" href="javascript:flipWithSign('{$key}admenu');"><span style="font-family:monospace;" id="flipper{$key}admenu">&nbsp;</span>
+				<a class="head" href="javascript:flipWithSign('{$key}admenu',1);"><span style="font-family:monospace;" id="flipper{$key}admenu">&nbsp;</span>
 			{/if}
 			&nbsp;&nbsp;{tr}{$key|capitalize}{/tr}</a>
 

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.15 2007/01/05 08:31:21 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.16 2007/11/23 11:24:53 squareing Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -26,7 +26,7 @@
 						{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
 							<a class="head" href="javascript:flipIcon('{$key}menu');">{biticon ipackage="icons" iname="list-add" id="`$key`menuimg" iexplain="folder"}&nbsp;
 						{else}
-							<a class="head" href="javascript:flipWithSign('{$key}menu');"><span style="font-family:monospace;" id="flipper{$key}menu">&nbsp;</span>
+							<a class="head" href="javascript:flipWithSign('{$key}menu',1);"><span style="font-family:monospace;" id="flipper{$key}menu">&nbsp;</span>
 						{/if}
 						&nbsp;&nbsp;{tr}{$menu.menu_title|escape}{/tr}</a>
 					{/if}
@@ -67,7 +67,7 @@
 				{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
 					<a class="head" href="javascript:flipIcon('usrmenu');">{biticon ipackage="icons" iname="list-add" id="usrmenuimg" iexplain="folder"}&nbsp;
 				{else}
-					<a class="head" href="javascript:flipWithSign('usrmenu');"><span style="font-family:monospace;" id="flipperusrmenu">&nbsp;</span>
+					<a class="head" href="javascript:flipWithSign('usrmenu',1);"><span style="font-family:monospace;" id="flipperusrmenu">&nbsp;</span>
 				{/if}
 				{tr}User Menu{/tr}</a>
 					{* Show user menu contents only if there is something to display *}

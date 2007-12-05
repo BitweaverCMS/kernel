@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.23 2007/11/22 01:25:26 joasch Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.24 2007/12/05 23:00:35 joasch Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -98,14 +98,13 @@ class BitDbAdodb extends BitDb
 	*/
 	function createTables($pTables, $pOptions = array())
 	{
-		switch ($this->mType)
-		{
-			case "mysql":
-			// SHOULD HANDLE INNODB so foreign keys are cool - XOXO spiderr
-			//$pOptions['mysql'] = 'TYPE=INNODB';
-			$pOptions = array('REPLACE','mysql' => 'ENGINE=INNODB', 'oci8' => 'TABLESPACE USERS');
-			default:
-			//$pOptions[] = 'REPLACE';
+		// If server support InnoDB for MySql set the selected engine
+		if( isset( $_SESSION['use_innodb'] )){
+			if( $_SESSION['use_innodb'] == TRUE) {
+				$pOptions = array_merge($pOptions, array('MYSQL' => 'ENGINE=INNODB'));
+			} else {
+				$pOptions = array_merge($pOptions, array('MYSQL' => 'ENGINE=MYISAM'));
+			}
 		}
 		$dict = NewDataDictionary($this->mDb);
 		$this->mFailed = array();
@@ -463,6 +462,19 @@ class BitDbAdodb extends BitDb
 	}
 
 	/**
+	* A database portable Sequence management function.
+	*
+	* @param pSequenceName Name of the sequence to be dropped
+	*
+	* @return	false if not supported
+	*/
+	function DropSequence($seqname='adodbseq')
+	{
+		if (empty($this->mDb->_dropSeqSQL)) return false;
+		return $this->mDb->DropSequence($seqname);
+	}
+
+	/**
 	* A database portable IFNULL function.
 	*
 	* @param pField argument to compare to NULL
@@ -512,7 +524,7 @@ class BitDbAdodb extends BitDb
 	function OffsetDate( $pDays, $pColumn=NULL ) {
 		return $this->mDb->OffsetDate( $pDays, $pColumn );
 	}
-	
+
 	/** Converts backtick (`) quotes to the appropriate quote for the
 	* database.
 	* @private
@@ -540,7 +552,7 @@ class BitDbAdodb extends BitDb
 					break;
 			}
 		}
-	}	
+	}
 
 	/** will activate ADODB's native debugging output
 	* @param pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.105 2007/11/03 14:08:02 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.106 2008/01/30 21:07:28 wjames5 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -112,6 +112,13 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$host = $gBitSystem->getConfig( 'kernel_server_name', $_SERVER['HTTP_HOST'] );
 	if( !defined('BIT_BASE_URI' ) ) {
 		define( 'BIT_BASE_URI', 'http'.(!empty($_SERVER['HTTPS'])?'s':'').'://'.$host );
+	}
+
+	if( !defined( 'BIT_BASE_PATH' ) ) {
+		$root_url_count = strlen( BIT_ROOT_URL );
+		$root_path_count = strlen( BIT_ROOT_PATH );
+		$path_end = $root_path_count - $root_url_count;
+		define( 'BIT_BASE_PATH', ( BIT_ROOT_URL == "/" ? BIT_ROOT_PATH : substr( BIT_ROOT_PATH, 0, $path_end ) . "/" ) );
 	}
 
 	// Force full URI's for offline or exported content (newsletters, etc.)

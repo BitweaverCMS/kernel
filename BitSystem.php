@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.162 2007/11/11 12:45:07 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.163 2008/02/03 14:16:37 nickpalmer Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -949,6 +949,7 @@ class BitSystem extends BitBase {
 				'style'         => 'display:'.( empty( $pMenuTitle ) || ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' )
 			);
 		}
+		uasort($this->mAppMenu, 'bit_system_menu_sort');
 	}
 
 	// === registerSchemaTable
@@ -2067,4 +2068,16 @@ class BitSystem extends BitBase {
 		}
 	}
 }
+
+/* Function for sorting AppMenu by menu_position */
+function bit_system_menu_sort($a, $b) {
+	$pa = empty($a['menu_position']) ? 0 : $a['menu_position'];
+	$pb = empty($b['menu_position']) ? 0 : $b['menu_position'];
+
+	if ($pa == 0 && $pb == 0) {
+		return ($pb['menu_title'] - $pa['menu_title']);
+	}
+	return $pb - $pa;
+}
+
 ?>

@@ -29,33 +29,43 @@
 			{/form}
 		{/if}
 	</div> <!-- end .pagination -->
+
 {elseif $listInfo && $listInfo.total_pages > 1}
+
+	{* Build up URL variable string *}
 	{capture name=string}
 		{foreach from=$listInfo.parameters key=param item=value}
 			{if $value|is_array}
-				{foreach from=$value item=v}&amp;{$param}[]={$v}{/foreach}
+				{foreach from=$value item=v}{if $value ne ''}&amp;{$param}[]={$v}{/if}{/foreach}
 			{else}
-				&amp;{$param}={$value}
+				{if $value ne ''}&amp;{$param}={$value}{/if}
 			{/if}
 		{/foreach}
 		{foreach from=$listInfo.ihash key=param item=value}
 			{if $value|is_array}
-				{foreach from=$value item=v}&amp;{$param}[]={$v}{/foreach}
+				{foreach from=$value item=v}{if $value ne ''}&amp;{$param}[]={$v}{/if}{/foreach}
 			{else}
-				&amp;{$param}={$value}
+				{if $value ne ''}&amp;{$param}={$value}{/if}
 			{/if}
 		{/foreach}
 		{foreach from=$pgnHidden key=param item=value}
 			{if $value|is_array}
-				{foreach from=$value item=v}&amp;{$param}[]={$v}{/foreach}
+				{foreach from=$value item=v}{if $value ne ''}&amp;{$param}[]={$v}{/if}{/foreach}
 			{else}
-				&amp;{$param}={$value}
+				{if $value ne ''}&amp;{$param}={$value}{/if}
 			{/if}
 		{/foreach}
+		{if isset($listInfo.sort_mode) && $listInfo.sort_mode ne ''}
+			&amp;sort_mode={$listInfo.sort_mode}
+		{/if}
+		{if isset($listInfo.find) && $listInfo.find ne ''}
+			&amp;find={$listInfo.find}
+		{/if}
 	{/capture}
 
 	<div class="pagination">
-		{assign var=pageUrl value="`$pgnUrl`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find``$smarty.capture.string`"}
+		{assign var=pageUrlVar value=$smarty.capture.string|regex_replace:"/^\&amp;/":""}
+		{assign var=pageUrl value="`$pgnUrl`?`$pageUrlVar`"}
 		{math equation="offset + 1 * max" offset=$listInfo.offset max=$listInfo.max_records assign=to}
 {*
 		<br />
@@ -90,11 +100,19 @@
 			</div>
 		{else}
 			{if $listInfo.current_page > 1}
-				&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page-1}">&laquo;</a>&nbsp;
+				{if $ajaxId}
+					&nbsp;<a href="javascript:void(0);" onclick="BitAjax.ajaxUpdater( '{$ajaxId}', '{$smarty.const.LIBERTY_PKG_URL}ajax_attachment_browser.php', 'list_page={$listInfo.current_page-1}' );">&raquo;</a>
+				{else}
+					&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page-1}">&laquo;</a>&nbsp;
+				{/if}
 			{/if}
 			{tr}Page <strong>{$listInfo.current_page}</strong> of <strong>{$listInfo.total_pages}</strong>{/tr}
 			{if $listInfo.current_page < $listInfo.total_pages}
-				&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page+1}">&raquo;</a>&nbsp;
+				{if $ajaxId}
+					&nbsp;<a href="javascript:void(0);" onclick="BitAjax.ajaxUpdater( '{$ajaxId}', '{$smarty.const.LIBERTY_PKG_URL}ajax_attachment_browser.php', 'list_page={$listInfo.current_page+1}' );">&raquo;</a>
+				{else}
+					&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page+1}">&raquo;</a>&nbsp;
+				{/if}
 			{/if}
 			{form action="$pageUrl"}
 				<input type="hidden" name="find" value="{$find|default:$smarty.request.find}" />
@@ -102,7 +120,7 @@
 				{foreach from=$pgnHidden key=name item=value}
 					<input type="hidden" name="{$name}" value="{$value}" />
 				{/foreach}
-				{tr}Go to page{/tr} <input class="gotopage" type="text" size="3" maxlength="4" name="page" /> {tr}of{/tr} <strong>{$listInfo.total_pages}</strong>
+				{tr}Go to page{/tr} <input class="gotopage" type="text" size="3" maxlength="4" name="list_page" /> {tr}of{/tr} <strong>{$listInfo.total_pages}</strong>
 			{/form}
 		{/if}
 	</div> <!-- end .pagination -->

@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.43 2007/11/03 14:08:02 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.44 2008/02/03 05:43:28 jht001 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -233,9 +233,9 @@ class BitBase {
 			} else {
 				if( isset( $_REQUEST["offset"] )) {
 					$pListHash['offset'] = $_REQUEST['offset'];
-				} elseif( isset( $_REQUEST['page'] ) && is_numeric( $_REQUEST['page'] )) {
+				} elseif( isset( $_REQUEST['page'] ) && is_numeric( $_REQUEST['page'] ) && $_REQUEST['page'] > 0 ) {
 					$pListHash['offset'] = ($_REQUEST['page'] - 1) * $pListHash['max_records'];
-				} elseif( isset( $_REQUEST['list_page'] ) && is_numeric( $_REQUEST['list_page'] )) {
+				} elseif( isset( $_REQUEST['list_page'] ) && is_numeric( $_REQUEST['list_page'] ) && $_REQUEST['list_page'] > 0 ) {
 					$pListHash['offset'] = ( $_REQUEST['list_page'] - 1 ) * $pListHash['max_records'];
 				} else {
 					$pListHash['offset'] = 0;

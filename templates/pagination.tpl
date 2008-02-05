@@ -66,7 +66,7 @@
 	<div class="pagination">
 		{assign var=pageUrlVar value=$smarty.capture.string|regex_replace:"/^\&amp;/":""}
 		{assign var=pageUrl value="`$pgnUrl`?`$pageUrlVar`"}
-		{math equation="offset + 1 * max" offset=$listInfo.offset max=$listInfo.max_records assign=to}
+		{math equation="offset + 1 * max" offset=$listInfo.offset|default:0 max=$listInfo.max_records|default:$gBitSystem->getConfig('max_records',20) assign=to}
 {*
 		<br />
 		{tr}Items <strong>{$listInfo.offset+1}</strong> to <strong>{if $to > $listInfo.total_records}{$listInfo.total_records}{else}{$to}{/if}</strong> (of <strong>{$listInfo.total_records}</strong>){/tr}

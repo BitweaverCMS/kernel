@@ -16,7 +16,6 @@
  * Output:   url of the form: $PHP_SELF?attribute1=value1&attribute2=value2
  */
 function smarty_function_pagination( $params, &$gBitSmarty ) {
-	vd( $params );
     $pgnUrl = $gBitSmarty->get_template_vars('returnURL');
     if ( isset( $params['url'] ) ) {
         $pgnUrl = $params['url'];

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.164 2008/02/08 18:00:46 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.165 2008/02/09 13:53:24 nickpalmer Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2075,7 +2075,7 @@ function bit_system_menu_sort($a, $b) {
 	$pb = empty($b['menu_position']) ? 0 : $b['menu_position'];
 
 	if ($pa == 0 && $pb == 0) {
-		return ($pb['menu_title'] - $pa['menu_title']);
+		return (strcmp($pb['menu_title'], $pa['menu_title']));
 	}
 	return $pb - $pa;
 }

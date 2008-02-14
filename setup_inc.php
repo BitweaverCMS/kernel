@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.106 2008/01/30 21:07:28 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.107 2008/02/14 18:50:58 wjames5 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -131,7 +131,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// load only installed and active packages
 	$gBitSystem->scanPackages( 'bit_setup_inc.php', TRUE, 'active', TRUE, TRUE );
-
+	
 	// some plugins check for active packages, so we do this *after* package scanning
 	$gBitSmarty->assign_by_ref( "gBitSystem", $gBitSystem );
 
@@ -252,6 +252,12 @@ if( $gBitSystem->isDatabaseValid() ) {
 			$gBitSystem->setConfig( 'http_login_url', $http_login_url );
 			$gBitSystem->setConfig( 'https_login_url', $https_login_url );
 		}
+	}
+
+	// if we have a valid user but their status is unsavory then completely cut them off from accessing the site
+	if( $gBitUser->getField('content_status_id') < 0 ){
+		$gBitSystem->scanPackages();
+		$gBitSystem->fatalError( tra( 'Access Denied' )."!" );
 	}
 }
 ?>

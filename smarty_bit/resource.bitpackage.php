@@ -21,19 +21,19 @@ function smarty_resource_bitpackage_source( $pTplName, &$pTplSource, &$gBitSmart
 	extract( $resources );
 
 	if ( empty( $gNoForceStyle ) && file_exists( $force ) ) {
-		$pTplSource = fread( fopen( $force, "r" ), filesize($force) );
+		$pTplSource = file_get_contents($force);
 		return TRUE;
 	} elseif ( empty( $gNoForceStyle ) && file_exists( $force_simple ) ) {
-		$pTplSource = fread( fopen( $force_simple, "r" ), filesize( $force_simple ) );
+		$pTplSource = file_get_contents($force_simple);
 		return TRUE;
 	} elseif ( file_exists( $override ) ) {
-		$pTplSource = fread( fopen( $override, "r" ), filesize( $override ) );
+		$pTplSource = file_get_contents($override);
 		return TRUE;
 	} elseif ( file_exists( $override_simple ) ) {
-		$pTplSource = filesize( $override_simple ) ? fread( fopen( $override_simple, "r" ), filesize( $override_simple ) ) : '';
+		$pTplSource = file_get_contents($override_simple);
 		return TRUE;
 	} elseif ( file_exists( $package_template ) ) {
-		$pTplSource = !filesize( $package_template ) ? '' : fread( fopen( $package_template, "r" ), filesize( $package_template ) );
+		$pTplSource = file_get_contents($package_template);
 		return TRUE;
 	} else {
 		$pTplSource = "<p>MISSING TEMPLATE:<br/> <b>p_resource_type:</b> $p_resource_type<br/><b>p_resource_name:</b> $p_resource_name<br/><b>p_template_source:</b> $p_template_source<br/><b>p_template_timestamp:</b> $p_template_timestamp<br/><b>p_smarty_obj:</b> $p_smarty_obj <br /><b>override_template:</b> $override_template<br/><b>package_template:</b>$package_template<br/><b>TIKI Package Path:</b>".BIT_ROOT_PATH;

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.165 2008/02/09 13:53:24 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.166 2008/02/20 22:59:42 pppspoonman Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1517,7 +1517,7 @@ class BitSystem extends BitBase {
 				$mime = finfo_file( $finfo, $pFile );
 				finfo_close( $finfo );
 			} else {
-				$mime = exec( trim( 'file -bi ' . escapeshellarg ( $pFile ) ) );
+				$mime = @exec( trim( 'file -bi ' . escapeshellarg ( $pFile ) ) );
 			}
 			if( empty( $mime ) ) {
 				$mime = $this->lookupMimeType( substr( $pFile, strrpos( $pFile, '.' ) + 1 ) );

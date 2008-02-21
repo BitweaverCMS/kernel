@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.14 2007/11/13 19:01:46 joasch Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.15 2008/02/21 22:24:24 pppspoonman Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -275,6 +275,23 @@ function deprecated( $pReplace = NULL ) {
 	} else {
 		error_log( $out );
 	}
+}
+
+ /**
+  * Check that function is enabled on server.
+  * @access public
+  * @return TRUE if function is enabled on server, FALSE otherwise
+  */
+function functionEnabled ( $pName ) {
+    static $disabled = NULL;
+
+    if ( $disabled == NULL ) {
+        $functions = @ini_get ( 'disable_functions' );
+        $functions = str_replace ( ' ', '', $functions);
+        $disabled = explode ( ',', $functions);
+    }
+
+    return !( in_array ( $pName, $disabled ));
 }
 
 /**

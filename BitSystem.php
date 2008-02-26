@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.167 2008/02/21 22:24:24 pppspoonman Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.168 2008/02/26 15:41:02 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -90,6 +90,9 @@ class BitSystem extends BitBase {
 
 	// Display full page or just contents?
 	var $mFormatHeader;
+
+	// Content classes. 
+	var $mContentClasses = array();
 
 	// === BitSystem constructor
 	/**
@@ -1098,6 +1101,17 @@ class BitSystem extends BitBase {
 
 	function registerNotifyEvent( $pEventHash ) {
 		$this->mNotifyEvents = array_merge( $this->mNotifyEvents, $pEventHash );
+	}
+
+	/**
+	 * registerContentObjects
+	 *
+	 * @param string $pPackageName the package name
+	 * @param hash $pClassesHash [$className => $pathToClassFile]
+	 * @access public
+	 */
+	function registerContentObjects( $pPackageName, $pClassesHash ) {
+		$this->mContentClasses[$pPackageName] = $pClassesHash;
 	}
 
 	// === fatalError

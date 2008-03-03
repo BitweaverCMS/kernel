@@ -23,6 +23,7 @@ function smarty_function_formfeedback( $params, &$gBitSmarty ) {
 	}
 	$feedback = '';
 	$i = 0;
+	$color = isset( $hash['color'] )?$hash['color']:"000000";
 	foreach( $hash as $key => $val ) {
 		if( $val ) {
 			require_once $gBitSmarty->_get_plugin_filepath( 'function', 'biticon' );
@@ -48,11 +49,17 @@ function smarty_function_formfeedback( $params, &$gBitSmarty ) {
 				}
 
 				foreach( $val as $valText ) {
-					$feedback .= '<p id="fat'.rand( 0, 10000 ).'" class="fade-000000 '.$key.'">'.smarty_function_biticon( $biticon, $gBitSmarty ).' '.$valText.'</p>';
+					$feedback .= '<p id="fat'.rand( 0, 10000 ).'" class="fade-'.$color.' '.$key.'">'.smarty_function_biticon( $biticon, $gBitSmarty ).' '.$valText.'</p>';
 				}
 
 			} else {
-				$feedback .= '<p class="'.$key.'">'.$val.'</p>';
+				/* unfortunately this plugin was written a little strictly and so it expects all params to be display text
+				 * to allow setting of a background color we have to exclude that param when rendering out the html
+				 * otherwise we'll render the color as text. -wjames5
+				 */ 
+				if ( $key != 'color' ){
+					$feedback .= '<p class="'.$key.'">'.$val.'</p>';
+				}
 			}
 		}
 	}

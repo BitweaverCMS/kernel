@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.29 2007/11/11 12:59:22 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.30 2008/03/29 15:06:44 lsces Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -53,6 +53,10 @@ if( !defined( 'ANONYMOUS_USER_ID' ) ) {
 if( !defined( 'ANONYMOUS_GROUP_ID' ) ) {
 	define( 'ANONYMOUS_GROUP_ID', -1 );
 }
+
+// Uncomment the following line if you require attachment and file id's to match the content id
+// This is used to simplify content mamagment where fisheye and treasury content is used internally
+//	define( 'LINKED_ATTACHMENTS', true );
 
 // Empty PHP_SELF and incorrect SCRIPT_NAME due to php-cgiwrap - wolff_borg
 if( empty( $_SERVER['PHP_SELF'] ) ) {

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.24 2007/12/05 23:00:35 joasch Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.25 2008/03/29 20:44:36 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -194,8 +194,7 @@ class BitDbAdodb extends BitDb
 	* conjunction with $pNumRows
 	* @todo currently not used anywhere.
 	*/
-	function queryError( $pQuery, &$pError, $pValues = NULL, $pNumRows = -1,
-	$pOffset = -1 )
+	function queryError( $pQuery, &$pError, $pValues = NULL, $pNumRows = -1, $pOffset = -1 )
 	{
 		$this->convertQuery($pQuery);
 		if ($pNumRows == -1 && $pOffset == -1)

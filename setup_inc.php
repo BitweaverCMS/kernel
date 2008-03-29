@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.107 2008/02/14 18:50:58 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.108 2008/03/29 20:44:36 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -56,6 +56,9 @@ require_once( KERNEL_PKG_PATH.$dbClass.'.php' );
 // =================== Global Classes ===================
 global $gBitDb;
 $gBitDb = new $dbClass();
+if( defined( 'QUERY_CACHE_ACTIVE' ) ) {
+	$gBitDb->setCaching();
+}
 
 require_once( KERNEL_PKG_PATH.'BitSystem.php' );
 global $gBitSmarty, $gBitSystem;

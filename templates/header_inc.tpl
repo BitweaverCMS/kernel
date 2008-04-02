@@ -42,6 +42,7 @@
 	var bitCookieDomain = "";
 	var bitIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons/";
 	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";
+	var bitTk = "{$gBitUser->mTicket}";
 /* ]]> */</script>
 
 <script type="text/javascript" src="{$gBitThemes->mStyles.joined_javascript}"></script>

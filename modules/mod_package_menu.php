@@ -3,7 +3,7 @@
  * @package kernel
  * @subpackage modules
  */
-global $gBitSystem, $gBitUser;
+global $gBitSystem, $gBitUser, $moduleParams;
 
 // if we're on any page in an admin/ dir, we'll simply set this to kernel
 if( $gBitUser->isAdmin() ) {
@@ -12,12 +12,14 @@ if( $gBitUser->isAdmin() ) {
 	$admin =  false;
 }
 
-if( !empty( $gBitSystem->mAppMenu[ACTIVE_PACKAGE]['menu_template'] ) && !$admin ) {
-	$gBitSmarty->assign( 'packageMenu', $gBitSystem->mAppMenu[ACTIVE_PACKAGE] );
+$package = !empty($moduleParams['module_params']['package'])?$moduleParams['module_params']['package']:ACTIVE_PACKAGE;
+
+if( !empty( $gBitSystem->mAppMenu[$package]['menu_template'] ) && !$admin ) {
+	$gBitSmarty->assign( 'packageMenu', $gBitSystem->mAppMenu[$package] );
 }
 
 if( empty( $module_title )) {
-	$pkgName = constant( strtoupper( ACTIVE_PACKAGE ).'_PKG_NAME' );
+	$pkgName = constant( strtoupper( $package ).'_PKG_NAME' );
 
 	if( $pkgName == 'kernel' || $admin ) {
 		$pkgName = 'Administration';

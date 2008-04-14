@@ -21,7 +21,7 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 	$class = '';
 	if ((!empty($gLibertySystem->mPlugins['bithtml']) && $gLibertySystem->mPlugins['bithtml']['is_active'] == 'y') ||
 		(!empty($gLibertySystem->mPlugins['tikiwiki']) && $gLibertySystem->mPlugins['tikiwiki']['is_active'] == 'y' &&
-		 $gBitSystem->isFeatureActive('content_force_allow_html')) ) {
+		$gBitSystem->isFeatureActive( 'content_force_allow_html' ))) {
 		$class = 'wysiwyg';
 	}
 	if (empty($pParams['rows'])) {

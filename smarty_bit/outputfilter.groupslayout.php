@@ -29,25 +29,21 @@ function group_replace_url_hander($matched) {
 /**
  * Smarty plugin
  * -------------------------------------------------------------
- * File:     outputfilter.group.php
+ * File:     outputfilter.groupslayout.php
  * Type:     outputfilter
- * Name:     group
- * Version:  1.1
- * Date:     Sep 18, 2003
+ * Name:     groupslayout
  * Version:  1.0
- * Date:     Aug 10, 2003
- * Purpose:  Adds Google-cache-like grouping for terms in a
- *           template after its rendered. This can be used 
- *           easily integrated with the wiki search functionality
- *           to provide grouped search terms.
+ * Date:     April 14, 2008
+ * Purpose:
  * Install:  Drop into the plugin directory, call 
- *           $gBitSmarty->load_filter('output','group');
+ *           $gBitSmarty->load_filter('output','groupslayout');
  *           from application.
- * Author:   Greg Hinkle <ghinkl@users.sourceforge.net>
- *           patched by mose <mose@feu.org>
+ * Author:   Nick Palmer <nick@slugardy.net> based on highlight filter by
+ *           Greg Hinkle <ghinkl@users.sourceforge.net>
+ *           and mose <mose@feu.org>
  * -------------------------------------------------------------
  */
-function smarty_outputfilter_group( $source, &$gBitSmarty ) {
+function smarty_outputfilter_groupslayout( $source, &$gBitSmarty ) {
 	if( empty($_REQUEST['group_layout_id']) || !is_numeric($_REQUEST['group_layout_id']) ) {
 		return $source;
 	}

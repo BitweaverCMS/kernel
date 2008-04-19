@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.1 2008/04/19 16:47:53 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.2 2008/04/19 18:14:11 spiderr Exp $
  *
  * +----------------------------------------------------------------------+
  * | Copyright ( c ) 2008, bitweaver.org
@@ -22,7 +22,7 @@
  * This is a base class to derive more capabale mailing services
  *
  * @author   nick <nick@sluggardy.net>
- * @version  $Revision: 1.1 $
+ * @version  $Revision: 1.2 $
  * @package  switchboard
  */
 
@@ -63,6 +63,7 @@ class BitMailer extends LibertyBase {
 				$mailer->ClearAddresses();
 			}
 		}
+		return $mailer->MessageID;
 	}
 
 	/**
@@ -96,6 +97,16 @@ class BitMailer extends LibertyBase {
 		if( !$mailer->SetLanguage( $gBitLanguage->getLanguage(), UTIL_PKG_PATH.'phpmailer/language/' ) ) {
 			$mailer->SetLanguage( 'en' );
 		}
+
+		if( !empty( $pMessage['x_headers'] ) && is_array( $pMessage['x_headers'] ) ) {
+			foreach( $pMessage['x_headers'] as $name=>$value ) {
+				if( !$mailer->set( $name, $value ) ) {
+					$mailer->$name = $value;
+					bit_log_error( $mailer->ErrorInfo );
+				}
+			}
+		}
+
 		$mailer->ClearReplyTos();
 		$mailer->AddReplyTo( $gBitSystem->getConfig( 'bitmailer_from' ) );
 		if (empty($pMessage['subject'])) {

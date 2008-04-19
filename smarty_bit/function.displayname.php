@@ -13,35 +13,43 @@
 	* usage: {displayname user= user_id= real_name= link_title=}
 */
 function smarty_function_displayname( $pParams, &$gBitSmarty ) {
-	if( !empty( $pParams['hash'] ) && is_array($pParams['hash']) ) {
-		$hash = array_merge( $pParams, $pParams['hash'] );
-		unset( $hash['hash'] );
-	} elseif( !empty( $pParams['user_id'] ) || !empty( $pParams['login'] ) || !empty( $pParams['user'] ) || !empty( $pParams['real_name'] )) {
-		// maybe params were passed in separately
-		$hash = $pParams;
-	} else {
-		global $gBitUser;
-		$hash = array_merge( $pParams, $gBitUser->mInfo );
-	}
-
-	if( !( is_array( $hash ))) {
-		// We were probably just passed the 'login' due to legacy code which has yet to be converted
-		$user = new BitUser();
-		$user->load( TRUE, $hash );
-		$hash = $user->mInfo;
-	} elseif( empty( $hash['real_name'] ) && empty( $hash['user'] ) && empty( $hash['login'] ) && empty( $hash['email'] )) {
-		if( empty( $hash['user_id'] )) {
-			// Now we're really in trouble. We don't even have a user_id to work with
-			$displayName = "Unknown";
+	global $gBitUser;
+	if( !empty( $pParams['hash'] ) ) {
+		if( is_array( $pParams['hash'] ) ) {
+			$hash = array_merge( $pParams, $pParams['hash'] );
+			unset( $hash['hash'] );
 		} else {
-			// Maybe we just weren't passed enuf info in $hash. We'll load up a BitUser instance to make sure we get the right display name
-			$user = new BitUser( $hash['user_id'] );
-			$user->load( TRUE );
-			$displayName = $user->mInfo['display_name'];
-			$hash = $user->mInfo;
+			// We were probably just passed the 'login' due to legacy code which has yet to be converted
+			if( strpos( '@', $pParams['hash'] ) ) {
+				$lookupHash['email'] = $hash;
+			} elseif( is_numeric( $pParams['hash'] ) ) {
+				$lookupHash['user_id'] = $hash;
+			} else {
+				$lookupHash['login'] = $hash;
+			}
 		}
+	} elseif( !empty( $pParams['user_id'] ) ) {
+		$lookupHash['user_id'] = $pParams['user_id'];
+	} elseif( !empty( $pParams['email'] ) ) {
+		$lookupHash['email'] = $pParams['email'];
+	} elseif( !empty( $pParams['login'] ) ) {
+		$lookupHash['login'] = $pParams['login'];
+	} elseif( empty( $pParams ) ) {
+		global $gBitUser;
+		$hash = $gBitUser->mInfo;
 	}
 
-	return( BitUser::getDisplayName( empty( $pParams['nolink'] ), $hash ));
+	if( !empty( $lookupHash ) ) {
+		$hash = $gBitUser->getUserInfo( $lookupHash );
+	}
+
+	if( !empty( $hash ) ) {
+		$displayName = BitUser::getDisplayName( empty( $pParams['nolink'] ), $hash );
+	} else {
+		// Now we're really in trouble. We don't even have a user_id to work with
+		$displayName = "Unknown";
+	}
+
+	return( $displayName );
 }
 ?>

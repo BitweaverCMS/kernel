@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.30 2008/03/29 15:06:44 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.31 2008/04/21 23:57:54 wjames5 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -81,12 +81,46 @@ if( !defined( 'BIT_ROOT_URL' ) ) {
 	define( 'BIT_ROOT_URL', $subpath );
 }
 
+// when running scripts
+global $gShellScript;
+if( !empty( $gShellScript ) ) {
+	// keep notices quiet
+	$_SERVER['SCRIPT_URL'] = '';
+	$_SERVER['HTTP_HOST'] = 'localhost';
+	$_SERVER['HTTP_USER_AGENT'] = 'cron';
+	$_SERVER['SERVER_NAME'] = '';
+	$_SERVER['HTTP_SERVER_VARS'] = '';
+	$_SERVER['REMOTE_ADDR'] = 'localhost';
+	if( empty( $_SERVER['SERVER_ADMIN'] ) ) {
+		$_SERVER['SERVER_ADMIN'] = 'root@localhost';
+	}
+
+	// Process some global arguments
+	global $gArgs, $argv;
+	$gArgs = array();
+	if( $argv ) { 
+		foreach( $argv AS $arg ) { 
+			switch( $arg ) { 
+				case '--debug':
+					$gDebug = TRUE;
+					break;
+				case strpos( $arg, '--' ) === 0:
+					if( strpos( $arg, '=' ) ) {
+						$gArgs[substr( $arg, 2, strpos( $arg, '=' )-2 )] = (int)substr( $arg, (strpos( $arg, '=' ) +1) );
+					} else {
+						$gArgs[substr( $arg, 2 )] = TRUE;
+					}
+					break;
+			}
+		}   
+	}
+
+}
+
 // If BIT_ROOT_URI hasn't been set yet, we'll try to get one from the super global $_SERVER. 
 // This works with apache - not sure about other servers.
 if( !defined( 'BIT_ROOT_URI' )) {
-	if( !empty( $_SERVER['HTTP_HOST'] )) {
-		define( 'BIT_ROOT_URI', 'http'.( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == TRUE ? 's': '' ).'://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL );
-	}
+	define( 'BIT_ROOT_URI', 'http'.( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == TRUE ? 's': '' ).'://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL );
 }
 
 // custom storage host
@@ -131,17 +165,6 @@ if( empty( $gBitDbHost ) ) {
 global $gPreScan;
 if( empty( $gPreScan ) ) {
 	$gPreScan = array( 'kernel', 'storage', 'liberty', 'themes', 'users' );
-}
-
-// when running scripts
-global $gShellScript;
-if( !empty( $gShellScript ) ) {
-	// keep notices quiet
-	$_SERVER['SCRIPT_URL'] = '';
-	$_SERVER['HTTP_HOST'] = 'localhost';
-	$_SERVER['HTTP_USER_AGENT'] = 'cron';
-	$_SERVER['SERVER_NAME'] = '';
-	$_SERVER['HTTP_SERVER_VARS'] = '';
 }
 
 // here we set the default thumbsizes we use in bitweaver.

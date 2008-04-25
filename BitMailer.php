@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.2 2008/04/19 18:14:11 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.3 2008/04/25 12:37:06 wjames5 Exp $
  *
  * +----------------------------------------------------------------------+
  * | Copyright ( c ) 2008, bitweaver.org
@@ -22,8 +22,8 @@
  * This is a base class to derive more capabale mailing services
  *
  * @author   nick <nick@sluggardy.net>
- * @version  $Revision: 1.2 $
- * @package  switchboard
+ * @version  $Revision: 1.3 $
+ * @package  kernel 
  */
 
 require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
@@ -58,7 +58,7 @@ class BitMailer extends LibertyBase {
 					$mailer->AddAddress( $to['email'] );
 				}
 				if( !$mailer->Send() ) {
-					$gBitSystem->fatalError("Unable to send email: " . $mailer->ErrorInfo);
+					bit_log_error( $mailer->ErrorInfo );
 				}
 				$mailer->ClearAddresses();
 			}

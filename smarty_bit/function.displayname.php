@@ -34,6 +34,8 @@ function smarty_function_displayname( $pParams, &$gBitSmarty ) {
 		$lookupHash['email'] = $pParams['email'];
 	} elseif( !empty( $pParams['login'] ) ) {
 		$lookupHash['login'] = $pParams['login'];
+	} elseif( !empty( $pParams['user'] ) ) {
+		$lookupHash['login'] = $pParams['user'];
 	} elseif( empty( $pParams ) ) {
 		global $gBitUser;
 		$hash = $gBitUser->mInfo;

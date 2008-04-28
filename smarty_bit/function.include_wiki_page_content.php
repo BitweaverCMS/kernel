@@ -19,20 +19,20 @@
  */
 
 #
-# This fuction provides transclusion in page templates.  To use transclusion
+# This fuction provides transclusion in page templates.	To use transclusion
 # inside of content, use the Liberty 'include' plugin
 #
 # ( Transclusion is including information from one document into another.
 # For more on Transclusion - see: http://en.wikipedia.org/wiki/Wikipedia:Transclusion )
 #
 # This function can be used in any wiki template to include the content of any arbitrary
-# wiki page.  There are many possible uses.
+# wiki page.	There are many possible uses.
 # For example, when editing pages, you want to include custom editing instructions
 # but want these instructions to be easily updatable by any wiki user.
 # Adding this line to the wiki/templates/edit_page.tpl file will automatically display
 # the content of the page named: 'edit notice' whenever a wiki page is edited:
 #
-#   {include_wiki_page_content page="edit notice"}
+#	 {include_wiki_page_content page="edit notice"}
 #
 # Suppose that instead of a global notice that is the same for all pages, you want
 # custom tailored notices specific to each page, and want to display a default
@@ -59,29 +59,21 @@
 
 function smarty_function_include_wiki_page_content($params, &$gBitSmarty)
 {
-  global $debugger;
-  //
-  $page_name = $params['page'];
-  $page_name_default = $params['page_default'];
-  $transclusion_parsed = '';
-  include_once( WIKI_PKG_PATH.'BitPage.php' );
-  $transclusion_bitpage = new BitPage();
-  $transclusion_page_id = $transclusion_bitpage->findByPageName($page_name);
-  if (!$transclusion_page_id) {
-          $transclusion_page_id = $transclusion_bitpage->findByPageName($page_name_default);
-  }
+	global $debugger;
+	//
+	$pageName = !empty( $params['page'] ) ? $params['page'] : (!empty( $params['page_default'] ) ? $params['page_default'] : NULL );
+	$transclusion_parsed = '';
+	include_once( WIKI_PKG_PATH.'BitPage.php' );
+	$transclusion_bitpage = new BitPage();
+	if( $transclusion_page_id = $transclusion_bitpage->findByPageName($pageName) ) {
+		$transclusion_bitpage->mPageId = $transclusion_page_id;
+		if($transclusion_bitpage->load()) {
+			$transclusion_full_page_data = $transclusion_bitpage->mInfo['data'];
+			$transclusion_parsed = $transclusion_bitpage->parseData($transclusion_full_page_data, ( isset( $transclusion_bitpage->mInfo['format_guid'] ) ?  $transclusion_bitpage->mInfo['format_guid'] : 'tikiwiki' ) ) ;
+		}
+	}
 
-  if ($transclusion_page_id) {
-          $transclusion_bitpage->mPageId = $transclusion_page_id;
-          if($transclusion_bitpage->load()) {
-                  $transclusion_full_page_data = $transclusion_bitpage->mInfo['data'];
-          $transclusion_parsed = $transclusion_bitpage->parseData($transclusion_full_page_data,
-                  ( isset( $transclusion_bitpage->mInfo['format_guid'] ) ? 
-                  $transclusion_bitpage->mInfo['format_guid'] : 'tikiwiki' ) ) ;
-          }
-  }
-
-  return $transclusion_parsed;
+	return $transclusion_parsed;
 }
 
 ?>

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.44 2007/11/05 04:11:31 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.45 2008/04/28 12:16:18 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -20,6 +20,7 @@
 require_once( KERNEL_PKG_PATH.'bit_error_inc.php' );
 
 define( 'BIT_QUERY_DEFAULT', -1 );
+define( 'BIT_MAX_RECORDS', -1 );
 
 // num queries has to be global
 global $gNumQueries;

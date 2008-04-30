@@ -84,7 +84,7 @@ function smarty_function_html_select_date($params, &$gBitSmarty)
 	  	// Just in case the offset moves us into another day.
 		$time = smarty_make_timestamp($time);
 	  	$time = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC($time);
-  		$time = strftime('%Y-%m-%d', smarty_make_timestamp($time));
+  		$time = $gBitSystem->mServerTimestamp->strftime('%Y-%m-%d', smarty_make_timestamp($time), TRUE);
   	}
   	// Now split this in pieces, which later can be used to set the select
   	$time = explode("-", $time);

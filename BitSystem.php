@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.168 2008/02/26 15:41:02 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.169 2008/05/02 15:56:36 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1665,6 +1665,9 @@ class BitSystem extends BitBase {
 		}
 
 		$permFiles[] = $this->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
+		if( !file_exists( STORAGE_PKG_PATH.'themes/' ) ) {
+			$permFiles[] = STORAGE_PKG_PATH.'themes/';
+		}
 
 		foreach( $permFiles as $file ) {
 			$present = FALSE;

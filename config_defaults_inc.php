@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.32 2008/05/07 18:35:52 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.33 2008/05/08 12:18:58 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -63,10 +63,10 @@ if( empty( $_SERVER['PHP_SELF'] ) ) {
 	$_SERVER['PHP_SELF'] = $_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_URL'];
 }
 
-// BIT_ROOT_URL should be set as soon as the system is installed. until then we 
-// need to make sure we have the correct value, otherwise installations won't 
-// work. The recent changes have caused problems during installation. i'll try 
-// combining both methods by applying the less successful one after the more 
+// BIT_ROOT_URL should be set as soon as the system is installed. until then we
+// need to make sure we have the correct value, otherwise installations won't
+// work. The recent changes have caused problems during installation. i'll try
+// combining both methods by applying the less successful one after the more
 // successful one - xing
 if( !defined( 'BIT_ROOT_URL' ) ) {
 	// version one which seems to only cause problems seldomly
@@ -98,9 +98,9 @@ if( !empty( $gShellScript ) ) {
 	// Process some global arguments
 	global $gArgs, $argv;
 	$gArgs = array();
-	if( $argv ) { 
-		foreach( $argv AS $arg ) { 
-			switch( $arg ) { 
+	if( $argv ) {
+		foreach( $argv AS $arg ) {
+			switch( $arg ) {
 				case '--debug':
 					$gDebug = TRUE;
 					break;
@@ -112,12 +112,11 @@ if( !empty( $gShellScript ) ) {
 					}
 					break;
 			}
-		}   
+		}
 	}
-
 }
 
-// If BIT_ROOT_URI hasn't been set yet, we'll try to get one from the super global $_SERVER. 
+// If BIT_ROOT_URI hasn't been set yet, we'll try to get one from the super global $_SERVER.
 // This works with apache - not sure about other servers.
 if( !defined( 'BIT_ROOT_URI' )) {
 	define( 'BIT_ROOT_URI', 'http'.( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == TRUE ? 's': '' ).'://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL );
@@ -158,9 +157,9 @@ if( empty( $gBitDbHost ) ) {
 	$gBitDbHost   = 'localhost';
 }
 
-// $gPreScan can be used to specify the order in which packages are scanned by 
-// the kernel.  In the example provided below, the kernel package is processed 
-// first, followed by the users and liberty packages.  Any packages not 
+// $gPreScan can be used to specify the order in which packages are scanned by
+// the kernel.  In the example provided below, the kernel package is processed
+// first, followed by the users and liberty packages.  Any packages not
 // specified in $gPreScan are processed in the traditional order
 global $gPreScan;
 if( empty( $gPreScan ) ) {

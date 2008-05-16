@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.169 2008/05/02 15:56:36 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.170 2008/05/16 15:57:44 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1369,11 +1369,14 @@ class BitSystem extends BitBase {
 			if (defined("$work")) {
 				$url = constant( $work );
 			}
-
-//this sends requests to inactive packages so commented out
-//for example if wiki is made not active, we can end up trying to go there
-//		} elseif( !empty( $bit_index ) ) {
-//			$url = BIT_ROOT_URL.$bit_index;
+		/* this was commented out with the note that this can send requests to inactive packages - 
+		 * that should only happen if the admin chooses to point to an inactive pacakge.
+		 * commenting this out however completely breaks the custom uri home page feature, so its
+		 * turned back on and caviate admin - if the problem is more severe than it seems then 
+		 * get in touch on irc and we'll work out a better solution than commenting things on and off -wjames5
+		 */
+		} elseif( !empty( $bit_index ) ) {
+ 			$url = BIT_ROOT_URL.$bit_index;
 		}
 
 		// if no special case was matched above, default to users' my page

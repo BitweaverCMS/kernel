@@ -4,7 +4,7 @@
  * @package Smarty
  * @subpackage plugins
  */
-// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.6 2007/04/11 18:41:52 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.7 2008/05/18 05:48:34 laetzer Exp $
 /**
  * \brief Smarty {bitmodule}{/bitmodule} block handler
  *
@@ -49,7 +49,9 @@ function smarty_block_bitmodule( $pParams, $pContent, &$gBitSmarty) {
 		$pParams['toggle_state'] = 'block';
 	}
 	 */
-
+	
+	$pParams['name'] = preg_replace( "/[^a-zA-Z0-9\\-\\_]/", "", $pParams['name'] );
+	
 	$gBitSmarty->assign( 'modInfo', $pParams );
 	return $gBitSmarty->fetch('bitpackage:themes/module.tpl');
 }

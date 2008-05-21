@@ -57,7 +57,7 @@ function biticon_output( $pParams, $pFile ) {
 		$outstr = $pFile;
 	} else {
 		if(( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'text' || $pParams['iforce'] == 'text' ) && $pParams['iforce'] != 'icon' ) {
-			return $iexplain;
+			$outstr =  $iexplain;
 		} else {
 			$outstr='<img src="'.$pFile.'"';
 			if( isset( $pParams["iexplain"] ) ) {
@@ -86,10 +86,10 @@ function biticon_output( $pParams, $pFile ) {
 			}
 
 			$outstr .= " />";
-		}
 
-		if( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'icon_text' && $pParams['iforce'] != 'icon' || $pParams['iforce'] == 'icon_text' ) {
-			$outstr .= '&nbsp;'.$iexplain;
+			if( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'icon_text' && $pParams['iforce'] != 'icon' || $pParams['iforce'] == 'icon_text' ) {
+				$outstr .= '&nbsp;'.$iexplain;
+			}
 		}
 	}
 
@@ -278,7 +278,7 @@ function biticon_write_cache( $pParams, $pCacheString ) {
  * @return full path to cachefile
  */
 function biticon_get_cache_file( $pParams ) {
-	global $gBitThemes;
+	global $gBitThemes, $gBitSystem;
 
 	// create a hash filename based on the parameters given
 	$hashstring = '';
@@ -290,6 +290,6 @@ function biticon_get_cache_file( $pParams ) {
 	}
 
 	// return path to cache file
-	return $gBitThemes->getIconCachePath().md5( $hashstring );
+	return $gBitThemes->getIconCachePath().md5( $hashstring.$gBitSystem->getConfig( 'site_biticon_display_style', 'icon' ));
 }
 ?>

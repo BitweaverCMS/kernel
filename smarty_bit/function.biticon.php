@@ -57,7 +57,7 @@ function biticon_output( $pParams, $pFile ) {
 		$outstr = $pFile;
 	} else {
 		if(( $gBitSystem->getConfig( 'site_biticon_display_style' ) == 'text' || $pParams['iforce'] == 'text' ) && $pParams['iforce'] != 'icon' ) {
-			$outstr = $iexplain;
+			return $iexplain;
 		} else {
 			$outstr='<img src="'.$pFile.'"';
 			if( isset( $pParams["iexplain"] ) ) {

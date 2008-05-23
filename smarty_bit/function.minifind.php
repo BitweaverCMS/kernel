@@ -10,11 +10,21 @@
  *
  * Type:     function
  * Name:     minifind
- * Input:    all parameters that are passed in will be added as <input type="hidden" name=$name value=$value>
+ * Input:    all parameters (except legend) that are passed in will be added as <input type="hidden" name=$name value=$value>. The 'legend' parameter will be used as the form legend, a string is expected.
  * Output:   a small form that allows you to search your table using $_REQUEST['find'] as search value
  */
 function smarty_function_minifind($params, &$gBitSmarty) {
+	
+	if(isset($params['legend'])) {
+		$legend = $params['legend'];
+		unset($params['legend']);
+	}
+	else {
+		$legend = 'find in entries';
+	}
+	
+	$gBitSmarty->assign( 'legend',$legend );
 	$gBitSmarty->assign( 'hidden',$params );
-    $gBitSmarty->display( 'bitpackage:kernel/minifind.tpl' );
+	$gBitSmarty->display( 'bitpackage:kernel/minifind.tpl' );
 }
 ?>

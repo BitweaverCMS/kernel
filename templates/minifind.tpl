@@ -1,5 +1,5 @@
 {strip}
-{form class="minifind" legend="find in entries"}
+{form class="minifind" legend=$legend}
 	{foreach from=$hidden item=value key=name}
 		<input type="hidden" name="{$name}" value="{$value}" />
 	{/foreach}

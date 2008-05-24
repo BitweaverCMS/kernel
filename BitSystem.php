@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.171 2008/05/23 07:51:38 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.172 2008/05/24 08:21:22 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1272,7 +1272,9 @@ class BitSystem extends BitBase {
 			}
 
 			$showTables = ( $prefix ? $prefix.'%' : NULL );
-			if( $dbTables = $this->mDb->MetaTables('TABLES', FALSE, $showTables ) ) {
+			if( $dbTables = $this->mDb->MetaTables( 'TABLES', FALSE, $showTables ) ) {
+				// make a copy that we can keep track of what tables have been used
+				$unusedTables = $dbTables;
 				foreach( array_keys( $this->mPackages ) as $package ) {
 					// Default to true, &= will FALSE out
 					$this->mPackages[$package]['installed'] = TRUE;
@@ -1296,6 +1298,12 @@ class BitSystem extends BitBase {
 // }
 							}
 
+							// lets also return the tables that are not in use by bitweaver
+							// this is useful when we want to remove old tables or upgrade tables
+							if(( $key = array_search( $fullTable, $dbTables )) !== FALSE ) {
+								unset( $unusedTables[$key] );
+							}
+
 							$this->mPackages[$package]['installed'] &= $tablePresent;
 							$this->mPackages[$package]['db_tables_found'] &= $tablePresent;
 						}
@@ -1316,10 +1324,17 @@ class BitSystem extends BitBase {
 					}
 				}
 			}
+			$ret['unused'] = $unusedTables;
 		}
 		return $ret;
 	}
 
+	/**
+	 * getDefaultPage 
+	 * 
+	 * @access public
+	 * @return URL of where user should be sent after login
+	 */
 	function getDefaultPage() {
 		global $userlib, $gBitUser, $gBitSystem;
 		$bit_index = $this->getConfig( "bit_index" );
@@ -1369,6 +1384,7 @@ class BitSystem extends BitBase {
 			if (defined("$work")) {
 				$url = constant( $work );
 			}
+
 		/* this was commented out with the note that this can send requests to inactive packages - 
 		 * that should only happen if the admin chooses to point to an inactive pacakge.
 		 * commenting this out however completely breaks the custom uri home page feature, so its
@@ -1376,7 +1392,7 @@ class BitSystem extends BitBase {
 		 * get in touch on irc and we'll work out a better solution than commenting things on and off -wjames5
 		 */
 		} elseif( !empty( $bit_index ) ) {
- 			$url = BIT_ROOT_URL.$bit_index;
+			$url = BIT_ROOT_URL.$bit_index;
 		}
 
 		// if no special case was matched above, default to users' my page

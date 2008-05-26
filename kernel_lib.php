@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.17 2008/05/26 09:28:34 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.18 2008/05/26 10:59:00 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -503,11 +503,12 @@ function copy_r( $pSource, $pTarget ) {
 /**
  * Fetch the contents of a file on a remote host
  * 
- * @param array $pUrl url to file to fetch
+ * @param string $pUrl url to file to fetch
+ * @param boolean $pNoCurl skip the use of curl if this causes problems
  * @access public
  * @return FALSE on failure, contents of file on success
  */
-function bit_http_request( $pUrl ) {
+function bit_http_request( $pUrl, $pNoCurl = FALSE ) {
 	global $gBitSystem;
 	$ret = FALSE;
 
@@ -524,7 +525,7 @@ function bit_http_request( $pUrl ) {
 		}
 
 		// try using curl first as it allows the use of a proxy
-		if( function_exists( 'curl_init' )) {
+		if( !$pNoCurl && function_exists( 'curl_init' )) {
 			$curl = curl_init();
 			curl_setopt( $curl, CURLOPT_URL, $pUrl );
 			curl_setopt( $curl, CURLOPT_HEADER, 0 );

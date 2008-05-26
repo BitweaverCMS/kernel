@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.16 2008/05/23 07:51:38 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.17 2008/05/26 09:28:34 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -519,7 +519,7 @@ function bit_http_request( $pUrl ) {
 			$pUrl = "http://".$pUrl;
 		}
 
-		if( !preg_match("/^[-_a-zA-Z0-9:\/\.\?&;=\+]*$/", $pUrl )) {
+		if( !preg_match("/^[-_a-zA-Z0-9:\/\.\?&;%=\+]*$/", $pUrl )) {
 			return FALSE;
 		}
 

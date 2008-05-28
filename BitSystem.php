@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.172 2008/05/24 08:21:22 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.173 2008/05/28 12:57:16 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -75,7 +75,7 @@ class BitSystem extends BitBase {
 
 	// Javascript to be added to the <body onunload> attribute
 	var $mOnunload = array();
-	
+
 	// Used by packages to register notification events that can be subscribed to.
 	var $mNotifyEvents = array();
 
@@ -1272,6 +1272,7 @@ class BitSystem extends BitBase {
 			}
 
 			$showTables = ( $prefix ? $prefix.'%' : NULL );
+			$unusedTables = array();
 			if( $dbTables = $this->mDb->MetaTables( 'TABLES', FALSE, $showTables ) ) {
 				// make a copy that we can keep track of what tables have been used
 				$unusedTables = $dbTables;

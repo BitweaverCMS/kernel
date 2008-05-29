@@ -5,8 +5,12 @@
 	{formlabel label="Title" for="title-$id"}
 	{forminput}
 		<input type="text" name="{$hash_key|default:'file'}[{$id}][title]" id="title-{$id}" size="50" />
-		<br />
-		{formlabel label="File" for="upload-slot-$id"}
+	{/forminput}
+</div>
+
+<div class="row">
+	{formlabel label="File" for="upload-$id"}
+	{forminput}
 		<input type="file" name="upload-{$id}" id="upload-{$id}" size="35" />
 	{/forminput}
 </div>

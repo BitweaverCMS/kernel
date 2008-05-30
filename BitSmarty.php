@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.17 2007/04/04 14:31:30 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.18 2008/05/30 13:23:44 squareing Exp $
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -77,6 +77,14 @@ class BitSmarty extends Smarty
 		// this is used when auto-storing untranslated master strings
 		$this->mCompileRsrc = $resource_name;
 		return parent::_compile_resource($resource_name, $compile_path);
+	}
+
+	function _fetch_resource_info( &$pParams ) {
+		if( empty( $pParams['resource_name'] )) {
+			return FALSE;
+		} else {
+			return parent::_fetch_resource_info( $pParams );
+		}
 	}
 
 	function fetch($_smarty_tpl_file, $_smarty_cache_id = null, $_smarty_compile_id = null, $_smarty_display = false)

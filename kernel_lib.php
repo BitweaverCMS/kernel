@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.18 2008/05/26 10:59:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.19 2008/05/31 09:50:50 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -241,6 +241,13 @@ function detoxify( &$pParamHash, $pHtml = FALSE ) {
 	}
 }
 
+/**
+ * file_name_to_title 
+ * 
+ * @param string $pFileName 
+ * @access public
+ * @return clean file name that can be used as title
+ */
 function file_name_to_title( $pFileName ) {
 	if( preg_match( '/^[A-Z]:\\\/', $pFileName ) ) {
 			// MSIE shit file names if passthrough via gigaupload, etc.
@@ -255,6 +262,16 @@ function file_name_to_title( $pFileName ) {
 	return( str_replace( '_', ' ', substr( $defaultName, 0, strrpos( $defaultName, '.' ) ) ) );
 }
 
+/**
+ * path_to_url 
+ * 
+ * @param string $pPath Relative path starting in the bitweaver root directory
+ * @access public
+ * @return a valid url based on the given path
+ */
+function path_to_url( $pPath ) {
+	return str_replace( '//', '/', BIT_ROOT_URL.str_replace( '+', '%20', str_replace( '%2F', '/', urlencode( $pPath ))));
+}
 
 /**
  * simple function to include in deprecated function calls. makes the developer replace with newer code

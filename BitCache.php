@@ -1,7 +1,7 @@
 <?php
 /**
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.15 2007/10/25 17:14:14 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.16 2008/06/04 14:54:16 squareing Exp $
  */
 
 /**
@@ -137,10 +137,10 @@ class BitCache {
 	 * @param string $pFile file to write to
 	 * @param string $pData string to write to file
 	 * @access public
-	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 * @return void
 	 */
 	function writeCacheFile( $pFile, $pData ) {
-		if( !empty( $pData )) {
+		if( !empty( $pData ) && !empty( $pFile )) {
 			if( $h = fopen( $this->getCacheFile( $pFile ), 'w' )) {
 				fwrite( $h, $pData );
 				fclose( $h );

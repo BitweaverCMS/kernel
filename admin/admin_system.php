@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.16 2008/06/02 19:51:22 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.17 2008/06/04 13:20:27 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -51,7 +51,7 @@ $diskUsage = array(
 	),
 	'javascript' => array(
 		'path' => STORAGE_PKG_PATH.'themes',
-		'title' => tra( 'Javascript files' ),
+		'title' => tra( 'Javascript and CSS files' ),
 	),
 );
 
@@ -62,11 +62,15 @@ foreach( $diskUsage as $key => $item ) {
 	}
 }
 
+if( !empty( $_GET['pruned'] )) {
+	$feedback['success'] = tra( 'The cache was successfully cleared.' );
+}
+
 if( !empty( $_GET['prune'] ) ) {
 	foreach( $diskUsage as $key => $item ) {
 		if( $_GET['prune'] == $key || $_GET['prune'] == 'all' ) {
 			if( unlink_r( $item['path'].( !empty( $item['subdir'] ) ? '/'.$item['subdir'] : '' ) ) ) {
-				$feedback['success'] = tra( 'The cache was successfully cleared.' );
+				$reload = TRUE;
 			} elseif( is_dir( $item['path'].( !empty( $item['subdir'] ) ? '/'.$item['subdir'] : '' ) ) ) {
 				$feedback['error'] = tra( 'There was a problem clearing out the cache.' );
 			}
@@ -78,6 +82,11 @@ if( !empty( $_GET['prune'] ) ) {
 		require_once( NEXUS_PKG_PATH.'Nexus.php' );
 		$nexus = new Nexus();
 		$nexus->rewriteMenuCache();
+	}
+
+	// depending on what we've just nuked, we need to reload the page
+	if( !empty( $reload )) {
+		bit_redirect( KERNEL_PKG_URL."admin/admin_system.php?pruned=1" );
 	}
 }
 

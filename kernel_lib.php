@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.19 2008/05/31 09:50:50 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.20 2008/06/09 18:46:36 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -139,6 +139,10 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 	//$gDebug = TRUE
 
 	$pTarget = trim( $pTarget );
+	if( empty( $pTarget ) || $pTarget == ';' ) {
+		return 0;
+	}
+
 	if( $pTarget == '/' ) {
 		return 1;
 	}
@@ -164,22 +168,28 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 	}
 
 	$oldu = umask( 0 );
-	if( @mkdir( $pTarget, $pPerms )) {
-		if( $gDebug ) echo "mkdir_p() - creating $pTarget<br />";
+	if( version_compare( phpversion(), "5.0.0", ">=" )) {
+		@mkdir( $pTarget, $pPerms, TRUE );
 		umask( $oldu );
 		return 1;
 	} else {
-		umask( $oldu );
-		$parent = substr( $pTarget, 0, ( strrpos( $pTarget, '/' )));
-		if( $gDebug ) echo "mkdir_p() - trying to create parent $parent<br />";
+		if( @mkdir( $pTarget, $pPerms )) {
+			if( $gDebug ) echo "mkdir_p() - creating $pTarget<br />";
+			umask( $oldu );
+			return 1;
+		} else {
+			umask( $oldu );
+			$parent = substr( $pTarget, 0, ( strrpos( $pTarget, '/' )));
+			if( $gDebug ) echo "mkdir_p() - trying to create parent $parent<br />";
 
-		// recursively create parents
-		if( mkdir_p( $parent, $pPerms )) {
-			// make the actual target!
-			if( @mkdir( $pTarget, $pPerms )) {
-				return 1;
-			} elseif( !is_dir( $pTarget ) ) {
-				error_log( "mkdir() - could not create $pTarget" );
+			// recursively create parents
+			if( mkdir_p( $parent, $pPerms )) {
+				// make the actual target!
+				if( @mkdir( $pTarget, $pPerms )) {
+					return 1;
+				} elseif( !is_dir( $pTarget ) ) {
+					error_log( "mkdir() - could not create $pTarget" );
+				}
 			}
 		}
 	}

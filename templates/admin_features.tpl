@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.13 2007/01/08 09:48:09 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.14 2008/06/10 12:10:22 laetzer Exp $ *}
 {strip}
 {form}
 	{jstabs}
@@ -39,9 +39,9 @@
 							<option value="user_home"{if $gBitSystem->getConfig('bit_index') eq 'user_home'} selected="selected"{/if}>{tr}User's homepage{/tr}</option>
 							<option value="group_home"{if $gBitSystem->getConfig('bit_index') eq 'group_home'} selected="selected"{/if}>{tr}Group home{/tr}</option>
 							<option value="users_custom_home"{if $gBitSystem->getConfig('bit_index') eq $gBitSystem->getConfig('site_url_index')} selected="selected"{/if}>{tr}Custom home{/tr}</option>
-							{foreach key=name item=package from=$gBitSystem->mPackages }
+							{foreach key=name item=package from=$gBitSystem->mPackages}
 								{if $package.homeable && $package.installed}
-									<option {if $gBitSystem->getConfig('bit_index') eq $package.name}selected="selected"{/if} value="{$package.name}">{$package.name|capitalize}</option>
+									<option {if $gBitSystem->getConfig('bit_index') eq $package.dir}selected="selected"{/if} value="{$package.dir}">{$package.dir|capitalize}</option>
 								{/if}
 							{/foreach}
 						</select>

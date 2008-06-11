@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.174 2008/06/06 16:18:09 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.175 2008/06/11 15:22:45 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1473,14 +1473,20 @@ die;
 	 * @access public
 	 */
 	function lookupMimeType( $pExtension ) {
-		// rfc1341 - mime types are case insensitive.
-		if( preg_match( "/.*\.[a-zA-Z]+$/", $pExtension ) ) {
-			$pExtension = substr( $pExtension, ( strrpos( $pExtension, '.' ) + 1 )  );
+		if( preg_match( "#\.[0-9a-z]+$#i", $pExtension )) {
+			$pExtension = substr( $pExtension, ( strrpos( $pExtension, '.' ) + 1 ));
 		}
+
+		// rfc1341 - mime types are case insensitive.
 		$pExtension = strtolower( $pExtension );
-		if( empty( $this->mMimeTypes ) ) {
-			// use the local mime.types files if it is available since it may be more current
-			$mimeFile = is_file( '/etc/mime.types' ) && is_readable( '/etc/mime.types' ) ? '/etc/mime.types' : KERNEL_PKG_PATH.'admin/mime.types';
+		if( empty( $this->mMimeTypes )) {
+			// use bitweavers mime.types file to ensure everyone has our set unless user forces his own.
+			if( defined( 'MIME_TYPES' ) && is_file( MIME_TYPES )) {
+				$mimeFile = MIME_TYPES;
+			} else {
+				$mimeFile = KERNEL_PKG_PATH.'admin/mime.types';
+			}
+
 			$this->mMimeTypes = array();
 			if( $fp = fopen( $mimeFile,"r" ) ) {
 				while( FALSE != ( $line = fgets( $fp, 4096 ) ) ) {

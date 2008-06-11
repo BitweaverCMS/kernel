@@ -64,7 +64,7 @@ application/news-message-id
 application/news-transmission
 application/ocsp-request
 application/ocsp-response
-application/octet-stream	bin dms lha lzh exe class so dll img iso
+application/octet-stream	bin so img
 application/oda					oda
 application/ogg			ogg
 application/parityfec

@@ -30,8 +30,16 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 	// This array is used to choose colours for supplied highlight terms
 	$colorArr = array( '#ffffcc', '#ffcccc', '#a0ffff', '#ffccff', '#ccffcc' );
 
-	$words = urldecode( $_REQUEST['highlight'] );
-	if( empty( $words ) ) {
+	// don't highlight characters that are used as replacements
+	$find = array(
+		"!(\s|^)%(\s|$)!",
+		"!(\s|^)#(\s|$)!",
+		"!(\s|^)@(\s|$)!",
+		"!(\s|^):(\s|$)!",
+		"!(\s|^)&(\s|$)!",
+	);
+	$words = trim( preg_replace( $find, "$1$2", urldecode( $_REQUEST['highlight'] )));
+	if( empty( $words )) {
 		return $source;
 	}
 
@@ -44,13 +52,17 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 	foreach( $highlights as $key => $highlight ) {
 		// if we picked something up, we highlight the contents
 		if( !empty( $highlight ) ) {
-			$source = preg_replace( $extractor, "@@@SMARTY:TRIM:HIGHLIGHT@@@", $source );
+			// highlighted words
+			$source = preg_replace( $extractor, "@@@##########:#########%:##########@@@", $source );
 
 			// extraction patterns and their replacements
 			$patterns = array(
-				"!<script[^>]+>.*?</script>!is"           => "@@@SMARTY:TRIM:SCRIPT@@@",
-				"!<div class=.?maketoc[^>]*>.*?</div>!si" => "@@@SMARTY:TRIM:MAKETOC@@@",
-				"'<[\/\!]*?[^<>]*?>'si"                   => "@@@SMARTY:TRIM:TAG@@@",
+				// scripts
+				"!<script[^>]+>.*?</script>!is"           => "@@@##########:#########%:#########&@@@",
+				// maketoc
+				"!<div class=.?maketoc[^>]*>.*?</div>!si" => "@@@##########:#########%:#########@@@@",
+				// html tags
+				"'<[\/\!]*?[^<>]*?>'si"                   => "@@@##########:#########%:#########:@@@",
 			);
 
 			ksort( $patterns );
@@ -99,9 +111,9 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 
 	// insert the highlighted code back into the source
 	foreach( $ret as $highlight ) {
-	    // Escape dollars in highlight so they don't back reference
-	    $highlight = preg_replace('!\$!','\\\$', $highlight);
-		$source = preg_replace( "!@@@SMARTY:TRIM:HIGHLIGHT@@@!", $highlight, $source, 1 );
+		// Escape dollars in highlight so they don't back reference
+		$highlight = preg_replace('!\$!','\\\$', $highlight);
+		$source = preg_replace( "!@@@##########:#########%:##########@@@!", $highlight, $source, 1 );
 	}
 
 	return $source;

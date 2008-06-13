@@ -32,6 +32,7 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 	}
 	if (empty($pParams['id'])) {
 		$pParams['id'] = LIBERTY_TEXT_AREA;
+		$pParams['name'] = 'edit';
 	}
 	foreach ($pParams as $_key=>$_value) {
 		switch ($_key) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.21 2008/06/14 13:45:53 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.22 2008/06/14 14:11:45 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -239,7 +239,7 @@ function detoxify( &$pParamHash, $pHtml = FALSE ) {
 	if( !empty( $pParamHash ) && is_array( $pParamHash ) ) {
 		foreach( $pParamHash as $key => $value ) {
 			if( isset( $value ) && is_array( $value ) ) {
-				detoxify( $value );
+				detoxify( $value, $pHtml );
 			} else {
 				if( $pHtml ) {
 					$pParamHash[$key] = htmlspecialchars( urldecode( $value ), ENT_NOQUOTES );

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.20 2008/06/09 18:46:36 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.21 2008/06/14 13:45:53 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -119,11 +119,11 @@ function get_temp_dir() {
  * @return TRUE if we are on windows, FALSE otherwise
  */
 function is_windows() {
-	static $windows;
-	if( !isset( $windows )) {
-		$windows = substr(PHP_OS, 0, 3) == 'WIN';
+	static $sWindows;
+	if( !isset( $sWindows )) {
+		$sWindows = substr( PHP_OS, 0, 3 ) == 'WIN';
 	}
-	return $windows;
+	return $sWindows;
 }
 
 /**

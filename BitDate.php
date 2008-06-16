@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.19 2007/04/03 06:21:41 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.20 2008/06/16 20:41:26 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -44,7 +44,7 @@ class BitDate {
 	 */
 	function BitDate($_display_offset = 0) {
 		$this->display_offset = $_display_offset;
-		$this->server_offset = mktime(0,0,0,1,2,1970,0) - gmmktime(0,0,0,1,2,1970,0);
+		$this->server_offset = mktime(0,0,0,1,2,1970) - gmmktime(0,0,0,1,2,1970);
 	}
 
 	/**

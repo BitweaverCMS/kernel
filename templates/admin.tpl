@@ -1,9 +1,12 @@
 {strip}
 
-{if $package}
-	<div class="floaticon">{biticon ipackage="$package" iname="pkg_`$package`" iexplain="$package" iforce=icon}</div>
-{/if}
-<div class="floaticon">{bithelp}</div>
+<div class="floaticon">
+	{if $package}
+		{assign var=iconsize value=$gBitSystem->getConfig("site_icon_size")}
+		{biticon ipackage="$package" iname="pkg_`$package`" iexplain="$package" iclass="$iconsize icon"}
+	{/if}
+	{bithelp}
+</div>
 
 <div class="admin {$package}">
 	<div class="header">

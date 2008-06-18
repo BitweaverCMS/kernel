@@ -5,6 +5,9 @@
  * @subpackage plugins
  */
 
+/**
+ * Handler
+ */
 function group_replace_url_hander($matched) {
 	$url = $matched[2];
 	// Make sure it is not an off site url

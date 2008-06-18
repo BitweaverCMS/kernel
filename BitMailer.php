@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.4 2008/06/18 09:18:19 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.5 2008/06/18 10:10:08 lsces Exp $
  *
  * +----------------------------------------------------------------------+
  * | Copyright ( c ) 2008, bitweaver.org
@@ -22,7 +22,7 @@
  * This is a base class to derive more capabale mailing services
  *
  * @author   nick <nick@sluggardy.net>
- * @version  $Revision: 1.4 $
+ * @version  $Revision: 1.5 $
  * @package  kernel 
  */
 
@@ -34,7 +34,7 @@ require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
 /**
  * BitMailer 
  * 
- * @uses LibertyBase
+ * @package  kernel
  */
  class BitMailer extends LibertyBase {
 	/**

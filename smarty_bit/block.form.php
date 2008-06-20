@@ -83,7 +83,8 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 		} else if( $url == 'https://' . $_SERVER['HTTP_HOST'] ) {
 			$url .= $_SERVER['PHP_SELF'];
 		}
-		$ret = '<form action="'.$url.( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' ).'" '.$atts.' onsubmit="'.$onsubmit.'">';
+		$onsub = (!empty( $onsubmit ) ? ' onsubmit="'.$onsubmit.'"' : '' );
+		$ret = '<form action="'.$url.( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' ).'" '.$atts.$onsub.'>';
 		$ret .= isset( $legend ) ? '<fieldset>'.$legend : '<div>';		// adding the div makes it easier to be xhtml compliant
 		$ret .= $content;
 		$ret .= '<div class="clear"></div>';							// needed to avoid rendering issues

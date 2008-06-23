@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.22 2008/06/14 14:11:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.23 2008/06/23 20:34:35 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -288,15 +288,21 @@ function path_to_url( $pPath ) {
  * 
  * @param array $pReplace code that needs replacing
  * @access public
- * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+ * @return void
  */
 function deprecated( $pReplace = NULL ) {
 	$trace = debug_backtrace();
-	//vd( $trace);
-	$out = "Deprecated function call:\n\tfunction: ".$trace[1]['class']."::".$trace[1]['function']."()\n\tfile: ".$trace[1]['file']."\n\tline: ".$trace[1]['line'];
-	if( !empty( $pReplace ) ) {
-		$out .= "\n\t".$pReplace;
+	if( !empty( $trace[1]['class'] )) {
+		$function = $trace[1]['class']."::".$trace[1]['function'];
+	} else {
+		$function = $trace[1]['function'];
 	}
+	$out = "Deprecated function call:\n\tfunction: $function()\n\tfile: ".$trace[1]['file']."\n\tline: ".$trace[1]['line'];
+
+	if( !empty( $pReplace ) ) {
+		$out .= "\n\t".str_replace( "\n", "\n\t", $pReplace );
+	}
+
 	if( !defined( 'IS_LIVE' ) || IS_LIVE == FALSE ) {
 		vd( $out );
 	} else {

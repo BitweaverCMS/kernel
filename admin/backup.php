@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/backup.php,v 1.4 2006/04/11 13:05:16 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/backup.php,v 1.5 2008/06/25 22:21:12 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -65,7 +65,7 @@ if (isset($_REQUEST["upload"])) {
 	} else {
 		$gBitSmarty->assign('msg', tra("Upload failed"));
 
-		$gBitSystem->display( 'error.tpl' );
+		$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'admin' ));
 		die;
 	}
 }
@@ -91,6 +91,6 @@ $gBitSmarty->assign_by_ref('backups', $backups);
 $gBitSmarty->assign('bitdomain', $bitdomain);
 
 
-$gBitSystem->display( 'bitpackage:kernel/backup.tpl', tra( 'Backups') );
+$gBitSystem->display( 'bitpackage:kernel/backup.tpl', tra( 'Backups') , array( 'display_mode' => 'admin' ));
 
 ?>

@@ -4,7 +4,7 @@
 
 	if (!$gBitUser->isAdmin()) {
 		$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
-		$gBitSystem->display( 'error.tpl' );
+		$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'admin' ));
 		die;
 	}
 

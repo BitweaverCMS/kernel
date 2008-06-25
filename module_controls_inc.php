@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/module_controls_inc.php,v 1.8 2006/04/19 13:48:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/module_controls_inc.php,v 1.9 2008/06/25 22:21:11 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -8,7 +8,7 @@
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
  *
- * $Id: module_controls_inc.php,v 1.8 2006/04/19 13:48:37 squareing Exp $
+ * $Id: module_controls_inc.php,v 1.9 2008/06/25 22:21:11 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -20,17 +20,17 @@ include_once( '../bit_setup_inc.php' );
 
 if (!$gBitUser->hasPermission( 'p_tidbits_configure_modules' )) {
 	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));
-	$gBitSystem->display( 'error.tpl' );
+	$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 	die;
 }
 /*if (!$gBitSystem->isFeatureActive( 'site_user_assigned_modules' ) && $check_req) {
 	$gBitSmarty->assign('msg', tra("This feature is disabled").": site_user_assigned_modules");
-	$gBitSystem->display( 'error.tpl' );
+	$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 	die;
 }*/
 if (!$gBitUser->isRegistered()) {
 	$gBitSmarty->assign('msg', tra("You must log in to use this feature"));
-	$gBitSystem->display( 'error.tpl' );
+	$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 	die;
 }
 

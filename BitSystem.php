@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.175 2008/06/11 15:22:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.176 2008/06/25 22:21:11 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1153,6 +1153,7 @@ die;
 		$this->mRegisterCalled = FALSE;
 		$scanFile = BIT_ROOT_PATH.$pPkgDir.'/'.$pScanFile;
 		$file_exists = 0;
+
 		if( file_exists( $scanFile ) ) {
 			$file_exists = 1;
 			global $gBitSystem, $gLibertySystem, $gBitSmarty, $gBitUser, $gBitLanguage;

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/list_cache.php,v 1.5 2006/04/11 13:05:16 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/list_cache.php,v 1.6 2008/06/25 22:21:12 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -76,6 +76,6 @@ $gBitSmarty->assign_by_ref('listpages', $listpages["data"]);
 
 
 // Display the template
-$gBitSystem->display( 'bitpackage:kernel/list_cache.tpl');
+$gBitSystem->display( 'bitpackage:kernel/list_cache.tpl', NULL, array( 'display_mode' => 'list' ));
 
 ?>

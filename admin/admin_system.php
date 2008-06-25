@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.17 2008/06/04 13:20:27 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.18 2008/06/25 22:21:12 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -126,7 +126,7 @@ foreach( array_keys( $languages ) as $clang ) {
 $gBitSmarty->assign( 'templates', $templates );
 $gBitSmarty->assign( 'feedback', $feedback );
 
-$gBitSystem->display( 'bitpackage:kernel/admin_system.tpl', tra( "System Cache" ) );
+$gBitSystem->display( 'bitpackage:kernel/admin_system.tpl', tra( "System Cache" ) , array( 'display_mode' => 'admin' ));
 
 
 // ----------------------- Functions ----------------------- //

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/error.php,v 1.3 2005/08/01 18:40:33 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/error.php,v 1.4 2008/06/25 22:21:11 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -18,6 +18,6 @@ require_once( '../bit_setup_inc.php' );
 
 // Display the template
 $gBitSmarty->assign('msg', strip_tags($_REQUEST["error"]));
-$gBitSystem->display( 'error.tpl' );
+$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 
 ?>

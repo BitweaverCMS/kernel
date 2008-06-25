@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.19 2007/07/19 05:00:27 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.20 2008/06/25 22:21:12 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -86,5 +86,5 @@ if( !empty( $_REQUEST['version_check'] ) ) {
 }
 
 // Display the template
-$gBitSystem->display( 'bitpackage:kernel/admin.tpl' );
+$gBitSystem->display( 'bitpackage:kernel/admin.tpl' , NULL, array( 'display_mode' => 'admin' ));
 ?>

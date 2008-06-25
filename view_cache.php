@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.9 2007/07/10 16:58:21 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.10 2008/06/25 22:21:11 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -18,7 +18,7 @@ require_once( WIKI_PKG_PATH.'BitPage.php' );
 /*
 if($gBitSystem->getConfig('wiki_list_pages') != 'y') {
   $gBitSmarty->assign('msg',tra("This feature is disabled"));
-  $gBitSystem->display( 'error.tpl' );
+  $gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
   die;  
 }
 */
@@ -28,7 +28,7 @@ if (isset($_REQUEST['url'])) {
 	if (!$id) {
 		$gBitSmarty->assign('msg', tra("No cache information available"));
 
-		$gBitSystem->display( 'error.tpl' );
+		$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 		die;
 	}
 
@@ -38,7 +38,7 @@ if (isset($_REQUEST['url'])) {
 if (!isset($_REQUEST["cache_id"])) {
 	$gBitSmarty->assign('msg', tra("No page indicated"));
 
-	$gBitSystem->display( 'error.tpl' );
+	$gBitSystem->display( 'error.tpl' , NULL, array( 'display_mode' => 'display' ));
 	die;
 }
 
@@ -53,7 +53,7 @@ if (substr($info["url"], -4, 4) == ".txt") {
 
 $gBitSmarty->assign('ggcacheurl', $ggcacheurl);
 $gBitSmarty->assign_by_ref('info', $info);
-$gBitSystem->display( 'bitpackage:kernel/view_cache.tpl');
+$gBitSystem->display( 'bitpackage:kernel/view_cache.tpl', NULL, array( 'display_mode' => 'display' ));
 
 
 

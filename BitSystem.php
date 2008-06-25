@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.176 2008/06/25 22:21:11 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.177 2008/06/25 22:41:32 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -432,7 +432,7 @@ class BitSystem extends BitBase {
 	 * @param  $format the output format - xml, ajax, content, full - relays to setRenderFormat
 	 * @access public
 	 */
-	function display( $pMid, $pBrowserTitle = NULL, $pFormat = 'html' ) {
+	function display( $pMid, $pBrowserTitle = NULL, $pOptionsHash = array() ) {
 		global $gBitSmarty;
 		$gBitSmarty->verifyCompileDir();
 
@@ -451,7 +451,8 @@ class BitSystem extends BitBase {
 
 		// set the correct headers if it hasn't been done yet
 		if( empty( $this->mFormatHeader )) {
-			$this->setFormatHeader( $pFormat );
+			$format = (!empty( $pOptionsHash['format'] ) ? $pOptionsHash['format'] : 'html' );
+			$this->setFormatHeader( $format );
 		}
 
 		if( $pMid == 'error.tpl' ) {

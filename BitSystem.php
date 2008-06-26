@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.178 2008/06/26 09:56:43 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.179 2008/06/26 10:59:45 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -206,11 +206,10 @@ class BitSystem extends BitBase {
 			$this->loadConfig();
 		}
 
-		$matching_keys = array();
-		$matching_keys = preg_grep( $pPattern, array_keys( $this->mConfig ) );
+		$matching_keys = preg_grep( $pPattern, array_keys( $this->mConfig ));
 		$new_array = array();
 		foreach( $matching_keys as $key=>$value ) {
-			if ( empty( $pSelectValue ) || ( !empty( $pSelectValue ) && $this->mConfig[$value] == $pSelectValue ) ) {
+			if ( empty( $pSelectValue ) || ( !empty( $pSelectValue ) && $this->mConfig[$value] == $pSelectValue )) {
 				$new_array[$value] = $this->mConfig[$value];
 			}
 		}
@@ -218,21 +217,24 @@ class BitSystem extends BitBase {
 	}
 
 	/**
-	 * set a group of config variables
-	 *
+	 * storeConfigMatch set a group of config variables
+	 * 
+	 * @param string $pPattern Perl regular expression
+	 * @param string $pSelectValue only manipulate settings with this value set
+	 * @param string $pNewValue New value that should be set for the matching settings (NULL will remove the entries from the DB)
+	 * @param string $pPackage Package for which the settings are
 	 * @access public
-	 **/
-	function setConfigMatch( $pPattern, $pSelect_value="", $pNew_value=NULL, $pPackage=NULL ) {
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	function storeConfigMatch( $pPattern, $pSelectValue = "", $pNewValue = NULL, $pPackage = NULL ) {
 		if( empty( $this->mConfig ) ) {
 			$this->loadConfig();
 		}
 
-		$matching_keys = array();
-		$matching_keys = preg_grep($pPattern, array_keys($this->mConfig));
-		$new_array = array();
-		foreach($matching_keys as $key=>$config_name) {
-			if ( empty($pSelect_value) || ( !empty($pSelect_value) && $this->mConfig[$config_name] == $pSelect_value) ) {
-				$this->storeConfig($config_name, $pNew_value, $pPackage);
+		$matchingKeys = preg_grep( $pPattern, array_keys( $this->mConfig ));
+		foreach( $matchingKeys as $key => $config_name ) {
+			if( empty( $pSelectValue ) || ( !empty( $pSelectValue ) && $this->mConfig[$config_name] == $pSelectValue )) {
+				$this->storeConfig( $config_name, $pNewValue, $pPackage );
 			}
 		}
 	}

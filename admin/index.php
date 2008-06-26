@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.21 2008/06/26 09:56:44 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.22 2008/06/26 11:34:46 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -53,7 +53,9 @@ if( !empty( $_REQUEST["page"] )) {
 				break;
 		}
 
-		$adminPage =  constant( strtoupper( $package ).'_PKG_PATH' ).'/admin/admin_'.$file.'_inc.php';
+		$adminPage = constant( strtoupper( $package ).'_PKG_PATH' ).'/admin/admin_'.$file.'_inc.php';
+		// gBitThemes->loadLayout uses this to determine the currently active package
+		$gBitSystem->mActivePackage = $package;
 	}
 	$gBitSmarty->assign( 'package', $package );
 	$gBitSmarty->assign( 'file', $file );

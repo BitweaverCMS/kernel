@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.177 2008/06/25 22:41:32 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.178 2008/06/26 09:56:43 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -87,9 +87,6 @@ class BitSystem extends BitBase {
 
 	// The name of the package that is currently being processed
 	var $mPackageFileName;
-
-	// Display full page or just contents?
-	var $mFormatHeader;
 
 	// Content classes. 
 	var $mContentClasses = array();
@@ -380,49 +377,6 @@ class BitSystem extends BitBase {
 		$this->mHttpStatus = $pHttpStatus;
 	}
 
-	/**
-	 * Set the proper headers for requested output
-	 *
-	 * @param  $pFormat the output headers. Available options include: html, json, xml or none
-	 * @access public
-	 */
-	function setFormatHeader( $pFormat = 'html' ) {
-		// this will tell BitSystem::display what headers have been set in case it's been called independently
-		$this->mFormatHeader = $pFormat;
-
-		switch( $pFormat ) {
-			case "xml" :
-				//since we are returning xml we must report so in the header
-				//we also need to tell the browser not to cache the page
-				//see: http://mapki.com/index.php?title=Dynamic_XML
-				// Date in the past
-				header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" );
-				// always modified
-				header( "Last-Modified: " . gmdate( "D, d M Y H:i:s" )." GMT" );
-				// HTTP/1.1
-				header( "Cache-Control: no-store, no-cache, must-revalidate" );
-				header( "Cache-Control: post-check=0, pre-check=0", FALSE );
-				// HTTP/1.0
-				header( "Pragma: no-cache" );
-				//XML Header
-				header( "Content-Type: text/xml" );
-				break;
-
-			case "json" :
-				header( 'Content-type: application/json' );
-				break;
-
-			case "none" :
-			case "center_only" :
-				break;
-
-			case "html" :
-			default :
-				header( 'Content-Type: text/html; charset=utf-8' );
-				break;
-		}
-	}
-
 
 	/**
 	 * Display the main page template
@@ -433,7 +387,7 @@ class BitSystem extends BitBase {
 	 * @access public
 	 */
 	function display( $pMid, $pBrowserTitle = NULL, $pOptionsHash = array() ) {
-		global $gBitSmarty;
+		global $gBitSmarty, $gBitThemes;
 		$gBitSmarty->verifyCompileDir();
 
 		// see if we have a custom status other than 200 OK
@@ -450,9 +404,15 @@ class BitSystem extends BitBase {
 		}
 
 		// set the correct headers if it hasn't been done yet
-		if( empty( $this->mFormatHeader )) {
-			$format = (!empty( $pOptionsHash['format'] ) ? $pOptionsHash['format'] : 'html' );
-			$this->setFormatHeader( $format );
+		if( empty( $gBitThemes->mFormatHeader )) {
+			// display is the last thing we call and therefore we need to set a default
+			$gBitThemes->setFormatHeader( !empty( $pOptionsHash['format'] ) ? $pOptionsHash['format'] : 'html' );
+		}
+
+		// set the desired display mode - this lets bitweaver know what type of page we are viewing
+		if( empty( $gBitThemes->mDisplayMode )) {
+			// display is the last thing we call and therefore we need to set a default
+			$gBitThemes->setDisplayMode( !empty( $pOptionsHash['display_mode'] ) ? $pOptionsHash['display_mode'] : 'display' );
 		}
 
 		if( $pMid == 'error.tpl' ) {
@@ -461,13 +421,13 @@ class BitSystem extends BitBase {
 		}
 
 		// only using the default html header will print modules and all the rest of it.
-		if( $this->mFormatHeader != 'html' ) {
+		if( $gBitThemes->mFormatHeader != 'html' ) {
 			$gBitSmarty->assign_by_ref( 'gBitSystem', $this );
 			$gBitSmarty->display( $pMid );
 			return;
 		}
 
-		if( !empty( $pBrowserTitle ) ) {
+		if( !empty( $pBrowserTitle )) {
 			$this->setBrowserTitle( $pBrowserTitle );
 		}
 
@@ -2035,6 +1995,11 @@ die;
 	function makePackageHomeable( $package ) {
 		deprecated( 'Please use: BitSystem::registerPackage( array( "homeable" => TRUE ) ) in your bit_setup_inc.php file' );
 		$this->mPackages[strtolower( $package )]['homeable'] = TRUE;
+	}
+	function setFormatHeader( $pFormat ) {
+		global $gBitThemes;
+		deprecated( 'This is now in BitThemes instead of BitSystem.' );
+		return $gBitThemes->setFormatHeader( $pFormat );
 	}
 	function getTplIncludeFiles( $pFilename ) {
 		global $gBitThemes;

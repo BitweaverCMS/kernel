@@ -48,7 +48,7 @@
 								{formlabel label="Upgrade"}
 								{forminput class=warning}
 									<strong>bitweaver {$version_info.upgrade}</strong>
-									{formhelp page="ReleaseOneChangelog}
+									{formhelp page="ReleaseTwoChangelog}
 								{/forminput}
 							</div>
 						{elseif $version_info.compare gt 0}
@@ -56,7 +56,7 @@
 								{formlabel label="Latest Version"}
 								{forminput}
 									<strong>bitweaver {$version_info.upgrade}</strong>
-									{formhelp page="ReleaseOneChangelog}
+									{formhelp page="ReleaseTwoChangelog}
 								{/forminput}
 							</div>
 						{/if}
@@ -66,7 +66,7 @@
 								{formlabel label="Latest Release"}
 								{forminput class=warning}
 									<strong>bitweaver {$version_info.release}</strong>
-									{formhelp page="ReleaseOneChangelog}
+									{formhelp page="ReleaseTwoChangelog}
 								{/forminput}
 							</div>
 						{/if}

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.14 2007/03/17 14:39:09 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.15 2008/06/30 18:42:26 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -29,7 +29,8 @@ if( $processForm ) {
 		"site_session_lifetime",
 		"site_load_threshold",
 		"site_busy_msg",
-		"site_closed_msg"
+		"site_closed_msg",
+		"storage_host"
 	);
 
 	foreach( $pref_simple_values as $item ) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.24 2008/06/30 17:13:54 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.25 2008/06/30 18:42:25 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -279,8 +279,9 @@ function file_name_to_title( $pFileName ) {
  * @access public
  * @return a valid url based on the given path
  */
-function path_to_url( $pPath ) {
-	return( BIT_ROOT_URI.str_replace( '//', '/', str_replace( '+', '%20', str_replace( '%2F', '/', urlencode( $pPath )))));
+function storage_path_to_url( $pPath ) {
+	global $gBitSystem;
+	return( $gBitSystem->getConfig( 'storage_host', BIT_ROOT_URL ).str_replace( '//', '/', str_replace( '+', '%20', str_replace( '%2F', '/', urlencode( $pPath )))));
 }
 
 /**

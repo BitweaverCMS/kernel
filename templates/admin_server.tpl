@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.16 2007/07/10 21:52:59 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.17 2008/06/30 18:42:26 squareing Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -89,6 +89,14 @@
 					{forminput}
 						<input size="50" type="text" name="site_temp_dir" id="site_temp_dir" value="{$gBitSystem->getConfig('site_temp_dir',$smarty.const.TEMP_PKG_PATH)|escape}" />
 						{formhelp note="Here you can set the temp directory to a non web-accessible path for maximum security. Specify the full path to the directory where you want to store the temporary data. Make sure the server has write access to the directory and the trailing slash is required. e.g.: /tmp/bitweaver/"}
+					{/forminput}
+				</div>
+
+				<div class="row">
+					{formlabel label="Storage Host URI" for="storage_host"}
+					{forminput}
+						<input size="50" type="text" name="storage_host" id="storage_host" value="{$gBitSystem->getConfig('storage_host')|escape}" />
+						{formhelp note="If you are using a different host for all uploaded files, you can enter the URL to that host here. On the storage host you need to point to the parent directory of storage/. If this is not set correctly, users will not be able to download files. e.g.: http://my.bitweaver.storage.com/ (trailing slash is required)"}
 					{/forminput}
 				</div>
 

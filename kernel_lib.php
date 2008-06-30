@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.23 2008/06/23 20:34:35 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.24 2008/06/30 17:13:54 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -280,7 +280,7 @@ function file_name_to_title( $pFileName ) {
  * @return a valid url based on the given path
  */
 function path_to_url( $pPath ) {
-	return str_replace( '//', '/', BIT_ROOT_URL.str_replace( '+', '%20', str_replace( '%2F', '/', urlencode( $pPath ))));
+	return( BIT_ROOT_URI.str_replace( '//', '/', str_replace( '+', '%20', str_replace( '%2F', '/', urlencode( $pPath )))));
 }
 
 /**

@@ -1,54 +1,55 @@
 {strip}
 
-{form}
+{form class="kernel_`$page`|replace:'packages':'pkg'"}
 	<input type="hidden" name="page" value="{$page}" />
 	{jstabs}
-		{jstab title="Installed Packages"}
-			{legend legend="bitweaver Packages that are installed on your system"}
+		{jstab title="Installed"}
+			{legend legend="bitweaver packages installed on your system"}
 				<p>
 				{tr}Packages with checkmarks are currently enabled, packages without are disabled.  To enable or disable a package, check or uncheck it, and click the 'Modify Activation' button. {/tr}
 				</p>
+
 				{foreach key=name item=package from=$gBitSystem->mPackages}
-					{if $package.installed && !$package.service}
+					{if $package.installed && !$package.service && !$package.required}
 						<div class="row">
 							<div class="formlabel">
-								{if !$package.required}<label for="package_{$name}">{/if}{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}{if !$package.required}</label>{/if}
+								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
 							</div>
 							{forminput}
-								{if $package.required}
-									<strong>{$name|capitalize}</strong>: <em>required</em>
-								{else}
-									<label>
-										<strong>{$name|capitalize}</strong>: <input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if}/>
-									</label>
-								{/if}
+								<label>
+									<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
+									&nbsp;
+									<strong>{$name|capitalize}</strong>
+								</label>
 								{formhelp note=`$package.info` package=$name}
 							{/forminput}
 						</div>
 					{/if}
 				{/foreach}
+				
 			{/legend}
+			
+				
 
-			{legend legend="bitweaver Services"}
+			{legend legend="bitweaver services installed on your system"}
 				<p>
 					{tr}A service package is a package that allows you to extend the way you display bitweaver content - such as <em>categorising your content</em>. Activating more than one of any service type might lead to conflicts.<br />
-					We therefore recommend that you <strong>enable only one of each service type</strong>.{/tr}
+					We therefore recommend that you <em>	enable only one of each</em> <strong>service type</strong>.{/tr}
 				</p>
 				{foreach key=name item=package from=$gBitSystem->mPackages}
-					{if $package.installed && $package.service}
+					{if $package.installed && $package.service && !$package.required}
 						<div class="row">
 							<div class="formlabel">
 								{if !$package.required}<label for="package_{$name}">{/if}{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}{if !$package.required}</label>{/if}
 							</div>
 							{forminput}
-								{if $package.required}
-									<strong>{$name|capitalize}</strong>: <em>required</em>
-								{else}
-									<label>
-										<strong>{$name|capitalize}</strong>: <input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if}/>
-										<br />{tr}Service Type{/tr}: <strong>{$package.service|capitalize|replace:"_":" "}</strong>
-									</label>
-								{/if}
+								<label>
+									<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
+									&nbsp;
+									<strong>{$name|capitalize}</strong>
+									<br />
+									{tr}Service Type{/tr}: <strong>{$package.service|capitalize|replace:"_":" "}</strong>
+								</label>
 								{formhelp note=`$package.info` package=$name}
 							{/forminput}
 						</div>
@@ -60,17 +61,62 @@
 				<input type="submit" name="features" value="{tr}Modify Activation{/tr}"/>
 			</div>
 		{/jstab}
+		
 
-		{jstab title="Install Packages"}
-			{box title="How to install bitweaver Packages"}
-				{tr}To install more packages, please run the <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>installer</a> to choose your desired packages.{/tr}
-				<br />
-				<small><strong>{tr}Note{/tr}</strong> : {tr}you might have to rename your 'install/install.done' file back to 'install/install.php' to be able to install more packages{/tr}</small>
-			{/box}
 
-			<br />
+		{jstab title="Required"}
+			{legend legend="Required bitweaver packages installed on your system"}
+				{foreach key=name item=package from=$gBitSystem->mPackages}
+					{if $package.installed && !$package.service && $package.required}
+						<div class="row">
+							<div class="formlabel">
+								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
+							</div>
+							{forminput}
+									<strong>{$name|capitalize}</strong>
+									{formhelp note=`$package.info` package=$name}
+							{/forminput}
+						</div>
+					{/if}
+				{/foreach}
+			{/legend}
+			{legend legend="Required bitweaver services installed on your system"}
+				{foreach key=name item=package from=$gBitSystem->mPackages}
+					{if $package.installed && $package.service && $package.required}
+						<div class="row">
+							<div class="formlabel">
+								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
+							</div>
+							{forminput}
+								<label>
+									<strong>{$name|capitalize}</strong>
+								</label>
+								{formhelp note=`$package.info` package=$name}
+							{/forminput}
+						</div>
+					{/if}
+				{/foreach}
+			{/legend}
+		{/jstab}
+
+
+		
+
+		{jstab title="Install new packages"}
 
 			{legend legend="bitweaver Packages available for installation"}
+
+				{box title="How to install bitweaver Packages"}
+					<p>{tr}To install more packages, please <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>run the installer and choose your desired packages</a>.{/tr}</p>
+
+					{assign var=installfile value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_file}
+					{assign var=installread value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_readable}
+					
+					{if $installfile neq 1 and $installread neq 1}
+						<p>{tr}You might have to rename your <strong>install/install.done</strong> file back to <strong>install/install.php</strong>.{/tr}</p>
+					{/if}
+				{/box}
+
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if ((1 or $package.tables) && !$package.required && !$package.installed) }
 						<div class="row">
@@ -84,15 +130,9 @@
 						</div>
 					{/if}
 				{/foreach}
+	
 			{/legend}
 
-			<br />
-
-			{box title="How to install bitweaver Packages"}
-				{tr}To install more packages, please run the <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>installer</a> to choose your desired packages.{/tr}
-				<br />
-				<small><strong>{tr}Note{/tr}</strong> : {tr}if you renamed your 'install/install.php' or changed the CHMOD permissions, you'll have to revert those changes to proceed.{/tr}</small>
-			{/box}
 		{/jstab}
 	{/jstabs}
 {/form}

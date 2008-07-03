@@ -28,9 +28,11 @@ function smarty_function_formfeedback( $params, &$gBitSmarty ) {
 		if( $val ) {
 			require_once $gBitSmarty->_get_plugin_filepath( 'function', 'biticon' );
 
-			if( $key === 'warning' || $key === 'success' || $key === 'error' ) {
-				// remap warning, success and error to icon themes
-				if( $key === 'success' ) {
+			$keys = array( 'warning', 'success', 'error', 'important' );
+			if( in_array( $key, $keys )) {
+				if( $key === 'important' ) {
+					$iname = 'emblem-important';
+				} elseif( $key === 'success' ) {
 					$iname = 'dialog-ok';
 				} elseif( $key === 'warning' ) {
 					$iname = 'dialog-warning';
@@ -40,9 +42,9 @@ function smarty_function_formfeedback( $params, &$gBitSmarty ) {
 
 				$biticon = array(
 					'ipackage' => 'icons',
-					'iname' => $iname,
-					'iexplain' => $key,
-					'iforce' => 'icon',
+					'iname'    => $iname,
+					'iexplain' => ucfirst( $key ),
+					'iforce'   => 'icon',
 				);
 				if( !is_array( $val ) ) {
 					$val = array( $val );

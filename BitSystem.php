@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.179 2008/06/26 10:59:45 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.180 2008/07/06 05:15:12 wolff_borg Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1648,9 +1648,7 @@ die;
 		}
 
 		$permFiles[] = $this->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
-		if( !file_exists( STORAGE_PKG_PATH.'themes/' ) ) {
-			$permFiles[] = STORAGE_PKG_PATH.'themes/';
-		}
+		$permFiles[] = STORAGE_PKG_PATH;
 
 		foreach( $permFiles as $file ) {
 			$present = FALSE;

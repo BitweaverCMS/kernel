@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.180 2008/07/06 05:15:12 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.181 2008/07/06 05:28:32 wolff_borg Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -855,6 +855,12 @@ die;
 		}
 		$this->mPackages[$pkgNameKey]['dir'] = $package_dir_name;
 		$this->mPackagesDirNameXref[$package_dir_name] = $pkgNameKey;
+
+		// Work around for old versions of IIS that do not support $_SERVER['SCRIPT_FILENAME'] - wolff_borg
+		if ( !array_key_exists( 'SCRIPT_FILENAME', $_SERVER ) ){
+		     //remove double-backslashes and return
+		     $_SERVER['SCRIPT_FILENAME'] =  str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED'] );
+		}
 
 		// Define the package we are currently in
 		// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr

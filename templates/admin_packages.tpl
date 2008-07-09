@@ -106,8 +106,8 @@
 
 			{legend legend="bitweaver Packages available for installation"}
 
-				{box title="How to install bitweaver Packages"}
-					<p>{tr}To install more packages, please <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>run the installer and choose your desired packages</a>.{/tr}</p>
+				{box}
+					<p><strong><a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click Here to Install More Packages{/tr}</a></strong></p>
 
 					{assign var=installfile value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_file}
 					{assign var=installread value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_readable}

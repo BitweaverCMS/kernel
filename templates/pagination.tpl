@@ -55,8 +55,14 @@
 				{if $value ne ''}&amp;{$param}={$value}{/if}
 			{/if}
 		{/foreach}
-		{if isset($listInfo.sort_mode) && $listInfo.sort_mode ne ''}
-			&amp;sort_mode={$listInfo.sort_mode}
+		{if $listInfo.sort_mode}
+			{if is_array($listInfo.sort_mode)}
+				{foreach from=$listInfo.sort_mode item=sort}
+					&amp;sort_mode[]={$sort}
+				{/foreach}
+			{else}
+				&amp;sort_mode={$listInfo.sort_mode}
+			{/if}
 		{/if}
 		{if isset($listInfo.find) && $listInfo.find ne ''}
 			&amp;find={$listInfo.find}

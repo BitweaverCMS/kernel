@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.109 2008/07/12 22:00:19 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.110 2008/07/12 22:15:01 wjames5 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -13,7 +13,7 @@
  */
 
 // immediately die on request to hack our database
-if(( !empty( $_REQUEST['sort_mode'] ) && !is_array( $_REQUEST['sort_mode'] && strpos( $_REQUEST['sort_mode'], 'http' ) !== FALSE ) || ( !empty( $_REQUEST['PGV_BASE_DIRECTORY'] ) && strpos( $_REQUEST['PGV_BASE_DIRECTORY'], 'http' ) !== FALSE )) {
+if(( !empty( $_REQUEST['sort_mode'] ) && !is_array( $_REQUEST['sort_mode'] ) && strpos( $_REQUEST['sort_mode'], 'http' ) !== FALSE ) || ( !empty( $_REQUEST['PGV_BASE_DIRECTORY'] ) && strpos( $_REQUEST['PGV_BASE_DIRECTORY'], 'http' ) !== FALSE )) {
 	die;
 }
 

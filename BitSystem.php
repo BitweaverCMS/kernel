@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.181 2008/07/06 05:28:32 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.182 2008/07/13 07:41:28 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -267,23 +267,23 @@ class BitSystem extends BitBase {
 	function storeConfig( $pName, $pValue, $pPackage = NULL ) {
 		global $gMultisites;
 		//stop undefined offset error being thrown after packages are installed
-		if( !empty( $this->mConfig ) ){
+		if( !empty( $this->mConfig )) {
 			// store the pref if we have a value _AND_ it is different from the default
-			if( ( empty( $this->mConfig[$pName] ) || ( $this->mConfig[$pName] != $pValue ) ) ) {
+			if( ( empty( $this->mConfig[$pName] ) || ( $this->mConfig[$pName] != $pValue ))) {
 				// make sure the value doesn't exceede database limitations
 				$pValue = substr( $pValue, 0, 250 );
 
 				// store the preference in multisites, if used
-				if( $this->isPackageActive( 'multisites' ) && @BitBase::verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mConfig[$pName] ) ) {
+				if( $this->isPackageActive( 'multisites' ) && @BitBase::verifyId( $gMultisites->mMultisiteId ) && isset( $gMultisites->mConfig[$pName] )) {
 					$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `config_value`=? WHERE `multisite_id`=? AND `config_name`=?";
 					$result = $this->mDb->query( $query, array( empty( $pValue ) ? '' : $pValue, $gMultisites->mMultisiteId, $pName ) );
 				} else {
 					$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`=?";
 					$result = $this->mDb->query( $query, array( $pName ) );
 					// make sure only non-empty values get saved, including '0'
-					if( isset( $pValue ) && ( !empty( $pValue )  || is_numeric( $pValue ) ) ) {
+					if( isset( $pValue ) && ( !empty( $pValue ) || is_numeric( $pValue ))) {
 						$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_config`(`config_name`,`config_value`,`package`) VALUES (?,?,?)";
-						$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage ) ) );
+						$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage )));
 					}
 				}
 
@@ -857,9 +857,9 @@ die;
 		$this->mPackagesDirNameXref[$package_dir_name] = $pkgNameKey;
 
 		// Work around for old versions of IIS that do not support $_SERVER['SCRIPT_FILENAME'] - wolff_borg
-		if ( !array_key_exists( 'SCRIPT_FILENAME', $_SERVER ) ){
-		     //remove double-backslashes and return
-		     $_SERVER['SCRIPT_FILENAME'] =  str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED'] );
+		if( !array_key_exists( 'SCRIPT_FILENAME', $_SERVER )) {
+			//remove double-backslashes and return
+			$_SERVER['SCRIPT_FILENAME'] =  str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED'] );
 		}
 
 		// Define the package we are currently in
@@ -1031,13 +1031,6 @@ die;
 	 * @return none
 	 * @access public
 	 */
-	//	function registerMenuOptions( $packagedir, $menu_options ) {
-	//		foreach( $menu_options as $opt ) {
-	//			$this->registerSchemaDefault( $packagedir,
-	//			"INSERT INTO `".BIT_DB_PREFIX."tiki_menu_options` (`menu_id` , `type` , `name` , `url` , `position` , `section` , `perm` , `groupname`) VALUES ($opt[0],'$opt[1]','$opt[2]','$opt[3]',$opt[4],'$opt[5]','$opt[6]','$opt[7]')");
-	//		}
-	//	}
-
 	function registerUserPermissions( $packagedir, $userpermissions ) {
 		foreach( $userpermissions as $perm ) {
 			$this->mPermHash[$perm[0]] = $perm;
@@ -1183,7 +1176,7 @@ die;
 	 */
 	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $pAutoRegister=TRUE ) {
 		global $gPreScan;
-		if( !empty( $gPreScan ) && is_array( $gPreScan ) ) {
+		if( !empty( $gPreScan ) && is_array( $gPreScan )) {
 			// gPreScan may hold a list of packages that must be loaded first
 			foreach( $gPreScan as $pkgDir ) {
 				$this->loadPackage( $pkgDir, $pScanFile, $pAutoRegister, $pOnce );
@@ -1191,21 +1184,21 @@ die;
 		}
 
 		// load lib configs
-		if( $pkgDir = opendir( BIT_ROOT_PATH ) ) {
-			while( FALSE !== ( $dirName = readdir( $pkgDir ) ) ) {
-				if( ($dirName != '..')  && ($dirName != '.') && is_dir(BIT_ROOT_PATH . '/' . $dirName) && ($dirName != 'CVS') && (preg_match( '/^\w/', $dirName )) ) {
+		if( $pkgDir = opendir( BIT_ROOT_PATH )) {
+			while( FALSE !== ( $dirName = readdir( $pkgDir ))) {
+				if( $dirName != '..'  && $dirName != '.' && is_dir( BIT_ROOT_PATH . '/' . $dirName ) && $dirName != 'CVS' && preg_match( '/^\w/', $dirName )) {
 					$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
 					$this->loadPackage( $dirName, $pScanFile, $pAutoRegister, $pOnce );
 				}
 			}
 		}
 
-		if( !defined( 'BIT_STYLES_PATH' ) && defined( 'THEMES_PKG_PATH' ) ) {
-			define( 'BIT_STYLES_PATH', THEMES_PKG_PATH . 'styles/' );
+		if( !defined( 'BIT_STYLES_PATH' ) && defined( 'THEMES_PKG_PATH' )) {
+			define( 'BIT_STYLES_PATH', THEMES_PKG_PATH.'styles/' );
 		}
 
-		if( !defined( 'BIT_STYLES_URL' ) && defined( 'THEMES_PKG_URL' ) ) {
-			define( 'BIT_STYLES_URL', THEMES_PKG_URL . 'styles/' );
+		if( !defined( 'BIT_STYLES_URL' ) && defined( 'THEMES_PKG_URL' )) {
+			define( 'BIT_STYLES_URL', THEMES_PKG_URL.'styles/' );
 		}
 	}
 

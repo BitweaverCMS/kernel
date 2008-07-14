@@ -4,16 +4,15 @@ BitFileBrowser = {
 
 	"load": function( configName ) {
 		if( configName ) {
-			BitAjax.showSpinner();
+			BitBase.showSpinner();
 			doSimpleXMLHttpRequest( this.url, merge( {ajax_path_conf:configName} )).addCallback( this.browseCallback, "ajax_load" );
 			$( "ajax_load_title" ).innerHTML = '';
-			BitAjax.hideSpinner();
 		}
 	},
 
 	"browse": function( relPath, state, configName ) {
 		if( relPath ) {
-			BitAjax.showSpinner();
+			BitBase.showSpinner();
 			if( state == 'close' ) {
 				$( relPath ).title = "open";
 				$( relPath+"-bitInsert" ).innerHTML = '';
@@ -27,11 +26,11 @@ BitFileBrowser = {
 				}
 				doSimpleXMLHttpRequest( this.url, merge( {relpath:relPath,ajax_path_conf:configName} )).addCallback( this.browseCallback, relPath+"-bitInsert" );
 			}
-			BitAjax.hideSpinner();
 		}
 	},
 
 	"browseCallback": function( insertID, result ) {
 		$( insertID ).innerHTML = result.responseText;
+		BitBase.hideSpinner();
 	}
 }

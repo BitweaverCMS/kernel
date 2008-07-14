@@ -38,10 +38,19 @@
 {/if}
 
 <script type="text/javascript">/* <![CDATA[ */
+	BitSystem = {ldelim}
+		"urls":{ldelim}
+		{foreach from=$gBitSystem->mPackages item=item key=key}
+			"{$key}":"{$item.url}",
+		{/foreach}
+			"root":"{$smarty.const.BIT_ROOT_URL}",
+			"cookie":"{$smarty.const.BIT_ROOT_URL}",
+			"iconstyle":"{$smarty.const.THEMES_PKG_URL}icon_styles/{$smarty.const.DEFAULT_ICON_STYLE}/"
+		{rdelim}
+	{rdelim};
 	var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";
 	var bitCookieDomain = "";
 	var bitIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons/";
-	var bitIconStyleDir = "{$smarty.const.THEMES_PKG_URL}icon_styles/{$smarty.const.DEFAULT_ICON_STYLE}/";
 	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 	var bitTk = "{$gBitUser->mTicket}";
 /* ]]> */</script>

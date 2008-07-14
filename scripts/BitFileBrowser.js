@@ -5,7 +5,7 @@ BitFileBrowser = {
 	"load": function( configName ) {
 		if( configName ) {
 			BitBase.showSpinner();
-			doSimpleXMLHttpRequest( this.url, {ajax_path_conf:configName} ).addCallback( this.browseCallback, "ajax_load" );
+			doSimpleXMLHttpRequest( BitFileBrowser.url, {ajax_path_conf:configName} ).addCallback( this.browseCallback, "ajax_load" );
 			$( "ajax_load_title" ).innerHTML = '';
 		}
 	},
@@ -24,7 +24,7 @@ BitFileBrowser = {
 				if( $( "image-"+relPath )) {
 					$( "image-"+relPath ).src = BitSystem.urls.iconstyle+"small/folder-open.png";
 				}
-				doSimpleXMLHttpRequest( this.url, {relpath:relPath,ajax_path_conf:configName} ).addCallback( this.browseCallback, relPath+"-bitInsert" );
+				doSimpleXMLHttpRequest( BitFileBrowser.url, {relpath:relPath,ajax_path_conf:configName} ).addCallback( this.browseCallback, relPath+"-bitInsert" );
 			}
 		}
 	},

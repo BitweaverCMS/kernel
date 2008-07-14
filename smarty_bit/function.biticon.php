@@ -282,7 +282,7 @@ function biticon_get_cache_file( $pParams ) {
 
 	// create a hash filename based on the parameters given
 	$hashstring = '';
-	$ihash = array( 'iforce', 'ipath', 'iname', 'iexplain', 'ipackage', 'url', 'istyle' );
+	$ihash = array( 'iforce', 'ipath', 'iname', 'iexplain', 'ipackage', 'url', 'istyle', 'id' );
 	foreach( $pParams as $param => $value ) {
 		if( in_array( $param, $ihash )) {
 			$hashstring .= strtolower( $value );

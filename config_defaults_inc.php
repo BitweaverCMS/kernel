@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.35 2008/07/09 10:53:23 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.36 2008/07/14 09:37:55 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -52,6 +52,9 @@ if( !defined( 'ANONYMOUS_USER_ID' ) ) {
 }
 if( !defined( 'ANONYMOUS_GROUP_ID' ) ) {
 	define( 'ANONYMOUS_GROUP_ID', -1 );
+}
+if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
+	define( 'EVIL_EXTENSION_PATTERN', "#\.(htaccess|pl|php|php3|php4|phtml|py|cgi|asp|jsp|sh|shtml)$#i" );
 }
 
 // Uncomment the following line if you require attachment and file id's to match the content id

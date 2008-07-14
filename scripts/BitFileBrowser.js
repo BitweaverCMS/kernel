@@ -6,7 +6,6 @@ BitFileBrowser = {
 		if( configName ) {
 			BitBase.showSpinner();
 			doSimpleXMLHttpRequest( BitFileBrowser.url, {ajax_path_conf:configName} ).addCallback( this.browseCallback, "ajax_load" );
-			$( "ajax_load_title" ).innerHTML = '';
 		}
 	},
 
@@ -31,6 +30,9 @@ BitFileBrowser = {
 
 	"browseCallback": function( insertID, result ) {
 		$( insertID ).innerHTML = result.responseText;
+		if( insertID == 'ajax_load' ) {
+			$( "ajax_load_title" ).innerHTML = '';
+		}
 		BitBase.hideSpinner();
 	}
 }

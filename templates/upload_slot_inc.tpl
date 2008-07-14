@@ -4,21 +4,21 @@
 <div class="row">
 	{formlabel label="Title" for="title-$id"}
 	{forminput}
-		<input type="text" name="{$hash_key|default:'file'}[{$id}][title]" id="title-{$id}" size="50" />
+		<input type="text" name="{$hash_key|default:'file'}[{$id}][title]" id="title-{$id}" size="40" />
 	{/forminput}
 </div>
 
 <div class="row">
 	{formlabel label="File" for="upload-$id"}
 	{forminput}
-		<input type="file" name="upload-{$id}" id="upload-{$id}" size="35" />
+		<input type="file" name="upload-{$id}" id="upload-{$id}" size="30" />
 	{/forminput}
 </div>
 
 <div class="row">
 	{formlabel label="Description" for="edit-$id"}
 	{forminput}
-		<textarea rows="2" cols="50" name="{$hash_key|default:'file'}[{$id}][edit]" id="edit-{$id}"></textarea>
+		<textarea rows="2" cols="40" name="{$hash_key|default:'file'}[{$id}][edit]" id="edit-{$id}"></textarea>
 	{/forminput}
 </div>
 

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.183 2008/07/15 19:23:01 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.184 2008/07/15 20:21:26 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1511,7 +1511,7 @@ die;
 			if( function_exists( 'finfo_open' ) ) {
 				if ( is_windows() ) {
 					// SET THIS TO THE CORRECT VALUE FOR YOUR WINDOWS SETUP
-					$finfo = finfo_open( FILEINFO_MIME, "D:/Network/PHP5_2_5/extras/magic" );
+					$finfo = finfo_open( FILEINFO_MIME, PHP_MAGIC_PATH );
 				} else {
 					$finfo = finfo_open( FILEINFO_MIME );
 				}

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.182 2008/07/13 07:41:28 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.183 2008/07/15 19:23:01 lsces Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1509,7 +1509,12 @@ die;
 		$mime = NULL;
 		if( file_exists( $pFile ) ) {
 			if( function_exists( 'finfo_open' ) ) {
-				$finfo = finfo_open( FILEINFO_MIME );
+				if ( is_windows() ) {
+					// SET THIS TO THE CORRECT VALUE FOR YOUR WINDOWS SETUP
+					$finfo = finfo_open( FILEINFO_MIME, "D:/Network/PHP5_2_5/extras/magic" );
+				} else {
+					$finfo = finfo_open( FILEINFO_MIME );
+				}
 				$mime = finfo_file( $finfo, $pFile );
 				finfo_close( $finfo );
 			} else {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.110 2008/07/12 22:15:01 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.111 2008/07/15 08:43:27 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -134,9 +134,21 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// load only installed and active packages
 	$gBitSystem->scanPackages( 'bit_setup_inc.php', TRUE, 'active', TRUE, TRUE );
-	
+
 	// some plugins check for active packages, so we do this *after* package scanning
 	$gBitSmarty->assign_by_ref( "gBitSystem", $gBitSystem );
+
+	// We can't load this in liberty/bit_setup_inc.php becuase it's too soon in the process.
+	// packages haven't been scanned yet making things like <pkg>_PKG_URL and similar
+	// unavailable to the plugins that are kept in <pkg>/liberty_plugins/
+	$current_default_format_guid = $gBitSystem->getConfig( 'default_format' );
+	$plugin_status = $gBitSystem->getConfig( 'liberty_plugin_status_'.$current_default_format_guid );
+	if( empty( $current_default_format_guid ) || empty( $plugin_status ) || $plugin_status != 'y' ) {
+		$gLibertySystem->scanAllPlugins();
+	} else {
+		$gLibertySystem->loadActivePlugins();
+	}
+	$gBitSmarty->assign_by_ref( 'gLibertySystem', $gLibertySystem );
 
 	// XSS security check
 	if( !empty( $_REQUEST['tk'] ) && empty( $_SERVER['bot'] ) ) {

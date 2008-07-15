@@ -25,8 +25,10 @@
  * NOTE: when you process the imported files, make sure you use realpath() to check of files are really in your 'jail'.
  */
 require_once( '../bit_setup_inc.php' );
+// we need to set these global that we can include this file from functions
+global $gBitThemes, $gBitSystem, $gBitSmarty;
 
-if( !empty( $_REQUEST['ajax_path_conf'] )) {
+if( !empty( $_REQUEST['ajax_path_conf'] ) && $gBitSystem->isFeatureActive( $_REQUEST['ajax_path_conf'] ) ) {
 	$fileList = ajax_dir_list( $gBitSystem->getConfig( $_REQUEST['ajax_path_conf'] ), ( !empty( $_REQUEST['relpath'] ) ? $_REQUEST['relpath']."/" : NULL ));
 	$gBitSmarty->assign( 'fileList', $fileList );
 }
@@ -81,7 +83,7 @@ function ajax_dir_list( $pDir, $pRelPath = NULL ) {
 
 	if( empty( $ret )) {
 		$ret['file'][] = array(
-			'indent'  => ( count( explode( '/', $pRelFile )) * 10 ),
+			'indent'  => ( count( explode( '/', $pRelPath )) * 10 ),
 		);
 	}
 

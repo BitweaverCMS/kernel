@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.111 2008/07/15 08:43:27 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.112 2008/07/15 09:26:13 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -148,7 +148,13 @@ if( $gBitSystem->isDatabaseValid() ) {
 	} else {
 		$gLibertySystem->loadActivePlugins();
 	}
-	$gBitSmarty->assign_by_ref( 'gLibertySystem', $gLibertySystem );
+
+	// if we have active plugins with an upload function, we call them:
+	if( $funcs = $gLibertySystem->getPluginFunction( NULL, 'preload_function' )) {
+		foreach( $funcs as $func ) {
+			$func();
+		}
+	}
 
 	// XSS security check
 	if( !empty( $_REQUEST['tk'] ) && empty( $_SERVER['bot'] ) ) {

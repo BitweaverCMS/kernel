@@ -11,7 +11,6 @@ BitFileBrowser = {
 
 	"browse": function( relPath, state, configName ) {
 		if( relPath ) {
-			BitBase.showSpinner();
 			if( state == 'close' ) {
 				$( relPath ).title = "open";
 				$( relPath+"-bitInsert" ).innerHTML = '';
@@ -19,6 +18,7 @@ BitFileBrowser = {
 					$( "image-"+relPath ).src = BitSystem.urls.iconstyle+"small/folder.png";
 				}
 			} else {
+				BitBase.showSpinner();
 				$(relPath).title = "close";
 				if( $( "image-"+relPath )) {
 					$( "image-"+relPath ).src = BitSystem.urls.iconstyle+"small/folder-open.png";

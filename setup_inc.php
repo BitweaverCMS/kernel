@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.112 2008/07/15 09:26:13 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.113 2008/07/17 08:17:52 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -138,18 +138,8 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// some plugins check for active packages, so we do this *after* package scanning
 	$gBitSmarty->assign_by_ref( "gBitSystem", $gBitSystem );
 
-	// We can't load this in liberty/bit_setup_inc.php becuase it's too soon in the process.
-	// packages haven't been scanned yet making things like <pkg>_PKG_URL and similar
-	// unavailable to the plugins that are kept in <pkg>/liberty_plugins/
-	$current_default_format_guid = $gBitSystem->getConfig( 'default_format' );
-	$plugin_status = $gBitSystem->getConfig( 'liberty_plugin_status_'.$current_default_format_guid );
-	if( empty( $current_default_format_guid ) || empty( $plugin_status ) || $plugin_status != 'y' ) {
-		$gLibertySystem->scanAllPlugins();
-	} else {
-		$gLibertySystem->loadActivePlugins();
-	}
-
-	// if we have active plugins with an upload function, we call them:
+	// some liberty plugins might need to run some functions.
+	// it's necessary that we call them early on after scanPackages() has been completed.
 	if( $funcs = $gLibertySystem->getPluginFunction( NULL, 'preload_function' )) {
 		foreach( $funcs as $func ) {
 			$func();

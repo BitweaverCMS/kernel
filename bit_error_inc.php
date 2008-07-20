@@ -194,10 +194,30 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 }	// End if function_exists('bt')
 
 // var dump variable in something nicely readable in web browser
-function vd( $iVar ) {
-	print vc( $iVar );
+function vd( $pVar, $pGlobals=FALSE ) {
+	if( $pGlobals ) {
+		print '<h2>$pVar</h2>';
+	}
+	print vc( $pVar );
+	if( $pGlobals ) {
+		if( !empty( $_GET )) {
+			print '<h2>$_GET</h2>';
+			print vc( $_GET );
+		}
+		if( !empty( $_POST )) {
+			print '<h2>$_POST</h2>';
+			print vc( $_POST );
+		}
+		if( !empty( $_FILES )) {
+			print '<h2>$_FILES</h2>';
+			print vc( $_FILES );
+		}
+		if( !empty( $_COOKIE )) {
+			print '<h2>$_COOKIE</h2>';
+			print vc( $_COOKIE );
+		}
+	}
 }
-
 
 // var capture variable in something nicely readable in web browser
 function vc( $iVar, $pHtml=TRUE ) {

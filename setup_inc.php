@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.113 2008/07/17 08:17:52 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.114 2008/07/22 10:43:26 wolff_borg Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -114,7 +114,8 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	$host = $gBitSystem->getConfig( 'kernel_server_name', $_SERVER['HTTP_HOST'] );
 	if( !defined('BIT_BASE_URI' ) ) {
-		define( 'BIT_BASE_URI', 'http'.(!empty($_SERVER['HTTPS'])?'s':'').'://'.$host );
+	  // Added check for IIS $_SERVER['HTTPS'] uses 'off' value - wolff_borg
+		define( 'BIT_BASE_URI', 'http'.((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS'] != 'off')?'s':'').'://'.$host );
 	}
 
 	if( !defined( 'BIT_BASE_PATH' ) ) {

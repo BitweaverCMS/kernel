@@ -63,10 +63,11 @@ function smarty_function_jspopup( $pParams, &$gBitSmarty ) {
 
 	if( !empty( $pParams['img'] )) {
 		$img_size = NULL;
-		$url = str_replace( '//', '/', BIT_BASE_PATH.( str_replace( BIT_ROOT_URI, '', urldecode( $pParams['img'] ) ) ) );
-		if ( is_file( $url ) ){
-			$imgSizeHash = @getimagesize( $url );
-			$img_size = $imgSizeHash[3];
+		$file = str_replace( '//', '/', BIT_BASE_PATH.( str_replace( BIT_ROOT_URI, '', urldecode( $pParams['img'] ))));
+		if( is_file( $file )) {
+			if( $imgSizeHash = @getimagesize( $file )) {
+				$img_size = $imgSizeHash[3];
+			}
 		}
 		$img = '<img src="'.$pParams['img'].'" alt="'.$title.'" title="'.$title.'" '.$img_size.' />';
 	}

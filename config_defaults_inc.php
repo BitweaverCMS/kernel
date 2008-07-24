@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.37 2008/07/22 10:43:26 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.38 2008/07/24 08:33:09 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -56,10 +56,6 @@ if( !defined( 'ANONYMOUS_GROUP_ID' ) ) {
 if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
 	define( 'EVIL_EXTENSION_PATTERN', "#\.(htaccess|pl|php|php3|php4|phtml|py|cgi|asp|jsp|sh|shtml)$#i" );
 }
-
-// Uncomment the following line if you require attachment and file id's to match the content id
-// This is used to simplify content mamagment where fisheye and treasury content is used internally
-//	define( 'LINKED_ATTACHMENTS', true );
 
 // Empty PHP_SELF and incorrect SCRIPT_NAME due to php-cgiwrap - wolff_borg
 if( empty( $_SERVER['PHP_SELF'] ) ) {

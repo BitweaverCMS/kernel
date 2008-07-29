@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.185 2008/07/18 08:36:52 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.186 2008/07/29 22:43:16 laetzer Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -67,7 +67,7 @@ class BitSystem extends BitBase {
 	// The currently active page
 	var $mActivePackage;
 
-	// Modules that need to inserted during installation
+	// Modules that need to be inserted during installation
 	var $mInstallModules = array();
 
 	// Javascript to be added to the <body onload> attribute
@@ -1594,6 +1594,12 @@ die;
 
 		$docroot = BIT_ROOT_PATH;
 
+        /*	this seems to prevent bw from running on servers where sessions work perfectly, 
+        	yet /var/lib/php/ is writeable only by php, not by bw (which is better)
+        	it seems to be enough to set temp in config_inc.php for a writable dir
+        	if session *actually* don't work - other problem
+        	the installer has similar code which is also not used anymore
+        	
 		if( ini_get( 'session.save_handler' ) == 'files' ) {
 			$save_path = ini_get( 'session.save_path' );
 
@@ -1621,6 +1627,7 @@ die;
 				}
 			}
 		}
+        */
 
 		$wwwuser = '';
 		$wwwgroup = '';

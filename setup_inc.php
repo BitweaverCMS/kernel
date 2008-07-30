@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.114 2008/07/22 10:43:26 wolff_borg Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.115 2008/07/30 00:21:55 laetzer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -94,14 +94,12 @@ global $gBitUser, $gTicket, $userlib, $gBitDbType;
 if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSystem->loadConfig();
 
-	// gzip output compression
+	// output compression
 	if( ini_get( 'zlib.output_compression' ) == 1 ) {
-		$gBitSmarty->assign( 'gzip', tra( 'Enabled' ));
+		$gBitSmarty->assign( 'output_compression', 'zlib' );
 	} elseif( $gBitSystem->isFeatureActive( 'site_output_obzip' ) && !empty( $_SERVER['SCRIPT_FILENAME'] ) && !preg_match( '!/download.php$!', $_SERVER['SCRIPT_FILENAME'] )) {
 		ob_start( "ob_gzhandler" );
-		$gBitSmarty->assign( 'gzip', tra( 'Enabled' ));
-	} else {
-		$gBitSmarty->assign( 'gzip', tra( 'Disabled' ));
+		$gBitSmarty->assign( 'output_compression', 'gzip' );
 	}
 
 	// we need to allow up to 900 chars for this value in our 250 char table column

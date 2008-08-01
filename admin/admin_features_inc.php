@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.25 2007/02/07 15:09:12 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.26 2008/08/01 02:08:46 laetzer Exp $
 
 $formBit = array(
 	'pretty_urls' => array(
@@ -76,7 +76,7 @@ $formMisc = array(
 	),
 	'site_output_obzip' => array(
 		'label' => 'Use gzipped output',
-		'note' => 'Send gzip compressed data to browsers that support it. This will reduce download times for users.',
+		'note' => 'Send gzip compressed data via PHP\'s output compression to browsers that support it. This feature will reduce download times and bandwidth consumption. Use it only if your server has no such mechanism enabled already (e.g., Apache\'s output compression).',
 	),
 	// want to remove this setting. we use addHit() which is clever
 	'users_count_admin_pageviews' => array(

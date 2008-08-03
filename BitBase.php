@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.44 2008/02/03 05:43:28 jht001 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.45 2008/08/03 07:10:29 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -134,20 +134,25 @@ class BitBase {
 	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=
 
 	/**
-	 * Determines if any given variable exists and is a number
-	 **/
+	 * verifyId Determines if any given variable exists and is a number
+	 * 
+	 * @param mixed $pId this can be a string, number or array. if it's an array, all values in the array will be checked to see if they are numeric
+	 * @access public
+	 * @return TRUE if the input was numeric, FALSE if it wasn't
+	 */
 	function verifyId( $pId ) {
-		if ( empty( $pId ) ) {
-			return false;
+		if( empty( $pId )) {
+			return FALSE;
 		}
-		if ( is_array( $pId ) ) {
-			foreach ($pId as $id) {
-				if ( !is_numeric( $id ) )
-					return false;
+		if( is_array( $pId )) {
+			foreach( $pId as $id ) {
+				if( !is_numeric( $id )) {
+					return FALSE;
+				}
 			}
-			return true;
+			return TRUE;
 		}
-		return( is_numeric( $pId ) );
+		return( is_numeric( $pId ));
 	}
 
 	/**
@@ -160,7 +165,7 @@ class BitBase {
 	 **/
 	function display( $pPackage, $pTemplate ) {
 		global $gBitSmarty, $gBitLanguage, $style, $style_base;
-		if (isset($style) && isset($style_base)) {
+		if( !empty( $style ) && !empty( $style_base )) {
 			if (file_exists(BIT_THEME_PATH."styles/$style_base/$pTemplate")) {
 				// Theme has overriden template
 				$_smarty_tpl_file = 'file:'.BIT_STYLES_PATH."/$style_base/$pTemplate";

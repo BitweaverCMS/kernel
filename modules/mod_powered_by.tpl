@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.13 2008/08/05 06:13:50 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.14 2008/08/05 07:06:18 laetzer Exp $ *}
 {strip}
 {bitmodule title="$moduleTitle" name="powered_by"}
 	<ul>
@@ -24,7 +24,7 @@
 		{if $gLibertySystem->isPluginActive( 'filterhtmlpure' )}
 			<li><a href="http://htmlpurifier.org">{biticon ipackage="liberty" iname="htmlpurifier" ipath="bitweaver/" iexplain="HTMLPurifier"}</a></li>
 		{/if}
-		{if $gBrowserInfo.browser eq 'ie' and $gBitSystem->isFeatureActive( 'themes_use_ie7-js' )}
+		{if $gBrowserInfo.browser eq 'ie' and $gBitSystem->isFeatureActive( 'themes_use_msie_png_hack' )}
 			<li><a href="http://code.google.com/p/ie7-js/">{biticon ipackage="liberty" iname="ie7" ipath="bitweaver/" iexplain="IE7-js"}</a></li>
 		{/if}
 	</ul>

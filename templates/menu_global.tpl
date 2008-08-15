@@ -6,8 +6,8 @@
 		{/if}
 
 		{if $gBitUser->isRegistered()}
-			<li><a class="item" href="{$smarty.const.LIBERTY_PKG_URL}list_content.php">{biticon iname=format-justify-fill ilocation=menu iexplain="All available Content"}</a></li>
-			<li><a class="item" href="{$smarty.const.USERS_PKG_URL}index.php">{biticon ipackage="icons" iname="system-users" iexplain="List of Users" ilocation=menu}</a></li>
+			<li><a class="item" href="{$smarty.const.LIBERTY_PKG_URL}list_content.php">{biticon iname=format-justify-fill ilocation=menu iexplain="List Content"}</a></li>
+			<li><a class="item" href="{$smarty.const.USERS_PKG_URL}index.php">{biticon ipackage="icons" iname="system-users" iexplain="List Users" ilocation=menu}</a></li>
 		{/if}
 	</ul>
 {/if}

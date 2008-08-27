@@ -27,7 +27,7 @@
 				{if !$gBitUser->isRegistered()}
 					<li><a href="{$smarty.const.USERS_PKG_URL}login.php">{tr}Login{/tr}</a></li>
 				{/if}
-				{if $gBitSystem->isFeatureActive('users_allow_register')}
+				{if $gBitSystem->isFeatureActive('users_allow_register') and !$gBitUser->isRegistered()}
 					<li><a href="{$smarty.const.USERS_PKG_URL}register.php">{tr}Register{/tr}</a></li>
 				{/if}
 				<li><a href="{$gBitSystem->getDefaultPage()}">{tr}Home page{/tr}</a></li>

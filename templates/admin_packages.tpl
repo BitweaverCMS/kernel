@@ -105,17 +105,27 @@
 		{jstab title="Install new packages"}
 
 			{legend legend="bitweaver Packages available for installation"}
+			
+				<div class="row">
+					<div class="formlabel">
+						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
+					</div>
+					{forminput}
+						<label>
+							<strong>Install</strong>
+						</label>
+						<p><strong><a class="warning" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click here to install more Packages{/tr}&nbsp;&hellip;</a></strong></p>
 
-				{box}
-					<p><strong><a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click Here to Install More Packages{/tr}</a></strong></p>
-
-					{assign var=installfile value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_file}
-					{assign var=installread value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_readable}
+						{assign var=installfile value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_file}
+						{assign var=installread value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_readable}
 					
-					{if $installfile neq 1 and $installread neq 1}
-						<p>{tr}You might have to rename your <strong>install/install.done</strong> file back to <strong>install/install.php</strong>.{/tr}</p>
-					{/if}
-				{/box}
+						{if $installfile neq 1 and $installread neq 1}
+							<p>{tr}You might have to rename your <strong>install/install.done</strong> file back to <strong>install/install.php</strong>.{/tr}</p>
+						{/if}
+					{/forminput}
+				</div>
+				
+				<hr />
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if ((1 or $package.tables) && !$package.required && !$package.installed) }

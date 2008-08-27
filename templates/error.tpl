@@ -1,11 +1,18 @@
 {strip}
 <div class="display errorpage">
 	<div class="header">
-		<h1>{tr}{$errorHeading|default:'Oops!'}{/tr}</h1>
+		{if $errorHeading}
+			<h1>{tr}{$errorHeading}{/tr}</h1>
+		{/if}
 	</div>
 
 	<div class="body">
-		{box title=$fatalTitle}
+		{box}
+			{if $fatalTitle}
+				<h2>{tr}{$fatalTitle}{/tr}</h2>
+			{/if}
+
+		
 			<p class="highlight">{$msg}</p>
 
 			{if $template}
@@ -16,8 +23,16 @@
 				<p>{tr}Create the page{/tr}: <a href="{$smarty.const.WIKI_PKG_URL}edit.php?page={$page}">{$page}</a></p>
 			{/if}
 
-			<p><a href="javascript:history.back()">{tr}Go back{/tr}</a></p>
-			<p><a href="{$gBitSystem->getDefaultPage()}">{tr}Go to home page{/tr}</a></p>
+			<ul>
+				{if !$gBitUser->isRegistered()}
+					<li><a href="{$smarty.const.USERS_PKG_URL}login.php">{tr}Login{/tr}</a></li>
+				{/if}
+				{if $gBitSystem->isFeatureActive('users_allow_register')}
+					<li><a href="{$smarty.const.USERS_PKG_URL}register.php">{tr}Register{/tr}</a></li>
+				{/if}
+				<li><a href="{$gBitSystem->getDefaultPage()}">{tr}Home page{/tr}</a></li>
+				<li><a href="javascript:history.back()">{tr}Previous page{/tr}</a></li>
+			</ul>
 		{/box}
 	</div><!-- end .body -->
 </div>

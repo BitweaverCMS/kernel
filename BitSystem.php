@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.186 2008/07/29 22:43:16 laetzer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.187 2008/08/27 01:14:50 laetzer Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -682,8 +682,8 @@ class BitSystem extends BitBase {
 	function fatalPermission( $pPermission, $pMsg=NULL ) {
 		global $gBitUser, $gBitSmarty;
 		if( !$gBitUser->isRegistered() ) {
-			$gBitSmarty->assign( 'errorHeading', 'Please login...' );
-			$title = 'Please login...';
+			$gBitSmarty->assign( 'errorHeading', 'Please login&nbsp;&hellip;' );
+			$title = 'Please login&nbsp;&hellip;';
 			$pMsg .= '</p><p>You must be logged in. Please <a href="'.USERS_PKG_URL.'login.php">login</a> or <a href="'.USERS_PKG_URL.'register.php">register</a>.';
 			$gBitSmarty->assign( 'template', 'bitpackage:users/login_inc.tpl' );
 		} else {
@@ -1082,7 +1082,7 @@ die;
 	function fatalError( $pMsg, $pTemplate='error.tpl', $pErrorTitle=NULL ) {
 		global $gBitSmarty;
 		if( is_null( $pErrorTitle ) ) {
-			$pErrorTitle = $this->getConfig( 'site_error_title', 'Seems there has been a problem.' );
+			$pErrorTitle = $this->getConfig( 'site_error_title', '' );
 		}
 		$gBitSmarty->assign( 'fatalTitle', tra( $pErrorTitle ) );
 		$gBitSmarty->assign( 'msg', $pMsg );

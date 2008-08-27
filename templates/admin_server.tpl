@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.17 2008/06/30 18:42:26 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.18 2008/08/27 01:14:50 laetzer Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -44,6 +44,14 @@
 					{forminput}
 						<input size="50" type="text" name="site_notice" id="site_notice" maxlength="180" value="{$gBitSystem->getConfig('site_notice')|escape}" />
 						{formhelp note="This is a global notice used mostly for emergencies or times of importance as this message will appear on all pages."}
+					{/forminput}
+				</div>
+
+				<div class="row">
+					{formlabel label="Default Error Message" for="site_error_title"}
+					{forminput}
+						<input size="50" type="text" name="site_error_title" id="site_error_title" maxlength="180" value="{$gBitSystem->getConfig('site_error_title')|escape}" />
+						{formhelp note="The error message to be displayed when Bitweaver did not determine the actual cause for the error; e.g., 'Page cannot be displayed', 'Not Found', or 'Seems there has been a problem.'"}
 					{/forminput}
 				</div>
 

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.15 2008/06/30 18:42:26 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_server_inc.php,v 1.16 2008/08/27 01:15:58 laetzer Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -42,6 +42,7 @@ if( $processForm ) {
 		"site_slogan",
 		"site_description",
 		"site_notice",
+		"site_error_title",
 	);
 
 	foreach( $pref_byref_values as $item ) {

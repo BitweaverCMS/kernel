@@ -16,6 +16,6 @@ require_once $gBitSmarty->_get_plugin_filepath( 'modifier', 'bit_date_format' );
  */
 function smarty_modifier_bit_long_datetime( $pString ) {
 	global $gBitSystem;
-	return smarty_modifier_bit_date_format( $pString, $gBitSystem->get_long_datetime_format(), '%A %d of %B, %Y [%H:%M:%S %Z]' );
+	return smarty_modifier_bit_date_format( $pString, $gBitSystem->get_long_datetime_format(), '%A %d of %B, %Y (%H:%M:%S %Z)' );
 }
 ?>

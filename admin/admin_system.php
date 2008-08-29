@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.18 2008/06/25 22:21:12 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.19 2008/08/29 12:02:19 laetzer Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -55,12 +55,12 @@ $diskUsage = array(
 	),
 );
 
-// make sure we only display paths that exist
+/* make sure we only display paths that exist
 foreach( $diskUsage as $key => $item ) {
 	if( !is_dir( $item['path'] )) {
 		unset( $diskUsage[$key] );
 	}
-}
+}*/
 
 if( !empty( $_GET['pruned'] )) {
 	$feedback['success'] = tra( 'The cache was successfully cleared.' );
@@ -97,6 +97,7 @@ if( !empty( $_GET['compiletemplates'] ) ) {
 foreach( $diskUsage as $key => $item ) {
 	$diskUsage[$key]['du'] = du( $item['path'] );
 }
+
 $gBitSmarty->assign( 'diskUsage', $diskUsage );
 
 $languages = array();

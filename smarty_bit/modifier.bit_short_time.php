@@ -5,7 +5,6 @@
  * @subpackage plugins
  */
 
-
 /**
  * required setup
  */

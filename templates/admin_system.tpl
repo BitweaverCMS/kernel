@@ -22,15 +22,15 @@
 				<tr>
 					<th style="width:25%;">{tr}Cache Area{/tr}</th>
 					<th style="width:30%;">{tr}Relative Path{/tr}</th>
-					<th style="width:15%;">{tr}File Count{/tr}</th>
-					<th style="width:15%;">{tr}File Size{/tr}</th>
+					<th style="width:15%;">{tr}Files{/tr}</th>
+					<th style="width:15%;">{tr}Size{/tr}</th>
 					<th style="width:15%;">{tr}Actions{/tr}</th>
 				</tr>
 				{foreach from=$diskUsage key=key item=item}
 					<tr class="{cycle values='odd,even'}">
 						<td>{$item.title}</td>
 						<td>{$item.path|replace:$smarty.const.BIT_ROOT_PATH:""|replace:"//":"/"}</td>
-						<td style="text-align:right;">{tr}{$item.du.count} file(s){/tr}</td>
+						<td style="text-align:right;">{$item.du.count}</td>
 						<td style="text-align:right;">{$item.du.size|display_bytes}</td>
 						<td class="actionicon">{smartlink ititle=Empty ibiticon="icons/edit-delete" prune=$key}</td>
 					</tr>
@@ -44,15 +44,15 @@
 				<tr>
 					<th style="width:25%;">{tr}Language{/tr}</th>
 					<th style="width:30%;">{tr}Relative Path{/tr}</th>
-					<th style="width:15%;">{tr}File Count{/tr}</th>
-					<th style="width:15%;">{tr}File Size{/tr}</th>
+					<th style="width:15%;">{tr}Files{/tr}</th>
+					<th style="width:15%;">{tr}Size{/tr}</th>
 					<th style="width:15%;">{tr}Actions{/tr}</th>
 				</tr>
 				{foreach from=$templates key=key item=item}
 					<tr class="{cycle values='odd,even'}">
 						<td>{$item.title}</td>
 						<td>{$item.path|replace:$smarty.const.BIT_ROOT_PATH:""|replace:"//":"/"}{$key}</td>
-						<td style="text-align:right;">{tr}{$item.du.count} file(s){/tr}</td>
+						<td style="text-align:right;">{$item.du.count}</td>
 						<td style="text-align:right;">{$item.du.size|display_bytes}</td>
 						<td class="actionicon">{smartlink ititle="Compile Templates" ibiticon="icons/accessories-text-editor" compiletemplates=$key}</td>
 					</tr>

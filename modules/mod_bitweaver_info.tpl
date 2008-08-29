@@ -1,4 +1,4 @@
-{bitmodule title="$moduleTitle|default:'Bitweaver'" name="bit_info"}
+{bitmodule title=$moduleTitle|default:'Bitweaver' name="bit_info"}
 	<ul>
 		<li>{tr}Version{/tr}: <strong>{$smarty.const.BIT_MAJOR_VERSION}.{$smarty.const.BIT_MINOR_VERSION}.{$smarty.const.BIT_SUB_VERSION} {$smarty.const.BIT_LEVEL}</strong></li>
 		{if $gBitUser->isAdmin()}

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.187 2008/08/27 01:14:50 laetzer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.188 2008/08/29 07:05:23 laetzer Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1837,7 +1837,7 @@ die;
 		static $long_datetime_format = FALSE;
 
 		if( !$long_datetime_format ) {
-			$long_datetime_format = $this->get_long_date_format().' ['.$this->get_long_time_format().']';
+			$long_datetime_format = $this->getConfig( 'site_long_datetime_format', '%A %d of %B, %Y (%H:%M:%S %Z)' );
 		}
 
 		return $long_datetime_format;
@@ -1850,7 +1850,7 @@ die;
 		static $short_datetime_format = FALSE;
 
 		if( !$short_datetime_format ) {
-			$short_datetime_format = $this->get_short_date_format().' ['.$this->get_short_time_format().']';
+			$short_datetime_format = $this->getConfig( 'site_short_datetime_format', '%a %d of %b, %Y (%H:%M %Z)' );
 		}
 
 		return $short_datetime_format;

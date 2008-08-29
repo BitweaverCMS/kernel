@@ -29,7 +29,7 @@ function smarty_modifier_bit_date_format( $pString, $format = "%b %e, %Y", $pTra
 	}
 
 	// we translate the entire date format string for total control
-	if( $gBitSystem->getConfig( "language", "en" ) != $gBitLanguage->mLanguage ) {
+	if( $gBitSystem->getConfig( "bitlanguage", "en" ) != $gBitLanguage->mLanguage ) {
 		$format = tra( $pTraFormat );
 	}
 

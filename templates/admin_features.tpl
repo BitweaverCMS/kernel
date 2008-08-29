@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.14 2008/06/10 12:10:22 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.15 2008/08/29 07:05:23 laetzer Exp $ *}
 {strip}
 {form}
 	{jstabs}
@@ -71,12 +71,12 @@
 					{formlabel label="Relative Time Display" for="site_display_reltime"}
 					{forminput}
 						<input type="checkbox" name="site_display_reltime" id="site_display_reltime" {if $gBitSystem->isFeatureActive('site_display_reltime')}checked="checked"{/if} />
-						{formhelp note="When you enable this, the date and time display in some areas will change to the relative time since the post has been made instead of using the absolute date."}
+						{formhelp note="If enabled, the date and time will be displayed relative to the time of posting (on occasion), e.g., 'Yesterday' instead of 'January 1, 1970'. "}
 					{/forminput}
 				</div>
-
+				
 				<div class="row">
-					{formlabel label="Long date format" for="site_long_date_format"}
+					{formlabel label="Long date" for="site_long_date_format"}
 					{forminput}
 						<input type="text" name="site_long_date_format" id="site_long_date_format" value="{$gBitSystem->getConfig('site_long_date_format')|escape}" size="50"/>
 						{formhelp note="Default: %A %d of %B, %Y"}
@@ -84,7 +84,7 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="Short date format" for="site_short_date_format"}
+					{formlabel label="Short date" for="site_short_date_format"}
 					{forminput}
 						<input type="text" name="site_short_date_format" id="site_short_date_format" value="{$gBitSystem->getConfig('site_short_date_format')|escape}" size="50"/>
 						{formhelp note="Default: %d %b %Y"}
@@ -92,7 +92,7 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="Long time format" for="site_long_time_format"}
+					{formlabel label="Long time" for="site_long_time_format"}
 					{forminput}
 						<input type="text" name="site_long_time_format" id="site_long_time_format" value="{$gBitSystem->getConfig('site_long_time_format')|escape}" size="50"/>
 						{formhelp note="Default: %H:%M:%S %Z"}
@@ -100,13 +100,34 @@
 				</div>
 
 				<div class="row">
-					{formlabel label="Short time format" for="site_short_time_format"}
+					{formlabel label="Short time" for="site_short_time_format"}
 					{forminput}
 						<input type="text" name="site_short_time_format" id="site_short_time_format" value="{$gBitSystem->getConfig('site_short_time_format')|escape}" size="50"/>
 						{formhelp note="Default: %H:%M %Z"}
-						{formhelp note="<strong>Online Help</strong>: <a class=\"external\" href=\"http://www.php.net/manual/en/function.strftime.php\">Date and Time Format Help</a>"}
 					{/forminput}
 				</div>
+
+				<div class="row">
+					{formlabel label="Long date and time" for="site_long_datetime_format"}
+					{forminput}
+						<input type="text" name="site_long_datetime_format" id="site_long_datetime_format" value="{$gBitSystem->getConfig('site_long_datetime_format')|escape}" size="50"/>
+						{formhelp note="Default: %A %d of %B, %Y (%H:%M:%S %Z)"}
+					{/forminput}
+				</div>
+				<div class="row">
+					{formlabel label="Short date and time" for="site_short_datetime_format"}
+					{forminput}
+						<input type="text" name="site_short_datetime_format" id="site_short_datetime_format" value="{$gBitSystem->getConfig('site_short_datetime_format')|escape}" size="50"/>
+						{formhelp note="Default: %a %d of %b, %Y (%H:%M %Z)"}
+					{/forminput}
+				</div>
+				<div class="row">
+					{formlabel label="Online Help:"}
+					{forminput}
+						{formhelp note="<a class=\"external\" href=\"http://www.php.net/manual/`$bitlanguage`/function.strftime.php\">Conversion specifiers for date and time formats</a> (php.net)"}
+					{/forminput}
+				</div>
+
 			{/legend}
 
 			{legend legend="Extended Header"}

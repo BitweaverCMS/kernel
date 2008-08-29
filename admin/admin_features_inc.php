@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.27 2008/08/27 01:16:44 laetzer Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.28 2008/08/29 07:05:23 laetzer Exp $
 
 $formBit = array(
 	'pretty_urls' => array(
@@ -117,6 +117,8 @@ if( !empty( $_REQUEST['change_prefs'] ) ) {
 		"site_long_time_format",
 		"site_short_date_format",
 		"site_short_time_format",
+		"site_long_datetime_format",
+		"site_short_datetime_format",
 		"bit_index"
 	);
 

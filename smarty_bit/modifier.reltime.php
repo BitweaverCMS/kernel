@@ -58,8 +58,22 @@ function smarty_modifier_reltime( $pTimeStamp, $pMode = 'long', $pFallback = 'bi
 			if( $pMode == 'short' ) {
 				return floor( $delta / $hour )."h {$delta_hours}m ago";
 			}
-			return floor( $delta / $hour )." hour(s) {$delta_hours} minute(s) ago";
+			if( floor( $delta / $hour ) > 1 ){
+				if( $delta_hours > 1 ){
+					return floor( $delta / $hour )." hours {$delta_hours} minutes ago";
+				} else {
+					return floor( $delta / $hour )." hours {$delta_hours} minute ago";
+				}
+			} else {
+				if( $delta_hours > 1 ){
+					return floor( $delta / $hour )." hour {$delta_hours} minutes ago";
+				} else {
+					return floor( $delta / $hour )." hour {$delta_hours} minute ago";
+				}
+			}
+
 		} else {
+
 			return round( $delta / $hour )." ".tra( "hour(s) ago" );
 		}
 	} elseif( $delta < $week ) {

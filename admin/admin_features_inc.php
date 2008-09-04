@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.28 2008/08/29 07:05:23 laetzer Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.29 2008/09/04 20:02:42 laetzer Exp $
 
 $formBit = array(
 	'pretty_urls' => array(
@@ -16,21 +16,21 @@ $formBit = array(
 $gBitSmarty->assign( 'formBit',$formBit );
 
 $formHelp = array(
+	'site_edit_help' => array(
+		'label' => 'Input Help',
+		'note' => 'Displays <strong>extensive</strong> (about 50kb) help regarding the syntax of available format plugins (e.g., Tikiwiki and HTML), and of available Data Plugins (e.g., attachment, include, table of contents). Explanations and examples are shown near any suitable entry form.',
+	),
 	'site_form_help' => array(
 		'label' => 'Help Notes',
 		'note' => 'Show inline help notes in forms such as the one you are reading now.',
 	),
+	'site_help_popup' => array(
+		'label' => 'Popup for Help Notes',
+		'note' => 'This will place a clickable icon after form elements for the extended help information.',
+	),
 	'site_online_help' => array(
 		'label' => 'Online Help Links',
 		'note' => 'Display links to relevant online help pages found on www.bitweaver.org.',
-	),
-	'site_edit_help' => array(
-		'label' => 'Show Help',
-		'note' => 'Displays <strong>extensive</strong> (about 50kb) help regarding the syntax of available format plugins (e.g., Tikiwiki and HTML), and of available Data Plugins (e.g., attachment, include, table of contents). Explanations and examples are shown near any suitable entry form.',
-	),
-	'site_help_popup' => array(
-		'label' => 'Use Popup for Help Items',
-		'note' => 'This will place a clickable icon after form elements for the extended help information.',
 	),
 );
 $gBitSmarty->assign( 'formHelp',$formHelp );

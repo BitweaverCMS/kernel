@@ -59,11 +59,6 @@
 
 <script type="text/javascript" src="{$gBitThemes->mStyles.joined_javascript}"></script>
 
-{* We could require a context var to turn this on. *}
-<script type="text/javascript">/* <![CDATA[ */
-	addLoadHook(setupShowHide);
-/* ]]> */</script>
-
 {if $gBitSystem->isFeatureActive( 'site_use_jscalendar' )}
 	<link rel="stylesheet" title="{$style}" type="text/css" href="{$smarty.const.JSCALENDAR_PKG_URL}calendar-bitweaver.css" media="all" />
 	<script type="text/javascript" src="{$smarty.const.JSCALENDAR_PKG_URL}calendar.js"></script>

@@ -20,7 +20,7 @@ function smarty_block_jstab( $pParams, $pContent, &$gBitSmarty ) {
 	$pClass = isset( $pParams['class'] ) ? ' '.$pParams['class'] : '';
 
 	$tClass	= isset( $pParams['class'] ) ? ' '.$pParams['class'] : '';
-	$tClick	= isset( $pParams['onclick'] ) ? ' onclick="'.$pParams['onclick'] : '';
+	$tClick	= isset( $pParams['onclick'] ) ? ' onclick="'.$pParams['onclick'].'"' : '';
 	$tTitle	= tra( isset( $pParams['title'] ) ? $pParams['title'] : 'No Title' );
 
 	$ret  = '<div class="tabpage' . $pClass . '">';

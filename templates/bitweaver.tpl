@@ -17,6 +17,7 @@
 
 		<div id="header">
 			{if $gBitSystem->isFeatureActive( 'site_top_column' ) && $t_modules && !$gHideModules}
+				<a href="#content" class="skip" style="position:absolute;left:-999em;top:-999em;height:1px;width:1px">{tr}Skip to content{/tr}</a>
 				{section name=homeix loop=$t_modules}
 					{$t_modules[homeix].data}
 				{/section}

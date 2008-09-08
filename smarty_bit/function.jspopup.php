@@ -78,7 +78,9 @@ function smarty_function_jspopup( $pParams, &$gBitSmarty ) {
 		$js = 'popUpWin(this.href,\'standard\','.( !empty( $pParams['width'] ) ? $pParams['width'] : 600 ).','.( !empty( $pParams['height'] ) ? $pParams['height'] : 400 ).');';
 	}
 
-	$guts .= ' onkeypress="'.$js.'" onclick="'.$js.'return false;"';
+	// deprecated slated for removal - onkeypress causes focus problems with browsers - if this is an ada issue get in touch -wjames5.
+	// $guts .= ' onkeypress="'.$js.'" onclick="'.$js.'return false;"';
+	$guts .= ' onclick="'.$js.'return false;"';
 
 	if( !empty( $pParams['gutsonly'] ) ) {
 		return $guts;

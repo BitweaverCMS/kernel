@@ -18,7 +18,7 @@ if( !isset( $moduleParams['module_params']['no_dblogo'] )) {
 	$gBitSmarty->assign( 'gBitDbType', $gBitDbType );
 }
 
-if ( isset($moduleParams['module_params']['large']) || $gBitSystem->getConfig( 'site_icon_size', 'small' ) == 'large' ) {
+if( isset( $moduleParams['module_params']['large'] ) || $gBitSystem->getConfig( 'site_icon_size', 'small' ) == 'large' ) {
 	$gBitSmarty->assign( 'size', '/large' );
 }
 ?>

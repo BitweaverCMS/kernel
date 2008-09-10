@@ -111,9 +111,6 @@
 						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
 					</div>
 					{forminput}
-						<label>
-							<strong>Install</strong>
-						</label>
 						<p><strong><a class="warning" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click here to install more Packages{/tr}&nbsp;&hellip;</a></strong></p>
 
 						{assign var=installfile value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_file}

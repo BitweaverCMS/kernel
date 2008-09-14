@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.26 2008/06/30 19:28:28 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.27 2008/09/14 10:34:26 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -135,58 +135,55 @@ function is_windows() {
  * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
  */
 function mkdir_p( $pTarget, $pPerms = 0755 ) {
-	global $gDebug;
-	//$gDebug = TRUE
+	// clean up input
+	$pTarget = str_replace( "//", "/", trim( $pTarget ));
 
-	$pTarget = trim( $pTarget );
-	if( empty( $pTarget ) || $pTarget == ';' ) {
-		return 0;
-	}
-
-	if( $pTarget == '/' ) {
-		return 1;
+	if( empty( $pTarget ) || $pTarget == ';' || $pTarget == "/" ) {
+		return FALSE;
 	}
 
 	if( ini_get( 'safe_mode' )) {
-		$pTarget = preg_replace('/^\/tmp/', $_SERVER['DOCUMENT_ROOT'] . '/temp', $pTarget);
+		$pTarget = preg_replace( '/^\/tmp/', $_SERVER['DOCUMENT_ROOT'].'/temp', $pTarget );
 	}
 
 	if( file_exists( $pTarget ) || is_dir( $pTarget )) {
-		if( $gDebug ) echo "mkdir_p() - file already exists $pTarget<br />";
-		return 0;
+		bitdebug( "mkdir_p() - file already exists $pTarget" );
+		return FALSE;
 	}
 
 	if( !is_windows() ) {
 		if( substr( $pTarget, 0, 1 ) != '/' ) {
-			if( $gDebug ) echo "mkdir_p() - prepending with a /<br />";
+			bitdebug( "mkdir_p() - prepending with a /" );
 			$pTarget = "/$pTarget";
 		}
+
 		if( ereg( '\.\.', $pTarget )) {
-			if( $gDebug ) echo "mkdir_p() - invalid Unix path $pTarget<br />";
-			return 0;
+			bitdebug( "mkdir_p() - We don't allow '..' in path for security reasons: $pTarget" );
+			return FALSE;
 		}
 	}
 
 	$oldu = umask( 0 );
+	// make use of PHP5 recursive mkdir feature
 	if( version_compare( phpversion(), "5.0.0", ">=" )) {
 		@mkdir( $pTarget, $pPerms, TRUE );
 		umask( $oldu );
-		return 1;
+		return TRUE;
 	} else {
 		if( @mkdir( $pTarget, $pPerms )) {
-			if( $gDebug ) echo "mkdir_p() - creating $pTarget<br />";
+			bitdebug( "mkdir_p() - creating $pTarget" );
 			umask( $oldu );
-			return 1;
+			return TRUE;
 		} else {
 			umask( $oldu );
 			$parent = substr( $pTarget, 0, ( strrpos( $pTarget, '/' )));
-			if( $gDebug ) echo "mkdir_p() - trying to create parent $parent<br />";
+			bitdebug( "mkdir_p() - trying to create parent $parent" );
 
 			// recursively create parents
 			if( mkdir_p( $parent, $pPerms )) {
 				// make the actual target!
 				if( @mkdir( $pTarget, $pPerms )) {
-					return 1;
+					return TRUE;
 				} elseif( !is_dir( $pTarget ) ) {
 					error_log( "mkdir() - could not create $pTarget" );
 				}
@@ -784,6 +781,20 @@ function install_error( $pMsg = null ) {
 
 	header( "Location: ".httpPrefix().BIT_ROOT_URL."install/install.php?step=".$step );
 	die;
+}
+
+/**
+ * bitdebug display an debug output when $gDebug is set to TRUE
+ * 
+ * @param array $pMessage Message to display
+ * @access public
+ * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+ */
+function bitdebug( $pMessage ) {
+	global $gDebug;
+	if( !empty( $gDebug )) {
+		echo "<pre>$pMessage</pre>";
+	}
 }
 
 /**

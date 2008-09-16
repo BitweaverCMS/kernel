@@ -10,5 +10,5 @@
 
 	<dt class="param"><kbd>large</kbd></dt>
 	<dd><em>{tr}Boolean{/tr}</em></dd>
-	<dd><abbr class="default" title="default">large</abbr>, small</dd>
+	<dd><abbr class="default" title="{tr}default{/tr}">large</abbr>, small</dd>
 </dl>

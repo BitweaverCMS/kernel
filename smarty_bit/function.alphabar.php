@@ -49,8 +49,12 @@ function smarty_function_alphabar( $params, &$gBitSmarty ) {
 	$ret = '<div class="pagination alphabar">';
 	$alpha = array( 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0-9','+' );
 	foreach( $alpha as $char ) {
-		if( empty( $iskip ) || !in_array( $char, $iskip ) ) {
-			$ret .= '<a href="'.$url.'?char='.urlencode( strtolower( $char ) ).$url_params.'">'.$char.'</a> ';
+		if( empty( $iskip ) || !in_array( $char, $iskip )) {
+			$wrap = array( 'open' => '', 'close' => '' );
+			if( !empty( $_REQUEST['char'] ) && $_REQUEST['char'] == strtolower( $char )) {
+				$wrap = array( 'open' => '<strong>', 'close' => '</strong>' );
+			}
+			$ret .= $wrap['open'].'<a href="'.$url.'?char='.urlencode( strtolower( $char )).$url_params.'">'.$char.'</a>'.$wrap['close'].' ';
 		}
 	}
 

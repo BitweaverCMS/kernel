@@ -53,8 +53,9 @@ function smarty_function_alphabar( $params, &$gBitSmarty ) {
 			$ret .= '<a href="'.$url.'?char='.urlencode( strtolower( $char ) ).$url_params.'">'.$char.'</a> ';
 		}
 	}
+
 	if( !empty( $params['iall'] ) ) {
-			$ret .= '<a href="'.$url.'?char='.urlencode( strtolower( 'All' ) ).$url_params.'">'.tra( 'All' ).'</a> ';
+		$ret .= '<a href="'.$url.'?char='.urlencode( strtolower( 'All' ) ).$url_params.'">'.tra( 'All' ).'</a> ';
 	}
 	$ret .= '</div>';
 

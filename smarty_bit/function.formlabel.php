@@ -38,7 +38,11 @@ function smarty_function_formlabel( $params,&$gBitSmarty ) {
 	if( $atts != '' ) {
 		$html .= '<label'.$atts.'>';
 	}
-	$html .= tra( $name );
+	if( empty( $params['no_translate'] ) ) {
+		$html .= tra( $name );
+	} else {
+		$html .= $name;
+	}
 	if( $atts != '' ) {
 		$html .= '</label>';
 	}

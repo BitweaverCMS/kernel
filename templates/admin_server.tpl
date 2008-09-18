@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.18 2008/08/27 01:14:50 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.19 2008/09/18 11:34:10 laetzer Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -68,7 +68,7 @@
 					{formlabel label="Server name" for="kernel_server_name"}
 					{forminput}
 						<input size="50" type="text" name="kernel_server_name" id="kernel_server_name" value="{$gBitSystem->getConfig('kernel_server_name')|escape}" />
-						{formhelp note="This value should be something like <strong>yourhome.com</strong> and is used for absolute URIs.<br />This setting does <strong>not</strong> require a trailing slash."}
+						{formhelp note="This value should follow the pattern: <strong>yourhome.com</strong>. It is used for absolute URIs and does <strong>not</strong> require a trailing slash and a scheme name (http[s])."}
 					{/forminput}
 				</div>
 

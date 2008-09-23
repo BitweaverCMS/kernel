@@ -2,10 +2,10 @@
 /**
  * Smarty {set} compiler function plugin
  *
- * File:     compiler.set.php<br>
- * Type:     compiler function<br>
- * Name:     set<br>
- * Purpose:  Set a value to a variable (also arrays).<br>
+ * File:     compiler.set.php
+ * Type:     compiler function
+ * Name:     set
+ * Purpose:  Set a value to a variable (also arrays).
  * The optional parameter "if" is used to set the value if the test is true. The test can be: 'empty', '!empty', 'is_null', '!is_null', 'isset', '!isset', 'is_void'.
  * The new command 'is_void' test if the variable is empty and != 0, very useful for test $_REQUEST parameters.
  *

@@ -18,9 +18,12 @@ function smarty_function_minifind($params, &$gBitSmarty) {
 	if(isset($params['legend'])) {
 		$legend = $params['legend'];
 		unset($params['legend']);
-	}
-	else {
+	} else {
 		$legend = 'find in entries';
+	}
+
+	if( !empty( $params['prompt'] ) ) {
+		$gBitSmarty->assign( 'prompt', tra( $params['prompt'] ) );
 	}
 	
 	$gBitSmarty->assign( 'legend',$legend );

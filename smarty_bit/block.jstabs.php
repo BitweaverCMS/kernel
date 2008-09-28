@@ -18,12 +18,12 @@ function smarty_block_jstabs( $pParams, $pContent, &$gBitSmarty ) {
 	global $gBitSystem;
 	extract( $pParams );
 
-	$alwaysTab = (isset($alwaysTab)) ? (boolean) $alwaysTab : false;
-	
+	$alwaysTab = ( isset( $alwaysTab )) ? ( boolean )$alwaysTab : FALSE;
+
 	// Work out if we want to insert tabs at all on this page
 	// This is necessary since we insert tabs dynamically using services
 	preg_match_all( '#<div class="tabpage.*?">#', $pContent, $tabs );
-	if( !empty( $tabs[0] ) && count( $tabs[0] ) <= 1 && $alwaysTab === false) {
+	if( !empty( $tabs[0] ) && count( $tabs[0] ) <= 1 && $alwaysTab === FALSE ) {
 		$pContent = preg_replace( "#<h4[^>]*tab.*?</h4>#", '', $pContent );
 		return $pContent;
 	}

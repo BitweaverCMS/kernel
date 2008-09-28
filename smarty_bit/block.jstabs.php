@@ -40,7 +40,7 @@ function smarty_block_jstabs( $pParams, $pContent, &$gBitSmarty ) {
 			$ret = '<div class="tabpane" id="jstabs">';
 			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ tabPane = new WebFXTabPane( $( 'jstabs' ), true ); /*]]>*/</script>";
 			$ret .= $pContent;
-			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();".( !empty( $tab ) ? "var tabPane; tabPane.setSelectedIndex( $tab );" : "" )."/*]]>*/</script>";
+			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();".( isset( $tab ) ? "var tabPane; tabPane.setSelectedIndex( $tab );" : "" )."/*]]>*/</script>";
 			$ret .= '</div>';
 		} else {
 			$ret = '<div class="tabpane">';

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.16 2008/06/04 14:54:16 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.17 2008/09/29 19:51:33 squareing Exp $
  */
 
 /**
@@ -11,9 +11,9 @@
  */
 class BitCache {
 	/**
-	* Used to store the directory used to store the cache files.
-	* @private
-	*/
+	 * Used to store the directory used to store the cache files.
+	 * @private
+	 */
 	var $mFolder;
 	/**
 	 * Will check the temp cache folder for existence and create it if necessary.
@@ -89,11 +89,11 @@ class BitCache {
 	}
 
 	/**
-	* Used to retrieve an object if cached.
-	*
-	* @param pKey the unique identifier used to retrieve the cached item
-	* @return object if cached object exists
-	*/
+	 * Used to retrieve an object if cached.
+	 *
+	 * @param pKey the unique identifier used to retrieve the cached item
+	 * @return object if cached object exists
+	 */
 	function readCacheFile( $pFile ) {
 		if( $this->isCached( $pFile )) {
 			$cacheFile = $this->getCacheFile( $pFile );
@@ -107,10 +107,10 @@ class BitCache {
 	}
 
 	/**
-	* Used to remove a cached object.
-	*
-	* @param pKey the unique identifier used to retrieve the cached item
-	*/
+	 * Used to remove a cached object.
+	 *
+	 * @param pKey the unique identifier used to retrieve the cached item
+	 */
 	function expungeCacheFile( $pFile ) {
 		if( $this->isCached( $pFile )) {
 			unlink( $this->getCacheFile( $pFile ));
@@ -124,9 +124,13 @@ class BitCache {
 	 * @return TRUE on success, FALSE on failure
 	 */
 	function expungeCache() {
-		$ret = unlink_r( $this->mFolder );
-		if( !is_dir( $this->mFolder )) {
-			mkdir_p( $this->mFolder );
+		// the only places we can write to in bitweaver are temp and storage
+		$subdir = str_replace( STORAGE_PKG_PATH, "", $this->mFolder );
+		if(( strpos( $this->mFolder, STORAGE_PKG_PATH ) === 0 && $subdir != "users" && $subdir != "common" ) || strpos( $this->mFolder, TEMP_PKG_PATH ) === 0 ) {
+			$ret = unlink_r( $this->mFolder );
+			if( !is_dir( $this->mFolder )) {
+				mkdir_p( $this->mFolder );
+			}
 		}
 		return $ret;
 	}

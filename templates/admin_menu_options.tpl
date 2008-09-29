@@ -2,12 +2,12 @@
 
 <table>
 	<tr>
-		<td style="vertical-align:top;">
+		<td class="aligntop">
 			{box title="`$admmenu_info.name`"}
 				{include file="bitpackage:users/user_menu.tpl" moptions=$allmoptions menu_info=$admmenu_info}
 			{/box}
 		</td>
-		<td style="vertical-align:top;">
+		<td class="aligntop">
 			{form legend="Edit menu options"}
 				<input type="hidden" name="page" value="{$page}" />
 				<input type="hidden" name="option_id" value="{$option_id|escape}" />
@@ -110,7 +110,7 @@
 			<td>{$admmoptions[user].section}</td>
 			<td>{$admmoptions[user].perm}</td>
 			<td>{$admmoptions[user].groupname}</td>
-			<td align="right">
+			<td class="alignright">
 				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$admmoptions[user].option_id}" onclick="return confirm('{tr}Are you sure you want to delete this menu item?{/tr}')" title="{tr}Delete this menu{/tr}">{biticon ipackage="icons" iname="edit-delete" iexplain="remove"}</a>
 				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;option_id={$admmoptions[user].option_id}" title="Edit this menu">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
 			</td>

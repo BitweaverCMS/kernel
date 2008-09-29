@@ -12,7 +12,7 @@
 				{/foreach}
 				<div class="row">
 					<h1>{$msgFields.label}</h1>
-					<p class="highlight" style="text-align:center;">{$msgFields.confirm_item}</p>
+					<p class="highlight aligncenter">{$msgFields.confirm_item}</p>
 					{if $inputFields}
 						<ul>
 							{section name=ix loop=$inputFields}

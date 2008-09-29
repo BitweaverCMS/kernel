@@ -79,7 +79,7 @@
 *}
 		{if $gBitSystem->isFeatureActive( 'site_direct_pagination' )}
 			<div class="pager">
-				<span class="left" style="float:left; width:48%; text-align:right;">
+				<span class="left floatleft width48p alignright">
 					{foreach from=$listInfo.block.prev key=list_page item=prev}
 						&nbsp;<a href="{$pageUrl}&amp;list_page={$list_page}">{$prev}</a>&nbsp;
 					{foreachelse}
@@ -92,7 +92,7 @@
 					{tr}Page <strong>{$listInfo.current_page}</strong> of <strong>{$listInfo.total_pages}</strong>{/tr}
 				</span>
 
-				<span class="right" style="float:right; width:48%; text-align:left;">
+				<span class="right floatright width48p alignleft">
 					{if $listInfo.current_page < $listInfo.total_pages}
 						&nbsp;<a href="{$pageUrl}&amp;list_page={$listInfo.current_page+1}">&raquo;</a>&nbsp;
 					{/if}

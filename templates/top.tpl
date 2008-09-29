@@ -1,5 +1,5 @@
 <div id="bittop">
-	<div style="float:right;text-align:right;">
+	<div class="floatright alignright">
 		{if $gBitUser->isRegistered()}
 			{tr}Welcome{/tr}, <strong>{displayname hash=$gBitUser->mInfo}</strong>
 			<a href="{$smarty.const.USERS_PKG_URL}logout.php">{tr}logout{/tr}</a>

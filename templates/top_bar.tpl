@@ -16,7 +16,7 @@
 						{foreach key=key item=menu from=$adminMenu}
 							{if $key eq 'kernel' or $key eq 'liberty' or $key eq 'languages' or $key eq 'users' or $key eq 'themes'}
 								<li>
-									<a class="head" style="cursor:default" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">
+									<a class="head cursordefault" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">
 										<strong>{tr}{$key|capitalize}{/tr}</strong>
 									</a>
 									{include file=`$menu.tpl`}
@@ -26,7 +26,7 @@
 						{foreach key=key item=menu from=$adminMenu}
 							{if $key neq 'kernel' and $key neq 'liberty' and $key neq 'languages' and $key neq 'users' and $key neq 'themes'}
 								<li>
-									<a class="head" style="cursor:default" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">
+									<a class="head cursordefault" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">
 										{tr}{$key|capitalize}{/tr}
 									</a>
 									{include file=`$menu.tpl`}

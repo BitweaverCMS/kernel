@@ -78,7 +78,7 @@
 				<tr>
 					{assign var="i" value="1"}
 					{foreach key=key item=template from=$adminTemplates}
-						<td style="width:25%;vertical-align:top;">
+						<td class="width25p aligntop">
 							{box class="`$key`menu menu box" ipackage=$key iname="pkg_`$key`" iexplain="$key" iclass="menuicon" title=$key|capitalize}
 								{include file="bitpackage:`$key`/menu_`$key`_admin.tpl"}
 							{/box}

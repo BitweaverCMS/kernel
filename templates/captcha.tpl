@@ -12,7 +12,7 @@ function reloadImage() {
 {/literal}
 {if $params.variant == "condensed"}
 	<span class="captcha">
-		<img id='captcha_img' onclick="this.blur();reloadImage();return false;" style="vertical-align:middle;" id="captcha_img" src="{$params.source}" alt="{tr}Random Image{/tr}"/>
+		<img id='captcha_img' onclick="this.blur();reloadImage();return false;" class="alignmiddle" id="captcha_img" src="{$params.source}" alt="{tr}Random Image{/tr}"/>
 		<br />
 		<input type="text" name="captcha" id="captcha" size="{$params.size+3}"/>
 		<br />

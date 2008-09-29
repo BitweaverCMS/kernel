@@ -60,7 +60,7 @@
 {if $gBitThemes->mStyles.joined_javascript}
 	<script type="text/javascript" src="{$gBitThemes->mStyles.joined_javascript}"></script>
 {/if}
-{foreach from=$gBitThemes->mRawFiles.javascript item=jsFile}
+{foreach from=$gBitThemes->mRawFiles.js item=jsFile}
 	<script type="text/javascript" src="{$jsFile}"></script>
 {/foreach}
 

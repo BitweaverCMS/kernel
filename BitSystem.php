@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.189 2008/10/03 09:22:58 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.190 2008/10/03 10:11:01 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1957,17 +1957,17 @@ die;
 	 */
 	function storeVersion( $pPackage = NULL, $pVersion ) {
 		global $gBitSystem;
-		if( empty( $pPackage )) {
-			$config = 'bitweaver_version';
-		} else {
-			$config = "package_".$pPackage."_version";
+		$ret = FALSE;
+		if( !empty( $pVersion )) {
+			if( empty( $pPackage )) {
+				$gBitSystem->storeConfig( "bitweaver_version", $pVersion, 'kernel' );
+				$ret = TRUE;
+			} elseif( !empty( $gBitSystem->mPackages[$pPackage] )) {
+				$gBitSystem->storeConfig( "package_".$pPackage."_version", $pVersion, $pPackage );
+				$ret = TRUE;
+			}
 		}
-
-		if( !empty( $gBitSystem->mPackages[$pPackage] ) && !empty( $pVersion )) {
-			$gBitSystem->storeConfig( $config, $pVersion, $pPackage );
-			return TRUE;
-		}
-		return FALSE;
+		return $ret;
 	}
 
 	/**
@@ -1986,7 +1986,7 @@ die;
 			$config = "package_".$pPackage."_version";
 		}
 
-		return $gBitSystem->getConfig( "package_".$pPackage."_version", $pDefault );
+		return $gBitSystem->getConfig( $config, $pDefault );
 	}
 
 	/**

@@ -32,9 +32,10 @@
 								<img src="{$smarty.const.INSTALL_PKG_URL}style/images/bitweaver_logo-trans.png" width="121" height="121" alt="bitweaver logo" title="Click here to visit the upgrade instructions" />
 							</a>
 						</div>
-						<p class="danger">You have just updated your bitweaver code to <strong>version {$smarty.const.BIT_MAJOR_VERSION}.{$smarty.const.BIT_MINOR_VERSION}.{$smarty.const.BIT_SUB_VERSION} {$smarty.const.BIT_LEVEL}</strong> and now some fixes to the database must be performed before you can continue.</p>
+						<p class="danger">{tr}You have just updated your bitweaver code to <strong>version {$smarty.const.BIT_MAJOR_VERSION}.{$smarty.const.BIT_MINOR_VERSION}.{$smarty.const.BIT_SUB_VERSION} {$smarty.const.BIT_LEVEL}</strong>. For security and/or technical reasons access to your site is locked down until you make some necessary changes to your database and site configuration. The installer will help you make the necessary updates and ensure your site is secure before unlocking access.{/tr}
+							<br /><br />
+							{tr}Please visit the <strong><a href="{$smarty.const.INSTALL_PKG_URL}install.php?step=4">Installer</a></strong> to finish updating your site and unlock it.{/tr}</p>
 						<ul class="help">
-							<li>Please visit the <strong><a href="{$smarty.const.INSTALL_PKG_URL}install.php?step=4">Installer</a></strong> to continue.</li>
 							<li>If you wish to find out more about this upgrade, please visit our <a class="external" href="http://www.bitweaver.org/wiki/upgrade">Upgrade page</a></li>
 						</ul>
 

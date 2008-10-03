@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.188 2008/08/29 07:05:23 laetzer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.189 2008/10/03 09:22:58 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1863,8 +1863,12 @@ die;
 		return $this->mServerTimestamp->strftime( $this->get_long_datetime_format(), $pTimestamp, $pUser );
 	}
 
-	// Check for new version
-	// returns an array with information on bitweaver version
+	/**
+	 * checkBitVersion Check for new version of bitweaver
+	 * 
+	 * @access public
+	 * @return returns an array with information on bitweaver version
+	 */
 	function checkBitVersion() {
 		$local= BIT_MAJOR_VERSION.'.'.BIT_MINOR_VERSION.'.'.BIT_SUB_VERSION;
 		$ret['local'] = $local;
@@ -1943,17 +1947,45 @@ die;
 		return $html;
 	}
 
-	function storeVersion( $pPackage, $pVersion ) {
+	/**
+	 * storeVersion will store the version number of a given package
+	 * 
+	 * @param array $pPackage Name of package - if not given, bitweaver_version will be stored
+	 * @param array $pVersion Version number
+	 * @access public
+	 * @return TRUE on success, FALSE on failure
+	 */
+	function storeVersion( $pPackage = NULL, $pVersion ) {
 		global $gBitSystem;
-		if( !empty( $gBitSystem->mPackages[$pPackage] )) {
-			$gBitSystem->storeConfig( "package_".$pPackage."_version", $pVersion, $pPackage );
+		if( empty( $pPackage )) {
+			$config = 'bitweaver_version';
+		} else {
+			$config = "package_".$pPackage."_version";
+		}
+
+		if( !empty( $gBitSystem->mPackages[$pPackage] ) && !empty( $pVersion )) {
+			$gBitSystem->storeConfig( $config, $pVersion, $pPackage );
 			return TRUE;
 		}
 		return FALSE;
 	}
 
-	function getVersion( $pPackage, $pDefault = NULL ) {
+	/**
+	 * getVersion will fetch the version number of a given package
+	 * 
+	 * @param array $pPackage Name of package - if not given, bitweaver_version will be stored
+	 * @param array $pVersion Version number
+	 * @access public
+	 * @return version number on success
+	 */
+	function getVersion( $pPackage = NULL, $pDefault = NULL ) {
 		global $gBitSystem;
+		if( empty( $pPackage )) {
+			$config = 'bitweaver_version';
+		} else {
+			$config = "package_".$pPackage."_version";
+		}
+
 		return $gBitSystem->getConfig( "package_".$pPackage."_version", $pDefault );
 	}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.27 2008/09/14 10:34:26 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.28 2008/10/03 07:06:37 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -454,15 +454,15 @@ function validate_email_syntax( $pEmail ) {
  * @return a string with the results of the file
  **/
 function get_include_contents($pFile) {
-  if (is_file($pFile)) {
-    ob_start();
-	global $gContent,$gBitSystem, $gBitSmarty, $gLibertySystem, $gBitUser;
-    include $pFile;
-    $contents = ob_get_contents();
-    ob_end_clean();
-    return $contents;
-  }
-  return false;
+	if( is_file( $pFile )) {
+		ob_start();
+		global $gContent, $gBitSystem, $gBitSmarty, $gLibertySystem, $gBitUser;
+		include $pFile;
+		$contents = ob_get_contents();
+		ob_end_clean();
+		return $contents;
+	}
+	return FALSE;
 }
 
 /**

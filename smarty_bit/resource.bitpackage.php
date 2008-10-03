@@ -80,7 +80,7 @@ function smarty_get_bitweaver_resources( $pTplName ) {
 		$subdir = ( preg_match( '/\b(help_)?mod_/', $template ) ? 'modules' : 'templates' )."/".$subdir;
 
 		// look for default package template
-		$ret['package_template'] = constant( strtoupper( $package ).'_PKG_PATH' )."/$subdir$template";
+		$ret['package_template'] = constant( strtoupper( $package ).'_PKG_PATH' )."$subdir$template";
 	}
 
 	return $ret;

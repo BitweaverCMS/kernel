@@ -88,7 +88,7 @@
 					{/forminput}
 				</div>
 
-				<hr />
+				<hr style="clear:both" />
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if ((1 or $package.tables) && !$package.required && !$package.installed) }

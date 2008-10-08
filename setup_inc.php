@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.116 2008/08/23 21:39:53 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.117 2008/10/08 17:40:47 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -63,6 +63,14 @@ if( defined( 'QUERY_CACHE_ACTIVE' ) ) {
 require_once( KERNEL_PKG_PATH.'BitSystem.php' );
 global $gBitSmarty, $gBitSystem;
 $gBitSystem = new BitSystem();
+
+// first thing we do, is check to see if our version of bitweaver is up to date.
+// we need to know about this before any other package is loaded to ensure that we can exclude stuff that isn't backwards compatible.
+// BIT_INSTALL is set by the installer and LOGIN_VALIDATE is set in users/validate.php
+// enter the minimum required version in the form '2.1.0-beta'
+if( !( defined( 'BIT_INSTALL' ) || defined( 'LOGIN_VALIDATE' )) && version_compare( '2.1.0-beta', $gBitSystem->getVersion(), '>' )) {
+	define( 'FORCE_INSTALLER', TRUE );
+}
 
 // allow for overridden TEMP_PKG_PATH
 if( !defined( 'TEMP_PKG_PATH' ) ) {
@@ -269,5 +277,11 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$gBitSystem->scanPackages();
 		$gBitSystem->fatalError( tra( 'Access Denied' )."!" );
 	}
+}
+
+// FORCE_INSTALLER was set earlier and here we force the installer if needed.
+if( defined( 'FORCE_INSTALLER' )) {
+	$gBitSmarty->display( "bitpackage:kernel/force_installer.tpl" );
+	die;
 }
 ?>

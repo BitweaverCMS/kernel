@@ -16,7 +16,7 @@
 				<p>
 					{tr}Packages with checkmarks are currently enabled, packages without are disabled.  To enable or disable a package, check or uncheck it, and click the 'Modify Activation' button.{/tr} <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}To uninstall or reinstall a package, visit the installer.{/tr}</a>
 				</p>
-					
+
 				{$install_unavailable}
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}
@@ -36,10 +36,10 @@
 						</div>
 					{/if}
 				{/foreach}
-				
+
 			{/legend}
-			
-				
+
+
 
 			{legend legend="bitweaver services installed on your system"}
 				<p>
@@ -71,23 +71,23 @@
 				<input type="submit" name="features" value="{tr}Modify Activation{/tr}"/>
 			</div>
 		{/jstab}
-		
+
 
 
 		{jstab title="Not Installed"}
 			{legend legend="bitweaver packages available for installation"}
-			
+
 				<div class="row">
 					<div class="formlabel">
 						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
 					</div>
 					{forminput}
 						<p><strong><a class="warning" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click here to install more Packages{/tr}&nbsp;&hellip;</a></strong></p>
-						
+
 						{$install_unavailable}
 					{/forminput}
 				</div>
-				
+
 				<hr />
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}

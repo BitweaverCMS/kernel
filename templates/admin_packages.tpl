@@ -1,4 +1,12 @@
 {strip}
+{* checks if installer path is available *}
+{assign var=installfile value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_file}
+{assign var=installread value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_readable}
+{if $installfile neq 1 and $installread neq 1}
+	{capture assign=install_unavailable}
+		<p>{tr}You might have to rename your <strong>install/install.done</strong> file back to <strong>install/install.php</strong>.{/tr}</p>
+	{/capture}
+{/if}
 
 {form class="kernel_`$page`|replace:'packages':'pkg'"}
 	<input type="hidden" name="page" value="{$page}" />
@@ -6,8 +14,10 @@
 		{jstab title="Installed"}
 			{legend legend="bitweaver packages installed on your system"}
 				<p>
-				{tr}Packages with checkmarks are currently enabled, packages without are disabled.  To enable or disable a package, check or uncheck it, and click the 'Modify Activation' button. {/tr}
+					{tr}Packages with checkmarks are currently enabled, packages without are disabled.  To enable or disable a package, check or uncheck it, and click the 'Modify Activation' button.{/tr} <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}To uninstall or reinstall a package, visit the installer.{/tr}</a>
 				</p>
+					
+				{$install_unavailable}
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && !$package.required}
@@ -64,6 +74,39 @@
 		
 
 
+		{jstab title="Not Installed"}
+			{legend legend="bitweaver packages available for installation"}
+			
+				<div class="row">
+					<div class="formlabel">
+						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
+					</div>
+					{forminput}
+						<p><strong><a class="warning" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click here to install more Packages{/tr}&nbsp;&hellip;</a></strong></p>
+						
+						{$install_unavailable}
+					{/forminput}
+				</div>
+				
+				<hr />
+
+				{foreach key=name item=package from=$gBitSystem->mPackages}
+					{if ((1 or $package.tables) && !$package.required && !$package.installed) }
+						<div class="row">
+							<div class="formlabel">
+								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
+							</div>
+							{forminput}
+								{$name|capitalize}
+								{formhelp note=`$package.info` package=$name}
+							{/forminput}
+						</div>
+					{/if}
+				{/foreach}
+			{/legend}
+		{/jstab}
+
+
 		{jstab title="Required"}
 			{legend legend="Required bitweaver packages installed on your system"}
 				{foreach key=name item=package from=$gBitSystem->mPackages}
@@ -97,49 +140,6 @@
 					{/if}
 				{/foreach}
 			{/legend}
-		{/jstab}
-
-
-		
-
-		{jstab title="Install new packages"}
-
-			{legend legend="bitweaver Packages available for installation"}
-			
-				<div class="row">
-					<div class="formlabel">
-						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
-					</div>
-					{forminput}
-						<p><strong><a class="warning" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click here to install more Packages{/tr}&nbsp;&hellip;</a></strong></p>
-
-						{assign var=installfile value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_file}
-						{assign var=installread value="`$smarty.const.INSTALL_PKG_PATH`install.php"|is_readable}
-					
-						{if $installfile neq 1 and $installread neq 1}
-							<p>{tr}You might have to rename your <strong>install/install.done</strong> file back to <strong>install/install.php</strong>.{/tr}</p>
-						{/if}
-					{/forminput}
-				</div>
-				
-				<hr />
-
-				{foreach key=name item=package from=$gBitSystem->mPackages}
-					{if ((1 or $package.tables) && !$package.required && !$package.installed) }
-						<div class="row">
-							<div class="formlabel">
-								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
-							</div>
-							{forminput}
-								{$name|capitalize}
-								{formhelp note=`$package.info` package=$name}
-							{/forminput}
-						</div>
-					{/if}
-				{/foreach}
-	
-			{/legend}
-
 		{/jstab}
 	{/jstabs}
 {/form}

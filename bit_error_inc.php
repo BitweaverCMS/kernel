@@ -57,7 +57,7 @@ function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	} elseif( $errorEmail ) {
 		mail( $errorEmail,  "$pSubject", $pLogMessage );
 		if( defined( 'AUTO_BUG_SUBMIT' ) && AUTO_BUG_SUBMIT && !empty( $gBitSystem ) && $gBitSystem->isDatabaseValid() ) {
-			mail( 'bugs@bitweaver.org',"$subject $pSubject",$pLogMessage );
+			mail( 'bugs@bitweaver.org',"$pSubject",$pLogMessage );
 		}
 	}
 

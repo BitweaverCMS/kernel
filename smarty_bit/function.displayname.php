@@ -18,6 +18,10 @@ function smarty_function_displayname( $pParams, &$gBitSmarty ) {
 		if( is_array( $pParams['hash'] ) ) {
 			$hash = array_merge( $pParams, $pParams['hash'] );
 			unset( $hash['hash'] );
+			// if the hash only has a user_id, we need to look up the user
+			if( @BitBase::verifyId( $hash['user_id'] ) && empty( $hash['user'] ) && empty( $hash['email'] ) && empty( $hash['login'] )) {
+				$lookupHash['user_id'] = $hash['user_id'];
+			}
 		} else {
 			// We were probably just passed the 'login' due to legacy code which has yet to be converted
 			if( strpos( '@', $pParams['hash'] ) ) {

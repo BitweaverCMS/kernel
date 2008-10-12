@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.19 2008/09/18 11:34:10 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.20 2008/10/12 22:34:59 laetzer Exp $ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />
@@ -143,7 +143,7 @@
 				<div class="row">
 					{formlabel label="Message to display when site is closed" for="site_closed_msg"}
 					{forminput}
-						<input type="text" name="site_closed_msg" id="site_closed_msg" value="{$gBitSystem->getConfig('site_closed_msg')}" size="50" />
+						<input type="text" name="site_closed_msg" id="site_closed_msg" value="{$gBitSystem->getConfig('site_closed_msg')|escape}" size="50" />
 					{/forminput}
 				</div>
 

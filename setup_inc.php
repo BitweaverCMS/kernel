@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.117 2008/10/08 17:40:47 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.118 2008/10/13 00:15:06 laetzer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -193,7 +193,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$bypass_siteclose_check = 'y';
 	}
 	if( $gBitSystem->isFeatureActive( 'site_closed' ) && !$gBitUser->hasPermission( 'p_access_closed_site' ) && !isset( $bypass_siteclose_check )) {
-		$_REQUEST['error'] = $gBitSystem->getConfig('site_closed_msg', 'Site is closed for maintainance; please come back later.');
+		$_REQUEST['error'] = $gBitSystem->getConfig('site_closed_msg', '');
 		include( KERNEL_PKG_PATH . 'error_simple.php' );
 		exit;
 	}

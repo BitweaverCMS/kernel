@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/error_simple.php,v 1.4 2008/08/04 18:14:52 laetzer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/error_simple.php,v 1.5 2008/10/13 00:54:11 laetzer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -24,7 +24,11 @@
 
 		<?php
 			if (isset($_REQUEST['error']) and !is_null($_REQUEST['error'])) {
-				echo strip_tags($_REQUEST['error']);
+				if( $gBitSystem->isFeatureActive( 'site_closed' )){
+					echo $_REQUEST['error']; 
+				} else {
+					echo strip_tags($_REQUEST['error']);
+				}
 			} else {
 				echo 'There was an unspecified error. Please go back and try again.';
 			}

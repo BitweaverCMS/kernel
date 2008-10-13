@@ -52,6 +52,7 @@ $gBitInstaller->registerPreferences( KERNEL_PKG_NAME, array(
 	array(KERNEL_PKG_NAME,'site_short_time_format','%H:%M %Z'),
 	//array(KERNEL_PKG_NAME,'site_title',''),
 	array(KERNEL_PKG_NAME,'site_upload_dir','storage'),
+	array(KERNEL_PKG_NAME,'site_closed_msg','Site is closed for maintainance; please come back later.'),
 	//array(KERNEL_PKG_NAME,'site_temp_dir','temp'),
 	//array(KERNEL_PKG_NAME,'site_use_proxy','n'),
 	//array(KERNEL_PKG_NAME,'site_proxy_host',''),

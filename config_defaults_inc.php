@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.39 2008/10/03 10:11:52 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.40 2008/10/13 18:41:12 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -133,6 +133,10 @@ define( 'BIT_MAJOR_VERSION',	'2' );
 define( 'BIT_MINOR_VERSION',	'1' );
 define( 'BIT_SUB_VERSION',		'0' );
 define( 'BIT_LEVEL',			'beta' ); // dev < alpha < beta < '' < pl
+
+// When updating to certain versions of bitweaver, we need to force a visit to the installer to fix certain stuff in the database.
+// Enter the minimum version number here in the format: '2.1.0-beta'
+define( 'MIN_BIT_VERSION', '2.1.0-beta' );
 
 // These defines have to happen FIRST because core classes depend on them.
 // This means these packages *CANNOT* be renamed

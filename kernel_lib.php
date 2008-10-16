@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.28 2008/10/03 07:06:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.29 2008/10/16 07:09:16 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -333,8 +333,9 @@ function function_enabled ( $pName ) {
  * @param sting $pData string that might contain an email address
  * @access public
  * @return encoded email address
+ * $note email regex taken from: http://www.regular-expressions.info/regexbuddy/email.html
  */
-define( 'EMAIL_ADDRESS_REGEX', '\w[+-.\w]*\@[-.\w]+\.\w{2,3}' );
+define( 'EMAIL_ADDRESS_REGEX', '[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}' );
 function encode_email_addresses( $pData ) {
 	$trans = array(
 		// Upper case
@@ -435,15 +436,7 @@ function encode_email_addresses( $pData ) {
  * @return a string with the results of the file
  **/
 function validate_email_syntax( $pEmail ) {
-	if( !eregi (
-		'^[-!#$%&\`*+\\./0-9=?A-Z^_`a-z{|}~]+'.'@'.
-		'(localhost|[-!$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\.'.
-		'[-!$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+)$'
-		, $pEmail ) ) {
-			return false;
-	} else {
-		return true;
-	}
+	return( preg_match( "!^".EMAIL_ADDRESS_REGEX."$!", trim( $pEmail )));
 }
 
 /**

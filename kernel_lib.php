@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.29 2008/10/16 07:09:16 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.30 2008/10/16 07:10:37 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -679,16 +679,16 @@ function array_diff_keys() {
 	$args = func_get_args();
 
 	$res = $args[0];
-	if(!is_array($res)) {
+	if( !is_array( $res )) {
 		return array();
 	}
 
-	for($i=1;$i<count($args);$i++) {
-		if(!is_array($args[$i])) {
+	for( $i = 1; $i < count( $args ); $i++ ) {
+		if( !is_array( $args[$i] )) {
 			continue;
 		}
-		foreach ($args[$i] as $key => $data) {
-			unset($res[$key]);
+		foreach( $args[$i] as $key => $data ) {
+			unset( $res[$key] );
 		}
 	}
 	return $res;

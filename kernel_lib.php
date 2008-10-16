@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.30 2008/10/16 07:10:37 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.31 2008/10/16 07:26:29 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -335,7 +335,7 @@ function function_enabled ( $pName ) {
  * @return encoded email address
  * $note email regex taken from: http://www.regular-expressions.info/regexbuddy/email.html
  */
-define( 'EMAIL_ADDRESS_REGEX', '[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}' );
+define( 'EMAIL_ADDRESS_REGEX', '[a-zA-Z0-9._%-+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}' );
 function encode_email_addresses( $pData ) {
 	$trans = array(
 		// Upper case

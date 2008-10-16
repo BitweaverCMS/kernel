@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.190 2008/10/03 10:11:01 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.191 2008/10/16 18:23:43 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1179,7 +1179,7 @@ die;
 		if( !empty( $gPreScan ) && is_array( $gPreScan )) {
 			// gPreScan may hold a list of packages that must be loaded first
 			foreach( $gPreScan as $pkgDir ) {
-				$this->loadPackage( $pkgDir, $pScanFile, $pAutoRegister, $pOnce );
+				$loadPkgs[] = $pkgDir;
 			}
 		}
 
@@ -1187,10 +1187,15 @@ die;
 		if( $pkgDir = opendir( BIT_ROOT_PATH )) {
 			while( FALSE !== ( $dirName = readdir( $pkgDir ))) {
 				if( $dirName != '..'  && $dirName != '.' && is_dir( BIT_ROOT_PATH . '/' . $dirName ) && $dirName != 'CVS' && preg_match( '/^\w/', $dirName )) {
-					$scanFile = BIT_ROOT_PATH.$dirName.'/'.$pScanFile;
-					$this->loadPackage( $dirName, $pScanFile, $pAutoRegister, $pOnce );
+					$loadPkgs[] = $dirName;
 				}
 			}
+		}
+		$loadPkgs = array_unique( $loadPkgs );
+
+		// load the list of pkgs in the right order
+		foreach( $loadPkgs as $loadPkg ) {
+			$this->loadPackage( $loadPkg, $pScanFile, $pAutoRegister, $pOnce );
 		}
 
 		if( !defined( 'BIT_STYLES_PATH' ) && defined( 'THEMES_PKG_PATH' )) {

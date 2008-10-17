@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.120 2008/10/13 18:41:12 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.121 2008/10/17 22:11:18 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -67,7 +67,7 @@ $gBitSystem = new BitSystem();
 // first thing we do, is check to see if our version of bitweaver is up to date.
 // we need to know about this before any other package is loaded to ensure that we can exclude stuff that isn't backwards compatible.
 // BIT_INSTALL is set by the installer and LOGIN_VALIDATE is set in users/validate.php
-if( version_compare( MIN_BIT_VERSION, $gBitSystem->getVersion(), '>' ) && !( defined( 'BIT_INSTALL' ) || defined( 'LOGIN_VALIDATE' ))) {
+if( !empty( $gBitSystem->mConfig ) && version_compare( MIN_BIT_VERSION, $gBitSystem->getVersion(), '>' ) && !( defined( 'BIT_INSTALL' ) || defined( 'LOGIN_VALIDATE' ))) {
 	define( 'INSTALLER_FORCE', TRUE );
 }
 

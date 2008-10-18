@@ -19,33 +19,38 @@
  * @uses smarty_function_escape_special_chars()
  * @todo somehow make the variable that is contained within $iselect global --> this will allow importing of outside variables not set in $_REQUEST
  */
-function smarty_block_form($params, $content, &$gBitSmarty) {
+function smarty_block_form( $pParams, $pContent, &$gBitSmarty) {
 	global $gBitSystem, $gSniffer;
 
-	if( $content ) {
-		if( !isset( $params['method'] ) ) {
-			$params['method'] = 'post';
+	if( $pContent ) {
+		if( !isset( $pParams['method'] ) ) {
+			$pParams['method'] = 'post';
 		}
 		$atts = '';
-		if( isset( $params['secure'] ) && $params['secure'] ) {
+		if( isset( $pParams['secure'] ) && $pParams['secure'] ) {
 			// This is NEEDED to enforce HTTPS secure logins!
 			$url = 'https://' . $_SERVER['HTTP_HOST'];
 		} else {
 			$url = '';
 		}
 		// We need an onsubmit handler in safari to show all tabs again so uploads in hidden tabs work
+		$onsubmit = '';
 		if( $gSniffer->_browser_info['browser'] == 'sf' ) {
-			$onsubmit="disposeAllTabs()";
+			$onsubmit .= "disposeAllTabs();";
 		}
-		foreach( $params as $key => $val ) {
+
+		// services can add something to onsubmit
+		$onsubmit .= $gBitSmarty->get_template_vars( 'serviceOnsubmit' ).";";
+
+		foreach( $pParams as $key => $val ) {
 			switch( $key ) {
 				case 'ifile':
 				case 'ipackage':
 					if( $key == 'ipackage' ) {
 						if( $val == 'root' ) {
-							$url .= BIT_ROOT_URL.$params['ifile'];
+							$url .= BIT_ROOT_URL.$pParams['ifile'];
 						} else {
-							$url .= constant( strtoupper( $val ).'_PKG_URL' ).$params['ifile'];
+							$url .= constant( strtoupper( $val ).'_PKG_URL' ).$pParams['ifile'];
 						}
 					}
 					break;
@@ -57,8 +62,8 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 				// this is needed for backwards compatibility since we sometimes pass in a url
 				case 'action':
 					if( substr( $val, 0, 4 ) == 'http' ) {
-						if( isset( $params['secure'] ) && $params['secure'] && (substr( $val, 0, 5 ) != 'https')) {
-							$val = preg_replace('/^http/', 'https', $val);
+						if( isset( $pParams['secure'] ) && $pParams['secure'] && ( substr( $val, 0, 5 ) != 'https' )) {
+							$val = preg_replace( '/^http/', 'https', $val );
 						}
 						$url = $val;
 					} else {
@@ -69,7 +74,7 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 				case 'secure':
 					break;
 				case 'onsubmit':
-					$onsubmit .= "; ".$val;
+					$onsubmit .= $val.";";
 					break;
 				default:
 					if( !empty( $val ) ) {
@@ -78,15 +83,17 @@ function smarty_block_form($params, $content, &$gBitSmarty) {
 					break;
 			}
 		}
-		if( !isset( $url ) || empty( $url ) ) {
+
+		if( empty( $url )) {
 			$url = $_SERVER['PHP_SELF'];
 		} else if( $url == 'https://' . $_SERVER['HTTP_HOST'] ) {
 			$url .= $_SERVER['PHP_SELF'];
 		}
-		$onsub = (!empty( $onsubmit ) ? ' onsubmit="'.$onsubmit.'"' : '' );
-		$ret = '<form action="'.$url.( !empty( $params['ianchor'] ) ? '#'.$params['ianchor'] : '' ).'" '.$atts.$onsub.'>';
+
+		$onsub = ( !empty( $onsubmit ) ? ' onsubmit="'.$onsubmit.'"' : '' );
+		$ret = '<form action="'.$url.( !empty( $pParams['ianchor'] ) ? '#'.$pParams['ianchor'] : '' ).'" '.$atts.$onsub.'>';
 		$ret .= isset( $legend ) ? '<fieldset>'.$legend : '<div>';		// adding the div makes it easier to be xhtml compliant
-		$ret .= $content;
+		$ret .= $pContent;
 		$ret .= '<div class="clear"></div>';							// needed to avoid rendering issues
 		$ret .= isset( $legend ) ? '</fieldset>' : '</div>';			// close the open tags
 		$ret .= '</form>';

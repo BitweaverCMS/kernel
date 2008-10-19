@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.45 2008/04/28 12:16:18 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.46 2008/10/19 08:14:21 squareing Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -1033,36 +1033,48 @@ class BitDb {
 	 * Renamed a few functions - these are the temporary backward compatability calls with the deprecated note
 	 * These funcitons will be removed in due course
 	 */
+	/**
+	 * @deprecated deprecated since version 2.0.0
+	 */
 	function convert_sortmode( $pSortMode ) {
 		deprecated( $this->depText( 'convert_sortmode', 'convertSortmode' ) );
 		return $this->convertSortmode( $pSortMode );
 	}
-
+	/**
+	 * @deprecated deprecated since version 2.0.0
+	 */
 	function convert_sortmode_one_item( $pSortMode ) {
 		deprecated( $this->depText( 'convert_sortmode_one_item', 'convertSortmodeOneItem' ) );
 		return $this->convertSortmode( $pSortMode );
 	}
-
+	/**
+	 * @deprecated deprecated since version 2.0.0
+	 */
 	function convert_binary() {
 		deprecated( $this->depText( 'convert_binary', 'convertBinary' ) );
 		return $this->convertBinary();
 	}
-
+	/**
+	 * @deprecated deprecated since version 2.0.0
+	 */
 	function sql_cast( $pVar, $pType ) {
 		deprecated( $this->depText( 'sql_cast', 'sqlCast' ) );
 		return $this->sqlCast( $pVar, $pType );
 	}
-
+	/**
+	 * @deprecated deprecated since version 2.0.0
+	 */
 	function db_byte_encode( &$pData ) {
 		deprecated( $this->depText( 'db_byte_encode', 'dbByteEncode' ) );
 		return $this->dbByteEncode( $pData );
 	}
-
+	/**
+	 * @deprecated deprecated since version 2.0.0
+	 */
 	function db_byte_decode( &$pData ) {
 		deprecated( $this->depText( 'db_byte_decode', 'dbByteDecode' ) );
 		return $this->dbByteDecode( $pData );
 	}
-
 	function depText( $pFrom, $pTo ) {
 		return "We have changed this method to BitDbBase::{$pTo}().
 	Please update your code accordingly - you can try using the following (please back up your code before applying this):

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.31 2008/10/16 07:26:29 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.32 2008/10/19 08:14:21 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -856,6 +856,9 @@ function r_compare_changed( $ar1, $ar2 ) {
 
 
 // ======================= deprecated functions =======================
+/**
+ * @deprecated deprecated since version 2.1.0-beta
+ */
 function chkgd2() {
 	deprecated( 'Please use get_gd_version() instead' );
 }

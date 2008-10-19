@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.40 2008/10/13 18:41:12 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.41 2008/10/19 10:19:03 nickpalmer Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -119,7 +119,7 @@ if( !empty( $gShellScript ) ) {
 // This works with apache - not sure about other servers.
 if( !defined( 'BIT_ROOT_URI' )) {
   // Added check for IIS $_SERVER['HTTPS'] uses 'off' value - wolff_borg
-	define( 'BIT_ROOT_URI', 'http'.((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS'] != 'off')?'s':'').'://'.$_SERVER['HTTP_HOST'].BIT_ROOT_URL );
+	define( 'BIT_ROOT_URI', 'http'.((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS'] != 'off')?'s':'').'://'.(empty($_SERVER['HTTP_HOST'])?'localhost':$_SERVER['HTTP_HOST']).BIT_ROOT_URL );
 }
 
 // custom storage host

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.192 2008/10/19 08:14:21 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.193 2008/10/22 07:36:47 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1963,7 +1963,7 @@ die;
 	function storeVersion( $pPackage = NULL, $pVersion ) {
 		global $gBitSystem;
 		$ret = FALSE;
-		if( !empty( $pVersion )) {
+		if( !empty( $pVersion ) && $this->validateVersion( $pVersion )) {
 			if( empty( $pPackage )) {
 				$gBitSystem->storeConfig( "bitweaver_version", $pVersion, 'kernel' );
 				$ret = TRUE;
@@ -1992,6 +1992,17 @@ die;
 		}
 
 		return $gBitSystem->getConfig( $config, $pDefault );
+	}
+
+	/**
+	 * validateVersion 
+	 * 
+	 * @param array $pVersion 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure
+	 */
+	function validateVersion( $pVersion ) {
+		return( preg_match( "/(\d+\.\d+\.\d+)(-dev|-alpha|-beta|-pl|-RC\d+)?/", $pVersion ));
 	}
 
 	/**

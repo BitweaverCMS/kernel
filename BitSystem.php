@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.193 2008/10/22 07:36:47 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.194 2008/10/23 19:56:14 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -914,159 +914,18 @@ die;
 				'style'         => 'display:'.( empty( $pMenuTitle ) || ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' )
 			);
 		}
-		uasort($this->mAppMenu, 'bit_system_menu_sort');
-	}
-
-	// === registerSchemaTable
-	/**
-	 * "Virtual" function stub - fully defined in BitInstaller
-	 *
-	 * @return none
-	 * @access public
-	 */
-	function registerSchemaTable( $pPackage, $pTableName, $pDataDict, $pRequired=FALSE, $pTableOptions=NULL ) {
-		$pPackage = strtolower( $pPackage ); // lower case for uniformity
-		if( !empty( $pTableName ) ) {
-			$this->mPackages[$pPackage]['tables'][$pTableName] = $pDataDict;
-			if( !empty( $pTableOptions ) ) {
-				$this->mPackages[$pPackage]['tables']['options'][$pTableName] = $pTableOptions;
-			}
-			// Package required now set in register package function
-			// A package is required if _any_ of it's tables are required
-			//$this->mPackages[$pPackage]['required'] = $pRequired | (isset( $this->mPackages[$pPackage]['required'] ) ? $this->mPackages[$pPackage]['required'] : 0 );
-		}
-	}
-
-	function registerSchemaConstraints( $pPackage, $pTableName, $pConstraints ) {
-		$pPackage = strtolower( $pPackage);
-		if( !empty( $pTableName ) ) {
-			$this->mPackages[$pPackage]['constraints'][$pTableName] = $pConstraints;
-		}
+		uasort( $this->mAppMenu, 'bit_system_menu_sort' );
 	}
 
 	/**
-	 * Holds the package version - required by packager - the bitweaver package manager
-	 *
-	 * @return none
+	 * registerNotifyEvent 
+	 * 
+	 * @param array $pEventHash 
 	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function registerPackageVersion( $pPackage, $pVersion ) {
-		$pPackage = strtolower( $pPackage ); // lower case for uniformity
-		$this->mPackages[$pPackage]['version'] = $pVersion;
-	}
-
-	// === registerPackageInfo
-	/**
-	 * "Virtual" function stub - fully defined in BitInstaller
-	 *
-	 * @return none
-	 * @access public
-	 */
-	function registerPackageInfo( $pPackage, $pInfoHash ) {
-		$pPackage = strtolower( $pPackage ); // lower case for uniformity
-		$this->mPackages[$pPackage]['info'] = $pInfoHash;
-	}
-
-	// === registerSchemaSequences
-	/**
-	 * accepts a sequence to be added to the install list
-	 *
-	 * @return none
-	 * @access public
-	 */
-	function registerSchemaSequences( $pPackage, $pSeqHash ) {
-		$pPackage = strtolower( $pPackage ); // lower case for uniformity
-		$this->mPackages[$pPackage]['sequences'] = $pSeqHash;
-	}
-
-	// === registerSchemaIndex
-	/**
-	 * "Virtual" function stub - fully defined in BitInstaller
-	 *
-	 * @return none
-	 * @access public
-	 */
-	function registerSchemaIndexes( $pPackage, $pIndexHash ) {
-		$pPackage = strtolower( $pPackage ); // lower case for uniformity
-		$this->mPackages[$pPackage]['indexes'] = $pIndexHash;
-	}
-
-	// === registerSchemaDefault
-	/**
-	 * "Virtual" function stub - fully defined in BitInstaller
-	 *
-	 * @return none
-	 * @access public
-	 */
-	function registerSchemaDefault( $pPackage, $pMixedDefaultSql ) {
-		$pPackage = strtolower( $pPackage ); // lower case for uniformity
-		if( empty( $this->mPackages[$pPackage]['defaults'] ) ) {
-			$this->mPackages[$pPackage]['defaults'] = array();
-		}
-		if( is_array( $pMixedDefaultSql ) ) {
-			foreach( $pMixedDefaultSql as $def ) {
-				$this->mPackages[$pPackage]['defaults'][] = $def;
-			}
-		} elseif( is_string( $pMixedDefaultSql ) ) {
-			array_push( $this->mPackages[$pPackage]['defaults'], $pMixedDefaultSql );
-		}
-	}
-
-	/**
-	 * registerSchemaTable - Handles big array of update info
-	 *
-	 * @return none
-	 * @access public
-	 */
-	function registerUpgrade( $pPackage, $pUpgradeHash ) {
-		$pPackage = strtolower( $pPackage ); // lower case for uniformity
-		if( !empty( $pUpgradeHash ) ) {
-			$this->mUpgrades[$pPackage] = $pUpgradeHash;
-		}
-	}
-
-	/**
-	 * Wrap registerSchemaDefault to handle an array of defaults
-	 *
-	 * @return none
-	 * @access public
-	 */
-	function registerUserPermissions( $packagedir, $userpermissions ) {
-		foreach( $userpermissions as $perm ) {
-			$this->mPermHash[$perm[0]] = $perm;
-			$this->mPermHash[$perm[0]]['sql'] = "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`, `perm_desc`, `perm_level`, `package`) VALUES ('$perm[0]', '$perm[1]', '$perm[2]', '$perm[3]')";
-			$this->registerSchemaDefault( $packagedir,
-				"INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`, `perm_desc`, `perm_level`, `package`) VALUES ('$perm[0]', '$perm[1]', '$perm[2]', '$perm[3]')");
-		}
-	}
-
-	function registerConfig( $packagedir, $preferences ) {
-		foreach( $preferences as $pref ) {
-			$this->registerSchemaDefault( $packagedir,
-				"INSERT INTO `".BIT_DB_PREFIX."kernel_config`(`package`,`config_name`,`config_value`) VALUES ('$pref[0]', '$pref[1]','$pref[2]')");
-		}
-	}
-	function registerPreferences( $packagedir, $preferences ) {
-		$this->registerConfig( $packagedir, $preferences );
-	}
-
-	function registerModules( $pModuleHash ) {
-		$this->mInstallModules = array_merge( $this->mInstallModules, $pModuleHash );
-	}
-
 	function registerNotifyEvent( $pEventHash ) {
 		$this->mNotifyEvents = array_merge( $this->mNotifyEvents, $pEventHash );
-	}
-
-	/**
-	 * registerContentObjects
-	 *
-	 * @param string $pPackageName the package name
-	 * @param hash $pClassesHash [$className => $pathToClassFile]
-	 * @access public
-	 */
-	function registerContentObjects( $pPackageName, $pClassesHash ) {
-		$this->mContentClasses[$pPackageName] = $pClassesHash;
 	}
 
 	// === fatalError
@@ -1205,90 +1064,6 @@ die;
 		if( !defined( 'BIT_STYLES_URL' ) && defined( 'THEMES_PKG_URL' )) {
 			define( 'BIT_STYLES_URL', THEMES_PKG_URL.'styles/' );
 		}
-	}
-
-	// === verifyInstalledPackages
-	/**
-	 * scan all available packages
-	 *
-	 * @param string $ pScanFile file to be looked for
-	 * @return none
-	 * @access public
-	 */
-	function verifyInstalledPackages( $pSelect='installed' ) {
-		global $gBitDbType;
-		#load in any admin/schema_inc.php files that exist for each package
-		$this->scanPackages( 'admin/schema_inc.php', TRUE, $pSelect, FALSE, TRUE );
-		$ret = array();
-
-		if( $this->isDatabaseValid() ) {
-			if( strlen( BIT_DB_PREFIX ) > 0 ) {
-				$lastQuote = strrpos( BIT_DB_PREFIX, '`' );
-				if( $lastQuote != FALSE ) {
-					$lastQuote++;
-				}
-				$prefix = substr( BIT_DB_PREFIX, $lastQuote );
-			} else {
-				$prefix = '';
-			}
-
-			$showTables = ( $prefix ? $prefix.'%' : NULL );
-			$unusedTables = array();
-			if( $dbTables = $this->mDb->MetaTables( 'TABLES', FALSE, $showTables ) ) {
-				// make a copy that we can keep track of what tables have been used
-				$unusedTables = $dbTables;
-				foreach( array_keys( $this->mPackages ) as $package ) {
-					// Default to TRUE, &= will FALSE out
-					$this->mPackages[$package]['installed'] = TRUE;
-					if( !empty( $this->mPackages[$package]['tables'] ) ) {
-						$this->mPackages[$package]['db_tables_found'] = TRUE;
-						foreach( array_keys( $this->mPackages[$package]['tables'] ) as $table ) {
-							// painful hardcoded exception for bitcommerce
-							if( $package == 'bitcommerce' ) {
-								$fullTable = $table;
-							} else {
-								$fullTable = $prefix.$table;
-							}
-							$tablePresent = in_array( $fullTable, $dbTables );
-							if( $tablePresent ) {
-								$ret['present'][$package][] = $table;
-							} else {
-								$ret['missing'][$package][] = $table;
-								// This is a crude but highly effective means of blurting out a very bad situation when an installed package is missing a table
-								// if( !defined( 'IS_LIVE' ) || !IS_LIVE ) {
-								// 	vd( "Table Missing => $package : $table" );
-								// }
-							}
-
-							// lets also return the tables that are not in use by bitweaver
-							// this is useful when we want to remove old tables or upgrade tables
-							if(( $key = array_search( $fullTable, $dbTables )) !== FALSE ) {
-								unset( $unusedTables[$key] );
-							}
-
-							$this->mPackages[$package]['installed'] &= $tablePresent;
-							$this->mPackages[$package]['db_tables_found'] &= $tablePresent;
-						}
-					} else {
-						$this->mPackages[$package]['db_tables_found'] = FALSE;
-					}
-
-					$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
-					if( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['active_switch'] != 'y' ) {
-						// we have a disabled required package. turn it back on!
-						$this->storeConfig( 'package_' . $package, 'y', $package );
-						$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_' . $package );
-					} elseif( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['installed'] &&  $this->getConfig( 'package_'.$package ) != 'i' &&  $this->getConfig( 'package_'.$package ) != 'y' ) {
-						$this->storeConfig( 'package_' . $package, 'i', $package );
-					} elseif( !empty( $this->mPackages[$package]['installed'] ) && !$this->isFeatureActive( 'package_'.strtolower( $package ) ) ) {
-						// set package to i if it is installed but not isFeatureActive (common when re-installing packages)
-						$this->storeConfig( 'package_' . $package, 'i', $package );
-					}
-				}
-			}
-			$ret['unused'] = $unusedTables;
-		}
-		return $ret;
 	}
 
 	/**
@@ -1758,6 +1533,310 @@ die;
 		$checked = TRUE;
 	}
 
+	// {{{=========================== Installer related methods ==============================
+	// Keep these methods in BitSystem that we can call verifyInstalledPackages() and other
+	// mthods without the need for an install/ package to be present.
+	/**
+	 * registerSchemaTable 
+	 * 
+	 * @param array $pPackage 
+	 * @param array $pTableName 
+	 * @param array $pDataDict 
+	 * @param array $pRequired 
+	 * @param array $pTableOptions 
+	 * @access public
+	 * @return void
+	 */
+	function registerSchemaTable( $pPackage, $pTableName, $pDataDict, $pRequired=FALSE, $pTableOptions=NULL ) {
+		$pPackage = strtolower( $pPackage ); // lower case for uniformity
+		if( !empty( $pTableName ) ) {
+			$this->mPackages[$pPackage]['tables'][$pTableName] = $pDataDict;
+			if( !empty( $pTableOptions ) ) {
+				$this->mPackages[$pPackage]['tables']['options'][$pTableName] = $pTableOptions;
+			}
+		}
+	}
+
+	/**
+	 * registerSchemaConstraints 
+	 * 
+	 * @param array $pPackage 
+	 * @param array $pTableName 
+	 * @param array $pConstraints 
+	 * @access public
+	 * @return void
+	 */
+	function registerSchemaConstraints( $pPackage, $pTableName, $pConstraints ) {
+		$pPackage = strtolower( $pPackage);
+		if( !empty( $pTableName ) ) {
+			$this->mPackages[$pPackage]['constraints'][$pTableName] = $pConstraints;
+		}
+	}
+
+	/**
+	 * registerUserPermissions 
+	 * 
+	 * @param array $pPackagedir 
+	 * @param array $pUserpermissions 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	function registerUserPermissions( $pPackagedir, $pUserpermissions ) {
+		foreach( $pUserpermissions as $perm ) {
+			$this->mPermHash[$perm[0]] = $perm;
+			$this->mPermHash[$perm[0]]['sql'] = "INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`, `perm_desc`, `perm_level`, `package`) VALUES ('$perm[0]', '$perm[1]', '$perm[2]', '$perm[3]')";
+			$this->registerSchemaDefault( $pPackagedir,
+				"INSERT INTO `".BIT_DB_PREFIX."users_permissions` (`perm_name`, `perm_desc`, `perm_level`, `package`) VALUES ('$perm[0]', '$perm[1]', '$perm[2]', '$perm[3]')");
+		}
+	}
+
+	/**
+	 * registerConfig 
+	 * 
+	 * @param array $pPackagedir 
+	 * @param array $pPreferences 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	function registerConfig( $pPackagedir, $pPreferences ) {
+		foreach( $pPreferences as $pref ) {
+			$this->registerSchemaDefault( $pPackagedir,
+				"INSERT INTO `".BIT_DB_PREFIX."kernel_config`(`package`,`config_name`,`config_value`) VALUES ('$pref[0]', '$pref[1]','$pref[2]')");
+		}
+	}
+
+	/**
+	 * registerPreferences 
+	 * 
+	 * @param array $pPackagedir 
+	 * @param array $pPreferences 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	function registerPreferences( $pPackagedir, $pPreferences ) {
+		$this->registerConfig( $pPackagedir, $pPreferences );
+	}
+
+	/**
+	 * registerModules 
+	 * 
+	 * @param array $pModuleHash 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	function registerModules( $pModuleHash ) {
+		$this->mInstallModules = array_merge( $this->mInstallModules, $pModuleHash );
+	}
+
+	/**
+	 * registerContentObjects
+	 *
+	 * @param string $pPackageName the package name
+	 * @param hash $pClassesHash [$className => $pathToClassFile]
+	 * @access public
+	 */
+	function registerContentObjects( $pPackageName, $pClassesHash ) {
+		$this->mContentClasses[$pPackageName] = $pClassesHash;
+	}
+
+	/**
+	 * registerPackageInfo 
+	 * 
+	 * @param array $pPackage 
+	 * @param array $pInfoHash 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	function registerPackageInfo( $pPackage, $pInfoHash ) {
+		$pPackage = strtolower( $pPackage ); // lower case for uniformity
+		$this->mPackages[$pPackage]['info'] = $pInfoHash;
+	}
+
+	/**
+	 * registerSchemaSequences 
+	 * 
+	 * @param array $pPackage 
+	 * @param array $pSeqHash 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	function registerSchemaSequences( $pPackage, $pSeqHash ) {
+		$pPackage = strtolower( $pPackage ); // lower case for uniformity
+		$this->mPackages[$pPackage]['sequences'] = $pSeqHash;
+	}
+
+	/**
+	 * registerSchemaIndexes 
+	 * 
+	 * @param array $pPackage 
+	 * @param array $pIndexHash 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	function registerSchemaIndexes( $pPackage, $pIndexHash ) {
+		$pPackage = strtolower( $pPackage ); // lower case for uniformity
+		$this->mPackages[$pPackage]['indexes'] = $pIndexHash;
+	}
+
+	/**
+	 * registerSchemaDefault 
+	 * 
+	 * @param array $pPackage 
+	 * @param array $pMixedDefaultSql 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	function registerSchemaDefault( $pPackage, $pMixedDefaultSql ) {
+		$pPackage = strtolower( $pPackage ); // lower case for uniformity
+		if( empty( $this->mPackages[$pPackage]['defaults'] ) ) {
+			$this->mPackages[$pPackage]['defaults'] = array();
+		}
+		if( is_array( $pMixedDefaultSql ) ) {
+			foreach( $pMixedDefaultSql as $def ) {
+				$this->mPackages[$pPackage]['defaults'][] = $def;
+			}
+		} elseif( is_string( $pMixedDefaultSql ) ) {
+			array_push( $this->mPackages[$pPackage]['defaults'], $pMixedDefaultSql );
+		}
+	}
+
+	/**
+	 * storeVersion will store the version number of a given package
+	 * 
+	 * @param array $pPackage Name of package - if not given, bitweaver_version will be stored
+	 * @param array $pVersion Version number
+	 * @access public
+	 * @return TRUE on success, FALSE on failure
+	 */
+	function storeVersion( $pPackage = NULL, $pVersion ) {
+		global $gBitSystem;
+		$ret = FALSE;
+		if( !empty( $pVersion ) && $this->validateVersion( $pVersion )) {
+			if( empty( $pPackage )) {
+				$gBitSystem->storeConfig( "bitweaver_version", $pVersion, 'kernel' );
+				$ret = TRUE;
+			} elseif( !empty( $gBitSystem->mPackages[$pPackage] )) {
+				$gBitSystem->storeConfig( "package_".$pPackage."_version", $pVersion, $pPackage );
+				$ret = TRUE;
+			}
+		}
+		return $ret;
+	}
+
+	/**
+	 * getVersion will fetch the version number of a given package
+	 * 
+	 * @param array $pPackage Name of package - if not given, bitweaver_version will be stored
+	 * @param array $pVersion Version number
+	 * @access public
+	 * @return version number on success
+	 */
+	function getVersion( $pPackage = NULL, $pDefault = '0.0.0' ) {
+		global $gBitSystem;
+		if( empty( $pPackage )) {
+			$config = 'bitweaver_version';
+		} else {
+			$config = "package_".$pPackage."_version";
+		}
+
+		return $gBitSystem->getConfig( $config, $pDefault );
+	}
+
+	/**
+	 * validateVersion 
+	 * 
+	 * @param array $pVersion 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure
+	 */
+	function validateVersion( $pVersion ) {
+		return( preg_match( "/(\d+\.\d+\.\d+)(-dev|-alpha|-beta|-pl|-RC\d+)?/", $pVersion ));
+	}
+
+	/**
+	 * verifyInstalledPackages scan all available packages
+	 *
+	 * @param string $ pScanFile file to be looked for
+	 * @return none
+	 * @access public
+	 */
+	function verifyInstalledPackages( $pSelect='installed' ) {
+		global $gBitDbType;
+		#load in any admin/schema_inc.php files that exist for each package
+		$this->scanPackages( 'admin/schema_inc.php', TRUE, $pSelect, FALSE, TRUE );
+		$ret = array();
+
+		if( $this->isDatabaseValid() ) {
+			if( strlen( BIT_DB_PREFIX ) > 0 ) {
+				$lastQuote = strrpos( BIT_DB_PREFIX, '`' );
+				if( $lastQuote != FALSE ) {
+					$lastQuote++;
+				}
+				$prefix = substr( BIT_DB_PREFIX, $lastQuote );
+			} else {
+				$prefix = '';
+			}
+
+			$showTables = ( $prefix ? $prefix.'%' : NULL );
+			$unusedTables = array();
+			if( $dbTables = $this->mDb->MetaTables( 'TABLES', FALSE, $showTables ) ) {
+				// make a copy that we can keep track of what tables have been used
+				$unusedTables = $dbTables;
+				foreach( array_keys( $this->mPackages ) as $package ) {
+					// Default to TRUE, &= will FALSE out
+					$this->mPackages[$package]['installed'] = TRUE;
+					if( !empty( $this->mPackages[$package]['tables'] ) ) {
+						$this->mPackages[$package]['db_tables_found'] = TRUE;
+						foreach( array_keys( $this->mPackages[$package]['tables'] ) as $table ) {
+							// painful hardcoded exception for bitcommerce
+							if( $package == 'bitcommerce' ) {
+								$fullTable = $table;
+							} else {
+								$fullTable = $prefix.$table;
+							}
+							$tablePresent = in_array( $fullTable, $dbTables );
+							if( $tablePresent ) {
+								$ret['present'][$package][] = $table;
+							} else {
+								$ret['missing'][$package][] = $table;
+								// This is a crude but highly effective means of blurting out a very bad situation when an installed package is missing a table
+								// if( !defined( 'IS_LIVE' ) || !IS_LIVE ) {
+								// 	vd( "Table Missing => $package : $table" );
+								// }
+							}
+
+							// lets also return the tables that are not in use by bitweaver
+							// this is useful when we want to remove old tables or upgrade tables
+							if(( $key = array_search( $fullTable, $dbTables )) !== FALSE ) {
+								unset( $unusedTables[$key] );
+							}
+
+							$this->mPackages[$package]['installed'] &= $tablePresent;
+							$this->mPackages[$package]['db_tables_found'] &= $tablePresent;
+						}
+					} else {
+						$this->mPackages[$package]['db_tables_found'] = FALSE;
+					}
+
+					$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );
+					if( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['active_switch'] != 'y' ) {
+						// we have a disabled required package. turn it back on!
+						$this->storeConfig( 'package_' . $package, 'y', $package );
+						$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_' . $package );
+					} elseif( !empty( $this->mPackages[$package]['required'] ) && $this->mPackages[$package]['installed'] &&  $this->getConfig( 'package_'.$package ) != 'i' &&  $this->getConfig( 'package_'.$package ) != 'y' ) {
+						$this->storeConfig( 'package_' . $package, 'i', $package );
+					} elseif( !empty( $this->mPackages[$package]['installed'] ) && !$this->isFeatureActive( 'package_'.strtolower( $package ) ) ) {
+						// set package to i if it is installed but not isFeatureActive (common when re-installing packages)
+						$this->storeConfig( 'package_' . $package, 'i', $package );
+					}
+				}
+			}
+			$ret['unused'] = $unusedTables;
+		}
+		return $ret;
+	}
+	// }}}
+
 	//********************* DATE AND TIME METHODS **************************//
 
 	/**
@@ -1950,59 +2029,6 @@ die;
 			$html = $fmt->format( $z, $page1 );
 		}
 		return $html;
-	}
-
-	/**
-	 * storeVersion will store the version number of a given package
-	 * 
-	 * @param array $pPackage Name of package - if not given, bitweaver_version will be stored
-	 * @param array $pVersion Version number
-	 * @access public
-	 * @return TRUE on success, FALSE on failure
-	 */
-	function storeVersion( $pPackage = NULL, $pVersion ) {
-		global $gBitSystem;
-		$ret = FALSE;
-		if( !empty( $pVersion ) && $this->validateVersion( $pVersion )) {
-			if( empty( $pPackage )) {
-				$gBitSystem->storeConfig( "bitweaver_version", $pVersion, 'kernel' );
-				$ret = TRUE;
-			} elseif( !empty( $gBitSystem->mPackages[$pPackage] )) {
-				$gBitSystem->storeConfig( "package_".$pPackage."_version", $pVersion, $pPackage );
-				$ret = TRUE;
-			}
-		}
-		return $ret;
-	}
-
-	/**
-	 * getVersion will fetch the version number of a given package
-	 * 
-	 * @param array $pPackage Name of package - if not given, bitweaver_version will be stored
-	 * @param array $pVersion Version number
-	 * @access public
-	 * @return version number on success
-	 */
-	function getVersion( $pPackage = NULL, $pDefault = NULL ) {
-		global $gBitSystem;
-		if( empty( $pPackage )) {
-			$config = 'bitweaver_version';
-		} else {
-			$config = "package_".$pPackage."_version";
-		}
-
-		return $gBitSystem->getConfig( $config, $pDefault );
-	}
-
-	/**
-	 * validateVersion 
-	 * 
-	 * @param array $pVersion 
-	 * @access public
-	 * @return TRUE on success, FALSE on failure
-	 */
-	function validateVersion( $pVersion ) {
-		return( preg_match( "/(\d+\.\d+\.\d+)(-dev|-alpha|-beta|-pl|-RC\d+)?/", $pVersion ));
 	}
 
 	/**

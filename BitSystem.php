@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.194 2008/10/23 19:56:14 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.195 2008/10/24 20:20:48 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1650,6 +1650,7 @@ die;
 	function registerPackageInfo( $pPackage, $pInfoHash ) {
 		$pPackage = strtolower( $pPackage ); // lower case for uniformity
 		$this->mPackages[$pPackage]['info'] = $pInfoHash;
+		$this->mPackages[$pPackage]['info']['version'] = $this->getVersion( $pPackage );
 	}
 
 	/**

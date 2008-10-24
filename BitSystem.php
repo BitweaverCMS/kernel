@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.195 2008/10/24 20:20:48 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.196 2008/10/24 22:06:26 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1751,7 +1751,7 @@ die;
 	 * @return TRUE on success, FALSE on failure
 	 */
 	function validateVersion( $pVersion ) {
-		return( preg_match( "/(\d+\.\d+\.\d+)(-dev|-alpha|-beta|-pl|-RC\d+)?/", $pVersion ));
+		return( preg_match( "/^(\d+\.\d+\.\d+)(-dev|-alpha|-beta|-pl|-RC\d+)?$/", $pVersion ));
 	}
 
 	/**

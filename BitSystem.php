@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.196 2008/10/24 22:06:26 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.197 2008/10/27 03:37:56 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1216,12 +1216,26 @@ die;
 	 * @access public
 	 */
 	function lookupMimeType( $pExtension ) {
+
+		$this->loadMimeTypes();
 		if( preg_match( "#\.[0-9a-z]+$#i", $pExtension )) {
 			$pExtension = substr( $pExtension, ( strrpos( $pExtension, '.' ) + 1 ));
 		}
-
 		// rfc1341 - mime types are case insensitive.
 		$pExtension = strtolower( $pExtension );
+
+		return( !empty( $this->mMimeTypes[$pExtension] ) ? $this->mMimeTypes[$pExtension] : 'application/binary' );
+	}
+
+	// === loadMimeTypes
+	/**
+	 * given an extension, return the mime type
+	 *
+	 * @param string $pExtension is the extension of the file or the complete file name
+	 * @return mime type of entry and populates $this->mMimeTypes with existing mime types
+	 * @access public
+	 */
+	function loadMimeTypes() {
 		if( empty( $this->mMimeTypes )) {
 			// use bitweavers mime.types file to ensure everyone has our set unless user forces his own.
 			if( defined( 'MIME_TYPES' ) && is_file( MIME_TYPES )) {
@@ -1244,10 +1258,7 @@ die;
 				fclose( $fp );
 			}
 		}
-
-		return( !empty( $this->mMimeTypes[$pExtension] ) ? $this->mMimeTypes[$pExtension] : 'application/binary' );
 	}
-
 
 	// === verifyFileExtension
 	/**
@@ -1259,15 +1270,22 @@ die;
 	 * @access public
 	 */
 	function verifyFileExtension( $pFile, $pFileName=NULL ) {
+		$this->loadMimeTypes();
 		if( empty( $pFileName ) ) {
 			$pFileName = basename( $pFile );
 			$ret = $pFile;
 		} else {
 			$ret = $pFileName;
 		}
-		$extension = substr( $pFileName, strrpos( $pFileName, '.' ) + 1 );
-		$lookupMime = $this->lookupMimeType( $extension );
 		$verifyMime = $this->verifyMimeType( $pFile );
+		if( strrpos( $pFileName, '.' ) ) {
+			$extension = substr( $pFileName, strrpos( $pFileName, '.' ) + 1 );
+			$lookupMime = $this->lookupMimeType( $extension );
+		} else {
+			//extensionless file uploaded, get ready to add an extension
+			$lookupMime = '';
+			$pFileName .= '.';
+		}
 		if( $lookupMime != $verifyMime ) {
 			if( $mimeExt = array_search( $verifyMime, $this->mMimeTypes ) ) {
 				$ret = substr( $pFileName, 0, strrpos( $pFileName, '.' ) + 1 ).$mimeExt;

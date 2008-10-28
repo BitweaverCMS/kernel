@@ -26,12 +26,22 @@
  *									only dispalyed if help is enabled
  *			- force		(optional)	if set, it will always dipslay this entry regardless of the feature settings
  */
-function smarty_function_formhelp( $params, &$gBitSmarty ) {
-	if( !empty( $params['hash'] ) ) {
-		$hash = &$params['hash'];
+function smarty_function_formhelp( $pParams, &$gBitSmarty ) {
+	$atts = $ret_note = $ret_page = $ret_link = $ret_install = '';
+
+	if( !empty( $pParams['hash'] ) ) {
+		$hash = &$pParams['hash'];
 	} else {
 		// maybe params were passed in separately
-		$hash = &$params;
+		$hash = &$pParams;
+	}
+
+	// we need to do some hash modification if we're in the installer
+	if( !empty( $hash['is_installer'] )) {
+		if( !empty( $hash['note']['upgrade'] )) {
+			$hash['note']['version'] = $hash['note']['upgrade'];
+			unset( $hash['note']['upgrade'] );
+		}
 	}
 
 	foreach( $hash as $key => $val ) {
@@ -86,7 +96,6 @@ function smarty_function_formhelp( $params, &$gBitSmarty ) {
 				}
 			}
 
-			$ret_note = '';
 			if( ( !empty( $rawHash['note'] ) && $gBitSystem->isFeatureActive('site_form_help') ) || ( !empty( $force ) && !empty( $rawHash['note'] ) ) ) {
 				if( is_array( $rawHash['note'] ) ) {
 					foreach( $rawHash['note'] as $name => $value ) {

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.198 2008/10/28 20:59:27 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.199 2008/10/29 22:06:35 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1763,6 +1763,32 @@ die;
 		}
 
 		return $gBitSystem->getConfig( $config, $pDefault );
+	}
+
+	/**
+	 * getLatestUpgradeVersion will fetch the greatest upgrade number for a given package
+	 * 
+	 * @param array $pPackage package we want to fetch the latest version number for
+	 * @access public
+	 * @return string greatest upgrade number for a given package
+	 */
+	function getLatestUpgradeVersion( $pPackage ) {
+		$ret = '0.0.0';
+		if( !empty( $pPackage )) {
+			$dir = constant( strtoupper( $pPackage )."_PKG_PATH" )."admin/upgrades/";
+			if( is_dir( $dir ) && $upDir = opendir( $dir )) {
+				while( FALSE !== ( $file = readdir( $upDir ))) {
+					if( is_file( $dir.$file )) {
+						$upVersion = str_replace( ".php", "", $file );
+						// we only want to update $ret if the version of the file is greater than the previous one
+						if( $this->validateVersion( $upVersion ) && version_compare( $ret, $upVersion, "<" )) {
+							$ret = $upVersion;
+						}
+					}
+				}
+			}
+		}
+		return(( $ret == '0.0.0' ) ? FALSE : $ret );
 	}
 
 	/**

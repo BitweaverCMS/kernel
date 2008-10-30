@@ -73,40 +73,6 @@
 		{/jstab}
 
 
-
-		{jstab title="Not Installed"}
-			{legend legend="bitweaver packages available for installation"}
-
-				<div class="row">
-					<div class="formlabel">
-						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
-					</div>
-					{forminput}
-						<p><strong><a class="warning" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click here to install more Packages{/tr}&nbsp;&hellip;</a></strong></p>
-
-						{$install_unavailable}
-					{/forminput}
-				</div>
-
-				<hr style="clear:both" />
-
-				{foreach key=name item=package from=$gBitSystem->mPackages}
-					{if ((1 or $package.tables) && !$package.required && !$package.installed) }
-						<div class="row">
-							<div class="formlabel">
-								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
-							</div>
-							{forminput}
-								{$name|capitalize}
-								{formhelp note=`$package.info` package=$name}
-							{/forminput}
-						</div>
-					{/if}
-				{/foreach}
-			{/legend}
-		{/jstab}
-
-
 		{jstab title="Required"}
 			{legend legend="Required bitweaver packages installed on your system"}
 				{foreach key=name item=package from=$gBitSystem->mPackages}
@@ -134,6 +100,122 @@
 								<label>
 									<strong>{$name|capitalize}</strong>
 								</label>
+								{formhelp note=`$package.info` package=$name}
+							{/forminput}
+						</div>
+					{/if}
+				{/foreach}
+			{/legend}
+		{/jstab}
+
+
+		{if $dependencymap || $dependencies}
+			{jstab title="Dependencies"}
+				{if $dependencymap}
+					<h2>{tr}Dependencies{/tr}</h2>
+					<p class="help">{tr}Below you will find an illustration of how the packages depend on each other.{/tr}</p>
+					<div style="text-align:center; overflow:auto;">
+						<img alt="A graphical representation of package dependencies" title="Dependency graph" src="{$smarty.const.KERNEL_PKG_URL}dependency_graph.php?format={$smarty.request.format}&amp;command={$smarty.request.command}" usemap="#Dependencies" />
+						{$dependencymap}
+					</div>
+				{/if}
+
+				{if $dependencies}
+					<h2>{tr}Dependency Table{/tr}</h2>
+					<p class="help">{tr}Below you will find a detailed table with package dependencies. If not all package dependencies are met, consider trying to meet all package dependencies. If you don't meet them, you may continue at your own peril.{/tr}</p>
+					<table id="dependencies">
+						<caption>Package Dependencies</caption>
+						<tr>
+							<th style="width:16%;">Requirement</th>
+							<th style="width:16%;">Min Version</th>
+							<th style="width:16%;">Max Version</th>
+							<th style="width:16%;">Available</th>
+							<th style="width:36%;">Result</th>
+						</tr>
+						{foreach from=$dependencies item=dep}
+							{if $pkg != $dep.package}
+								<tr><th colspan="5">{$dep.package|ucfirst} requirements</th></tr>
+								{assign var=pkg value=$dep.package}
+							{/if}
+
+							{if $dep.result == 'ok'}
+								{assign var=class value=success}
+							{elseif $dep.result == 'missing'}
+								{assign var=class value=error}
+							{elseif $dep.result == 'min_dep'}
+								{assign var=class value=error}
+							{elseif $dep.result == 'max_dep'}
+								{assign var=class value=warning}
+							{/if}
+
+							<tr class="{$class}">
+								<td>{$dep.requires|ucfirst}</td>
+								<td>{$dep.required_version.min}</td>
+								<td>{$dep.required_version.max}</td>
+								<td>{$dep.required_version.available}</td>
+								<td>
+									{if $dep.result == 'ok'}
+										OK
+									{elseif $dep.result == 'missing'}
+										Package missing
+										{assign var=missing value=true}
+									{elseif $dep.result == 'min_dep'}
+										Minimum version not met
+										{assign var=min_dep value=true}
+									{elseif $dep.result == 'max_dep'}
+										Maximum version exceeded
+										{assign var=max_dep value=true}
+									{/if}
+								</td>
+							</tr>
+						{/foreach}
+					</table>
+
+					{if $missing}
+						<p class="warning">At least one required package is missing. Please install the missing package.</p>
+					{/if}
+
+					{if $min_dep}
+						<p class="warning">At least one package did not meet the minimum version requirement in our calculations. If possible, please get a newer version of those packages.</p>
+					{/if}
+
+					{if $max_dep}
+						<p class="warning">At least one package recommend a version lower to the one you have installed or are about to upgrade to.</p>
+					{/if}
+
+					{if !$min_dep && !$max_dep && !$missing}
+						<p class="success">All package dependencies have been met.</p>
+					{/if}
+				{/if}
+
+			{/jstab}
+		{/if}
+
+
+		{jstab title="Not Installed"}
+			{legend legend="bitweaver packages available for installation"}
+
+				<div class="row">
+					<div class="formlabel">
+						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
+					</div>
+					{forminput}
+						<p><strong><a class="warning" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click here to install more Packages{/tr}&nbsp;&hellip;</a></strong></p>
+
+						{$install_unavailable}
+					{/forminput}
+				</div>
+
+				<hr style="clear:both" />
+
+				{foreach key=name item=package from=$gBitSystem->mPackages}
+					{if ((1 or $package.tables) && !$package.required && !$package.installed) }
+						<div class="row">
+							<div class="formlabel">
+								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
+							</div>
+							{forminput}
+								{$name|capitalize}
 								{formhelp note=`$package.info` package=$name}
 							{/forminput}
 						</div>

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.199 2008/10/29 22:06:35 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.200 2008/10/30 22:02:20 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1803,6 +1803,252 @@ die;
 	}
 
 	/**
+	 * registerDependencies 
+	 * 
+	 * @param array $pParams 
+	 * @param array $pDepHash 
+	 * @access public
+	 * @return void
+	 */
+	function registerDependencies( $pPackage, $pDepHash ) {
+		if( !empty( $pPackage ) && $this->verifyDependencies( $pDepHash )) {
+			$this->mDependencies[strtolower( $pPackage )]['dependencies'] = $pDepHash;
+		}
+	}
+
+	/**
+	 * verifyDependencies 
+	 * 
+	 * @param array $pDepHash 
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	function verifyDependencies( &$pDepHash ) {
+		if( !empty( $pDepHash ) && is_array( $pDepHash )) {
+			foreach( $pDepHash as $pkg => $versions ) {
+				if( empty( $versions['min'] )) {
+					$this->mErrors['version_min'] = "You have to provide a minimum version number for the $pkg dependency. If you just want the required package to be present, please use 0.0.0 as minimum version.";
+				} elseif( !$this->validateVersion( $versions['min'] )) {
+					$this->mErrors['version_min'] = "Please make sure you use a valid minimum version number for the $pkg dependency.";
+				} elseif( !empty( $versions['max'] )) {
+					if( !$this->validateVersion( $versions['max'] )) {
+						$this->mErrors['version_max'] = "Please make sure you use a valid maximum version number for the $pkg dependency.";
+					} elseif( version_compare( $versions['min'], $versions['max'], '>=' )) {
+						$this->mErrors['version_max'] = "Please make sure the maximum version is greater than the minimum version for the $pkg dependency.";
+					}
+				}
+			}
+		} else {
+			$this->mErrors['deps'] = "If you want to register dependencies, please do so with a valid dependency hash.";
+		}
+
+		// since this should only show up when devs are working, we'll simply display the output:
+		if( !empty( $this->mErrors )) {
+			vd( $this->mErrors );
+			bt();
+		}
+
+		return( count( $this->mErrors ) == 0 );
+	}
+
+	/**
+	 * getDependencies 
+	 * 
+	 * @param array $pPackage 
+	 * @access public
+	 * @return array of package dependencies
+	 */
+	function getDependencies( $pPackage ) {
+		$ret = array();
+		if( !empty( $pPackage )) {
+			$pPackage = strtolower( $pPackage );
+			if( !empty( $this->mDependencies[$pPackage]['dependencies'] )) {
+				return $this->mDependencies[$pPackage]['dependencies'];
+			}
+		}
+		return $ret;
+	}
+
+	/**
+	 * calculateDependencies will calculate all dependencies and return a hash of the results
+	 * 
+	 * @access public
+	 * @return array of calculated dependencies
+	 */
+	function calculateDependencies() {
+		$ret = array();
+		// first we gather all version information.
+		foreach( array_keys( $this->mPackages ) as $package ) {
+			if( $this->isPackageActive( $package )) {
+
+				// get the latest upgrade version, since this is the version the package will be at after install
+				if( !$version = $this->getLatestUpgradeVersion( $package )) {
+					$version = $this->getVersion( $package );
+				}
+				$installed[$package] = $version;
+
+				if( $deps = $this->getDependencies( $package )) {
+					$dependencies[$package] = $deps;
+				}
+			}
+		}
+
+		if( !empty( $dependencies )) {
+			foreach( $dependencies as $package => $deps ) {
+				foreach( $deps as $depPackage => $depVersion ) {
+					$hash = array(
+						'package'          => $package,
+						'package_version'  => $installed[$package],
+						'requires'         => $depPackage,
+						'required_version' => $depVersion,
+					);
+
+					if( !empty( $installed[$depPackage] )) {
+						$hash['version']['available'] = $installed[$depPackage];
+					}
+
+					if( empty( $installed[$depPackage] )) {
+						$hash['result'] = 'missing';
+					} elseif( version_compare( $depVersion['min'], $installed[$depPackage], '>' )) {
+						$hash['result'] = 'min_dep';
+					} elseif( !empty( $depVersion['max'] ) && version_compare( $depVersion['max'], $installed[$depPackage], '<' )) {
+						$hash['result'] = 'max_dep';
+					} else {
+						$hash['result'] = 'ok';
+					}
+
+					$ret[] = $hash;
+				}
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * drawDependencyGraph 
+	 * 
+	 * @access public
+	 * @return image
+	 */
+	function drawDependencyGraph( $pFormat = 'png', $pCommand = 'dot' ) {
+		global $gBitSmarty;
+
+		// only do this if we can load PEAR GraphViz interface
+		if( include_once( 'Image/GraphViz.php' )) {
+			ksort( $this->mPackages );
+			$deps = $this->calculateDependencies();
+			$delKeys = $matches = array();
+
+			// crazy manipulation of hash to remove duplicate version matches.
+			// we do this that we can use double headed arrows in the graph below.
+			foreach( $deps as $key => $dep ) {
+				foreach( $deps as $k => $d ) {
+					if( $dep['requires'] == $d['package'] && $dep['package'] == $d['requires'] && $dep['result'] == 'ok' && $d['result'] == 'ok' ) {
+						$deps[$key]['dir'] = 'both';
+						$matches[$key] = $k;
+					}
+				}
+			}
+
+			// get duplicates
+			foreach( $matches as $key => $match ) {
+				unset( $delKeys[$match] );
+				$delKeys[$key] = $match;
+			}
+
+			// remove dupes from hash
+			foreach( $delKeys as $key ) {
+				unset( $deps[$key] );
+			}
+
+			// start drawing stuff
+			$graphattributes = array(
+				'fontname' => 'mono',
+				'fontsize' => 11,
+				'overlap'  => 'scale',
+				'size'     => '7,10',
+				'ratio'    => 'auto',
+			);
+			$graph = new Image_GraphViz( TRUE, $graphattributes, 'Dependencies', TRUE );
+
+			$fromattributes = $toattributes = array(
+				'overlap'   => 'scale',
+				'fontname'  => 'mono',
+				'fontsize'  => 11,
+				'style'     => 'filled',
+				'fillcolor' => 'palegreen',
+			);
+
+			foreach( $deps as $node ) {
+				//$fromNode = ucfirst( $node['package'] )."\n".$node['package_version'];
+				//$toNode   = ucfirst( $node['requires'] )."\n".$node['required_version']['min'];
+
+				$fromNode = ucfirst( $node['package'] );
+				$toNode   = ucfirst( $node['requires'] );
+
+				switch( $node['result'] ) {
+				case 'max_dep':
+					$edgecolor = 'chocolate3';
+					$headlabel = 'Maximum version\nexceeded';
+					$toNode   .= "\n".$node['required_version']['min']." - ".$node['required_version']['max'];
+					$toattributes['fillcolor'] = 'khaki';
+					break;
+				case 'min_dep':
+					$edgecolor = 'crimson';
+					$headlabel = 'Minimum version\nnot met';
+					$toNode   .= "\n".$node['required_version']['min'];
+					if( !empty( $node['required_version']['max'] )) {
+						$toNode .= " - ".$node['required_version']['max'];
+					}
+					$toattributes['fillcolor'] = 'pink';
+					break;
+				case 'missing':
+					$edgecolor = 'crimson';
+					$headlabel = 'Missing package';
+					$toNode   .= "\n".$node['required_version']['min'];
+					if( !empty( $node['required_version']['max'] )) {
+						$toNode .= " - ".$node['required_version']['max'];
+					}
+					$toattributes['fillcolor'] = 'pink';
+					break;
+				default:
+					$edgecolor = 'darkgreen';
+					$headlabel = '';
+					$toattributes['fillcolor'] = 'palegreen';
+					break;
+				}
+
+				$fromattributes['URL'] = "http://www.bitweaver.org/wiki/".ucfirst( $node['package'] )."Package";
+				$graph->addNode( $fromNode, $fromattributes );
+
+				$toattributes['URL'] = "http://www.bitweaver.org/wiki/".ucfirst( $node['requires'] )."Package";
+				$graph->addNode( $toNode, $toattributes );
+
+				$graph->addEdge(
+					array( $fromNode => $toNode ),
+					array(
+						'dir'       => ( !empty( $node['dir'] ) ? $node['dir'] : '' ),
+						'color'     => $edgecolor,
+						'fontcolor' => $edgecolor,
+						'label'     => $headlabel,
+						'fontname'  => 'mono',
+						'fontsize'  => 11
+					)
+				);
+			}
+
+			if( preg_match( "#(png|gif|jpe?g|bmp|svg|tif)#i", $pFormat )) {
+				$graph->image( $pFormat, $pCommand );
+			} else {
+				return $graph->fetch( $pFormat, $pCommand );
+			}
+		} else {
+			return FALSE;
+		}
+	}
+
+	/**
 	 * verifyInstalledPackages scan all available packages
 	 *
 	 * @param string $ pScanFile file to be looked for
@@ -1886,8 +2132,7 @@ die;
 	}
 	// }}}
 
-	//********************* DATE AND TIME METHODS **************************//
-
+	// {{{=========================== Date and time methods ==============================
 	/**
 	 * Retrieve a current UTC timestamp
 	 * Simple map to BitDate object allowing tidy display elsewhere
@@ -1995,6 +2240,7 @@ die;
 	function get_long_datetime( $pTimestamp, $pUser = FALSE ) {
 		return $this->mServerTimestamp->strftime( $this->get_long_datetime_format(), $pTimestamp, $pUser );
 	}
+	// }}}
 
 	/**
 	 * checkBitVersion Check for new version of bitweaver
@@ -2115,7 +2361,7 @@ die;
 
 
 
-	// ==================== deprecated methods - will be removed soon ====================
+	// {{{ ==================== deprecated methods - will be removed soon ====================
 	// deprecated method saved compatibility until all getPreference calls have been eliminated
 	/**
 	 * @deprecated deprecated since version 2.1.0-beta
@@ -2243,6 +2489,7 @@ die;
 			$this->setRenderFormat( "html" );
 		}
 	}
+	// }}}
 }
 
 /* Function for sorting AppMenu by menu_position */
@@ -2256,4 +2503,5 @@ function bit_system_menu_sort( $a, $b ) {
 	return $pb - $pa;
 }
 
+/* vim: :set fdm=marker : */
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.9 2006/10/11 07:45:46 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.10 2008/10/30 22:02:20 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -13,25 +13,23 @@ $fPackage = &$_REQUEST['fPackage'];   // emulate register_globals
 $gBitSystem->scanPackages(
 	'bit_setup_inc.php', TRUE, 'all', TRUE, TRUE
 );
-ksort($gBitSystem->mPackages);	// So packages will be listed in alphabetical order
 
 // make a copy of mPackages - expensive, but this is low use code
 
-if(!empty( $_REQUEST['features'] ) ) {
+if( !empty( $_REQUEST['features'] ) ) {
 	$pkgArray = $gBitSystem->mPackages;
 	foreach( array_keys( $pkgArray ) as $pkgKey ) {
 		$pkg = $pkgArray[$pkgKey];
-		if( isset( $pkg['name'] ) ) {
+		if( !empty( $pkg['name'] )) {
 			$pkgName = strtolower( $pkg['name'] );
-			#can only change already installed packages that are not required
-			if ($gBitSystem->isPackageInstalled($pkgName) && empty($pkg['required']) ) {
-				if( isset( $_REQUEST['fPackage'][$pkgName] ) ) {
-					#mark installed and active
+			// can only change already installed packages that are not required
+			if( $gBitSystem->isPackageInstalled( $pkgName ) && empty( $pkg['required'] )) {
+				if( isset( $_REQUEST['fPackage'][$pkgName] )) {
+					// mark installed and active
 					$gBitSystem->storeConfig( 'package_'.$pkgName, 'y', $pkgName );
 					unset( $pkgArray[$pkgKey] );
-				}
-				else {
-					#mark installed but not active
+				} else {
+					// mark installed but not active
 					$gBitSystem->storeConfig( 'package_'.$pkgName, 'i', $pkgName );
 					unset( $pkgArray[$pkgKey] );
 				}
@@ -43,4 +41,9 @@ if(!empty( $_REQUEST['features'] ) ) {
 global $gBitInstaller;
 $gBitInstaller = &$gBitSystem;
 $gBitSystem->verifyInstalledPackages();
+$gBitSmarty->assign( 'dependencies', $gBitInstaller->calculateDependencies() );
+$gBitSmarty->assign( 'dependencymap', $gBitSystem->drawDependencyGraph( 'cmapx' ));
+
+// So packages will be listed in alphabetical order
+ksort( $gBitSystem->mPackages );
 ?>

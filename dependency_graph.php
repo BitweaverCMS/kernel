@@ -1,5 +1,6 @@
 <?php
 require_once( '../bit_setup_inc.php' );
+$gBitSystem->verifyPermission( 'p_admin' );
 global $gBitInstaller;
 $gBitInstaller = &$gBitSystem;
 $gBitInstaller->verifyInstalledPackages();

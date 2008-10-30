@@ -115,7 +115,7 @@
 					<h2>{tr}Dependencies{/tr}</h2>
 					<p class="help">{tr}Below you will find an illustration of how the packages depend on each other.{/tr}</p>
 					<div style="text-align:center; overflow:auto;">
-						<img alt="A graphical representation of package dependencies" title="Dependency graph" src="{$smarty.const.KERNEL_PKG_URL}dependency_graph.php?format={$smarty.request.format}&amp;command={$smarty.request.command}" usemap="#Dependencies" />
+						<img alt="A graphical representation of package dependencies" title="Dependency graph" src="{$smarty.const.KERNEL_PKG_URL}dependency_graph.php?install_version=1&amp;format={$smarty.request.format}&amp;command={$smarty.request.command}" usemap="#Dependencies" />
 						{$dependencymap}
 					</div>
 				{/if}
@@ -172,22 +172,26 @@
 					</table>
 
 					{if $missing}
-						<p class="warning">At least one required package is missing. Please install the missing package.</p>
+						{formfeedback warning="At least one required package is missing. Please activate or install the missing package." link="install/install.php?step=3/Install Package"}
 					{/if}
 
 					{if $min_dep}
-						<p class="warning">At least one package did not meet the minimum version requirement in our calculations. If possible, please get a newer version of those packages.</p>
+						{formfeedback warning="At least one package did not meet the minimum version requirement. If possible, please upgrade to a newer version."}
 					{/if}
 
 					{if $max_dep}
-						<p class="warning">At least one package recommend a version lower to the one you have installed or are about to upgrade to.</p>
+						{formfeedback warning="At least one package recommend a version lower to the one you have installed. This might cause problems."}
 					{/if}
 
 					{if !$min_dep && !$max_dep && !$missing}
-						<p class="success">All package dependencies have been met.</p>
+						{formfeedback success="All package dependencies have been met."}
 					{/if}
 				{/if}
 
+				<ul>
+					<li>{smartlink ititle="Install Packages" ipackage=install ifile=install.php step=3}</li>
+					<li>{smartlink ititle="Upgrade Packages" ipackage=install ifile=install.php step=4}</li>
+				</ul>
 			{/jstab}
 		{/if}
 

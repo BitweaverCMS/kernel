@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.200 2008/10/30 22:02:20 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.201 2008/10/30 23:02:12 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1872,17 +1872,18 @@ die;
 	/**
 	 * calculateDependencies will calculate all dependencies and return a hash of the results
 	 * 
+	 * @param boolean $pInstallVersion Use the actual installed version instead of the version that will be in bitweaver after the upgrade
 	 * @access public
-	 * @return array of calculated dependencies
+	 * @return boolean TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function calculateDependencies() {
+	function calculateDependencies( $pInstallVersion = FALSE ) {
 		$ret = array();
 		// first we gather all version information.
 		foreach( array_keys( $this->mPackages ) as $package ) {
 			if( $this->isPackageActive( $package )) {
 
 				// get the latest upgrade version, since this is the version the package will be at after install
-				if( !$version = $this->getLatestUpgradeVersion( $package )) {
+				if( $pInstallVersion || !$version = $this->getLatestUpgradeVersion( $package )) {
 					$version = $this->getVersion( $package );
 				}
 				$installed[$package] = $version;
@@ -1926,18 +1927,21 @@ die;
 	}
 
 	/**
-	 * drawDependencyGraph 
+	 * drawDependencyGraph Will draw a dependency graph if PEAR::Image_GraphViz is installed
 	 * 
+	 * @param boolean $pInstallVersion Use the actual installed version instead of the version that will be in bitweaver after the upgrade
+	 * @param string $pFormat dot output format
+	 * @param string $pCommand dot or neato
 	 * @access public
-	 * @return image
+	 * @return boolean TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function drawDependencyGraph( $pFormat = 'png', $pCommand = 'dot' ) {
+	function drawDependencyGraph( $pInstallVersion = FALSE, $pFormat = 'png', $pCommand = 'dot' ) {
 		global $gBitSmarty;
 
 		// only do this if we can load PEAR GraphViz interface
 		if( include_once( 'Image/GraphViz.php' )) {
 			ksort( $this->mPackages );
-			$deps = $this->calculateDependencies();
+			$deps = $this->calculateDependencies( $pInstallVersion );
 			$delKeys = $matches = array();
 
 			// crazy manipulation of hash to remove duplicate version matches.
@@ -1965,17 +1969,15 @@ die;
 			// start drawing stuff
 			$graphattributes = array(
 				'fontname' => 'mono',
-				'fontsize' => 11,
+				'fontsize' => 10,
 				'overlap'  => 'scale',
-				'size'     => '7,10',
-				'ratio'    => 'auto',
 			);
 			$graph = new Image_GraphViz( TRUE, $graphattributes, 'Dependencies', TRUE );
 
 			$fromattributes = $toattributes = array(
 				'overlap'   => 'scale',
 				'fontname'  => 'mono',
-				'fontsize'  => 11,
+				'fontsize'  => 10,
 				'style'     => 'filled',
 				'fillcolor' => 'palegreen',
 			);

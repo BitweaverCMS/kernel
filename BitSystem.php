@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.201 2008/10/30 23:02:12 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.202 2008/10/31 08:12:23 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1667,7 +1667,11 @@ die;
 	 */
 	function registerPackageInfo( $pPackage, $pInfoHash ) {
 		$pPackage = strtolower( $pPackage ); // lower case for uniformity
-		$this->mPackages[$pPackage]['info'] = $pInfoHash;
+		if( !empty( $this->mPackages[$pPackage]['info'] )) {
+			$this->mPackages[$pPackage]['info'] = array_merge( $this->mPackages[$pPackage]['info'], $pInfoHash );
+		} else {
+			$this->mPackages[$pPackage]['info'] = $pInfoHash;
+		}
 		$this->mPackages[$pPackage]['info']['version'] = $this->getVersion( $pPackage );
 		$upgrade = $this->getLatestUpgradeVersion( $pPackage );
 		if( !empty( $upgrade ) && version_compare( $upgrade, $this->getVersion( $pPackage ), '>' )) {
@@ -1792,6 +1796,21 @@ die;
 	}
 
 	/**
+	 * registerPackageVersion Holds the package version
+	 *
+	 * @param array $pPackage 
+	 * @param array $pVersion 
+	 * @access public
+	 * @return void
+	 */
+	function registerPackageVersion( $pPackage, $pVersion ) {
+		if( !empty( $pPackage ) && $this->validateVersion( $pVersion )) {
+			$pPackage = strtolower( $pPackage );
+			$this->mPackages[$pPackage]['version'] = $pVersion;
+		}
+	}
+
+	/**
 	 * validateVersion 
 	 * 
 	 * @param array $pVersion 
@@ -1803,43 +1822,57 @@ die;
 	}
 
 	/**
-	 * registerDependencies 
+	 * registerRequirements 
 	 * 
 	 * @param array $pParams 
 	 * @param array $pDepHash 
 	 * @access public
 	 * @return void
 	 */
-	function registerDependencies( $pPackage, $pDepHash ) {
-		if( !empty( $pPackage ) && $this->verifyDependencies( $pDepHash )) {
-			$this->mDependencies[strtolower( $pPackage )]['dependencies'] = $pDepHash;
+	function registerRequirements( $pPackage, $pDepHash ) {
+		if( !empty( $pPackage ) && $this->verifyRequirements( $pDepHash )) {
+			$pPackage = strtolower( $pPackage );
+			$this->mRequirements[$pPackage]['requirements'] = $pDepHash;
+
+			// and we display the info
+			$this->mPackages[$pPackage]['info']['requirements'] = '';
+			foreach( $pDepHash as $dep => $version ) {
+				$this->mPackages[$pPackage]['info']['requirements'] .= '<a class="external" href="http://www.bitweaver.org/wiki/'.ucfirst( $dep ).'Package">'.ucfirst( $dep ).'</a>';
+				$max = ( !empty( $version['max'] ) ? " - ".$version['max'] : '' );
+				if( $version['min'] != '0.0.0' ) {
+					$this->mPackages[$pPackage]['info']['requirements'] .= " (".$version['min'].$max.")";
+				}
+				$this->mPackages[$pPackage]['info']['requirements'] .= ", ";
+			}
+			// remove trailing ,
+			$this->mPackages[$pPackage]['info']['requirements'] = rtrim( trim( $this->mPackages[$pPackage]['info']['requirements'] ), "," );
 		}
 	}
 
 	/**
-	 * verifyDependencies 
+	 * verifyRequirements 
 	 * 
 	 * @param array $pDepHash 
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function verifyDependencies( &$pDepHash ) {
+	function verifyRequirements( &$pDepHash ) {
 		if( !empty( $pDepHash ) && is_array( $pDepHash )) {
 			foreach( $pDepHash as $pkg => $versions ) {
 				if( empty( $versions['min'] )) {
-					$this->mErrors['version_min'] = "You have to provide a minimum version number for the $pkg dependency. If you just want the required package to be present, please use 0.0.0 as minimum version.";
+					$this->mErrors['version_min'] = "You have to provide a minimum version number for the $pkg requirement. If you just want the required package to be present, please use 0.0.0 as minimum version.";
 				} elseif( !$this->validateVersion( $versions['min'] )) {
-					$this->mErrors['version_min'] = "Please make sure you use a valid minimum version number for the $pkg dependency.";
+					$this->mErrors['version_min'] = "Please make sure you use a valid minimum version number for the $pkg requirement.";
 				} elseif( !empty( $versions['max'] )) {
 					if( !$this->validateVersion( $versions['max'] )) {
-						$this->mErrors['version_max'] = "Please make sure you use a valid maximum version number for the $pkg dependency.";
+						$this->mErrors['version_max'] = "Please make sure you use a valid maximum version number for the $pkg requirement.";
 					} elseif( version_compare( $versions['min'], $versions['max'], '>=' )) {
-						$this->mErrors['version_max'] = "Please make sure the maximum version is greater than the minimum version for the $pkg dependency.";
+						$this->mErrors['version_max'] = "Please make sure the maximum version is greater than the minimum version for the $pkg requirement.";
 					}
 				}
 			}
 		} else {
-			$this->mErrors['deps'] = "If you want to register dependencies, please do so with a valid dependency hash.";
+			$this->mErrors['deps'] = "If you want to register requirements, please do so with a valid requirement hash.";
 		}
 
 		// since this should only show up when devs are working, we'll simply display the output:
@@ -1852,31 +1885,31 @@ die;
 	}
 
 	/**
-	 * getDependencies 
+	 * getRequirements 
 	 * 
 	 * @param array $pPackage 
 	 * @access public
-	 * @return array of package dependencies
+	 * @return array of package requirements
 	 */
-	function getDependencies( $pPackage ) {
+	function getRequirements( $pPackage ) {
 		$ret = array();
 		if( !empty( $pPackage )) {
 			$pPackage = strtolower( $pPackage );
-			if( !empty( $this->mDependencies[$pPackage]['dependencies'] )) {
-				return $this->mDependencies[$pPackage]['dependencies'];
+			if( !empty( $this->mRequirements[$pPackage]['requirements'] )) {
+				return $this->mRequirements[$pPackage]['requirements'];
 			}
 		}
 		return $ret;
 	}
 
 	/**
-	 * calculateDependencies will calculate all dependencies and return a hash of the results
+	 * calculateRequirements will calculate all requirements and return a hash of the results
 	 * 
 	 * @param boolean $pInstallVersion Use the actual installed version instead of the version that will be in bitweaver after the upgrade
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function calculateDependencies( $pInstallVersion = FALSE ) {
+	function calculateRequirements( $pInstallVersion = FALSE ) {
 		$ret = array();
 		// first we gather all version information.
 		foreach( array_keys( $this->mPackages ) as $package ) {
@@ -1888,14 +1921,14 @@ die;
 				}
 				$installed[$package] = $version;
 
-				if( $deps = $this->getDependencies( $package )) {
-					$dependencies[$package] = $deps;
+				if( $deps = $this->getRequirements( $package )) {
+					$requirements[$package] = $deps;
 				}
 			}
 		}
 
-		if( !empty( $dependencies )) {
-			foreach( $dependencies as $package => $deps ) {
+		if( !empty( $requirements )) {
+			foreach( $requirements as $package => $deps ) {
 				foreach( $deps as $depPackage => $depVersion ) {
 					$hash = array(
 						'package'          => $package,
@@ -1927,7 +1960,7 @@ die;
 	}
 
 	/**
-	 * drawDependencyGraph Will draw a dependency graph if PEAR::Image_GraphViz is installed
+	 * drawRequirementsGraph Will draw a requirement graph if PEAR::Image_GraphViz is installed
 	 * 
 	 * @param boolean $pInstallVersion Use the actual installed version instead of the version that will be in bitweaver after the upgrade
 	 * @param string $pFormat dot output format
@@ -1935,13 +1968,13 @@ die;
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function drawDependencyGraph( $pInstallVersion = FALSE, $pFormat = 'png', $pCommand = 'dot' ) {
+	function drawRequirementsGraph( $pInstallVersion = FALSE, $pFormat = 'png', $pCommand = 'dot' ) {
 		global $gBitSmarty;
 
 		// only do this if we can load PEAR GraphViz interface
 		if( include_once( 'Image/GraphViz.php' )) {
 			ksort( $this->mPackages );
-			$deps = $this->calculateDependencies( $pInstallVersion );
+			$deps = $this->calculateRequirements( $pInstallVersion );
 			$delKeys = $matches = array();
 
 			// crazy manipulation of hash to remove duplicate version matches.
@@ -1972,7 +2005,7 @@ die;
 				'fontsize' => 10,
 				'overlap'  => 'scale',
 			);
-			$graph = new Image_GraphViz( TRUE, $graphattributes, 'Dependencies', TRUE );
+			$graph = new Image_GraphViz( TRUE, $graphattributes, 'Requirements', TRUE );
 
 			$fromattributes = $toattributes = array(
 				'overlap'   => 'scale',

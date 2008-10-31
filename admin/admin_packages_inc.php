@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.11 2008/10/30 23:02:12 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.12 2008/10/31 08:12:24 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -41,8 +41,8 @@ if( !empty( $_REQUEST['features'] ) ) {
 global $gBitInstaller;
 $gBitInstaller = &$gBitSystem;
 $gBitSystem->verifyInstalledPackages();
-$gBitSmarty->assign( 'dependencies', $gBitInstaller->calculateDependencies( TRUE ) );
-$gBitSmarty->assign( 'dependencymap', $gBitSystem->drawDependencyGraph( TRUE, 'cmapx' ));
+$gBitSmarty->assign( 'requirements', $gBitInstaller->calculateRequirements( TRUE ) );
+$gBitSmarty->assign( 'requirementsMap', $gBitSystem->drawRequirementsGraph( TRUE, 'cmapx' ));
 
 // So packages will be listed in alphabetical order
 ksort( $gBitSystem->mPackages );

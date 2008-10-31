@@ -109,22 +109,22 @@
 		{/jstab}
 
 
-		{if $dependencymap || $dependencies}
-			{jstab title="Dependencies"}
-				{if $dependencymap}
-					<h2>{tr}Dependencies{/tr}</h2>
+		{if $requirementsMap || $requirements}
+			{jstab title="Requirements"}
+				{if $requirementsMap}
+					<h2>{tr}Requirements{/tr}</h2>
 					<p class="help">{tr}Below you will find an illustration of how the packages depend on each other.{/tr}</p>
 					<div style="text-align:center; overflow:auto;">
-						<img alt="A graphical representation of package dependencies" title="Dependency graph" src="{$smarty.const.KERNEL_PKG_URL}dependency_graph.php?install_version=1&amp;format={$smarty.request.format}&amp;command={$smarty.request.command}" usemap="#Dependencies" />
-						{$dependencymap}
+						<img alt="A graphical representation of package requirements" title="Requirements graph" src="{$smarty.const.KERNEL_PKG_URL}requirements_graph.php?install_version=1&amp;format={$smarty.request.format}&amp;command={$smarty.request.command}" usemap="#Requirements" />
+						{$requirementsMap}
 					</div>
 				{/if}
 
-				{if $dependencies}
-					<h2>{tr}Dependency Table{/tr}</h2>
-					<p class="help">{tr}Below you will find a detailed table with package dependencies. If not all package dependencies are met, consider trying to meet all package dependencies. If you don't meet them, you may continue at your own peril.{/tr}</p>
-					<table id="dependencies">
-						<caption>Package Dependencies</caption>
+				{if $requirements}
+					<h2>{tr}Requirements Table{/tr}</h2>
+					<p class="help">{tr}Below you will find a detailed table with package requirements. If not all package requirements are met, consider trying to meet all package requirements. If you don't meet them, you may continue at your own peril.{/tr}</p>
+					<table id="requirements">
+						<caption>Package Requirements</caption>
 						<tr>
 							<th style="width:16%;">Requirement</th>
 							<th style="width:16%;">Min Version</th>
@@ -132,7 +132,7 @@
 							<th style="width:16%;">Available</th>
 							<th style="width:36%;">Result</th>
 						</tr>
-						{foreach from=$dependencies item=dep}
+						{foreach from=$requirements item=dep}
 							{if $pkg != $dep.package}
 								<tr><th colspan="5">{$dep.package|ucfirst} requirements</th></tr>
 								{assign var=pkg value=$dep.package}
@@ -184,7 +184,7 @@
 					{/if}
 
 					{if !$min_dep && !$max_dep && !$missing}
-						{formfeedback success="All package dependencies have been met."}
+						{formfeedback success="All package requirements have been met."}
 					{/if}
 				{/if}
 

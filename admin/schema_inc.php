@@ -137,8 +137,8 @@ $gBitInstaller->registerUserPermissions( KERNEL_PKG_NAME, array(
 	array('p_access_closed_site', 'Can access site when closed', 'admin', KERNEL_PKG_NAME)
 ));
 
-// Package dependencies
-$gBitInstaller->registerDependencies( KERNEL_PKG_NAME, array(
+// Package requirements
+$gBitInstaller->registerRequirements( KERNEL_PKG_NAME, array(
 	'liberty'   => array( 'min' => '2.1.0' ),
 	'users'     => array( 'min' => '2.1.0' ),
 	'themes'    => array( 'min' => '2.0.0' ),

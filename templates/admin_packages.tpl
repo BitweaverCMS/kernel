@@ -27,13 +27,18 @@
 							</div>
 							{forminput}
 								<label>
-									{assign var=disabled value=''}
-									{foreach from=$gBitSystem->mRequirements item=reqs}
-										{if $reqs.$name && $package.active_switch eq 'y'}
-											{assign var=disabled value='disabled="disabled"'}
+									{assign var=is_requirement value=''}
+									{foreach from=$gBitSystem->mRequirements key=req item=reqs}
+										{if $reqs.$name && $gBitSystem->isPackageActive($req) && $package.active_switch eq 'y'}
+											{assign var=is_requirement value='true'}
 										{/if}
 									{/foreach}
-									<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} {$disabled} />
+									{if $is_requirement}
+										{biticon iname=dialog-ok iexplain="Required"}
+										<input type="hidden" value="y" name="fPackage[{$name}]" id="package_{$name}" />
+									{else}
+										<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
+									{/if}
 									&nbsp; <strong>{$name|capitalize}</strong>
 									{assign var=first_loop value=1}
 									{foreach from=$gBitSystem->mRequirements key=required_by item=reqs}
@@ -66,15 +71,18 @@
 							</div>
 							{forminput}
 								<label>
-									{assign var=disabled value=''}
-									{foreach from=$gBitSystem->mRequirements key=req_by item=reqs}
-										{if $reqs.$name}
-											{if $package.active_switch eq 'y'}
-												{assign var=disabled value='disabled="disabled"'}
-											{/if}
+									{assign var=is_requirement value=''}
+									{foreach from=$gBitSystem->mRequirements key=req item=reqs}
+										{if $reqs.$name && $gBitSystem->isPackageActive($req) && $package.active_switch eq 'y'}
+											{assign var=is_requirement value='true'}
 										{/if}
 									{/foreach}
-									<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
+									{if $is_requirement}
+										{biticon iname=dialog-ok iexplain="Required"}
+										<input type="hidden" value="y" name="fPackage[{$name}]" id="package_{$name}" />
+									{else}
+										<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
+									{/if}
 									&nbsp; <strong>{$name|capitalize}</strong>
 									{assign var=first_loop value=1}
 									{foreach from=$gBitSystem->mRequirements key=required_by item=reqs}
@@ -136,10 +144,10 @@
 
 
 		{if $requirementsMap || $requirements}
-			{jstab title="Requirements"}
+			{jstab title="Dependencies"}
 				{if $requirementsMap}
 					<h2>{tr}Requirements{/tr}</h2>
-					<p class="help">{tr}Below you will find an illustration of how the packages depend on each other.{/tr}</p>
+					<p class="help">{tr}Below you will find an illustration of how packages depend on each other.{/tr}</p>
 					<div style="text-align:center; overflow:auto;">
 						<img alt="A graphical representation of package requirements" title="Requirements graph" src="{$smarty.const.KERNEL_PKG_URL}requirements_graph.php?install_version=1&amp;format={$smarty.request.format}&amp;command={$smarty.request.command}" usemap="#Requirements" />
 						{$requirementsMap}

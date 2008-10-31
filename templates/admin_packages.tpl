@@ -27,9 +27,21 @@
 							</div>
 							{forminput}
 								<label>
-									<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
-									&nbsp;
-									<strong>{$name|capitalize}</strong>
+									{assign var=disabled value=''}
+									{foreach from=$gBitSystem->mRequirements item=reqs}
+										{if $reqs.$name && $package.active_switch eq 'y'}
+											{assign var=disabled value='disabled="disabled"'}
+										{/if}
+									{/foreach}
+									<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} {$disabled} />
+									&nbsp; <strong>{$name|capitalize}</strong>
+									{assign var=first_loop value=1}
+									{foreach from=$gBitSystem->mRequirements key=required_by item=reqs}
+										{if $reqs.$name}
+											{if $first_loop}<br />{biticon iname=dialog-warning iexplain="Requirement"} Required by {else}, {/if}{$required_by}
+											{assign var=first_loop value=0}
+										{/if}
+									{/foreach}
 								</label>
 								{formhelp note=`$package.info` package=$name}
 							{/forminput}
@@ -54,9 +66,23 @@
 							</div>
 							{forminput}
 								<label>
+									{assign var=disabled value=''}
+									{foreach from=$gBitSystem->mRequirements key=req_by item=reqs}
+										{if $reqs.$name}
+											{if $package.active_switch eq 'y'}
+												{assign var=disabled value='disabled="disabled"'}
+											{/if}
+										{/if}
+									{/foreach}
 									<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
-									&nbsp;
-									<strong>{$name|capitalize}</strong>
+									&nbsp; <strong>{$name|capitalize}</strong>
+									{assign var=first_loop value=1}
+									{foreach from=$gBitSystem->mRequirements key=required_by item=reqs}
+										{if $reqs.$name}
+											{if $first_loop}<br />{biticon iname=dialog-warning iexplain="Requirement"} Required by {else}, {/if}{$required_by}
+											{assign var=first_loop value=0}
+										{/if}
+									{/foreach}
 									<br />
 									{tr}Service Type{/tr}: <strong>{$package.service|capitalize|replace:"_":" "}</strong>
 								</label>
@@ -82,8 +108,8 @@
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>
 							{forminput}
-									<strong>{$name|capitalize}</strong>
-									{formhelp note=`$package.info` package=$name}
+								<strong>{$name|capitalize}</strong>
+								{formhelp note=`$package.info` package=$name}
 							{/forminput}
 						</div>
 					{/if}
@@ -157,7 +183,7 @@
 									{if $dep.result == 'ok'}
 										OK
 									{elseif $dep.result == 'missing'}
-										Package missing
+										Package not installed or not activated
 										{assign var=missing value=true}
 									{elseif $dep.result == 'min_dep'}
 										Minimum version not met

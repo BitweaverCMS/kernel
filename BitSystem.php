@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.202 2008/10/31 08:12:23 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.203 2008/10/31 10:16:33 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1825,19 +1825,21 @@ die;
 	 * registerRequirements 
 	 * 
 	 * @param array $pParams 
-	 * @param array $pDepHash 
+	 * @param array $pReqHash 
 	 * @access public
 	 * @return void
 	 */
-	function registerRequirements( $pPackage, $pDepHash ) {
-		if( !empty( $pPackage ) && $this->verifyRequirements( $pDepHash )) {
+	function registerRequirements( $pPackage, $pReqHash ) {
+		if( !empty( $pPackage ) && $this->verifyRequirements( $pReqHash )) {
 			$pPackage = strtolower( $pPackage );
-			$this->mRequirements[$pPackage]['requirements'] = $pDepHash;
+			$this->mRequirements[$pPackage] = $pReqHash;
 
 			// and we display the info
 			$this->mPackages[$pPackage]['info']['requirements'] = '';
-			foreach( $pDepHash as $dep => $version ) {
-				$this->mPackages[$pPackage]['info']['requirements'] .= '<a class="external" href="http://www.bitweaver.org/wiki/'.ucfirst( $dep ).'Package">'.ucfirst( $dep ).'</a>';
+			foreach( $pReqHash as $req => $version ) {
+				//$this->mPackages[$req]['is_requirement'] = TRUE;
+
+				$this->mPackages[$pPackage]['info']['requirements'] .= '<a class="external" href="http://www.bitweaver.org/wiki/'.ucfirst( $req ).'Package">'.ucfirst( $req ).'</a>';
 				$max = ( !empty( $version['max'] ) ? " - ".$version['max'] : '' );
 				if( $version['min'] != '0.0.0' ) {
 					$this->mPackages[$pPackage]['info']['requirements'] .= " (".$version['min'].$max.")";
@@ -1852,13 +1854,13 @@ die;
 	/**
 	 * verifyRequirements 
 	 * 
-	 * @param array $pDepHash 
+	 * @param array $pReqHash 
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function verifyRequirements( &$pDepHash ) {
-		if( !empty( $pDepHash ) && is_array( $pDepHash )) {
-			foreach( $pDepHash as $pkg => $versions ) {
+	function verifyRequirements( &$pReqHash ) {
+		if( !empty( $pReqHash ) && is_array( $pReqHash )) {
+			foreach( $pReqHash as $pkg => $versions ) {
 				if( empty( $versions['min'] )) {
 					$this->mErrors['version_min'] = "You have to provide a minimum version number for the $pkg requirement. If you just want the required package to be present, please use 0.0.0 as minimum version.";
 				} elseif( !$this->validateVersion( $versions['min'] )) {
@@ -1895,8 +1897,8 @@ die;
 		$ret = array();
 		if( !empty( $pPackage )) {
 			$pPackage = strtolower( $pPackage );
-			if( !empty( $this->mRequirements[$pPackage]['requirements'] )) {
-				return $this->mRequirements[$pPackage]['requirements'];
+			if( !empty( $this->mRequirements[$pPackage] )) {
+				return $this->mRequirements[$pPackage];
 			}
 		}
 		return $ret;
@@ -1979,9 +1981,9 @@ die;
 
 			// crazy manipulation of hash to remove duplicate version matches.
 			// we do this that we can use double headed arrows in the graph below.
-			foreach( $deps as $key => $dep ) {
+			foreach( $deps as $key => $req ) {
 				foreach( $deps as $k => $d ) {
-					if( $dep['requires'] == $d['package'] && $dep['package'] == $d['requires'] && $dep['result'] == 'ok' && $d['result'] == 'ok' ) {
+					if( $req['requires'] == $d['package'] && $req['package'] == $d['requires'] && $req['result'] == 'ok' && $d['result'] == 'ok' ) {
 						$deps[$key]['dir'] = 'both';
 						$matches[$key] = $k;
 					}
@@ -2040,7 +2042,7 @@ die;
 					break;
 				case 'missing':
 					$edgecolor = 'crimson';
-					$headlabel = 'Missing package';
+					$headlabel = 'Not installed\nor activated';
 					$toNode   .= "\n".$node['required_version']['min'];
 					if( !empty( $node['required_version']['max'] )) {
 						$toNode .= " - ".$node['required_version']['max'];

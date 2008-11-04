@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.204 2008/11/02 04:14:29 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.205 2008/11/04 16:20:00 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1975,7 +1975,7 @@ die;
 		global $gBitSmarty;
 
 		// only do this if we can load PEAR GraphViz interface
-		if( include_once( 'Image/GraphViz.php' )) {
+		if( file_exists( 'Image/GraphViz.php' ) && include_once( 'Image/GraphViz.php' )) {
 			ksort( $this->mPackages );
 			$deps = $this->calculateRequirements( $pInstallVersion );
 			$delKeys = $matches = array();

@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.26 2008/06/06 16:18:09 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.27 2008/11/06 17:53:24 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -45,8 +45,16 @@ require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
  * @package kernel
  */
 class BitDbAdodb extends BitDb {
-	function BitDbAdodb() {
-		global $gBitDbType, $gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName, $ADODB_FETCH_MODE;
+	function BitDbAdodb( $pConnectionHash = NULL ) {
+		global $ADODB_FETCH_MODE;
+		if( is_null( $pConnectionHash ) ) {
+			global $gBitDbType, $gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName;
+			$pConnectionHash['db_type'] = $gBitDbType;
+			$pConnectionHash['db_host'] = $gBitDbHost;
+			$pConnectionHash['db_user'] = $gBitDbUser;
+			$pConnectionHash['db_password'] = $gBitDbPassword;
+			$pConnectionHash['db_name'] = $gBitDbName;
+		}
 
 		parent::BitDb();
 
@@ -59,21 +67,21 @@ class BitDbAdodb extends BitDb {
 		}
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 
-		if( !empty( $gBitDbName ) && !empty( $gBitDbType ) ) {
-			if( $gBitDbType == 'oci8' ) {
-				$gBitDbType = 'oci8po';
+		if( !empty( $pConnectionHash['db_name'] ) && !empty( $pConnectionHash['db_type'] ) ) {
+			if( $pConnectionHash['db_type'] == 'oci8' ) {
+				$pConnectionHash['db_type'] = 'oci8po';
 			}
-			$this->mType = $gBitDbType;
-			$this->mName = $gBitDbName;
+			$this->mType = $pConnectionHash['db_type'];
+			$this->mName = $pConnectionHash['db_type'];
 			if( !isset( $this->mName )) {
 				die( "No database name specified" );
 			}
 			$this->preDBConnection();
-			$this->mDb = ADONewConnection( $gBitDbType );
-			$this->mDb->Connect( $gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName );
+			$this->mDb = ADONewConnection( $pConnectionHash['db_type'] );
+			$this->mDb->Connect( $pConnectionHash['db_host'], $pConnectionHash['db_user'], $pConnectionHash['db_password'], $pConnectionHash['db_name'] );
 
 			if( !$this->mDb ) {
-				die( "Unable to login to the database '<?=$gBitDbName?>' on '<?=$gBitDbHost?>' as `user` '<?=$gBitDbUser?>'<p>".$this->mDb->ErrorMsg() );
+				die( "Unable to login to the database $pConnectionHash[db_type] on $pConnectionHash[db_host] as `user` $pConnectionHash[db_user]<p>".$this->mDb->ErrorMsg() );
 			}
 			$this->postDBConnection();
 			unset( $pDSN );

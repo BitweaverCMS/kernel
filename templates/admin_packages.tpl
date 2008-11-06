@@ -8,7 +8,9 @@
 	{/capture}
 {/if}
 
-{form class="kernel_`$page`|replace:'packages':'pkg'"}
+{assign var=pageName value=kernel_`$page`}
+
+{form class=$pageName|replace:'packages':'pkg'}
 	<input type="hidden" name="page" value="{$page}" />
 	{jstabs}
 		{jstab title="Installed"}

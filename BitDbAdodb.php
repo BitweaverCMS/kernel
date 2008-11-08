@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.27 2008/11/06 17:53:24 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.28 2008/11/08 15:22:33 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -72,7 +72,7 @@ class BitDbAdodb extends BitDb {
 				$pConnectionHash['db_type'] = 'oci8po';
 			}
 			$this->mType = $pConnectionHash['db_type'];
-			$this->mName = $pConnectionHash['db_type'];
+			$this->mName = $pConnectionHash['db_name'];
 			if( !isset( $this->mName )) {
 				die( "No database name specified" );
 			}

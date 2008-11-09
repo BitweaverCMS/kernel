@@ -23,7 +23,11 @@ if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
 }
 
 function bit_log_error( $pLogMessage ) {
-	error_log( "$pLogMessage in {$_SERVER['SCRIPT_URI']}" );
+	if( !empty( $_SERVER['SCRIPT_URI'] )) {
+		error_log( "$pLogMessage in {$_SERVER['SCRIPT_URI']}" );
+	} else {
+		error_log( "$pLogMessage" );
+	}
 }
 
 function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.207 2008/11/08 15:02:54 pppspoonman Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.208 2008/11/13 09:39:03 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1972,7 +1972,7 @@ die;
 	 * @return boolean TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
 	function drawRequirementsGraph( $pInstallVersion = FALSE, $pFormat = 'png', $pCommand = 'dot' ) {
-		global $gBitSmarty;
+		global $gBitSmarty, $gBitThemes;
 
 		// only do this if we can load PEAR GraphViz interface
 		if( @include_once( 'Image/GraphViz.php' )) {
@@ -2003,20 +2003,9 @@ die;
 			}
 
 			// start drawing stuff
-			$graphattributes = array(
-				'fontname' => 'mono',
-				'fontsize' => 10,
-				'overlap'  => 'scale',
-			);
-			$graph = new Image_GraphViz( TRUE, $graphattributes, 'Requirements', TRUE );
+			$graph = new Image_GraphViz( TRUE, $gBitThemes->getGraphvizGraphAttributes(), 'Requirements', TRUE );
 
-			$fromattributes = $toattributes = array(
-				'overlap'   => 'scale',
-				'fontname'  => 'mono',
-				'fontsize'  => 10,
-				'style'     => 'filled',
-				'fillcolor' => 'palegreen',
-			);
+			$fromattributes = $toattributes = $gBitThemes->getGraphvizNodeAttributes();
 
 			foreach( $deps as $node ) {
 				//$fromNode = ucfirst( $node['package'] )."\n".$node['package_version'];
@@ -2028,13 +2017,13 @@ die;
 				switch( $node['result'] ) {
 				case 'max_dep':
 					$edgecolor = 'chocolate3';
-					$headlabel = 'Maximum version\nexceeded';
+					$label     = 'Maximum version\nexceeded';
 					$toNode   .= "\n".$node['required_version']['min']." - ".$node['required_version']['max'];
 					$toattributes['fillcolor'] = 'khaki';
 					break;
 				case 'min_dep':
 					$edgecolor = 'crimson';
-					$headlabel = 'Minimum version\nnot met';
+					$label     = 'Minimum version\nnot met';
 					$toNode   .= "\n".$node['required_version']['min'];
 					if( !empty( $node['required_version']['max'] )) {
 						$toNode .= " - ".$node['required_version']['max'];
@@ -2043,7 +2032,7 @@ die;
 					break;
 				case 'missing':
 					$edgecolor = 'crimson';
-					$headlabel = 'Not installed\nor activated';
+					$label     = 'Not installed\nor activated';
 					$toNode   .= "\n".$node['required_version']['min'];
 					if( !empty( $node['required_version']['max'] )) {
 						$toNode .= " - ".$node['required_version']['max'];
@@ -2051,9 +2040,9 @@ die;
 					$toattributes['fillcolor'] = 'pink';
 					break;
 				default:
-					$edgecolor = 'darkgreen';
-					$headlabel = '';
-					$toattributes['fillcolor'] = 'palegreen';
+					$edgecolor = '';
+					$label     = '';
+					$toattributes['fillcolor'] = 'white';
 					break;
 				}
 
@@ -2065,14 +2054,12 @@ die;
 
 				$graph->addEdge(
 					array( $fromNode => $toNode ),
-					array(
+					$gBitThemes->getGraphvizEdgeAttributes( array(
 						'dir'       => ( !empty( $node['dir'] ) ? $node['dir'] : '' ),
 						'color'     => $edgecolor,
 						'fontcolor' => $edgecolor,
-						'label'     => $headlabel,
-						'fontname'  => 'mono',
-						'fontsize'  => 11
-					)
+						'label'     => $label,
+					))
 				);
 			}
 

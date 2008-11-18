@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.28 2008/11/08 15:22:33 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.29 2008/11/18 22:34:44 pppspoonman Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -176,6 +176,14 @@ class BitDbAdodb extends BitDb {
 	 */
 	function qstr( $pStr ) {
 		return $this->mDb->qstr( $pStr );
+	}
+	
+	/**
+	 * Returns SUBSTRING function appropiate for database.
+	 * @return string using AdoDB->substr property
+	 */
+	function substr() {
+		return $this->mDb->substr;
 	}
 
 	/** Queries the database, returning an error if one occurs, rather

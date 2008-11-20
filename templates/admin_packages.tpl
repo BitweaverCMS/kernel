@@ -147,17 +147,16 @@
 
 		{if $requirementsMap || $requirements}
 			{jstab title="Dependencies"}
+				{legend legend="Requirements"}
 				{if $requirementsMap}
-					<h2>{tr}Requirements{/tr}</h2>
-					<p class="help">{tr}Below you will find an illustration of how packages depend on each other.{/tr}</p>
-					<div style="text-align:center; overflow:auto;">
-						<img alt="A graphical representation of package requirements" title="Requirements graph" src="{$smarty.const.KERNEL_PKG_URL}requirements_graph.php?install_version=1&amp;format={$smarty.request.format}&amp;command={$smarty.request.command}" usemap="#Requirements" />
-						{$requirementsMap}
-					</div>
+						<p class="help">{tr}Below you will find an illustration of how packages depend on each other.{/tr}</p>
+						<div style="text-align:center; overflow:auto;">
+							<img alt="A graphical representation of package requirements" title="Requirements graph" src="{$smarty.const.KERNEL_PKG_URL}requirements_graph.php?install_version=1&amp;format={$smarty.request.format}&amp;command={$smarty.request.command}" usemap="#Requirements" />
+							{$requirementsMap}
+						</div>
 				{/if}
 
 				{if $requirements}
-					<h2>{tr}Requirements Table{/tr}</h2>
 					<p class="help">{tr}Below you will find a detailed table with package requirements. If not all package requirements are met, consider trying to meet all package requirements. If you don't meet them, you may continue at your own peril.{/tr}</p>
 					<table id="requirements">
 						<caption>Package Requirements</caption>
@@ -228,6 +227,7 @@
 					<li>{smartlink ititle="Install Packages" ipackage=install ifile=install.php step=3}</li>
 					<li>{smartlink ititle="Upgrade Packages" ipackage=install ifile=install.php step=4}</li>
 				</ul>
+				{/legend}
 			{/jstab}
 		{/if}
 

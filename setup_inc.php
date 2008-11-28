@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.121 2008/10/17 22:11:18 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.122 2008/11/28 23:57:51 tekimaki_admin Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -191,7 +191,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	if(( isset( $_SERVER['SCRIPT_URL'] ) && $_SERVER['SCRIPT_URL'] == USERS_PKG_URL.'validate.php' )) {
 		$bypass_siteclose_check = 'y';
 	}
-	if( $gBitSystem->isFeatureActive( 'site_closed' ) && !$gBitUser->hasPermission( 'p_access_closed_site' ) && !isset( $bypass_siteclose_check )) {
+	if( empty($gShellScript) && $gBitSystem->isFeatureActive( 'site_closed' ) && !$gBitUser->hasPermission( 'p_access_closed_site' ) && !isset( $bypass_siteclose_check )) {
 		$_REQUEST['error'] = $gBitSystem->getConfig('site_closed_msg','&nbsp;');
 		include( KERNEL_PKG_PATH . 'error_simple.php' );
 		exit;

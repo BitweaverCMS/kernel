@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.5 2008/06/18 10:10:08 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.6 2008/11/29 17:52:28 tekimaki_admin Exp $
  *
  * +----------------------------------------------------------------------+
  * | Copyright ( c ) 2008, bitweaver.org
@@ -22,7 +22,7 @@
  * This is a base class to derive more capabale mailing services
  *
  * @author   nick <nick@sluggardy.net>
- * @version  $Revision: 1.5 $
+ * @version  $Revision: 1.6 $
  * @package  kernel 
  */
 
@@ -108,10 +108,16 @@ require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
 
 		if( !empty( $pMessage['x_headers'] ) && is_array( $pMessage['x_headers'] ) ) {
 			foreach( $pMessage['x_headers'] as $name=>$value ) {
+				/* Not sure what this is intended to do
+				   but nothing seems to use it yet but boards
+				   that I am hacking on now. 29-11-08
+				   XOXO - Nick
 				if( !$mailer->set( $name, $value ) ) {
 					$mailer->$name = $value;
 					bit_log_error( $mailer->ErrorInfo );
 				}
+				*/
+				$mailer->AddCustomHeader($name.":".$value);
 			}
 		}
 

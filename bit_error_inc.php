@@ -228,7 +228,7 @@ function vc( $iVar, $pHtml=TRUE ) {
 	ob_start();
 	if( is_object( $iVar ) ) {
 		if( isset( $iVar->mDb ) ) {
-			unset( 	$iVar->mDb );
+			unset( $iVar->mDb );
 		}
 	}
 

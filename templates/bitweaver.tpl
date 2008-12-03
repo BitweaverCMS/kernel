@@ -30,7 +30,7 @@
 				{if $pageError}<div class="error">{$pageError}</div>{/if}
 				{include file=$mid}
 			</div><!-- end #content -->{* needed by output filters. *}
-		</div>
+		</div><!-- end #wrapper -->
 
 		{if $gBitSystem->isFeatureActive( 'site_left_column' ) && $l_modules && !$gHideModules}
 			<div id="navigation">
@@ -49,10 +49,10 @@
 				{section name=homeix loop=$b_modules}
 					{$b_modules[homeix].data}
 				{/section}
-			{/if}<!-- end #footer -->{* needed by output filters. *}
-		</div>
+			{/if}
+		</div><!-- end #footer -->{* needed by output filters. *}
 
-	</div>
+	</div><!-- end #container -->
 
 	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}</div>{/if}
 {/if}

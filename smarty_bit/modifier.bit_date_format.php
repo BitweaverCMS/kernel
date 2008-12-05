@@ -22,7 +22,7 @@ require_once $gBitSmarty->_get_plugin_filepath('shared','make_timestamp');
  * -------------------------------------------------------------
  */
 function smarty_modifier_bit_date_format( $pString, $format = "%b %e, %Y", $pTraFormat = "%b %e, %Y" ) {
-	global $gBitSystem, $user, $gBitLanguage;
+	global $gBitSystem, $gBitUser, $gBitLanguage;
 
 	if( empty( $pString )) {
 		return '';
@@ -33,13 +33,23 @@ function smarty_modifier_bit_date_format( $pString, $format = "%b %e, %Y", $pTra
 		$format = tra( $pTraFormat );
 	}
 
-	if( $gBitSystem->get_display_offset() ) {
-		$format = preg_replace( "/ ?%Z/", "", $format );
+	if( $gBitUser->getPreference( 'site_display_utc' ) == 'Fixed' ) {
+		date_default_timezone_set( $gBitUser->getPreference( 'site_display_timezone' ) );
+		if ( is_numeric( $pString )) {
+			$dateTimeUser = new DateTime( '@'.$pString );
+		} else  {
+			$dateTimeUser = new DateTime( $pString );
+		}
+		$disptime = strtotime($dateTimeUser->format(DATE_W3C));
+		return $gBitSystem->mServerTimestamp->strftime( $format, $disptime );
 	} else {
-		$format = preg_replace( "/%Z/", "UTC", $format );
+		 if( $gBitSystem->get_display_offset() ) {
+			$format = preg_replace( "/ ?%Z/", "", $format );
+		} else {
+			$format = preg_replace( "/%Z/", "UTC", $format );
+		}
+		$disptime = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC( $pString );
 	}
-
-	$disptime = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC( $pString );
 	return $gBitSystem->mServerTimestamp->strftime( $format, $disptime, TRUE );
 }
 ?>

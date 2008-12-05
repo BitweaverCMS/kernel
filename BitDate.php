@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.23 2008/12/05 07:29:45 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.24 2008/12/05 08:51:36 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -192,8 +192,8 @@ class BitDate {
 		"|^([0-9]{3,4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|",
 			($iso_date), $rr)) {
 			// h-m-s-MM-DD-YY
-			if (!isset($rr[5])) $ret = $this->mktime(0,0,0,$rr[2],$rr[3],$rr[1]);
-			else $ret = @$this->mktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[3],$rr[1]);
+			if (!isset($rr[5])) $ret = $this->gmmktime(0,0,0,$rr[2],$rr[3],$rr[1]);
+			else $ret = @$this->gmmktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[3],$rr[1]);
 		}
 		return $ret;
 	}

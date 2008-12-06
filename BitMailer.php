@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.6 2008/11/29 17:52:28 tekimaki_admin Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.7 2008/12/06 16:54:47 tekimaki_admin Exp $
  *
  * +----------------------------------------------------------------------+
  * | Copyright ( c ) 2008, bitweaver.org
@@ -22,7 +22,7 @@
  * This is a base class to derive more capabale mailing services
  *
  * @author   nick <nick@sluggardy.net>
- * @version  $Revision: 1.6 $
+ * @version  $Revision: 1.7 $
  * @package  kernel 
  */
 
@@ -51,7 +51,11 @@ require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
 		global $gBitSystem;
 		$message = $pHeaders;
 		$message['subject'] = $pSubject;
-		$message['message'] = $pBody;
+        if( is_string( $pBody ) ){
+            $message['message'] = $pBody;
+        }elseif( is_array( $pBody ) ){
+            $message = array_merge( $message, $pBody );
+        }
 		$mailer = $this->buildMailer($message);
 
 		if( is_string( $pRecipients ) ) {
@@ -142,7 +146,7 @@ require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
 				$mailer->AltBody = '';
 			}
 		}
-		elseif (!empty($pmessage['alt_message'])) {
+		elseif (!empty($pMessage['alt_message'])) {
 			$mailer->Body = $pMessage['alt_message'];
 			$mailer->IsHTML( FALSE );
 		}

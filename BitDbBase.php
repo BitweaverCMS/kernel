@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.46 2008/10/19 08:14:21 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.47 2008/12/11 18:33:32 pppspoonman Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -551,6 +551,28 @@ class BitDb {
 	function ifNull($pField, $pNullRepl) {
 		// PURE VIRTUAL
 	}
+	
+	/**
+	 * A database portable RANDOM() function.
+	 * Adodb overrides it anyway with it's $rand property.
+	 * 
+	 * @return string with RANDOM() function.
+	 */
+	function random() {
+		
+		switch( $this->mType ) {
+			case "postgres":
+			case "pgsql":
+				return "RANDOM()";
+				
+			case "mssql":
+				return "NEWID()";
+				
+			default:
+				return "RAND()";
+			
+		}
+	}
 
 	/** Format the timestamp in the format the database accepts.
 	* @param pDate a Unix integer timestamp or an ISO format Y-m-d H:i:s
@@ -782,29 +804,11 @@ class BitDb {
 			$pSortMode = preg_replace( '/^user_(asc|desc)/', 'login_\1', $pSortMode );
 
 			$bIsFunction = FALSE;
-			$functionMap = array(
-				'random' => array(
-					"postgres" => "RANDOM()",
-					"pgsql"    => "RANDOM()",
-					"mysql3"   => "RAND()",
-					"mysql"    => "RAND()",
-					"mysqli"   => "RAND()",
-					"mssql"    => "NEWID()",
-					"firebird" => "RAND()",
-					// TODO: get the correct function names for these databases:
-					//"oci8"     => "",
-					//"sqlite"   => "",
-					//"sybase"   => "",
-				)
-			);
-
-			foreach( $functionMap as $funcName => $funcMethods ) {
-				if( $pSortMode == $funcName ) {
-					if( in_array( $this->mType, array_keys( $funcMethods ))) {
-						$pSortMode = $funcMethods[$this->mType];
-						$bIsFunction = TRUE;
-					}
-				}
+			
+			//Use random() of BitDbBase. BitDbAdodb will override it with its implementation.
+			if( $pSortMode == "random" ) {
+				$pSortMode = $this->random ();
+				$bIsFunction = TRUE;
 			}
 
 			if( !$bIsFunction ) {

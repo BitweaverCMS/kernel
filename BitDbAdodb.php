@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.29 2008/11/18 22:34:44 pppspoonman Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.30 2008/12/11 18:33:32 pppspoonman Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -184,6 +184,16 @@ class BitDbAdodb extends BitDb {
 	 */
 	function substr() {
 		return $this->mDb->substr;
+	}
+
+	/**
+	 * Returns RANDOM function appropiate for database.
+	 * Overrides BitDbBase::random()
+	 * @return string using AdoDB->random property
+	 */
+	function random() {
+		return $this->mDb->random;
+		
 	}
 
 	/** Queries the database, returning an error if one occurs, rather

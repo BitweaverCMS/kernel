@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.33 2008/12/05 03:42:56 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.34 2008/12/18 21:42:27 pppspoonman Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -225,27 +225,33 @@ function bw_is_writeable( $pPath ) {
 }
 
 /**
- * clean up an array of values and remove any dangerous html - particularly useful for cleaning up $_GET and $_REQUEST
+ * clean up an array of values and remove any dangerous html - particularly useful for cleaning up $_GET and $_REQUEST.
+ * Turn off urldecode when detoxifying $_GET or $_REQUEST - these two are always urldecoded done by PHP itself (check docs).
+ * If you urldecode $_GET twice there might be unexpected consequences (like page One%2BTwo --(PHP)--> One+Two --(you)--> One Two).
  * 
  * @param array $pParamHash array to be cleaned
  * @param boolean $pHtml set true to escape HTML code as well
+ * @param boolean $pUrldecode set true to urldecode as well
  * @access public
  * @return void
  */
-function detoxify( &$pParamHash, $pHtml = FALSE ) {
+function detoxify( &$pParamHash, $pHtml = FALSE, $pUrldecode = TRUE) {
+	print_r($_GET);
 	if( !empty( $pParamHash ) && is_array( $pParamHash ) ) {
 		foreach( $pParamHash as $key => $value ) {
 			if( isset( $value ) && is_array( $value ) ) {
-				detoxify( $value, $pHtml );
+				detoxify( $value, $pHtml, $pUrldecode );
 			} else {
 				if( $pHtml ) {
-					$pParamHash[$key] = htmlspecialchars( urldecode( $value ), ENT_NOQUOTES );
+					$newValue = $pUrldecode ? urldecode( $value ) : $value;
+					$pParamHash[$key] = htmlspecialchars( ( $newValue ), ENT_NOQUOTES );
 				} elseif( preg_match( "/<script[^>]*>/i", urldecode( $value ) ) ) {
 					unset( $pParamHash[$key] );
 				}
 			}
 		}
 	}
+	print_r($_GET);
 }
 
 /**

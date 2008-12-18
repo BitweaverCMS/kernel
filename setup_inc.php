@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.122 2008/11/28 23:57:51 tekimaki_admin Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.123 2008/12/18 21:42:27 pppspoonman Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -33,7 +33,7 @@ if( ini_get( 'safe_mode' ) && ini_get( 'safe_mode_gid' )) {
 
 // clean up $_GET and make sure others are clean as well
 if( !empty( $_GET ) && is_array( $_GET ) && empty( $gNoToxify ) ) {
-	detoxify( $_GET, TRUE );
+	detoxify( $_GET, TRUE, FALSE );
 	$_REQUEST = array_merge( $_REQUEST, $_GET );
 }
 

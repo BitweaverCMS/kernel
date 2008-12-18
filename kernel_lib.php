@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.34 2008/12/18 21:42:27 pppspoonman Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.35 2008/12/18 22:16:03 pppspoonman Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -236,7 +236,6 @@ function bw_is_writeable( $pPath ) {
  * @return void
  */
 function detoxify( &$pParamHash, $pHtml = FALSE, $pUrldecode = TRUE) {
-	print_r($_GET);
 	if( !empty( $pParamHash ) && is_array( $pParamHash ) ) {
 		foreach( $pParamHash as $key => $value ) {
 			if( isset( $value ) && is_array( $value ) ) {
@@ -251,7 +250,6 @@ function detoxify( &$pParamHash, $pHtml = FALSE, $pUrldecode = TRUE) {
 			}
 		}
 	}
-	print_r($_GET);
 }
 
 /**

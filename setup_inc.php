@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.123 2008/12/18 21:42:27 pppspoonman Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.124 2008/12/22 10:03:00 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -146,13 +146,11 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// some liberty plugins might need to run some functions.
 	// it's necessary that we call them early on after scanPackages() has been completed.
-	if( $funcs = $gLibertySystem->getPluginFunction( NULL, 'preload_function' )) {
-		foreach( $funcs as $func ) {
-			$func();
-		}
+	foreach( $gLibertySystem->getPluginFunctions( 'preload_function' ) as $func ) {
+		$func();
 	}
 
-	// XSS security check
+	// TODO: XSS security check
 	if( !empty( $_REQUEST['tk'] ) && empty( $_SERVER['bot'] ) ) {
 		//$gBitUser->verifyTicket();
 	} elseif( !empty( $_SERVER['bot'] ) ) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.35 2008/12/18 22:16:03 pppspoonman Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.36 2008/12/28 07:46:02 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -635,15 +635,18 @@ function parse_xml_attributes( $pString ) {
  */
 function xmlentities( $string, $quote_style=ENT_QUOTES ) {
 	static $trans;
-	if (!isset($trans)) {
-		$trans = get_html_translation_table(HTML_ENTITIES, $quote_style);
-		foreach ($trans as $key => $value)
-			$trans[$key] = '&#'.ord($key).';';
+	if( !isset( $trans )) {
+		$trans = get_html_translation_table( HTML_ENTITIES, $quote_style );
+		foreach( $trans as $key => $value ) {
+			$trans[$key] = '&#'.ord( $key ).';';
+		}
+
 		// dont translate the '&' in case it is part of &xxx;
 		$trans[chr(38)] = '&';
 	}
+
 	// after the initial translation, _do_ map standalone '&' into '&#38;'
-	return preg_replace("/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,5};)/","&#38;" , strtr($string, $trans));
+	return preg_replace( "/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,5};)/","&#38;" , strtr( $string, $trans ));
 }
 
 /**
@@ -666,9 +669,9 @@ function bit_redirect( $pUrl, $pStatusCode=NULL ) {
 	}
 
 	if( $pStatusCode ) {
-		header('Location: ' . $pUrl, TRUE, $pStatusCode );
+		header( 'Location: ' . $pUrl, TRUE, $pStatusCode );
 	} else {
-		header('Location: ' . $pUrl );
+		header( 'Location: ' . $pUrl );
 	}
 	session_write_close();
 	exit();

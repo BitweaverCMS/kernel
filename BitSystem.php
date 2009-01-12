@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.208 2008/11/13 09:39:03 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.209 2009/01/12 05:27:02 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1537,7 +1537,7 @@ die;
 		<blockquote>
 			$errors
 		</blockquote>";
-			if( !defined( 'IS_LIVE' ) || !IS_LIVE ) {
+			if( !$this->isLive() ) {
 				if( !is_windows() ) {
 					print "<p>Proceed to the installer <strong>at <a href=\"".BIT_ROOT_URL."install/install.php\">".BIT_ROOT_URL."install/install.php</a></strong> after you run the command.";
 				} else {
@@ -1550,6 +1550,16 @@ die;
 		}
 
 		$checked = TRUE;
+	}
+
+	/**
+	 * isLive returns status of the IS_LIVE constant from config_inc.php
+	 * 
+	 * @access public
+	 * @return TRUE if IS_LIVE is defined and set to a non empty value, else FALSE
+	 */
+	function isLive() {
+		return( defined( 'IS_LIVE' ) && IS_LIVE );
 	}
 
 	// {{{=========================== Installer related methods ==============================
@@ -2120,7 +2130,7 @@ die;
 							} else {
 								$ret['missing'][$package][] = $table;
 								// This is a crude but highly effective means of blurting out a very bad situation when an installed package is missing a table
-								// if( !defined( 'IS_LIVE' ) || !IS_LIVE ) {
+								// if( !$this->isLive() ) {
 								// 	vd( "Table Missing => $package : $table" );
 								// }
 							}

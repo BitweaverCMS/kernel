@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.24 2008/12/05 08:51:36 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.25 2009/01/12 08:38:58 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -87,13 +87,13 @@ class BitDate {
 		global $gBitUser;
 		
 		if ( $gBitUser->getPreference('site_display_utc', "Local") == "Fixed" ) {
-			date_default_timezone_set( $gBitUser->getPreference( 'site_display_timezone' ) );
+			date_default_timezone_set( $gBitUser->getPreference( 'site_display_timezone', 'UTC' ) );
 			if ( is_numeric( $_timestamp )) {
 				$dateTimeUser = new DateTime( '@'.$_timestamp );
 			} else  {
 				$dateTimeUser = new DateTime( $_timestamp );
 			}
-			$dateTimeUserZone = new DateTimeZone( $gBitUser->getPreference( 'site_display_timezone' ) );
+			$dateTimeUserZone = new DateTimeZone( $gBitUser->getPreference( 'site_display_timezone', 'UTC' ) );
 			return strtotime( $dateTimeUser->format(DATE_ATOM) ) + timezone_offset_get( $dateTimeUserZone, $dateTimeUser );
 		} else {
 			return $this->getTimestampFromISO($_timestamp) + $this->display_offset;
@@ -110,13 +110,13 @@ class BitDate {
 		global $gBitUser;
 		
 		if ( $gBitUser->getPreference('site_display_utc', "Local") == "Fixed" ) {
-			date_default_timezone_set( $gBitUser->getPreference( 'site_display_timezone' ) );
+			date_default_timezone_set( $gBitUser->getPreference( 'site_display_timezone', 'UTC' ) );
 			if ( is_numeric( $_timestamp )) {
 				$dateTimeUser = new DateTime( '@'.$_timestamp );
 			} else  {
 				$dateTimeUser = new DateTime( $_timestamp );
 			}
-			$dateTimeUserZone = new DateTimeZone( $gBitUser->getPreference( 'site_display_timezone' ) );
+			$dateTimeUserZone = new DateTimeZone( $gBitUser->getPreference( 'site_display_timezone', 'UTC' ) );
 			return strtotime( $dateTimeUser->format(DATE_ATOM) ) - timezone_offset_get( $dateTimeUserZone, $dateTimeUser );
 		} else {
 			return $this->getTimestampFromISO($_timestamp) - $this->display_offset;

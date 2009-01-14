@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.25 2009/01/12 08:38:58 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.26 2009/01/14 12:12:10 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -185,15 +185,26 @@ class BitDate {
 	 * @return int Seconds count based on 1st Jan 1970<br>
 	 * returns $iso_date if it is a number, or 0 if format invalid
 	 */
-	function getTimestampFromISO($iso_date) {
+	function getTimestampFromISO( $iso_date, $reverse = false ) {
 		$ret = 0;
-		if ( is_numeric($iso_date) ) $ret = $iso_date;
-		else if (preg_match(
-		"|^([0-9]{3,4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|",
-			($iso_date), $rr)) {
-			// h-m-s-MM-DD-YY
-			if (!isset($rr[5])) $ret = $this->gmmktime(0,0,0,$rr[2],$rr[3],$rr[1]);
-			else $ret = @$this->gmmktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[3],$rr[1]);
+		if ( is_numeric($iso_date) ) { 
+			$ret = $iso_date;
+		} else if ( $reverse ) {
+			// Input d.m.y, h:m:s
+			if (preg_match(
+				"|^([0-9]{1,2})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{3,4}), ?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,8}))?|",
+				($iso_date), $rr)) {
+					if (!isset($rr[5])) $ret = $this->gmmktime(0,0,0,$rr[2],$rr[1],$rr[3]);
+					else $ret = @$this->gmmktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[1],$rr[3]);
+				}
+		} else {	
+				// Input y.m.d h:m:s
+				if (preg_match(
+					"|^([0-9]{3,4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|",
+					($iso_date), $rr)) {
+						if (!isset($rr[5])) $ret = $this->gmmktime(0,0,0,$rr[2],$rr[3],$rr[1]);
+						else $ret = @$this->gmmktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[3],$rr[1]);
+			}
 		}
 		return $ret;
 	}

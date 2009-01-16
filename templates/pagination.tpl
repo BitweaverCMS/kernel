@@ -126,7 +126,7 @@
 				{foreach from=$pgnHidden key=name item=value}
 					<input type="hidden" name="{$name}" value="{$value}" />
 				{/foreach}
-				{tr}Go to page{/tr} <input class="gotopage" type="text" size="3" maxlength="4" name="list_page" /> {tr}of{/tr} <strong>{$listInfo.total_pages}</strong>
+				{tr}Go to page{/tr} <input class="gotopage" type="text" size="3" maxlength="6" name="list_page" /> {tr}of{/tr} <strong>{$listInfo.total_pages}</strong>
 			{/form}
 		{/if}
 	</div> <!-- end .pagination -->

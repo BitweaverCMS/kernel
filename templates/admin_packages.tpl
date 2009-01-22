@@ -13,8 +13,32 @@
 {form class=$pageName|replace:'packages':'pkg'}
 	<input type="hidden" name="page" value="{$page}" />
 	{jstabs}
+		{if $upgradable}
+			{jstab title="Upgradable"}
+				{legend legend="Upgradable packages"}
+					<p class="warning">
+						{biticon iname="large/dialog-warning" iexplain="Warning"} {tr}You seem to have at least one package that can be upgraded.{/tr} <a href="{$smarty.const.INSTALL_PKG_URL}install.php?step=4">{tr}We recommend you visit the installer now{/tr}</a>.
+					</p>
+
+					{foreach from=$upgradable item=package key=name}
+						<div class="row">
+							<div class="formlabel">
+								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
+							</div>
+							{forminput}
+								<label>
+									<strong>{$name|capitalize}</strong>
+								</label>
+								{formhelp note=`$package.info`}
+							{/forminput}
+						</div>
+					{/foreach}
+				{/legend}
+			{/jstab}
+		{/if}
+
 		{jstab title="Installed"}
-			{legend legend="bitweaver packages installed on your system"}
+			{legend legend="Packages installed on your system"}
 				<p>
 					{tr}Packages with checkmarks are currently enabled, packages without are disabled.  To enable or disable a package, check or uncheck it, and click the 'Modify Activation' button.{/tr} <a href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}To uninstall or reinstall a package, visit the installer.{/tr}</a>
 				</p>
@@ -55,12 +79,10 @@
 						</div>
 					{/if}
 				{/foreach}
-
 			{/legend}
 
 
-
-			{legend legend="bitweaver services installed on your system"}
+			{legend legend="Services installed on your system"}
 				<p>
 					{tr}A service package is a package that allows you to extend the way you display bitweaver content - such as <em>categorising your content</em>. Activating more than one of any service type might lead to conflicts.<br />
 					We therefore recommend that you <em>	enable only one of each</em> <strong>service type</strong>.{/tr}
@@ -110,7 +132,7 @@
 
 
 		{jstab title="Required"}
-			{legend legend="Required bitweaver packages installed on your system"}
+			{legend legend="Required packages installed on your system"}
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && $package.required}
 						<div class="row">
@@ -125,7 +147,7 @@
 					{/if}
 				{/foreach}
 			{/legend}
-			{legend legend="Required bitweaver services installed on your system"}
+			{legend legend="Required services installed on your system"}
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && $package.service && $package.required}
 						<div class="row">
@@ -148,85 +170,85 @@
 		{if $requirementsMap || $requirements}
 			{jstab title="Dependencies"}
 				{legend legend="Requirements"}
-				{if $requirementsMap}
+					{if $requirementsMap}
 						<p class="help">{tr}Below you will find an illustration of how packages depend on each other.{/tr}</p>
 						<div style="text-align:center; overflow:auto;">
 							<img alt="A graphical representation of package requirements" title="Requirements graph" src="{$smarty.const.KERNEL_PKG_URL}requirements_graph.php?install_version=1&amp;format={$smarty.request.format}&amp;command={$smarty.request.command}" usemap="#Requirements" />
 							{$requirementsMap}
 						</div>
-				{/if}
+					{/if}
 
-				{if $requirements}
-					<p class="help">{tr}Below you will find a detailed table with package requirements. If not all package requirements are met, consider trying to meet all package requirements. If you don't meet them, you may continue at your own peril.{/tr}</p>
-					<table id="requirements">
-						<caption>Package Requirements</caption>
-						<tr>
-							<th style="width:16%;">Requirement</th>
-							<th style="width:16%;">Min Version</th>
-							<th style="width:16%;">Max Version</th>
-							<th style="width:16%;">Available</th>
-							<th style="width:36%;">Result</th>
-						</tr>
-						{foreach from=$requirements item=dep}
-							{if $pkg != $dep.package}
-								<tr><th colspan="5">{$dep.package|ucfirst} requirements</th></tr>
-								{assign var=pkg value=$dep.package}
-							{/if}
-
-							{if $dep.result == 'ok'}
-								{assign var=class value=success}
-							{elseif $dep.result == 'missing'}
-								{assign var=class value=error}
-							{elseif $dep.result == 'min_dep'}
-								{assign var=class value=error}
-							{elseif $dep.result == 'max_dep'}
-								{assign var=class value=warning}
-							{/if}
-
-							<tr class="{$class}">
-								<td>{$dep.requires|ucfirst}</td>
-								<td>{$dep.required_version.min}</td>
-								<td>{$dep.required_version.max}</td>
-								<td>{$dep.required_version.available}</td>
-								<td>
-									{if $dep.result == 'ok'}
-										OK
-									{elseif $dep.result == 'missing'}
-										Package not installed or not activated
-										{assign var=missing value=true}
-									{elseif $dep.result == 'min_dep'}
-										Minimum version not met
-										{assign var=min_dep value=true}
-									{elseif $dep.result == 'max_dep'}
-										Maximum version exceeded
-										{assign var=max_dep value=true}
-									{/if}
-								</td>
+					{if $requirements}
+						<p class="help">{tr}Below you will find a detailed table with package requirements. If not all package requirements are met, consider trying to meet all package requirements. If you don't meet them, you may continue at your own peril.{/tr}</p>
+						<table id="requirements">
+							<caption>Package Requirements</caption>
+							<tr>
+								<th style="width:16%;">Requirement</th>
+								<th style="width:16%;">Min Version</th>
+								<th style="width:16%;">Max Version</th>
+								<th style="width:16%;">Available</th>
+								<th style="width:36%;">Result</th>
 							</tr>
-						{/foreach}
-					</table>
+							{foreach from=$requirements item=dep}
+								{if $pkg != $dep.package}
+									<tr><th colspan="5">{$dep.package|ucfirst} requirements</th></tr>
+									{assign var=pkg value=$dep.package}
+								{/if}
 
-					{if $missing}
-						{formfeedback warning="At least one required package is missing. Please activate or install the missing package." link="install/install.php?step=3/Install Package"}
+								{if $dep.result == 'ok'}
+									{assign var=class value=success}
+								{elseif $dep.result == 'missing'}
+									{assign var=class value=error}
+								{elseif $dep.result == 'min_dep'}
+									{assign var=class value=error}
+								{elseif $dep.result == 'max_dep'}
+									{assign var=class value=warning}
+								{/if}
+
+								<tr class="{$class}">
+									<td>{$dep.requires|ucfirst}</td>
+									<td>{$dep.required_version.min}</td>
+									<td>{$dep.required_version.max}</td>
+									<td>{$dep.required_version.available}</td>
+									<td>
+										{if $dep.result == 'ok'}
+											OK
+										{elseif $dep.result == 'missing'}
+											Package not installed or not activated
+											{assign var=missing value=true}
+										{elseif $dep.result == 'min_dep'}
+											Minimum version not met
+											{assign var=min_dep value=true}
+										{elseif $dep.result == 'max_dep'}
+											Maximum version exceeded
+											{assign var=max_dep value=true}
+										{/if}
+									</td>
+								</tr>
+							{/foreach}
+						</table>
+
+						{if $missing}
+							{formfeedback warning="At least one required package is missing. Please activate or install the missing package." link="install/install.php?step=3/Install Package"}
+						{/if}
+
+						{if $min_dep}
+							{formfeedback warning="At least one package did not meet the minimum version requirement. If possible, please upgrade to a newer version."}
+						{/if}
+
+						{if $max_dep}
+							{formfeedback warning="At least one package recommend a version lower to the one you have installed. This might cause problems."}
+						{/if}
+
+						{if !$min_dep && !$max_dep && !$missing}
+							{formfeedback success="All package requirements have been met."}
+						{/if}
 					{/if}
 
-					{if $min_dep}
-						{formfeedback warning="At least one package did not meet the minimum version requirement. If possible, please upgrade to a newer version."}
-					{/if}
-
-					{if $max_dep}
-						{formfeedback warning="At least one package recommend a version lower to the one you have installed. This might cause problems."}
-					{/if}
-
-					{if !$min_dep && !$max_dep && !$missing}
-						{formfeedback success="All package requirements have been met."}
-					{/if}
-				{/if}
-
-				<ul>
-					<li>{smartlink ititle="Install Packages" ipackage=install ifile=install.php step=3}</li>
-					<li>{smartlink ititle="Upgrade Packages" ipackage=install ifile=install.php step=4}</li>
-				</ul>
+					<ul>
+						<li>{smartlink ititle="Install Packages" ipackage=install ifile=install.php step=3}</li>
+						<li>{smartlink ititle="Upgrade Packages" ipackage=install ifile=install.php step=4}</li>
+					</ul>
 				{/legend}
 			{/jstab}
 		{/if}

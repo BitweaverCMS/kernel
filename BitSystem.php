@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.209 2009/01/12 05:27:02 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.210 2009/01/22 23:57:38 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -856,6 +856,13 @@ die;
 		}
 		$this->mPackages[$pkgNameKey]['dir'] = $package_dir_name;
 		$this->mPackagesDirNameXref[$package_dir_name] = $pkgNameKey;
+
+		// Define <PACKAGE>_PKG_DIR
+		$pkgDefine = $pkgName.'_PKG_TITLE';
+		if( !defined( $pkgDefine )) {
+			define( $pkgDefine, ucfirst( constant( $pkgName.'_PKG_DIR' ) ) );
+		}
+		$this->mPackages[$pkgNameKey]['dir'] = $package_dir_name;
 
 		// Work around for old versions of IIS that do not support $_SERVER['SCRIPT_FILENAME'] - wolff_borg
 		if( !array_key_exists( 'SCRIPT_FILENAME', $_SERVER )) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.43 2008/12/07 07:31:49 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.44 2009/01/23 16:27:53 bitweaver Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -132,7 +132,7 @@ if( !defined( 'STORAGE_HOST_URI' ) ) {
 define( 'BIT_MAJOR_VERSION',	'2' );
 define( 'BIT_MINOR_VERSION',	'5' );
 define( 'BIT_SUB_VERSION',		'0' );
-define( 'BIT_LEVEL',			'beta' ); // dev < alpha < beta < RC# < '' < pl
+define( 'BIT_LEVEL',			'' ); // dev < alpha < beta < RC# < '' < pl
 
 // When updating to certain versions of bitweaver, we need to force a visit to the installer to fix certain stuff in the database.
 // Enter the minimum version number here in the format: '2.1.0-beta'

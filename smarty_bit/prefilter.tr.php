@@ -72,7 +72,6 @@ function _translate_lang( $pKey ) {
 	// if the entire string in {tr} is a variable, we pass it on to block.tr.php
 	// e.g. {tr}{$menu.menu_title}{/tr} in top_bar.tpl
 	// if you change this regexp, please modify the one in languages/BitLanguage.php as well (approx line 256)
-vd($pKey);
 	if( preg_match( '!^(\{\$[^\}]*\})+$!', $pKey[2] ) ) {
 		return $pKey[1].$pKey[2]."{/tr}";
 	} elseif( $pKey[1] == "{tr}" ) {

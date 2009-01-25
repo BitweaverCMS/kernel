@@ -33,7 +33,7 @@ function smarty_modifier_bit_date_format( $pString, $format = "%b %e, %Y", $pTra
 		$format = tra( $pTraFormat );
 	}
 
-	if( $gBitUser->getPreference( 'site_display_utc' ) == 'Fixed' ) {
+	if( $gBitUser->getPreference( 'site_display_utc' ) == 'Fixed' && class_exists( 'DateTime' ) ) {
 		date_default_timezone_set( $gBitUser->getPreference( 'site_display_timezone', 'UTC' ) );
 		if ( is_numeric( $pString )) {
 			$dateTimeUser = new DateTime( '@'.$pString );

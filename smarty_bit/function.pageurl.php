@@ -26,10 +26,7 @@ function smarty_function_pageurl( $params, &$gBitSmarty ) {
 			unset( $params['url'] );
 		}
 		if( empty( $pgnUrl ) ) {
-			$pngUrl = $_SERVER['PHP_SELF'];
-		}
-		if( empty( $pgnUrl ) ) {
-			$pngUrl = "";
+			$pgnUrl = $_SERVER['PHP_SELF'];
 		}
 	}
 
@@ -61,7 +58,7 @@ function smarty_function_pageurl( $params, &$gBitSmarty ) {
 
 	$pageUrlVar = preg_replace( '/^\&amp;/', '', $str );
 
-	$pageUrl = $pngUrl . "?" . $pageUrlVar;
+	$pageUrl = $pgnUrl . "?" . $pageUrlVar;
 	
 	return $pageUrl;
 }

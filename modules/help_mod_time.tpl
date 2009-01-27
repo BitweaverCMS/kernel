@@ -8,13 +8,17 @@
 <dl>
 	<dt class="param"><kbd>width</kbd></dt>
 	<dd><em>{tr}Numeric{/tr}</em></dd>
+	<dd>{tr}Width in pixels.{/tr}</dd>
 	
 	<dt class="param"><kbd>height</kbd></dt>
 	<dd><em>{tr}Numeric{/tr}</em></dd>
+	<dd>{tr}Height in pixels.{/tr}</dd>
 	
 	<dt class="param"><kbd>background</kbd></dt>
 	<dd><em>{tr}String{/tr}</em></dd>
+	<dd>{tr}Color name.{/tr}</dd>
 
 	<dt class="param"><kbd>src</kbd></dt>
 	<dd><em>{tr}URL, text, Javascript{/tr}</em></dd>
+	<dd>{tr}Type of clock shown.{/tr}</dd>
 </dl>

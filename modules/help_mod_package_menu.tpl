@@ -7,4 +7,5 @@
 <dl>
 	<dt class="param"><kbd>package</kbd></dt>
 	<dd><em>{tr}String{/tr}</em></dd>
+	<dd>{tr}Name of package to display, default is <kbd>active_package</kbd>{/tr}</dd>
 </dl>

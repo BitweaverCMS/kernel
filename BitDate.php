@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.26 2009/01/14 12:12:10 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.27 2009/01/27 22:46:58 spiderr Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -86,7 +86,7 @@ class BitDate {
 	function getDisplayDateFromUTC($_timestamp) {
 		global $gBitUser;
 		
-		if ( $gBitUser->getPreference('site_display_utc', "Local") == "Fixed" ) {
+		if ( $gBitUser->getPreference('site_display_utc', "Local") == "Fixed" && class_exists( 'DateTime' ) ) {
 			date_default_timezone_set( $gBitUser->getPreference( 'site_display_timezone', 'UTC' ) );
 			if ( is_numeric( $_timestamp )) {
 				$dateTimeUser = new DateTime( '@'.$_timestamp );

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.210 2009/01/22 23:57:38 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.211 2009/01/28 10:48:35 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2283,6 +2283,20 @@ die;
 		return $this->mServerTimestamp->strftime( $this->get_long_datetime_format(), $pTimestamp, $pUser );
 	}
 	// }}}
+	/**
+	 * getBitVersion will fetch the version of bitweaver as set in kernel/config_defaults_inc.php
+	 * 
+	 * @param boolean $pIncludeLevel Return bitweaver version including BIT_LEVEL
+	 * @access public
+	 * @return string bitweaver version set in kernel/config_defaults_inc.php
+	 */
+	function getBitVersion( $pIncludeLevel = TRUE ) {
+		$ret = BIT_MAJOR_VERSION.".".BIT_MINOR_VERSION.".".BIT_SUB_VERSION;
+		if( $pIncludeLevel && defined( BIT_LEVEL ) && BIT_LEVEL != '' ) {
+			$ret .= '-'.BIT_LEVEL;
+		}
+		return $ret;
+	}
 
 	/**
 	 * checkBitVersion Check for new version of bitweaver
@@ -2291,13 +2305,14 @@ die;
 	 * @return returns an array with information on bitweaver version
 	 */
 	function checkBitVersion() {
-		$local= BIT_MAJOR_VERSION.'.'.BIT_MINOR_VERSION.'.'.BIT_SUB_VERSION;
+		$local = $this->getBitVersion( FALSE );
 		$ret['local'] = $local;
 
 		$error['number'] = 0;
 		$error['string'] = $data = '';
 
 		// cache the bitversion.txt file locally and update only once a day
+		// if you don't have a connection to bitweaver.org, you can set a cronjob to 'touch' this file once a day to avoid waiting for a timeout.
 		if( !is_file( TEMP_PKG_PATH.'bitversion.txt' ) || ( time() - filemtime( TEMP_PKG_PATH.'bitversion.txt' )) > 86400 ) {
 			if( $h = fopen( TEMP_PKG_PATH.'bitversion.txt', 'w' )) {
 				$data = bit_http_request( 'http://www.bitweaver.org/bitversion.txt' );

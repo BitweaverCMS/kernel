@@ -32,7 +32,7 @@
 								<img src="{$smarty.const.INSTALL_PKG_URL}style/images/bitweaver_logo-trans.png" width="121" height="121" alt="bitweaver logo" title="Click here to visit the upgrade instructions" />
 							</a>
 						</div>
-						<p class="danger">{tr}You have just updated your bitweaver code to <strong>version {$smarty.const.BIT_MAJOR_VERSION}.{$smarty.const.BIT_MINOR_VERSION}.{$smarty.const.BIT_SUB_VERSION} {$smarty.const.BIT_LEVEL}</strong>. For security or technical reasons access to your site is locked down until you make some necessary changes to your database and site configuration. The installer will help you make the these updates and ensure your site is secure before unlocking access.{/tr}
+						<p class="danger">{tr}You have just updated your bitweaver code to <strong>version {$gBitSystem->getBitVersion()}</strong>. For security or technical reasons access to your site is locked down until you make some necessary changes to your database and site configuration. The installer will help you make the these updates and ensure your site is secure before unlocking access.{/tr}
 							<br /><br />
 							{tr}Please <strong><a href="{$smarty.const.INSTALL_PKG_URL}install.php?step=4">visit the Installer to finish updating your site</a></strong> and unlock it.{/tr}</p>
 						<ul class="help">

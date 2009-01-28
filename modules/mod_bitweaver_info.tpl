@@ -1,6 +1,6 @@
 {bitmodule title=$moduleTitle|default:'Bitweaver' name="bit_info"}
 	<ul>
-		<li>{tr}Version{/tr}: <strong>{$smarty.const.BIT_MAJOR_VERSION}.{$smarty.const.BIT_MINOR_VERSION}.{$smarty.const.BIT_SUB_VERSION} {$smarty.const.BIT_LEVEL}</strong></li>
+		<li>{tr}Version{/tr}: <strong>{$gBitSystem->getBitVersion()}</strong></li>
 		{if $gBitUser->isAdmin()}
 			{assign var=version_info value=$gBitSystem->checkBitVersion()}
 			<li>

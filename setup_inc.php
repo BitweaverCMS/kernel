@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.124 2008/12/22 10:03:00 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.125 2009/01/30 17:04:30 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -239,23 +239,17 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSmarty->assign( 'login_url', $login_url );
 
 	if( $gBitSystem->isFeatureActive( 'site_https_login' ) || $gBitSystem->isFeatureActive( 'site_https_login_required' ) )	{
-		$http_login_url = 'http://' . $gBitSystem->getConfig( 'site_http_domain', '' );
+		$http_login_url = 'http://' . $gBitSystem->getConfig( 'site_http_domain', $_SERVER['HTTP_HOST'] );
 		if( $site_http_port != 80 ) {
 			$http_login_url .= ':'.$site_http_port;
 		}
-		$http_login_url .= $gBitSystem->getConfig( 'site_http_prefix', '' ).$gBitSystem->getDefaultPage();
+		$http_login_url .= $gBitSystem->getConfig( 'site_http_prefix', BIT_ROOT_URL ).USERS_PKG_URL.'login.php';
 
-		$https_login_url = 'https://'.$gBitSystem->getConfig( 'site_https_domain', '' );
+		$https_login_url = 'https://'.$gBitSystem->getConfig( 'site_https_domain', $_SERVER['HTTP_HOST'] );
 		if( $site_https_port != 443 ) {
 			$https_login_url .= ':'.$site_https_port;
 		}
-		$https_login_url .= $gBitSystem->getConfig( 'site_https_prefix', '/' ).$gBitSystem->getDefaultPage();
-
-		// append SID
-		if( SID ) {
-			$http_login_url .= '?'.SID;
-			$https_login_url .= '?' . SID;
-		}
+		$https_login_url .= $gBitSystem->getConfig( 'site_https_prefix', BIT_ROOT_URL ).USERS_PKG_URL.'login.php';
 
 		$gBitSystem->setConfig( 'http_login_url', $http_login_url );
 		if( $gBitSystem->isFeatureActive('site_https_login_required') ) {

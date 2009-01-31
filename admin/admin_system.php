@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.19 2008/08/29 12:02:19 laetzer Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_system.php,v 1.20 2009/01/31 17:14:28 squareing Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -30,16 +30,20 @@ $diskUsage = array(
 	),
 	'cache' => array(
 		'path' => TEMP_PKG_PATH.'cache',
-		'title' => tra( 'System' ),
+		'title' => tra( 'System Cache' ),
 		'subdir' => $bitdomain,
 	),
 	'icons' => array(
 		'path' => TEMP_PKG_PATH.'themes/biticon',
 		'title' => tra( 'Icons' ),
 	),
-	'liberty' => array(
-		'path' => LibertyContent::getCacheBasePath(),
-		'title' => tra( 'Liberty' ),
+	'liberty_cache' => array(
+		'path' => TEMP_PKG_PATH.'liberty/cache',
+		'title' => tra( 'Liberty Cache' ),
+	),
+	'format_help' => array(
+		'path' => TEMP_PKG_PATH.'liberty/help',
+		'title' => tra( 'Format Help' ),
 	),
 	'nexus' => array(
 		'path' => TEMP_PKG_PATH.'nexus',
@@ -69,10 +73,13 @@ if( !empty( $_GET['pruned'] )) {
 if( !empty( $_GET['prune'] ) ) {
 	foreach( $diskUsage as $key => $item ) {
 		if( $_GET['prune'] == $key || $_GET['prune'] == 'all' ) {
-			if( unlink_r( $item['path'].( !empty( $item['subdir'] ) ? '/'.$item['subdir'] : '' ) ) ) {
-				$reload = TRUE;
-			} elseif( is_dir( $item['path'].( !empty( $item['subdir'] ) ? '/'.$item['subdir'] : '' ) ) ) {
-				$feedback['error'] = tra( 'There was a problem clearing out the cache.' );
+			$dir = $item['path'].( !empty( $item['subdir'] ) ? '/'.$item['subdir'] : '' );
+			if( is_dir( $dir ) && strpos( $item['path'], BIT_ROOT_PATH ) === 0 ) {
+				if( unlink_r( $dir )) {
+					$reload = TRUE;
+				} else {
+					$feedback['error'] = tra( 'There was a problem clearing out the cache.' );
+				}
 			}
 		}
 	}
@@ -130,25 +137,32 @@ $gBitSmarty->assign( 'feedback', $feedback );
 $gBitSystem->display( 'bitpackage:kernel/admin_system.tpl', tra( "System Cache" ) , array( 'display_mode' => 'admin' ));
 
 
-// ----------------------- Functions ----------------------- //
-function du( $path ) {
+// {{{ Functions
+/**
+ * du 
+ * 
+ * @param array $pPath 
+ * @access public
+ * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
+ */
+function du( $pPath ) {
 	$size = $count = 0;
 
-	if( !$path or !is_dir( $path ) ) {
+	if( !$pPath or !is_dir( $pPath ) ) {
 		$ret['size'] = $size;
 		$ret['count'] = $count;
 		return $ret;
 	}
 
-	$all = opendir( $path );
+	$all = opendir( $pPath );
 	while( FALSE !== ( $file = readdir( $all ) ) ) {
 		if( $file <> ".." and $file <> "." and $file <> "CVS" ) {
-			if( is_file( $path.'/'.$file ) ) {
-				$size += filesize( $path.'/'.$file );
+			if( is_file( $pPath.'/'.$file ) ) {
+				$size += filesize( $pPath.'/'.$file );
 				$count++;
 				unset( $file );
-			} elseif( is_dir( $path.'/'.$file ) ) {
-				$du = du( $path.'/'.$file );
+			} elseif( is_dir( $pPath.'/'.$file ) ) {
+				$du = du( $pPath.'/'.$file );
 				$size += $du['size'];
 				$count += $du['count'];
 				unset( $file );
@@ -163,14 +177,23 @@ function du( $path ) {
 	return $ret;
 }
 
-function cache_templates( $path, $oldlang, $newlang ) {
+/**
+ * cache_templates 
+ * 
+ * @param array $pPath 
+ * @param array $pOldLang 
+ * @param array $pNewLang 
+ * @access public
+ * @return boolean TRUE on success, FALSE on failure - $this->mErrors will contain reason for failure
+ */
+function cache_templates( $pPath, $pOldLang, $pNewLang ) {
 	global $gBitLanguage, $gBitSmarty;
 
-	if( !$path or !is_dir( $path ) ) {
+	if( !$pPath or !is_dir( $pPath ) ) {
 		return 0;
 	}
 
-	if( $dir = opendir( $path ) ) {
+	if( $dir = opendir( $pPath ) ) {
 		while( FALSE !== ( $file = readdir( $dir ) ) ) {
 			$a = explode( ".", $file );
 			$ext = strtolower( end( $a ) );
@@ -178,15 +201,15 @@ function cache_templates( $path, $oldlang, $newlang ) {
 				continue;
 			}
 
-			if( is_dir( $path."/".$file ) ) {
-				cache_templates( $path."/".$file, $oldlang, $newlang );
+			if( is_dir( $pPath."/".$file ) ) {
+				cache_templates( $pPath."/".$file, $pOldLang, $pNewLang );
 			} else {
 				if( $ext == "tpl" ) {
-					$file = str_replace( '//', '/', $path."/".$file );
-					$gBitLanguage->setLanguage( $newlang );
+					$file = str_replace( '//', '/', $pPath."/".$file );
+					$gBitLanguage->setLanguage( $pNewLang );
 					$gBitSmarty->verifyCompileDir();
 					$comppath = $gBitSmarty->_get_compile_path( $file );
-					$gBitLanguage->setLanguage( $oldlang );
+					$gBitLanguage->setLanguage( $pOldLang );
 					// ignore files in sudirectories of templates/ - will break stuff as in the case of phpbb
 					if( preg_match( "!/templates/\w*\.tpl!i", $file ) && !$gBitSmarty->_is_compiled( $file, $comppath ) ) {
 						$gBitSmarty->_compile_resource( $file, $comppath );
@@ -197,4 +220,6 @@ function cache_templates( $path, $oldlang, $newlang ) {
 		closedir( $dir );
 	}
 }
+// }}}
+// vim: set fdm=marker :
 ?>

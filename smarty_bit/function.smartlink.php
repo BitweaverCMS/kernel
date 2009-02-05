@@ -124,8 +124,17 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 	// append any other paramters that were passed in
 	foreach( $hash as $key => $val ) {
 		if( !empty( $val ) && !in_array( $key, $ignore ) ) {
-			$url_params .= empty( $url_params ) ? '?' : '&amp;';
-			$url_params .= $key."=".$val;
+			// normally the key is a string
+			if( !is_array( $val ) ){
+				$url_params .= empty( $url_params ) ? '?' : '&amp;';
+				$url_params .= $key."=".$val;
+			// but sometimes it can be an array
+			}else{
+				foreach( $val as $v ){
+					$url_params .= empty( $url_params ) ? '?' : '&amp;';
+					$url_params .= $key."[]=".$v;
+				}
+			}
 		}
 	}
 

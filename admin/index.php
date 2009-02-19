@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.22 2008/06/26 11:34:46 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.23 2009/02/19 16:47:37 spiderr Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -12,14 +12,14 @@ $gForceAdodb = TRUE;
 require_once( '../../bit_setup_inc.php' );
 require_once( KERNEL_PKG_PATH.'simple_form_functions_lib.php' );
 
-// only admins may use this page
-$gBitSystem->verifyPermission( 'p_admin' );
-
 //make an alias in case anyone decides to verifyInstalledPackages
 $gBitInstaller = &$gBitSystem;
 
 if( !empty( $_REQUEST["page"] )) {
 	$page = $_REQUEST["page"];
+
+	// only admins may use this page
+	$gBitSystem->verifyPermission( 'p_'.$page.'_admin' );
 
 	if( preg_match( '/\.php/', $page )) {
 		$adminPage = $page;
@@ -73,18 +73,25 @@ if( !empty( $_REQUEST["page"] )) {
 	asort( $packages );
 	$packages = array_unique( array_merge( array( 'kernel', 'liberty', 'users', 'themes' ), $packages ));
 	foreach( $packages as $package ) {
-		$lowerPackage = strtolower( $package );
-		$tpl = "bitpackage:$lowerPackage/menu_{$lowerPackage}_admin.tpl";
-		if(( $gBitSystem->isPackageActive( $package ) || $lowerPackage == 'kernel' ) && @$gBitSmarty->template_exists( $tpl )) {
-			$adminTemplates[$package] = $tpl;
+		if( $gBitUser->hasPermission( 'p_'.$package.'_admin' ) ) {
+			$lowerPackage = strtolower( $package );
+			$tpl = "bitpackage:$lowerPackage/menu_{$lowerPackage}_admin.tpl";
+			if(( $gBitSystem->isPackageActive( $package ) || $lowerPackage == 'kernel' ) && @$gBitSmarty->template_exists( $tpl )) {
+				$adminTemplates[$package] = $tpl;
+			}
 		}
 	}
 
-	$gBitSystem->setBrowserTitle( 'Administration' );
-	$gBitSmarty->assign_by_ref( 'adminTemplates', $adminTemplates );
+	if( !empty( $adminTemplates ) ) {
+		$gBitSystem->setBrowserTitle( 'Administration' );
+		$gBitSmarty->assign_by_ref( 'adminTemplates', $adminTemplates );
+	} else {
+		$gBitSytem->verifyPermission( 'p_admin' );
+	}
 }
 
-if( !empty( $_REQUEST['version_check'] ) ) {
+
+if( !empty( $_REQUEST['version_check'] ) && $gBitUser->isAdmin() ) {
 	$gBitSmarty->assign( 'version_info', $gBitSystem->checkBitVersion() );
 }
 

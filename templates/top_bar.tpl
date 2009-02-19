@@ -6,7 +6,7 @@
 			{include file="bitpackage:kernel/menu_global.tpl"}
 		</li>
 
-		{if $gBitUser->isAdmin()}
+		{if $adminMenu}
 			<li class="m-admin{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} current{/if}">
 				<a accesskey="A" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} selected{/if}" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">
 					<strong>{tr}Administration{/tr}</strong>

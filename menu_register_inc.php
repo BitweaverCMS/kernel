@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.15 2007/04/04 14:31:31 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.16 2009/02/19 16:47:37 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -18,9 +18,9 @@ global $gBitUser, $gBitSystem, $gBitSmarty;
 uasort( $gBitSystem->mAppMenu, "mAppMenu_sort" );
 
 // Admin menu
-if( $gBitUser->isAdmin() ) {
-	$adminMenu = array();
-	foreach( array_keys( $gBitSystem->mPackages ) as $package ) {
+$adminMenu = array();
+foreach( array_keys( $gBitSystem->mPackages ) as $package ) {
+	if( $gBitUser->hasPermission( 'p_'.$package.'_admin' ) ) {
 		$package = strtolower( $package );
 		$tpl = "bitpackage:$package/menu_".$package."_admin.tpl";
 		if(( $gBitSystem->isPackageActive( $package ) || $package == 'kernel') && @$gBitSmarty->template_exists( $tpl )) {
@@ -28,6 +28,9 @@ if( $gBitUser->isAdmin() ) {
 			$adminMenu[$package]['display'] = 'display:'.( empty( $package ) || ( isset( $_COOKIE[$package.'admenu'] ) && ( $_COOKIE[$package.'admenu'] == 'o' ) ) ? 'block;' : 'none;' );
 		}
 	}
+}
+
+if( !empty( $adminMenu ) ) {
 	ksort( $adminMenu );
 	$gBitSmarty->assign_by_ref( 'adminMenu', $adminMenu );
 }

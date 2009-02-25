@@ -11,7 +11,7 @@ function reloadImage() {
 /* ]]> */ </script>
 {/literal}
 {if $params.variant == "condensed"}
-	<span class="captcha">
+	<span class="captcha" {if $params.id}id="{$params.id}"{/if} {if $params.style}style="{$params.style}"{/if}>
 		<img id='captcha_img' onclick="this.blur();reloadImage();return false;" class="alignmiddle" id="captcha_img" src="{$params.source}" alt="{tr}Random Image{/tr}"/>
 		<br />
 		<input type="text" name="captcha" id="captcha" size="{$params.size+3}"/>
@@ -20,7 +20,7 @@ function reloadImage() {
 	</span>
 	<br />
 {else}
-	<div class="row">
+	<div class="row" {if $params.id}id="{$params.id}"{/if} {if $params.style}style="{$params.style}"{/if}>
 		{formlabel label="Verification Code" for="captcha"}
 		{forminput}
 			<img id='captcha_img' onclick="this.blur();reloadImage();return false;" src="{$params.source}" alt="{tr}Random Image{/tr}"/>

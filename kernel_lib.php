@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.36 2008/12/28 07:46:02 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.37 2009/03/11 10:22:52 squareing Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -794,6 +794,24 @@ function bitdebug( $pMessage ) {
 	global $gDebug;
 	if( !empty( $gDebug )) {
 		echo "<pre>$pMessage</pre>";
+	}
+}
+
+/**
+ * pear_check will check to see if a given PEAR module is installed
+ * 
+ * @param string $pPearModule The name of the module in the format: Image/GraphViz.php
+ * @access public
+ * @return string with error message on failure, NULL on success
+ */
+function pear_check( $pPearModule = NULL ) {
+	if( !@include_once( "PEAR.php" )) {
+		return tra( "PEAR is not installed." );
+	} elseif( !empty( $pPearModule ) && !@include_once( $pPearModule )) {
+		$module = str_replace( ".php", "", str_replace( "/", "_", $pPearModule ));
+		return tra( "The PEAR plugin <strong>$module</strong> is not installed. Install it with '<strong>pear install $module</strong>' or use your distribution's package manager.");
+	} else {
+		return NULL;
 	}
 }
 

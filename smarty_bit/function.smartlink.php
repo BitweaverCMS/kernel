@@ -14,6 +14,7 @@
  * Name:	smartlink<br>
  * Input:<br>
  *			- ititle	(required)	words that are displayed<br>
+ *			- iatitle	(optional)	alternative text for the link title (rollover, etc.) <br>
  *			- ianchor	(optional)	set the anchor where the link should point to<br>
  *			- isort		(optional)	name of the sort column without the orientation (e.g.: title)<br>
  *			- isort_mode(optional)	this can be used to manually pass the sort mode to smartlink<br>
@@ -22,6 +23,7 @@
  *									asc is default<br>
  *			- idefault	(optional)	if set, it will highlight this link if no $isort_mode is given<br>
  *									this should only be set once per sorting group since it represents the default sorting column<br>
+ *			- itra		(optional)	if present then don't translate<br>
  *			- itype		(optional)	can be set to<br>
  *									url		-->		outputs only url<br>
  *									li		-->		outputs link as &lt;li&gt;&lt;a ... &gt;&lt;/li&gt;<br>
@@ -42,7 +44,7 @@
  *			- {smartlink ititle="Page Name" isort="title" iorder="desc" idefault=1}<br>
  *				setting iorder and idefault here, makes this link sort in a descending order by default (iorder)<br>
  *				and it is highlighted when $isort_mode ( or $_REQUEST['sort_mode'] ) is not set (idefault)<br>
- * Note Don't use this plugin if ititle is generated dynamically since it is passed through tra()<br>
+ * Note Be careful if ititle is generated dynamically since it is passed through tra() by default, use itra to override<br>
  */
 function smarty_function_smartlink( $params, &$gBitSmarty ) {
 	if( !empty( $params['ihash'] ) ) {
@@ -77,11 +79,13 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 	$url_params = NULL;
 	if( !empty( $hash['itra'] ) || $hash['itra'] === FALSE ) {
 		$ititle = $hash['ititle'];
+		$iatitle =  empty( $hash['iatitle'] ) ? $ititle : $hash['iatitle'];
 	} else {
 		$ititle = tra( $hash['ititle'] );
+		$iatitle =  empty( $hash['iatitle'] ) ? $ititle : tra ( $hash['iatitle'] );
 	}
 
-	$atitle = 'title="'.$ititle.'"';
+	$atitle = 'title="'.$iatitle.'"';
 
 	// if isort is set, we need to deal with all the sorting stuff
 	if( !empty( $hash['isort'] ) ) {
@@ -89,7 +93,7 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		$sort_asc = $hash['isort'].'_asc';
 		$sort_desc = $hash['isort'].'_desc';
 
-		$atitle = 'title="'.tra( 'Sort by' ).": ".$ititle.'"';
+		$atitle = 'title="'.tra( 'Sort by' ).": ".$iatitle.'"';
 		$url .= '?';
 		$url_params .= 'sort_mode=';
 
@@ -120,7 +124,7 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		}
 	}
 
-	$ignore = array( 'icontrol', 'isort', 'ianchor', 'isort_mode', 'iorder', 'ititle', 'idefault', 'ifile', 'ipackage', 'itype', 'iurl', 'ionclick', 'ibiticon', 'iforce', 'itra' );
+	$ignore = array( 'iatitle', 'icontrol', 'isort', 'ianchor', 'isort_mode', 'iorder', 'ititle', 'idefault', 'ifile', 'ipackage', 'itype', 'iurl', 'ionclick', 'ibiticon', 'iforce', 'itra' );
 	// append any other paramters that were passed in
 	foreach( $hash as $key => $val ) {
 		if( !empty( $val ) && !in_array( $key, $ignore ) ) {

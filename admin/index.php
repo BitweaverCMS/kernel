@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.23 2009/02/19 16:47:37 spiderr Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.24 2009/03/17 16:24:46 wjames5 Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -86,7 +86,7 @@ if( !empty( $_REQUEST["page"] )) {
 		$gBitSystem->setBrowserTitle( 'Administration' );
 		$gBitSmarty->assign_by_ref( 'adminTemplates', $adminTemplates );
 	} else {
-		$gBitSytem->verifyPermission( 'p_admin' );
+		$gBitSystem->verifyPermission( 'p_admin' );
 	}
 }
 

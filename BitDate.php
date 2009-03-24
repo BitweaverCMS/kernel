@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.27 2009/01/27 22:46:58 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.28 2009/03/24 10:04:16 lsces Exp $
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003
@@ -72,7 +72,8 @@ class BitDate {
 			$this->display_offset = $gBitUser->getPreference( 'site_display_timezone', 0 ); 
 			if ( version_compare( phpversion(), "5.1.0", ">=" ) and !is_numeric( $this->display_offset ) ) {
 				$dateTimeZoneUser = new DateTimeZone( $this->display_offset );
-				$this->display_offset = $dateTimeZoneUser->getOffset();
+				$dtNow = new DateTime( "now" );
+				$this->display_offset = $dateTimeZoneUser->getOffset( $dtNow );
 			}
 		return $this->display_offset;
 	}

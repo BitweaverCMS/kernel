@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.19 2008/06/06 16:18:09 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.20 2009/03/30 03:24:22 spiderr Exp $
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -74,7 +74,7 @@ class BitSmarty extends Smarty {
 		if( defined( 'TEMPLATE_DEBUG' ) && TEMPLATE_DEBUG == TRUE ) {
 			echo "\n<!-- - - - {$pParams['smarty_include_tpl_file']} - - - -->\n";
 		}
-		$this->includeSiblingPhp( $pParams['smarty_include_tpl_file'] );
+		$this->includeSiblingPhp( $pParams['smarty_include_tpl_file'], $pParams['smarty_include_vars'] );
 		return parent::_smarty_include( $pParams );
 	}
 
@@ -122,7 +122,8 @@ class BitSmarty extends Smarty {
 	 * @return TRUE if a sibling php file was included
 	 * @access private
 	 */
-	function includeSiblingPhp( $pRsrc ) {
+	function includeSiblingPhp( $pRsrc, $pIncludeVars=NULL ) {
+		global $gBitThemes;
 		$ret = FALSE;
 		if( strpos( $pRsrc, ':' )) {
 			list( $resource, $location ) = split( ':', $pRsrc );
@@ -136,8 +137,15 @@ class BitSmarty extends Smarty {
 					$modPhpFile = str_replace( '.tpl', '.php', "$path$subdir/$template" );
 					if( file_exists( $modPhpFile )) {
 						global $gBitSmarty, $gBitSystem, $gBitUser, $gQueryUserId, $moduleParams;
-						// Module Params were passed in from the template, like kernel/dynamic.tpl
-						$moduleParams = $this->get_template_vars( 'moduleParams' );
+						$moduleParams = array();
+						if( !empty( $pIncludeVars['module_params'] ) ) {
+							// module_params were passed through via the {include}, 
+							// e.g. {include file="bitpackage:foobar/mod_list_foo.tpl" module_params="user_id=`$gBitUser->mUserId`&sort_mode=created_desc"}
+							$moduleParams['module_params'] = $gBitThemes->parseString( $pIncludeVars['module_params'] );
+						} else {
+							// Module Params were passed in from the template, like kernel/dynamic.tpl
+							$moduleParams = $this->get_template_vars( 'moduleParams' );
+						}
 						include( $modPhpFile );
 						$ret = TRUE;
 					}

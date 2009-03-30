@@ -32,7 +32,7 @@ if( !empty( $_REQUEST['ajax_path_conf'] ) && $gBitSystem->isFeatureActive( $_REQ
 	$fileList = ajax_dir_list( $gBitSystem->getConfig( $_REQUEST['ajax_path_conf'] ), ( !empty( $_REQUEST['relpath'] ) ? $_REQUEST['relpath']."/" : NULL ));
 	$gBitSmarty->assign( 'fileList', $fileList );
 }
-$gBitThemes->loadAjax( 'mochikit', array( 'DOM.js', 'Async.js' ));
+$gBitThemes->loadAjax( 'mochikit', array( 'Iter.js', 'DOM.js', 'Async.js' ));
 $gBitThemes->loadJavascript( KERNEL_PKG_PATH."scripts/BitFileBrowser.js", TRUE );
 
 if( $gBitThemes->isAjaxRequest() ) {

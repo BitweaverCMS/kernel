@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.47 2008/12/11 18:33:32 pppspoonman Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.48 2009/03/31 20:09:36 dansut Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -788,7 +788,7 @@ class BitDb {
 	 */
 	function convertSortmodeOneItem( $pSortMode ) {
 		// check $sort_mode for evil stuff
-		if( $pSortMode = preg_replace('/[^.A-Za-z_,]/', '', $pSortMode) ) {
+		if( $pSortMode = preg_replace('/[^.0-9A-Za-z_,]/', '', $pSortMode) ) {
 			if( $sep = strrpos( $pSortMode, '_' ) ) {
 				$order = substr( $pSortMode, $sep );
 				// force ending to neither _asc or _desc

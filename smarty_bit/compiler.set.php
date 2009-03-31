@@ -9,7 +9,7 @@
  * The optional parameter "if" is used to set the value if the test is true. The test can be: 'empty', '!empty', 'is_null', '!is_null', 'isset', '!isset', 'is_void'.
  * The new command 'is_void' test if the variable is empty and != 0, very useful for test $_REQUEST parameters.
  *
- * @llink http://smarty.incutio.com/?page=set
+ * @link http://smarty.incutio.com/?page=set
  * @link http://www.dav-muz.net/
  * @version 1.0
  * @copyright Copyright 2006 by Muzzarelli Davide

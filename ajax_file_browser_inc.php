@@ -1,5 +1,16 @@
 <?php
 /**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/ajax_file_browser_inc.php,v 1.4 2009/03/31 05:51:29 lsces Exp $
+ *
+ * Copyright (c) 2008 bitweaver.org
+ * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details
+ * 
+ * @package kernel
+ * @subpackage functions
+ */
+
+/**
  * Quick guide to this file:
  * $_REQUEST['ajax_path_conf'] is the kernel configuration name that contains the absolute path to the directory where the files are.
  *

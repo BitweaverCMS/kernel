@@ -1,5 +1,9 @@
 <?php
 /**
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/compiler.set.php,v 1.4 2009/03/31 08:18:24 lsces Exp $
+ * @package kernel
+ * @subpackage plugins
+ * 
  * Smarty {set} compiler function plugin
  *
  * File:     compiler.set.php

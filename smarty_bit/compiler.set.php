@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/compiler.set.php,v 1.4 2009/03/31 08:18:24 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/compiler.set.php,v 1.5 2009/03/31 10:21:29 lsces Exp $
  * @package kernel
  * @subpackage plugins
  * 
@@ -23,6 +23,10 @@
  * @param Smarty_Compiler object
  * @return void|string
  */
+ 
+/**
+ * Set Compiler Function
+ */ 
 function smarty_compiler_set($params, &$smarty) {
 	// Extract if "value" parameter contain an array
 	$regularExpression = '/ value=array\([\'"]?.*[\'"]?\)/';

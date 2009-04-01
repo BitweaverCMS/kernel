@@ -57,4 +57,5 @@
 	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}</div>{/if}
 {/if}
 {/strip}
+{*haha made you look. xoxo - spiderr. 01-APR-2009*}
 {include file="bitpackage:kernel/footer.tpl"}

@@ -37,10 +37,12 @@ function smarty_function_jspopup( $pParams, &$gBitSmarty ) {
 	$optionHash = array( 'type', 'width', 'height', 'gutsonly', 'img' );
 	foreach( $pParams as $param => $val ) {
 		if( !in_array( $param, $optionHash ) ) {
-			if( $param != 'title' ) {
-				$guts .= ' '.$param.'="'.$val.'"';
-			} else {
+			if( $param == 'title' ) {
 				$guts .= ' '.$param.'="'.tra( 'This will open a new window: ' ).$title.'"';
+			}elseif( $param == 'href' ){
+				$guts .= ' '.$param.'="javascript:void(0)"';
+			} else {
+				$guts .= ' '.$param.'="'.$val.'"';
 			}
 		}
 	}
@@ -73,9 +75,9 @@ function smarty_function_jspopup( $pParams, &$gBitSmarty ) {
 	}
 
 	if( !empty( $pParams['type'] ) && $pParams['type'] == 'fullscreen' ) {
-		$js = 'popUpWin(this.href,\'fullScreen\');';
+		$js = 'popUpWin(\''.$pParams['href'].'\',\'fullScreen\');';
 	} else {
-		$js = 'popUpWin(this.href,\'standard\','.( !empty( $pParams['width'] ) ? $pParams['width'] : 600 ).','.( !empty( $pParams['height'] ) ? $pParams['height'] : 400 ).');';
+		$js = 'popUpWin(\''.$pParams['href'].'\',\'standard\','.( !empty( $pParams['width'] ) ? $pParams['width'] : 600 ).','.( !empty( $pParams['height'] ) ? $pParams['height'] : 400 ).');';
 	}
 
 	// deprecated slated for removal - onkeypress causes focus problems with browsers - if this is an ada issue get in touch -wjames5.
@@ -88,4 +90,3 @@ function smarty_function_jspopup( $pParams, &$gBitSmarty ) {
 		return( '<a '.$guts.'>'.( !empty( $img ) ? $img : $title ).'</a>' );
 	}
 }
-?>

@@ -23,6 +23,8 @@
  * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
  */
 function smarty_function_jspopup( $pParams, &$gBitSmarty ) {
+	global $gBitThemes;
+
 	$ret = '';
 	if( empty( $pParams['href'] ) ) {
 		return( 'assign: missing "href" parameter' );
@@ -39,7 +41,7 @@ function smarty_function_jspopup( $pParams, &$gBitSmarty ) {
 		if( !in_array( $param, $optionHash ) ) {
 			if( $param == 'title' ) {
 				$guts .= ' '.$param.'="'.tra( 'This will open a new window: ' ).$title.'"';
-			}elseif( $param == 'href' ){
+			}elseif( $param == 'href' && $gBitThemes->isJavascriptEnabled()){
 				$guts .= ' '.$param.'="javascript:void(0)"';
 			} else {
 				$guts .= ' '.$param.'="'.$val.'"';

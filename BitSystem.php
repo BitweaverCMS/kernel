@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.211 2009/01/28 10:48:35 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.212 2009/04/02 20:24:39 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -701,7 +701,7 @@ class BitSystem extends BitBase {
 			}
 			$gBitSmarty->assign( 'fatalTitle', tra( "Permission denied." ) );
 		}
-bit_log_error( "PERMISSION DENIED: $pPermission $pMsg" ); 
+// bit_log_error( "PERMISSION DENIED: $pPermission $pMsg" ); 
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->display( "error.tpl" );
 die;
@@ -1107,7 +1107,7 @@ die;
 					$url = USERS_PKG_URL.'login.php';
 				} else {
 					if( $bit_index == 'my_page' ) {
-						$url = USERS_PKG_URL . 'my.php';
+						$url = $gBitSystem->getConfig( 'users_login_homepage', USERS_PKG_URL.'my.php' );
 					} elseif( $bit_index == 'user_home' ) {
 						$url = $gBitUser->getDisplayUrl();
 					} else {

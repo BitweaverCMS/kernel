@@ -79,6 +79,10 @@ function biticon_output( $pParams, $pFile ) {
 				$outstr .=  ' class="'.$pParams["iclass"].'"';
 			}
 
+			if( isset( $pParams["style"] ) ) {
+				$outstr .=  ' style="'.$pParams["style"].'"';
+			}
+
 			// insert image width and height
 			list( $width, $height, $type, $attr ) = @getimagesize( BIT_ROOT_PATH.$pFile );
 			if( !empty( $width ) && !empty( $height ) ) {

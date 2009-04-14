@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.212 2009/04/02 20:24:39 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.213 2009/04/14 17:51:03 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -399,7 +399,7 @@ class BitSystem extends BitBase {
 			case '403':
 				header( "HTTP/1.0 403 Forbidden" );
 				break;
-			case 404:
+			case '404':
 				header( "HTTP/1.0 404 Not Found" );
 				break;
 			}

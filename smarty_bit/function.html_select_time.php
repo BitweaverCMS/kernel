@@ -48,7 +48,10 @@ function smarty_function_html_select_time($params, &$gBitSmarty)
     extract($params);
 
     $time = smarty_make_timestamp($time);
-    $disptime = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC( $time );
+	$date = new BitDate(0);
+	// sets the offset for the user - necessary because BitDate is a bitwack
+	$offset = $date->get_display_offset();
+	$disptime = $date->getDisplayDateFromUTC( $time );
     $html_result = '';
 
     if ($display_hours) {

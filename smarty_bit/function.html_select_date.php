@@ -83,7 +83,10 @@ function smarty_function_html_select_date($params, &$gBitSmarty)
   		// strftime to make yyyy-mm-dd
 	  	// Just in case the offset moves us into another day.
 		$time = smarty_make_timestamp($time);
-	  	$time = $gBitSystem->mServerTimestamp->getDisplayDateFromUTC($time);
+		$date = new BitDate(0);
+		// sets the offset for the user - necessary because BitDate is a bitwack
+		$offset = $date->get_display_offset();
+		$time = $date->getDisplayDateFromUTC( $time );
   		$time = $gBitSystem->mServerTimestamp->strftime('%Y-%m-%d', smarty_make_timestamp($time), TRUE);
   	}
   	// Now split this in pieces, which later can be used to set the select

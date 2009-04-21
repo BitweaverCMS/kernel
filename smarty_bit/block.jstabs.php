@@ -30,8 +30,11 @@ function smarty_block_jstabs( $pParams, $pContent, &$gBitSmarty ) {
 
 	// When tabs are disabled, we simply wrap the tabs with the appropriate div for styling
 	if( $gBitSystem->isFeatureActive( 'site_disable_jstabs' ) ) {
-		$ret = '<div class="tabpane">'.$pContent.'</div>';
+		$ret = '<div class="tabpane"';
+		$ret .= !empty( $pParams['id'] ) ? ' id="'.$pParams['id'].'"' : '';
+		$ret .= '>'.$pContent.'</div>';
 	} else {
+		// @TODO review this conditional or comment its purpose, $tab never seems to be set
 		if( isset( $tab ) || isset( $_REQUEST['jstab'] ) ) {
 			// make sure we aren't passed any evil shit
 			if( !isset( $tab ) && isset( $_REQUEST['jstab'] ) && preg_match( "!^\d+$!", $_REQUEST['jstab'] ) ) {
@@ -43,7 +46,9 @@ function smarty_block_jstabs( $pParams, $pContent, &$gBitSmarty ) {
 			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();".( isset( $tab ) ? "var tabPane; tabPane.setSelectedIndex( $tab );" : "" )."/*]]>*/</script>";
 			$ret .= '</div>';
 		} else {
-			$ret = '<div class="tabpane">';
+			$ret = '<div class="tabpane"';
+			$ret .= !empty( $pParams['id'] ) ? ' id="'.$pParams['id'].'"' : '';
+			$ret .= '>';
 			$ret .= $pContent;
 			$ret .= "<script type=\"text/javascript\">/*<![CDATA[*/ setupAllTabs();var tabPane; /*]]>*/</script>";
 			$ret .= '</div>';

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.213 2009/04/14 17:51:03 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.214 2009/04/22 15:44:04 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -830,7 +830,7 @@ die;
 		$pkgDefine = $pkgName.'_PKG_URL';
 		if( !defined( $pkgDefine )) {
 			// Force full URI's for offline or exported content (newsletters, etc.)
-			$root = !empty( $_REQUEST['uri_mode'] ) ? BIT_BASE_URI . '/' : BIT_ROOT_URL;
+			$root = !empty( $_REQUEST['uri_mode'] ) ? BIT_BASE_URI . BIT_ROOT_URL : BIT_ROOT_URL;
 			define( $pkgDefine, $root . basename( $path ) . '/' );
 		}
 

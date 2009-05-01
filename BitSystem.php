@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.214 2009/04/22 15:44:04 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.215 2009/05/01 14:02:17 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -726,8 +726,8 @@ die;
 			}
 			$gBitSmarty->assign( 'msgFields', $pMsg );
 			$gBitSmarty->assign_by_ref( 'hiddenFields', $pFormHash );
-			$this->display( 'bitpackage:kernel/confirm.tpl' );
-die;
+			$this->display( 'bitpackage:kernel/confirm.tpl', NULL, array( 'display_mode' => 'edit' ));
+			die;
 		}
 	}
 

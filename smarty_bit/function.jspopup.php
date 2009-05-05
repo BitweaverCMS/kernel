@@ -36,6 +36,15 @@ function smarty_function_jspopup( $pParams, &$gBitSmarty ) {
 		$title = empty( $pParams['notra'] ) ? $pParams['title'] : tra( $pParams['title'] );
 	}
 
+	if( empty( $pParams['text'] )){
+		$text = $title;
+	} else {
+		$text = empty( $pParams['notra'] ) ? $pParams['text'] : tra( $pParams['text'] );
+		// remove it from the hash since later the params are looped over for to formulate the a tag
+		unset( $pParams['text'] );
+	}
+
+
 	$optionHash = array( 'type', 'width', 'height', 'gutsonly', 'img' );
 	foreach( $pParams as $param => $val ) {
 		if( !in_array( $param, $optionHash ) ) {
@@ -89,6 +98,6 @@ function smarty_function_jspopup( $pParams, &$gBitSmarty ) {
 	if( !empty( $pParams['gutsonly'] ) ) {
 		return $guts;
 	} else {
-		return( '<a '.$guts.'>'.( !empty( $img ) ? $img : $title ).'</a>' );
+		return( '<a '.$guts.'>'.( !empty( $img ) ? $img : $text ).'</a>' );
 	}
 }

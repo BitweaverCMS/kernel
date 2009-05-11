@@ -1,6 +1,6 @@
 {strip}
 <div id="bittopbar">
-	<ul id="nav" class="menu hor">
+	<ul id="nav" class="dropmenu">
 		<li class="m-home">
 			<a class="head" accesskey="h" href="{$smarty.const.BIT_ROOT_URL}">{$gBitSystem->getConfig('site_menu_title')|default:$gBitSystem->getConfig('site_title')}</a>
 			{include file="bitpackage:kernel/menu_global.tpl"}
@@ -49,8 +49,13 @@
 			{/if}
 		{/foreach}
 	</ul>
-	<div class="clear"></div>
 </div>
+
+<!--[if lt IE 8]>
+<script type="text/javascript">
+    BitBase.fixIEDropMenu( 'nav' );
+</script>
+<![endif]-->
 
 {if $gBitSystem->isFeatureActive('site_top_bar_js') && $gBitSystem->isFeatureActive('site_top_bar_dropdown')}
 	<script type="text/javascript"> /*<![CDATA[*/

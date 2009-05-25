@@ -8,9 +8,9 @@
 
 		{if $adminMenu}
 			<li class="m-admin{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} current{/if}">
-				<a accesskey="A" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} selected{/if}" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">
+				{if $gBitUser->isAdmin()}<a accesskey="A" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} selected{/if}" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">{/if}
 					<strong>{tr}Administration{/tr}</strong>
-				</a>
+				{if $gBitUser->isAdmin()}</a>{/if}
 				{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}
 					<ul>
 						{foreach key=key item=menu from=$adminMenu}

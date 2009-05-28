@@ -1,9 +1,9 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.14 2008/08/05 07:06:18 laetzer Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.15 2009/05/28 18:58:45 lsces Exp $ *}
 {strip}
 {bitmodule title="$moduleTitle" name="powered_by"}
 	<ul>
 		<li><a href="http://www.bitweaver.org/">{biticon ipackage="liberty" iname="bitweaver" ipath="bitweaver$size/" iexplain="Bitweaver"}</a></li>
-		<li><a href="http://smarty.php.net/">{biticon ipackage="liberty" iname="smarty" ipath="bitweaver$size/" iexplain="Smarty"}</a></li>
+		<li><a href="http://www.smarty.net/">{biticon ipackage="liberty" iname="smarty" ipath="bitweaver$size/" iexplain="Smarty"}</a></li>
 		<li>
 			{if $gBitDbSystem eq 'adodb'}
 				<a href="http://adodb.sourceforge.net/">{biticon ipackage="liberty" iname="adodb" ipath="bitweaver$size/" iexplain="Adodb"}</a></li>

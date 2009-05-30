@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.7 2008/12/06 16:54:47 tekimaki_admin Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.8 2009/05/30 18:32:52 wjames5 Exp $
  *
  * +----------------------------------------------------------------------+
  * | Copyright ( c ) 2008, bitweaver.org
@@ -22,7 +22,7 @@
  * This is a base class to derive more capabale mailing services
  *
  * @author   nick <nick@sluggardy.net>
- * @version  $Revision: 1.7 $
+ * @version  $Revision: 1.8 $
  * @package  kernel 
  */
 
@@ -98,6 +98,7 @@ require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
 		}
 		$mailer->Host     = $gBitSystem->getConfig( 'bitmailer_servers', $gBitSystem->getConfig( 'kernel_server_name', '127.0.0.1' ) );
 		$mailer->Mailer   = $gBitSystem->getConfig( 'bitmailer_protocol', 'smtp' ); // Alternative to IsSMTP()
+		$mailer->CharSet  = 'UTF-8';
 		if( $gBitSystem->getConfig( 'bitmailer_smtp_username' ) ) {
 			$mailer->SMTPAuth = TRUE;
 			$mailer->Username = $gBitSystem->getConfig( 'bitmailer_smtp_username' );

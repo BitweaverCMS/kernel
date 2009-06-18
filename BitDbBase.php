@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.49 2009/04/12 13:07:22 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbBase.php,v 1.50 2009/06/18 06:31:47 lsces Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -813,6 +813,10 @@ class BitDb {
 
 			if( !$bIsFunction ) {
 				switch( $this->mType ) {
+					case "oci8po":
+						$pSortMode = preg_replace( "/_asc$/", "` ASC NULLS LAST", $pSortMode );
+						$pSortMode = preg_replace( "/_desc$/", "` DESC NULLS LAST", $pSortMode );
+						break;
 					case "firebird":
 						// Use of alias in order by is not supported because of optimizer processing
 						if ( $pSortMode == 'page_name_asc' )           $pSortMode = 'title_asc';
@@ -827,9 +831,6 @@ class BitDb {
 						if ( $pSortMode == 'modifier_user_desc' )      $pSortMode = 'uue.login_desc';
 						if ( $pSortMode == 'modifier_real_name_asc' )  $pSortMode = 'uue.real_name_asc';
 						if ( $pSortMode == 'modifier_real_name_desc' ) $pSortMode = 'uue.real_name_desc';
-					case "oci8po":
-						$pSortMode = preg_replace( "/_asc$/", "` ASC NULLS LAST", $pSortMode );
-						$pSortMode = preg_replace( "/_desc$/", "` DESC NULLS LAST", $pSortMode );
 					case "oci8":
 					case "sybase":
 					case "mssql":
@@ -840,13 +841,13 @@ class BitDb {
 					default:
 						$pSortMode = preg_replace( "/_asc$/", "` ASC", $pSortMode );
 						$pSortMode = preg_replace( "/_desc$/", "` DESC", $pSortMode );
-						$pSortMode = str_replace( ",", "`,`",$pSortMode );
-						if( strpos( $pSortMode, '.' ) ) {
-							$pSortMode = str_replace( ".", ".`",$pSortMode );
-						} else {
-							$pSortMode = "`" . $pSortMode;
-						}
 						break;
+				}
+				$pSortMode = str_replace( ",", "`,`",$pSortMode );
+				if( strpos( $pSortMode, '.' ) ) {
+					$pSortMode = str_replace( ".", ".`",$pSortMode );
+				} else {
+					$pSortMode = "`" . $pSortMode;
 				}
 			}
 		} else {

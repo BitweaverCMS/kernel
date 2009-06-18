@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.20 2009/03/30 03:24:22 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.21 2009/06/18 06:45:24 lsces Exp $
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -96,9 +96,9 @@ class BitSmarty extends Smarty {
 		global $gBitSystem;
 		$this->verifyCompileDir();
 		if( strpos( $pTplFile, ':' )) {
-			list( $resource, $location ) = split( ':', $pTplFile );
+			list( $resource, $location ) = explode( ':', $pTplFile );
 			if( $resource == 'bitpackage' ) {
-				list( $package, $template ) = split( '/', $location );
+				list( $package, $template ) = explode( '/', $location );
 				// exclude temp, as it contains nexus menus
 				if( !$gBitSystem->isPackageActive( $package ) && $package != 'temp' ) {
 					return '';
@@ -126,9 +126,9 @@ class BitSmarty extends Smarty {
 		global $gBitThemes;
 		$ret = FALSE;
 		if( strpos( $pRsrc, ':' )) {
-			list( $resource, $location ) = split( ':', $pRsrc );
+			list( $resource, $location ) = explode( ':', $pRsrc );
 			if( $resource == 'bitpackage' ) {
-				list( $package, $template ) = split( '/', $location );
+				list( $package, $template ) = explode( '/', $location );
 				// print "( $resource, $location )  ( $package, $template )<br/>";
 				$subdir = preg_match( '/mod_/', $template ) ? 'modules' : 'templates';
 				if( preg_match('/mod_/', $template ) || preg_match( '/center_/', $template )) {

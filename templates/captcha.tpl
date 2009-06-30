@@ -5,7 +5,7 @@ function reloadImage() {
 	if (element) {
 		thesrc = element.src;
 		thesrc = thesrc.substring(0,thesrc.lastIndexOf(".")+4);
-		$("captcha_img").src = thesrc+"?"+Math.round(Math.random()*100000);
+		document.getElementById("captcha_img").src = thesrc+"?"+Math.round(Math.random()*100000);
 	}
 }
 /* ]]> */ </script>

@@ -76,7 +76,9 @@ function smarty_block_form( $pParams, $pContent, &$gBitSmarty) {
 				case 'secure':
 					break;
 				case 'onsubmit':
-					$onsubmit .= $val.";";
+					if( !empty( $val ) ) {
+						$onsubmit .= $val.";";
+					}
 					break;
 				default:
 					if( !empty( $val ) ) {

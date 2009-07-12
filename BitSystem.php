@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.215 2009/05/01 14:02:17 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.216 2009/07/12 10:34:05 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1290,15 +1290,26 @@ die;
 			$extension = substr( $pFileName, strrpos( $pFileName, '.' ) + 1 );
 			$lookupMime = $this->lookupMimeType( $extension );
 		} else {
-			//extensionless file uploaded, get ready to add an extension
+			// extensionless file uploaded, get ready to add an extension
 			$lookupMime = '';
 			$pFileName .= '.';
 		}
-		if( $lookupMime != $verifyMime ) {
+
+		// if $verifyMime turns out to be 'octet-stream' and the lookupMimeType is a video file, we'll allow the video filetype and extenstion
+		// if we don't do this, most uploaded videos are changed to have a '.bin' extenstion which is very annoying.
+		if( $verifyMime == 'application/octet-stream' && preg_match( "/^video/", $lookupMime )) {
+			$verifyMime = $lookupMime;
+		} elseif( $lookupMime != $verifyMime ) {
 			if( $mimeExt = array_search( $verifyMime, $this->mMimeTypes ) ) {
 				$ret = substr( $pFileName, 0, strrpos( $pFileName, '.' ) + 1 ).$mimeExt;
 			}
 		}
+
+		// if we still don't have an extension, we'll simply append a 'bin'
+		if( preg_match( "/\.$/", $pFileName )) {
+			$pFileName .= "bin";
+		}
+
 		return array( $ret, $verifyMime );
 	}
 

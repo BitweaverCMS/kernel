@@ -18,7 +18,7 @@
 function smarty_function_pagination( $params, &$gBitSmarty ) {
     $pgnUrl = $gBitSmarty->get_template_vars('returnURL');
     if ( isset( $params['url'] ) ) {
-        $pgnUrl = $params['url'];
+     	  $pgnUrl = $params['url'];
         unset( $params['url'] );
     }
     if( empty( $pgnUrl ) ) {

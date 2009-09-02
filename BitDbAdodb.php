@@ -3,7 +3,7 @@
  * ADOdb Library interface Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.30 2008/12/11 18:33:32 pppspoonman Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDbAdodb.php,v 1.31 2009/09/02 00:17:06 spiderr Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * Copyright (c) 2003 tikwiki.org
@@ -566,6 +566,7 @@ class BitDbAdodb extends BitDb {
 	 * @param pLevel debugging level - FALSE is off, TRUE is on, 99 is verbose
 	 **/
 	function debug( $pLevel=99 ) {
+		parent::debug( $pLevel );
 		if( is_object( $this->mDb )) {
 			$this->mDb->debug = $pLevel;
 		}

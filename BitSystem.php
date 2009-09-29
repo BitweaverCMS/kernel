@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.218 2009/09/29 15:40:16 dansut Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.219 2009/09/29 19:34:23 dansut Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1948,7 +1948,7 @@ die;
 		$ret = array();
 		// first we gather all version information.
 		foreach( array_keys( $this->mPackages ) as $package ) {
-			if( $this->isPackageActive( $package )) {
+			if( $this->isPackageInstalled( $package )) {
 
 				// get the latest upgrade version, since this is the version the package will be at after install
 				if( $pInstallVersion || !$version = $this->getLatestUpgradeVersion( $package )) {
@@ -1956,8 +1956,13 @@ die;
 				}
 				$installed[$package] = $version;
 
-				if( $deps = $this->getRequirements( $package )) {
-					$requirements[$package] = $deps;
+				if( $this->isPackageActive( $package )) {
+					if( $deps = $this->getRequirements( $package )) {
+						$requirements[$package] = $deps;
+					}
+					$inactive[$package] = FALSE;
+				} else {
+					$inactive[$package] = TRUE;
 				}
 			}
 		}
@@ -1982,6 +1987,8 @@ die;
 						$hash['result'] = 'min_dep';
 					} elseif( !empty( $depVersion['max'] ) && version_compare( $depVersion['max'], $installed[$depPackage], '<' )) {
 						$hash['result'] = 'max_dep';
+					} elseif( isset( $inactive[$depPackage] ) && $inactive[$depPackage] ) {
+						$hash['result'] = 'inactive';
 					} else {
 						$hash['result'] = 'ok';
 					}

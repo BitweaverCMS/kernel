@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.14 2009/01/22 22:24:42 squareing Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_packages_inc.php,v 1.15 2009/09/29 14:52:45 dansut Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
@@ -45,11 +45,19 @@ $gBitSmarty->assign( 'requirements', $gBitInstaller->calculateRequirements( TRUE
 $gBitSmarty->assign( 'requirementsMap', $gBitInstaller->drawRequirementsGraph( TRUE, 'cmapx' ));
 
 $upgradable = array();
-foreach( $gBitSystem->mPackages as $name => $pkg ) {
+foreach( $gBitSystem->mPackages as $name => &$pkg ) {
 	if( $gBitSystem->isPackageInstalled( $name ) && !empty( $pkg['info']['upgrade'] )) {
-		// only display relevant information to keep things tight.
-		$upgradable[$name]['info']['version'] = $pkg['info']['version'];
-		$upgradable[$name]['info']['upgrade'] = $pkg['info']['upgrade'];
+		// If no tables then just do a quiet 'auto-upgrade' of version number
+		if( !isset( $pkg['tables'] ) || empty( $pkg['tables'] ) ) {
+			$gBitSystem->storeVersion( $name, $pkg['info']['upgrade'] );
+			$gBitSystem->registerPackageVersion( $name, $pkg['info']['upgrade'] );
+			$pkg['info']['version'] = $pkg['info']['upgrade'];
+			unset( $pkg['info']['upgrade'] );
+		} else { // add to a list of displayed packages that need upgrading
+			// only display relevant information to keep things tight.
+			$upgradable[$name]['info']['version'] = $pkg['info']['version'];
+			$upgradable[$name]['info']['upgrade'] = $pkg['info']['upgrade'];
+		}
 	}
 }
 $gBitSmarty->assign( 'upgradable', $upgradable );

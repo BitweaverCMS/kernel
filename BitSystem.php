@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.216 2009/07/12 10:34:05 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.217 2009/09/29 14:52:45 dansut Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2176,6 +2176,12 @@ die;
 					} elseif( !empty( $this->mPackages[$package]['installed'] ) && !$this->isFeatureActive( 'package_'.strtolower( $package ) ) ) {
 						// set package to i if it is installed but not isFeatureActive (common when re-installing packages)
 						$this->storeConfig( 'package_' . $package, 'i', $package );
+						if( $version = $this->getLatestUpgradeVersion( $package ) ) {
+							$this->storeVersion( $package, $version );
+							$this->registerPackageVersion( $package, $version );
+							$this->mPackages[$package]['info']['version'] = $version;
+							unset( $this->mPackages[$package]['info']['upgrade'] );
+						}
 					}
 				}
 			}

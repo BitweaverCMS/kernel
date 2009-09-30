@@ -3,7 +3,7 @@
  * Smarty plugin
  * @package Smarty
  * @subpackage plugins
- *  @version $Id: function.bit_select_datetime.php,v 1.6 2009/09/10 19:25:13 tylerbello Exp $
+ *  @version $Id: function.bit_select_datetime.php,v 1.7 2009/09/30 21:36:43 tylerbello Exp $
  * @author hiran  
  */
 
@@ -42,7 +42,7 @@ function smarty_function_bit_select_datetime( $pParams, &$gBitSmarty ) {
 	$name         = 'date';                   // ID of the input field
 	// unsupported as of now $format       = $gBitSystem->getConfig( 'site_short_date_format' ).' '.$gBitSystem->getConfig( 'site_short_time_format' );      // date format used
 	$showtime     = 'true';                   //true: show time; false: pick date only
-	$time         = time();                   // override the currently set date
+	$time         =  time();                   // override the currently set date
 
 	//extract actual parameters from the params hashmap.
 	extract( $pParams );
@@ -94,18 +94,18 @@ function smarty_function_bit_select_datetime( $pParams, &$gBitSmarty ) {
 		$html_result .= smarty_function_html_select_date( $pDate, $gBitSmarty );
 		if( $showtime == 'true' ) {
 			$html_result .= smarty_function_html_select_time( $pTime, $gBitSmarty );
-			$html_result .= "<script type=\"text/javascript\">\n";
+			$html_result .= "<script type=\"text/javascript\"> \n";
 			$html_result .= "    function bit_select_datetime_${nname} () {\n";
-			$html_result .= "    	var date = new Date(); \n date.setDate( document.getElementsByName(\"${nname}Day\")[0].value ); \n date.setHours ( document.getElementsByName(\"${nname}Hour\")[0].value);\ndate.setMinutes( document.getElementsByName(\"${nname}Minute\")[0].value);\n date.setMonth(document.getElementsByName(\"${nname}Month\")[0].value-1); \n date.setFullYear(document.getElementsByName(\"${nname}Year\")[0].value); \n ";
-			$html_result .= "        document.getElementsByName(\"${name}\")[0].value = Math.floor(date.getTime() / 1000);";
-			$html_result .= "    }\n";
+			$html_result .= "    	var date = new Date(); \n date.setHours ( document.getElementsByName(\"${nname}Hour\")[0].value);\ndate.setMinutes( document.getElementsByName(\"${nname}Minute\")[0].value); \n date.setFullYear(document.getElementsByName(\"${nname}Year\")[0].value,document.getElementsByName(\"${nname}Month\")[0].value-1,document.getElementsByName(\"${nname}Day\")[0].value); \n ";
+			$html_result .= "document.getElementsByName(\"${name}\")[0].value = Math.floor(date.getTime() / 1000);";
+			$html_result .= "}\n";
 			$html_result .= "</script>\n";
 		} else {
 			$html_result .= "<script type=\"text/javascript\">\n";
 			$html_result .= "    function bit_select_datetime_${name} () {\n";
 			$html_result .= "    	var date = new Date(); \n date.setDate( document.getElementsByName(\"${nname}Day\")[0].value ); \n date.setMonth(document.getElementsByName(\"${nname}Month\")[0].value-1); \n date.setFullYear(document.getElementsByName(\"${nname}Year\")[0].value); \n ";
 			$html_result .= "        document.getElementsByName(\"${name}\")[0].value = Math.floor(date.getTime() / 1000);";
-			$html_result .= "    }\n";
+			$html_result .= "}\n";
 			$html_result .= "</script>\n";
 		}
 	}

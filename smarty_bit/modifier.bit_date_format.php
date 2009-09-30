@@ -44,7 +44,7 @@ function smarty_modifier_bit_date_format( $pString, $format = "%b %e, %Y", $pTra
 		return $gBitSystem->mServerTimestamp->strftime( $format, $disptime );
 	} else {
 		 if( $gBitSystem->get_display_offset() ) {
-			$format = preg_replace( "/ ?%Z/", "", $format );
+			$format = preg_replace( "/ ?%Z/",'', $format );
 		} else {
 			$format = preg_replace( "/%Z/", "UTC", $format );
 		}

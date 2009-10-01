@@ -1,10 +1,10 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.24 2009/03/17 16:24:46 wjames5 Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.25 2009/10/01 13:45:43 wjames5 Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See copyright.txt for details and a complete list of authors.
-// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See license.txt for details.
+// Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
 
 // Initialization
 global $gForceAdodb;

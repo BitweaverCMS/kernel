@@ -1,9 +1,9 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_adsense.php,v 1.3 2009/10/01 13:45:43 wjames5 Exp $
+ * $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_adsense.php,v 1.4 2009/10/01 14:17:01 wjames5 Exp $
  *
  * Copyright ( c ) 2004 bitweaver.org
- * All Rights Reserved. See copyright.txt for details and a complete list of authors.
+ * All Rights Reserved. See below for details and a complete list of authors.
  * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
  *
  * @package kernel

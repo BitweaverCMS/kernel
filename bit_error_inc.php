@@ -246,7 +246,7 @@ function vc( $iVar, $pHtml=TRUE ) {
 		var_dump( $iVar );
 	} elseif( $pHtml && !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && ((is_object( $iVar ) && !empty( $iVar )) || is_array( $iVar )) ) {
 		include_once( UTIL_PKG_PATH.'dBug/dBug.php' );
-		new dBug( $iVar, "", true );
+		new dBug( $iVar, "", FALSE );
 	} else {
 		print '<pre>';
 		if( is_object( $iVar ) ) {

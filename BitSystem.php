@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.221 2009/10/01 14:17:00 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.222 2009/10/02 21:22:56 dansut Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -90,6 +90,9 @@ class BitSystem extends BitBase {
 
 	// Content classes. 
 	var $mContentClasses = array();
+
+	// Debug HTML to be displayed just after the HTML headers
+	var $mDebugHtml = "";
 
 	// === BitSystem constructor
 	/**

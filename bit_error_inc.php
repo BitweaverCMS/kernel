@@ -198,7 +198,10 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 }	// End if function_exists('bt')
 
 // var dump variable in something nicely readable in web browser
-function vd( $pVar, $pGlobals=FALSE ) {
+function vd( $pVar, $pGlobals=FALSE, $pDelay=FALSE ) {
+	global $gBitSystem;
+
+	ob_start();
 	if( $pGlobals ) {
 		print '<h2>$pVar</h2>';
 	}
@@ -221,6 +224,12 @@ function vd( $pVar, $pGlobals=FALSE ) {
 			print vc( $_COOKIE );
 		}
 	}
+	if($pDelay) {
+		$gBitSystem->mDebugHtml .= ob_get_contents();
+		ob_end_clean();
+	} else {
+		ob_end_flush();
+	}
 }
 
 // var capture variable in something nicely readable in web browser
@@ -237,7 +246,7 @@ function vc( $iVar, $pHtml=TRUE ) {
 		var_dump( $iVar );
 	} elseif( $pHtml && !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && ((is_object( $iVar ) && !empty( $iVar )) || is_array( $iVar )) ) {
 		include_once( UTIL_PKG_PATH.'dBug/dBug.php' );
-		new dBug( $iVar );
+		new dBug( $iVar, "", true );
 	} else {
 		print '<pre>';
 		if( is_object( $iVar ) ) {

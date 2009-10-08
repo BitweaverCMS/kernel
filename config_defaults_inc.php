@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.46 2009/03/24 18:19:55 bitweaver Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.47 2009/10/08 20:29:07 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -129,14 +129,18 @@ if( !defined( 'STORAGE_HOST_URI' ) ) {
 
 // set the currect version of bitweaver
 // if this version of bitweaver needs a visit to the installer, update the number in /bit_setup_inc.php
-define( 'BIT_MAJOR_VERSION',	'2' );
-define( 'BIT_MINOR_VERSION',	'6' );
-define( 'BIT_SUB_VERSION',		'0' );
-define( 'BIT_LEVEL',			'beta' ); // dev < alpha < beta < RC# < '' < pl
+if( !defined( 'BIT_MAJOR_VERSION' ) ) {
+	define( 'BIT_MAJOR_VERSION',	'2' );
+	define( 'BIT_MINOR_VERSION',	'7' );
+	define( 'BIT_SUB_VERSION',		'0' );
+	define( 'BIT_LEVEL',			'' ); // dev < alpha < beta < RC# < '' < pl
+}
 
 // When updating to certain versions of bitweaver, we need to force a visit to the installer to fix certain stuff in the database.
 // Enter the minimum version number here in the format: '2.1.0-beta'
-define( 'MIN_BIT_VERSION', '2.1.0-RC1' );
+if( !defined( 'MIN_BIT_VERSION' ) ) {
+	define( 'MIN_BIT_VERSION', '2.1.0-RC1' );
+}
 
 // These defines have to happen FIRST because core classes depend on them.
 // This means these packages *CANNOT* be renamed

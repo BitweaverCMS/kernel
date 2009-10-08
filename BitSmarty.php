@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.23 2009/10/01 14:17:00 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.24 2009/10/08 21:14:57 spiderr Exp $
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See below for details and a complete list of authors.
@@ -196,7 +196,7 @@ class BitSmarty extends Smarty {
 function add_link_ticket( $pTplSource ) {
 	global $gBitUser;
 
-	if( is_object( $gBitUser ) && $gBitUser->isValid() ) {
+	if( is_object( $gBitUser ) && $gBitUser->isRegistered() ) {
 		$from = '#href="(.*PKG_URL.*php)\?(.*)&(.*)"#i';
 		$to = 'href="\\1?\\2&amp;tk={$gBitUser->mTicket}&\\3"';
 		$pTplSource = preg_replace( $from, $to, $pTplSource );

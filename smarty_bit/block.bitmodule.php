@@ -4,7 +4,7 @@
  * @package Smarty
  * @subpackage plugins
  */
-// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.7 2008/05/18 05:48:34 laetzer Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.8 2009/10/20 18:01:48 ukgrad89 Exp $
 /**
  * \brief Smarty {bitmodule}{/bitmodule} block handler
  *
@@ -38,7 +38,7 @@ function smarty_block_bitmodule( $pParams, $pContent, &$gBitSmarty) {
 //	}
 
 //	if( empty( $pParams['name'] )) {
-//		$pParams['name'] = ereg_replace( "[^-_a-zA-Z0-9]", "", $pParams['title'] );
+//		$pParams['name'] = preg_replace( "/[^-_a-zA-Z0-9]/", "", $pParams['title'] );
 //	}
 
 	// this is outdated and will not work with our serialised cookies - xing

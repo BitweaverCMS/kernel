@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.38 2009/04/14 17:51:03 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.39 2009/10/20 18:01:48 ukgrad89 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -157,7 +157,7 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 			$pTarget = "/$pTarget";
 		}
 
-		if( ereg( '\.\.', $pTarget )) {
+		if( preg_match( '#\.\.#', $pTarget )) {
 			bitdebug( "mkdir_p() - We don't allow '..' in path for security reasons: $pTarget" );
 			return FALSE;
 		}

@@ -132,7 +132,7 @@ function smarty_function_formhelp( $pParams, &$gBitSmarty ) {
 					$gBitSmarty->assign( 'content', $content );
 					$gBitSmarty->assign( 'closebutton', TRUE );
 					$text = $gBitSmarty->fetch('bitpackage:kernel/popup_box.tpl');
-					$text = ereg_replace( '"',"'",$text );
+					$text = preg_replace( '/"/',"'",$text );
 
 					$popup = array(
 						'trigger' => 'onclick',

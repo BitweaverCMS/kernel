@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.222 2009/10/02 21:22:56 dansut Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.223 2009/11/09 17:39:30 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -36,7 +36,7 @@ define( 'HOMEPAGE_LAYOUT', 'home' );
  *
  * Purpose:
  *
- *     This is the main system class that does the work of seeing Tiki has an
+ *     This is the main system class that does the work of seeing bitweaver has an
  * 	operable environment and has methods for modifying that environment.
  *
  * 	Currently gBitSystem derives from this class for backward compatibility sake.

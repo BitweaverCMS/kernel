@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.223 2009/11/09 17:39:30 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.224 2009/11/09 22:53:32 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -860,7 +860,7 @@ die;
 		$this->mPackages[$pkgNameKey]['dir'] = $package_dir_name;
 		$this->mPackagesDirNameXref[$package_dir_name] = $pkgNameKey;
 
-		// Define <PACKAGE>_PKG_DIR
+		// Define <PACKAGE>_PKG_TITLE
 		$pkgDefine = $pkgName.'_PKG_TITLE';
 		if( !defined( $pkgDefine )) {
 			define( $pkgDefine, ucfirst( constant( $pkgName.'_PKG_DIR' ) ) );

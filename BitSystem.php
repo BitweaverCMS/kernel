@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.225 2009/11/10 20:44:43 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.226 2009/11/11 19:11:42 spiderr Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -392,7 +392,7 @@ class BitSystem extends BitBase {
 	 * @access public
 	 */
 	function display( $pMid, $pBrowserTitle = NULL, $pOptionsHash = array() ) {
-		global $gBitSmarty, $gBitThemes;
+		global $gBitSmarty, $gBitThemes, $gContent;
 		$gBitSmarty->verifyCompileDir();
 
 		// see if we have a custom status other than 200 OK
@@ -434,6 +434,20 @@ class BitSystem extends BitBase {
 
 		if( !empty( $pBrowserTitle )) {
 			$this->setBrowserTitle( $pBrowserTitle );
+		}
+
+		// populate meta description with something useful so you are not penalized/ignored by web crawlers
+		if( is_object( $gContent ) && $gContent->isValid() ) {
+			if( $summary = $gContent->getField( 'summary' ) ) {
+				$desc = $gContent->parseData( $summary );
+			} elseif( $desc = $gContent->getField( 'parsed' ) ) {
+			} elseif( $summary = $gContent->getField( 'data' ) ) {
+				$desc = $gContent->parseData( $summary );
+			}
+			if( !empty( $desc ) ) {
+				$desc = $gContent->getContentTypeDescription().': '.$desc;
+				$gBitSmarty->assign_by_ref( 'metaDescription', substr( strip_tags( $desc ), 0, 256 ) );
+			}
 		}
 
 		$this->preDisplay( $pMid );

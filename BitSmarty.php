@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.24 2009/10/08 21:14:57 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.25 2009/11/11 15:58:13 dansut Exp $
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See below for details and a complete list of authors.
@@ -51,12 +51,13 @@ class BitSmarty extends Smarty {
 	 * @return void
 	 */
 	function BitSmarty() {
-		global $smarty_force_compile;
+		global $smarty_force_compile, $smarty_debugging;
 		Smarty::Smarty();
 		$this->mCompileRsrc = NULL;
 		$this->config_dir = "configs/";
 		// $this->caching = FALSE;
 		$this->force_compile = $smarty_force_compile;
+		$this->debugging = isset($smarty_debugging) && $smarty_debugging;
 		$this->assign( 'app_name', 'bitweaver' );
 		$this->plugins_dir = array_merge( array( KERNEL_PKG_PATH . "smarty_bit" ), $this->plugins_dir );
 		$this->register_prefilter( "add_link_ticket" );

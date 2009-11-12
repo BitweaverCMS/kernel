@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.25 2009/11/11 15:58:13 dansut Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.26 2009/11/12 05:09:05 wjames5 Exp $
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See below for details and a complete list of authors.
@@ -129,7 +129,10 @@ class BitSmarty extends Smarty {
 		if( strpos( $pRsrc, ':' )) {
 			list( $resource, $location ) = explode( ':', $pRsrc );
 			if( $resource == 'bitpackage' ) {
-				list( $package, $template ) = explode( '/', $location );
+				// @TODO MODULE UPGRADE - we may want to simplify this after all modules have been upgraded
+				// list( $package, $template ) = explode( '/', $location );
+				$package = substr( $location, 0, strpos( $location, '/' ) ); 
+				$template = substr( $location, strpos( $location, '/' )+1 );
 				// print "( $resource, $location )  ( $package, $template )<br/>";
 				$subdir = preg_match( '/mod_/', $template ) ? 'modules' : 'templates';
 				if( preg_match('/mod_/', $template ) || preg_match( '/center_/', $template )) {

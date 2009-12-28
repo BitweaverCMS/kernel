@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.226 2009/11/11 19:11:42 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.227 2009/12/28 20:39:41 squareing Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1358,7 +1358,7 @@ die;
 			if( empty( $mime ) ) {
 				$mime = $this->lookupMimeType( substr( $pFile, strrpos( $pFile, '.' ) + 1 ) );
 			}
-			if( $len = strpos( $mime, ';' ) || $len = strpos( $mime, ';' ) ) {
+			if( $len = strpos( $mime, ';' )) {
 				$mime = substr( $mime, 0, $len );
 			}
 		}

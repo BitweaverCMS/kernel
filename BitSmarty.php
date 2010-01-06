@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.26 2009/11/12 05:09:05 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.27 2010/01/06 18:27:34 spiderr Exp $
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See below for details and a complete list of authors.
@@ -205,13 +205,14 @@ function add_link_ticket( $pTplSource ) {
 		$to = 'href="\\1?\\2&amp;tk={$gBitUser->mTicket}&\\3"';
 		$pTplSource = preg_replace( $from, $to, $pTplSource );
 		$from = '#<form([^>]*)>#i';
-		$to = '<form\\1><input type="hidden" name="tk" value="{$gBitUser->mTicket}" />';
+		// div tag is for stupid XHTML compliance.
+		$to = '<form\\1><div style="display:inline"><input type="hidden" name="tk" value="{$gBitUser->mTicket}" /></div>';
 		$pTplSource = preg_replace( $from, $to, $pTplSource );
 		if( strpos( $pTplSource, '{form}' )) {
-			$pTplSource = str_replace( '{form}', '{form}<input type="hidden" name="tk" value="{$gBitUser->mTicket}" />', $pTplSource );
+			$pTplSource = str_replace( '{form}', '{form}<div style="display:inline"><input type="hidden" name="tk" value="{$gBitUser->mTicket}" /></div>', $pTplSource );
 		} elseif( strpos( $pTplSource, '{form ' ) ) {
 			$from = '#\{form(\}| [^\}]*)\}#i';
-			$to = '{form\\1}<input type="hidden" name="tk" value="{$gBitUser->mTicket}" />';
+			$to = '{form\\1}<div style="display:inline"><input type="hidden" name="tk" value="{$gBitUser->mTicket}" /></div>';
 			$pTplSource = preg_replace( $from, $to, $pTplSource );
 		}
 	}

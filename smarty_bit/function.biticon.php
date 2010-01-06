@@ -79,8 +79,8 @@ function biticon_output( $pParams, $pFile ) {
 				$outstr .=  ' class="'.$pParams["iclass"].'"';
 			}
 
-			if( isset( $pParams["style"] ) ) {
-				$outstr .=  ' style="'.$pParams["style"].'"';
+			if( isset( $pParams["onclick"] ) ) {
+				$outstr .=  ' onclick="'.$pParams["onclick"].'"';
 			}
 
 			// insert image width and height
@@ -286,7 +286,7 @@ function biticon_get_cache_file( $pParams ) {
 
 	// create a hash filename based on the parameters given
 	$hashstring = '';
-	$ihash = array( 'iforce', 'ipath', 'iname', 'iexplain', 'ipackage', 'url', 'istyle', 'id', 'style' );
+	$ihash = array( 'iforce', 'ipath', 'iname', 'iexplain', 'ipackage', 'url', 'istyle', 'id', 'style', 'onclick' );
 	foreach( $pParams as $param => $value ) {
 		if( in_array( $param, $ihash )) {
 			$hashstring .= strtolower( $value );

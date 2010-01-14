@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.227 2009/12/28 20:39:41 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.228 2010/01/14 23:43:14 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -726,8 +726,8 @@ die;
 
 	/**
 	 * This code was duplicated _EVERYWHERE_ so here is an easy template to cut that down.
-	 * It will verify if a given user has a given $permission and if not, it will display the error template and die()
-	 * @param $pPermission value of a given permission
+	 * @param $pFormHash documentation needed
+	 * @param $pMsg documentation needed
 	 * @return none
 	 * @access public
 	 */

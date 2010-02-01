@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.228 2010/01/14 23:43:14 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.229 2010/02/01 15:52:59 dansut Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -701,7 +701,10 @@ class BitSystem extends BitBase {
 		if( !$gBitUser->isRegistered() ) {
 			$gBitSmarty->assign( 'errorHeading', 'Please login&nbsp;&hellip;' );
 			$title = 'Please login&nbsp;&hellip;';
-			$pMsg .= '</p><p>You must be logged in. Please <a href="'.USERS_PKG_URL.'login.php">login</a> or <a href="'.USERS_PKG_URL.'register.php">register</a>.';
+			$pMsg .= '</p><p>You must be logged in. Please <a href="'.USERS_PKG_URL.'login.php">login</a>';
+			if( $this->getConfig( 'users_allow_register', 'y' ) == 'y' ) {
+				$pMsg .= ' or <a href="'.USERS_PKG_URL.'register.php">register</a>.';
+			}
 			$gBitSmarty->assign( 'template', 'bitpackage:users/login_inc.tpl' );
 		} else {
 			$title = 'Oops!';

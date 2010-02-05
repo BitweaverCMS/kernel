@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.229 2010/02/01 15:52:59 dansut Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.230 2010/02/05 23:22:06 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2461,140 +2461,6 @@ die;
 		}
 		return $ret;
 	}
-
-
-
-
-
-	// {{{ ==================== deprecated methods - will be removed soon ====================
-	// deprecated method saved compatibility until all getPreference calls have been eliminated
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function getPreference( $pName, $pDefault = '' ) {
-		deprecated( 'Please use: BitSystem::getConfig()' );
-		return $this->getConfig( $pName, $pDefault );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function setPreference( $pPrefName, $pPrefValue ) {
-		deprecated( 'Please use: BitSystem::setConfig()' );
-		$this->setConfig( $pPrefName, $pPrefValue );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function makePackageHomeable( $package ) {
-		deprecated( 'Please use: BitSystem::registerPackage( array( "homeable" => TRUE ) ) in your bit_setup_inc.php file' );
-		$this->mPackages[strtolower( $package )]['homeable'] = TRUE;
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function setFormatHeader( $pFormat ) {
-		global $gBitThemes;
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return $gBitThemes->setFormatHeader( $pFormat );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function getTplIncludeFiles( $pFilename ) {
-		global $gBitThemes;
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return $gBitThemes->getTplIncludeFiles( $pFilename );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function getStyle() {
-		global $gBitThemes;
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return $gBitThemes->getStyle( $pStyle );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function setStyle( $pStyle ) {
-		global $gBitThemes;
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return $gBitThemes->setStyle( $pStyle );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function getStyleCss( $pStyle = NULL, $pUserId = NULL ) {
-		global $gBitThemes;
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return $gBitThemes->getStyleCss( $pStyle, $pUserId );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function getCustomStyleCss( $pStyle = null ) {
-		global $gBitThemes;
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return $gBitThemes->getCustomStyleCss( $pStyle );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function getBrowserStyleCss() {
-		global $gBitThemes;
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return $gBitThemes->getBrowserStyleCss();
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function getStyleUrl( $pStyle = NULL ) {
-		global $gBitThemes;
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return $gBitThemes->getStyleUrl( $pStyle );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function getStylePath( $pStyle = NULL ) {
-		global $gBitThemes;
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return $gBitThemes->getStylePath( $pStyle );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function isJavascriptEnabled() {
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return BitThemes::isJavascriptEnabled();
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function isAjaxRequest() {
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return BitThemes::isAjaxRequest();
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function loadAjax( $pAjaxLib, $pLibHash=NULL ) {
-		global $gBitThemes;
-		deprecated( 'This is now in BitThemes instead of BitSystem.' );
-		return $gBitThemes->loadAjax( $pAjaxLib, $pLibHash );
-	}
-	/**
-	 * @deprecated deprecated since version 2.1.0-beta
-	 */
-	function onlyRenderContent( $pOnlyRender = TRUE ) {
-		deprecated( 'Please use: BitSystem::setRenderFormat( [xml,json,content,full] )' );
-		if( $pOnlyRender == TRUE ) {
-			$this->setRenderFormat( "center_only" );
-		} else {
-			$this->setRenderFormat( "html" );
-		}
-	}
-	// }}}
 }
 
 /* Function for sorting AppMenu by menu_position */

@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.47 2009/10/01 14:17:00 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.48 2010/02/08 22:27:51 wjames5 Exp $
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.
@@ -166,7 +166,7 @@ class BitBase {
 	function display( $pPackage, $pTemplate ) {
 		global $gBitSmarty, $gBitLanguage, $style, $style_base;
 		if( !empty( $style ) && !empty( $style_base )) {
-			if (file_exists(BIT_THEME_PATH."styles/$style_base/$pTemplate")) {
+			if (file_exists(BIT_THEMES_PATH."styles/$style_base/$pTemplate")) {
 				// Theme has overriden template
 				$_smarty_tpl_file = 'file:'.BIT_STYLES_PATH."/$style_base/$pTemplate";
 			} else {

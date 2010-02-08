@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.230 2010/02/05 23:22:06 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.231 2010/02/08 16:33:39 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -2195,6 +2195,9 @@ die;
 						}
 					} else {
 						$this->mPackages[$package]['db_tables_found'] = FALSE;
+						if( !$this->getConfig( 'package_'.strtolower( $package ) ) ){
+							$this->mPackages[$package]['installed'] = FALSE;
+						}
 					}
 
 					$this->mPackages[$package]['active_switch'] = $this->getConfig( 'package_'.strtolower( $package ) );

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.12 2009/10/01 14:17:01 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.13 2010/02/08 21:27:23 wjames5 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -12,7 +12,7 @@
 /**
  * required setup
  */
-require_once( '../bit_setup_inc.php' );
+require_once( '../kernel/setup_inc.php' );
 require_once( WIKI_PKG_PATH.'BitPage.php' );
 
 /*

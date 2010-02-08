@@ -1,6 +1,6 @@
 <?php
 
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.26 2009/10/01 14:17:01 wjames5 Exp $
+// $Header: /cvsroot/bitweaver/_bit_kernel/admin/index.php,v 1.27 2010/02/08 21:27:23 wjames5 Exp $
 
 // Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
 // All Rights Reserved. See below for details and a complete list of authors.
@@ -9,7 +9,7 @@
 // Initialization
 global $gForceAdodb;
 $gForceAdodb = TRUE;
-require_once( '../../bit_setup_inc.php' );
+require_once( '../../kernel/setup_inc.php' );
 require_once( KERNEL_PKG_PATH.'simple_form_functions_lib.php' );
 
 //make an alias in case anyone decides to verifyInstalledPackages

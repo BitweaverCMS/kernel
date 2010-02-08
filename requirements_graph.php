@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/requirements_graph.php,v 1.2 2009/03/31 06:30:03 lsces Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/requirements_graph.php,v 1.3 2010/02/08 21:27:23 wjames5 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -8,7 +8,7 @@
 /**
  * Setup
  */
-require_once( '../bit_setup_inc.php' );
+require_once( '../kernel/setup_inc.php' );
 $gBitSystem->verifyPermission( 'p_admin' );
 global $gBitInstaller;
 $gBitInstaller = &$gBitSystem;

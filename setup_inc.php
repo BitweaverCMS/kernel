@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.127 2009/10/01 14:17:01 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.128 2010/02/08 21:27:23 wjames5 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -11,6 +11,10 @@
 /**
  * required setup
  */
+
+//ini_set( 'session.save_path', 'C:\somewhere\I\can\write' );
+$rootDir = dirname( dirname( __FILE__ ) );
+define( 'BIT_ROOT_PATH', empty( $_SERVER['VHOST_DIR'] ) ? $rootDir.'/' : $_SERVER['VHOST_DIR'].'/' );
 
 // immediately die on request to hack our database
 if(( !empty( $_REQUEST['sort_mode'] ) && !is_array( $_REQUEST['sort_mode'] ) && strpos( $_REQUEST['sort_mode'], 'http' ) !== FALSE ) || ( !empty( $_REQUEST['PGV_BASE_DIRECTORY'] ) && strpos( $_REQUEST['PGV_BASE_DIRECTORY'], 'http' ) !== FALSE )) {

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.16 2007/11/23 11:24:53 squareing Exp $ *}
+{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_application_menu.tpl,v 1.17 2010/02/11 15:16:16 squareing Exp $ *}
 {strip}
 
 {bitmodule title="$moduleTitle" name="application_menu"}
@@ -24,9 +24,9 @@
 				{else}
 					{if $menu.menu_title}
 						{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
-							<a class="head" href="javascript:flipIcon('{$key}menu');">{biticon ipackage="icons" iname="list-add" id="`$key`menuimg" iexplain="folder"}&nbsp;
+							<a class="head" href="javascript:BitBase.flipIcon('{$key}menu');">{biticon ipackage="icons" iname="list-add" id="`$key`menuimg" iexplain="folder"}&nbsp;
 						{else}
-							<a class="head" href="javascript:flipWithSign('{$key}menu',1);"><span style="font-family:monospace;" id="flipper{$key}menu">&nbsp;</span>
+							<a class="head" href="javascript:BitBase.flipWithSign('{$key}menu',1);"><span style="font-family:monospace;" id="flipper{$key}menu">&nbsp;</span>
 						{/if}
 						&nbsp;&nbsp;{tr}{$menu.menu_title|escape}{/tr}</a>
 					{/if}
@@ -38,9 +38,9 @@
 					{if $menu.menu_title}
 						<script type="text/javascript">
 						{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
-							setFlipIcon('{$key}menu');
+							BitBase.setFlipIcon('{$key}menu');
 						{else}
-							setFlipWithSign('{$key}menu');
+							BitBase.setFlipWithSign('{$key}menu');
 						{/if}
 						</script>
 					{/if}
@@ -65,9 +65,9 @@
 				{/if}
 			{else}
 				{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
-					<a class="head" href="javascript:flipIcon('usrmenu');">{biticon ipackage="icons" iname="list-add" id="usrmenuimg" iexplain="folder"}&nbsp;
+					<a class="head" href="javascript:BitBase.flipIcon('usrmenu');">{biticon ipackage="icons" iname="list-add" id="usrmenuimg" iexplain="folder"}&nbsp;
 				{else}
-					<a class="head" href="javascript:flipWithSign('usrmenu',1);"><span style="font-family:monospace;" id="flipperusrmenu">&nbsp;</span>
+					<a class="head" href="javascript:BitBase.flipWithSign('usrmenu',1);"><span style="font-family:monospace;" id="flipperusrmenu">&nbsp;</span>
 				{/if}
 				{tr}User Menu{/tr}</a>
 					{* Show user menu contents only if there is something to display *}
@@ -82,7 +82,7 @@
 					{/if}
 				<script type="text/javascript">
 					{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
-						setFlipIcon('usrmenu');
+						BitBase.setFlipIcon('usrmenu');
 					{else}
 						setFlipWithSign('usrmenu');
 					{/if}

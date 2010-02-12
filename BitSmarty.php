@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.27 2010/01/06 18:27:34 spiderr Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.28 2010/02/12 08:09:27 squareing Exp $
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See below for details and a complete list of authors.
@@ -131,19 +131,19 @@ class BitSmarty extends Smarty {
 			if( $resource == 'bitpackage' ) {
 				// @TODO MODULE UPGRADE - we may want to simplify this after all modules have been upgraded
 				// list( $package, $template ) = explode( '/', $location );
-				$package = substr( $location, 0, strpos( $location, '/' ) ); 
-				$template = substr( $location, strpos( $location, '/' )+1 );
+				$package = substr( $location, 0, strpos( $location, '/' ) );
+				$template = substr( $location, strpos( $location, '/' ) + 1 );
 				// print "( $resource, $location )  ( $package, $template )<br/>";
 				$subdir = preg_match( '/mod_/', $template ) ? 'modules' : 'templates';
 				if( preg_match('/mod_/', $template ) || preg_match( '/center_/', $template )) {
 					global $gBitSystem;
-					$path = $gBitSystem->mPackages[$package]['path'];
+					$path = constant( strtoupper( $package )."_PKG_PATH" );
 					$modPhpFile = str_replace( '.tpl', '.php', "$path$subdir/$template" );
 					if( file_exists( $modPhpFile )) {
 						global $gBitSmarty, $gBitSystem, $gBitUser, $gQueryUserId, $moduleParams;
 						$moduleParams = array();
 						if( !empty( $pIncludeVars['module_params'] ) ) {
-							// module_params were passed through via the {include}, 
+							// module_params were passed through via the {include},
 							// e.g. {include file="bitpackage:foobar/mod_list_foo.tpl" module_params="user_id=`$gBitUser->mUserId`&sort_mode=created_desc"}
 							$moduleParams['module_params'] = $gBitThemes->parseString( $pIncludeVars['module_params'] );
 						} else {

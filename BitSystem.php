@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.231 2010/02/08 16:33:39 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.232 2010/02/23 20:31:47 dansut Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -499,10 +499,10 @@ class BitSystem extends BitBase {
 			$gBitUser->invokeServices( 'module_display_function' );
 		}
 
-		$gBitThemes->loadStyle();
-
 		// process layout
 		require_once( THEMES_PKG_PATH.'modules_inc.php' );
+
+		$gBitThemes->loadStyle();
 
 		/* force the session to close *before* displaying. Why? Note this very important comment from http://us4.php.net/exec
 			edwin at bit dot nl

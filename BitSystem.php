@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.232 2010/02/23 20:31:47 dansut Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.233 2010/03/01 14:34:53 dansut Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -552,18 +552,18 @@ class BitSystem extends BitBase {
 		$gBitSmarty->assign( 'TikiHelpInfo', array( 'URL' => 'http://doc.bitweaver.org/wiki/index.php?page=' . $package . $context , 'Desc' => $desc ) );
 	}
 
-	// === isPackageActive
+	// === getPackageStatus
 	/**
-	 * check's if a package is active.
+	 * find out a packages installation status
 	 * @param $pPackageName the name of the package to test
 	 *        where the package name is in the form used to index $mPackages
-	 *        See comments in scanPackages for more information
-	 * @return none
+	 * @return char where
+	 *              'i' is installed but not active
+	 *              'y' is installed and active
+	 *              'n' is not installed
 	 * @access public
-	 *
-	 * @param $pKey hash key
 	 */
-	function isPackageActive( $pPackageName ) {
+	function getPackageStatus( $pPackageName ) {
 
 		// A package is installed if
 		//    $this->getConfig('package_'.$name) == 'i'
@@ -573,18 +573,56 @@ class BitSystem extends BitBase {
 		//     <package name>_PKG_NAME is defined
 		// and $this->getConfig('package_'.$name) == 'y'
 
-		$ret = FALSE;
+		$ret = 'n';
 		if( defined( strtoupper( $pPackageName ).'_PKG_NAME' ) ) {
 			if( $name = strtolower( @constant(( strtoupper( $pPackageName ).'_PKG_NAME' )))) {
 				// kernel always active
 				if( $name == 'kernel' ) {
-					$ret = 1;
+					$ret = 'y';
 				} else {
 					// we have migrated the old tikiwiki feature_<pac
-					$ret = ( $this->getConfig( 'package_'.$name ) == 'y' );
+					$ret = $this->getConfig( 'package_'.$name, 'n' );
 				}
-
 			}
+		}
+
+		return( $ret );
+	}
+
+	// === isPackageActive
+	/**
+	 * check's if a package is active.
+	 * @param $pPackageName the name of the package to test
+	 *        where the package name is in the form used to index $mPackages
+	 *        See comments in scanPackages for more information
+	 * @return boolean
+	 * @access public
+	 */
+	function isPackageActive( $pPackageName ) {
+
+		return( $this->getPackageStatus( $pPackageName ) == 'y' );
+	}
+
+	// === isPackageActiveEarly
+	/**
+	 * check if a package is active; but only do this after making sure a package
+	 * has had it's bit_setup_inc loaded if possible.  This func exists for use in
+	 * other packages bit_setup_inc's to avoid dependency on load order and ugly code
+	 * @param $pPackageName the name of the package to test
+	 *        where the package name is in the form used to index $mPackages
+	 *        See comments in scanPackages for more information
+	 * @return boolean
+	 * @access public
+	 */
+	function isPackageActiveEarly( $pPackageName ) {
+
+		$ret = FALSE;
+		$pkgname_l = strtolower( $pPackageName );
+		if( is_file(BIT_ROOT_PATH.$pkgname_l.'/bit_setup_inc.php') ) {
+			require_once(BIT_ROOT_PATH.$pkgname_l.'/bit_setup_inc.php');
+			$ret = $this->isPackageActive( $pPackageName );
+		} elseif( $pkgname_l == 'kernel' ) {
+			$ret = TRUE;
 		}
 
 		return( $ret );
@@ -596,35 +634,14 @@ class BitSystem extends BitBase {
 	 * @param $pPackageName the name of the package to test
 	 *        where the package name is in the form used to index $mPackages
 	 *        See comments in scanPackages for more information
-	 * @return none
+	 * @return boolean
 	 * @access public
-	 *
-	 * @param $pKey hash key
 	 */
 	function isPackageInstalled( $pPackageName ) {
 
-		// A package is installed if
-		//    $this->getConfig('package_'.$name) == 'i'
-		// or $this->getConfig('package_'.$name) == 'y'
-		//
-		// A package is installed and active if
-		//     <package name>_PKG_NAME is defined
-		// and $this->getConfig('package_'.$name) == 'y'
+		$pkgstatus = $this->getPackageStatus( $pPackageName );
 
-		$ret = FALSE;
-		if( defined(( strtoupper( $pPackageName ).'_PKG_NAME' ))) {
-			if( $name = strtolower( @constant(( strtoupper( $pPackageName ).'_PKG_NAME' )))) {
-				// kernel always active
-				if( $name == 'kernel' ) {
-					$ret = TRUE;
-				} else {
-					// we have migrated the old tikiwiki feature_<pac
-					$ret = ( $this->getConfig( 'package_'.$name ) == 'i' ) || ( $this->getConfig( 'package_'.$name ) == 'y' );
-				}
-			}
-		}
-
-		return( $ret );
+		return( ( $pkgstatus == 'y' ) || ( $pkgstatus == 'i' ) );
 	}
 
 	// === verifyPackage
@@ -633,9 +650,7 @@ class BitSystem extends BitBase {
 	 * @param $pPackageName the name of the package to test
 	 *        where the package name is in the form used to index $mPackages
 	 *        See comments in scanPackages for more information
-	 * @return none
-	 *
-	 * @param  $pKey hash key
+	 * @return boolean
 	 * @access public
 	 */
 	function verifyPackage( $pPackageName ) {

@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.233 2010/03/01 14:34:53 dansut Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.234 2010/03/10 02:29:54 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -482,6 +482,8 @@ class BitSystem extends BitBase {
 			// all modules in all areas and have more than 3 columns - xing - Sunday Nov 11, 2007   13:38:37 CET
 			//unset( $gBitThemes->mLayout['c'] );
 		}
+
+		$gBitThemes->preLoadStyle();
 
 		/* @TODO - fetch module php files before rendering tpls.
 		 * The basic problem here is center_list and module files are 

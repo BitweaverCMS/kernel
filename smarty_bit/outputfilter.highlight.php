@@ -84,7 +84,7 @@ function smarty_outputfilter_highlight( $source, &$gBitSmarty ) {
 
 			$words = preg_replace( "!\s+!", " ", $words );
 			if( !empty( $words ) ) {
-				$wordArr = array_merge( $wordArr, split( ' ', $words ) );
+				$wordArr = array_merge( $wordArr, explode( ' ', $words ) );
 			}
 
 			//$wordArr = split( " ", urldecode( $words ) );

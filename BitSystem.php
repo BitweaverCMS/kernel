@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.235 2010/03/21 00:46:42 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.236 2010/03/21 02:01:39 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1161,6 +1161,11 @@ die;
 				} else {
 					if( $pIndexType == 'my_page' ) {
 						$url = $gBitSystem->getConfig( 'users_login_homepage', USERS_PKG_URL.'my.php' );
+						if( $url != USERS_PKG_URL.'my.php' && strpos( $url, 'http://' ) === FALSE ){
+							// the safe assumption is that a custom path is a subpath of the site 
+							// append the root url unless we have a fully qualified uri
+							$url = BIT_ROOT_URL.$url;
+						}
 					} elseif( $pIndexType == 'user_home' ) {
 						$url = $gBitUser->getDisplayUrl();
 					} else {

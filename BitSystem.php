@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.234 2010/03/10 02:29:54 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.235 2010/03/21 00:46:42 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -1115,13 +1115,26 @@ die;
 	 * getDefaultPage 
 	 * 
 	 * @access public
-	 * @return URL of where user should be sent after login
+	 * @return URL of site homepage 
 	 */
 	function getDefaultPage() {
+		return $this->getIndexPage( $this->getConfig( "bit_index" ) );
+	}
+
+	/**
+	 * getIndexPage
+	 *
+	 * Returns the page for the given type
+	 * defaults to the site homepage
+	 *
+	 * @access public
+	 * @return URL of page by index type
+	 */
+	function getIndexPage( $pIndexType = NULL ){
 		global $userlib, $gBitUser, $gBitSystem;
-		$bit_index = $this->getConfig( "bit_index" );
+		$pIndexType = !is_null( $pIndexType )? $pIndexType : $this->getConfig( "bit_index" );
 		$url = '';
-		if( $bit_index == 'group_home') {
+		if( $pIndexType == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
 			if( !$gBitUser->isRegistered() && ( $group_home = $gBitUser->getGroupHome( ANONYMOUS_GROUP_ID ))) {
 			} elseif( @$this->verifyId( $gBitUser->mInfo['default_group_id'] ) && ( $group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ))) {
@@ -1131,21 +1144,24 @@ die;
 			if( !empty( $group_home )) {
 				if( $this->verifyId( $group_home ) ) {
 					$url = BIT_ROOT_URL."index.php".( !empty( $group_home ) ? "?content_id=".$group_home : "" );
-				} elseif( strpos( $group_home, '/' ) === FALSE ) {
-					$url = BitPage::getDisplayUrl( $group_home );
+				// wiki dependence - NO bad idea
+				// } elseif( strpos( $group_home, '/' ) === FALSE ) {
+				// 	$url = BitPage::getDisplayUrl( $group_home );
+				} elseif(  strpos( $group_home, 'http://' ) === FALSE ){
+					$url = BIT_ROOT_URL.$group_home;
 				} else {
 					$url = $group_home;
 				}
 			}
-		} elseif( $bit_index == 'my_page' || $bit_index == 'my_home' || $bit_index == 'user_home'  ) {
+		} elseif( $pIndexType == 'my_page' || $pIndexType == 'my_home' || $pIndexType == 'user_home'  ) {
 			// TODO: my_home is deprecated, but was the default for BWR1. remove in DILLINGER - spiderr
 			if( $gBitUser->isRegistered() ) {
 				if( !$gBitUser->isRegistered() ) {
 					$url = USERS_PKG_URL.'login.php';
 				} else {
-					if( $bit_index == 'my_page' ) {
+					if( $pIndexType == 'my_page' ) {
 						$url = $gBitSystem->getConfig( 'users_login_homepage', USERS_PKG_URL.'my.php' );
-					} elseif( $bit_index == 'user_home' ) {
+					} elseif( $pIndexType == 'user_home' ) {
 						$url = $gBitUser->getDisplayUrl();
 					} else {
 						$users_homepage = $gBitUser->getPreference( 'users_homepage' );
@@ -1161,8 +1177,8 @@ die;
 			} else {
 				$url = USERS_PKG_URL . 'login.php';
 			}
-		} elseif( in_array( $bit_index, array_keys( $gBitSystem->mPackages ) ) ) {
-			$work = strtoupper( $bit_index ).'_PKG_URL';
+		} elseif( in_array( $pIndexType, array_keys( $gBitSystem->mPackages ) ) ) {
+			$work = strtoupper( $pIndexType ).'_PKG_URL';
 			if (defined("$work")) {
 				$url = constant( $work );
 			}
@@ -1173,8 +1189,8 @@ die;
 			 * turned back on and caviate admin - if the problem is more severe than it seems then 
 			 * get in touch on irc and we'll work out a better solution than commenting things on and off -wjames5
 			 */
-		} elseif( !empty( $bit_index ) ) {
-			$url = BIT_ROOT_URL.$bit_index;
+		} elseif( !empty( $pIndexType ) ) {
+			$url = BIT_ROOT_URL.$pIndexType;
 		}
 
 		// if no special case was matched above, default to users' my page

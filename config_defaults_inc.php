@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.49 2010/01/09 07:52:06 squareing Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.50 2010/03/25 22:50:25 wjames5 Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -27,10 +27,6 @@ if( !defined( 'BIT_QUERY_CACHE_TIME' ) ) {
 // default theme after installation
 if( !defined( 'DEFAULT_THEME' ) ) {
 	define( 'DEFAULT_THEME', 'basic' );
-}
-// default icon style. this is the fallback icon style when a {biticon} is missing
-if( !defined( 'DEFAULT_ICON_STYLE' ) ) {
-	define( 'DEFAULT_ICON_STYLE', 'tango' );
 }
 if( !defined( 'DISPLAY_ERRORS' ) ) {
 	define( 'DISPLAY_ERRORS', 0 );

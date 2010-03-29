@@ -84,7 +84,7 @@ function smarty_modifier_reltime( $pTimeStamp, $pMode = 'long', $pFallback = 'bi
 			if( $pMode == 'short' ) {
 				return date( 'D '.$strf, $pTimeStamp );
 			}
-			return tra( date( 'l' ) )." ".date( $strf, $pTimeStamp );
+			return tra( date( 'l', $pTimeStamp ) )." ".date( $strf, $pTimeStamp );
 		}
 	} else {
 		// anything longer than a week

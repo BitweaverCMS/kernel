@@ -38,6 +38,10 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 	if( empty( $pParams['name'] ) ){
 		$pParams['name'] = 'edit';
 	}
+	if( empty( $pParams['maxchars'] ) ){
+		// prevent smarty presistence of vars
+		$pParams['maxchars'] = 0;
+	}
 	foreach ($pParams as $_key=>$_value) {
 		switch ($_key) {
 		case 'name':
@@ -47,6 +51,7 @@ function smarty_block_textarea( $pParams, $pContent, &$gBitSmarty ) {
 		case 'label':
 		case 'error':
 		case 'required':
+		case 'maxchars':
 			$gBitSmarty->assign("textarea_".$_key, $_value);
 			break;
 		case 'class':

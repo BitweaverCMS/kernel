@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.39 2009/10/20 18:01:48 ukgrad89 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.40 2010/04/08 20:32:19 dansut Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -307,7 +307,7 @@ function deprecated( $pReplace = NULL ) {
 	}
 
 	if( !defined( 'IS_LIVE' ) || IS_LIVE == FALSE ) {
-		vd( $out );
+		vd( $out, FALSE, TRUE );
 	} else {
 		error_log( $out );
 	}

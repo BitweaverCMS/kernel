@@ -1,9 +1,27 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.11 2007/04/09 01:41:18 nickpalmer Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.12 2010/04/11 21:09:45 wjames5 Exp $
  * @package kernel
  * @subpackage functions
  */
+
+/**
+ * Store or update an array of values
+ * @param $pArray an array of values to set
+ * @param $pPackageName name of the package the feature belongs to
+ * @return none
+ */
+function simple_set_configs( $pArray, $pPackageName = NULL ){
+    foreach( $pArray as $item => $data ) {
+        if( $data['type'] == 'numeric' ) {
+            simple_set_int( $item, $pPackageName );
+        } elseif( $data['type'] == 'toggle' ) {
+            simple_set_toggle( $item, $pPackageName );
+        } elseif( $data['type'] == 'input' ) {
+            simple_set_value( $item, $pPackageName );
+        }
+    }
+}
 
 /**
  * Store or update a boolean value in the database - automatically collects data from $_REQUEST[$pFeature]

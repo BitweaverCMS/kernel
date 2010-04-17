@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.236 2010/03/21 02:01:39 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.237 2010/04/17 03:45:08 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -445,7 +445,7 @@ class BitSystem extends BitBase {
 				$desc = $gContent->parseData( $summary );
 			}
 			if( !empty( $desc ) ) {
-				$desc = $gContent->getContentTypeDescription().': '.$desc;
+				$desc = $gContent->getContentTypeName().': '.$desc;
 				$gBitSmarty->assign_by_ref( 'metaDescription', substr( strip_tags( $desc ), 0, 256 ) );
 			}
 		}

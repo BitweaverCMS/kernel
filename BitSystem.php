@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.237 2010/04/17 03:45:08 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.238 2010/04/24 19:03:37 wjames5 Exp $
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+
@@ -687,19 +687,11 @@ class BitSystem extends BitBase {
 
 	// === verifyPermission
 	/**
-	 * This code was duplicated _EVERYWHERE_ so here is an easy template to cut that down.
-	 * It will verify if a given user has a given $permission and if not, it will display the error template and die()
-	 * @param $pPermission value of a given permission
-	 * @return none
-	 * @access public
+	 * DEPRECATED - this function has been moved into BitPermUser, use that 
 	 */
 	function verifyPermission( $pPermission, $pMsg = NULL ) {
-		global $gBitSmarty, $gBitUser, ${$pPermission};
-		if( empty( $pPermission ) || $gBitUser->hasPermission( $pPermission ) ) {
-			return TRUE;
-		} else {
-			$this->fatalPermission( $pPermission, $pMsg );
-		}
+		global $gBitUser;
+		return $gBitUser->verifyPermission( $pPermission, $pMsg );
 	}
 
 	// === fatalPermission

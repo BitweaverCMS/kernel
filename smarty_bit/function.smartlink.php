@@ -157,6 +157,9 @@ function smarty_function_smartlink( $params, &$gBitSmarty ) {
 		}
 	}
 
+	// encode quote marks so we not break href="" construction
+	$url_params = preg_replace('/"/', '%22', $url_params);
+
 	require_once $gBitSmarty->_get_plugin_filepath( 'function','biticon' );
 
 	if( isset( $hash['itype'] ) && $hash['itype'] == 'url' ) {

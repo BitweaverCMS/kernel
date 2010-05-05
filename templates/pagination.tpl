@@ -70,7 +70,7 @@
 	{/capture}
 
 	<div class="pagination">
-		{assign var=pageUrlVar value=$smarty.capture.string|regex_replace:"/^\&amp;/":""}
+		{assign var=pageUrlVar value=$smarty.capture.string|regex_replace:"/^\&amp;/":""|regex_replace:'/"/':'%22':''}
 		{assign var=pageUrl value="`$pgnUrl`?`$pageUrlVar`"}
 		{math equation="offset + 1 * max" offset=$listInfo.offset|default:0 max=$listInfo.max_records|default:$gBitSystem->getConfig('max_records',20) assign=to}
 {*

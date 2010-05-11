@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/ajax_file_browser_inc.php,v 1.7 2010/02/08 21:27:23 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/ajax_file_browser_inc.php,v 1.8 2010/05/11 18:08:56 squareing Exp $
  *
  * Copyright (c) 2008 bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.
@@ -35,7 +35,7 @@
  *
  * NOTE: when you process the imported files, make sure you use realpath() to check of files are really in your 'jail'.
  */
-require_once( '../kernel/setup_inc.php' );
+require_once( 'setup_inc.php' );
 // we need to set these global that we can include this file from functions
 global $gBitThemes, $gBitSystem, $gBitSmarty;
 

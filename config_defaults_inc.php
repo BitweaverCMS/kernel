@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.50 2010/03/25 22:50:25 wjames5 Exp $
+ * @version $Header: /cvsroot/bitweaver/_bit_kernel/config_defaults_inc.php,v 1.51 2010/05/28 18:33:33 spiderr Exp $
  * @package kernel
  * @subpackage functions
  */
@@ -126,9 +126,9 @@ if( !defined( 'STORAGE_HOST_URI' ) ) {
 // set the currect version of bitweaver
 // if this version of bitweaver needs a visit to the installer, update the number in /bit_setup_inc.php
 if( !defined( 'BIT_MAJOR_VERSION' ) ) {
-	define( 'BIT_MAJOR_VERSION',	'2' );
-	define( 'BIT_MINOR_VERSION',	'7' );
-	define( 'BIT_SUB_VERSION',		'1' );
+	define( 'BIT_MAJOR_VERSION',	'3' );
+	define( 'BIT_MINOR_VERSION',	'0' );
+	define( 'BIT_SUB_VERSION',		'0' );
 	define( 'BIT_LEVEL',			'alpha' ); // dev < alpha < beta < RC# < '' < pl
 }
 

@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_powered_by.tpl,v 1.15 2009/05/28 18:58:45 lsces Exp $ *}
+{* $Header$ *}
 {strip}
 {bitmodule title="$moduleTitle" name="powered_by"}
 	<ul>

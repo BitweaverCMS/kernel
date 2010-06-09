@@ -4,7 +4,7 @@
  * @package Smarty
  * @subpackage plugins
  */
-// $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/block.bitmodule.php,v 1.8 2009/10/20 18:01:48 ukgrad89 Exp $
+// $Header$
 /**
  * \brief Smarty {bitmodule}{/bitmodule} block handler
  *

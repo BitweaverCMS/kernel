@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/menu_register_inc.php,v 1.16 2009/02/19 16:47:37 spiderr Exp $
+ * @version $Header$
  * @package kernel
  * @subpackage functions
  */

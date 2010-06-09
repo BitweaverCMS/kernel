@@ -3,7 +3,7 @@
  * eMail Notification Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/notification_lib.php,v 1.11 2009/10/01 14:17:01 wjames5 Exp $
+ * @version $Header$
  * @author awcolley
  *
  * created 2003/06/03

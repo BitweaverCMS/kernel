@@ -3,7 +3,7 @@
  * Smarty Library Inteface Class
  *
  * @package Smarty
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSmarty.php,v 1.28 2010/02/12 08:09:27 squareing Exp $
+ * @version $Header$
  *
  * Copyright (c) 2002-2003, Luis Argerich, Garland Foster, Eduardo Polidor, et. al.
  * All Rights Reserved. See below for details and a complete list of authors.

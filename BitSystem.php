@@ -3,7 +3,7 @@
  * Main bitweaver systems functions
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitSystem.php,v 1.239 2010/05/04 21:59:33 squareing Exp $
+ * @version $Header$
  * @author spider <spider@steelsun.com>
  */
 // +----------------------------------------------------------------------+

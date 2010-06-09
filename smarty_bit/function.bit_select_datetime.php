@@ -3,7 +3,7 @@
  * Smarty plugin
  * @package Smarty
  * @subpackage plugins
- *  @version $Id: function.bit_select_datetime.php,v 1.7 2009/09/30 21:36:43 tylerbello Exp $
+ *  @version $Id$
  * @author hiran  
  */
 

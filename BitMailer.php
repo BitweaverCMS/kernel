@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitMailer.php,v 1.10 2009/10/01 14:17:00 wjames5 Exp $
+ * @version $Header$
  *
  * +----------------------------------------------------------------------+
  * | Copyright ( c ) 2008, bitweaver.org
@@ -22,7 +22,7 @@
  * This is a base class to derive more capabale mailing services
  *
  * @author   nick <nick@sluggardy.net>
- * @version  $Revision: 1.10 $
+ * @version  $Revision$
  * @package  kernel 
  */
 

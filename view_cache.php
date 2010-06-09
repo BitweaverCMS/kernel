@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/view_cache.php,v 1.13 2010/02/08 21:27:23 wjames5 Exp $
+ * @version $Header$
  * @package kernel
  * @subpackage functions
  */

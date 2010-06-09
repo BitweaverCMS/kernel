@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/setup_inc.php,v 1.128 2010/02/08 21:27:23 wjames5 Exp $
+ * @version $Header$
  * @package kernel
  * @subpackage functions
  */

@@ -6,7 +6,7 @@
  */
 
 /** \file
- * $Header: /cvsroot/bitweaver/_bit_kernel/smarty_bit/modifier.dbg.php,v 1.3 2005/08/01 18:40:37 squareing Exp $
+ * $Header$
  *
  * @author zaufi <zaufi@sendmail.ru>
  */

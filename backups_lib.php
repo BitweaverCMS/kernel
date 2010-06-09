@@ -3,7 +3,7 @@
  * Database Backup Library
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/backups_lib.php,v 1.7 2006/07/01 04:06:22 nickpalmer Exp $
+ * @version $Header$
  */
 
 /**

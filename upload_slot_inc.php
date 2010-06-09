@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/upload_slot_inc.php,v 1.3 2010/02/08 21:27:23 wjames5 Exp $
+ * @version $Header$
  * @package kernel
  * @subpackage functions
  */

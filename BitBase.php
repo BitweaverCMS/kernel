@@ -3,7 +3,7 @@
  * Virtual bitweaver base class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitBase.php,v 1.48 2010/02/08 22:27:51 wjames5 Exp $
+ * @version $Header$
  *
  * Copyright (c) 2004 bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.

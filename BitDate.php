@@ -3,7 +3,7 @@
  * Date Handling Class
  *
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitDate.php,v 1.29 2009/06/04 22:46:22 lsces Exp $
+ * @version $Header$
  *
  * Created by: Jeremy Jongsma (jjongsma@tickchat.com)
  * Created on: Sat Jul 26 11:51:31 CDT 2003

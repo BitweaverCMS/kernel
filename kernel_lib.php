@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/kernel_lib.php,v 1.40 2010/04/08 20:32:19 dansut Exp $
+ * @version $Header$
  * @package kernel
  * @subpackage functions
  */

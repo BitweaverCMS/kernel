@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_server.tpl,v 1.20 2008/10/12 22:34:59 laetzer Exp $ *}
+{* $Header$ *}
 {strip}
 {form}
 	<input type="hidden" name="page" value="{$page}" />

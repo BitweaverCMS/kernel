@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/simple_form_functions_lib.php,v 1.12 2010/04/11 21:09:45 wjames5 Exp $
+ * @version $Header$
  * @package kernel
  * @subpackage functions
  */

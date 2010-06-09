@@ -1,4 +1,4 @@
-{* $Header: /cvsroot/bitweaver/_bit_kernel/templates/admin_features.tpl,v 1.15 2008/08/29 07:05:23 laetzer Exp $ *}
+{* $Header$ *}
 {strip}
 {form}
 	{jstabs}

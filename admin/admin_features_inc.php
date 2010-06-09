@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/bitweaver/_bit_kernel/admin/admin_features_inc.php,v 1.29 2008/09/04 20:02:42 laetzer Exp $
+// $Header$
 
 $formBit = array(
 	'pretty_urls' => array(

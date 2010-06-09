@@ -1,6 +1,6 @@
 <?php
 /**
- * $Header: /cvsroot/bitweaver/_bit_kernel/modules/mod_adsense.php,v 1.4 2009/10/01 14:17:01 wjames5 Exp $
+ * $Header$
  *
  * Copyright ( c ) 2004 bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.

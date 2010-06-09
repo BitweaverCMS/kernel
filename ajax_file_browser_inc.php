@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/ajax_file_browser_inc.php,v 1.8 2010/05/11 18:08:56 squareing Exp $
+ * @version $Header$
  *
  * Copyright (c) 2008 bitweaver.org
  * All Rights Reserved. See below for details and a complete list of authors.

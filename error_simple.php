@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/error_simple.php,v 1.5 2008/10/13 00:54:11 laetzer Exp $
+ * @version $Header$
  * @package kernel
  * @subpackage functions
  */

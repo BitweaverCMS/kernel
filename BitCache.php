@@ -1,7 +1,7 @@
 <?php
 /**
  * @package kernel
- * @version $Header: /cvsroot/bitweaver/_bit_kernel/BitCache.php,v 1.17 2008/09/29 19:51:33 squareing Exp $
+ * @version $Header$
  */
 
 /**

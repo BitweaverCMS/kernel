@@ -25,7 +25,7 @@
  */
 require_once( KERNEL_PKG_PATH . 'BitBase.php' );
 require_once( KERNEL_PKG_PATH . 'BitDate.php' );
-require_once( KERNEL_PKG_PATH . 'BitSmarty.php' );
+require_once( THEMES_PKG_PATH . 'BitSmarty.php' );
 
 define( 'DEFAULT_PACKAGE', 'kernel' );
 define( 'CENTER_COLUMN', 'c' );

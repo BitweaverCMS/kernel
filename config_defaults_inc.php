@@ -10,13 +10,13 @@
  */
 
 // include the bitweaver configuration file - this needs to happen first
-$config_file = empty( $_SERVER['CONFIG_INC'] ) ? BIT_ROOT_PATH.'kernel/config_inc.php' : $_SERVER['CONFIG_INC'];
+$config_file = empty( $_SERVER['CONFIG_INC'] ) ? BIT_ROOT_PATH.'config/kernel_config.php' : $_SERVER['CONFIG_INC'];
 if( file_exists( $config_file ) ) {
 	include_once( $config_file );
 }
 
 // =================== Essential Defines ===================
-// These defines can be set in config_inc.php. If they haven't been set, we set default values here
+// These defines can be set in config/kernel_config.php. If they haven't been set, we set default values here
 // database settings
 if( !defined( 'BIT_DB_PREFIX' ) ) {
 	define( 'BIT_DB_PREFIX', '' );
@@ -145,6 +145,7 @@ define( 'INSTALL_PKG_URL',    BIT_ROOT_URL.'install/' );
 define( 'KERNEL_PKG_DIR',     'kernel' );
 define( 'KERNEL_PKG_NAME',    'kernel' );
 define( 'KERNEL_PKG_PATH',    BIT_ROOT_PATH.'kernel/' );
+define( 'CONFIG_PKG_PATH',    BIT_ROOT_PATH.'config/' );
 define( 'LANGUAGES_PKG_PATH', BIT_ROOT_PATH.'languages/' );
 define( 'LIBERTY_PKG_DIR',    'liberty' );
 define( 'LIBERTY_PKG_NAME',   'liberty' );
@@ -172,7 +173,7 @@ if( empty( $gPreScan ) ) {
 }
 
 // here we set the default thumbsizes we use in bitweaver.
-// you can override these by populating this hash in your kernel/config_inc.php
+// you can override these by populating this hash in your config/kernel_config.php
 global $gThumbSizes;
 if( empty( $gThumbSizes )) {
 	$gThumbSizes = array(

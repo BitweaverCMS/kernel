@@ -18,7 +18,7 @@
 	} else {
 ?>
 
-<p style="color:red;">To activate database performance, please add to you config/kernel_config.php:<br>
+<p style="color:red;">To activate database performance, please add to you config/kernel/config_inc.php:<br>
 <code>define( 'DB_PERFORMANCE_STATS', TRUE ); </code>
 
 <?php

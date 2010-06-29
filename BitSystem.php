@@ -1468,7 +1468,7 @@ die;
 
         /*	this seems to prevent bw from running on servers where sessions work perfectly, 
         	yet /var/lib/php/ is writeable only by php, not by bw (which is better)
-        	it seems to be enough to set temp in config/kernel_config.php for a writable dir
+        	it seems to be enough to set temp in config/kernel/config_inc.php for a writable dir
         	if session *actually* don't work - other problem
         	the installer has similar code which is also not used anymore
         	
@@ -1626,7 +1626,7 @@ die;
 	}
 
 	/**
-	 * isLive returns status of the IS_LIVE constant from config/kernel_config.php
+	 * isLive returns status of the IS_LIVE constant from config/kernel/config_inc.php
 	 * 
 	 * @access public
 	 * @return TRUE if IS_LIVE is defined and set to a non empty value, else FALSE

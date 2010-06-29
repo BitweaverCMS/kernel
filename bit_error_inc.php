@@ -33,7 +33,7 @@ function bit_log_error( $pLogMessage ) {
 function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	global $gBitSystem;
 
-	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config/kernel_config.php
+	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config/kernel/config_inc.php
 	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : (!empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL);
 
 	error_log( $pLogMessage );
@@ -51,7 +51,7 @@ function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 			<ul>
 				<li><a href='http://sourceforge.net/tracker/?func=add&amp;group_id=141358&amp;atid=749176'>Click here to log a bug</a>, if this appears to be an error with the application.</li>
 				<li><a href='".BIT_ROOT_URL."install/install.php'>Go here to begin the installation process</a>, if you haven't done so already.</li>
-				<li>To hide this message, please <strong>set the IS_LIVE constant to TRUE</strong> in your config/kernel_config.php file.</li>
+				<li>To hide this message, please <strong>set the IS_LIVE constant to TRUE</strong> in your config/kernel/config_inc.php file.</li>
 			</ul>
 			<hr />
 		";

@@ -484,15 +484,16 @@ function tra( $pString ) {
  */
 function unlink_r( $pPath, $pFollowLinks = FALSE ) {
 	if( is_dir( $pPath ) ) {
-		$dir = opendir( $pPath ) ;
-		while( FALSE !== ( $entry = readdir( $dir ) ) ) {
-			if( is_file( "$pPath/$entry" ) || ( !$pFollowLinks && is_link( "$pPath/$entry" ) ) ) {
-				unlink( "$pPath/$entry" );
-			} elseif( is_dir( "$pPath/$entry" ) && $entry != '.' && $entry != '..' ) {
-				unlink_r( "$pPath/$entry" ) ;
+		if( $dir = opendir( $pPath ) ) {
+			while( FALSE !== ( $entry = readdir( $dir ) ) ) {
+				if( is_file( "$pPath/$entry" ) || ( !$pFollowLinks && is_link( "$pPath/$entry" ) ) ) {
+					unlink( "$pPath/$entry" );
+				} elseif( is_dir( "$pPath/$entry" ) && $entry != '.' && $entry != '..' ) {
+					unlink_r( "$pPath/$entry" ) ;
+				}
 			}
+			closedir( $dir ) ;
 		}
-		closedir( $dir ) ;
 		return @rmdir( $pPath );
 	}
 }

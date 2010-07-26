@@ -1,8 +1,22 @@
 {strip}
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="generator" content="bitweaver - http://www.bitweaver.org" />
-<meta name="description" content="{$metaDescription|default:$gBitSystem->getConfig('site_description')}" />
+
+{if $metaDescription}
+<meta name="description" content="{$metaDescription|escape}" />
+{elseif $smarty.server.REQUEST_URI==$smarty.const.BIT_ROOT_URL}
+<meta name="description" content="{$gBitSystem->getConfig('site_description')|escape}"/>
+{elseif !empty($gContent) && $gContent->isValid()}
+<meta name="description" content="{$gContent->generateDescription()|strip_tags|escape}"/>
+{/if}
+
+{if $metaKeywords}
+<meta name="keywords" content="{$metaKeywords|escape}" />
+{elseif $smarty.server.REQUEST_URI==BIT_ROOT_URI}
 <meta name="keywords" content="{$metaKeywords|default:$gBitSystem->getConfig('site_keywords')}" />
+{elseif !empty($gContent) && $gContent->isValid()}
+<meta name="keywords" content="{$gContent->generateKeywords()|@implode:','|strip_tags|escape}"/>
+{/if}
 
 <link rel="shortcut icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
 <link rel="icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />

@@ -61,6 +61,9 @@ class BitSystem extends BitBase {
 	// Contains site style information
 	var $mStyle = array();
 
+	// Information about package menus used in all menu modules and top bar
+	var $mAppMenu = array();
+
 	// The currently active page
 	var $mActivePackage;
 
@@ -102,6 +105,8 @@ class BitSystem extends BitBase {
 		global $gBitTimer;
 		// Call DB constructor which will create the database member variable
 		BitBase::BitBase();
+
+		$this->mAppMenu = array();
 
 		$this->mTimer = $gBitTimer;
 		$this->mServerTimestamp = new BitDate();

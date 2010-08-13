@@ -52,9 +52,6 @@ class BitSystem extends BitBase {
 
 	// Initiate class variables
 
-	// Information about package menus used in all menu modules and top bar
-	var $mAppMenu = array();
-
 	// Essential information about packages
 	var $mPackages = array();
 
@@ -106,7 +103,6 @@ class BitSystem extends BitBase {
 		// Call DB constructor which will create the database member variable
 		BitBase::BitBase();
 
-		$this->mAppMenu = array();
 		$this->mTimer = $gBitTimer;
 		$this->mServerTimestamp = new BitDate();
 
@@ -914,7 +910,7 @@ die;
 
 	// === registerAppMenu
 	/**
-	 * Define and load Smarty components
+	 * Register global system menu. Due to the startup nature of this method, it need to belong in BitSystem instead of BitThemes, where it would more naturally fit.
 	 *
 	 * @param  $pKey hash key
 	 * @return none

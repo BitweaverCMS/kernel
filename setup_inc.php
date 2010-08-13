@@ -161,7 +161,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	// this will register and set up the dropdown menus and the application menus in modules
-	require_once( KERNEL_PKG_PATH.'menu_register_inc.php' );
+	require_once( THEMES_PKG_PATH.'menu_register_inc.php' );
 
 	// added for virtual hosting suport
 	if( !isset( $bitdomain )) {

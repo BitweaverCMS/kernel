@@ -1,11 +1,6 @@
 {strip}
 <div id="bittopbar">
 	<ul id="nav" class="dropmenu">
-		<li class="m-home">
-			<a class="head" accesskey="h" href="{$smarty.const.BIT_ROOT_URL}">{$gBitSystem->getConfig('site_menu_title')|default:$gBitSystem->getConfig('site_title')}</a>
-			{include file="bitpackage:kernel/menu_global.tpl"}
-		</li>
-
 		{if $adminMenu}
 			<li class="m-admin{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} current{/if}">
 				{if $gBitUser->isAdmin()}<a accesskey="A" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} selected{/if}" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php">{/if}

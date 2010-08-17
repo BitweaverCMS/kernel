@@ -78,12 +78,12 @@
 				<tr>
 					{assign var="i" value="1"}
 					{foreach key=key item=template from=$adminTemplates}
-						<td class="width25p aligntop">
+						<td class="width33p aligntop">
 							{box class="`$key`menu menu box" ipackage=$key iname="pkg_`$key`" iexplain="$key" iclass="menuicon" title=$key|capitalize}
 								{include file="bitpackage:`$key`/menu_`$key`_admin.tpl"}
 							{/box}
 						</td>
-						{if not ($i++ mod 4)}
+						{if not ($i++ mod 3)}
 							</tr><tr>
 						{/if}
 					{/foreach}

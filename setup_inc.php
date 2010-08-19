@@ -145,6 +145,11 @@ if( $gBitSystem->isDatabaseValid() ) {
 	// load only installed and active packages
 	$gBitSystem->scanPackages( 'bit_setup_inc.php', TRUE, 'active', TRUE, TRUE );
 
+	if( file_exists( CONFIG_PKG_PATH.'kernel/override_inc.php' ) ) {
+		// possible install specific customizations for multi-sites, staging sites, etc.
+		require_once( CONFIG_PKG_PATH.'kernel/override_inc.php' );
+	}
+
 	// some plugins check for active packages, so we do this *after* package scanning
 	$gBitSmarty->assign_by_ref( "gBitSystem", $gBitSystem );
 

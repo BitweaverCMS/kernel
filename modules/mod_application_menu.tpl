@@ -59,7 +59,7 @@
 				{if count($usr_user_menus) gt 0}
 					<ul>
 						{section name=ix loop=$usr_user_menus}
-							<li><a class="item" {if $usr_user_menus[ix].mode eq 'n'}onkeypress="popUpWin(this.href,'fullScreen',0,0);" onclick="popUpWin(this.href,'fullScreen',0,0);return false;"{/if} href="{$usr_user_menus[ix].url}">{$usr_user_menus[ix].name}</a></li>
+							<li><a class="item" {if $usr_user_menus[ix].mode eq 'n'}onkeypress="javascript:BitBase.popUpWin(this.href,'fullScreen',0,0);" onclick="javascript:BitBase.popUpWin(this.href,'fullScreen',0,0);return false;"{/if} href="{$usr_user_menus[ix].url}">{$usr_user_menus[ix].name}</a></li>
 						{/section}
 					</ul>
 				{/if}
@@ -75,7 +75,7 @@
 						<div id="usrmenu">
 						<ul>
 							{section name=ix loop=$usr_user_menus}
-								<li><a class="item" {if $usr_user_menus[ix].mode eq 'n'}onkeypress="popUpWin(this.href,'fullScreen',0,0);" onclick="popUpWin(this.href,'fullScreen',0,0);return false;"{/if} href="{$usr_user_menus[ix].url}">{$usr_user_menus[ix].name}</a></li>
+								<li><a class="item" {if $usr_user_menus[ix].mode eq 'n'}onkeypress="javascript:BitBase.popUpWin(this.href,'fullScreen',0,0);" onclick="javascript:BitBase.popUpWin(this.href,'fullScreen',0,0);return false;"{/if} href="{$usr_user_menus[ix].url}">{$usr_user_menus[ix].name}</a></li>
 							{/section}
 						</ul>
 						</div>

@@ -207,6 +207,7 @@ class BitDb {
 	*/
 	function getCaseSensitivity( $pSensitivity=TRUE ) {
 		switch ($this->mType) {
+			case "firebird":
 			case "oci8":
 			case "oci8po":
 				// Force Oracle to always be insensitive

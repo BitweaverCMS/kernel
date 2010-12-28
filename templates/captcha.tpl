@@ -26,7 +26,7 @@ function reloadImage() {
 			<img id='captcha_img' onclick="this.blur();reloadImage();return false;" src="{$params.source}" alt="{tr}Random Image{/tr}"/>
 			<br/>
 			<input type="text" name="captcha" id="captcha" size="{$params.size+3}"/>
-			{formhelp note="Please copy the code into the box. Reload the page or click the image if it is unreadable. Note that it is not case sensitive."}
+			{formhelp note="Please copy the code into the box. Click the image if it is unreadable. Note that it is not case sensitive."}
 			{if empty($smarty.cookies)}<div class="error">You do not currently have any cookies from this site. You must accept cookies in order to pass the captcha. For information on enabling cookies in your browser see this: <a href="http://www.google.com/cookies.html">google page on cookies</a>.</div>{/if}
 		{/forminput}
 	</div>

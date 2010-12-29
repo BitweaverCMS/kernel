@@ -61,7 +61,7 @@
 		{/foreach}
 			"root":"{$smarty.const.BIT_ROOT_URL}",
 			"cookie":"{$smarty.const.BIT_ROOT_URL}",
-			"iconstyle":"{$smarty.const.THEMES_PKG_URL}icon_styles/{$smarty.const.DEFAULT_ICON_STYLE}/"
+			"iconstyle":"{$smarty.const.CONFIG_PKG_URL}iconsets/{$smarty.const.DEFAULT_ICON_STYLE}/"
 		{rdelim}
 	{rdelim};
 	var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";

@@ -470,7 +470,7 @@ class BitSystem extends BitBase {
 	 */
 	function preDisplay( $pMid ) {
 		global $gCenterPieces, $gBitSmarty, $gBitThemes;
-		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'jscalendar/' );
+		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'javascript/libs/dynarch/jscalendar/' );
 
 		$gBitThemes->loadLayout();
 

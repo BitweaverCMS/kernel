@@ -112,11 +112,20 @@ if( !empty( $gShellScript ) ) {
 
 // If BIT_ROOT_URI hasn't been set yet, we'll try to get one from the super global $_SERVER.
 // This works with apache - not sure about other servers.
-if( !defined( 'BIT_ROOT_URI' )) {
+if( !defined( 'BIT_BASE_URI' )) {
   // Added check for IIS $_SERVER['HTTPS'] uses 'off' value - wolff_borg
-	define( 'BIT_ROOT_URI', 'http'.((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS'] != 'off')?'s':'').'://'.(empty($_SERVER['HTTP_HOST'])?'localhost':$_SERVER['HTTP_HOST']).BIT_ROOT_URL );
+	define( 'BIT_BASE_URI', 'http'.((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS'] != 'off')?'s':'').'://'.(empty($_SERVER['HTTP_HOST'])?'localhost':$_SERVER['HTTP_HOST']) );
 }
 
+if( !defined( 'BIT_ROOT_URI' )) {
+  // Added check for IIS $_SERVER['HTTPS'] uses 'off' value - wolff_borg
+	define( 'BIT_ROOT_URI', BIT_BASE_URI.BIT_ROOT_URL );
+}
+
+// custom storage host
+if( !defined( 'STORAGE_BASE_URI' ) ) {
+	define( 'STORAGE_BASE_URI', BIT_BASE_URI );
+}
 // custom storage host
 if( !defined( 'STORAGE_HOST_URI' ) ) {
 	define( 'STORAGE_HOST_URI', BIT_ROOT_URI );

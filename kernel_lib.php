@@ -283,7 +283,7 @@ function file_name_to_title( $pFileName ) {
 function storage_path_to_url( $pPath ) {
 	global $gBitSystem;
 	$root = !empty( $_REQUEST['uri_mode'] ) ? BIT_BASE_URI.'/' : BIT_ROOT_URL;
-	return( $gBitSystem->getConfig( 'storage_host', $root ).str_replace( '//', '/', str_replace( '+', '%20', str_replace( '%2F', '/', urlencode( $pPath )))));
+	return( STORAGE_HOST_URI.str_replace( '//', '/', str_replace( '+', '%20', str_replace( '%2F', '/', urlencode( $pPath )))));
 }
 
 /**

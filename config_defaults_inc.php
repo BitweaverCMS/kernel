@@ -131,7 +131,7 @@ if( !defined( 'STORAGE_HOST_URI' ) ) {
 	define( 'STORAGE_HOST_URI', BIT_ROOT_URI );
 }
 
-if( substr_count( $_SERVER['HTTP_HOST'], '.' ) > 2 ) {
+if( substr_count( $_SERVER['HTTP_HOST'], '.' ) >= 2 ) {
 	define( 'BIT_BASE_HOST', substr( $_SERVER['HTTP_HOST'], strpos( $_SERVER['HTTP_HOST'], '.') + 1 ) );
 } else {
 	define( 'BIT_BASE_HOST',  $_SERVER['HTTP_HOST'] );

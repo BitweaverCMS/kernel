@@ -131,6 +131,12 @@ if( !defined( 'STORAGE_HOST_URI' ) ) {
 	define( 'STORAGE_HOST_URI', BIT_ROOT_URI );
 }
 
+if( substr_count( $_SERVER['HTTP_HOST'], '.' ) > 2 ) {
+	define( 'BIT_BASE_HOST', substr( $_SERVER['HTTP_HOST'], strpos( $_SERVER['HTTP_HOST'], '.') + 1 ) );
+} else {
+	define( 'BIT_BASE_HOST',  $_SERVER['HTTP_HOST'] );
+}
+
 // set the currect version of bitweaver
 // if this version of bitweaver needs a visit to the installer, update the number in /bit_setup_inc.php
 if( !defined( 'BIT_MAJOR_VERSION' ) ) {

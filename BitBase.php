@@ -308,6 +308,7 @@ class BitBase {
 	*/
 	function postGetList( &$pListHash ) {
 		global $gBitSystem;
+		$pListHash['listInfo']['page_records'] = (!empty( $pListHash['page_records'] ) ? $pListHash['page_records'] : $pListHash['max_records'] );
 		$pListHash['listInfo']['total_records'] = $pListHash["cant"];
 		$pListHash['listInfo']['total_pages'] = ceil( $pListHash["cant"] / $pListHash['max_records'] );
 		$pListHash['listInfo']['current_page'] = 1 + ( $pListHash['offset'] / $pListHash['max_records'] );
@@ -329,6 +330,9 @@ class BitBase {
 		$pListHash['listInfo']['find'] = $pListHash['find'];
 		$pListHash['listInfo']['sort_mode'] = $pListHash['sort_mode'];
 		$pListHash['listInfo']['max_records'] = $pListHash['max_records'];
+
+		$pListHash['listInfo']['block_pages'] = 3;
+		$pListHash['listInfo']['start_block'] = floor( $pListHash['offset'] / $pListHash['max_records'] ) * $pListHash['max_records'] + 1;
 
 		// calculate what links to show
 		if( $gBitSystem->isFeatureActive( 'site_direct_pagination' ) ) {

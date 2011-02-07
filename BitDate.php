@@ -382,7 +382,7 @@ class BitDate {
 	{
 		static $YRS;
 
-		$d =  $origd - ($is_gmt ? 0 : adodb_get_gmt_diff());
+		$d =  $origd - ($is_gmt ? 0 : adodb_get_gmt_diff(false,false,false));
 
 		$_day_power = 86400;
 		$_hour_power = 3600;

@@ -18,9 +18,6 @@
 <meta name="keywords" content="{$gContent->generateKeywords()|@implode:','|strip_tags|escape}"/>
 {/if}
 
-<link rel="shortcut icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
-<link rel="icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
-
 {if $gBitSystem->isFeatureActive( 'site_header_extended_nav' )}
 	<link rel="start" title="{$gBitSystem->getConfig('site_title')} {tr}Home{/tr}" href="{$smarty.const.BIT_ROOT_URL}" />
 

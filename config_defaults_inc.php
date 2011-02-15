@@ -164,8 +164,12 @@ define( 'LANGUAGES_PKG_PATH', BIT_ROOT_PATH.'languages/' );
 define( 'LIBERTY_PKG_DIR',    'liberty' );
 define( 'LIBERTY_PKG_NAME',   'liberty' );
 define( 'LIBERTY_PKG_PATH',   BIT_ROOT_PATH.'liberty/' );
-define( 'STORAGE_PKG_NAME',   'storage' );
-define( 'STORAGE_PKG_PATH',   BIT_ROOT_PATH.'storage/' );
+if( !defined( 'STORAGE_PKG_NAME' ) ) { 
+	define( 'STORAGE_PKG_NAME',   'storage' );
+}
+if( !defined( 'STORAGE_PKG_PATH' ) ) { 
+	define( 'STORAGE_PKG_PATH',   BIT_ROOT_PATH.'storage/' );
+}
 define( 'THEMES_PKG_PATH',    BIT_ROOT_PATH.'themes/' );
 define( 'USERS_PKG_PATH',     BIT_ROOT_PATH.'users/' );
 define( 'UTIL_PKG_PATH',      BIT_ROOT_PATH.'util/' );

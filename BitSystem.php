@@ -1530,7 +1530,12 @@ die;
 			$wwwgroup = 'nobody (or the group account the web server is running under)';
 		}
 
-		$permFiles[] = $this->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
+		if( defined( 'TEMP_PKG_PATH' ) ) {
+			$this->setConfig( 'site_temp_dir', TEMP_PKG_PATH );
+			$permFiles[] = TEMP_PKG_PATH;
+		} else {
+			$permFiles[] = $this->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
+		}
 		$permFiles[] = STORAGE_PKG_PATH;
 
 		foreach( $permFiles as $file ) {

@@ -100,7 +100,7 @@ $gSniffer = new phpSniff;
 $gBitSmarty->assign_by_ref( 'gBrowserInfo', $gSniffer->_browser_info );
 
 // set various classes global
-global $gBitUser, $gTicket, $userlib, $gBitDbType;
+global $gBitUser, $gTicket, $userlib, $gBitDbType, $gLibertySystem;
 
 if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSystem->loadConfig();

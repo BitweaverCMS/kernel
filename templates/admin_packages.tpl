@@ -47,7 +47,7 @@
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && !$package.required}
-						<div class="row">
+						<div class="row clear">
 							<div class="formlabel">
 								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
 							</div>
@@ -272,7 +272,7 @@
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if ((1 or $package.tables) && !$package.required && !$package.installed) }
-						<div class="row">
+						<div class="row clear">
 							<div class="formlabel">
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>

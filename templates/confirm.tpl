@@ -1,8 +1,5 @@
 {strip}
 <div class="display confirm">
-	<div class="header">
-		<h1>{tr}Confirmation{/tr}</h1>
-	</div>
 
 	<div class="body">
 		{form}

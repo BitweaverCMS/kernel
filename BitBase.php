@@ -126,11 +126,32 @@ class BitBase {
 	 *
 	 **/
 	function debug( $pLevel = 99 ) {
+		global $gDebug;
+		$gDebug = $pLevel;
 		if( is_object( $this->mDb ) ) {
 			$this->mDb->debug( $pLevel );
 		}
 	}
 
+	function debugMarkTime() {
+		$this->mDebugMicrotime = microtime(1);
+	}
+
+	function debugOutput( $pString ) {
+		global $gDebug;
+		if( $gDebug || !defined( 'IS_LIVE' ) || !IS_LIVE ) {
+			if( empty(  $this->mLastOutputTime ) ) {
+				$elapsed = (float)0.000;
+			} else {
+				$elapsed = (microtime(1) - (float)$this->mLastOutputTime);
+			}
+			if( !empty( $this->mDebugMicrotime ) ) {
+				$pString = "ELAPSED TIME: ".round( (float)((microtime(1) - $this->mDebugMicrotime)), 3).' sec, +'.round( $elapsed, 3 ).' '.$pString;
+			}
+			error_log( $pString );
+			$this->mLastOutputTime = microtime(1);
+		}
+	}
 	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=
 
 	/**

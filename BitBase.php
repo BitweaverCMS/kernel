@@ -139,11 +139,17 @@ class BitBase {
 
 	function debugOutput( $pString ) {
 		global $gDebug;
-		if( $gDebug ) {
+		if( $gDebug || !defined( 'IS_LIVE' ) || !IS_LIVE ) {
+			if( empty(  $this->mLastOutputTime ) ) {
+				$elapsed = (float)0.000;
+			} else {
+				$elapsed = (microtime(1) - (float)$this->mLastOutputTime);
+			}
 			if( !empty( $this->mDebugMicrotime ) ) {
-				$pString = "ELAPSED TIME: ".(microtime(1) - $this->mDebugMicrotime).$pString;
+				$pString = "ELAPSED TIME: ".round( (float)((microtime(1) - $this->mDebugMicrotime)), 3).' sec, +'.round( $elapsed, 3 ).' '.$pString;
 			}
 			error_log( $pString );
+			$this->mLastOutputTime = microtime(1);
 		}
 	}
 	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=

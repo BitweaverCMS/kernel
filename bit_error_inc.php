@@ -19,7 +19,7 @@
  * set error handling
  */
 if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
-	define( 'ADODB_ERROR_HANDLER', 'bit_error_handler' );
+	define( 'ADODB_ERROR_HANDLER', 'bitdb_error_handler' );
 }
 
 function bit_log_error( $pLogMessage ) {
@@ -29,6 +29,63 @@ function bit_log_error( $pLogMessage ) {
 		error_log( "$pLogMessage" );
 	}
 }
+
+function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NULL ) {
+    // error_reporting() === 0 if code was prepended with @
+	$reportingLevel = error_reporting();
+    if( $reportingLevel !== 0 && !strpos( $errfile, 'templates_c' ) ) {
+		$errType = FALSE;
+        switch ($errno) {
+            case E_USER_ERROR:
+				if( $reportingLevel & E_USER_ERROR ) {
+					$errType = 'Error';
+				}
+                break;
+
+            case E_USER_WARNING:
+                // Write the error to our log file
+				if( $reportingLevel & E_USER_WARNING ) {
+					$errType = 'Warning';
+				}
+                break;
+
+            case E_USER_NOTICE:
+                // Write the error to our log file
+				if( $reportingLevel & E_USER_WARNING ) {
+					$errType = 'Notice';
+				}
+                break;
+
+            case E_STRICT:
+				if( $reportingLevel & E_STRICT ) {
+					$errType = 'Strict Compilation';
+                }
+                break;
+
+            default:
+                // Write the error to our log file
+				$errType = 'Unknown Error';
+                break;
+        }
+        // Send an e-mail to the administrator
+		if( $errType && defined( 'ERROR_EMAIL' ) ) {
+	        error_log( $errType." [#$errno]: $errstr \n in $errfile on line $errline \n ".vc( $errcontext, TRUE ).bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType  )), 1, ERROR_EMAIL);
+		}
+    }
+
+    // Execute PHP's internal error handler
+    return FALSE;
+}
+
+function bit_shutdown_handler() {
+	$isError = false;
+	if( $error = error_get_last() ){
+		bit_error_handler( $error['type'], $error['message'], $error['file'], $error['line'] );
+	}
+}
+
+register_shutdown_function('bit_shutdown_handler');
+
 
 function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	global $gBitSystem;
@@ -101,7 +158,7 @@ function bit_error_string( $iDBParms ) {
 		$info .= $indent."#### PHP: ".$php_errormsg.$separator;
 	}
 
-	if ( $iDBParms['sql'] ) {
+	if ( !empty( $iDBParms['sql'] ) ) {
 		$badSpace = array("\n", "\t");
 		$info .= $indent."#### SQL: ".str_replace($badSpace, ' ', $iDBParms['sql']).$separator;
 		if( is_array( $iDBParms['p2'] ) ) {

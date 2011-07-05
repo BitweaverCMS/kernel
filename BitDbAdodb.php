@@ -650,7 +650,7 @@ class BitDbAdodb extends BitDb {
  * @param $p1		$fn specific parameter - see below
  * @param $P2		$fn specific parameter - see below
  */
-function bit_error_handler( $dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnection ) {
+function bitdb_error_handler( $dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConnection ) {
 	global $gBitDb;
 	if( ini_get( 'error_reporting' ) == 0 ) {
 		return; // obey @ protocol

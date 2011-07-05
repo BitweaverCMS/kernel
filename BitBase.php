@@ -161,7 +161,7 @@ class BitBase {
 	 * @access public
 	 * @return TRUE if the input was numeric, FALSE if it wasn't
 	 */
-	function verifyId( $pId ) {
+	static function verifyId( $pId ) {
 		if( empty( $pId )) {
 			return FALSE;
 		}
@@ -185,7 +185,7 @@ class BitBase {
 	 * @access public
 	 * @return TRUE if the input was numeric, FALSE if it wasn't
 	 */
-	function getParameter( &$pParamHash, $pKey, $pDefaultValue=NULL ) {
+	static function getParameter( &$pParamHash, $pKey, $pDefaultValue=NULL ) {
 		if( isset( $pParamHash[$pKey] ) ) {
 			$ret = $pParamHash[$pKey];
 		} else {

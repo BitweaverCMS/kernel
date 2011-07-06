@@ -36,36 +36,23 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
     if( $reportingLevel !== 0 && !strpos( $errfile, 'templates_c' ) ) {
 		$errType = FALSE;
         switch ($errno) {
-            case E_USER_ERROR:
-				if( $reportingLevel & E_USER_ERROR ) {
-					$errType = 'Error';
-				}
-                break;
+			case E_ERROR: if( $reportingLevel & E_ERROR ) { $errType = 'FATAL ERROR'; } break;
+			case E_WARNING: if( $reportingLevel & E_WARNING ) { $errType = 'WARNING'; } break;
+			case E_PARSE: if( $reportingLevel & E_PARSE ) { $errType = 'PARSE'; } break;
+			case E_NOTICE: if( $reportingLevel & E_NOTICE ) { $errType = 'NOTICE'; } break;
+			case E_CORE_ERROR: if( $reportingLevel & E_CORE_ERROR ) { $errType = 'CORE_ERROR'; } break;
+			case E_CORE_WARNING: if( $reportingLevel & E_CORE_WARNING ) { $errType = 'CORE_WARNING'; } break;
+			case E_COMPILE_ERROR: if( $reportingLevel & E_COMPILE_ERROR ) { $errType = 'COMPILE_ERROR'; } break;
+			case E_COMPILE_WARNING: if( $reportingLevel & E_COMPILE_WARNING ) { $errType = 'COMPILE_WARNING'; } break;
+			case E_USER_ERROR: if( $reportingLevel & E_USER_ERROR ) { $errType = 'USER_ERROR'; } break;
+			case E_USER_WARNING: if( $reportingLevel & E_USER_WARNING ) { $errType = 'USER_WARNING'; } break;
+			case E_USER_NOTICE: if( $reportingLevel & E_USER_NOTICE ) { $errType = 'USER_NOTICE'; } break;
+			case E_STRICT: if( $reportingLevel & E_STRICT ) { $errType = 'STRICT'; } break;
+			case E_RECOVERABLE_ERROR: if( $reportingLevel & E_RECOVERABLE_ERROR ) { $errType = 'RECOVERABLE_ERROR'; } break; 
+			case E_DEPRECATED: if( $reportingLevel & E_DEPRECATED ) { $errType = 'DEPRECATED'; } break;
+			case E_USER_DEPRECATED: if( $reportingLevel & E_USER_DEPRECATED ) { $errType = 'USER_DEPRECATED'; } break;
+            default: $errType = 'Unknown Error'; break;
 
-            case E_USER_WARNING:
-                // Write the error to our log file
-				if( $reportingLevel & E_USER_WARNING ) {
-					$errType = 'Warning';
-				}
-                break;
-
-            case E_USER_NOTICE:
-                // Write the error to our log file
-				if( $reportingLevel & E_USER_WARNING ) {
-					$errType = 'Notice';
-				}
-                break;
-
-            case E_STRICT:
-				if( $reportingLevel & E_STRICT ) {
-					$errType = 'Strict Compilation';
-                }
-                break;
-
-            default:
-                // Write the error to our log file
-				$errType = 'Unknown Error';
-                break;
         }
         // Send an e-mail to the administrator
 		if( $errType && defined( 'ERROR_EMAIL' ) ) {
@@ -79,7 +66,8 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 
 function bit_shutdown_handler() {
 	$isError = false;
-	if( $error = error_get_last() ){
+	$error = error_get_last();
+	if( $error && $error['type'] & (E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_USER_ERROR) ){
 		bit_error_handler( $error['type'], $error['message'], $error['file'], $error['line'] );
 	}
 }

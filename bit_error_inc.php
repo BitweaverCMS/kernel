@@ -56,7 +56,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
         }
         // Send an e-mail to the administrator
 		if( $errType && defined( 'ERROR_EMAIL' ) ) {
-	        error_log( $errType." [#$errno]: $errstr \n in $errfile on line $errline \n ".vc( $errcontext, TRUE ).bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType  )), 1, ERROR_EMAIL);
+	        error_log( $errType." [#$errno]: $errstr \n in $errfile on line $errline \n ".vc( $errcontext, FALSE ).bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType  )), 1, ERROR_EMAIL);
 		}
     }
 
@@ -288,7 +288,7 @@ function vc( $iVar, $pHtml=TRUE ) {
 
 	// xdebug rocks!
 	if( extension_loaded( 'xdebug' ) ) {
-		if( !$pHtml ) {
+		if( empty( $pHtml ) ) {
 			ini_set( 'xdebug.overload_var_dump', FALSE );
 		}
 		var_dump( $iVar );

@@ -56,7 +56,9 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
         }
         // Send an e-mail to the administrator
 		if( $errType && defined( 'ERROR_EMAIL' ) ) {
-	        error_log( $errType." [#$errno]: $errstr \n in $errfile on line $errline \n ".vc( $errcontext, FALSE ).bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType  )), 1, ERROR_EMAIL);
+			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline \n ".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) );
+			mail( ERROR_EMAIL, 'PHP error_log message: '.$errstr, $messageBody );
+//	        error_log( $messageBody, 1, ERROR_EMAIL);
 		}
     }
 
@@ -168,8 +170,8 @@ function bit_error_string( $iDBParms ) {
 	$globals = array(
 		'$_POST'   => $_POST,
 		'$_GET'    => $_GET,
-		'$_COOKIE' => $_COOKIE,
 		'$_FILES'  => $_FILES,
+		'$_COOKIE' => $_COOKIE,
 	);
 
 	$parameters = '';

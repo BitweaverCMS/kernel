@@ -57,7 +57,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
         // Send an e-mail to the administrator
 		if( $errType && defined( 'ERROR_EMAIL' ) ) {
 			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline \n "."\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ).vc( $errcontext, FALSE) );
-			mail( ERROR_EMAIL, $_SERVER['HTTP_HOST'].' PHP error_log message: '.$errstr, $messageBody );
+			mail( ERROR_EMAIL, php_uname( 'n' ).' PHP error_log message: '.$errstr, $messageBody );
 		}
     }
 

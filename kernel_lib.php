@@ -147,13 +147,11 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 	}
 
 	if( file_exists( $pTarget ) || is_dir( $pTarget )) {
-		bitdebug( "mkdir_p() - file already exists $pTarget" );
 		return FALSE;
 	}
 
 	if( !is_windows() ) {
 		if( substr( $pTarget, 0, 1 ) != '/' ) {
-			bitdebug( "mkdir_p() - prepending with a /" );
 			$pTarget = "/$pTarget";
 		}
 
@@ -177,7 +175,6 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 		} else {
 			umask( $oldu );
 			$parent = substr( $pTarget, 0, ( strrpos( $pTarget, '/' )));
-			bitdebug( "mkdir_p() - trying to create parent $parent" );
 
 			// recursively create parents
 			if( mkdir_p( $parent, $pPerms )) {
@@ -814,20 +811,6 @@ function install_error( $pMsg = null ) {
 
 	header( "Location: ".httpPrefix().BIT_ROOT_URL."install/install.php?step=".$step );
 	die;
-}
-
-/**
- * bitdebug display an debug output when $gDebug is set to TRUE
- * 
- * @param array $pMessage Message to display
- * @access public
- * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
- */
-function bitdebug( $pMessage ) {
-	global $gDebug;
-	if( !empty( $gDebug )) {
-		echo "<pre>$pMessage</pre>";
-	}
 }
 
 /**

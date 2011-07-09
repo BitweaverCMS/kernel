@@ -56,9 +56,8 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
         }
         // Send an e-mail to the administrator
 		if( $errType && defined( 'ERROR_EMAIL' ) ) {
-			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline \n ".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) );
-			mail( ERROR_EMAIL, 'PHP error_log message: '.$errstr, $messageBody );
-//	        error_log( $messageBody, 1, ERROR_EMAIL);
+			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline \n "."\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ).vc( $errcontext, FALSE) );
+			mail( ERROR_EMAIL, $_SERVER['HTTP_HOST'].' PHP error_log message: '.$errstr, $messageBody );
 		}
     }
 
@@ -319,6 +318,20 @@ function va( $iVar ) {
 	$dbg = highlight_string("<?\n". $dbg."\n?>", 1);
 	echo "<div><span style='background-color:black;color:white;padding:.5ex;font-weight:bold;'>Var Anatomy</div>";
 	echo "<div style='border:1px solid black;padding:2ex;background-color:#efe6d6;'>$dbg</div>";
+}
+
+/**
+ * bitdebug display an debug output when $gDebug is set to TRUE
+ * 
+ * @param array $pMessage Message to display
+ * @access public
+ * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+ */
+function bitdebug( $pMessage ) {
+	global $gDebug;
+	if( !empty( $gDebug )) {
+		echo "<pre>$pMessage</pre>";
+	}
 }
 
 

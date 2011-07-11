@@ -227,8 +227,23 @@ class BitBase {
 	}
 
 	/**
+	 * Assign an entry to the mInfo hash if the current object is valid
+	 * @param pFieldName the hash key to retrieve the value
+	 * @param pValue the value of the hash key
+	 **/
+	function setField( $pFieldName, $pValue ) {
+		$ret = FALSE;
+		if( $this->isValid() ) {
+			$this->mInfo[$pFieldName] = $pValue;
+			$ret = TRUE;
+		}
+		return $ret;
+	}
+
+	/**
 	 * Returns entry from the mInfo hash if field exists
-	 * @param pFieldName the instance of the database mechanism
+	 * @param pFieldName the hash key to retrieve the value
+	 * @param pDefault the value to return of there is now hash value present
 	 **/
 	function getField( $pFieldName, $pDefault = NULL ) {
 		return( !empty( $this->mInfo[$pFieldName] ) ? $this->mInfo[$pFieldName] : $pDefault );

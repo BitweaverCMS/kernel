@@ -737,7 +737,7 @@ class BitDb {
 				case "oci8":
 				case "oci8po":
 					// Force Oracle to always be insensitive
-					$pQuery = preg_replace("/`/", "", $pQuery);
+					$pQuery = str_replace( '`', '', $pQuery );
 					break;
 				case "pgsql":
 				case "postgres":	// For PEAR
@@ -746,13 +746,13 @@ class BitDb {
 				case "sybase":
 				case "firebird":
 					if( $this->getCaseSensitivity() ) {
-						$pQuery = preg_replace("/`/", "\"", $pQuery);
+						$pQuery = str_replace( '`', '"', $pQuery );
 					} else {
-						$pQuery = preg_replace("/`/", "", $pQuery);
+						$pQuery = str_replace( '`', '', $pQuery );
 					}
 					break;
 				case "sqlite":
-					$pQuery = preg_replace("/`/", "", $pQuery);
+					$pQuery = str_replace( '`', '', $pQuery );
 					break;
 			}
 		}

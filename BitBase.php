@@ -371,7 +371,7 @@ class BitBase {
 		$pListHash['listInfo']['total_pages'] = ceil( $pListHash['cant'] / $pListHash['max_records'] );
 		$pListHash['listInfo']['current_page'] = 1 + ( $pListHash['offset'] / $pListHash['max_records'] );
 
-		if( $pListHash['cant'] > ( $pListHash['offset'] + $pListHash['max_records'] ) ) {
+		if( isset( $pListHash["cant"] ) && $pListHash["cant"] > ( $pListHash['offset'] + $pListHash['max_records'] ) ) {
 			$pListHash['listInfo']['next_offset'] = $pListHash['offset'] + $pListHash['max_records'];
 		} else {
 			$pListHash['listInfo']['next_offset'] = -1;

@@ -364,11 +364,14 @@ class BitBase {
 	function postGetList( &$pListHash ) {
 		global $gBitSystem;
 		$pListHash['listInfo']['page_records'] = (!empty( $pListHash['page_records'] ) ? $pListHash['page_records'] : $pListHash['max_records'] );
-		$pListHash['listInfo']['total_records'] = $pListHash["cant"];
-		$pListHash['listInfo']['total_pages'] = ceil( $pListHash["cant"] / $pListHash['max_records'] );
+		if( !isset( $pListHash['cant'] ) ) {
+			$pListHash['cant'] = $pListHash['max_records']; 
+		}
+		$pListHash['listInfo']['total_records'] = $pListHash['cant'];
+		$pListHash['listInfo']['total_pages'] = ceil( $pListHash['cant'] / $pListHash['max_records'] );
 		$pListHash['listInfo']['current_page'] = 1 + ( $pListHash['offset'] / $pListHash['max_records'] );
 
-		if( $pListHash["cant"] > ( $pListHash['offset'] + $pListHash['max_records'] ) ) {
+		if( $pListHash['cant'] > ( $pListHash['offset'] + $pListHash['max_records'] ) ) {
 			$pListHash['listInfo']['next_offset'] = $pListHash['offset'] + $pListHash['max_records'];
 		} else {
 			$pListHash['listInfo']['next_offset'] = -1;

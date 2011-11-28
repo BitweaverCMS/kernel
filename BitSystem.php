@@ -1356,8 +1356,8 @@ die;
 		if( $verifyMime == 'application/octet-stream' && preg_match( "/^video/", $lookupMime )) {
 			$verifyMime = $lookupMime;
 		} elseif( $lookupMime != $verifyMime ) {
-			if( $mimeExt = array_search( $verifyMime, $this->mMimeTypes ) ) {
-				$ret = substr( $pFileName, 0, strrpos( $pFileName, '.' ) + 1 ).$mimeExt;
+			if( $verifyExt = $this->getMimeExtension( $verifyMime ) ) {
+				$ret = substr( $pFileName, 0, strrpos( $pFileName, '.' ) + 1 ).$verifyExt;
 			}
 		}
 
@@ -1404,6 +1404,28 @@ die;
 		return $mime;
 	}
 
+	function getMimeExtension( $pMimeType ) {
+		$ret = '';
+
+		if( !($ret = array_search( $pMimeType, $this->mMimeTypes )) ) {
+			// not present in mMimeTypes, here are some custom types
+			switch( $pMimeType ) {
+				case 'image/bmp':
+					$ret = 'bmp'; break;
+				case 'image/pipeg':
+					$ret = 'jfif'; break;
+				case 'image/vnd.adobe.photoshop':
+					$ret = 'psd'; break;
+				case 'image/x-cmx':
+					$ret = 'cmx'; break;
+				case 'image/x-jps':
+					$ret = 'jps'; break;
+				case 'image/x-freehand':
+					$ret = 'fh'; break;
+			}
+		}
+		return $ret;
+	}
 
 	/**
 	 * * Prepend $pPath to the include path

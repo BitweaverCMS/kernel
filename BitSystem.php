@@ -2242,9 +2242,9 @@ die;
 							} else {
 								$ret['missing'][$package][] = $table;
 								// This is a crude but highly effective means of blurting out a very bad situation when an installed package is missing a table
-								// if( !$this->isLive() ) {
-								// 	vd( "Table Missing => $package : $table" );
-								// }
+								if( !$this->isLive() ) {
+								 	vd( "Table Missing => $package : $table" );
+								}
 							}
 
 							// lets also return the tables that are not in use by bitweaver

@@ -702,7 +702,7 @@ class BitSystem extends BitBase {
 	 * @access public
 	 */
 	function fatalPermission( $pPermission, $pMsg=NULL ) {
-		global $gBitUser, $gBitSmarty;
+		global $gBitUser, $gBitSmarty, $gBitThemes;
 		if( !$gBitUser->isRegistered() ) {
 			$gBitSmarty->assign( 'errorHeading', 'Please login&nbsp;&hellip;' );
 			$title = 'Please login&nbsp;&hellip;';
@@ -720,13 +720,13 @@ class BitSystem extends BitBase {
 		}
 // bit_log_error( "PERMISSION DENIED: $pPermission $pMsg" ); 
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
+		$gBitThemes->setHttpStatus( HttpStatusCodes::HTTP_FORBIDDEN );
 		$this->display( "error.tpl" );
-die;
 	}
 
 	function getPermissionDeniedMessage( $pPermission ) {
 		$permDesc = $this->getPermissionInfo( $pPermission );
-		$ret = "You do not have the required permissions ";
+		$ret = "You do not have the required permissions";
 		if( !empty( $permDesc[$pPermission]['perm_desc'] ) ) {
 			if( preg_match( '/administrator,/i', $permDesc[$pPermission]['perm_desc'] ) ) {
 				$ret .= preg_replace( '/^administrator, can/i', ' to ', $permDesc[$pPermission]['perm_desc'] );
@@ -977,7 +977,7 @@ die;
 	 * @access public
 	 */
 	function fatalError( $pMsg, $pTemplate='error.tpl', $pErrorTitle=NULL ) {
-		global $gBitSmarty;
+		global $gBitSmarty, $gBitThemes;
 		if( is_null( $pErrorTitle ) ) {
 			$pErrorTitle = $this->getConfig( 'site_error_title', '' );
 		}
@@ -987,6 +987,7 @@ die;
 		if( !isset( $this->mHttpStatus ) ) {
 			error_log( "Fatal Error: $pMsg http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
 		}
+		$gBitThemes->setHttpStatus( HttpStatusCodes::HTTP_BAD_REQUEST );
 		$this->display( $pTemplate );
 		die;
 	}

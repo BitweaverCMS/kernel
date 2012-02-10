@@ -26,6 +26,7 @@
 require_once( KERNEL_PKG_PATH . 'BitBase.php' );
 require_once( KERNEL_PKG_PATH . 'BitDate.php' );
 require_once( THEMES_PKG_PATH . 'BitSmarty.php' );
+require_once( KERNEL_PKG_PATH . 'HttpStatusCodes.php' );
 
 define( 'DEFAULT_PACKAGE', 'kernel' );
 define( 'CENTER_COLUMN', 'c' );
@@ -93,6 +94,9 @@ class BitSystem extends BitBase {
 
 	// Debug HTML to be displayed just after the HTML headers
 	var $mDebugHtml = "";
+
+	// Output http status
+	var $mHttpStatus = HttpStatusCodes::HTTP_OK;
 
 	// === BitSystem constructor
 	/**
@@ -397,17 +401,8 @@ class BitSystem extends BitBase {
 		$gBitSmarty->verifyCompileDir();
 
 		// see if we have a custom status other than 200 OK
-		if( isset( $this->mHttpStatus ) ) {
-			switch( $this->mHttpStatus ) {
-				// before you can spunky and decide to enter every HTTP status code under the sun here, please have the code needed someplace first
-			case '403':
-				header( "HTTP/1.0 403 Forbidden" );
-				break;
-			case '404':
-				header( "HTTP/1.0 404 Not Found" );
-				break;
-			}
-		}
+		header( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
+		error_log( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
 
 		// set the correct headers if it hasn't been done yet
 		if( empty( $gBitThemes->mFormatHeader )) {
@@ -719,15 +714,7 @@ class BitSystem extends BitBase {
 		} else {
 			$title = 'Oops!';
 			if( empty( $pMsg ) ) {
-				$permDesc = $this->getPermissionInfo( $pPermission );
-				$pMsg = "You do not have the required permissions ";
-				if( !empty( $permDesc[$pPermission]['perm_desc'] ) ) {
-					if( preg_match( '/administrator,/i', $permDesc[$pPermission]['perm_desc'] ) ) {
-						$pMsg .= preg_replace( '/^administrator, can/i', ' to ', $permDesc[$pPermission]['perm_desc'] );
-					} else {
-						$pMsg .= preg_replace( '/^can /i', ' to ', $permDesc[$pPermission]['perm_desc'] );
-					}
-				}
+				$pMsg = $this->getPermissionDeniedMessage( $pPermission );
 			}
 			$gBitSmarty->assign( 'fatalTitle', tra( "Permission denied." ) );
 		}
@@ -735,6 +722,19 @@ class BitSystem extends BitBase {
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->display( "error.tpl" );
 die;
+	}
+
+	function getPermissionDeniedMessage( $pPermission ) {
+		$permDesc = $this->getPermissionInfo( $pPermission );
+		$ret = "You do not have the required permissions ";
+		if( !empty( $permDesc[$pPermission]['perm_desc'] ) ) {
+			if( preg_match( '/administrator,/i', $permDesc[$pPermission]['perm_desc'] ) ) {
+				$ret .= preg_replace( '/^administrator, can/i', ' to ', $permDesc[$pPermission]['perm_desc'] );
+			} else {
+				$ret .= preg_replace( '/^can /i', ' to ', $permDesc[$pPermission]['perm_desc'] );
+			}
+		}
+		return $ret;
 	}
 
 	/**
@@ -1744,7 +1744,9 @@ die;
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
 	function registerPreferences( $pPackagedir, $pPreferences ) {
-		$this->registerConfig( $pPackagedir, $pPreferences );
+		foreach( $pPreferences as $prefHash ) {
+			$this->mPackages[$pPackagedir]['default_prefs'][] = array( 'package' => $prefHash[0], 'name' => $prefHash[1], 'value' => $prefHash[2] );
+		}
 	}
 
 	/**

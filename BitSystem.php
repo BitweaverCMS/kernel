@@ -2245,7 +2245,7 @@ class BitSystem extends BitBase {
 							} else {
 								$ret['missing'][$package][] = $table;
 								// This is a crude but highly effective means of blurting out a very bad situation when an installed package is missing a table
-								if( !$this->isLive() ) {
+								if( !$this->isLive() && $this->isPackageActive( $package ) ) {
 								 	vd( "Table Missing => $package : $table" );
 								}
 							}

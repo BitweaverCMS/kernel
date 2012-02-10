@@ -720,7 +720,7 @@ class BitSystem extends BitBase {
 		}
 // bit_log_error( "PERMISSION DENIED: $pPermission $pMsg" ); 
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
-		$gBitThemes->setHttpStatus( HttpStatusCodes::HTTP_FORBIDDEN );
+		$this->setHttpStatus( HttpStatusCodes::HTTP_FORBIDDEN );
 		$this->display( "error.tpl" );
 	}
 
@@ -976,18 +976,24 @@ class BitSystem extends BitBase {
 	 * @return none this function will DIE DIE DIE!!!
 	 * @access public
 	 */
-	function fatalError( $pMsg, $pTemplate='error.tpl', $pErrorTitle=NULL ) {
+	function fatalError( $pMsg, $pTemplate=NULL, $pErrorTitle=NULL, $pHttpStatus = HTTP_BAD_REQUEST  ) {
 		global $gBitSmarty, $gBitThemes;
 		if( is_null( $pErrorTitle ) ) {
 			$pErrorTitle = $this->getConfig( 'site_error_title', '' );
 		}
+
+		if( empty( $pTemplate ) ) {
+			$pTemplate = 'error.tpl';
+		}
+
 		$gBitSmarty->assign( 'fatalTitle', tra( $pErrorTitle ) );
 		$gBitSmarty->assign( 'msg', $pMsg );
 		// if mHttpStatus is set, we can assume this was an expected fatal, such as a 404 or 403
 		if( !isset( $this->mHttpStatus ) ) {
 			error_log( "Fatal Error: $pMsg http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
 		}
-		$gBitThemes->setHttpStatus( HttpStatusCodes::HTTP_BAD_REQUEST );
+
+		$this->setHttpStatus( $pHttpStatus );
 		$this->display( $pTemplate );
 		die;
 	}

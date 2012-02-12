@@ -68,7 +68,10 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 function bit_shutdown_handler() {
 	$isError = false;
 	$error = error_get_last();
+
 	if( $error && $error['type'] & (E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_USER_ERROR) ){
+		header( "HTTP/1.0 500 Internal Server Error" );
+		print "Internal Server Error";
 		bit_error_handler( $error['type'], $error['message'], $error['file'], $error['line'] );
 	}
 }

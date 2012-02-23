@@ -726,6 +726,7 @@ if( $this->mHttpStatus != 200 ) {
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->setHttpStatus( HttpStatusCodes::HTTP_FORBIDDEN );
 		$this->display( "error.tpl" );
+		die;
 	}
 
 	function getPermissionDeniedMessage( $pPermission ) {

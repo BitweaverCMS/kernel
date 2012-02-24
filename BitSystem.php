@@ -402,7 +402,6 @@ class BitSystem extends BitBase {
 
 		// see if we have a custom status other than 200 OK
 		header( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
-		error_log( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
 
 		// set the correct headers if it hasn't been done yet
 		if( empty( $gBitThemes->mFormatHeader )) {

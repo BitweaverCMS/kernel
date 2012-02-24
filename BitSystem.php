@@ -402,6 +402,9 @@ class BitSystem extends BitBase {
 
 		// see if we have a custom status other than 200 OK
 		header( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
+		if( $this->mHttpStatus != 200 ) {
+				error_log( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus )." http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
+		}
 
 		// set the correct headers if it hasn't been done yet
 		if( empty( $gBitThemes->mFormatHeader )) {
@@ -464,7 +467,9 @@ class BitSystem extends BitBase {
 	 */
 	function preDisplay( $pMid ) {
 		global $gCenterPieces, $gBitSmarty, $gBitThemes;
-		define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'javascript/libs/dynarch/jscalendar/' );
+		if( !defined( 'JSCALENDAR_PKG_URL' ) ) {
+			define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'javascript/libs/dynarch/jscalendar/' );
+		}
 
 		$gBitThemes->loadLayout();
 
@@ -721,6 +726,7 @@ class BitSystem extends BitBase {
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->setHttpStatus( HttpStatusCodes::HTTP_FORBIDDEN );
 		$this->display( "error.tpl" );
+		die;
 	}
 
 	function getPermissionDeniedMessage( $pPermission ) {
@@ -975,7 +981,7 @@ class BitSystem extends BitBase {
 	 * @return none this function will DIE DIE DIE!!!
 	 * @access public
 	 */
-	function fatalError( $pMsg, $pTemplate=NULL, $pErrorTitle=NULL, $pHttpStatus = HTTP_BAD_REQUEST  ) {
+	function fatalError( $pMsg, $pTemplate=NULL, $pErrorTitle=NULL, $pHttpStatus = 400  ) {
 		global $gBitSmarty, $gBitThemes;
 		if( is_null( $pErrorTitle ) ) {
 			$pErrorTitle = $this->getConfig( 'site_error_title', '' );

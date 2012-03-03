@@ -402,9 +402,9 @@ class BitSystem extends BitBase {
 
 		// see if we have a custom status other than 200 OK
 		header( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
-if( $this->mHttpStatus != 200 ) {
-		error_log( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus )." http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
-}
+		if( $this->mHttpStatus != 200 ) {
+				error_log( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus )." http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
+		}
 
 		// set the correct headers if it hasn't been done yet
 		if( empty( $gBitThemes->mFormatHeader )) {
@@ -726,6 +726,7 @@ if( $this->mHttpStatus != 200 ) {
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->setHttpStatus( HttpStatusCodes::HTTP_FORBIDDEN );
 		$this->display( "error.tpl" );
+		die;
 	}
 
 	function getPermissionDeniedMessage( $pPermission ) {

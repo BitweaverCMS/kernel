@@ -279,6 +279,7 @@ function vd( $pVar, $pGlobals=FALSE, $pDelay=FALSE ) {
 	} else {
 		ob_end_flush();
 	}
+	flush();
 }
 
 // var capture variable in something nicely readable in web browser

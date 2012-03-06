@@ -81,12 +81,7 @@ class BitBase {
 	 **/
 	var $mLogs = array();
 
-	/**
-	 * During initialisation, we assign a name which is used by the class.
-	 * @param pName a unique identified used in caching and database
-	 * mechanisms
-	 **/
-	function BitBase( $pName = '' ) {
+	public function __construct( $pName = '' ) {
 		global $gBitDb;
 		$this->mName = $pName;
 		$this->mCacheTime = BIT_QUERY_CACHE_TIME;
@@ -95,6 +90,15 @@ class BitBase {
 		}
 		$this->mErrors = array();
 		$this->mInfo = array();
+	}
+
+	/**
+	 * During initialisation, we assign a name which is used by the class.
+	 * @param pName a unique identified used in caching and database
+	 * mechanisms
+	 **/
+	function BitBase( $pName = '' ) {
+		self::__construct( $pName );
 	}
 
 	/**

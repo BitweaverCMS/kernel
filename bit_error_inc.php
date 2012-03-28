@@ -32,11 +32,10 @@ function bit_log_error( $pLogMessage ) {
 
 function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NULL ) {
     // error_reporting() === 0 if code was prepended with @
-	$reportingLevel = error_reporting();
-    if( $reportingLevel !== 0 && !strpos( $errfile, 'templates_c' ) ) {
+    if( ($errno == 1 || $reportingLevel = error_reporting()) && !strpos( $errfile, 'templates_c' ) ) {
 		$errType = FALSE;
         switch ($errno) {
-			case E_ERROR: if( $reportingLevel & E_ERROR ) { $errType = 'FATAL ERROR'; } break;
+			case E_ERROR: $errType = 'FATAL ERROR'; break;
 			case E_WARNING: if( $reportingLevel & E_WARNING ) { $errType = 'WARNING'; } break;
 			case E_PARSE: if( $reportingLevel & E_PARSE ) { $errType = 'PARSE'; } break;
 			case E_NOTICE: if( $reportingLevel & E_NOTICE ) { $errType = 'NOTICE'; } break;
@@ -51,7 +50,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 			case E_RECOVERABLE_ERROR: if( $reportingLevel & E_RECOVERABLE_ERROR ) { $errType = 'RECOVERABLE_ERROR'; } break; 
 			case E_DEPRECATED: if( $reportingLevel & E_DEPRECATED ) { $errType = 'DEPRECATED'; } break;
 			case E_USER_DEPRECATED: if( $reportingLevel & E_USER_DEPRECATED ) { $errType = 'USER_DEPRECATED'; } break;
-            default: $errType = 'Unknown Error'; break;
+            default: $errType = 'Error '.$errno; break;
 
         }
         // Send an e-mail to the administrator

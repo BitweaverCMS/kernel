@@ -8,6 +8,43 @@
  * required setup
  */
 
+// when running scripts
+global $gShellScript;
+if( !empty( $gShellScript ) ) {
+	// keep notices quiet
+	$_SERVER['SCRIPT_URL'] = '';
+	$_SERVER['HTTP_HOST'] = 'localhost';
+	$_SERVER['HTTP_USER_AGENT'] = 'cron';
+	$_SERVER['SERVER_NAME'] = '';
+	$_SERVER['HTTP_SERVER_VARS'] = '';
+	$_SERVER['REQUEST_URI'] = __FILE__;
+	$_SERVER['SERVER_ADDR'] = 'localhost';
+	$_SERVER['REMOTE_ADDR'] = 'localhost';
+	if( empty( $_SERVER['SERVER_ADMIN'] ) ) {
+		$_SERVER['SERVER_ADMIN'] = 'root@localhost';
+	}
+
+	// Process some global arguments
+	global $gArgs, $argv;
+	$gArgs = array();
+	if( $argv ) {
+		foreach( $argv AS $arg ) {
+			switch( $arg ) {
+				case '--debug':
+					$gDebug = TRUE;
+					break;
+				case strpos( $arg, '--' ) === 0:
+					if( strpos( $arg, '=' ) ) {
+						$gArgs[substr( $arg, 2, strpos( $arg, '=' )-2 )] = (int)substr( $arg, (strpos( $arg, '=' ) +1) );
+					} else {
+						$gArgs[substr( $arg, 2 )] = TRUE;
+					}
+					break;
+			}
+		}
+	}
+}
+
 // include the bitweaver configuration file - this needs to happen first
 $config_file = empty( $_SERVER['CONFIG_INC'] ) ? BIT_ROOT_PATH.'config/kernel/config_inc.php' : $_SERVER['CONFIG_INC'];
 if( file_exists( $config_file ) ) {
@@ -73,41 +110,6 @@ if( !defined( 'BIT_ROOT_URL' ) ) {
 	}
 	$subpath = str_replace( '//', '/', str_replace( "\\", '/', $subpath ) ); // do some de-windows-ification
 	define( 'BIT_ROOT_URL', $subpath );
-}
-
-// when running scripts
-global $gShellScript;
-if( !empty( $gShellScript ) ) {
-	// keep notices quiet
-	$_SERVER['SCRIPT_URL'] = '';
-	$_SERVER['HTTP_HOST'] = 'localhost';
-	$_SERVER['HTTP_USER_AGENT'] = 'cron';
-	$_SERVER['SERVER_NAME'] = '';
-	$_SERVER['HTTP_SERVER_VARS'] = '';
-	$_SERVER['REMOTE_ADDR'] = 'localhost';
-	if( empty( $_SERVER['SERVER_ADMIN'] ) ) {
-		$_SERVER['SERVER_ADMIN'] = 'root@localhost';
-	}
-
-	// Process some global arguments
-	global $gArgs, $argv;
-	$gArgs = array();
-	if( $argv ) {
-		foreach( $argv AS $arg ) {
-			switch( $arg ) {
-				case '--debug':
-					$gDebug = TRUE;
-					break;
-				case strpos( $arg, '--' ) === 0:
-					if( strpos( $arg, '=' ) ) {
-						$gArgs[substr( $arg, 2, strpos( $arg, '=' )-2 )] = (int)substr( $arg, (strpos( $arg, '=' ) +1) );
-					} else {
-						$gArgs[substr( $arg, 2 )] = TRUE;
-					}
-					break;
-			}
-		}
-	}
 }
 
 // If BIT_ROOT_URI hasn't been set yet, we'll try to get one from the super global $_SERVER.

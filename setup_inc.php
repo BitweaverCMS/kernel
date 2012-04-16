@@ -189,7 +189,8 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 	global $gHideModules;
 	$gBitSmarty->assign_by_ref( 'gHideModules', $gHideModules );
-
+	$keywords = $gBitSystem->getConfig( 'site_keywords' );
+	$gBitSmarty->assign_by_ref( 'metaKeywords', $keywords );
 
 	// =================== Kernel ===================
 	//$gBitSmarty->assign_by_ref( "gBitSystemPackages", $gBitSystem->mPackages ); doesn't seem to be used - xing

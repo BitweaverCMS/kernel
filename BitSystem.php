@@ -932,7 +932,7 @@ class BitSystem extends BitBase {
 			$pkg = $pMenuHash['package_name'];
 
 			// prepare hash
-			$pMenuHash['style']       = 'display:'.( ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' );
+			$pMenuHash['style']       = 'display:'.( ( isset( $_COOKIE[$pkg.'menu'] ) && ( $_COOKIE[$pkg.'menu'] == 'o' ) ) ? 'block;' : 'none;' );
 			$pMenuHash['is_disabled'] = ( $this->getConfig( 'menu_'.$pkg ) == 'n' );
 			$pMenuHash['menu_title']  = $this->getConfig( $pkg.'_menu_text',
 				( !empty( $pMenuHash['menu_title'] )

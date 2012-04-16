@@ -444,7 +444,7 @@ class BitSystem extends BitBase {
 			}
 			if( !empty( $desc ) ) {
 				$desc = $gContent->getContentTypeName().': '.$desc;
-				$gBitSmarty->assign_by_ref( 'metaDescription', substr( strip_tags( $desc ), 0, 256 ) );
+				$gBitSmarty->assign( 'metaDescription', substr( strip_tags( $desc ), 0, 256 ) );
 			}
 		}
 
@@ -1172,7 +1172,7 @@ class BitSystem extends BitBase {
 							$url = BIT_ROOT_URL.$url;
 						}
 					} elseif( $pIndexType == 'user_home' ) {
-						$url = $gBitUser->getDisplayUrl();
+						$url = $gBitUser->getContentUrl();
 					} else {
 						$users_homepage = $gBitUser->getPreference( 'users_homepage' );
 						if( isset( $users_homepage ) && !empty( $users_homepage )) {
@@ -1443,7 +1443,7 @@ class BitSystem extends BitBase {
 	 * * Prepend $pPath to the include path
 	 * \static
 	 */
-	function prependIncludePath( $pPath ) {
+	public static function prependIncludePath( $pPath ) {
 		if( !function_exists( "get_include_path" ) ) {
 			include_once( UTIL_PKG_PATH . "PHP_Compat/Compat/Function/get_include_path.php" );
 		}

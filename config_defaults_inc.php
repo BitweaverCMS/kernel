@@ -175,6 +175,7 @@ if( !defined( 'STORAGE_PKG_PATH' ) ) {
 define( 'THEMES_PKG_PATH',    BIT_ROOT_PATH.'themes/' );
 define( 'USERS_PKG_PATH',     BIT_ROOT_PATH.'users/' );
 define( 'UTIL_PKG_PATH',      BIT_ROOT_PATH.'util/' );
+define( 'EXTERNAL_LIBS_PATH',      BIT_ROOT_PATH.'externals/' );
 
 
 // =================== Global Variables ===================

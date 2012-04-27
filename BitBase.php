@@ -165,7 +165,7 @@ class BitBase {
 	 * @access public
 	 * @return TRUE if the input was numeric, FALSE if it wasn't
 	 */
-	static function verifyId( $pId ) {
+	public static function verifyId( $pId ) {
 		if( empty( $pId )) {
 			return FALSE;
 		}
@@ -189,7 +189,7 @@ class BitBase {
 	 * @access public
 	 * @return TRUE if the input was numeric, FALSE if it wasn't
 	 */
-	static function getParameter( &$pParamHash, $pKey, $pDefaultValue=NULL ) {
+	public static function getParameter( &$pParamHash, $pKey, $pDefaultValue=NULL ) {
 		if( isset( $pParamHash[$pKey] ) ) {
 			$ret = $pParamHash[$pKey];
 		} else {
@@ -365,7 +365,7 @@ class BitBase {
 	* @param array hash of parameters returned by any getList() function
 	* @return - none the hash is updated via the reference
 	*/
-	function postGetList( &$pListHash ) {
+	public static function postGetList( &$pListHash ) {
 		global $gBitSystem;
 		$pListHash['listInfo']['page_records'] = (!empty( $pListHash['page_records'] ) ? $pListHash['page_records'] : $pListHash['max_records'] );
 		if( !isset( $pListHash['cant'] ) ) {

@@ -22,12 +22,13 @@ if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
 	define( 'ADODB_ERROR_HANDLER', 'bitdb_error_handler' );
 }
 
-function bit_log_error( $pLogMessage ) {
+function bit_error_log( $pLogMessage ) {
 	if( !empty( $_SERVER['SCRIPT_URI'] )) {
-		error_log( "$pLogMessage in {$_SERVER['SCRIPT_URI']}" );
-	} else {
-		error_log( "$pLogMessage" );
-	}
+		error_log( "OUTPUT in {$_SERVER['SCRIPT_URI']}" );
+	} 
+
+	$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage ) : $pLogMessage) );
+	foreach ($errlines as $txt) { error_log($txt); }
 }
 
 function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NULL ) {

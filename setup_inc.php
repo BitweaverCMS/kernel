@@ -174,7 +174,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	} else {
 		$bitdomain .= "/";
 	}
-	$gBitSystem->storeConfig( 'bitdomain', $bitdomain, KERNEL_PKG_NAME );
+	$gBitSystem->setConfig( 'bitdomain', $bitdomain );
 
 	$gBitSmarty->assign( "bitdomain", $bitdomain );
 	// Fix IIS servers not setting what they should set (ay ay IIS, ay ay)

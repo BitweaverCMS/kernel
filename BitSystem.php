@@ -466,7 +466,7 @@ class BitSystem extends BitBase {
 	 * @access private
 	 */
 	function preDisplay( $pMid ) {
-		global $gCenterPieces, $gBitSmarty, $gBitThemes;
+		global $gCenterPieces, $gBitSmarty, $gBitThemes, $gDefaultCenter;
 		if( !defined( 'JSCALENDAR_PKG_URL' ) ) {
 			define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'javascript/libs/dynarch/jscalendar/' );
 		}
@@ -475,12 +475,17 @@ class BitSystem extends BitBase {
 
 		// check to see if we are working with a dynamic center area
 		if( $pMid == 'bitpackage:kernel/dynamic.tpl' ) {
-			$gBitSmarty->assign_by_ref( 'gCenterPieces', $gCenterPieces );
-		} else {
-			// i don't think there is a need for this anymore
-			// if we don't unset this, it's easier for us to scan for assigned modules and will eventually allow us to have
-			// all modules in all areas and have more than 3 columns - xing - Sunday Nov 11, 2007   13:38:37 CET
-			//unset( $gBitThemes->mLayout['c'] );
+			// pre-render dynamic center content
+			$dynamicContent = "";
+			if( !empty( $gCenterPieces ) ){
+				foreach ( $gCenterPieces as $centerPiece ){
+					$gBitSmarty->assign( 'moduleParams', $centerPiece );
+					$dynamicContent .= $gBitSmarty->fetch( $centerPiece['module_rsrc'] );
+				}
+			}elseif( $gDefaultCenter ){
+				$dynamicContent = $gBitSmarty->fetch( $gDefaultCenter );
+			}
+			$gBitSmarty->assign( 'dynamicContent', $dynamicContent );
 		}
 
 		$gBitThemes->preLoadStyle();

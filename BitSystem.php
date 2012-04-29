@@ -1172,12 +1172,12 @@ class BitSystem extends BitBase {
 							$url = BIT_ROOT_URL.$url;
 						}
 					} elseif( $pIndexType == 'user_home' ) {
-						$url = $gBitUser->getContentUrl();
+						$url = $gBitUser->getDisplayUrl();
 					} else {
 						$users_homepage = $gBitUser->getPreference( 'users_homepage' );
 						if( isset( $users_homepage ) && !empty( $users_homepage )) {
 							if( strpos($users_homepage, '/') === FALSE ) {
-								$url = BitPage::getDisplayUrl( $users_homepage );
+								$url = BitPage::getDisplayUrlFromHash( array( 'title' => $users_homepage ) );
 							} else {
 								$url = $users_homepage;
 							}

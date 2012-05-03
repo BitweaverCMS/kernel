@@ -107,23 +107,23 @@ class HttpStatusCodes {
 	);
 	
 	public static function httpHeaderFor($code) {
-		return 'HTTP/1.1 ' . self::$messages[$code];
+		return 'HTTP/1.1 ' . static::$messages[$code];
 	}
 	public static function getMessageForCode($code) {
-		return self::$messages[$code];
+		return static::$messages[$code];
 	}
 	
 	public static function isError($code) {
-		return is_numeric($code) && $code >= self::HTTP_BAD_REQUEST;
+		return is_numeric($code) && $code >= static::HTTP_BAD_REQUEST;
 	}
 	
 	public static function canHaveBody($code) {
 		return
 			// True if not in 100s
-			($code < self::HTTP_CONTINUE || $code >= self::HTTP_OK)
+			($code < static::HTTP_CONTINUE || $code >= static::HTTP_OK)
 			&& // and not 204 NO CONTENT
-			$code != self::HTTP_NO_CONTENT
+			$code != static::HTTP_NO_CONTENT
 			&& // and not 304 NOT MODIFIED
-			$code != self::HTTP_NOT_MODIFIED;
+			$code != static::HTTP_NOT_MODIFIED;
 	}
 }

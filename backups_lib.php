@@ -13,7 +13,7 @@
  */
 class BackupLib extends BitBase {
 	function BackupLib() {
-		BitBase::BitBase();
+		parent::__construct();
 	}
 
 	function restore_database($filename) {

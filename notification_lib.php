@@ -31,7 +31,7 @@ class NotificationLib extends BitBase
     */
     function NotificationLib()
     {
-        BitBase::BitBase();
+        parent::__construct();
     }
     /**
     * Lists registered notification events

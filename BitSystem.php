@@ -23,7 +23,7 @@
 /**
  * required setup
  */
-require_once( KERNEL_PKG_PATH . 'BitBase.php' );
+require_once( KERNEL_PKG_PATH . 'BitSingleton.php' );
 require_once( KERNEL_PKG_PATH . 'BitDate.php' );
 require_once( THEMES_PKG_PATH . 'BitSmarty.php' );
 require_once( KERNEL_PKG_PATH . 'HttpStatusCodes.php' );
@@ -49,7 +49,7 @@ define( 'HOMEPAGE_LAYOUT', 'home' );
  *
  * @package kernel
  */
-class BitSystem extends BitBase {
+class BitSystem extends BitSingleton {
 
 	// Initiate class variables
 
@@ -98,6 +98,11 @@ class BitSystem extends BitBase {
 	// Output http status
 	var $mHttpStatus = HttpStatusCodes::HTTP_OK;
 
+    protected static $singleton = null;
+	protected static function getSingleInstance() {
+		return static::$singleton;
+	}
+
 	// === BitSystem constructor
 	/**
 	 * base constructor, auto assigns member db variable
@@ -105,10 +110,10 @@ class BitSystem extends BitBase {
 	 * @access public
 	 */
 	// Constructor receiving a PEAR::Db database object.
-	function BitSystem() {
+	function __construct() {
 		global $gBitTimer;
 		// Call DB constructor which will create the database member variable
-		BitBase::BitBase();
+		parent::__construct();
 
 		$this->mAppMenu = array();
 

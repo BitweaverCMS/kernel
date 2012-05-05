@@ -48,7 +48,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 			case E_USER_WARNING: if( $reportingLevel & E_USER_WARNING ) { $errType = 'USER_WARNING'; } break;
 			case E_USER_NOTICE: if( $reportingLevel & E_USER_NOTICE ) { $errType = 'USER_NOTICE'; } break;
 			case E_STRICT: if( $reportingLevel & E_STRICT ) { $errType = 'STRICT'; } break;
-			case E_RECOVERABLE_ERROR: if( $reportingLevel & E_RECOVERABLE_ERROR ) { $errType = 'RECOVERABLE_ERROR'; } break; 
+			case E_RECOVERABLE_ERROR: if( $reportingLevel & E_RECOVERABLE_ERROR ) { $errType = 'RECOVERABLE_ERROR'; } break;
 			case E_DEPRECATED: if( $reportingLevel & E_DEPRECATED ) { $errType = 'DEPRECATED'; } break;
 			case E_USER_DEPRECATED: if( $reportingLevel & E_USER_DEPRECATED ) { $errType = 'USER_DEPRECATED'; } break;
             default: $errType = 'Error '.$errno; break;
@@ -326,7 +326,7 @@ function va( $iVar ) {
 
 /**
  * bitdebug display an debug output when $gDebug is set to TRUE
- * 
+ *
  * @param array $pMessage Message to display
  * @access public
  * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
@@ -337,6 +337,3 @@ function bitdebug( $pMessage ) {
 		echo "<pre>$pMessage</pre>";
 	}
 }
-
-
-?>

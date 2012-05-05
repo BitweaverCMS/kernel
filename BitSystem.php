@@ -89,7 +89,7 @@ class BitSystem extends BitSingleton {
 	// The name of the package that is currently being processed
 	var $mPackageFileName;
 
-	// Content classes. 
+	// Content classes.
 	var $mContentClasses = array();
 
 	// Debug HTML to be displayed just after the HTML headers
@@ -231,7 +231,7 @@ class BitSystem extends BitSingleton {
 
 	/**
 	 * storeConfigMatch set a group of config variables
-	 * 
+	 *
 	 * @param string $pPattern Perl regular expression
 	 * @param string $pSelectValue only manipulate settings with this value set
 	 * @param string $pNewValue New value that should be set for the matching settings (NULL will remove the entries from the DB)
@@ -253,9 +253,9 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * Set a hash value in the mConfig hash. This does *NOT* store the value in 
-	 * the database. It does no checking for existing or duplicate values. the 
-	 * main point of this function is to limit direct accessing of the mConfig 
+	 * Set a hash value in the mConfig hash. This does *NOT* store the value in
+	 * the database. It does no checking for existing or duplicate values. the
+	 * main point of this function is to limit direct accessing of the mConfig
 	 * hash. I will probably make mConfig private one day.
 	 *
 	 * @param string Hash key for the mConfig value
@@ -471,7 +471,7 @@ class BitSystem extends BitSingleton {
 	 * @access private
 	 */
 	function preDisplay( $pMid ) {
-		global $gCenterPieces, $gBitSmarty, $gBitThemes;
+		global $gCenterPieces, $gBitSmarty, $gBitThemes, $gDefaultCenter;
 		if( !defined( 'JSCALENDAR_PKG_URL' ) ) {
 			define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'javascript/libs/dynarch/jscalendar/' );
 		}
@@ -480,25 +480,30 @@ class BitSystem extends BitSingleton {
 
 		// check to see if we are working with a dynamic center area
 		if( $pMid == 'bitpackage:kernel/dynamic.tpl' ) {
-			$gBitSmarty->assign_by_ref( 'gCenterPieces', $gCenterPieces );
-		} else {
-			// i don't think there is a need for this anymore
-			// if we don't unset this, it's easier for us to scan for assigned modules and will eventually allow us to have 
-			// all modules in all areas and have more than 3 columns - xing - Sunday Nov 11, 2007   13:38:37 CET
-			//unset( $gBitThemes->mLayout['c'] );
+			// pre-render dynamic center content
+			$dynamicContent = "";
+			if( !empty( $gCenterPieces ) ){
+				foreach ( $gCenterPieces as $centerPiece ){
+					$gBitSmarty->assign( 'moduleParams', $centerPiece );
+					$dynamicContent .= $gBitSmarty->fetch( $centerPiece['module_rsrc'] );
+				}
+			}elseif( $gDefaultCenter ){
+				$dynamicContent = $gBitSmarty->fetch( $gDefaultCenter );
+			}
+			$gBitSmarty->assign( 'dynamicContent', $dynamicContent );
 		}
 
 		$gBitThemes->preLoadStyle();
 
 		/* @TODO - fetch module php files before rendering tpls.
-		 * The basic problem here is center_list and module files are 
+		 * The basic problem here is center_list and module files are
 		 * processed during page rendering, which means code in those
 		 * files can not set <head> information before rendering. Kinda sucks.
 		 *
 		 * So what this does is, this calls on a service function allowing any
-		 * package to check if its center or other module file is going to be 
+		 * package to check if its center or other module file is going to be
 		 * called and gives it a chance to set any information for <head> first.
-		 * 
+		 *
 		 * Remove when TODO is complete. -wjames5
 		 */
 		global $gBitUser;
@@ -692,7 +697,7 @@ class BitSystem extends BitSingleton {
 
 	// === verifyPermission
 	/**
-	 * DEPRECATED - this function has been moved into BitPermUser, use that 
+	 * DEPRECATED - this function has been moved into BitPermUser, use that
 	 */
 	function verifyPermission( $pPermission, $pMsg = NULL ) {
 		global $gBitUser;
@@ -703,7 +708,7 @@ class BitSystem extends BitSingleton {
 	/**
 	 * Interupt code execution and show a permission denied message.
 	 * This does not show a big nasty denied message if user is simply not logged in.
-	 * This *could* lead to a user seeing a denied message twice, however this is 
+	 * This *could* lead to a user seeing a denied message twice, however this is
 	 * unlikely as logic permission checks should prevent access to non-permed page REQUEST in the first place
 	 * @param $pPermission value of a given permission
 	 * @param $pMsg optional additional information to present to user
@@ -727,7 +732,7 @@ class BitSystem extends BitSingleton {
 			}
 			$gBitSmarty->assign( 'fatalTitle', tra( "Permission denied." ) );
 		}
-// bit_log_error( "PERMISSION DENIED: $pPermission $pMsg" ); 
+// bit_log_error( "PERMISSION DENIED: $pPermission $pMsg" );
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->setHttpStatus( HttpStatusCodes::HTTP_FORBIDDEN );
 		$this->display( "error.tpl" );
@@ -966,9 +971,9 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerNotifyEvent 
-	 * 
-	 * @param array $pEventHash 
+	 * registerNotifyEvent
+	 *
+	 * @param array $pEventHash
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -1019,7 +1024,7 @@ class BitSystem extends BitSingleton {
 	 * @return none
 	 * @access public
 	 */
-	function loadPackage( $pPkgDir, $pScanFile, $pAutoRegister=TRUE, $pOnce=TRUE ) { 
+	function loadPackage( $pPkgDir, $pScanFile, $pAutoRegister=TRUE, $pOnce=TRUE ) {
 		#check if already loaded, loading again won't work with 'include_once' since
 		#no register call will be done, so don't auto register.
 		if( $pAutoRegister && !empty( $this->mPackagesDirNameXref[$pPkgDir] ) ) {
@@ -1066,16 +1071,16 @@ class BitSystem extends BitSingleton {
 	 * @param string $ autoRegister - TRUE = autoregister any packages that don't register on their own, FALSE = don't
 	 * @param string $ fileSystemScan - TRUE = scan file system for packages to load, False = don't
 	 * @return none
-	 * 
+	 *
 	 * Packages have three different names:
 	 *    The directory name where they reside on disk
-	 *    The Name they register themselves as when they call registerPackage 
+	 *    The Name they register themselves as when they call registerPackage
 	 *    The Key for the array $this->mPackages
-	 *    
+	 *
 	 * Example:
 	 *    A package in directory 'stars' that registers itself with a name of 'Star Ratings'
 	 *    would have these three names:
-	 *    
+	 *
 	 *    Directory Name: 'stars'
 	 *    Registered Name: Star Ratings'
 	 *    $this->mPackages key: 'star_ratings'
@@ -1085,7 +1090,7 @@ class BitSystem extends BitSingleton {
 	 *
 	 *    Functions that expect a package name as a parameter should make clear which form
 	 *    of the name they expect.
-	 *    
+	 *
 	 * @access public
 	 */
 	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $pAutoRegister=TRUE ) {
@@ -1122,10 +1127,10 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * getDefaultPage 
-	 * 
+	 * getDefaultPage
+	 *
 	 * @access public
-	 * @return URL of site homepage 
+	 * @return URL of site homepage
 	 */
 	function getDefaultPage() {
 		return $this->getIndexPage( $this->getConfig( "bit_index" ) );
@@ -1172,17 +1177,17 @@ class BitSystem extends BitSingleton {
 					if( $pIndexType == 'my_page' ) {
 						$url = $gBitSystem->getConfig( 'users_login_homepage', USERS_PKG_URL.'my.php' );
 						if( $url != USERS_PKG_URL.'my.php' && strpos( $url, 'http://' ) === FALSE ){
-							// the safe assumption is that a custom path is a subpath of the site 
+							// the safe assumption is that a custom path is a subpath of the site
 							// append the root url unless we have a fully qualified uri
 							$url = BIT_ROOT_URL.$url;
 						}
 					} elseif( $pIndexType == 'user_home' ) {
-						$url = $gBitUser->getContentUrl();
+						$url = $gBitUser->getDisplayUrl();
 					} else {
 						$users_homepage = $gBitUser->getPreference( 'users_homepage' );
 						if( isset( $users_homepage ) && !empty( $users_homepage )) {
 							if( strpos($users_homepage, '/') === FALSE ) {
-								$url = BitPage::getDisplayUrl( $users_homepage );
+								$url = BitPage::getDisplayUrlFromHash( array( 'title' => $users_homepage ) );
 							} else {
 								$url = $users_homepage;
 							}
@@ -1198,10 +1203,10 @@ class BitSystem extends BitSingleton {
 				$url = constant( $work );
 			}
 
-			/* this was commented out with the note that this can send requests to inactive packages - 
+			/* this was commented out with the note that this can send requests to inactive packages -
 			 * that should only happen if the admin chooses to point to an inactive pacakge.
 			 * commenting this out however completely breaks the custom uri home page feature, so its
-			 * turned back on and caviate admin - if the problem is more severe than it seems then 
+			 * turned back on and caviate admin - if the problem is more severe than it seems then
 			 * get in touch on irc and we'll work out a better solution than commenting things on and off -wjames5
 			 */
 		} elseif( !empty( $pIndexType ) ) {
@@ -1227,7 +1232,7 @@ class BitSystem extends BitSingleton {
 	}
 	// === setOnloadScript
 	/**
-	 * add javascript to the <body onload> attribute 
+	 * add javascript to the <body onload> attribute
 	 *
 	 * @param string $pJavascript javascript to be added
 	 * @return none
@@ -1238,7 +1243,7 @@ class BitSystem extends BitSingleton {
 	}
 	// === setOnunloadScript
 	/**
-	 * add javascript to the <body onunload> attribute 
+	 * add javascript to the <body onunload> attribute
 	 *
 	 * @param string $pJavascript javascript to be added
 	 * @return none
@@ -1506,12 +1511,12 @@ class BitSystem extends BitSingleton {
 
 		$docroot = BIT_ROOT_PATH;
 
-        /*	this seems to prevent bw from running on servers where sessions work perfectly, 
+        /*	this seems to prevent bw from running on servers where sessions work perfectly,
         	yet /var/lib/php/ is writeable only by php, not by bw (which is better)
         	it seems to be enough to set temp in config/kernel/config_inc.php for a writable dir
         	if session *actually* don't work - other problem
         	the installer has similar code which is also not used anymore
-        	
+
 		if( ini_get( 'session.save_handler' ) == 'files' ) {
 			$save_path = ini_get( 'session.save_path' );
 
@@ -1672,7 +1677,7 @@ class BitSystem extends BitSingleton {
 
 	/**
 	 * isLive returns status of the IS_LIVE constant from config/kernel/config_inc.php
-	 * 
+	 *
 	 * @access public
 	 * @return TRUE if IS_LIVE is defined and set to a non empty value, else FALSE
 	 */
@@ -1684,13 +1689,13 @@ class BitSystem extends BitSingleton {
 	// Keep these methods in BitSystem that we can call verifyInstalledPackages() and other
 	// mthods without the need for an install/ package to be present.
 	/**
-	 * registerSchemaTable 
-	 * 
-	 * @param array $pPackage 
-	 * @param array $pTableName 
-	 * @param array $pDataDict 
-	 * @param array $pRequired 
-	 * @param array $pTableOptions 
+	 * registerSchemaTable
+	 *
+	 * @param array $pPackage
+	 * @param array $pTableName
+	 * @param array $pDataDict
+	 * @param array $pRequired
+	 * @param array $pTableOptions
 	 * @access public
 	 * @return void
 	 */
@@ -1705,11 +1710,11 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerSchemaConstraints 
-	 * 
-	 * @param array $pPackage 
-	 * @param array $pTableName 
-	 * @param array $pConstraints 
+	 * registerSchemaConstraints
+	 *
+	 * @param array $pPackage
+	 * @param array $pTableName
+	 * @param array $pConstraints
 	 * @access public
 	 * @return void
 	 */
@@ -1721,10 +1726,10 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerUserPermissions 
-	 * 
-	 * @param array $pPackagedir 
-	 * @param array $pUserpermissions 
+	 * registerUserPermissions
+	 *
+	 * @param array $pPackagedir
+	 * @param array $pUserpermissions
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -1738,10 +1743,10 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerConfig 
-	 * 
-	 * @param array $pPackagedir 
-	 * @param array $pPreferences 
+	 * registerConfig
+	 *
+	 * @param array $pPackagedir
+	 * @param array $pPreferences
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -1753,10 +1758,10 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerPreferences 
-	 * 
-	 * @param array $pPackagedir 
-	 * @param array $pPreferences 
+	 * registerPreferences
+	 *
+	 * @param array $pPackagedir
+	 * @param array $pPreferences
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -1767,9 +1772,9 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerModules 
-	 * 
-	 * @param array $pModuleHash 
+	 * registerModules
+	 *
+	 * @param array $pModuleHash
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -1789,10 +1794,10 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerPackageInfo 
-	 * 
-	 * @param array $pPackage 
-	 * @param array $pInfoHash 
+	 * registerPackageInfo
+	 *
+	 * @param array $pPackage
+	 * @param array $pInfoHash
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -1815,10 +1820,10 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerSchemaSequences 
-	 * 
-	 * @param array $pPackage 
-	 * @param array $pSeqHash 
+	 * registerSchemaSequences
+	 *
+	 * @param array $pPackage
+	 * @param array $pSeqHash
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -1828,10 +1833,10 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerSchemaIndexes 
-	 * 
-	 * @param array $pPackage 
-	 * @param array $pIndexHash 
+	 * registerSchemaIndexes
+	 *
+	 * @param array $pPackage
+	 * @param array $pIndexHash
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -1841,10 +1846,10 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerSchemaDefault 
-	 * 
-	 * @param array $pPackage 
-	 * @param array $pMixedDefaultSql 
+	 * registerSchemaDefault
+	 *
+	 * @param array $pPackage
+	 * @param array $pMixedDefaultSql
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -1864,7 +1869,7 @@ class BitSystem extends BitSingleton {
 
 	/**
 	 * storeVersion will store the version number of a given package
-	 * 
+	 *
 	 * @param array $pPackage Name of package - if not given, bitweaver_version will be stored
 	 * @param array $pVersion Version number
 	 * @access public
@@ -1887,7 +1892,7 @@ class BitSystem extends BitSingleton {
 
 	/**
 	 * getVersion will fetch the version number of a given package
-	 * 
+	 *
 	 * @param array $pPackage Name of package - if not given, bitweaver_version will be stored
 	 * @param array $pVersion Version number
 	 * @access public
@@ -1906,7 +1911,7 @@ class BitSystem extends BitSingleton {
 
 	/**
 	 * getLatestUpgradeVersion will fetch the greatest upgrade number for a given package
-	 * 
+	 *
 	 * @param array $pPackage package we want to fetch the latest version number for
 	 * @access public
 	 * @return string greatest upgrade number for a given package
@@ -1933,8 +1938,8 @@ class BitSystem extends BitSingleton {
 	/**
 	 * registerPackageVersion Holds the package version
 	 *
-	 * @param array $pPackage 
-	 * @param array $pVersion 
+	 * @param array $pPackage
+	 * @param array $pVersion
 	 * @access public
 	 * @return void
 	 */
@@ -1946,9 +1951,9 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * validateVersion 
-	 * 
-	 * @param array $pVersion 
+	 * validateVersion
+	 *
+	 * @param array $pVersion
 	 * @access public
 	 * @return TRUE on success, FALSE on failure
 	 */
@@ -1957,10 +1962,10 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * registerRequirements 
-	 * 
-	 * @param array $pParams 
-	 * @param array $pReqHash 
+	 * registerRequirements
+	 *
+	 * @param array $pParams
+	 * @param array $pReqHash
 	 * @access public
 	 * @return void
 	 */
@@ -1987,9 +1992,9 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * verifyRequirements 
-	 * 
-	 * @param array $pReqHash 
+	 * verifyRequirements
+	 *
+	 * @param array $pReqHash
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
@@ -2022,9 +2027,9 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * getRequirements 
-	 * 
-	 * @param array $pPackage 
+	 * getRequirements
+	 *
+	 * @param array $pPackage
 	 * @access public
 	 * @return array of package requirements
 	 */
@@ -2041,7 +2046,7 @@ class BitSystem extends BitSingleton {
 
 	/**
 	 * calculateRequirements will calculate all requirements and return a hash of the results
-	 * 
+	 *
 	 * @param boolean $pInstallVersion Use the actual installed version instead of the version that will be in bitweaver after the upgrade
 	 * @access public
 	 * @return boolean TRUE on success, FALSE on failure - mErrors will contain reason for failure
@@ -2105,7 +2110,7 @@ class BitSystem extends BitSingleton {
 
 	/**
 	 * drawRequirementsGraph Will draw a requirement graph if PEAR::Image_GraphViz is installed
-	 * 
+	 *
 	 * @param boolean $pInstallVersion Use the actual installed version instead of the version that will be in bitweaver after the upgrade
 	 * @param string $pFormat dot output format
 	 * @param string $pCommand dot or neato
@@ -2418,7 +2423,7 @@ class BitSystem extends BitSingleton {
 	// }}}
 	/**
 	 * getBitVersion will fetch the version of bitweaver as set in kernel/config_defaults_inc.php
-	 * 
+	 *
 	 * @param boolean $pIncludeLevel Return bitweaver version including BIT_LEVEL
 	 * @access public
 	 * @return string bitweaver version set in kernel/config_defaults_inc.php
@@ -2433,7 +2438,7 @@ class BitSystem extends BitSingleton {
 
 	/**
 	 * checkBitVersion Check for new version of bitweaver
-	 * 
+	 *
 	 * @access public
 	 * @return returns an array with information on bitweaver version
 	 */
@@ -2518,7 +2523,7 @@ class BitSystem extends BitSingleton {
 
 	/**
 	 * getIncludeFiles will get a set of available files with a given filename
-	 * 
+	 *
 	 * @param array $pPhpFile name of php file
 	 * @param array $pTplFile name of tpl file
 	 * @access public

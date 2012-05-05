@@ -160,7 +160,7 @@ abstract class BitBase {
 
 	/**
 	 * verifyId Determines if any given variable exists and is a number
-	 * 
+	 *
 	 * @param mixed $pId this can be a string, number or array. if it's an array, all values in the array will be checked to see if they are numeric
 	 * @access public
 	 * @return TRUE if the input was numeric, FALSE if it wasn't
@@ -339,7 +339,7 @@ abstract class BitBase {
 
 	/**
 	 * verifySortMode is used to validate a given sort_mode agains an array of valid sort modes
-	 * 
+	 *
 	 * @param string $pSortMode sort mode to check
 	 * @param array $pValidSortModes array of available sort modes
 	 * @access public

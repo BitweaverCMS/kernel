@@ -31,7 +31,7 @@ define( 'STORAGE_IMAGE', 2 );
  *
  * @package kernel
  */
-class BitBase {
+abstract class BitBase {
 	/**
 	 * Error hash that will contain an error codes we encounter along
 	 * the way this hash can be used by presentation layer ti give feedback
@@ -81,7 +81,7 @@ class BitBase {
 	 **/
 	var $mLogs = array();
 
-	public function __construct( $pName = '' ) {
+	function __construct( $pName = '' ) {
 		global $gBitDb;
 		$this->mName = $pName;
 		$this->mCacheTime = BIT_QUERY_CACHE_TIME;

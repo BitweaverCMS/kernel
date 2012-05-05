@@ -10,5 +10,6 @@
 	{/if}
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/phpinfo.php">{tr}PHPinfo{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?version_check=1">{tr}Check Version{/tr}</a></li>
+	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/sitemaps.php">{tr}Sitemaps{/tr}</a></li>
 </ul>
 {/strip}

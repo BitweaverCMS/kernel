@@ -12,9 +12,6 @@
  * @package kernel
  */
 class BackupLib extends BitBase {
-	function BackupLib() {
-		parent::__construct();
-	}
 
 	function restore_database($filename) {
 		global $gBitDbType;

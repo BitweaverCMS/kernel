@@ -32,10 +32,10 @@ require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
  */
 class BitDbPear extends BitDb
 {
-	function BitDbPear( $pPearDsn=NULL, $pPearOptions = NULL )
+	function __construct( $pPearDsn=NULL, $pPearOptions = NULL )
 	{
 		global $gDebug;
-		parent::BitDb();
+		parent::__construct();
 
 		if( empty( $pPearDsn ) ) {
 			global $gBitDbType, $gBitDbUser, $gBitDbPassword, $gBitDbHost, $gBitDbName;

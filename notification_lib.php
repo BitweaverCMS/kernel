@@ -27,13 +27,6 @@
 class NotificationLib extends BitBase
 {
     /**
-    * Notifies via email triggered events.
-    */
-    function NotificationLib()
-    {
-        parent::__construct();
-    }
-    /**
     * Lists registered notification events
     * @param offset the location to begin listing from
     * @param max_records the maximum number of records returned

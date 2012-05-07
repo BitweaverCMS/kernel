@@ -59,7 +59,7 @@ class BitDbAdodb extends BitDb {
 			$pConnectionHash['db_name'] = $gBitDbName;
 		}
 
-		parent::BitDb();
+		parent::__construct();
 
 		// Get all the ADODB stuff included
 		if( !defined( "ADODB_ASSOC_CASE" )) {

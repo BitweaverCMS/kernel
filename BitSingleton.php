@@ -22,7 +22,10 @@ require_once( KERNEL_PKG_PATH . 'BitBase.php' );
 
 abstract class BitSingleton extends BitBase {
 
-	abstract static protected function getSingleInstance();
+	static protected function getSingleInstance() {
+		bit_error_log( "BitSingleton::getSingleInstance() must be overridden" );
+		die;
+	}
 
     function __construct() {
         // Thou shalt not construct that which is unconstructable!

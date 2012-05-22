@@ -480,17 +480,7 @@ class BitSystem extends BitSingleton {
 
 		// check to see if we are working with a dynamic center area
 		if( $pMid == 'bitpackage:kernel/dynamic.tpl' ) {
-			// pre-render dynamic center content
-			$dynamicContent = "";
-			if( !empty( $gCenterPieces ) ){
-				foreach ( $gCenterPieces as $centerPiece ){
-					$gBitSmarty->assign( 'moduleParams', $centerPiece );
-					$dynamicContent .= $gBitSmarty->fetch( $centerPiece['module_rsrc'] );
-				}
-			}elseif( $gDefaultCenter ){
-				$dynamicContent = $gBitSmarty->fetch( $gDefaultCenter );
-			}
-			$gBitSmarty->assign( 'dynamicContent', $dynamicContent );
+			$gBitSmarty->assign_by_ref( 'gCenterPieces', $gCenterPieces );
 		}
 
 		$gBitThemes->preLoadStyle();

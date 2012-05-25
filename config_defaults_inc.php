@@ -89,9 +89,9 @@ if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
 	define( 'EVIL_EXTENSION_PATTERN', "#\.(htaccess|pl|php|php3|php4|phtml|py|cgi|asp|jsp|sh|shtml)$#i" );
 }
 
-// Empty PHP_SELF and incorrect SCRIPT_NAME due to php-cgiwrap - wolff_borg
-if( empty( $_SERVER['PHP_SELF'] ) ) {
-	$_SERVER['PHP_SELF'] = $_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_URL'];
+// Empty SCRIPT_NAME and incorrect SCRIPT_NAME due to php-cgiwrap - wolff_borg
+if( empty( $_SERVER['SCRIPT_NAME'] ) ) {
+	$_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_URL'];
 }
 
 // BIT_ROOT_URL should be set as soon as the system is installed. until then we
@@ -101,11 +101,11 @@ if( empty( $_SERVER['PHP_SELF'] ) ) {
 // successful one - xing
 if( !defined( 'BIT_ROOT_URL' ) ) {
 	// version one which seems to only cause problems seldomly
-	preg_match( '/.*'.basename( dirname( dirname( __FILE__ ) ) ).'\//', $_SERVER['PHP_SELF'], $match );
+	preg_match( '/.*'.basename( dirname( dirname( __FILE__ ) ) ).'\//', $_SERVER['SCRIPT_NAME'], $match );
 	$subpath = ( isset($match[0] ) ) ? $match[0] : '/';
 	// version two which doesn't work well on it's own
 	if( $subpath == "/" ) {
-		$subpath = dirname( dirname( $_SERVER['PHP_SELF'] ) );
+		$subpath = dirname( dirname( $_SERVER['SCRIPT_NAME'] ) );
 		$subpath .= ( substr( $subpath,-1,1 )!='/' ) ? '/' : '';
 	}
 	$subpath = str_replace( '//', '/', str_replace( "\\", '/', $subpath ) ); // do some de-windows-ification

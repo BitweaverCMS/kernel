@@ -182,7 +182,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$_SERVER['QUERY_STRING'] = '';
 	}
 	if( !isset( $_SERVER['REQUEST_URI'] ) || empty( $_SERVER['REQUEST_URI'] )) {
-		$_SERVER['REQUEST_URI'] = $_SERVER['PHP_SELF'].'/'.$_SERVER['QUERY_STRING'];
+		$_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'].'/'.$_SERVER['QUERY_STRING'];
 	}
 	if( isset( $_REQUEST['page'] )) {
 		$_REQUEST['page'] = strip_tags( $_REQUEST['page'] );

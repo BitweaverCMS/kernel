@@ -91,7 +91,7 @@ if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
 
 // Empty SCRIPT_NAME and incorrect SCRIPT_NAME due to php-cgiwrap - wolff_borg
 if( empty( $_SERVER['SCRIPT_NAME'] ) ) {
-	$_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_URL'];
+	$_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_URL'];
 }
 
 // BIT_ROOT_URL should be set as soon as the system is installed. until then we

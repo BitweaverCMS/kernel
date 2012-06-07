@@ -1139,7 +1139,26 @@ class BitSystem extends BitSingleton {
 		global $userlib, $gBitUser, $gBitSystem;
 		$pIndexType = !is_null( $pIndexType )? $pIndexType : $this->getConfig( "bit_index" );
 		$url = '';
-		if( $pIndexType == 'group_home') {
+		if( $pIndexType == 'role_home') {
+			// See if we have first a user assigned default group id, and second a group default system preference
+			if( !$gBitUser->isRegistered() && ( $role_home = $gBitUser->getHomeRole( ANONYMOUS_ROLE_ID ))) {
+			} elseif( @$this->verifyId( $gBitUser->mInfo['default_role_id'] ) && ( $role_home = $gBitUser->getHomeRole( $gBitUser->mInfo['default_role_id'] ))) {
+			} elseif( $this->getConfig( 'default_home_role' ) && ( $role_home = $gBitUser->getHomeRole( $this->getConfig( 'default_home_role' )))) {
+			}
+
+			if( !empty( $role_home )) {
+				if( $this->verifyId( $role_home ) ) {
+					$url = BIT_ROOT_URL."index.php".( !empty( $role_home ) ? "?content_id=".$role_home : "" );
+				// wiki dependence - NO bad idea
+				// } elseif( strpos( $group_home, '/' ) === FALSE ) {
+				// 	$url = BitPage::getDisplayUrl( $group_home );
+				} elseif(  strpos( $role_home, 'http://' ) === FALSE ){
+					$url = BIT_ROOT_URL.$role_home;
+				} else {
+					$url = $role_home;
+				}
+			}
+		} elseif( $pIndexType == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
 			if( !$gBitUser->isRegistered() && ( $group_home = $gBitUser->getGroupHome( ANONYMOUS_GROUP_ID ))) {
 			} elseif( @$this->verifyId( $gBitUser->mInfo['default_group_id'] ) && ( $group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ))) {

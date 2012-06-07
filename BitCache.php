@@ -17,14 +17,14 @@ class BitCache {
 	var $mFolder;
 	/**
 	 * Will check the temp cache folder for existence and create it if necessary.
-	 * 
+	 *
 	 * @param string $pSubdir use a specifed subdirectory
 	 * @param boolean $pUseStorage use the storage directory instead of the temp dir. only makes sense if you need direct webaccess to stored cachefiles
 	 * @access public
 	 * @return void
 	 */
 	function BitCache( $pSubdir = 'cache', $pUseStorage = FALSE ) {
-		if( $pUseStorage ) {
+		if( $pUseStorage and defined(STORAGE_PKG_PATH) ) {
 			$this->mFolder = STORAGE_PKG_PATH.$pSubdir;
 			$this->mUrl = STORAGE_PKG_URL.$pSubdir;
 		} elseif( defined( "TEMP_PKG_PATH" )) {
@@ -41,9 +41,9 @@ class BitCache {
 	}
 
 	/**
-	 * getCacheFile 
-	 * 
-	 * @param string $pFile 
+	 * getCacheFile
+	 *
+	 * @param string $pFile
 	 * @access public
 	 * @return filepath on success, FALSE on failure
 	 */
@@ -57,8 +57,8 @@ class BitCache {
 
 	/**
 	 * getCacheUrl will get the URL to the cache file - only works when you're using BitCache with the UseStorage option
-	 * 
-	 * @param string $pFile 
+	 *
+	 * @param string $pFile
 	 * @access public
 	 * @return fileurl on success, FALSE on failure
 	 */
@@ -70,7 +70,7 @@ class BitCache {
 
 	/**
 	 * Used to check if an object is cached.
-	 * 
+	 *
 	 * @param string $pFile name of the file we want to check for
 	 * @param numeric $pModTime Pass in the modification time you wish to check against
 	 * @access public
@@ -119,7 +119,7 @@ class BitCache {
 
 	/**
 	 * remove the entire cache in the cache folder
-	 * 
+	 *
 	 * @access public
 	 * @return TRUE on success, FALSE on failure
 	 */
@@ -136,8 +136,8 @@ class BitCache {
 	}
 
 	/**
-	 * writeCacheFile 
-	 * 
+	 * writeCacheFile
+	 *
 	 * @param string $pFile file to write to
 	 * @param string $pData string to write to file
 	 * @access public

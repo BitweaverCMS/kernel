@@ -1,38 +1,38 @@
+{strip}
 {bitmodule title="$moduleTitle" name="twitter"}
 	<div style="text-align:center;">
-		{literal}
 			<div id="js_twitter" style="font-family:monospace;">
 				<script src="http://widgets.twimg.com/j/2/widget.js"></script>
 				<script type="text/javascript">
-					//<![CDATA[
-					new TWTR.Widget({
+					/* <![CDATA[ */
+					new TWTR.Widget({ldelim}
 					  version: 2,
 					  type: 'profile',
 					  rpp: 4,
 					  interval: 30000,
 					  width: 222,
 					  height: 240,
-					  theme: {
-					    shell: {
-					      background: '#333333',
-					      color: '#ffffff'
-					    },
-					    tweets: {
-					      background: '#000000',
-					      color: '#ffffff',
+					  theme: {ldelim}
+					    shell: {ldelim}
+					      background: '#ffffff',
+					      color: '#ff8800'
+					    {rdelim},
+					    tweets: {ldelim}
+					      background: '#eeeeee',
+					      color: '#000000',
 					      links: '#eb072d'
-					    }
-					  },
-					  features: {
+					    {rdelim}
+					  {rdelim},
+					  features: {ldelim}
 					    scrollbar: false,
 					    loop: false,
 					    live: false,
 					    behavior: 'all'
-					  }
-					}).render().setUser('PHXSecurityLtd').start();
-					//]]>
+					  {rdelim}
+					{rdelim}).render().setUser('{$moduleTitle}').start();
+					/* ]]> */
 				</script>
 			</div>
-		{/literal}
 	</div>
 {/bitmodule}
+{/strip}

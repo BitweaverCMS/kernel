@@ -286,10 +286,11 @@ abstract class BitBase {
 			}
 		}
 
-		if( empty( $pListHash['max_records'] )) {
+		if( empty( $pListHash['max_records'] ) || !is_numeric( $pListHash['max_records'] ) ) {
 			global $gBitSystem;
 			$pListHash['max_records'] = $gBitSystem->getConfig( "max_records", 10 );
 		}
+		$pListHash['max_records'] = (int)$pListHash['max_records'];
 
 		if( !isset( $pListHash['offset'] )) {
 			if( isset($pListHash['page'] )) {

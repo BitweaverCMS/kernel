@@ -57,7 +57,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
         // Send an e-mail to the administrator
 		if( $errType && defined( 'ERROR_EMAIL' ) ) {
 			global $gBitDb;
-			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline \n ".$gBitDb->mDb->databaseType.'://'.$gBitDb->mDb->user.'@'.$gBitDb->mDb->host.'/'.$gBitDb->mDb->database."\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ).vc( $errcontext, FALSE).vc( $_SERVER, FALSE ) );
+			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ).vc( $errcontext, FALSE).vc( $_SERVER, FALSE ) );
 			mail( ERROR_EMAIL, 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr, $messageBody );
 		}
     }
@@ -140,12 +140,18 @@ function bit_error_string( $iDBParms ) {
 	$info .= $indent."-----------------------------------------------------------------------------------------------".$separator;
 	$info .= $indent."#### USER AGENT: ".$_SERVER['HTTP_USER_AGENT'].$separator;
 	$info .= $indent."#### ACCT: ".$acctStr.$separator;
-	$info .= $indent."#### URL: ".$_SERVER['SCRIPT_URI'].(!empty($_SERVER['QUERY_STRING'])?'?'.$_SERVER['QUERY_STRING']:'').$separator;
+	if( !empty( $_SERVER['SCRIPT_URI'] ) ) {
+		$uri = $_SERVER['SCRIPT_URI'].(!empty($_SERVER['QUERY_STRING'])?'?'.$_SERVER['QUERY_STRING']:'').$separator;	
+	} else {
+		$uri = implode( ' ', $argv );
+	}
+	$info .= $indent."#### URL: ".$uri;
 	if( isset($_SERVER['HTTP_REFERER'] ) ) {
 		$info .= $indent."#### REFERRER: $_SERVER[HTTP_REFERER]".$separator;
 	}
 	$info .= $indent."#### HOST: $_SERVER[HTTP_HOST]".$separator;
 	$info .= $indent."#### IP: $_SERVER[REMOTE_ADDR]".$separator;
+	$info .= $indent."#### DB: ".$gBitDb->mDb->databaseType.'://'.$gBitDb->mDb->user.'@'.$gBitDb->mDb->host.'/'.$gBitDb->mDb->database.$separator;
 
 	if( $gBitDb && isset( $php_errormsg ) ) {
 		$info .= $indent."#### PHP: ".$php_errormsg.$separator;

@@ -87,7 +87,7 @@ if( !function_exists( 'file_get_contents' )) {
  * Return system defined temporary directory.
  * In Unix, this is usually /tmp
  * In Windows, this is usually c:\windows\temp or c:\winnt\temp
- * 
+ *
  * @access public
  * @return system defined temporary directory.
  */
@@ -113,8 +113,8 @@ function get_temp_dir() {
 }
 
 /**
- * is_windows 
- * 
+ * is_windows
+ *
  * @access public
  * @return TRUE if we are on windows, FALSE otherwise
  */
@@ -128,7 +128,7 @@ function is_windows() {
 
 /**
  * Recursively create directories
- * 
+ *
  * @param array $pTarget target directory
  * @param float $pPerms octal permissions
  * @access public
@@ -192,7 +192,7 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 /**
  * check to see if particular directories are wroteable by bitweaver
  * added check for Windows - wolff_borg - see http://bugs.php.net/bug.php?id=27609
- * 
+ *
  * @param array $pPath path to file or dir
  * @access public
  * @return TRUE on success, FALSE on failure
@@ -225,7 +225,7 @@ function bw_is_writeable( $pPath ) {
  * clean up an array of values and remove any dangerous html - particularly useful for cleaning up $_GET and $_REQUEST.
  * Turn off urldecode when detoxifying $_GET or $_REQUEST - these two are always urldecoded done by PHP itself (check docs).
  * If you urldecode $_GET twice there might be unexpected consequences (like page One%2BTwo --(PHP)--> One+Two --(you)--> One Two).
- * 
+ *
  * @param array $pParamHash array to be cleaned
  * @param boolean $pHtml set true to escape HTML code as well
  * @param boolean $pUrldecode set true to urldecode as well
@@ -250,9 +250,9 @@ function detoxify( &$pParamHash, $pHtml = FALSE, $pUrldecode = TRUE) {
 }
 
 /**
- * file_name_to_title 
- * 
- * @param string $pFileName 
+ * file_name_to_title
+ *
+ * @param string $pFileName
  * @access public
  * @return clean file name that can be used as title
  */
@@ -271,8 +271,8 @@ function file_name_to_title( $pFileName ) {
 }
 
 /**
- * path_to_url 
- * 
+ * path_to_url
+ *
  * @param string $pPath Relative path starting in the bitweaver root directory
  * @access public
  * @return a valid url based on the given path
@@ -284,7 +284,7 @@ function storage_path_to_url( $pPath ) {
 
 /**
  * simple function to include in deprecated function calls. makes the developer replace with newer code
- * 
+ *
  * @param array $pReplace code that needs replacing
  * @access public
  * @return void
@@ -329,7 +329,7 @@ function function_enabled ( $pName ) {
 /**
  * html encode all characters
  * taken from: http://www.bbsinc.com/iso8859.html
- * 
+ *
  * @param sting $pData string that might contain an email address
  * @access public
  * @return encoded email address
@@ -460,7 +460,7 @@ function get_include_contents($pFile) {
 
 /**
  * Translate a string
- * 
+ *
  * @param string $pString String that needs to be translated
  * @access public
  * @return void
@@ -472,7 +472,7 @@ function tra( $pString ) {
 
 /**
  * recursively remove files and directories
- * 
+ *
  * @param string $pPath directory we want to remove
  * @param boolean $pFollowLinks follow symlinks or not
  * @access public
@@ -496,7 +496,7 @@ function unlink_r( $pPath, $pFollowLinks = FALSE ) {
 
 /**
  * recursively copy the contents of a directory to a new location akin to copy -r
- * 
+ *
  * @param array $pSource source directory
  * @param array $pTarget target directory
  * @access public
@@ -528,7 +528,7 @@ function copy_r( $pSource, $pTarget ) {
 
 /**
  * Fetch the contents of a file on a remote host
- * 
+ *
  * @param string $pUrl url to file to fetch
  * @param boolean $pNoCurl skip the use of curl if this causes problems
  * @access public
@@ -603,7 +603,7 @@ function bit_http_request( $pUrl, $pNoCurl = FALSE ) {
  *
  * this function has a whopper of a RegEx.
  * I nabbed it from http://www.phpbuilder.com/annotate/message.php3?id=1000234 - XOXO spiderr
- * 
+ *
  * @param array $pString XML type string of parameters
  * @access public
  * @return TRUE on success, FALSE on failure
@@ -624,9 +624,9 @@ function parse_xml_attributes( $pString ) {
 
 /**
  * XML Entity Mandatory Escape Characters
- * 
- * @param array $string 
- * @param array $quote_style 
+ *
+ * @param array $string
+ * @param array $quote_style
  * @access public
  * @return TRUE on success, FALSE on failure
  */
@@ -652,7 +652,7 @@ function xmlentities( $string, $quote_style=ENT_QUOTES ) {
  */
 function bit_redirect( $pUrl, $pStatusCode=NULL ) {
 
-	$errors = array( 
+	$errors = array(
 		400 => "HTTP/1.1 400 Bad Request",
 		401 => "HTTP/1.1 401 Unauthorized",
 		402 => "HTTP/1.1 402 Payment Required",
@@ -675,7 +675,7 @@ function bit_redirect( $pUrl, $pStatusCode=NULL ) {
 		501 => "HTTP/1.1 501 Not Implemented",
 		502 => "HTTP/1.1 502 Bad Gateway",
 		503 => "HTTP/1.1 503 Service Unavailable",
-		504 => "HTTP/1.1 504 Gateway Time-out" 
+		504 => "HTTP/1.1 504 Gateway Time-out"
 	);
 
 	// Handle non-3xx codes separately
@@ -708,8 +708,8 @@ function bit_redirect( $pUrl, $pStatusCode=NULL ) {
 }
 
 /**
- * array_diff_keys 
- * 
+ * array_diff_keys
+ *
  * @access public
  */
 function array_diff_keys() {
@@ -732,9 +732,9 @@ function array_diff_keys() {
 }
 
 /**
- * trim_array 
- * 
- * @param array $pArray 
+ * trim_array
+ *
+ * @param array $pArray
  * @access public
  */
 function trim_array( &$pArray ) {
@@ -749,8 +749,8 @@ function trim_array( &$pArray ) {
 
 
 /**
- * ordinalize 
- * 
+ * ordinalize
+ *
  * @param numeric $num Number to append th, st, nd, rd to - only makes sense when languages is english
  * @access public
  */
@@ -775,8 +775,8 @@ function ordinalize( $num ) {
 
 /**
  * Cleans file path according to system we're on
- * 
- * @param array $pPath 
+ *
+ * @param array $pPath
  * @access public
  * @return TRUE on success, FALSE on failure
  */
@@ -815,7 +815,7 @@ function install_error( $pMsg = null ) {
 
 /**
  * pear_check will check to see if a given PEAR module is installed
- * 
+ *
  * @param string $pPearModule The name of the module in the format: Image/GraphViz.php
  * @access public
  * @return string with error message on failure, NULL on success

@@ -18,6 +18,9 @@
 <meta name="keywords" content="{$gContent->generateKeywords()|@implode:','|strip_tags|escape}"/>
 {/if}
 
+<link rel="shortcut icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
+<link rel="icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
+
 {if $gBitSystem->isFeatureActive( 'site_header_extended_nav' )}
 	<link rel="start" title="{$gBitSystem->getConfig('site_title')} {tr}Home{/tr}" href="{$smarty.const.BIT_ROOT_URL}" />
 
@@ -37,7 +40,7 @@
 		<link rel="glossary" title="{tr}Glossary{/tr}" href="{$gBitSystem->getConfig('site_header_glossary')}" />
 	{/if}
 
-	{assign var=headPageUrl value="`$smarty.server.PHP_SELF`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find`"}
+	{assign var=headPageUrl value="`$smarty.server.SCRIPT_NAME`?sort_mode=`$listInfo.sort_mode`&amp;find=`$listInfo.find`"}
 	{if $listInfo.current_page > 1}
 		<link rel="first" title="{tr}First page{/tr}" href="{$headPageUrl}&amp;list_page=1" />
 		<link rel="previous" title="{tr}Previous page{/tr}" href="{$headPageUrl}&amp;list_page={$listInfo.current_page-1}" />

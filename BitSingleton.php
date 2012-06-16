@@ -39,6 +39,9 @@ abstract class BitSingleton extends BitBase {
 		$singleton = static::getSingleInstance();
         if (!isset($singleton)) {
             $singleton = new static;
+			$globalVar = 'g'.get_class( $singleton );
+			global $gBitSmarty;
+			$gBitSmarty->assign_by_ref( $globalVar, $singleton );
         }
         return $singleton;
     }

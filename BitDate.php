@@ -44,7 +44,7 @@ class BitDate {
 	 */
 	function BitDate($_display_offset = 0) {
 		if ( version_compare( phpversion(), "5.1.0", ">=" ) ) {
-			//date_default_timezone_set( 'UTC' );
+			date_default_timezone_set( @date_default_timezone_get() );
 		}
 		$this->display_offset = $_display_offset;
 		$this->server_offset = mktime(0,0,0,1,2,1970) - gmmktime(0,0,0,1,2,1970);

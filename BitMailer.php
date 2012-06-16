@@ -70,7 +70,7 @@ require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
 					$mailer->AddAddress( $to['email'] );
 				}
 				if( !$mailer->Send() ) {
-					bit_log_error( $mailer->ErrorInfo );
+					bit_error_log( $mailer->ErrorInfo );
 				}
 				$mailer->ClearAddresses();
 			}
@@ -119,7 +119,7 @@ require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
 				   XOXO - Nick
 				if( !$mailer->set( $name, $value ) ) {
 					$mailer->$name = $value;
-					bit_log_error( $mailer->ErrorInfo );
+					bit_error_log( $mailer->ErrorInfo );
 				}
 				*/
 				$mailer->AddCustomHeader($name.":".$value);

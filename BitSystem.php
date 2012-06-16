@@ -480,17 +480,7 @@ class BitSystem extends BitSingleton {
 
 		// check to see if we are working with a dynamic center area
 		if( $pMid == 'bitpackage:kernel/dynamic.tpl' ) {
-			// pre-render dynamic center content
-			$dynamicContent = "";
-			if( !empty( $gCenterPieces ) ){
-				foreach ( $gCenterPieces as $centerPiece ){
-					$gBitSmarty->assign( 'moduleParams', $centerPiece );
-					$dynamicContent .= $gBitSmarty->fetch( $centerPiece['module_rsrc'] );
-				}
-			}elseif( $gDefaultCenter ){
-				$dynamicContent = $gBitSmarty->fetch( $gDefaultCenter );
-			}
-			$gBitSmarty->assign( 'dynamicContent', $dynamicContent );
+			$gBitSmarty->assign_by_ref( 'gCenterPieces', $gCenterPieces );
 		}
 
 		$gBitThemes->preLoadStyle();
@@ -732,7 +722,7 @@ class BitSystem extends BitSingleton {
 			}
 			$gBitSmarty->assign( 'fatalTitle', tra( "Permission denied." ) );
 		}
-// bit_log_error( "PERMISSION DENIED: $pPermission $pMsg" );
+// bit_error_log( "PERMISSION DENIED: $pPermission $pMsg" );
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->setHttpStatus( HttpStatusCodes::HTTP_FORBIDDEN );
 		$this->display( "error.tpl" );
@@ -918,7 +908,7 @@ class BitSystem extends BitSingleton {
 		// Define the package we are currently in
 		// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
 		$scriptDir = ( basename( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );
-		if( !defined( 'ACTIVE_PACKAGE' ) && ( $scriptDir == constant( $pkgName.'_PKG_DIR' ) || isset( $_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '!/'.$this->mPackages[$pkgNameKey]['dir'].'/!', $_SERVER['PHP_SELF'] ) || preg_match( '!/'.$pkgNameKey.'/!', $_SERVER['PHP_SELF'] ))) {
+		if( !defined( 'ACTIVE_PACKAGE' ) && ( $scriptDir == constant( $pkgName.'_PKG_DIR' ) || isset( $_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '!/'.$this->mPackages[$pkgNameKey]['dir'].'/!', $_SERVER['SCRIPT_NAME'] ) || preg_match( '!/'.$pkgNameKey.'/!', $_SERVER['SCRIPT_NAME'] ))) {
 			if( isset( $_SERVER['ACTIVE_PACKAGE'] )) {
 				// perhaps the webserver told us the active package (probably because of mod_rewrites)
 				$pkgNameKey = $_SERVER['ACTIVE_PACKAGE'];
@@ -1149,7 +1139,26 @@ class BitSystem extends BitSingleton {
 		global $userlib, $gBitUser, $gBitSystem;
 		$pIndexType = !is_null( $pIndexType )? $pIndexType : $this->getConfig( "bit_index" );
 		$url = '';
-		if( $pIndexType == 'group_home') {
+		if( $pIndexType == 'role_home') {
+			// See if we have first a user assigned default group id, and second a group default system preference
+			if( !$gBitUser->isRegistered() && ( $role_home = $gBitUser->getHomeRole( ANONYMOUS_ROLE_ID ))) {
+			} elseif( @$this->verifyId( $gBitUser->mInfo['default_role_id'] ) && ( $role_home = $gBitUser->getHomeRole( $gBitUser->mInfo['default_role_id'] ))) {
+			} elseif( $this->getConfig( 'default_home_role' ) && ( $role_home = $gBitUser->getHomeRole( $this->getConfig( 'default_home_role' )))) {
+			}
+
+			if( !empty( $role_home )) {
+				if( $this->verifyId( $role_home ) ) {
+					$url = BIT_ROOT_URL."index.php".( !empty( $role_home ) ? "?content_id=".$role_home : "" );
+				// wiki dependence - NO bad idea
+				// } elseif( strpos( $group_home, '/' ) === FALSE ) {
+				// 	$url = BitPage::getDisplayUrl( $group_home );
+				} elseif(  strpos( $role_home, 'http://' ) === FALSE ){
+					$url = BIT_ROOT_URL.$role_home;
+				} else {
+					$url = $role_home;
+				}
+			}
+		} elseif( $pIndexType == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
 			if( !$gBitUser->isRegistered() && ( $group_home = $gBitUser->getGroupHome( ANONYMOUS_GROUP_ID ))) {
 			} elseif( @$this->verifyId( $gBitUser->mInfo['default_group_id'] ) && ( $group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ))) {

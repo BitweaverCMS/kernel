@@ -7,7 +7,7 @@ global $gBitSystem, $gBitUser, $moduleParams;
 
 // if we're on any page in an admin/ dir, we'll simply set this to kernel
 if( $gBitUser->isAdmin() ) {
-	$admin = preg_match( "!/admin/!", $_SERVER['PHP_SELF'] );
+	$admin = preg_match( "!/admin/!", $_SERVER['SCRIPT_NAME'] );
 } else {
 	$admin =  false;
 }

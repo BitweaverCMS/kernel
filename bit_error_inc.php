@@ -82,6 +82,10 @@ register_shutdown_function('bit_shutdown_handler');
 function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	global $gBitSystem;
 
+	if( $pFatal ) {
+		$gBitSystem->setHttpStatus( HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR );
+	}
+
 	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config/kernel/config_inc.php
 	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : (!empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL);
 

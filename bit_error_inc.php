@@ -128,6 +128,7 @@ function bit_error_string( $iDBParms ) {
 	global $gBitDb;
 	global $gBitUser;
 	global $_SERVER;
+	global $argv;
 
 	$separator = "\n";
 	$indent = "  ";
@@ -146,7 +147,7 @@ function bit_error_string( $iDBParms ) {
 	$info .= $indent."#### ACCT: ".$acctStr.$separator;
 	if( !empty( $_SERVER['SCRIPT_URI'] ) ) {
 		$uri = $_SERVER['SCRIPT_URI'].(!empty($_SERVER['QUERY_STRING'])?'?'.$_SERVER['QUERY_STRING']:'').$separator;	
-	} else {
+	} elseif( !empty( $argv ) ) {
 		$uri = implode( ' ', $argv );
 	}
 	$info .= $indent."#### URL: ".$uri;

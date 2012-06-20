@@ -66,7 +66,7 @@ if( defined( 'QUERY_CACHE_ACTIVE' ) ) {
 
 require_once( KERNEL_PKG_PATH.'BitSystem.php' );
 global $gBitSmarty, $gBitSystem;
-$gBitSystem = BitSystem::getSingleton();
+BitSystem::loadSingleton();
 
 // first thing we do, is check to see if our version of bitweaver is up to date.
 // we need to know about this before any other package is loaded to ensure that we can exclude stuff that isn't backwards compatible.

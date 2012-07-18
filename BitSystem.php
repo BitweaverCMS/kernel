@@ -1438,21 +1438,26 @@ class BitSystem extends BitSingleton {
 	function getMimeExtension( $pMimeType ) {
 		$ret = '';
 
-		if( !($ret = array_search( $pMimeType, $this->mMimeTypes )) ) {
-			// not present in mMimeTypes, here are some custom types
-			switch( $pMimeType ) {
-				case 'image/bmp':
-					$ret = 'bmp'; break;
-				case 'image/pipeg':
-					$ret = 'jfif'; break;
-				case 'image/vnd.adobe.photoshop':
-					$ret = 'psd'; break;
-				case 'image/x-cmx':
-					$ret = 'cmx'; break;
-				case 'image/x-jps':
-					$ret = 'jps'; break;
-				case 'image/x-freehand':
-					$ret = 'fh'; break;
+		if( $pMimeType == 'image/jpeg' ) {
+			$ret = 'jpg'; // jpeg has three options, .jpg is the most common
+		} else {
+			$this->loadMimeTypes();
+			if( !($ret = array_search( $pMimeType, $this->mMimeTypes )) ) {
+				// not present in mMimeTypes, here are some custom types
+				switch( $pMimeType ) {
+					case 'image/bmp':
+						$ret = 'bmp'; break;
+					case 'image/pipeg':
+						$ret = 'jfif'; break;
+					case 'image/vnd.adobe.photoshop':
+						$ret = 'psd'; break;
+					case 'image/x-cmx':
+						$ret = 'cmx'; break;
+					case 'image/x-jps':
+						$ret = 'jps'; break;
+					case 'image/x-freehand':
+						$ret = 'fh'; break;
+				}
 			}
 		}
 		return $ret;

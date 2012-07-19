@@ -17,7 +17,6 @@
 /**
  * ensure your AdoDB install is a subdirectory off your include path
  */
-require_once( KERNEL_PKG_PATH.'bit_error_inc.php' );
 
 define( 'BIT_QUERY_DEFAULT', -1 );
 define( 'BIT_MAX_RECORDS', -1 );

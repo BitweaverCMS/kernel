@@ -21,6 +21,7 @@ if(( !empty( $_REQUEST['sort_mode'] ) && !is_array( $_REQUEST['sort_mode'] ) && 
 	die;
 }
 
+require_once( dirname( __FILE__ ).'/bit_error_inc.php' );
 require_once( BIT_ROOT_PATH.'kernel/config_defaults_inc.php' );
 require_once( KERNEL_PKG_PATH.'kernel_lib.php' );
 require_once( KERNEL_PKG_PATH.'BitTimer.php' );

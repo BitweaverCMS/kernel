@@ -292,7 +292,8 @@ abstract class BitBase {
 		}
 		$pListHash['max_records'] = (int)$pListHash['max_records'];
 
-		if( !isset( $pListHash['offset'] )) {
+		if( !isset( $pListHash['offset'] ) || !is_numeric( $pListHash['offset'] ) ) {
+			$pListHash['offset'] = 0;
 			if( isset($pListHash['page'] )) {
 				$pListHash['offset'] = ($pListHash['page'] - 1) * $pListHash['max_records'];
 			} else {
@@ -302,8 +303,6 @@ abstract class BitBase {
 					$pListHash['offset'] = ($_REQUEST['page'] - 1) * $pListHash['max_records'];
 				} elseif( isset( $_REQUEST['list_page'] ) && is_numeric( $_REQUEST['list_page'] ) && $_REQUEST['list_page'] > 0 ) {
 					$pListHash['offset'] = ( $_REQUEST['list_page'] - 1 ) * $pListHash['max_records'];
-				} else {
-					$pListHash['offset'] = 0;
 				}
 			}
 		}
@@ -372,6 +371,11 @@ abstract class BitBase {
 		if( !isset( $pListHash['cant'] ) ) {
 			$pListHash['cant'] = $pListHash['max_records']; 
 		}
+
+		if( !isset( $pListHash['offset'] ) || !is_numeric( $pListHash['offset'] ) ) {
+			$pListHash['offset'] = 0;
+		}
+
 		$pListHash['listInfo']['total_records'] = $pListHash['cant'];
 		$pListHash['listInfo']['total_pages'] = ceil( $pListHash['cant'] / $pListHash['max_records'] );
 		$pListHash['listInfo']['current_page'] = 1 + ( $pListHash['offset'] / $pListHash['max_records'] );

@@ -37,7 +37,11 @@
 						<select name="bit_index" id="bit_index">
 							<option value="my_page"{if $gBitSystem->getConfig('bit_index') eq 'my_page'} selected="selected"{/if}>{tr}My {$gBitSystem->getConfig('site_title')} Page{/tr}</option>
 							<option value="user_home"{if $gBitSystem->getConfig('bit_index') eq 'user_home'} selected="selected"{/if}>{tr}User's homepage{/tr}</option>
-							<option value="group_home"{if $gBitSystem->getConfig('bit_index') eq 'group_home'} selected="selected"{/if}>{tr}Group home{/tr}</option>
+							{if $role_model }
+								<option value="role_home"{if $gBitSystem->getConfig('bit_index') eq 'role_home'} selected="selected"{/if}>{tr}Role home{/tr}</option>
+							{else}
+								<option value="group_home"{if $gBitSystem->getConfig('bit_index') eq 'group_home'} selected="selected"{/if}>{tr}Group home{/tr}</option>
+							{/if}
 							<option value="users_custom_home"{if $gBitSystem->getConfig('bit_index') eq $gBitSystem->getConfig('site_url_index')} selected="selected"{/if}>{tr}Custom home{/tr}</option>
 							{foreach key=name item=package from=$gBitSystem->mPackages}
 								{if $package.homeable && $package.installed}

@@ -25,7 +25,7 @@ if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
 function bit_error_log( $pLogMessage ) {
 	if( !empty( $_SERVER['SCRIPT_URI'] )) {
 		error_log( "OUTPUT in {$_SERVER['SCRIPT_URI']}" );
-	} 
+	}
 
 	$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage ) : $pLogMessage) );
 	foreach ($errlines as $txt) { error_log($txt); }
@@ -145,8 +145,9 @@ function bit_error_string( $iDBParms ) {
 	$info .= $indent."-----------------------------------------------------------------------------------------------".$separator;
 	$info .= $indent."#### USER AGENT: ".$_SERVER['HTTP_USER_AGENT'].$separator;
 	$info .= $indent."#### ACCT: ".$acctStr.$separator;
+	$uri = '';
 	if( !empty( $_SERVER['SCRIPT_URI'] ) ) {
-		$uri = $_SERVER['SCRIPT_URI'].(!empty($_SERVER['QUERY_STRING'])?'?'.$_SERVER['QUERY_STRING']:'').$separator;	
+		$uri = $_SERVER['SCRIPT_URI'].(!empty($_SERVER['QUERY_STRING'])?'?'.$_SERVER['QUERY_STRING']:'').$separator;
 	} elseif( !empty( $argv ) ) {
 		$uri = implode( ' ', $argv );
 	}

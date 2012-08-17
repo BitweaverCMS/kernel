@@ -284,6 +284,7 @@ class BitDbAdodb extends BitDb {
 	 * @return  array of ADOFieldObjects for current table.
 	 */
 	function MetaColumns( $table,$normalize=TRUE, $schema=FALSE ) {
+		$table = str_replace( '`', '', $table );
 		return $this->mDb->MetaColumns( $table, $normalize, $schema );
 	}
 
@@ -298,6 +299,7 @@ class BitDbAdodb extends BitDb {
 	 * @return  array of ADOFieldObjects for current table.
 	 */
 	function MetaIndexes( $table,$primary=FALSE, $owner=FALSE ) {
+		$table = str_replace( '`', '', $table );
 		return $this->mDb->MetaIndexes( $table, $primary, $owner );
 	}
 

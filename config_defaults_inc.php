@@ -82,13 +82,21 @@ if( !defined( 'ROOT_USER_ID' ) ) {
 if( !defined( 'ANONYMOUS_USER_ID' ) ) {
 	define( 'ANONYMOUS_USER_ID', -1 );
 }
-if( !defined( 'ANONYMOUS_GROUP_ID' ) ) {
-	define( 'ANONYMOUS_GROUP_ID', -1 );
+if( !defined( 'ANONYMOUS_TEAM_ID' ) ) {
+	define( 'ANONYMOUS_TEAM_ID', -1 );
 }
 if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
 	define( 'EVIL_EXTENSION_PATTERN', "#\.(htaccess|pl|php|php3|php4|phtml|py|cgi|asp|jsp|sh|shtml)$#i" );
 }
 
+/* Uncomment to switch to role team model ...
+if( !defined( 'ROLE_MODEL' )) {
+	define( 'ROLE_MODEL', true );
+}*/
+
+// Uncomment the following line if you require attachment and file id's to match the content id
+// This is used to simplify content mamagment where fisheye and treasury content is used internally
+//define( 'LINKED_ATTACHMENTS', true );
 // Empty SCRIPT_NAME and incorrect SCRIPT_NAME due to php-cgiwrap - wolff_borg
 if( empty( $_SERVER['SCRIPT_NAME'] ) ) {
 	$_SERVER['SCRIPT_NAME'] = $_SERVER['SCRIPT_URL'];

@@ -406,7 +406,7 @@ class BitSystem extends BitSingleton {
 		$gBitSmarty->verifyCompileDir();
 
 		// see if we have a custom status other than 200 OK
-		header( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
+		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
 		if( $this->mHttpStatus != 200 ) {
 //			error_log( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus )." http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
 		}

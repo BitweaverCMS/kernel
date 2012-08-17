@@ -1141,7 +1141,7 @@ class BitSystem extends BitSingleton {
 		$url = '';
 		if( $pIndexType == 'role_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
-			if( !$gBitUser->isRegistered() && ( $role_home = $gBitUser->getHomeRole( ANONYMOUS_TEAM_ID ))) {
+			if( !$gBitUser->isRegistered() && ( $role_home = $gBitUser->getHomeRole( ANONYMOUS_GROUP_ID ))) {
 			} elseif( @$this->verifyId( $gBitUser->mInfo['default_role_id'] ) && ( $role_home = $gBitUser->getHomeRole( $gBitUser->mInfo['default_role_id'] ))) {
 			} elseif( $this->getConfig( 'default_home_role' ) && ( $role_home = $gBitUser->getHomeRole( $this->getConfig( 'default_home_role' )))) {
 			}
@@ -1160,7 +1160,7 @@ class BitSystem extends BitSingleton {
 			}
 		} elseif( $pIndexType == 'group_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
-			if( !$gBitUser->isRegistered() && ( $group_home = $gBitUser->getGroupHome( ANONYMOUS_TEAM_ID ))) {
+			if( !$gBitUser->isRegistered() && ( $group_home = $gBitUser->getGroupHome( ANONYMOUS_GROUP_ID ))) {
 			} elseif( @$this->verifyId( $gBitUser->mInfo['default_group_id'] ) && ( $group_home = $gBitUser->getGroupHome( $gBitUser->mInfo['default_group_id'] ))) {
 			} elseif( $this->getConfig( 'default_home_group' ) && ( $group_home = $gBitUser->getGroupHome( $this->getConfig( 'default_home_group' )))) {
 			}

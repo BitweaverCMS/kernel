@@ -84,7 +84,7 @@ function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	global $gBitSystem;
 
 	if( $pFatal ) {
-		$gBitSystem->setHttpStatus( HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR );
+		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR ) );
 	}
 
 	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config/kernel/config_inc.php

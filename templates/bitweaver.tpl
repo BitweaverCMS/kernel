@@ -14,6 +14,7 @@
 			}1{
 		/if
 	}">
+		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='container' serviceHash=$gContent->mInfo}
 
 		<div id="header">
 			{if $gBitSystem->isFeatureActive( 'site_top_column' ) && $t_modules && !$gHideModules}

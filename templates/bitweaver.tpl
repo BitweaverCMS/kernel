@@ -25,6 +25,7 @@
 		</div><!-- end #header -->{* needed by output filters. *}
 
 		<div id="wrapper">
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
 			<div id="content">
 				{include file="bitpackage:liberty/display_structure.tpl"}
 				{if $pageError}<div class="error">{$pageError}</div>{/if}

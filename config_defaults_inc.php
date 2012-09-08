@@ -92,6 +92,7 @@ if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
 /* Uncomment to switch to role team model ...
 if( !defined( 'ROLE_MODEL' )) {
 	define( 'ROLE_MODEL', true );
+	define( 'ANONYMOUS_TEAM_ID', -1 );
 }*/
 
 // Uncomment the following line if you require attachment and file id's to match the content id
@@ -174,10 +175,10 @@ define( 'LANGUAGES_PKG_PATH', BIT_ROOT_PATH.'languages/' );
 define( 'LIBERTY_PKG_DIR',    'liberty' );
 define( 'LIBERTY_PKG_NAME',   'liberty' );
 define( 'LIBERTY_PKG_PATH',   BIT_ROOT_PATH.'liberty/' );
-if( !defined( 'STORAGE_PKG_NAME' ) ) { 
+if( !defined( 'STORAGE_PKG_NAME' ) ) {
 	define( 'STORAGE_PKG_NAME',   'storage' );
 }
-if( !defined( 'STORAGE_PKG_PATH' ) ) { 
+if( !defined( 'STORAGE_PKG_PATH' ) ) {
 	define( 'STORAGE_PKG_PATH',   BIT_ROOT_PATH.'storage/' );
 }
 define( 'THEMES_PKG_PATH',    BIT_ROOT_PATH.'themes/' );

@@ -297,7 +297,7 @@ abstract class BitBase {
 			if( isset($pListHash['page'] )) {
 				$pListHash['offset'] = ($pListHash['page'] - 1) * $pListHash['max_records'];
 			} else {
-				if( isset( $_REQUEST["offset"] )) {
+				if( !empty( $_REQUEST["offset"] )) {
 					$pListHash['offset'] = $_REQUEST['offset'];
 				} elseif( isset( $_REQUEST['page'] ) && is_numeric( $_REQUEST['page'] ) && $_REQUEST['page'] > 0 ) {
 					$pListHash['offset'] = ($_REQUEST['page'] - 1) * $pListHash['max_records'];

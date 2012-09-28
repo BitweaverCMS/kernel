@@ -258,7 +258,7 @@ abstract class BitBase {
 	 * @param pParamHash hash of parameters for any getList() function
 	 * @return the link to display the page.
 	 */
-	function prepGetList( &$pListHash ) {
+	public static function prepGetList( &$pListHash ) {
 		global $gBitSmarty, $gBitSystem;
 
 		// if sort_mode is not set then use last_modified_desc

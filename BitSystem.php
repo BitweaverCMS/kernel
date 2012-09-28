@@ -1141,7 +1141,7 @@ class BitSystem extends BitSingleton {
 		$url = '';
 		if( $pIndexType == 'role_home') {
 			// See if we have first a user assigned default group id, and second a group default system preference
-			if( !$gBitUser->isRegistered() && ( $role_home = $gBitUser->getHomeRole( ANONYMOUS_GROUP_ID ))) {
+			if( !$gBitUser->isRegistered() && ( $role_home = $gBitUser->getHomeRole( ANONYMOUS_TEAM_ID ))) {
 			} elseif( @$this->verifyId( $gBitUser->mInfo['default_role_id'] ) && ( $role_home = $gBitUser->getHomeRole( $gBitUser->mInfo['default_role_id'] ))) {
 			} elseif( $this->getConfig( 'default_home_role' ) && ( $role_home = $gBitUser->getHomeRole( $this->getConfig( 'default_home_role' )))) {
 			}
@@ -2281,7 +2281,8 @@ class BitSystem extends BitSingleton {
 								$ret['missing'][$package][] = $table;
 								// This is a crude but highly effective means of blurting out a very bad situation when an installed package is missing a table
 								if( !$this->isLive() && $this->isPackageActive( $package ) ) {
-								 	vd( "Table Missing => $package : $table" );
+// This needs hiding during install so disabled for now
+//								 	vd( "Table Missing => $package : $table" );
 								}
 							}
 

@@ -63,6 +63,8 @@ if( !defined( 'BIT_QUERY_CACHE_TIME' ) ) {
 // default theme after installation
 if( !defined( 'DEFAULT_THEME' ) ) {
 	define( 'DEFAULT_THEME', 'basic' );
+// needs to be managed better when installing
+	define( 'SITE_NAME', 'basic' );
 }
 if( !defined( 'DISPLAY_ERRORS' ) ) {
 	define( 'DISPLAY_ERRORS', 0 );
@@ -92,8 +94,10 @@ if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
 /* Uncomment to switch to role team model ...
 if( !defined( 'ROLE_MODEL' )) {
 	define( 'ROLE_MODEL', true );
+} */
+if( !defined( 'ANONYMOUS_TEAM_ID' ) ) {
 	define( 'ANONYMOUS_TEAM_ID', -1 );
-}*/
+}
 
 // Uncomment the following line if you require attachment and file id's to match the content id
 // This is used to simplify content mamagment where fisheye and treasury content is used internally

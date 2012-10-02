@@ -73,7 +73,7 @@ if( !defined( 'BIT_SESSION_NAME' ) ) {
 }
 // define where errors are sent
 if( !defined( 'BIT_PHP_ERROR_REPORTING' ) ) {
-	define( 'BIT_PHP_ERROR_REPORTING', E_ALL );
+	define( 'BIT_PHP_ERROR_REPORTING', E_ALL & ~E_DEPRECATED & ~E_STRICT );
 }
 // don't change / set _IDs unless you know exactly what you are doing
 if( !defined( 'ROOT_USER_ID' ) ) {

@@ -57,7 +57,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
         // Send an e-mail to the administrator
 		if( $errType && defined( 'ERROR_EMAIL' ) ) {
 			global $gBitDb;
-			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ).vc( $errcontext, FALSE).vc( $_SERVER, FALSE ) );
+			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) ).vc( $errcontext, FALSE).vc( $_SERVER, FALSE );
 			mail( ERROR_EMAIL, 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr, $messageBody );
 		}
     }
@@ -171,9 +171,10 @@ function bit_error_string( $iDBParms ) {
 		}
 	}
 
-	$errno = ((int)$iDBParms['errno'] ? 'Errno: '.$iDBParms['errno'] : '');
-
-	$info .= $indent."#### ERROR CODE: ".$errno."  Message: ".$iDBParms['db_msg'];
+	$errno = (!empty( $iDBParms['errno'] ) ? 'Errno: '.$iDBParms['errno'] : '');
+	if( !empty( $iDBParms['db_msg'] ) ) {
+		$info .= $indent."#### ERROR CODE: ".$errno."  Message: ".$iDBParms['db_msg'];
+	}
 
 	$stackTrace = bt( 9999, FALSE );
 

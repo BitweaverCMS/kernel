@@ -273,13 +273,13 @@ abstract class BitBase {
 		// valid_sort_modes are set, we check them against our selected sort_mode
 		if( !empty( $pListHash['sort_mode'] ) && !empty( $pListHash['valid_sort_modes'] ) && is_array( $pListHash['valid_sort_modes'] )) {
 			if( is_string( $pListHash['sort_mode'] )) {
-				if( !$this->verifySortMode( $pListHash['sort_mode'], $pListHash['valid_sort_modes'] )) {
+				if( !static::verifySortMode( $pListHash['sort_mode'], $pListHash['valid_sort_modes'] )) {
 					$pListHash['sort_mode'] = '';
 				}
 			} elseif( is_array( $pListHash['sort_mode'] )) {
 				// make sure all values of the sort_mode array match something in the valid valid_sort_modes hash
 				foreach( $pListHash['sort_mode'] as $key => $mode ) {
-					if( !$this->verifySortMode( $mode, $pListHash['valid_sort_modes'] )) {
+					if( !static::verifySortMode( $mode, $pListHash['valid_sort_modes'] )) {
 						unset( $pListHash['sort_mode'][$key] );
 					}
 				}

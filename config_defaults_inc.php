@@ -63,8 +63,6 @@ if( !defined( 'BIT_QUERY_CACHE_TIME' ) ) {
 // default theme after installation
 if( !defined( 'DEFAULT_THEME' ) ) {
 	define( 'DEFAULT_THEME', 'basic' );
-// needs to be managed better when installing
-	define( 'SITE_NAME', 'basic' );
 }
 if( !defined( 'DISPLAY_ERRORS' ) ) {
 	define( 'DISPLAY_ERRORS', 0 );

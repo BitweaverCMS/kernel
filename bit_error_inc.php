@@ -57,7 +57,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
         // Send an e-mail to the administrator
 		if( $errType && defined( 'ERROR_EMAIL' ) ) {
 			global $gBitDb;
-			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) ).vc( $errcontext, FALSE).vc( $_SERVER, FALSE );
+			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) ).vc( $_SERVER, FALSE );
 			mail( ERROR_EMAIL, 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr, $messageBody );
 		}
     }
@@ -183,7 +183,7 @@ function bit_error_string( $iDBParms ) {
 		$stackTrace = $match[1][0];
 	}
 
-	$globals = array(
+	$globalVars = array(
 		'$_POST'   => $_POST,
 		'$_GET'    => $_GET,
 		'$_FILES'  => $_FILES,
@@ -191,7 +191,7 @@ function bit_error_string( $iDBParms ) {
 	);
 
 	$parameters = '';
-	foreach( $globals as $global => $hash ) {
+	foreach( $globalVars as $global => $hash ) {
 		if( !empty( $hash )) {
 			$parameters .= $separator.$separator.$global.': '.$separator.var_export( $hash, TRUE );
 		}

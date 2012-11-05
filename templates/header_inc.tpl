@@ -71,13 +71,6 @@
 	var bitTk = "{$gBitUser->mTicket}";
 /* ]]> */</script>
 
-{if $gBitThemes->mStyles.joined_javascript}
-	<script type="text/javascript" src="{$gBitThemes->mStyles.joined_javascript}"></script>
-{/if}
-{foreach from=$gBitThemes->mRawFiles.js item=jsFile}
-	<script type="text/javascript" src="{$jsFile}"></script>
-{/foreach}
-
 {if $gBitSystem->isFeatureActive( 'site_use_jscalendar' )}
 	<link rel="stylesheet" title="{$style}" type="text/css" href="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar-system.css" media="all" />
 	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar.js"></script>

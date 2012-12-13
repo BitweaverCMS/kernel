@@ -95,7 +95,7 @@ class BitDb {
 	function BitDb() {
 		global $gDebug;
 		$this->mDebug = $gDebug;
-		$this->mCacheFlag = FALSE;
+		$this->mCacheFlag = TRUE;
 		$this->mNumQueries = 0;
 		$this->mQueryTime = 0;
 		$this->setFatalActive();

@@ -1162,7 +1162,7 @@ class BitDate {
 			default:
 				// First off, the simple ones
 				$return[$pYear . '-01-01'] = 'New Year`s Day';
-				$return[$pYear . '-02-14'] = 'Valentine`s Day';
+				//$return[$pYear . '-02-14'] = 'Valentine`s Day';
 				$return[$pYear . '-06-14'] = 'Flag Day';
 				$return[$pYear . '-07-04'] = 'Independence Day';
 				$return[$pYear . '-11-11'] = 'Veteran`s Day';
@@ -1175,7 +1175,7 @@ class BitDate {
 				$return[date( 'Y-m-d', strtotime( '2 weeks monday', strtotime( "February 1, $pYear" ) ) + 43200 )] = 'Presidents` Day';
 
 				// Mardi Gras - Tuesday ~47 days before Easter
-				$return[date( 'Y-m-d', strtotime( 'last tuesday 46 days ago', easter_date( $pYear ) ) + 43200 )] = 'Mardi Gras';
+				//$return[date( 'Y-m-d', strtotime( 'last tuesday 46 days ago', easter_date( $pYear ) ) + 43200 )] = 'Mardi Gras';
 
 				// Memorial Day - last Monday in May
 				$return[date( 'Y-m-d', strtotime( '-1 week monday', strtotime( "June 1, $pYear" ) ) + 43200 )] = 'Memorial Day';

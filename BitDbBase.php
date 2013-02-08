@@ -677,6 +677,28 @@ class BitDb {
 		return $ret;
 	}
 
+	public static function getPeriodFormat( $pPeriod ) {
+		switch( $pPeriod ) {
+			case 'year':
+				$format = 'Y';
+				break;
+			case 'quarter':
+				$format = 'Y-\QQ';
+				break;
+			case 'day':
+				$format = 'Y-m-d';
+				break;
+			case 'week':
+				$format = 'Y \Week W';
+				break;
+			case 'month':
+			default:
+				$format = 'Y-m';
+				break;
+		}
+		return $format;
+	}
+
 	/** Return the sql to lock selected rows for updating.
 	* ADODB has no native support for this, see http://phplens.com/lens/lensforum/msgs.php?id=13661&x=1
 	* @param pColumn name of an integer, or long integer column

@@ -1274,6 +1274,7 @@ class BitSystem extends BitSingleton {
 		global $gPageTitle;
 		return( $gPageTitle );
 	}
+
 	// === setBrowserTitle
 	/**
 	 * set the title of the browser
@@ -1287,6 +1288,19 @@ class BitSystem extends BitSingleton {
 		$gPageTitle = $pTitle;
 		$gBitSmarty->assign( 'browserTitle', $pTitle );
 		$gBitSmarty->assign( 'gPageTitle', $pTitle );
+	}
+
+	// === setCanonicalLink
+	/**
+	 * set the canonical page title
+	 *
+	 * @param string $ pTitle title to be used
+	 * @return none
+	 * @access public
+	 */
+	function setCanonicalLink( $pLink ) {
+		global $gBitSmarty;
+		$gBitSmarty->assign( 'canonicalLink', $pLink );
 	}
 
 	/*static*/

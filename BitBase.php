@@ -261,15 +261,6 @@ abstract class BitBase {
 	public static function prepGetList( &$pListHash ) {
 		global $gBitSmarty, $gBitSystem;
 
-		// if sort_mode is not set then use last_modified_desc
-		if( empty( $pListHash['sort_mode'] )) {
-			if( empty( $_REQUEST["sort_mode"] )) {
-				$pListHash['sort_mode'] = 'last_modified_desc';
-			} else {
-				$pListHash['sort_mode'] = $_REQUEST['sort_mode'];
-			}
-		}
-
 		// valid_sort_modes are set, we check them against our selected sort_mode
 		if( !empty( $pListHash['sort_mode'] ) && !empty( $pListHash['valid_sort_modes'] ) && is_array( $pListHash['valid_sort_modes'] )) {
 			if( is_string( $pListHash['sort_mode'] )) {

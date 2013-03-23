@@ -376,10 +376,12 @@ class BitSystem extends BitSingleton {
 			$extraHeaders = "Reply-to: ".$pMailHash['Reply-to']."\r\n";
 		}
 
+		$fromEmail = !empty( $pMailHash['from'] ) ? $pMailHash['from'] : $this->getConfig( 'site_sender_email' );
+
 		mail($pMailHash['email'],
 			$pMailHash['subject'].' '.$_SERVER["SERVER_NAME"],
 			$pMailHash['body'],
-			"From: ".$this->getConfig( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
+			"From: ".$fromEmail."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
 		);
 	}
 

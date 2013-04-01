@@ -6,7 +6,7 @@
 	{jstabs}
 		{jstab title="Server Settings"}
 			{legend legend="Page Setup"}
-				<div class="row">
+				<div class="control-group">
 					{formfeedback warning="After changing the browser title, you might have to login again."}
 					{formlabel label="Site title" for="site_title"}
 					{forminput}
@@ -15,7 +15,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Site slogan" for="site_slogan"}
 					{forminput}
 						<input size="50" type="text" name="site_slogan" id="site_slogan" value="{$gBitSystem->getConfig('site_slogan')|escape}" />
@@ -23,7 +23,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Site Description" for="site_description"}
 					{forminput}
 						<input size="50" type="text" name="site_description" id="site_description" maxlength="180" value="{$gBitSystem->getConfig('site_description')|escape}" />
@@ -31,7 +31,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Site Keywords" for="site_keywords"}
 					{forminput}
 						<textarea cols="50" rows="5" name="site_keywords" id="site_keywords">{$gBitSystem->getConfig('site_keywords')|escape}</textarea>
@@ -39,7 +39,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Site Notice" for="site_notice"}
 					{forminput}
 						<input size="50" type="text" name="site_notice" id="site_notice" maxlength="180" value="{$gBitSystem->getConfig('site_notice')|escape}" />
@@ -47,7 +47,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Default Error Message" for="site_error_title"}
 					{forminput}
 						<input size="50" type="text" name="site_error_title" id="site_error_title" maxlength="180" value="{$gBitSystem->getConfig('site_error_title')|escape}" />
@@ -55,7 +55,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row submit">
+				<div class="control-group submit">
 					<input type="submit" name="serverTabSubmit" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
@@ -63,7 +63,7 @@
 
 		{jstab title="Miscellaneous"}
 			{legend legend="Server Settings"}
-				<div class="row">
+				<div class="control-group">
 					{formfeedback warning="Please make sure you know what you are doing as setting this wrongly could prevent you from logging in again."}
 					{formlabel label="Server name" for="kernel_server_name"}
 					{forminput}
@@ -72,7 +72,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{if !$gBitSystem->hasValidSenderEmail()}
 						{formfeedback error="Site emailer return address is not valid!"}
 					{/if}
@@ -84,7 +84,7 @@
 				</div>
 
 {* defaults to STORAGE_PKG_NAME now
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Centralized user upload directory" for="site_upload_dir"}
 					{forminput}
 						<input size="50" type="text" name="site_upload_dir" id="site_upload_dir" value="{$gBitSystem->getConfig('site_upload_dir',$smarty.const.STORAGE_PKG_URL)|escape}" />
@@ -92,7 +92,7 @@
 				</div>
 *}
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Temporary directory" for="site_temp_dir"}
 					{forminput}
 						<input size="50" type="text" name="site_temp_dir" id="site_temp_dir" value="{$gBitSystem->getConfig('site_temp_dir',$smarty.const.TEMP_PKG_PATH)|escape}" />
@@ -100,7 +100,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Storage Host URI" for="storage_host"}
 					{forminput}
 						<input size="50" type="text" name="storage_host" id="storage_host" value="{$gBitSystem->getConfig('storage_host')|escape}" />
@@ -108,7 +108,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formfeedback warning="After changing this setting you might have to log in again."}
 					{formlabel label="Store session data in database" for="site_store_session_db"}
 					{forminput}
@@ -116,7 +116,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Session lifetime in seconds" for="site_session_lifetime"}
 					{forminput}
 						<input size="5" type="text" name="site_session_lifetime" id="site_session_lifetime" value="{$gBitSystem->getConfig('site_session_lifetime')}" /> {tr}seconds{/tr}
@@ -124,7 +124,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row submit">
+				<div class="control-group submit">
 					<input type="submit" name="serverTabSubmit" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
@@ -132,7 +132,7 @@
 
 		{jstab title="Site Access"}
 			{legend legend="Site Access"}
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Disallow access to the site" for="site_closed"}
 					{forminput}
 						{html_checkboxes name="site_closed" values="y" checked=$gBitSystem->getConfig('site_closed') labels=false id="site_closed"}
@@ -140,14 +140,14 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Message to display when site is closed" for="site_closed_msg"}
 					{forminput}
 						<input type="text" name="site_closed_msg" id="site_closed_msg" value="{$gBitSystem->getConfig('site_closed_msg')|escape}" size="50" />
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Disallow access when load is above the threshold" for="site_load_threshold"}
 					{forminput}
 						{html_checkboxes name="site_load_threshold" values="y" checked=$BitSystemPrefs.site_load_threshold labels=false id="site_load_threshold"}
@@ -155,21 +155,21 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Max average server load threshold in the last minute" for="site_load_threshold"}
 					{forminput}
 						<input type="text" name="site_load_threshold" id="site_load_threshold" value="{$gBitSystem->getConfig('site_load_threshold')}" size="5" />
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Message to display when server is too busy" for="site_busy_msg"}
 					{forminput}
 						<input type="text" name="site_busy_msg" id="site_busy_msg" value="{$gBitSystem->getConfig('site_busy_msg')}" size="50" />
 					{/forminput}
 				</div>
 
-				<div class="row submit">
+				<div class="control-group submit">
 					<input type="submit" name="siteTabSubmit" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
@@ -177,28 +177,28 @@
 
 		{jstab title="Proxy"}
 			{legend legend="Proxy Settings"}
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Use proxy" for="site_use_proxy"}
 					{forminput}
 						{html_checkboxes name="site_use_proxy" values="y" checked=$gBitSystem->getConfig('site_use_proxy') labels=false id="site_use_proxy"}
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Proxy Host" for="site_proxy_host"}
 					{forminput}
 						<input type="text" name="site_proxy_host" id="site_proxy_host" value="{$gBitSystem->getConfig('site_proxy_host')|escape}" size="50" />
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Proxy port" for="site_proxy_port"}
 					{forminput}
 						<input type="text" name="site_proxy_port" id="site_proxy_port" value="{$gBitSystem->getConfig('site_proxy_port')|escape}" size="50" />
 					{/forminput}
 				</div>
 
-				<div class="row submit">
+				<div class="control-group submit">
 					<input type="submit" name="proxyTabSubmit" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}

@@ -20,7 +20,7 @@ function reloadImage() {
 	</span>
 	<br />
 {else}
-	<div class="row" {if $params.id}id="{$params.id}"{/if} {if $params.style}style="{$params.style}"{/if}>
+	<div class="control-group" {if $params.id}id="{$params.id}"{/if} {if $params.style}style="{$params.style}"{/if}>
 		{formlabel label="Verification Code" for="captcha"}
 		{forminput}
 			<img id='captcha_img' onclick="this.blur();reloadImage();return false;" src="{$params.source}" alt="{tr}Random Image{/tr}"/>

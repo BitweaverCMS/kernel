@@ -1,6 +1,5 @@
 {strip}
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$bitlanguage|default:'en'}" lang="{$bitlanguage|default:'en'}" {$htmlTagAttributes} {if $gBitLanguage->isLanguageRTL()}dir="rtl"{/if}>
 
 {if $gBitThemes->mDisplayMode}
@@ -18,6 +17,10 @@
 
 <head>
 	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
+
+	{if file_exists("`$smarty.const.CONFIG_THEME_PATH`header_theme_inc.tpl")}
+		{include file="`$smarty.const.CONFIG_THEME_PATH`header_theme_inc.tpl"}
+	{/if}
 
 	{* get custom header files from individual packages *}
 	{foreach from=$gBitThemes->mAuxFiles.templates.header_inc item=file}

@@ -7,7 +7,7 @@
 				{foreach from=$hiddenFields item=value key=name}
 					<input type="hidden" name="{$name}" value="{$value}" />
 				{/foreach}
-				<div class="row">
+				<div class="control-group">
 					<h1>{$msgFields.label}</h1>
 					<p class="highlight aligncenter">{$msgFields.confirm_item}</p>
 					{if $inputFields}
@@ -22,7 +22,7 @@
 					{formfeedback error=$msgFields.error}
 				</div>
 
-				<div class="row submit">
+				<div class="control-group submit">
 					<input type="button" name="cancel" {$backJavascript} value="{tr}Cancel{/tr}" /> &nbsp;
 					<input type="submit" name="confirm" value="{tr}Yes{/tr}" />
 				</div>

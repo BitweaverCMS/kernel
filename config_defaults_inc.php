@@ -85,6 +85,9 @@ if( !defined( 'ANONYMOUS_USER_ID' ) ) {
 if( !defined( 'ANONYMOUS_GROUP_ID' ) ) {
 	define( 'ANONYMOUS_GROUP_ID', -1 );
 }
+if( !defined( 'ANONYMOUS_TEAM_ID' ) ) {
+	define( 'ANONYMOUS_TEAM_ID', -1 );
+}
 if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
 	define( 'EVIL_EXTENSION_PATTERN', "#\.(htaccess|pl|php|php3|php4|phtml|py|cgi|asp|jsp|sh|shtml)$#i" );
 }

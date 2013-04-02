@@ -16,7 +16,7 @@
 					</div>
 				{else}
 					<div class="{cycle values="even,odd"}" style="margin-left:{$finfo.indent}px;">
-						{biticon iname=dialog-warning iexplain="Empty"} [{tr}empty{/tr}]
+						{booticon iname="icon-warning-sign"   iexplain="Empty"} [{tr}empty{/tr}]
 					</div>
 				{/if}
 			{/foreach}

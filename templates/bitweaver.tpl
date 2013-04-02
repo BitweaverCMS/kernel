@@ -34,13 +34,13 @@
 		</div><!-- end #wrapper -->
 
 		{if $gBitSystem->isFeatureActive( 'site_left_column' ) && $l_modules && !$gHideModules}
-			<nav id="navigation" class="span{$extraColumns*3}">
+			<nav id="navigation" class="span3">
 				{include file="bitpackage:kernel/bit_left.tpl"}
 			</nav><!-- end #navigation -->{* needed by output filters. *}
 		{/if}
 
 		{if $gBitSystem->isFeatureActive( 'site_right_column' ) && $r_modules && !$gHideModules}
-			<nav id="extra" class="span{$extraColumns*3}">
+			<nav id="extra" class="span3">
 				{include file="bitpackage:kernel/bit_right.tpl"}
 			</nav><!-- end #extra -->{* needed by output filters. *}
 		{/if}

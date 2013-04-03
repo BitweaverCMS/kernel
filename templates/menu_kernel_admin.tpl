@@ -1,5 +1,5 @@
 {strip}
-<ul>
+<ul class="dropdown-menu sub-menu">
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=features">{tr}Kernel Settings{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=packages">{tr}Packages{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=server">{tr}Server Settings{/tr}</a></li>

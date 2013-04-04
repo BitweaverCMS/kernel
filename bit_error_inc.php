@@ -243,12 +243,12 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 					}
 				}
 			}
-			$s .= "\n    ".$indent;
-			$s .= @sprintf(" LINE: %4d, %s", $arr['line'],$arr['file']);
 			if( !preg_match( "*include*", $arr['function'] ) && !preg_match( "*silentlog*", strtolower( $arr['function'] ) ) ) {
 				$s .= "\n    ".$indent.'    -> ';
 				$s .= $sClass.$arr['function'].'('.implode(', ',$args).')';
 			}
+			$s .= "\n    ".$indent;
+			$s .= @sprintf(" LINE: %4d, %s", $arr['line'],$arr['file']);
 			$indent = '';
 		}
 		$s .= "\n";

@@ -21,11 +21,11 @@
 		{/if}
 	</header>
 
-	<section class="row maincontent">
-		<div class="container">
+	<section class="container maincontent">
+		<div class="row">
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='container' serviceHash=$gContent->mInfo}
 
-			<div id="wrapper" class="container span{math equation="12-x*3" x=$extraColumns}">
+			<div id="wrapper" class="span{math equation="12-x*3" x=$extraColumns}">
 				{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
 				<div id="content">
 					{include file="bitpackage:liberty/display_structure.tpl"}

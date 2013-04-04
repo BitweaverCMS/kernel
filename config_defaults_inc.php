@@ -156,8 +156,8 @@ if( substr_count( $_SERVER['HTTP_HOST'], '.' ) >= 2 ) {
 // set the currect version of bitweaver
 // if this version of bitweaver needs a visit to the installer, update the number in /bit_setup_inc.php
 if( !defined( 'BIT_MAJOR_VERSION' ) ) {
-	define( 'BIT_MAJOR_VERSION',	'3' );
-	define( 'BIT_MINOR_VERSION',	'1' );
+	define( 'BIT_MAJOR_VERSION',	'4' );
+	define( 'BIT_MINOR_VERSION',	'0' );
 	define( 'BIT_SUB_VERSION',		'0' );
 	define( 'BIT_LEVEL',			'alpha' ); // dev < alpha < beta < RC# < '' < pl
 }

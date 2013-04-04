@@ -35,7 +35,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" name="add" value="{tr}Add{/tr}" />
+				<input type="submit" class="btn" name="add" value="{tr}Add{/tr}" />
 			</div>
 		{/form}
 

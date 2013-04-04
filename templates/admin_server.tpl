@@ -56,7 +56,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" name="serverTabSubmit" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn" name="serverTabSubmit" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/jstab}
@@ -125,7 +125,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" name="serverTabSubmit" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn" name="serverTabSubmit" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/jstab}
@@ -170,7 +170,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" name="siteTabSubmit" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn" name="siteTabSubmit" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/jstab}
@@ -199,7 +199,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="submit" name="proxyTabSubmit" value="{tr}Change preferences{/tr}" />
+					<input type="submit" class="btn" name="proxyTabSubmit" value="{tr}Change preferences{/tr}" />
 				</div>
 			{/legend}
 		{/jstab}

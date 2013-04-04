@@ -24,7 +24,7 @@
 
 				<div class="control-group submit">
 					<input type="button" name="cancel" {$backJavascript} value="{tr}Cancel{/tr}" /> &nbsp;
-					<input type="submit" name="confirm" value="{tr}Yes{/tr}" />
+					<input type="submit" class="btn" name="confirm" value="{tr}Yes{/tr}" />
 				</div>
 			{/box}
 		{/form}

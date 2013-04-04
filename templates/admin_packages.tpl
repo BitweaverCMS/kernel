@@ -126,7 +126,7 @@
 			{/legend}
 
 			<div class="control-group submit">
-				<input type="submit" name="features" value="{tr}Modify Activation{/tr}"/>
+				<input type="submit" class="btn" name="features" value="{tr}Modify Activation{/tr}"/>
 			</div>
 		{/jstab}
 

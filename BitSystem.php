@@ -462,7 +462,7 @@ class BitSystem extends BitSingleton {
 		//		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
 		// Make sure that the gBitSystem symbol available to templates is correct and up-to-date.
 		$gBitSmarty->assign_by_ref('gBitSystem', $this);
-		$gBitSmarty->display( 'bitpackage:kernel/bitweaver.tpl' );
+		$gBitSmarty->display( 'bitpackage:kernel/html.tpl' );
 		$this->postDisplay( $pMid );
 	}
 

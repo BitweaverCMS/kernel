@@ -29,7 +29,7 @@
 								<label>
 									<strong>{$name|capitalize}</strong>
 								</label>
-								{formhelp note=`$package.info`}
+								{formhelp note=$package.info}
 							{/forminput}
 						</div>
 					{/foreach}
@@ -74,7 +74,7 @@
 										{/if}
 									{/foreach}
 								</label>
-								{formhelp note=`$package.info` package=$name}
+								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
 					{/if}
@@ -118,7 +118,7 @@
 									<br />
 									{tr}Service Type{/tr}: <strong>{$package.service|capitalize|replace:"_":" "}</strong>
 								</label>
-								{formhelp note=`$package.info` package=$name}
+								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
 					{/if}
@@ -141,7 +141,7 @@
 							</div>
 							{forminput}
 								<strong>{$name|capitalize}</strong>
-								{formhelp note=`$package.info` package=$name}
+								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
 					{/if}
@@ -158,7 +158,7 @@
 								<label>
 									<strong>{$name|capitalize}</strong>
 								</label>
-								{formhelp note=`$package.info` package=$name}
+								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
 					{/if}
@@ -278,7 +278,7 @@
 							</div>
 							{forminput}
 								{$name|capitalize}
-								{formhelp note=`$package.info` package=$name}
+								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
 					{/if}

@@ -43,7 +43,7 @@ if( !empty( $_GET ) && is_array( $_GET ) && empty( $gNoToxify ) ) {
 }
 
 // Force a global ADODB db object so all classes share the same connection
-switch( @$gBitDbSystem ) {
+switch( $gBitDbSystem ) {
 	case 'pear':
 		$dbClass = 'BitDbPear';
 		break;
@@ -67,6 +67,18 @@ if( defined( 'QUERY_CACHE_ACTIVE' ) ) {
 
 require_once( KERNEL_PKG_PATH.'BitSystem.php' );
 global $gBitSmarty, $gBitSystem;
+
+// make sure we only create one BitSmarty
+if( !is_object( $gBitSmarty ) ) {
+	$gBitSmarty = new BitSmarty();
+	// set the default handler
+	$gBitSmarty->load_filter( 'pre', 'tr' );
+	// $gBitSmarty->load_filter('output','trimwhitespace');
+	if( isset( $_REQUEST['highlight'] ) ) {
+		$gBitSmarty->load_filter( 'output', 'highlight' );
+	}
+}
+
 BitSystem::loadSingleton();
 
 // first thing we do, is check to see if our version of bitweaver is up to date.
@@ -145,6 +157,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// load only installed and active packages
 	$gBitSystem->scanPackages( 'bit_setup_inc.php', TRUE, 'active', TRUE, TRUE );
+	$gBitSmarty->scanPackagePluginDirs();
 
 	if( file_exists( CONFIG_PKG_PATH.'kernel/override_inc.php' ) ) {
 		// possible install specific customizations for multi-sites, staging sites, etc.
@@ -152,7 +165,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	// some plugins check for active packages, so we do this *after* package scanning
-	$gBitSmarty->assign_by_ref( "gBitSystem", $gBitSystem );
+	$gBitSmarty->assign_by_ref( 'gBitSystem', $gBitSystem );
 
 	// some liberty plugins might need to run some functions.
 	// it's necessary that we call them early on after scanPackages() has been completed.

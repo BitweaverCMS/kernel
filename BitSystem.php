@@ -125,20 +125,7 @@ class BitSystem extends BitSingleton {
 		// Critical Preflight Checks
 		$this->checkEnvironment();
 
-		$this->initSmarty();
 		$this->mRegisterCalled = FALSE;
-	}
-
-	// === initSmarty
-	/**
-	 * Define and load Smarty components
-	 *
-	 * @param none $
-	 * @return none
-	 * @access private
-	 */
-	function initSmarty() {
-		global $bitdomain, $_SERVER, $gBitSmarty;
 
 		// Set the separator for PHP generated tags to be &amp; instead of &
 		// This is necessary for XHTML compliance
@@ -149,21 +136,6 @@ class BitSystem extends BitSingleton {
 				if( !is_array( $_REQUEST[$k] ) ) {
 					$_REQUEST[$k] = stripslashes( $v );
 				}
-			}
-		}
-
-		if( !isset( $bitdomain ) ) {
-			$bitdomain = "";
-		}
-
-		// make sure we only create one BitSmarty
-		if( !is_object( $gBitSmarty ) ) {
-			$gBitSmarty = new BitSmarty();
-			// set the default handler
-			$gBitSmarty->load_filter( 'pre', 'tr' );
-			// $gBitSmarty->load_filter('output','trimwhitespace');
-			if( isset( $_REQUEST['highlight'] ) ) {
-				$gBitSmarty->load_filter( 'output', 'highlight' );
 			}
 		}
 	}
@@ -434,7 +406,6 @@ class BitSystem extends BitSingleton {
 
 		// only using the default html header will print modules and all the rest of it.
 		if( $gBitThemes->mFormatHeader != 'html' ) {
-			$gBitSmarty->assign_by_ref( 'gBitSystem', $this );
 			$gBitSmarty->display( $pMid );
 			return;
 		}
@@ -461,8 +432,7 @@ class BitSystem extends BitSingleton {
 		$gBitSmarty->assign( 'mid', $pMid );
 		//		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
 		// Make sure that the gBitSystem symbol available to templates is correct and up-to-date.
-		$gBitSmarty->assign_by_ref('gBitSystem', $this);
-		$gBitSmarty->display( 'bitpackage:kernel/html.tpl' );
+		print $gBitSmarty->fetch( 'bitpackage:kernel/html.tpl' );
 		$this->postDisplay( $pMid );
 	}
 
@@ -502,11 +472,11 @@ class BitSystem extends BitSingleton {
 		 */
 		global $gBitUser;
 		if( isset( $gBitUser )) {
-			$gBitUser->invokeServices( 'module_display_function' );
+			//SMARTY3 $gBitUser->invokeServices( 'module_display_function' );
 		}
 
 		// process layout
-		require_once( THEMES_PKG_PATH.'modules_inc.php' );
+		// SMARTY3 require_once( THEMES_PKG_PATH.'modules_inc.php' );
 
 		$gBitThemes->loadStyle();
 

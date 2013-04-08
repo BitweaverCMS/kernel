@@ -386,7 +386,9 @@ abstract class BitBase {
 
 		$pListHash['listInfo']['offset'] = $pListHash['offset'];
 		$pListHash['listInfo']['find'] = $pListHash['find'];
-		$pListHash['listInfo']['sort_mode'] = $pListHash['sort_mode'];
+		if( !empty( $pListHash['sort_mode'] ) ) {
+			$pListHash['listInfo']['sort_mode'] = $pListHash['sort_mode'];
+		}
 		$pListHash['listInfo']['max_records'] = $pListHash['max_records'];
 
 		$pListHash['listInfo']['block_pages'] = 3;

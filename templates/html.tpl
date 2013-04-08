@@ -14,7 +14,7 @@
 <head>
 	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
 
-	{* if the theme has a header, it goes first *}
+	{**** if the theme has a header, it goes first ****}
 	{if file_exists("`$smarty.const.CONFIG_THEME_PATH`html_head_inc.tpl")}
 		{include file="`$smarty.const.CONFIG_THEME_PATH`html_head_inc.tpl"}
 	{/if}
@@ -39,24 +39,20 @@
 {strip}
 	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}<div dir="rtl">{/if}
 
-	{if $gBitSystem->isFeatureActive( 'site_left_column' ) && $l_modules && !$gHideModules and $gBitSystem->isFeatureActive( 'site_right_column' ) && $r_modules && !$gHideModules
-		}{assign var=extraColumns value=2}{
-	elseif $gBitSystem->isFeatureActive( 'site_left_column' ) && $l_modules && !$gHideModules
-		}{assign var=extraColumns value=1}{
-	elseif $gBitSystem->isFeatureActive( 'site_right_column' ) && $r_modules && !$gHideModules
-		}{assign var=extraColumns value=1}{
-	else
-		}{assign var=extraColumns value=0}{
-	/if}
+	{if $gBitSystem->isFeatureActive( 'site_left_column' ) && $l_modules && !$gHideModules and $gBitSystem->isFeatureActive( 'site_right_column' ) && $r_modules && !$gHideModules}
+		{assign var=extraColumns value=2}
+	{elseif $gBitSystem->isFeatureActive( 'site_left_column' ) && $l_modules && !$gHideModules}
+		{assign var=extraColumns value=1}
+	{elseif $gBitSystem->isFeatureActive( 'site_right_column' ) && $r_modules && !$gHideModules}
+		{assign var=extraColumns value=1}
+	{else}
+		{assign var=extraColumns value=0}{/if}
 
+	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
 	<header class="mainheader">
-		{**** Theme Layout Modules : TOP ****}
-		{if $gBitSystem->isFeatureActive( 'site_top_column' ) && $t_modules && !$gHideModules}
-			{section name=homeix loop=$t_modules}
-				{$t_modules[homeix].data}
-			{/section}
-		{/if}
+		{$gBitThemes->displayLayoutColumn('t')}
 	</header>
+	{/if}
 
 	<section class="container maincontent">
 		<div class="row">
@@ -72,17 +68,17 @@
 				</div><!-- end #content -->{* needed by output filters. *}
 			</div><!-- end #wrapper -->
 
-			{if $gBitSystem->isFeatureActive( 'site_left_column' ) && $l_modules && !$gHideModules}
+			{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules}
 				{**** Theme Layout Modules : NAVIGATION ****}
 				<nav id="navigation" class="span3">
-					{include file="bitpackage:kernel/bit_left.tpl"}
+					{$gBitThemes->displayLayoutColumn('l')}
 				</nav><!-- end #navigation -->{* needed by output filters. *}
 			{/if}
 
-			{if $gBitSystem->isFeatureActive( 'site_right_column' ) && $r_modules && !$gHideModules}
+			{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules}
 				{**** Theme Layout Modules : EXTRA ****}
 				<nav id="extra" class="span3">
-					{include file="bitpackage:kernel/bit_right.tpl"}
+					{$gBitThemes->displayLayoutColumn('r')}
 				</nav><!-- end #extra -->{* needed by output filters. *}
 			{/if}
 		<div>
@@ -90,10 +86,8 @@
 
 	<footer class="mainfooter">
 		{**** Theme Layout Modules : BOTTOM ****}
-		{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && $b_modules && !$gHideModules}
-			{section name=homeix loop=$b_modules}
-				{$b_modules[homeix].data}
-			{/section}
+		{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && !$gHideModules}
+			{$gBitThemes->displayLayoutColumn('b')}
 		{/if}
 		{* get custom footer files from individual packages *}
 		{foreach from=$gBitThemes->mAuxFiles.templates.footer_inc item=file}

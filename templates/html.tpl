@@ -39,11 +39,11 @@
 {strip}
 	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}<div dir="rtl">{/if}
 
-	{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules and $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules}
+	{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules and $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l') && $gBitThemes->hasColumnModules('r')}
 		{assign var=extraColumns value=2}
-	{elseif $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules}
+	{elseif $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
 		{assign var=extraColumns value=1}
-	{elseif $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules}
+	{elseif $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
 		{assign var=extraColumns value=1}
 	{else}
 		{assign var=extraColumns value=0}{/if}
@@ -68,14 +68,14 @@
 				</div><!-- end #content -->{* needed by output filters. *}
 			</div><!-- end #wrapper -->
 
-			{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules}
+			{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
 				{**** Theme Layout Modules : NAVIGATION ****}
 				<nav id="navigation" class="span3">
 					{$gBitThemes->displayLayoutColumn('l')}
 				</nav><!-- end #navigation -->{* needed by output filters. *}
 			{/if}
 
-			{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules}
+			{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
 				{**** Theme Layout Modules : EXTRA ****}
 				<nav id="extra" class="span3">
 					{$gBitThemes->displayLayoutColumn('r')}

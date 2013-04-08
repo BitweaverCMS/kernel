@@ -39,11 +39,11 @@
 {strip}
 	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}<div dir="rtl">{/if}
 
-	{if $gBitSystem->isFeatureActive( 'site_left_column' ) && $l_modules && !$gHideModules and $gBitSystem->isFeatureActive( 'site_right_column' ) && $r_modules && !$gHideModules}
+	{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules and $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules}
 		{assign var=extraColumns value=2}
-	{elseif $gBitSystem->isFeatureActive( 'site_left_column' ) && $l_modules && !$gHideModules}
+	{elseif $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules}
 		{assign var=extraColumns value=1}
-	{elseif $gBitSystem->isFeatureActive( 'site_right_column' ) && $r_modules && !$gHideModules}
+	{elseif $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules}
 		{assign var=extraColumns value=1}
 	{else}
 		{assign var=extraColumns value=0}{/if}

@@ -43,20 +43,20 @@
 							{/forminput}
 						</div>
 
-						{if $version_info.compare lt 0}
+						{if $version_info.compare < 0}
 							<div class="control-group">
 								{formlabel label="Upgrade"}
 								{forminput class=warning}
 									<strong>bitweaver {$version_info.upgrade}</strong>
-									{formhelp page="ReleaseTwoChangelog}
+									{formhelp page="ReleaseTwoChangelog"}
 								{/forminput}
 							</div>
-						{elseif $version_info.compare gt 0}
+						{elseif $version_info.compare > 0}
 							<div class="control-group">
 								{formlabel label="Latest Version"}
 								{forminput}
 									<strong>bitweaver {$version_info.upgrade}</strong>
-									{formhelp page="ReleaseTwoChangelog}
+									{formhelp page="ReleaseTwoChangelog"}
 								{/forminput}
 							</div>
 						{/if}
@@ -66,7 +66,7 @@
 								{formlabel label="Latest Release"}
 								{forminput class=warning}
 									<strong>bitweaver {$version_info.release}</strong>
-									{formhelp page="ReleaseTwoChangelog}
+									{formhelp page="ReleaseTwoChangelog"}
 								{/forminput}
 							</div>
 						{/if}

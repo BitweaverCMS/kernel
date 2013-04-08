@@ -1,4 +1,4 @@
-<a tabindex="-1" accesskey="A" class="{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} active{/if}" href="{if $gBitUser->isAdmin()}{$smarty.const.KERNEL_PKG_URL}admin/index.php{else}#{/if}">
+{strip}<a tabindex="-1" accesskey="A" class="{if $smarty.const.ACTIVE_PACKAGE eq 'kernel'} active{/if}" href="{if $gBitUser->isAdmin()}{$smarty.const.KERNEL_PKG_URL}admin/index.php{else}#{/if}">
 <i class="icon-cog"></i> {tr}Administration{/tr}
 </a>
 <ul class="dropdown-menu sub-menu pull-right">	
@@ -13,4 +13,4 @@
 	{/if}
 {/foreach}
 </ul>
-
+{/strip}

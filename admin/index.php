@@ -24,7 +24,7 @@ if( !empty( $_REQUEST["page"] )) {
 	if( preg_match( '/\.php/', $page )) {
 		$adminPage = $page;
 	} else {
-		$file = $page; // Default file name
+		$adminFile = $page; // Default file name
 		switch( $page ) {
 			// handle a few special cases for page requests
 			case 'features':
@@ -53,12 +53,12 @@ if( !empty( $_REQUEST["page"] )) {
 				break;
 		}
 
-		$adminPage = constant( strtoupper( $package ).'_PKG_PATH' ).'/admin/admin_'.$file.'_inc.php';
+		$adminPage = constant( strtoupper( $package ).'_PKG_PATH' ).'/admin/admin_'.$adminFile.'_inc.php';
 		// gBitThemes->loadLayout uses this to determine the currently active package
 		$gBitSystem->mActivePackage = $package;
 	}
 	$gBitSmarty->assign( 'package', $package );
-	$gBitSmarty->assign( 'file', $file );
+	$gBitSmarty->assign( 'adminFile', $adminFile );
 	$gBitSmarty->assign( 'page', $page );
 	$gBitSystem->setBrowserTitle( preg_replace( '/_/', ' ', $page )." Settings" );
 

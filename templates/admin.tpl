@@ -20,8 +20,8 @@
 	{* The rest determines which page to include using "page" GET parameter. Default: list-sections
 	Add a value in first check when you create a new admin page. *}
 	<div class="body">
-		{if $file }
-			{include file="bitpackage:$package/admin_`$file`.tpl"}
+		{if $adminFile }
+			{include file="bitpackage:$package/admin_`$adminFile`.tpl"}
 		{else}
 			{if $smarty.request.version_check}
 				{if $version_info.error.number ne 0}

@@ -1,4 +1,4 @@
-<div class="container" id="bittop">
+<div class="row{$gBitSystem->getConfig('layout-header')}" id="bittop">
 	<div class="navbar">
 		<a class="brand" href="{$smarty.const.BIT_ROOT_URL}" {if $gBitSystem->getConfig('site_slogan')} title="{$gBitSystem->getConfig('site_slogan')|escape}" {/if}>{$gBitSystem->getConfig('site_title')}</a>
 		<div class="pull-right">

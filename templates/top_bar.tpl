@@ -1,5 +1,5 @@
 {strip}
-<div class="container" id="bittopbar">
+<div class="row{$gBitSystem->getConfig('layout-header')}" id="bittopbar">
 	<div class="navbar navbar-static-top">
 		<div class="navbar-inner">
 			<div class="nav-collapse collapse clear width100p">

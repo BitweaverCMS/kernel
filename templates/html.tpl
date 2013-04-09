@@ -49,13 +49,13 @@
 		{assign var=extraColumns value=0}{/if}
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
-	<header class="mainheader">
+	<header class="container{$gBitSystem->getConfig('layout-header')} mainheader">
 		{$gBitThemes->displayLayoutColumn('t')}
 	</header>
 	{/if}
 
-	<section class="container maincontent">
-		<div class="row">
+	<section class="container{$gBitSystem->getConfig('layout-maincontent')} maincontent">
+		<div class="row{$gBitSystem->getConfig('layout-maincontent')}">
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='container' serviceHash=$gContent->mInfo}
 
 			<div id="wrapper" class="span{math equation="12-x*3" x=$extraColumns}">
@@ -84,7 +84,7 @@
 		<div>
 	</section>
 
-	<footer class="mainfooter">
+	<footer class="container{$gBitSystem->getConfig('layout-footer')} mainfooter">
 		{**** Theme Layout Modules : BOTTOM ****}
 		{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && !$gHideModules}
 			{$gBitThemes->displayLayoutColumn('b')}

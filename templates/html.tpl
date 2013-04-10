@@ -49,7 +49,7 @@
 		{assign var=extraColumns value=0}{/if}
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
-	<header class="container{$gBitSystem->getConfig('layout-header')} mainheader">
+	<header class="row{$gBitSystem->getConfig('layout-header')} mainheader">
 		{$gBitThemes->displayLayoutColumn('t')}
 	</header>
 	{/if}

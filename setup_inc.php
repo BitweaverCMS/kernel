@@ -43,13 +43,16 @@ if( !empty( $_GET ) && is_array( $_GET ) && empty( $gNoToxify ) ) {
 }
 
 // Force a global ADODB db object so all classes share the same connection
-switch( $gBitDbSystem ) {
-	case 'pear':
-		$dbClass = 'BitDbPear';
-		break;
-	default:
-		$dbClass = 'BitDbAdodb';
-		break;
+$dbClass = 'BitDbAdodb';
+if( !empty( $gBitSystem ) ) {
+	switch( $gBitDbSystem ) {
+		case 'pear':
+			$dbClass = 'BitDbPear';
+			break;
+		default:
+			$dbClass = 'BitDbAdodb';
+			break;
+	}
 }
 // the installer and select admin pages required DataDict to verify package installation
 global $gForceAdodb;

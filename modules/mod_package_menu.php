@@ -15,7 +15,7 @@ if( $gBitUser->isAdmin() ) {
 $package = !empty($moduleParams['module_params']['package'])?$moduleParams['module_params']['package']:ACTIVE_PACKAGE;
 
 if( !empty( $gBitSystem->mAppMenu[$package]['menu_template'] ) && !$admin ) {
-	$gBitSmarty->assign( 'packageMenu', $gBitSystem->mAppMenu[$package] );
+	$_template->tpl_vars['packageMenu'] = new Smarty_variable(  $gBitSystem->mAppMenu[$package]  );
 }
 
 if( empty( $module_title )) {
@@ -25,6 +25,6 @@ if( empty( $module_title )) {
 		$pkgName = 'Administration';
 	}
 	$title = $gBitSystem->getConfig( $pkgName."_menu_text", ucfirst( $pkgName ));
-	$gBitSmarty->assign( 'moduleTitle', $title );
+	$_template->tpl_vars['moduleTitle'] = new Smarty_variable(  $title  );
 }
 ?>

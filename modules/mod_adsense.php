@@ -11,7 +11,7 @@
  */
 
 if( !empty( $module_params ) ) {
-	$gBitSmarty->assign( 'modParams', $module_params );
+	$_template->tpl_vars['modParams'] = new Smarty_variable( $module_params );
 }
 
 $gBitSmarty->assign('adSenseActive', !empty($module_params['client']) &&

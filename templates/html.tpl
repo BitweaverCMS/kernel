@@ -15,8 +15,8 @@
 	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
 
 	{**** if the theme has a header, it goes first ****}
-	{if file_exists("`$smarty.const.CONFIG_THEME_PATH`html_head_inc.tpl")}
-		{include file="`$smarty.const.CONFIG_THEME_PATH`html_head_inc.tpl"}
+	{if file_exists("`$smarty.const.CONFIG_THEME_PATH`theme_head_inc.tpl")}
+		{include file="`$smarty.const.CONFIG_THEME_PATH`theme_head_inc.tpl"}
 	{/if}
 
 	{**** get custom head files from individual packages ****}

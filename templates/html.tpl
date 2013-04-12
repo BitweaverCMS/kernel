@@ -12,7 +12,7 @@
 {/if}
 
 <head>
-	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
+	<title>{$bcontainerserTitle} - {$gBitSystem->getConfig('site_title')}</title>
 
 	{**** if the theme has a header, it goes first ****}
 	{if file_exists("`$smarty.const.CONFIG_THEME_PATH`theme_head_inc.tpl")}
@@ -49,16 +49,16 @@
 		{assign var=extraColumns value=0}{/if}
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
-	<header class="row{$gBitSystem->getConfig('layout-header')} mainheader">
-		<div class="container{$gBitSystem->getConfig('layout-header')}">
+	<header class="container{$gBitSystem->getConfig('layout-header')} mainheader">
+		<div class="row{$gBitSystem->getConfig('layout-header')}">
 			{$gBitThemes->displayLayoutColumn('t')}
 		</div>
 	</header>
 	{/if}
 
-	<section class="row{$gBitSystem->getConfig('layout-maincontent')} maincontent">
-		<div class="container{$gBitSystem->getConfig('layout-maincontent')}">
-			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='container' serviceHash=$gContent->mInfo}
+	<section class="container{$gBitSystem->getConfig('layout-maincontent')} maincontent">
+		<div class="row{$gBitSystem->getConfig('layout-maincontent')}">
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='row' serviceHash=$gContent->mInfo}
 
 			{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
 				{**** Theme Layout Modules : NAVIGATION ****}
@@ -86,8 +86,8 @@
 		<div>
 	</section>
 
-	<footer class="row mainfooter">
-		<div class="container{$gBitSystem->getConfig('layout-footer')}">
+	<footer class="container{$gBitSystem->getConfig('layout-footer')} mainfooter">
+		<div class="row{$gBitSystem->getConfig('layout-footer')}">
 			{**** Theme Layout Modules : BOTTOM ****}
 			{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && !$gHideModules}
 				{$gBitThemes->displayLayoutColumn('b')}

@@ -4,7 +4,9 @@
 <ul class="dropdown-menu sub-menu pull-right">	
 {foreach key=key item=menu from=$adminMenu}
 	{if $key eq 'kernel' or $key eq 'liberty' or $key eq 'users' or $key eq 'themes'}
-		{include file=$menu.tpl}
+<li class="dropdown-submenu favorite">
+		{include file=$menu.tpl packageMenuTitle=$key packageMenuClass="dropdown-menu sub-menu"}
+</li>
 	{/if}
 {/foreach}
 {foreach key=key item=menu from=$adminMenu}

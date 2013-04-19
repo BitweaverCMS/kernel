@@ -74,21 +74,16 @@
 				{/if}
 			{/if}
 
-			<table width="100%" class="menutable">
-				<tr>
+			<div class="row-fluid">
 					{assign var="i" value="1"}
 					{foreach key=key item=template from=$adminTemplates}
-						<td class="width33p aligntop">
+						<div class="span4">
 							{box class="`$key`menu menu box" ipackage=$key iname="pkg_`$key`" iexplain="$key" iclass="menuicon" title=$key|capitalize}
-								{include file="bitpackage:`$key`/menu_`$key`_admin.tpl"}
+								{include file="bitpackage:`$key`/menu_`$key`_admin.tpl" packageMenuClass="unstyled"}
 							{/box}
-						</td>
-						{if not ($i++ mod 3)}
-							</tr><tr>
-						{/if}
+						</div>
 					{/foreach}
-				</tr>
-			</table>
+			</div>
 		{/if}
 	</div><!-- end .body -->
 </div><!-- end .body -->

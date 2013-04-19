@@ -8,7 +8,7 @@
 	{/capture}
 {/if}
 
-{assign var=pageName value=kernel_`$page`}
+{assign var=pageName value="kernel_`$page`"}
 
 {form class=$pageName|replace:'packages':'pkg'}
 	<input type="hidden" name="page" value="{$page}" />
@@ -246,8 +246,8 @@
 					{/if}
 
 					<ul>
-						<li>{smartlink ititle="Install Packages" ipackage=install ifile=install.php step=3}</li>
-						<li>{smartlink ititle="Upgrade Packages" ipackage=install ifile=install.php step=4}</li>
+						<li>{smartlink ititle="Install Packages" ipackage=install ifile="install.php" step=3}</li>
+						<li>{smartlink ititle="Upgrade Packages" ipackage=install ifile="install.php" step=4}</li>
 					</ul>
 				{/legend}
 			{/jstab}

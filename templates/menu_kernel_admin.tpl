@@ -1,7 +1,6 @@
 {strip}
-<li class="dropdown-submenu favorite">
-    <a href="#" onclick="return(false);" tabindex="-1" class="sub-menu-root">{tr}{$smarty.const.KERNEL_PKG_DIR|capitalize}{/tr}</a>
-	<ul class="dropdown-menu sub-menu">
+{if $packageMenuTitle}<a class="dropdown-toggle" data-toggle="dropdown" href="#"> {tr}{$packageMenuTitle}{/tr}</a>{/if}
+	<ul class="{$packageMenuClass}">
 		<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=features">{tr}Kernel Settings{/tr}</a></li>
 		<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=packages">{tr}Packages{/tr}</a></li>
 		<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=server">{tr}Server Settings{/tr}</a></li>
@@ -15,5 +14,4 @@
 		<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?version_check=1">{tr}Check Version{/tr}</a></li>
 		<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/sitemaps.php">{tr}Sitemaps{/tr}</a></li>
 	</ul>
-</li>
 {/strip}

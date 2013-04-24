@@ -58,6 +58,9 @@
 		<div class="row{$gBitSystem->getConfig('layout-header')}">
 			{$gBitThemes->displayLayoutColumn('t')}
 		</div>
+		{if $gBitSystem->getConfig('site_notice')}
+		<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
+		{/if}
 	</header>
 	{/if}
 

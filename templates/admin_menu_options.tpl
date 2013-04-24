@@ -86,7 +86,7 @@
 
 {minifind menu_id=$menu_id sort_mode=$sort_mode page=$page}
 
-<table class="data">
+<table class="table data">
 	<caption>{tr}Menu Options{/tr}</caption>
 	<tr>
 		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'option_id_desc'}option_id_asc{else}option_id_desc{/if}">{tr}ID{/tr}</a></th>

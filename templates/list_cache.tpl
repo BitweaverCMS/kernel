@@ -19,7 +19,7 @@
 </tr>
 </table>
 
-<table class="data">
+<table class="table data">
 <tr>
 <th><a href="{$smarty.const.THEMES_PKG_URL}list_cache.php?offset={$offset}&amp;sort_mode={if $sort_mode eq 'url_desc'}url_asc{else}url_desc{/if}">{tr}URL{/tr}</a></th>
 <th><a href="{$smarty.const.THEMES_PKG_URL}list_cache.php?offset={$offset}&amp;sort_mode={if $sort_mode eq 'refresh_desc'}refresh_asc{else}refresh_desc{/if}">{tr}Last updated{/tr}</a></th>

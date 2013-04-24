@@ -35,7 +35,7 @@
 	id="{$smarty.const.ACTIVE_PACKAGE}" class="{$displayClass}{$userClass}{$contentClass}">
 {if $gBitSystem->mDebugHtml}
 	<div id="bw_debughtml">
-		<a href="#postdebug" onclick="document.getElementById('bw_debughtml').style.display='none';">Go to content</a><br />
+		<a href="#postdebug" onclick="document.getElementById('bw_debughtml').style.display='none';">Go to content</a>
 		{$gBitSystem->mDebugHtml}
 	</div>
 	<a name="postdebug"></a>
@@ -78,7 +78,7 @@
 					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
 					<div id="content">
 						{include file="bitpackage:liberty/display_structure.tpl"}
-						{if $pageError}<div class="error">{$pageError}</div>{/if}
+						{if $pageError}<div class="alert alert-error">{$pageError}</div>{/if}
 						{include file=$mid}
 					</div><!-- end #content -->{* needed by output filters. *}
 				</div><!-- end #wrapper -->
@@ -89,8 +89,8 @@
 						{$gBitThemes->displayLayoutColumn('r')}
 					</nav><!-- end #extra -->{* needed by output filters. *}
 				{/if}
-			<div>
-		<div>
+			</div>
+		</div>
 	</section>
 
 	<footer class="container{$gBitSystem->getConfig('layout-footer')} mainfooter">

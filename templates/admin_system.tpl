@@ -17,7 +17,7 @@
 				{/forminput}
 			</div>
 
-			<table class="data">
+			<table class="table data">
 				<caption>{tr}List of Cached Files{/tr}</caption>
 				<tr>
 					<th class="width25p">{tr}Cache Area{/tr}</th>
@@ -39,7 +39,7 @@
 		{/legend}
 
 		{legend legend="Templates Compiler"}
-			<table class="data">
+			<table class="table data">
 				<caption>{tr}List of Cached Templates{/tr}</caption>
 				<tr>
 					<th class="width25p">{tr}Language{/tr}</th>

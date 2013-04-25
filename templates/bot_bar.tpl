@@ -1,4 +1,4 @@
-<div>
+<div class="span12">
 {if $gBitSystem->isFeatureActive( 'messages_site_contact' )}
 	<a href="{$smarty.const.MESSAGES_PKG_URL}contact.php">{booticon iname="icon-envelope" ilocation=menu iexplain="Contact Us"}</a> 
 {/if}

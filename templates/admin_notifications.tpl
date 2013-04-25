@@ -41,7 +41,7 @@
 
 		{minifind sort_mode=$sort_mode find=$find}
 
-		<table class="data">
+		<table class="table data">
 			<caption>{tr}Active Notifications{/tr}</caption>
 			<tr>
 				<th>{smartlink ititle="Event" isort="event" offset=$offset idefault=1}</th>

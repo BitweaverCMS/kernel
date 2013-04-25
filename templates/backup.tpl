@@ -40,7 +40,7 @@
 			{/jstab}
 		{/jstabs}
 
-		<table class="data">
+		<table class="table data">
 			<caption>{tr}List of available backups{/tr}</caption>
 			<tr>
 				<th>{tr}Filename{/tr}</th>

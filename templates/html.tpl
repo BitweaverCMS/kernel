@@ -12,7 +12,7 @@
 {/if}
 
 <head>
-	<title>{$bcontainerserTitle} - {$gBitSystem->getConfig('site_title')}</title>
+	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
 
 	{**** if the theme has a header, it goes first ****}
 	{if file_exists("`$smarty.const.CONFIG_THEME_PATH`theme_head_inc.tpl")}

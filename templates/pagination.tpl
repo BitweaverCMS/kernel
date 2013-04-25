@@ -41,8 +41,8 @@
 	{assign var=pageUrl value="`$pgnUrl`?`$pageUrlVar`"}
 {/if}
 {if $listInfo.total_pages > 1 && $listInfo.page_records}
-<div class="pagination">
-	<ul>
+<div class="pagination" style="overflow:hidden">
+	<ul class="pull-left">
 		{if $listInfo.current_page > 1}
 			{assign var=blockStart value=1}
 			<li>{tr}<a href="{$pageUrl}&amp;page={$listInfo.current_page-1}&amp;max_records={$listInfo.max_records}&amp;sort_mode={$listInfo.sort_mode}">&laquo;</a>{/tr}</li>
@@ -76,7 +76,7 @@
 		<li><a href="{$pageUrl}&amp;page={$listInfo.current_page+1}&amp;max_records={$listInfo.max_records}&amp;sort_mode={$listInfo.sort_mode}">&raquo;</a></li>
 		{/if}
 	</ul>
-	<div>
+	<div class="pull-right">
 		{form action="$pageUrl" class="form-inline"}
 		{$listInfo.offset+1} {tr}to{/tr} {math equation="x + y" x=$listInfo.offset y=$listInfo.page_records} {tr}of{/tr} {$listInfo.total_records},&nbsp; 
 				<input type="hidden" name="find" value="{$find|default:$smarty.request.find}" />

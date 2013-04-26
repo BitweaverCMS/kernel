@@ -62,10 +62,10 @@
 	{/if}
 
 	<section class="maincontent">
-		{if $gBitSystem->getConfig('site_notice')}
-		<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
-		{/if}
 		<div class="container{$gBitSystem->getConfig('layout-maincontent')}">
+			{if $gBitSystem->getConfig('site_notice')}
+			<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
+			{/if}
 			<div class="row{$gBitSystem->getConfig('layout-maincontent')}">
 				{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='row' serviceHash=$gContent->mInfo}
 

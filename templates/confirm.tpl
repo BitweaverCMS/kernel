@@ -2,7 +2,7 @@
 <div class="display confirm">
 
 	<div class="body">
-		{form}
+		{form class="span6"}
 			{box title=Confirm}
 				{foreach from=$hiddenFields item=value key=name}
 					<input type="hidden" name="{$name}" value="{$value}" />
@@ -23,7 +23,7 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="button" name="cancel" {$backJavascript} value="{tr}Cancel{/tr}" /> &nbsp;
+					<input type="button" class="btn" name="cancel" {$backJavascript} value="{tr}Cancel{/tr}" /> &nbsp;
 					<input type="submit" class="btn" name="confirm" value="{tr}Yes{/tr}" />
 				</div>
 			{/box}

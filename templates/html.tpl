@@ -78,7 +78,6 @@
 					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
 					<div id="content">
 						{include file="bitpackage:liberty/display_structure.tpl"}
-						{if $pageError}<div class="alert alert-error">{$pageError}</div>{/if}
 						{include file=$mid}
 					</div><!-- end #content -->{* needed by output filters. *}
 				</div><!-- end #wrapper -->

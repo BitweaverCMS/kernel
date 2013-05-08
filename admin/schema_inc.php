@@ -87,7 +87,7 @@ $moduleHash = array(
 	array(
 		'title' => NULL,
 		'pos' => 5,
-		'layout_area' => 'l',
+		'layout_area' => 'r',
 		'module_rsrc' => 'bitpackage:kernel/mod_package_menu.tpl',
 	),
 	array(

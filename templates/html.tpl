@@ -55,9 +55,7 @@
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
 	<header class="container{$gBitSystem->getConfig('layout-header')} mainheader">
-		<div class="row{$gBitSystem->getConfig('layout-header')}">
-			{$gBitThemes->displayLayoutColumn('t')}
-		</div>
+		{$gBitThemes->displayLayoutColumn('t')}
 	</header>
 	{/if}
 

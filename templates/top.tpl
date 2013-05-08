@@ -1,5 +1,5 @@
-<div class="row{$gBitSystem->getConfig('layout-header')}" id="bittop">
-	<div class="navbar">
+<div id="bittop">
+	<div class="bittop-wrapper">
 		<a class="brand" href="{$smarty.const.BIT_ROOT_URL}" {if $gBitSystem->getConfig('site_slogan')} title="{$gBitSystem->getConfig('site_slogan')|escape}" {/if}>{$gBitSystem->getConfig('site_title')}</a>
 		<div class="pull-right">
 			{if $gBitUser->isRegistered()}

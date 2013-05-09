@@ -55,17 +55,15 @@
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
 	<header class="container{$gBitSystem->getConfig('layout-header')} mainheader">
-		<div class="row{$gBitSystem->getConfig('layout-header')}">
-			{$gBitThemes->displayLayoutColumn('t')}
-		</div>
-		{if $gBitSystem->getConfig('site_notice')}
-		<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
-		{/if}
+		{$gBitThemes->displayLayoutColumn('t')}
 	</header>
 	{/if}
 
 	<section class="maincontent">
 		<div class="container{$gBitSystem->getConfig('layout-maincontent')}">
+			{if $gBitSystem->getConfig('site_notice')}
+			<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
+			{/if}
 			<div class="row{$gBitSystem->getConfig('layout-maincontent')}">
 				{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='row' serviceHash=$gContent->mInfo}
 
@@ -76,15 +74,12 @@
 					</nav><!-- end #navigation -->{* needed by output filters. *}
 				{/if}
 
-				<div id="wrapper" class="span{math equation="12-x*3" x=$extraColumns}">
+				<section id="wrapper" class="span{math equation="12-x*3" x=$extraColumns}" id="content">
 					{**** Theme Layout Modules : CENTER ****}
 					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
-					<div id="content">
-						{include file="bitpackage:liberty/display_structure.tpl"}
-						{if $pageError}<div class="alert alert-error">{$pageError}</div>{/if}
-						{include file=$mid}
-					</div><!-- end #content -->{* needed by output filters. *}
-				</div><!-- end #wrapper -->
+					{include file="bitpackage:liberty/display_structure.tpl"}
+					{include file=$mid}
+				</section><!-- end #wrapper -->
 
 				{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
 					{**** Theme Layout Modules : EXTRA ****}

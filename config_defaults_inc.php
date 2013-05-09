@@ -159,7 +159,7 @@ if( !defined( 'BIT_MAJOR_VERSION' ) ) {
 	define( 'BIT_MAJOR_VERSION',	'4' );
 	define( 'BIT_MINOR_VERSION',	'0' );
 	define( 'BIT_SUB_VERSION',		'0' );
-	define( 'BIT_LEVEL',			'alpha' ); // dev < alpha < beta < RC# < '' < pl
+	define( 'BIT_LEVEL',			'' ); // dev < alpha < beta < RC# < '' < pl
 }
 
 // When updating to certain versions of bitweaver, we need to force a visit to the installer to fix certain stuff in the database.

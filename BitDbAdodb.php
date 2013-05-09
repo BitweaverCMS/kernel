@@ -24,18 +24,7 @@ if( empty( $ADODB_CACHE_DIR )) {
 }
 mkdir_p( $ADODB_CACHE_DIR );
 
-if( file_exists( EXTERNAL_LIBS_PATH.'adodb/adodb.inc.php' )) {
-	// this is the adodb that is distributed with bitweaver
-	$adodbIncFile = EXTERNAL_LIBS_PATH.'adodb/adodb.inc.php';
-} elseif( file_exists( UTIL_PKG_PATH.'adodb/adodb.inc.php' )) {
-	// this is the adodb that is distributed with bitweaver
-	$adodbIncFile = UTIL_PKG_PATH.'adodb/adodb.inc.php';
-} else {
-	// assume it is in php's global include_path
-	$adodbIncFile = 'adodb.inc.php';
-}
-
-require_once( $adodbIncFile );
+require_once( CONFIG_PKG_PATH.'externals/adodb/adodb.inc.php' );
 require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
 
 /**

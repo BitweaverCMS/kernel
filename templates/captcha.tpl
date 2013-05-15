@@ -55,8 +55,8 @@
 		{formfeedback error=$errors.smcaptcha}
 		{formlabel label="Are you human?" for="smcaptcha"}
 		{forminput}
-{$gBitSystem->getConfig('users_register_smcaptcha_c_key')|solvemedia_get_html}
-			{formhelp note="Sorry, we have to ask."}
+			{solvemedia_get_html($gBitSystem->getConfig('users_register_smcaptcha_c_key'),null,!empty($smarty.server.HTTPS))}
+			{formhelp note="Sorry, we have to ask.."}
 		{/forminput}
 	</div>
 {/if}

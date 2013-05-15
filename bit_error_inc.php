@@ -27,7 +27,7 @@ function bit_error_log( $pLogMessage ) {
 		error_log( "OUTPUT in {$_SERVER['SCRIPT_URI']}" );
 	}
 
-	$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage ) : $pLogMessage) );
+	$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
 	foreach ($errlines as $txt) { error_log($txt); }
 }
 

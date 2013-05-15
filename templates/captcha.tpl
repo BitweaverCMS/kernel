@@ -43,7 +43,7 @@
 		{formfeedback error=$errors.recaptcha}
 		{formlabel label="Are you human?" for="recaptcha"}
 		{forminput}
-			{$gBitSystem->getConfig('users_register_recaptcha_public_key')|recaptcha_get_html:$errors.recaptcha}
+			{recaptcha_get_html($gBitSystem->getConfig('users_register_recaptcha_public_key'),$errors.recaptcha,!empty($smarty.server.HTTPS))}
 			{formhelp note="Sorry, we have to ask."}
 		{/forminput}
 	</div>
@@ -56,7 +56,7 @@
 		{formlabel label="Are you human?" for="smcaptcha"}
 		{forminput}
 			{solvemedia_get_html($gBitSystem->getConfig('users_register_smcaptcha_c_key'),null,!empty($smarty.server.HTTPS))}
-			{formhelp note="Sorry, we have to ask.."}
+			{formhelp note="Sorry, we have to ask."}
 		{/forminput}
 	</div>
 {/if}

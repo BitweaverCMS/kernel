@@ -5,7 +5,7 @@
 		<li>{tr}Execution time:{/tr} {elapsed}s</li>
 		<li>{tr}Memory:{/tr} {memusage}</li>
 		<li>{tr}Db queries:{/tr} {$gBitSystem->mDb->mNumQueries}</li>
-		<li>{tr}Db time:{/tr} {$gBitSystem->mDb->mQueryTime|string_format:"%.3f"}s / {$gBitSystem->mDb->mQueryTime/$gBitSystem->mTimer->elapsed()*100|round}%</li>
+		<li>{tr}Db time:{/tr} {$gBitSystem->mDb->mQueryTime|string_format:"%.3f"}s / {($gBitSystem->mDb->mQueryTime/$gBitSystem->mTimer->elapsed()*100)|round}%</li>
 		<li>{tr}Compression:{/tr} {$output_compression|default:"0"}</li>
 		{if $server_load}
 			<li>{tr}Server load:{/tr} {$server_load|default:"&#8211;"}</li>

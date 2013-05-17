@@ -24,6 +24,9 @@
 {if $canonicalLink}
 <link rel="canonical" href="{$canonicalLink}"/>
 {/if}
+{if !$gBitSystem->isLive()}
+<meta name="robots" content="noindex,nofollow">
+{/if}
 
 {if $gBitSystem->isFeatureActive( 'site_header_extended_nav' )}
 	<link rel="start" title="{$gBitSystem->getConfig('site_title')} {tr}Home{/tr}" href="{$smarty.const.BIT_ROOT_URL}" />

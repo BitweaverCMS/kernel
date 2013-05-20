@@ -9,7 +9,7 @@
 				{/foreach}
 				<div class="control-group">
 					<h1>{$msgFields.label}</h1>
-					<p class="highlight aligncenter">{$msgFields.confirm_item}</p>
+					<p class="highlight">{$msgFields.confirm_item}</p>
 					{if $inputFields}
 						<ul>
 							{section name=ix loop=$inputFields}

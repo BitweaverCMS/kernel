@@ -3,7 +3,7 @@
 
 	<div class="body">
 		{form class="span6"}
-			{box title=Confirm}
+			{box class="box confirm" title="Please Confirm"}
 				{foreach from=$hiddenFields item=value key=name}
 					<input type="hidden" name="{$name}" value="{$value}" />
 				{/foreach}

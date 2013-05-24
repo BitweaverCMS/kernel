@@ -13,10 +13,10 @@
 	{/literal}
 
 
-	{formfeedback error=$errors.captcha}
 
 	{if $params.variant == "condensed"}
 		<span class="captcha" {if $params.id}id="{$params.id}"{/if} {if $params.style}style="{$params.style}"{/if}>
+			{formhelp note=$errors.captcha}
 			<img id='captcha_img' onclick="this.blur();reloadImage();return false;" class="alignmiddle" id="captcha_img" src="{$params.source}" alt="{tr}Random Image{/tr}"/>
 			<br />
 			<input type="text" name="captcha" id="captcha" size="{$params.size+3}"/>
@@ -25,7 +25,7 @@
 		</span>
 		<br />
 	{else}
-		<div class="control-group" {if $params.id}id="{$params.id}"{/if} {if $params.style}style="{$params.style}"{/if}>
+		<div class="control-group {if $errors.captcha}error{/if}" {if $params.id}id="{$params.id}"{/if} {if $params.style}style="{$params.style}"{/if}>
 			{formlabel label="Verification Code" for="captcha"}
 			{forminput}
 				<img id='captcha_img' onclick="this.blur();reloadImage();return false;" src="{$params.source}" alt="{tr}Random Image{/tr}"/>
@@ -33,17 +33,18 @@
 				<input type="text" name="captcha" id="captcha" size="{$params.size+3}"/>
 				{formhelp note="Please copy the code into the box. Reload the page or click the image if it is unreadable. Note that it is not case sensitive."}
 				{if empty($smarty.cookies)}<div class="error">You do not currently have any cookies from this site. You must accept cookies in order to pass the captcha. For information on enabling cookies in your browser see this: <a href="http://www.google.com/cookies.html">google page on cookies</a>.</div>{/if}
+				{formhelp note=$errors.captcha}
 			{/forminput}
 		</div>
 	{/if}
 {/if}
 
 {if $gBitSystem->isFeatureActive('users_register_recaptcha')}
-	<div class="control-group">
-		{formfeedback error=$errors.recaptcha}
+	<div class="control-group {if $errors.recaptcha}error{/if}">
 		{formlabel label="Are you human?" for="recaptcha"}
 		{forminput}
 			{recaptcha_get_html($gBitSystem->getConfig('users_register_recaptcha_public_key'),$errors.recaptcha,!empty($smarty.server.HTTPS))}
+			{formhelp note=$errors.recaptcha}
 			{formhelp note="Sorry, we have to ask."}
 		{/forminput}
 	</div>
@@ -51,12 +52,12 @@
 
 
 {if $gBitSystem->isFeatureActive('users_register_smcaptcha')}
-	<div class="control-group">
-		{formfeedback error=$errors.smcaptcha}
+	<div class="control-group {if $errors.smcaptcha}error{/if}">
 		{formlabel label="Are you human?" for="smcaptcha"}
 		{forminput}
 			{solvemedia_get_html($gBitSystem->getConfig('users_register_smcaptcha_c_key'),null,!empty($smarty.server.HTTPS))}
 			{formhelp note="Sorry, we have to ask."}
+			{formhelp note=$errors.smcaptcha}
 		{/forminput}
 	</div>
 {/if}

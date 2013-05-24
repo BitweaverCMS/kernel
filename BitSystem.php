@@ -720,6 +720,7 @@ class BitSystem extends BitSingleton {
 	function confirmDialog( $pFormHash, $pMsg ) {
 		global $gBitSmarty;
 		if( !empty( $pMsg ) ) {
+			$pageTitle = self::getParameter( $pMsg, 'label', 'Please Confirm' );
 			if( empty( $pParamHash['cancel_url'] ) ) {
 				$gBitSmarty->assign( 'backJavascript', 'onclick="history.back();"' );
 			}
@@ -729,7 +730,7 @@ class BitSystem extends BitSingleton {
 			}
 			$gBitSmarty->assign( 'msgFields', $pMsg );
 			$gBitSmarty->assign_by_ref( 'hiddenFields', $pFormHash );
-			$this->display( 'bitpackage:kernel/confirm.tpl', NULL, array( 'display_mode' => 'edit' ));
+			$this->display( 'bitpackage:kernel/confirm.tpl', $pageTitle, array( 'display_mode' => 'edit' ));
 			die;
 		}
 	}

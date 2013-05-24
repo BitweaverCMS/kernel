@@ -3,12 +3,11 @@
 
 	<div class="body">
 		{form class="span6"}
-			{box class="box confirm" title="Please Confirm"}
+			{box class="box confirm" title=$msgFields.label|default:"Please Confirm"}
 				{foreach from=$hiddenFields item=value key=name}
 					<input type="hidden" name="{$name}" value="{$value}" />
 				{/foreach}
 				<div class="control-group">
-					<h1>{$msgFields.label}</h1>
 					<p class="highlight">{$msgFields.confirm_item}</p>
 					{if $inputFields}
 						<ul>

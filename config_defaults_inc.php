@@ -62,7 +62,7 @@ if( !defined( 'BIT_QUERY_CACHE_TIME' ) ) {
 }
 // default theme after installation
 if( !defined( 'DEFAULT_THEME' ) ) {
-	define( 'DEFAULT_THEME', 'basic' );
+	define( 'DEFAULT_THEME', 'bootstrap' );
 }
 if( !defined( 'DISPLAY_ERRORS' ) ) {
 	define( 'DISPLAY_ERRORS', 0 );

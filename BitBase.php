@@ -159,6 +159,17 @@ abstract class BitBase {
 	// =-=-=-=-=-=-=-=-=-=-=- Non-DB related functions =-=-=-=-=-=-=-=-=-=-=-=-=
 
 	/**
+	 * verifyIdParamter Determines if any given variable exists and is a number
+	 *
+	 * @param mixed $pId this can be a string, number or array. if it's an array, all values in the array will be checked to see if they are numeric
+	 * @access public
+	 * @return TRUE if the input was numeric, FALSE if it wasn't
+	 */
+	public static function verifyIdParamter( &$pParamHash, $pKey ) {
+		return !empty( $pParamHash[$pKey] ) && is_numeric( $pParamHash[$pKey] );
+	}
+
+	/**
 	 * verifyId Determines if any given variable exists and is a number
 	 *
 	 * @param mixed $pId this can be a string, number or array. if it's an array, all values in the array will be checked to see if they are numeric

@@ -260,6 +260,13 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 }
 }	// End if function_exists('bt')
 
+// variable argument var dump
+function vvd() {
+	for( $i = 0; $i < func_num_args(); $i++ ) { 
+    	vd( func_get_arg( $i ) );
+	} 
+}
+
 // var dump variable in something nicely readable in web browser
 function vd( $pVar, $pGlobals=FALSE, $pDelay=FALSE ) {
 	global $gBitSystem;

@@ -105,7 +105,7 @@ abstract class BitBase {
 	 * Sets database mechanism for the instance
 	 * @param pDB the instance of the database mechanism
 	 **/
-	function setDatabase( &$pDB ) {
+	public function setDatabase( &$pDB ) {
 		// set internal db and retrieve values
 		$this->mDb = &$pDB;
 		$this->dType = $this->mDb->mType;
@@ -114,14 +114,14 @@ abstract class BitBase {
 	/**
 	 * Determines if there is a valide database connection
 	 **/
-	function isDatabaseValid() {
+	public function isDatabaseValid() {
 		return( !empty( $this->mDb ) && $this->mDb->isValid() );
 	}
 
 	/**
 	 * Return pointer to current Database
 	 **/
-	function getDb() {
+	public function getDb() {
 		return ( !empty( $this->mDb ) ? $this->mDb : NULL  );
 	}
 
@@ -129,7 +129,7 @@ abstract class BitBase {
 	 * Switch debug level in database
 	 *
 	 **/
-	function debug( $pLevel = 99 ) {
+	public function debug( $pLevel = 99 ) {
 		global $gDebug;
 		$gDebug = $pLevel;
 		if( is_object( $this->mDb ) ) {
@@ -193,7 +193,7 @@ abstract class BitBase {
 
 	/**
 	 * getParameter Gets a hash value it exists, or returns an optional default
-	 * 
+	 *
 	 * @param associativearray $pParamHash Hash of key=>value pairs
 	 * @param string $pHashKey Key used to search for value
 	 * @param string $pDefault Default value to return if not found. NULL if nothing is passed in.
@@ -206,7 +206,7 @@ abstract class BitBase {
 		} else {
 			$ret = $pDefaultValue;
 		}
-	
+
 		return $ret;
 	}
 
@@ -218,7 +218,7 @@ abstract class BitBase {
 	 * @return none this function will DIE DIE DIE!!!
 	 * @access public
 	 **/
-	function display( $pPackage, $pTemplate ) {
+	public function display( $pPackage, $pTemplate ) {
 		global $gBitSmarty, $gBitLanguage, $style, $style_base;
 		if( !empty( $style ) && !empty( $style_base )) {
 			if (file_exists(BIT_THEMES_PATH."styles/$style_base/$pTemplate")) {
@@ -246,7 +246,7 @@ abstract class BitBase {
 	 * @param pFieldName the hash key to retrieve the value
 	 * @param pValue the value of the hash key
 	 **/
-	function setField( $pFieldName, $pValue ) {
+	public function setField( $pFieldName, $pValue ) {
 		$ret = FALSE;
 		if( $this->isValid() ) {
 			$this->mInfo[$pFieldName] = $pValue;
@@ -260,7 +260,7 @@ abstract class BitBase {
 	 * @param pFieldName the hash key to retrieve the value
 	 * @param pDefault the value to return of there is now hash value present
 	 **/
-	function getField( $pFieldName, $pDefault = NULL ) {
+	public function getField( $pFieldName, $pDefault = NULL ) {
 		return( !empty( $this->mInfo[$pFieldName] ) ? $this->mInfo[$pFieldName] : $pDefault );
 	}
 
@@ -347,7 +347,7 @@ abstract class BitBase {
 	 * @access public
 	 * @return TRUE on success, FALSE on failure
 	 */
-	function verifySortMode( $pSortMode, $pValidSortModes ) {
+	public static function verifySortMode( $pSortMode, $pValidSortModes ) {
 		if( !empty( $pSortMode ) && is_string( $pSortMode ) && !empty( $pValidSortModes ) && is_array( $pValidSortModes )) {
 			foreach( $pValidSortModes as $mode ) {
 				// we will not check the table - that would just be too complicated...
@@ -371,7 +371,7 @@ abstract class BitBase {
 		global $gBitSystem;
 		$pListHash['listInfo']['page_records'] = (!empty( $pListHash['page_records'] ) ? $pListHash['page_records'] : $pListHash['max_records'] );
 		if( !isset( $pListHash['cant'] ) ) {
-			$pListHash['cant'] = $pListHash['max_records']; 
+			$pListHash['cant'] = $pListHash['max_records'];
 		}
 
 		if( !isset( $pListHash['offset'] ) || !is_numeric( $pListHash['offset'] ) ) {

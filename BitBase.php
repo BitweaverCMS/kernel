@@ -166,7 +166,8 @@ abstract class BitBase {
 	 * @return TRUE if the input was numeric, FALSE if it wasn't
 	 */
 	public static function verifyIdParamter( &$pParamHash, $pKey ) {
-		return !empty( $pParamHash[$pKey] ) && is_numeric( $pParamHash[$pKey] );
+		// check all possibilities as quickly as possible as this function is called frequently
+		return !empty( $pParamHash[$pKey] ) && (is_int( $pParamHash[$pKey] ) || ctype_digit( $pParamHash[$pKey] ) || (is_numeric($pParamHash[$pKey]) ? intval( $pParamHash[$pKey] ) == $pParamHash[$pKey] : false));
 	}
 
 	/**
@@ -182,13 +183,14 @@ abstract class BitBase {
 		}
 		if( is_array( $pId )) {
 			foreach( $pId as $id ) {
-				if( !is_numeric( $id )) {
+				if( (is_int( $id ) || ctype_digit( $id ) || (is_numeric( $id ) ? intval( $id ) == $id : false)) ) {
 					return FALSE;
 				}
 			}
 			return TRUE;
 		}
-		return( is_numeric( $pId ));
+		return( !empty( $pId ) && (is_int( $pId ) || ctype_digit( $pId ) || (is_numeric( $pId ) ? intval( $pId ) == $pId : false)) );
+;
 	}
 
 	/**

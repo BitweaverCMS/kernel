@@ -1,24 +1,21 @@
 <?php
 /**
  * Main bitweaver systems functions
- *
- * @package kernel
+  *
  * @version $Header$
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * All Rights Reserved. See below for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
+ *
+ * Virtual base class (as much as one can have such things in PHP) for all
+ * derived tikiwiki classes that require database access.
+ *
+ * created 2004/8/15
+ *
  * @author spider <spider@steelsun.com>
+ * @package  kernel
  */
-// +----------------------------------------------------------------------+
-// | PHP version 4.??
-// +----------------------------------------------------------------------+
-// | Copyright (c) 2005 bitweaver.org
-// +----------------------------------------------------------------------+
-// | Copyright (c) 2004-2005, Christian Fowler, et. al.
-// | All Rights Reserved. See below for details and a complete list of authors.
-// | Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
-// |
-// | For comments, please use PEAR documentation standards!!!
-// | -> see http://pear.php.net/manual/en/standards.comments.php
-// |    and http://www.phpdoc.org/
-// +----------------------------------------------------------------------+
 
 /**
  * required setup
@@ -720,6 +717,7 @@ class BitSystem extends BitSingleton {
 	function confirmDialog( $pFormHash, $pMsg ) {
 		global $gBitSmarty;
 		if( !empty( $pMsg ) ) {
+			$pageTitle = self::getParameter( $pMsg, 'label', 'Please Confirm' );
 			if( empty( $pParamHash['cancel_url'] ) ) {
 				$gBitSmarty->assign( 'backJavascript', 'onclick="history.back();"' );
 			}
@@ -729,7 +727,7 @@ class BitSystem extends BitSingleton {
 			}
 			$gBitSmarty->assign( 'msgFields', $pMsg );
 			$gBitSmarty->assign_by_ref( 'hiddenFields', $pFormHash );
-			$this->display( 'bitpackage:kernel/confirm.tpl', NULL, array( 'display_mode' => 'edit' ));
+			$this->display( 'bitpackage:kernel/confirm.tpl', $pageTitle, array( 'display_mode' => 'edit' ));
 			die;
 		}
 	}

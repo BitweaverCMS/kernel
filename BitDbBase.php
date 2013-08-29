@@ -137,7 +137,7 @@ class BitDb {
 				break;
 			case "mysql":
 				$version = $this->getDatabaseVersion();
-				if( ($version['major'] >= 4 && $version['minor'] >=1) || ($version['major'] >= 5) ) {	
+				if( ($version['major'] >= 4 && $version['minor'] >=1) || ($version['major'] >= 5) ) {
 					$this->mDb->Execute("set session sql_mode='PIPES_AS_CONCAT'");
 				}
 				break;
@@ -216,7 +216,7 @@ class BitDb {
 				$ret = $this->mCaseSensitive;
 				break;
 		}
-	
+
 		return( $ret );
 	}
 	/**
@@ -552,26 +552,26 @@ class BitDb {
 	function ifNull($pField, $pNullRepl) {
 		// PURE VIRTUAL
 	}
-	
+
 	/**
 	 * A database portable RANDOM() function.
 	 * Adodb overrides it anyway with it's $rand property.
-	 * 
+	 *
 	 * @return string with RANDOM() function.
 	 */
 	function random() {
-		
+
 		switch( $this->mType ) {
 			case "postgres":
 			case "pgsql":
 				return "RANDOM()";
-				
+
 			case "mssql":
 				return "NEWID()";
-				
+
 			default:
 				return "RAND()";
-			
+
 		}
 	}
 
@@ -782,7 +782,7 @@ class BitDb {
 
 	/**
 	 * Converts field sorting abbreviation to SQL - you can pass in a single string or an entire array of sortmodes
-	 * 
+	 *
 	 * @param string or array $pSortMode fieldname and sort order string (eg name_asc)
 	 * @access public
 	 * @return the correctly quoted SQL ORDER statement
@@ -804,7 +804,7 @@ class BitDb {
 
 	/**
 	 * Converts field sorting abbreviation to SQL and it also allows us to do things like sort by random rows.
-	 * 
+	 *
 	 * @param array $pSortMode If pSortMode is 'random' it will insert the properly named db-specific function to achieve this.
 	 * @access public
 	 * @return valid, database-specific sortmode - if sortmode is not valid, NULL is returned
@@ -827,7 +827,7 @@ class BitDb {
 			$pSortMode = preg_replace( '/^user_(asc|desc)/', 'login_\1', $pSortMode );
 
 			$bIsFunction = FALSE;
-			
+
 			//Use random() of BitDbBase. BitDbAdodb will override it with its implementation.
 			if( $pSortMode == "random" ) {
 				$pSortMode = $this->random ();
@@ -1020,7 +1020,7 @@ class BitDb {
 
 	/**
 	 * determine current version of the databse
-	 * @return # hash including 'description', 'version' full string, 'major', 'minor', and 'revsion' 
+	 * @return # hash including 'description', 'version' full string, 'major', 'minor', and 'revsion'
 	 */
 	function getDatabaseVersion() {
 		$ret = $this->mDb->ServerInfo();
@@ -1035,7 +1035,7 @@ class BitDb {
 	/**
 	 * Compatibility function for DBs with case insensitive searches
 	 * (like MySQL, see: http://dev.mysql.com/doc/refman/5.1/en/case-sensitivity.html)
-	 * How to use: 
+	 * How to use:
      * 	AND ".$this->mDb->getCaseLessColumn('lc.title')." = 'page title'
      * The reason all this matters is that huge performane difference between:
 	 *   where title = 'PAGE TITLE'

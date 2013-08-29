@@ -58,7 +58,7 @@
 						</ul>
 					{/legend}
 				{else}
-					{include file=bitpackage:install/install_login.tpl title="Only site adminstrators can access this website at this time."}
+					{include file="bitpackage:install/install_login.tpl" title="Only site adminstrators can access this website at this time."}
 				{/if}
 			</div>
 		</div>

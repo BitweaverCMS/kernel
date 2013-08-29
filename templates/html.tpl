@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$bitlanguage|default:'en'}" lang="{$bitlanguage|default:'en'}" {$htmlTagAttributes} {if $gBitLanguage->isLanguageRTL()}dir="rtl"{/if}>
-
 {if $gBitThemes->mDisplayMode}
 	{assign var=displayClass value=$gBitThemes->mDisplayMode|cat:"mode"|cat:" "}
 {/if}
@@ -10,7 +9,7 @@
 {if $gContent->mContentId}
 	{assign var=contentClass value="cid"|cat:$gContent->mContentId}
 {/if}
-
+{strip}
 <head>
 	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
 
@@ -41,7 +40,6 @@
 	<a name="postdebug"></a>
 {/if}
 
-{strip}
 	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}<div dir="rtl">{/if}
 
 	{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules and $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l') && $gBitThemes->hasColumnModules('r')}
@@ -105,6 +103,7 @@
 	</footer>
 
 	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}</div>{/if}
+	{include file="bitpackage:kernel/footer.tpl"}
 	</body>
 </html>
 {/strip}

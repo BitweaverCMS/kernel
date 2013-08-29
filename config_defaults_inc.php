@@ -85,9 +85,6 @@ if( !defined( 'ANONYMOUS_USER_ID' ) ) {
 if( !defined( 'ANONYMOUS_GROUP_ID' ) ) {
 	define( 'ANONYMOUS_GROUP_ID', -1 );
 }
-if( !defined( 'ANONYMOUS_TEAM_ID' ) ) {
-	define( 'ANONYMOUS_TEAM_ID', -1 );
-}
 if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
 	define( 'EVIL_EXTENSION_PATTERN', "#\.(htaccess|pl|php|php3|php4|phtml|py|cgi|asp|jsp|sh|shtml)$#i" );
 }
@@ -159,7 +156,7 @@ if( !defined( 'BIT_MAJOR_VERSION' ) ) {
 	define( 'BIT_MAJOR_VERSION',	'4' );
 	define( 'BIT_MINOR_VERSION',	'0' );
 	define( 'BIT_SUB_VERSION',		'0' );
-	define( 'BIT_LEVEL',			'' ); // dev < alpha < beta < RC# < '' < pl
+	define( 'BIT_LEVEL',			'alpha' ); // dev < alpha < beta < RC# < '' < pl
 }
 
 // When updating to certain versions of bitweaver, we need to force a visit to the installer to fix certain stuff in the database.

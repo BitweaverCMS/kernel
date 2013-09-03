@@ -366,6 +366,11 @@ class BitSystem extends BitSingleton {
 	}
 
 
+	public function outputHeader() {
+		// see if we have a custom status other than 200 OK
+		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
+	}
+
 	/**
 	 * Display the main page template
 	 *
@@ -378,8 +383,7 @@ class BitSystem extends BitSingleton {
 		global $gBitSmarty, $gBitThemes, $gContent;
 		$gBitSmarty->verifyCompileDir();
 
-		// see if we have a custom status other than 200 OK
-		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
+		$this->outputHeader();
 		if( $this->mHttpStatus != 200 ) {
 //			error_log( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus )." http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
 		}

@@ -210,9 +210,9 @@ if( empty( $gPreScan ) ) {
 global $gThumbSizes;
 if( empty( $gThumbSizes )) {
 	$gThumbSizes = array(
-		'large'  => array( 'width' => 800, 'height' => 600 ),
-		'medium' => array( 'width' => 400, 'height' => 300 ),
-		'small'  => array( 'width' => 160, 'height' => 120 ),
+		'large'  => array( 'width' => 940, 'height' => 705 ),
+		'medium' => array( 'width' => 460, 'height' => 345 ),
+		'small'  => array( 'width' => 220, 'height' => 165 ),
 		'avatar' => array( 'width' => 100, 'height' => 100 ),
 		'icon'   => array( 'width' => 48,  'height' => 48 ),
 	);

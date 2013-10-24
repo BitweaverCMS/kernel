@@ -157,7 +157,9 @@ function bit_error_string( $iDBParms ) {
 	}
 	$info .= $indent."#### HOST: $_SERVER[HTTP_HOST]".$separator;
 	$info .= $indent."#### IP: $_SERVER[REMOTE_ADDR]".$separator;
-	$info .= $indent."#### DB: ".$gBitDb->mDb->databaseType.'://'.$gBitDb->mDb->user.'@'.$gBitDb->mDb->host.'/'.$gBitDb->mDb->database.$separator;
+	if( !empty( $gBitDb ) ) {
+		$info .= $indent."#### DB: ".$gBitDb->mDb->databaseType.'://'.$gBitDb->mDb->user.'@'.$gBitDb->mDb->host.'/'.$gBitDb->mDb->database.$separator;
+	}
 
 	if( $gBitDb && isset( $php_errormsg ) ) {
 		$info .= $indent."#### PHP: ".$php_errormsg.$separator;

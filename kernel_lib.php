@@ -326,6 +326,25 @@ function function_enabled ( $pName ) {
 	return !( in_array( $pName, $disabled ));
 }
 
+
+function verify_hex_color( $pColor ) {
+	$ret = NULL;
+	
+	if( preg_match('/^#[a-f0-9]{6}$/i', $pColor) ) {
+		$ret = $pColor;
+	} elseif( preg_match('/^[a-f0-9]{6}$/i', $pColor)) {
+		//Check for a hex color string without hash 'c1c2b4'
+		$ret = '#' . $pColor;
+	} elseif( preg_match('/^#[a-f0-9]{3}$/i', $pColor) ) {
+		$ret = $pColor;
+	} elseif( preg_match('/^[a-f0-9]{3}$/i', $pColor)) {
+		//Check for a hex color string without hash 'fff'
+		$ret = '#' . $pColor;
+	} 
+	return $ret;
+}
+
+
 /**
  * html encode all characters
  * taken from: http://www.bbsinc.com/iso8859.html
@@ -429,7 +448,7 @@ function encode_email_addresses( $pData ) {
 }
 
 /**
- * validate email sysntax
+ * validate email syntax
  * php include as a string
  *
  * @param $pEmail the file to include

@@ -1266,9 +1266,10 @@ class BitSystem extends BitSingleton {
 	 * @return none
 	 * @access public
 	 */
-	function setCanonicalLink( $pLink ) {
+	function setCanonicalLink( $pRelativeUrl ) {
 		global $gBitSmarty;
-		$gBitSmarty->assign( 'canonicalLink', $pLink );
+		$baseUri = defined( 'CANONICAL_BASE_URI' ) ? CANONICAL_BASE_URI : BIT_BASE_URI; 
+		$gBitSmarty->assign( 'canonicalLink', $baseUri.$pRelativeUrl );
 	}
 
 	/*static*/

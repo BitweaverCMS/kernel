@@ -12,7 +12,7 @@
 		{/if}
 
 	
-		<p class="highlight">{$msg}</p>
+		<div class="alert alert-error">{$msg}</div>
 
 		{if $template}
 			{include file=$template}

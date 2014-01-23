@@ -969,7 +969,11 @@ class BitSystem extends BitSingleton {
 		}
 
 		$this->setHttpStatus( $pHttpStatus );
-		$this->display( $pTemplate );
+		if( $gBitThemes->isAjaxRequest() ) {
+			$gBitSmarty->display( 'bitpackage:kernel/'.$pTemplate );
+		} else {
+			$this->display( $pTemplate );
+		}
 		die;
 	}
 

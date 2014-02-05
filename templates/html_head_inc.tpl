@@ -10,6 +10,10 @@
 <meta name="description" content="{$gContent->generateDescription()|strip_tags|escape}"/>
 {/if}
 
+{if $metaNoIndex}
+<meta name="robots" content="noindex">
+{/if}
+
 {if $metaKeywords}
 <meta name="keywords" content="{$metaKeywords|escape}" />
 {elseif $smarty.server.REQUEST_URI==BIT_ROOT_URI}

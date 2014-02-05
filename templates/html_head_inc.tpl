@@ -62,11 +62,6 @@
 <script type="text/javascript">/* <![CDATA[ */
 	BitSystem = {ldelim}
 		"urls":{ldelim}
-		{foreach from=$gBitSystem->mPackages item=pkgInfo key=pkg}
-			{if $gBitSystem->isPackageActive( $pkg )}
-				"{$pkg}":"{$pkgInfo.url}",
-			{/if}
-		{/foreach}
 			"root":"{$smarty.const.BIT_ROOT_URL}",
 			"cookie":"{$smarty.const.BIT_ROOT_URL}",
 			"iconstyle":"{$smarty.const.CONFIG_PKG_URL}iconsets/{$smarty.const.DEFAULT_ICON_STYLE}/"

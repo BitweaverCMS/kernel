@@ -951,7 +951,7 @@ class BitSystem extends BitSingleton {
 	 * @return none this function will DIE DIE DIE!!!
 	 * @access public
 	 */
-	function fatalError( $pMsg, $pTemplate=NULL, $pErrorTitle=NULL, $pHttpStatus = 400  ) {
+	function fatalError( $pMsg, $pTemplate=NULL, $pErrorTitle=NULL, $pHttpStatus = 200  ) {
 		global $gBitSmarty, $gBitThemes;
 		if( is_null( $pErrorTitle ) ) {
 			$pErrorTitle = $this->getConfig( 'site_error_title', '' );

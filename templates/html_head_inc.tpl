@@ -23,7 +23,7 @@
 {/if}
 
 {if $canonicalLink}
-<link rel="canonical" href="{$canonicalLink}"/>
+<link rel="canonical" href="{$canonicalLink|escape}"/>
 {/if}
 {if !$gBitSystem->isLive()}
 <meta name="robots" content="noindex,nofollow">

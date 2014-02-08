@@ -64,12 +64,10 @@
 		"urls":{ldelim}
 			"root":"{$smarty.const.BIT_ROOT_URL}",
 			"cookie":"{$smarty.const.BIT_ROOT_URL}",
-			"iconstyle":"{$smarty.const.CONFIG_PKG_URL}iconsets/{$smarty.const.DEFAULT_ICON_STYLE}/"
 		{rdelim}
 	{rdelim};
 	var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";
 	var bitCookieDomain = "";
-	var bitIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons/";
 	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 	var bitTk = "{$gBitUser->mTicket}";
 /* ]]> */</script>

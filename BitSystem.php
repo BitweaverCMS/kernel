@@ -972,6 +972,7 @@ class BitSystem extends BitSingleton {
 		if( $gBitThemes->isAjaxRequest() ) {
 			$gBitSmarty->display( 'bitpackage:kernel/'.$pTemplate );
 		} else {
+			$gBitSmarty->assign( 'metaNoIndex', 1 );
 			$this->display( $pTemplate );
 		}
 		die;

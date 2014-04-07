@@ -74,8 +74,8 @@
 
 {if $gBitSystem->isFeatureActive( 'site_use_jscalendar' )}
 	<link rel="stylesheet" title="{$style}" type="text/css" href="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar-system.css" media="all" />
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar.js"></script>
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/lang/calendar-en.js"></script>
-	<script type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar-setup.js"></script>
+	<script async type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar.js"></script>
+	<script async type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/lang/calendar-en.js"></script>
+	<script async type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar-setup.js"></script>
 {/if}
 {/strip}

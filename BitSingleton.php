@@ -38,7 +38,7 @@ abstract class BitSingleton extends BitBase {
 		$globalVarName = !empty( $pVarName ) ? $pVarName : 'g'.$class;
 		global $$globalVarName;
 
-		if( !($$globalVarName = static::loadFromCache( $globalVarName )) ) {
+		if( !($$globalVarName = static::loadFromCache( $class::getCacheKey() )) ) {
 			$$globalVarName = new $class;
 		}
 		if(!isset(static::$singletons[$globalVarName])) {

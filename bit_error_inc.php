@@ -55,7 +55,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 
         }
         // Send an e-mail to the administrator
-		if( $errType && defined( 'ERROR_EMAIL' ) ) {
+		if( defined( 'IS_LIVE' ) && IS_LIVE && $errType && defined( 'ERROR_EMAIL' ) ) {
 			global $gBitDb;
 			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) ).vc( $_SERVER, FALSE );
 			mail( ERROR_EMAIL, 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr, $messageBody );

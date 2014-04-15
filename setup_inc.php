@@ -106,8 +106,7 @@ BitSystem::prependIncludePath( UTIL_PKG_PATH.'/' );
 BitSystem::prependIncludePath( UTIL_PKG_PATH.'pear/' );
 
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
-global $gBitLanguage;
-$gBitLanguage = new BitLanguage();
+BitLanguage::loadSingleton();
 
 // collects information about the browser - needed for various browser specific theme settings
 require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
@@ -119,7 +118,6 @@ $gBitSmarty->assign_by_ref( 'gBrowserInfo', $gSniffer->_browser_info );
 global $gBitUser, $gTicket, $userlib, $gBitDbType, $gLibertySystem;
 
 if( $gBitSystem->isDatabaseValid() ) {
-	$gBitSystem->loadConfig();
 
 	// output compression
 	if( ini_get( 'zlib.output_compression' ) == 1 ) {

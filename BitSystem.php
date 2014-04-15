@@ -137,6 +137,13 @@ class BitSystem extends BitSingleton {
 		}
 	}
 
+	protected static function loadFromCache( $pCacheKey ) {
+		if( $ret = parent::loadFromCache( $pCacheKey ) ) {
+			$ret->mTimer->start();
+		}
+		return $ret;
+	}
+
 	/**
 	 * Load all preferences and store them in $this->mConfig
 	 *

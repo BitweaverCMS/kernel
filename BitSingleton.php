@@ -50,7 +50,7 @@ abstract class BitSingleton extends BitBase {
     }
 
 	public static function getCacheKey() {
-		return 'g'.self::getClass();
+		return parent::getCacheKey().'#Singleton';
 	}
 
 	public static function isCacheable() {

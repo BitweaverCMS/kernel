@@ -1285,7 +1285,7 @@ class BitSystem extends BitSingleton {
 	}
 
 	/*static*/
-	function genPass() {
+	static function genPass() {
 		$vocales = "aeiou";
 		$consonantes = "bcdfghjklmnpqrstvwxyz123456789";
 		$r = '';

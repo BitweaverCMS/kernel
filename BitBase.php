@@ -111,6 +111,59 @@ abstract class BitBase {
 		self::__construct( $pName );
 	}
 
+	public function clearFromCache( &$pParamHash=NULL ) {
+		$this->mCacheTime = BIT_QUERY_CACHE_DISABLE;
+		if( static::isCacheable() && static::isCacheActive() && ($cacheKey = $this->getCacheKey()) ) {
+			$ret = apc_store( $cacheKey, $this, 3600 );
+		}
+	}
+
+	/**
+	 * storeInCache
+	 *
+	 * @param string $pCacheKey unique identifier for object in cache store
+	 * @access public
+	 * @return TRUE on success, FALSE on failure
+	 */
+	private function storeInCache( $pCacheKey ) {
+		if( $pCacheKey && static::isCacheable() && static::isCacheActive() ) {
+			$ret = apc_store( $pCacheKey, $this, 3600 );
+		}
+	}
+
+	protected static function loadFromCache( $pCacheKey ) {
+		$ret = NULL;
+		if( static::isCacheActive() && static::isCacheable() && !empty( $pCacheKey ) ) {
+			if( $ret = apc_fetch( $pCacheKey ) ) {
+				global $gBitDb;
+				$ret->setDatabase( $gBitDb );
+			}
+		}
+		return $ret;
+	}
+
+	public function getCacheKey( $pCacheKeyUuid = '' ) {
+		global $gBitDbName, $gBitDbHost;
+		return $gBitDbName.'@'.$gBitDbHost.':'.get_called_class().$pCacheKeyUuid;
+	}
+
+	public static function isCacheActive() {
+		// only apc is supported for now.
+		return function_exists( 'apc_add' );
+	}
+
+	public static function isCacheable() {
+		return false;
+	}
+
+	public function isCached() {
+		return apc_exists( $this->getCacheKey() );
+	}
+
+    final public static function getClass() {
+        return get_called_class();
+    }
+
 	/**
 	 * Sets database mechanism for the instance
 	 * @param pDB the instance of the database mechanism
@@ -478,56 +531,6 @@ abstract class BitBase {
 			}
 		}
 	}
-
-	/**
-	 * cacheObject
-	 *
-	 * @param string $pCacheKey unique identifier for object in cache store
-	 * @access public
-	 * @return TRUE on success, FALSE on failure
-	 */
-	private function storeInCache( $pCacheKey ) {
-		if( static::isCacheable() && static::isCacheActive() ) {
-			$ret = apc_store( $pCacheKey, $this );
-		}
-	}
-
-
-	public static function isCacheActive() {
-		// only apc is supported for now.
-		return function_exists( 'apc_add' );
-	}
-
-	public static function getCacheKey( $pCacheKeyUuid = '' ) {
-		global $gBitDbName, $gBitDbHost;
-		return $gBitDbName.'@'.$gBitDbHost.':'.get_called_class().$pCacheKeyUuid;
-	}
-
-	public static function isCacheable() {
-		return false;
-	}
-
-	public function isCached() {
-		return apc_exists( $this->getCacheKey() );
-	}
-
-	public function clearFromCache() {
-	}
-
-	protected static function loadFromCache( $pCacheKey ) {
-		$ret = NULL;
-		if( static::isCacheActive() && static::isCacheable() && !empty( $pCacheKey ) ) {
-			if( $ret = apc_fetch( $pCacheKey ) ) {
-				global $gBitDb;
-				$ret->setDatabase( $gBitDb );
-			}
-		}
-		return $ret;
-	}
-
-    final public static function getClass() {
-        return get_called_class();
-    }
 
 }
 

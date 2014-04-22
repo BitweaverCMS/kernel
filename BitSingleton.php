@@ -49,7 +49,7 @@ abstract class BitSingleton extends BitBase {
 		return static::$singletons[$globalVarName];
     }
 
-	public static function getCacheKey() {
+	public function getCacheKey() {
 		return parent::getCacheKey().'#Singleton';
 	}
 

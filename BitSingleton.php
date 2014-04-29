@@ -25,7 +25,7 @@ require_once( KERNEL_PKG_PATH . 'BitBase.php' );
 /**
  * @package  kernel
  */
-abstract class BitSingleton extends BitBase {
+abstract class BitSingleton extends BitBase implements BitCacheable {
 
     protected static $singletons = null;
 
@@ -38,7 +38,7 @@ abstract class BitSingleton extends BitBase {
 		$globalVarName = !empty( $pVarName ) ? $pVarName : 'g'.$class;
 		global $$globalVarName;
 
-		if( !($$globalVarName = static::loadFromCache( $class::getCacheKey() )) ) {
+		if( !($$globalVarName = static::loadFromCache( 'Singleton' )) ) {
 			$$globalVarName = new $class;
 		}
 		if(!isset(static::$singletons[$globalVarName])) {
@@ -50,10 +50,14 @@ abstract class BitSingleton extends BitBase {
     }
 
 	public function getCacheKey() {
-		return parent::getCacheKey().'#Singleton';
+		return 'Singleton';
 	}
 
-	public static function isCacheable() {
+	public static function isCacheableClass() {
+		return true;
+	}
+
+	public function isCacheableObject() {
 		return true;
 	}
 

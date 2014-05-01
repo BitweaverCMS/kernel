@@ -595,7 +595,7 @@ class BitDbAdodb extends BitDb {
 	 *	   are disabled, making it backward compatible.
 	 */
 	function StartTrans() {
-		return $this->mDb->StartTrans();
+		return is_object( $this->mDb ) && $this->mDb->StartTrans();
 	}
 
 	/**
@@ -607,7 +607,7 @@ class BitDbAdodb extends BitDb {
 	 *	@returns TRUE on commit, FALSE on rollback.
 	 */
 	function CompleteTrans() {
-		return $this->mDb->CompleteTrans();
+		return is_object( $this->mDb ) && $this->mDb->CompleteTrans();
 	}
 
 	/**

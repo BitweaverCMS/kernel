@@ -1,4 +1,3 @@
-{* $Header$ *}
 {strip}
 {if $packageMenu}
 	{bitmodule title="$moduleTitle" name="package_menu"}

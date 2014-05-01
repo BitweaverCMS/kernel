@@ -8,7 +8,7 @@
 	{/capture}
 {/if}
 
-{assign var=pageName value=kernel_`$page`}
+{assign var=pageName value="kernel_`$page`"}
 
 {form class=$pageName|replace:'packages':'pkg'}
 	<input type="hidden" name="page" value="{$page}" />
@@ -21,7 +21,7 @@
 					</p>
 
 					{foreach from=$upgradable item=package key=name}
-						<div class="row">
+						<div class="control-group">
 							<div class="formlabel">
 								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
 							</div>
@@ -29,7 +29,7 @@
 								<label>
 									<strong>{$name|capitalize}</strong>
 								</label>
-								{formhelp note=`$package.info`}
+								{formhelp note=$package.info}
 							{/forminput}
 						</div>
 					{/foreach}
@@ -47,7 +47,7 @@
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && !$package.required}
-						<div class="row clear">
+						<div class="control-group clear">
 							<div class="formlabel">
 								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
 							</div>
@@ -60,7 +60,7 @@
 										{/if}
 									{/foreach}
 									{if $is_requirement}
-										{biticon iname=dialog-ok iexplain="Required"}
+										{booticon iname="icon-ok"   iexplain="Required"}
 										<input type="hidden" value="y" name="fPackage[{$name}]" id="package_{$name}" />
 									{else}
 										<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
@@ -69,12 +69,12 @@
 									{assign var=first_loop value=1}
 									{foreach from=$gBitSystem->mRequirements key=required_by item=reqs}
 										{if $reqs.$name}
-											{if $first_loop}<br />{biticon iname=dialog-warning iexplain="Requirement"} Required by {else}, {/if}{$required_by}
+											{if $first_loop}<br />{booticon iname="icon-warning-sign"   iexplain="Requirement"} Required by {else}, {/if}{$required_by}
 											{assign var=first_loop value=0}
 										{/if}
 									{/foreach}
 								</label>
-								{formhelp note=`$package.info` package=$name}
+								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
 					{/if}
@@ -89,7 +89,7 @@
 				</p>
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && $package.service && !$package.required}
-						<div class="row">
+						<div class="control-group">
 							<div class="formlabel">
 								{if !$package.required}<label for="package_{$name}">{/if}{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}{if !$package.required}</label>{/if}
 							</div>
@@ -102,7 +102,7 @@
 										{/if}
 									{/foreach}
 									{if $is_requirement}
-										{biticon iname=dialog-ok iexplain="Required"}
+										{booticon iname="icon-ok"   iexplain="Required"}
 										<input type="hidden" value="y" name="fPackage[{$name}]" id="package_{$name}" />
 									{else}
 										<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
@@ -111,22 +111,22 @@
 									{assign var=first_loop value=1}
 									{foreach from=$gBitSystem->mRequirements key=required_by item=reqs}
 										{if $reqs.$name}
-											{if $first_loop}<br />{biticon iname=dialog-warning iexplain="Requirement"} Required by {else}, {/if}{$required_by}
+											{if $first_loop}<br />{booticon iname="icon-warning-sign"   iexplain="Requirement"} Required by {else}, {/if}{$required_by}
 											{assign var=first_loop value=0}
 										{/if}
 									{/foreach}
 									<br />
 									{tr}Service Type{/tr}: <strong>{$package.service|capitalize|replace:"_":" "}</strong>
 								</label>
-								{formhelp note=`$package.info` package=$name}
+								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
 					{/if}
 				{/foreach}
 			{/legend}
 
-			<div class="row submit">
-				<input type="submit" name="features" value="{tr}Modify Activation{/tr}"/>
+			<div class="control-group submit">
+				<input type="submit" class="btn" name="features" value="{tr}Modify Activation{/tr}"/>
 			</div>
 		{/jstab}
 
@@ -135,13 +135,13 @@
 			{legend legend="Required packages installed on your system"}
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && $package.required}
-						<div class="row">
+						<div class="control-group">
 							<div class="formlabel">
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>
 							{forminput}
 								<strong>{$name|capitalize}</strong>
-								{formhelp note=`$package.info` package=$name}
+								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
 					{/if}
@@ -150,7 +150,7 @@
 			{legend legend="Required services installed on your system"}
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && $package.service && $package.required}
-						<div class="row">
+						<div class="control-group">
 							<div class="formlabel">
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>
@@ -158,7 +158,7 @@
 								<label>
 									<strong>{$name|capitalize}</strong>
 								</label>
-								{formhelp note=`$package.info` package=$name}
+								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
 					{/if}
@@ -246,8 +246,8 @@
 					{/if}
 
 					<ul>
-						<li>{smartlink ititle="Install Packages" ipackage=install ifile=install.php step=3}</li>
-						<li>{smartlink ititle="Upgrade Packages" ipackage=install ifile=install.php step=4}</li>
+						<li>{smartlink ititle="Install Packages" ipackage=install ifile="install.php" step=3}</li>
+						<li>{smartlink ititle="Upgrade Packages" ipackage=install ifile="install.php" step=4}</li>
 					</ul>
 				{/legend}
 			{/jstab}
@@ -257,7 +257,7 @@
 		{jstab title="Not Installed"}
 			{legend legend="bitweaver packages available for installation"}
 
-				<div class="row">
+				<div class="control-group">
 					<div class="formlabel">
 						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
 					</div>
@@ -272,13 +272,13 @@
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if ((1 or $package.tables) && !$package.required && !$package.installed) }
-						<div class="row clear">
+						<div class="control-group clear">
 							<div class="formlabel">
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>
 							{forminput}
 								{$name|capitalize}
-								{formhelp note=`$package.info` package=$name}
+								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
 					{/if}

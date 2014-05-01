@@ -87,27 +87,8 @@ $moduleHash = array(
 	array(
 		'title' => NULL,
 		'pos' => 5,
-		'layout_area' => 'l',
+		'layout_area' => 'r',
 		'module_rsrc' => 'bitpackage:kernel/mod_package_menu.tpl',
-	),
-	array(
-		'title' => 'bitweaver',
-		'pos' => 5,
-		'layout_area' => 'r',
-		'module_rsrc' => 'bitpackage:kernel/mod_bitweaver_info.tpl',
-	),
-	array(
-		'title' => 'Server Statistics',
-		'groups' => array( 'Admin' ),
-		'pos' => 10,
-		'layout_area' => 'r',
-		'module_rsrc' => 'bitpackage:kernel/mod_server_stats.tpl',
-	),
-	array(
-		'title' => 'Powered by',
-		'pos' => 15,
-		'layout_area' => 'r',
-		'module_rsrc' => 'bitpackage:kernel/mod_powered_by.tpl',
 	),
 	array(
 		'title' => NULL,

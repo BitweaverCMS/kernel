@@ -1,6 +1,5 @@
 {strip}
-<div class="navbar{if $gBitSystem->isFeatureActive( 'themes_dropdown_navbar' )} hor{/if}">
-	<ul>
+	<ul class="inline navbar">
 		{if $gBitSystem->isFeatureActive( 'themes_dropdown_navbar' )}
 			<li>{tr}Page Menu{/tr}
 				<ul>
@@ -13,6 +12,5 @@
 			</li>
 		{/if}
 	</ul>
-</div>
 <div class="clear"></div>
 {/strip}

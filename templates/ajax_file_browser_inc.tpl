@@ -4,7 +4,7 @@
 		<div style="margin-bottom:1em;cursor:hand;">
 			{foreach from=$fileList.dir item=finfo}
 				<div class="{cycle values="even,odd"}" style="margin-left:{$finfo.indent}px;" id="{$finfo.relpath|escape}" title="open" onclick='BitFileBrowser.browse(this.id,this.title,"{$smarty.request.ajax_path_conf}");'>
-					{biticon id="image-`$finfo.relpath`" iname=folder iexplain="Open"} {$finfo.name}
+					{booticon iname="icon-folder-close"  id="image-`$finfo.relpath`"  iexplain="Open"} {$finfo.name}
 				</div>
 				<div id="{$finfo.relpath|escape}-bitInsert"></div>
 			{/foreach}
@@ -16,7 +16,7 @@
 					</div>
 				{else}
 					<div class="{cycle values="even,odd"}" style="margin-left:{$finfo.indent}px;">
-						{biticon iname=dialog-warning iexplain="Empty"} [{tr}empty{/tr}]
+						{booticon iname="icon-warning-sign"   iexplain="Empty"} [{tr}empty{/tr}]
 					</div>
 				{/if}
 			{/foreach}

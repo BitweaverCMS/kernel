@@ -20,8 +20,8 @@
 	{* The rest determines which page to include using "page" GET parameter. Default: list-sections
 	Add a value in first check when you create a new admin page. *}
 	<div class="body">
-		{if $file }
-			{include file="bitpackage:$package/admin_`$file`.tpl"}
+		{if $adminFile }
+			{include file="bitpackage:$package/admin_`$adminFile`.tpl"}
 		{else}
 			{if $smarty.request.version_check}
 				{if $version_info.error.number ne 0}
@@ -36,37 +36,37 @@
 							{formfeedback warning="{tr}Seems you are using a test version.{/tr}"}
 						{/if}
 
-						<div class="row">
+						<div class="control-group">
 							{formlabel label="Your Version"}
 							{forminput}
 								<strong>bitweaver {$version_info.local}</strong>
 							{/forminput}
 						</div>
 
-						{if $version_info.compare lt 0}
-							<div class="row">
+						{if $version_info.compare < 0}
+							<div class="control-group">
 								{formlabel label="Upgrade"}
 								{forminput class=warning}
 									<strong>bitweaver {$version_info.upgrade}</strong>
-									{formhelp page="ReleaseTwoChangelog}
+									{formhelp page="ReleaseTwoChangelog"}
 								{/forminput}
 							</div>
-						{elseif $version_info.compare gt 0}
-							<div class="row">
+						{elseif $version_info.compare > 0}
+							<div class="control-group">
 								{formlabel label="Latest Version"}
 								{forminput}
 									<strong>bitweaver {$version_info.upgrade}</strong>
-									{formhelp page="ReleaseTwoChangelog}
+									{formhelp page="ReleaseTwoChangelog"}
 								{/forminput}
 							</div>
 						{/if}
 
 						{if $version_info.release}
-							<div class="row">
+							<div class="control-group">
 								{formlabel label="Latest Release"}
 								{forminput class=warning}
 									<strong>bitweaver {$version_info.release}</strong>
-									{formhelp page="ReleaseTwoChangelog}
+									{formhelp page="ReleaseTwoChangelog"}
 								{/forminput}
 							</div>
 						{/if}
@@ -74,21 +74,16 @@
 				{/if}
 			{/if}
 
-			<table width="100%" class="menutable">
-				<tr>
+			<div class="row-fluid">
 					{assign var="i" value="1"}
 					{foreach key=key item=template from=$adminTemplates}
-						<td class="width33p aligntop">
+						<div class="span4">
 							{box class="`$key`menu menu box" ipackage=$key iname="pkg_`$key`" iexplain="$key" iclass="menuicon" title=$key|capitalize}
-								{include file="bitpackage:`$key`/menu_`$key`_admin.tpl"}
+								{include file="bitpackage:`$key`/menu_`$key`_admin.tpl" packageMenuClass="unstyled"}
 							{/box}
-						</td>
-						{if not ($i++ mod 3)}
-							</tr><tr>
-						{/if}
+						</div>
 					{/foreach}
-				</tr>
-			</table>
+			</div>
 		{/if}
 	</div><!-- end .body -->
 </div><!-- end .body -->

@@ -12,7 +12,7 @@
 				<input type="hidden" name="page" value="{$page}" />
 				<input type="hidden" name="option_id" value="{$option_id|escape}" />
 				<input type="hidden" name="menu_id" value="{$menu_id|escape}" />
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Name" for="menu_name"}
 					{forminput}
 						<input id="menu_name" type="text" name="name" value="{$name|escape}"size="34"  />
@@ -20,7 +20,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="URL" for="menu_url"}
 					{forminput}
 						<input id="menu_url" type="text" name="url" value="{$url|escape}" size="34" />
@@ -28,7 +28,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Package" for="menu_section"}
 					{forminput}
 						<input id="menu_section" type="text" name="section" value="{$section|escape}" size="34" />
@@ -36,7 +36,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Permissions" for="menu_perm"}
 					{forminput}
 						<input id="menu_perm" type="text" name="perm" value="{$perm|escape}" size="34" />
@@ -44,7 +44,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Group" for="menu_groupname"}
 					{forminput}
 						<input id="menu_groupname" type="text" name="groupname" value="{$groupname|escape}" size="34" />
@@ -52,7 +52,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Type" for="type"}
 					{forminput}
 						<select name="type" id="type">
@@ -63,7 +63,7 @@
 					{/forminput}
 				</div>
 
-				<div class="row">
+				<div class="control-group">
 					{formlabel label="Position" for="position"}
 					{forminput}
 						<input type="text" name="position" id="position" value="{$position|escape}" size="5" />
@@ -71,8 +71,8 @@
 					{/forminput}
 				</div>
 
-				<div class="row submit">
-					<input type="submit" name="save" value="{tr}Save{/tr}" />
+				<div class="control-group submit">
+					<input type="submit" class="btn" name="save" value="{tr}Save{/tr}" />
 				</div>
 			{/form}
 
@@ -86,7 +86,7 @@
 
 {minifind menu_id=$menu_id sort_mode=$sort_mode page=$page}
 
-<table class="data">
+<table class="table data">
 	<caption>{tr}Menu Options{/tr}</caption>
 	<tr>
 		<th><a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={if $sort_mode eq 'option_id_desc'}option_id_asc{else}option_id_desc{/if}">{tr}ID{/tr}</a></th>
@@ -111,8 +111,8 @@
 			<td>{$admmoptions[user].perm}</td>
 			<td>{$admmoptions[user].groupname}</td>
 			<td class="alignright">
-				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$admmoptions[user].option_id}" onclick="return confirm('{tr}Are you sure you want to delete this menu item?{/tr}')" title="{tr}Delete this menu{/tr}">{biticon ipackage="icons" iname="edit-delete" iexplain="remove"}</a>
-				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;option_id={$admmoptions[user].option_id}" title="Edit this menu">{biticon ipackage="icons" iname="accessories-text-editor" iexplain="edit"}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$admmoptions[user].option_id}" onclick="return confirm('{tr}Are you sure you want to delete this menu item?{/tr}')" title="{tr}Delete this menu{/tr}">{booticon iname="icon-trash" ipackage="icons" iexplain="remove"}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;option_id={$admmoptions[user].option_id}" title="Edit this menu">{booticon iname="icon-edit" ipackage="icons" iexplain="edit"}</a>
 			</td>
 		</tr>
 	{sectionelse}

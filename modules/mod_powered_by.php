@@ -11,14 +11,14 @@
  */
 
 global $gBitDbSystem;
-$gBitSmarty->assign( 'gBitDbSystem', $gBitDbSystem );
+$_template->tpl_vars['gBitDbSystem'] = new Smarty_variable( $gBitDbSystem );
 
 if( !isset( $moduleParams['module_params']['no_dblogo'] )) {
 	global $gBitDbType;
-	$gBitSmarty->assign( 'gBitDbType', $gBitDbType );
+	$_template->tpl_vars['gBitDbType'] = new Smarty_variable( $gBitDbType );
 }
 
 if( isset( $moduleParams['module_params']['large'] ) || $gBitSystem->getConfig( 'site_icon_size', 'small' ) == 'large' ) {
-	$gBitSmarty->assign( 'size', '/large' );
+	$_template->tpl_vars['size'] = new Smarty_variable( '/large' );
 }
 ?>

@@ -27,7 +27,7 @@ function bit_error_log( $pLogMessage ) {
 		error_log( "OUTPUT in {$_SERVER['SCRIPT_URI']}" );
 	}
 
-	$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage ) : $pLogMessage) );
+	$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
 	foreach ($errlines as $txt) { error_log($txt); }
 }
 
@@ -55,7 +55,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 
         }
         // Send an e-mail to the administrator
-		if( $errType && defined( 'ERROR_EMAIL' ) ) {
+		if( defined( 'IS_LIVE' ) && IS_LIVE && $errType && defined( 'ERROR_EMAIL' ) ) {
 			global $gBitDb;
 			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) ).vc( $_SERVER, FALSE );
 			mail( ERROR_EMAIL, 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr, $messageBody );
@@ -157,7 +157,9 @@ function bit_error_string( $iDBParms ) {
 	}
 	$info .= $indent."#### HOST: $_SERVER[HTTP_HOST]".$separator;
 	$info .= $indent."#### IP: $_SERVER[REMOTE_ADDR]".$separator;
-	$info .= $indent."#### DB: ".$gBitDb->mDb->databaseType.'://'.$gBitDb->mDb->user.'@'.$gBitDb->mDb->host.'/'.$gBitDb->mDb->database.$separator;
+	if( !empty( $gBitDb ) ) {
+		$info .= $indent."#### DB: ".$gBitDb->mDb->databaseType.'://'.$gBitDb->mDb->user.'@'.$gBitDb->mDb->host.'/'.$gBitDb->mDb->database.$separator;
+	}
 
 	if( $gBitDb && isset( $php_errormsg ) ) {
 		$info .= $indent."#### PHP: ".$php_errormsg.$separator;
@@ -243,12 +245,12 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 					}
 				}
 			}
-			$s .= "\n    ".$indent;
-			$s .= @sprintf(" LINE: %4d, %s", $arr['line'],$arr['file']);
 			if( !preg_match( "*include*", $arr['function'] ) && !preg_match( "*silentlog*", strtolower( $arr['function'] ) ) ) {
 				$s .= "\n    ".$indent.'    -> ';
 				$s .= $sClass.$arr['function'].'('.implode(', ',$args).')';
 			}
+			$s .= "\n    ".$indent;
+			$s .= @sprintf(" LINE: %4d, %s", $arr['line'],$arr['file']);
 			$indent = '';
 		}
 		$s .= "\n";
@@ -259,6 +261,13 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 	return $s;
 }
 }	// End if function_exists('bt')
+
+// variable argument var dump
+function vvd() {
+	for( $i = 0; $i < func_num_args(); $i++ ) { 
+    	vd( func_get_arg( $i ) );
+	} 
+}
 
 // var dump variable in something nicely readable in web browser
 function vd( $pVar, $pGlobals=FALSE, $pDelay=FALSE ) {

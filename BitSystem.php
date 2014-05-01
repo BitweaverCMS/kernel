@@ -1,24 +1,21 @@
 <?php
 /**
  * Main bitweaver systems functions
- *
- * @package kernel
+  *
  * @version $Header$
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * All Rights Reserved. See below for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
+ *
+ * Virtual base class (as much as one can have such things in PHP) for all
+ * derived tikiwiki classes that require database access.
+ *
+ * created 2004/8/15
+ *
  * @author spider <spider@steelsun.com>
+ * @package  kernel
  */
-// +----------------------------------------------------------------------+
-// | PHP version 4.??
-// +----------------------------------------------------------------------+
-// | Copyright (c) 2005 bitweaver.org
-// +----------------------------------------------------------------------+
-// | Copyright (c) 2004-2005, Christian Fowler, et. al.
-// | All Rights Reserved. See below for details and a complete list of authors.
-// | Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
-// |
-// | For comments, please use PEAR documentation standards!!!
-// | -> see http://pear.php.net/manual/en/standards.comments.php
-// |    and http://www.phpdoc.org/
-// +----------------------------------------------------------------------+
 
 /**
  * required setup
@@ -125,20 +122,7 @@ class BitSystem extends BitSingleton {
 		// Critical Preflight Checks
 		$this->checkEnvironment();
 
-		$this->initSmarty();
 		$this->mRegisterCalled = FALSE;
-	}
-
-	// === initSmarty
-	/**
-	 * Define and load Smarty components
-	 *
-	 * @param none $
-	 * @return none
-	 * @access private
-	 */
-	function initSmarty() {
-		global $bitdomain, $_SERVER, $gBitSmarty;
 
 		// Set the separator for PHP generated tags to be &amp; instead of &
 		// This is necessary for XHTML compliance
@@ -151,21 +135,14 @@ class BitSystem extends BitSingleton {
 				}
 			}
 		}
+	}
 
-		if( !isset( $bitdomain ) ) {
-			$bitdomain = "";
+	public static function loadFromCache( $pCacheKey ) {
+		if( $ret = parent::loadFromCache( $pCacheKey ) ) {
+			$ret->setHttpStatus( HttpStatusCodes::HTTP_OK );
+			$ret->mTimer->start();
 		}
-
-		// make sure we only create one BitSmarty
-		if( !is_object( $gBitSmarty ) ) {
-			$gBitSmarty = new BitSmarty();
-			// set the default handler
-			$gBitSmarty->load_filter( 'pre', 'tr' );
-			// $gBitSmarty->load_filter('output','trimwhitespace');
-			if( isset( $_REQUEST['highlight'] ) ) {
-				$gBitSmarty->load_filter( 'output', 'highlight' );
-			}
-		}
+		return $ret;
 	}
 
 	/**
@@ -376,10 +353,12 @@ class BitSystem extends BitSingleton {
 			$extraHeaders = "Reply-to: ".$pMailHash['Reply-to']."\r\n";
 		}
 
+		$fromEmail = !empty( $pMailHash['from'] ) ? $pMailHash['from'] : $this->getConfig( 'site_sender_email' );
+
 		mail($pMailHash['email'],
 			$pMailHash['subject'].' '.$_SERVER["SERVER_NAME"],
 			$pMailHash['body'],
-			"From: ".$this->getConfig( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
+			"From: ".$fromEmail."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"
 		);
 	}
 
@@ -395,6 +374,11 @@ class BitSystem extends BitSingleton {
 	}
 
 
+	public function outputHeader() {
+		// see if we have a custom status other than 200 OK
+		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
+	}
+
 	/**
 	 * Display the main page template
 	 *
@@ -407,8 +391,7 @@ class BitSystem extends BitSingleton {
 		global $gBitSmarty, $gBitThemes, $gContent;
 		$gBitSmarty->verifyCompileDir();
 
-		// see if we have a custom status other than 200 OK
-		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
+		$this->outputHeader();
 		if( $this->mHttpStatus != 200 ) {
 //			error_log( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus )." http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
 		}
@@ -432,7 +415,6 @@ class BitSystem extends BitSingleton {
 
 		// only using the default html header will print modules and all the rest of it.
 		if( $gBitThemes->mFormatHeader != 'html' ) {
-			$gBitSmarty->assign_by_ref( 'gBitSystem', $this );
 			$gBitSmarty->display( $pMid );
 			return;
 		}
@@ -459,8 +441,7 @@ class BitSystem extends BitSingleton {
 		$gBitSmarty->assign( 'mid', $pMid );
 		//		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
 		// Make sure that the gBitSystem symbol available to templates is correct and up-to-date.
-		$gBitSmarty->assign_by_ref('gBitSystem', $this);
-		$gBitSmarty->display( 'bitpackage:kernel/bitweaver.tpl' );
+		print $gBitSmarty->fetch( 'bitpackage:kernel/html.tpl' );
 		$this->postDisplay( $pMid );
 	}
 
@@ -500,11 +481,11 @@ class BitSystem extends BitSingleton {
 		 */
 		global $gBitUser;
 		if( isset( $gBitUser )) {
-			$gBitUser->invokeServices( 'module_display_function' );
+			//SMARTY3 $gBitUser->invokeServices( 'module_display_function' );
 		}
 
 		// process layout
-		require_once( THEMES_PKG_PATH.'modules_inc.php' );
+		// SMARTY3 require_once( THEMES_PKG_PATH.'modules_inc.php' );
 
 		$gBitThemes->loadStyle();
 
@@ -710,12 +691,6 @@ class BitSystem extends BitSingleton {
 	function fatalPermission( $pPermission, $pMsg=NULL ) {
 		global $gBitUser, $gBitSmarty, $gBitThemes;
 		if( !$gBitUser->isRegistered() ) {
-			$gBitSmarty->assign( 'errorHeading', 'Please login&nbsp;&hellip;' );
-			$title = 'Please login&nbsp;&hellip;';
-			$pMsg .= '</p><p>You must be logged in. Please <a href="'.USERS_PKG_URL.'login.php">login</a>';
-			if( $this->getConfig( 'users_allow_register', 'y' ) == 'y' ) {
-				$pMsg .= ' or <a href="'.USERS_PKG_URL.'register.php">register</a>.';
-			}
 			$gBitSmarty->assign( 'template', 'bitpackage:users/login_inc.tpl' );
 		} else {
 			$title = 'Oops!';
@@ -726,7 +701,7 @@ class BitSystem extends BitSingleton {
 		}
 // bit_error_log( "PERMISSION DENIED: $pPermission $pMsg" );
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
-		$this->setHttpStatus( HttpStatusCodes::HTTP_FORBIDDEN );
+		$this->setHttpStatus( HttpStatusCodes::HTTP_UNAUTHORIZED );
 		$this->display( "error.tpl" );
 		die;
 	}
@@ -754,6 +729,7 @@ class BitSystem extends BitSingleton {
 	function confirmDialog( $pFormHash, $pMsg ) {
 		global $gBitSmarty;
 		if( !empty( $pMsg ) ) {
+			$pageTitle = self::getParameter( $pMsg, 'label', 'Please Confirm' );
 			if( empty( $pParamHash['cancel_url'] ) ) {
 				$gBitSmarty->assign( 'backJavascript', 'onclick="history.back();"' );
 			}
@@ -763,7 +739,7 @@ class BitSystem extends BitSingleton {
 			}
 			$gBitSmarty->assign( 'msgFields', $pMsg );
 			$gBitSmarty->assign_by_ref( 'hiddenFields', $pFormHash );
-			$this->display( 'bitpackage:kernel/confirm.tpl', NULL, array( 'display_mode' => 'edit' ));
+			$this->display( 'bitpackage:kernel/confirm.tpl', $pageTitle, array( 'display_mode' => 'edit' ));
 			die;
 		}
 	}
@@ -983,7 +959,7 @@ class BitSystem extends BitSingleton {
 	 * @return none this function will DIE DIE DIE!!!
 	 * @access public
 	 */
-	function fatalError( $pMsg, $pTemplate=NULL, $pErrorTitle=NULL, $pHttpStatus = 400  ) {
+	function fatalError( $pMsg, $pTemplate=NULL, $pErrorTitle=NULL, $pHttpStatus = 200  ) {
 		global $gBitSmarty, $gBitThemes;
 		if( is_null( $pErrorTitle ) ) {
 			$pErrorTitle = $this->getConfig( 'site_error_title', '' );
@@ -1001,7 +977,12 @@ class BitSystem extends BitSingleton {
 		}
 
 		$this->setHttpStatus( $pHttpStatus );
-		$this->display( $pTemplate );
+		if( $gBitThemes->isAjaxRequest() ) {
+			$gBitSmarty->display( 'bitpackage:kernel/'.$pTemplate );
+		} else {
+			$gBitSmarty->assign( 'metaNoIndex', 1 );
+			$this->display( $pTemplate );
+		}
 		die;
 	}
 
@@ -1274,6 +1255,7 @@ class BitSystem extends BitSingleton {
 		global $gPageTitle;
 		return( $gPageTitle );
 	}
+
 	// === setBrowserTitle
 	/**
 	 * set the title of the browser
@@ -1289,8 +1271,22 @@ class BitSystem extends BitSingleton {
 		$gBitSmarty->assign( 'gPageTitle', $pTitle );
 	}
 
+	// === setCanonicalLink
+	/**
+	 * set the canonical page title
+	 *
+	 * @param string $ pTitle title to be used
+	 * @return none
+	 * @access public
+	 */
+	function setCanonicalLink( $pRelativeUrl ) {
+		global $gBitSmarty;
+		$baseUri = defined( 'CANONICAL_BASE_URI' ) ? CANONICAL_BASE_URI : BIT_BASE_URI; 
+		$gBitSmarty->assign( 'canonicalLink', $baseUri.$pRelativeUrl );
+	}
+
 	/*static*/
-	function genPass() {
+	static function genPass() {
 		$vocales = "aeiou";
 		$consonantes = "bcdfghjklmnpqrstvwxyz123456789";
 		$r = '';

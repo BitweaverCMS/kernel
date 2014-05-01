@@ -11,7 +11,7 @@
 			<input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
 			<input type="hidden" name="offset" value="{$offset|escape}" />
 
-			<div class="row">
+			<div class="control-group">
 				{formlabel label="Event" for="event"}
 				{forminput}
 					<select name="event" id="event">
@@ -23,7 +23,7 @@
 				{/forminput}
 			</div>
 
-			<div class="row">
+			<div class="control-group">
 				{formlabel label="Email address" for="femail"}
 				{forminput}
 					<input type="text" id="femail" name="email" />
@@ -34,14 +34,14 @@
 				{/forminput}
 			</div>
 
-			<div class="row submit">
-				<input type="submit" name="add" value="{tr}Add{/tr}" />
+			<div class="control-group submit">
+				<input type="submit" class="btn" name="add" value="{tr}Add{/tr}" />
 			</div>
 		{/form}
 
 		{minifind sort_mode=$sort_mode find=$find}
 
-		<table class="data">
+		<table class="table data">
 			<caption>{tr}Active Notifications{/tr}</caption>
 			<tr>
 				<th>{smartlink ititle="Event" isort="event" offset=$offset idefault=1}</th>
@@ -55,7 +55,7 @@
 					<td>{$channels[user].event}</td>
 					<td>{$channels[user].object}</td>
 					<td>{$channels[user].email}</td>
-					<td class="actionicon">{smartlink ititle="remove" ibiticon="icons/edit-delete" offset=$offset removeevent=`$channels[user].event` object=`$channels[user].object` email=`$channels[user].email`}</td>
+					<td class="actionicon">{smartlink ititle="remove" booticon="icon-trash" offset=$offset removeevent=$channels[user].event object=$channels[user].object email=$channels[user].email}</td>
 				</tr>
 			{sectionelse}
 				<tr class="norecords"><td colspan="4">{tr}No records found{/tr}</td></tr>

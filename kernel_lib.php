@@ -326,6 +326,25 @@ function function_enabled ( $pName ) {
 	return !( in_array( $pName, $disabled ));
 }
 
+
+function verify_hex_color( $pColor ) {
+	$ret = NULL;
+	
+	if( preg_match('/^#[a-f0-9]{6}$/i', $pColor) ) {
+		$ret = $pColor;
+	} elseif( preg_match('/^[a-f0-9]{6}$/i', $pColor)) {
+		//Check for a hex color string without hash 'c1c2b4'
+		$ret = '#' . $pColor;
+	} elseif( preg_match('/^#[a-f0-9]{3}$/i', $pColor) ) {
+		$ret = $pColor;
+	} elseif( preg_match('/^[a-f0-9]{3}$/i', $pColor)) {
+		//Check for a hex color string without hash 'fff'
+		$ret = '#' . $pColor;
+	} 
+	return $ret;
+}
+
+
 /**
  * html encode all characters
  * taken from: http://www.bbsinc.com/iso8859.html
@@ -429,7 +448,7 @@ function encode_email_addresses( $pData ) {
 }
 
 /**
- * validate email sysntax
+ * validate email syntax
  * php include as a string
  *
  * @param $pEmail the file to include
@@ -650,37 +669,11 @@ function xmlentities( $string, $quote_style=ENT_QUOTES ) {
  * Redirect to another page or site
  * @param string The url to redirect to
  */
-function bit_redirect( $pUrl, $pStatusCode=NULL ) {
-
-	$errors = array(
-		400 => "HTTP/1.1 400 Bad Request",
-		401 => "HTTP/1.1 401 Unauthorized",
-		402 => "HTTP/1.1 402 Payment Required",
-		403 => "HTTP/1.1 403 Forbidden",
-		404 => "HTTP/1.1 404 Not Found",
-		405 => "HTTP/1.1 405 Method Not Allowed",
-		406 => "HTTP/1.1 406 Not Acceptable",
-		407 => "HTTP/1.1 407 Proxy Authentication Required",
-		408 => "HTTP/1.1 408 Request Time-out",
-		409 => "HTTP/1.1 409 Conflict",
-		410 => "HTTP/1.1 410 Gone",
-		411 => "HTTP/1.1 411 Length Required",
-		412 => "HTTP/1.1 412 Precondition Failed",
-		413 => "HTTP/1.1 413 Request Entity Too Large",
-		414 => "HTTP/1.1 414 Request-URI Too Large",
-		415 => "HTTP/1.1 415 Unsupported Media Type",
-		416 => "HTTP/1.1 416 Requested range not satisfiable",
-		417 => "HTTP/1.1 417 Expectation Failed",
-		500 => "HTTP/1.1 500 Internal Server Error",
-		501 => "HTTP/1.1 501 Not Implemented",
-		502 => "HTTP/1.1 502 Bad Gateway",
-		503 => "HTTP/1.1 503 Service Unavailable",
-		504 => "HTTP/1.1 504 Gateway Time-out"
-	);
+function bit_redirect( $pUrl, $pStatusCode=HttpStatusCodes::HTTP_FOUND ) {
 
 	// Handle non-3xx codes separately
 	if( $pStatusCode && isset( $errors[$pStatusCode] ) ) {
-		header( $errors[$pStatusCode] );
+		header( HttpStatusCodes::httpHeaderFor( $pStatusCode ) );
 		$pStatusCode = NULL;
 	}
 

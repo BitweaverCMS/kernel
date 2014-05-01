@@ -9,7 +9,7 @@
 	<div class="body">
 		{formfeedback hash=$feedback}
 		{legend legend="Exterminator"}
-			<div class="row">
+			<div class="control-group">
 				{formlabel label="Clear entire cache" for=""}
 				{forminput}
 					<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?prune=all">{tr}Empty All{/tr}</a>
@@ -17,7 +17,7 @@
 				{/forminput}
 			</div>
 
-			<table class="data">
+			<table class="table data">
 				<caption>{tr}List of Cached Files{/tr}</caption>
 				<tr>
 					<th class="width25p">{tr}Cache Area{/tr}</th>
@@ -32,14 +32,14 @@
 						<td>{$item.path|replace:$smarty.const.BIT_ROOT_PATH:""|replace:"//":"/"}</td>
 						<td class="alignright">{$item.du.count}</td>
 						<td class="alignright">{$item.du.size|display_bytes}</td>
-						<td class="actionicon">{smartlink ititle=Empty ibiticon="icons/edit-delete" prune=$key}</td>
+						<td class="actionicon">{smartlink ititle=Empty booticon="icon-trash" prune=$key}</td>
 					</tr>
 				{/foreach}
 			</table>
 		{/legend}
 
 		{legend legend="Templates Compiler"}
-			<table class="data">
+			<table class="table data">
 				<caption>{tr}List of Cached Templates{/tr}</caption>
 				<tr>
 					<th class="width25p">{tr}Language{/tr}</th>
@@ -54,7 +54,7 @@
 						<td>{$item.path|replace:$smarty.const.BIT_ROOT_PATH:""|replace:"//":"/"}{$key}</td>
 						<td class="alignright">{$item.du.count}</td>
 						<td class="alignright">{$item.du.size|display_bytes}</td>
-						<td class="actionicon">{smartlink ititle="Compile Templates" ibiticon="icons/accessories-text-editor" compiletemplates=$key}</td>
+						<td class="actionicon">{smartlink ititle="Compile Templates" booticon="icon-edit" compiletemplates=$key}</td>
 					</tr>
 				{/foreach}
 			</table>

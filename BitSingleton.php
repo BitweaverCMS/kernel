@@ -1,26 +1,31 @@
 <?php
 /**
-* Base class for all objects where only one object should be created
-*
-* @package  kernel
-* @author   spiderr <spider@bitweaver.org>
-*/
-// +---------------------------------------------------------------------------+
-// | Copyright (c) 2012, bitweaver.org
-// +---------------------------------------------------------------------------+
-// | All Rights Reserved. See below for details and a complete list of authors.
-// | Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. 
-// | -> See http://www.gnu.org/copyleft/lesser.html
-// |
-// | For comments, please use phpdocu.sourceforge.net documentation standards!
-// | -> See http://phpdocu.sourceforge.net/
-// +---------------------------------------------------------------------------+
-// | Authors: spiderr <spider@bitweaver.org>
-// +---------------------------------------------------------------------------+
+ * Base class for all objects where only one object should be created
+ *
+ * @version $Header$
+ *
+ * Copyright (c) 2004 bitweaver.org
+ * All Rights Reserved. See below for details and a complete list of authors.
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details
+ *
+ * Virtual base class (as much as one can have such things in PHP) for all
+ * derived tikiwiki classes that require database access.
+ *
+ * created 2004/8/15
+ *
+ * @author spider <spider@steelsun.com>
+ * @package  kernel
+ */
 
+/**
+ * required setup
+ */
 require_once( KERNEL_PKG_PATH . 'BitBase.php' );
 
-abstract class BitSingleton extends BitBase {
+/**
+ * @package  kernel
+ */
+abstract class BitSingleton extends BitBase implements BitCacheable {
 
     protected static $singletons = null;
 
@@ -33,8 +38,10 @@ abstract class BitSingleton extends BitBase {
 		$globalVarName = !empty( $pVarName ) ? $pVarName : 'g'.$class;
 		global $$globalVarName;
 
-		if(!isset(static::$singletons[$globalVarName])) {
+		if( !($$globalVarName = static::loadFromCache( 'Singleton' )) ) {
 			$$globalVarName = new $class;
+		}
+		if(!isset(static::$singletons[$globalVarName])) {
 			static::$singletons[$globalVarName] = $$globalVarName;
 			global $gBitSmarty;
 			$gBitSmarty->assign_by_ref( $globalVarName, $$globalVarName );
@@ -42,12 +49,19 @@ abstract class BitSingleton extends BitBase {
 		return static::$singletons[$globalVarName];
     }
 
-    final public static function getClass(){
-        return get_called_class();
-    }
+	public function getCacheKey() {
+		return 'Singleton';
+	}
+
+	public static function isCacheableClass() {
+		return true;
+	}
+
+	public function isCacheableObject() {
+		return true;
+	}
 
 }
-
 
 // I don't remember where I found this, but this is to allow php < 5.3 to use this method.
 if (!function_exists('get_called_class')) {

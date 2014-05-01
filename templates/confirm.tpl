@@ -2,14 +2,13 @@
 <div class="display confirm">
 
 	<div class="body">
-		{form}
-			{box title=Confirm}
+		{form class="span6"}
+			{box class="box confirm" title=$msgFields.label|default:"Please Confirm"}
 				{foreach from=$hiddenFields item=value key=name}
 					<input type="hidden" name="{$name}" value="{$value}" />
 				{/foreach}
-				<div class="row">
-					<h1>{$msgFields.label}</h1>
-					<p class="highlight aligncenter">{$msgFields.confirm_item}</p>
+				<div class="control-group">
+					<p class="highlight">{$msgFields.confirm_item}</p>
 					{if $inputFields}
 						<ul>
 							{section name=ix loop=$inputFields}
@@ -22,9 +21,9 @@
 					{formfeedback error=$msgFields.error}
 				</div>
 
-				<div class="row submit">
-					<input type="button" name="cancel" {$backJavascript} value="{tr}Cancel{/tr}" /> &nbsp;
-					<input type="submit" name="confirm" value="{tr}Yes{/tr}" />
+				<div class="control-group submit">
+					<input type="button" class="btn" name="cancel" {$backJavascript} value="{tr}Cancel{/tr}" /> &nbsp;
+					<input type="submit" class="btn" name="confirm" value="{tr}Yes{/tr}" />
 				</div>
 			{/box}
 		{/form}

@@ -140,12 +140,15 @@ abstract class BitBase {
 		return $ret;
 	}
 
+	public function __wakeup() {
+		global $gBitDb;
+		$this->setDatabase( $gBitDb );
+	}
+
 	public static function loadFromCache( $pCacheKey ) {
 		$ret = NULL;
 		if( static::isCacheActive() && static::isCacheableClass() && !empty( $pCacheKey ) ) {
 			if( $ret = apc_fetch( static::getCacheUuidFromKey( $pCacheKey ) ) ) {
-				global $gBitDb;
-				$ret->setDatabase( $gBitDb );
 			}
 		}
 		return $ret;

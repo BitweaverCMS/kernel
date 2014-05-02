@@ -172,6 +172,7 @@ define( 'INSTALL_PKG_URL',    BIT_ROOT_URL.'install/' );
 define( 'KERNEL_PKG_DIR',     'kernel' );
 define( 'KERNEL_PKG_NAME',    'kernel' );
 define( 'KERNEL_PKG_PATH',    BIT_ROOT_PATH.'kernel/' );
+define( 'KERNEL_PKG_URL',    BIT_ROOT_URL.KERNEL_PKG_DIR.'/' );
 define( 'CONFIG_PKG_PATH',    BIT_ROOT_PATH.'config/' );
 define( 'LANGUAGES_PKG_PATH', BIT_ROOT_PATH.'languages/' );
 define( 'LIBERTY_PKG_DIR',    'liberty' );

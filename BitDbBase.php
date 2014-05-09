@@ -18,7 +18,8 @@
  * ensure your AdoDB install is a subdirectory off your include path
  */
 
-define( 'BIT_QUERY_DEFAULT', -1 );
+define( 'BIT_QUERY_DEFAULT', -1 ); // deprecated constant for no cache time
+define( 'BIT_QUERY_CACHE_DISABLE', -1 );
 define( 'BIT_MAX_RECORDS', -1 );
 
 // num queries has to be global

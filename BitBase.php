@@ -25,6 +25,13 @@ require_once ( KERNEL_PKG_PATH.'BitDbBase.php' );
 define( 'STORAGE_BINARY', 1 );
 define( 'STORAGE_IMAGE', 2 );
 
+
+interface BitCacheable  {
+	public function getCacheKey(); 
+}
+
+
+
 /**
  * Virtual base class (as much as one can have such things in PHP) for all
  * derived bitweaver classes that require database access.
@@ -81,6 +88,14 @@ abstract class BitBase {
 	 **/
 	var $mLogs = array();
 
+	var $mPreventCache = FALSE;
+
+
+	const CACHE_STATE_NONE = 0;
+	const CACHE_STATE_DELETE = -1;
+	const CACHE_STATE_ADDED = 1;
+	const CACHE_STATE_STORED = 2;
+
 	function __construct( $pName = '' ) {
 		global $gBitDb;
 		$this->mName = $pName;
@@ -92,6 +107,11 @@ abstract class BitBase {
 		$this->mInfo = array();
 	}
 
+	function __destruct() {
+		unset( $this->mDb );
+		$this->storeInCache();
+	}
+
 	/**
 	 * During initialisation, we assign a name which is used by the class.
 	 * @param pName a unique identified used in caching and database
@@ -100,6 +120,77 @@ abstract class BitBase {
 	function BitBase( $pName = '' ) {
 		self::__construct( $pName );
 	}
+
+	public function clearFromCache( &$pParamHash=NULL ) {
+		$this->mCacheTime = BIT_QUERY_CACHE_DISABLE;
+		if( $this->isCacheableObject() && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
+			$ret = apc_delete( $cacheKey );
+		}
+	}
+
+	/**
+	 * storeInCache
+	 *
+	 * @param string $pCacheKey unique identifier for object in cache store
+	 * @access public
+	 * @return TRUE on success, FALSE on failure
+	 */
+	private function storeInCache() {
+		$ret = FALSE;
+		if( $this->isCacheableObject() && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
+			$ret = apc_store( $cacheKey, $this, 3600 );
+		}
+		return $ret;
+	}
+
+	public function __wakeup() {
+		global $gBitDb;
+		$this->setDatabase( $gBitDb );
+	}
+
+	public static function loadFromCache( $pCacheKey ) {
+		$ret = NULL;
+		if( static::isCacheActive() && static::isCacheableClass() && !empty( $pCacheKey ) ) {
+			if( $ret = apc_fetch( static::getCacheUuidFromKey( $pCacheKey ) ) ) {
+			}
+		}
+		return $ret;
+	}
+
+	public function getCacheUuid() {
+		return static::getCacheUuidFromKey( $this->getCacheKey() );
+	}
+
+	public static function getCacheUuidFromKey( $pCacheUuid = '' ) {
+		global $gBitDbName, $gBitDbHost;
+		$ret = $gBitDbName.'@'.$gBitDbHost.':'.get_called_class().'#'.$pCacheUuid;
+		return $ret;
+	}
+
+	public static function isCacheActive() {
+		// only apc is supported for now.
+		return function_exists( 'apc_add' );
+	}
+
+	public function isCacheableObject() {
+		return method_exists( $this, 'getCacheKey' ) && empty( $this->mPreventCache );
+	}
+
+	public static function isCacheableClass() {
+		return false;
+	}
+
+	public function isCached() {
+		return apc_exists( $this->getCacheUuid() );
+	}
+
+	public function setCacheableObject( $pCacheState = TRUE ) {
+		$this->mPreventCache = !empty( $pCacheState );
+	}
+
+    final public static function getClass() {
+        return get_called_class();
+    }
 
 	/**
 	 * Sets database mechanism for the instance
@@ -470,4 +561,4 @@ abstract class BitBase {
 	}
 
 }
-?>
+

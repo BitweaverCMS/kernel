@@ -137,6 +137,14 @@ class BitSystem extends BitSingleton {
 		}
 	}
 
+	public static function loadFromCache( $pCacheKey ) {
+		if( $ret = parent::loadFromCache( $pCacheKey ) ) {
+			$ret->setHttpStatus( HttpStatusCodes::HTTP_OK );
+			$ret->mTimer->start();
+		}
+		return $ret;
+	}
+
 	/**
 	 * Load all preferences and store them in $this->mConfig
 	 *
@@ -366,6 +374,11 @@ class BitSystem extends BitSingleton {
 	}
 
 
+	public function outputHeader() {
+		// see if we have a custom status other than 200 OK
+		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
+	}
+
 	/**
 	 * Display the main page template
 	 *
@@ -378,8 +391,7 @@ class BitSystem extends BitSingleton {
 		global $gBitSmarty, $gBitThemes, $gContent;
 		$gBitSmarty->verifyCompileDir();
 
-		// see if we have a custom status other than 200 OK
-		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
+		$this->outputHeader();
 		if( $this->mHttpStatus != 200 ) {
 //			error_log( "HTTP/1.0 ".HttpStatusCodes::getMessageForCode( $this->mHttpStatus )." http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] );
 		}
@@ -689,7 +701,7 @@ class BitSystem extends BitSingleton {
 		}
 // bit_error_log( "PERMISSION DENIED: $pPermission $pMsg" );
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
-		$this->setHttpStatus( HttpStatusCodes::HTTP_FORBIDDEN );
+		$this->setHttpStatus( HttpStatusCodes::HTTP_UNAUTHORIZED );
 		$this->display( "error.tpl" );
 		die;
 	}
@@ -947,7 +959,7 @@ class BitSystem extends BitSingleton {
 	 * @return none this function will DIE DIE DIE!!!
 	 * @access public
 	 */
-	function fatalError( $pMsg, $pTemplate=NULL, $pErrorTitle=NULL, $pHttpStatus = 400  ) {
+	function fatalError( $pMsg, $pTemplate=NULL, $pErrorTitle=NULL, $pHttpStatus = 200  ) {
 		global $gBitSmarty, $gBitThemes;
 		if( is_null( $pErrorTitle ) ) {
 			$pErrorTitle = $this->getConfig( 'site_error_title', '' );
@@ -965,7 +977,12 @@ class BitSystem extends BitSingleton {
 		}
 
 		$this->setHttpStatus( $pHttpStatus );
-		$this->display( $pTemplate );
+		if( $gBitThemes->isAjaxRequest() ) {
+			$gBitSmarty->display( 'bitpackage:kernel/'.$pTemplate );
+		} else {
+			$gBitSmarty->assign( 'metaNoIndex', 1 );
+			$this->display( $pTemplate );
+		}
 		die;
 	}
 
@@ -1262,13 +1279,14 @@ class BitSystem extends BitSingleton {
 	 * @return none
 	 * @access public
 	 */
-	function setCanonicalLink( $pLink ) {
+	function setCanonicalLink( $pRelativeUrl ) {
 		global $gBitSmarty;
-		$gBitSmarty->assign( 'canonicalLink', $pLink );
+		$baseUri = defined( 'CANONICAL_BASE_URI' ) ? CANONICAL_BASE_URI : BIT_BASE_URI; 
+		$gBitSmarty->assign( 'canonicalLink', $baseUri.$pRelativeUrl );
 	}
 
 	/*static*/
-	function genPass() {
+	static function genPass() {
 		$vocales = "aeiou";
 		$consonantes = "bcdfghjklmnpqrstvwxyz123456789";
 		$r = '';

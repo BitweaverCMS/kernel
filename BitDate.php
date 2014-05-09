@@ -1147,7 +1147,7 @@ class BitDate {
 	* @return an associative array containing the holidays occuring in the given year they key is a date stamp of the form Y-m-d, the value is the name of the corresponding holiday
 	* @access public
 	**/
-	function getHolidays( $pYear=NULL, $pCountryCode='US' ) {
+	static function getHolidays( $pYear=NULL, $pCountryCode='US' ) {
 		$return = array();
 
 		if( empty( $pYear ) ) {

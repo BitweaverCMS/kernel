@@ -72,7 +72,7 @@
 					</nav><!-- end #navigation -->{* needed by output filters. *}
 				{/if}
 
-				<section id="wrapper" class="span{math equation="12-x*3" x=$extraColumns}" id="content">
+				<section id="wrapper" class="span{math equation='12-x*3' x=$extraColumns}">
 					{**** Theme Layout Modules : CENTER ****}
 					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
 					{include file="bitpackage:liberty/display_structure.tpl"}

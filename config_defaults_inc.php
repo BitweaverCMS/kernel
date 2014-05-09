@@ -172,6 +172,7 @@ define( 'INSTALL_PKG_URL',    BIT_ROOT_URL.'install/' );
 define( 'KERNEL_PKG_DIR',     'kernel' );
 define( 'KERNEL_PKG_NAME',    'kernel' );
 define( 'KERNEL_PKG_PATH',    BIT_ROOT_PATH.'kernel/' );
+define( 'KERNEL_PKG_URL',    BIT_ROOT_URL.KERNEL_PKG_DIR.'/' );
 define( 'CONFIG_PKG_PATH',    BIT_ROOT_PATH.'config/' );
 define( 'LANGUAGES_PKG_PATH', BIT_ROOT_PATH.'languages/' );
 define( 'LIBERTY_PKG_DIR',    'liberty' );
@@ -210,9 +211,9 @@ if( empty( $gPreScan ) ) {
 global $gThumbSizes;
 if( empty( $gThumbSizes )) {
 	$gThumbSizes = array(
-		'large'  => array( 'width' => 800, 'height' => 600 ),
-		'medium' => array( 'width' => 400, 'height' => 300 ),
-		'small'  => array( 'width' => 160, 'height' => 120 ),
+		'large'  => array( 'width' => 940, 'height' => 705 ),
+		'medium' => array( 'width' => 460, 'height' => 345 ),
+		'small'  => array( 'width' => 220, 'height' => 165 ),
 		'avatar' => array( 'width' => 100, 'height' => 100 ),
 		'icon'   => array( 'width' => 48,  'height' => 48 ),
 	);

@@ -11,8 +11,9 @@
 			<h2>{tr}{$fatalTitle}{/tr}</h2>
 		{/if}
 
-	
-		<p class="highlight">{$msg}</p>
+		{if $msg}	
+		<div class="alert alert-error">{$msg}</div>
+		{/if}
 
 		{if $template}
 			{include file=$template}

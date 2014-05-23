@@ -18,7 +18,7 @@
 					<p><strong>Please note that there is no ecryption added to the backup file when you create a backup.</strong></p>
 
 					<div class="control-group submit">
-						<input type="submit" class="btn" name="generate" value="{tr}Create new Backup{/tr}" />
+						<input type="submit" class="btn btn-default" name="generate" value="{tr}Create new Backup{/tr}" />
 					</div>
 				{/form}
 			{/jstab}
@@ -34,7 +34,7 @@
 					</div>
 					
 					<div class="control-group submit">
-						<input type="submit" class="btn" name="upload" value="{tr}upload{/tr}" />
+						<input type="submit" class="btn btn-default" name="upload" value="{tr}upload{/tr}" />
 					</div>
 				{/form}
 			{/jstab}

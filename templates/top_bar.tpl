@@ -1,27 +1,25 @@
 {strip}
-<div id="bittopbar">
-	<div class="navbar {if $gBitSystem->getConfig('layout-header')}navbar-static-top{/if}">
-		<div class="navbar-inner">
-			<div class="nav-collapse collapse clear width100p">
-				<ul class="nav">
-					{foreach key=key item=menu from=$gBitSystem->mAppMenu}
-						{if $menu.menu_title && $menu.index_url && $menu.menu_template && !$menu.is_disabled}
-							{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}
-							<li class="dropdown m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} active{/if}">
-								{include file="`$menu.menu_template`" packageMenuClass="dropdown-menu" packageMenuTitle=$menu.menu_title}
-							</li>
-							{else}
-							<li class="dropdown m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} active{/if}">
-								<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} selected{/if}" href="{$menu.index_url}">{tr}{$menu.menu_title}{/tr}</a>
-							</li>
-							{/if}
+<nav class="navbar navbar-default {if $gBitSystem->getConfig('layout-header')}navbar-static-top{/if}" role="navigation" id="bittopbar">
+	<div class="container-fluid">
+		<div class="collapse navbar-collapse clear width100p">
+			<ul class="nav navbar-nav">
+				{foreach key=key item=menu from=$gBitSystem->mAppMenu}
+					{if $menu.menu_title && $menu.index_url && $menu.menu_template && !$menu.is_disabled}
+						{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}
+						<li class="dropdown m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} active{/if}">
+							{include file="`$menu.menu_template`" packageMenuClass="dropdown-menu" packageMenuTitle=$menu.menu_title}
+						</li>
+						{else}
+						<li class="dropdown m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} active{/if}">
+							<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} selected{/if}" href="{$menu.index_url}">{tr}{$menu.menu_title}{/tr}</a>
+						</li>
 						{/if}
-					{/foreach}
-				</ul>
-			</div>
+					{/if}
+				{/foreach}
+			</ul>
 		</div>
 	</div>
-</div>
+</nav>
 
 {if $gBitSystem->isFeatureActive('site_top_bar_js') && $gBitSystem->isFeatureActive('site_top_bar_dropdown')}
 	<script type="text/javascript"> /*<![CDATA[*/

@@ -74,10 +74,10 @@
 				{/if}
 			{/if}
 
-			<div class="row-fluid">
+			<div class="row">
 					{assign var="i" value="1"}
 					{foreach key=key item=template from=$adminTemplates}
-						<div class="span4">
+						<div class="col-md-4">
 							{box class="`$key`menu menu box" ipackage=$key iname="pkg_`$key`" iexplain="$key" iclass="menuicon" title=$key|capitalize}
 								{include file="bitpackage:`$key`/menu_`$key`_admin.tpl" packageMenuClass="unstyled"}
 							{/box}

@@ -52,7 +52,7 @@
 		{assign var=extraColumns value=0}{/if}
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
-	<header class="container{$gBitSystem->getConfig('layout-header')} mainheader">
+	<header role="banner" class="container{$gBitSystem->getConfig('layout-header')} mainheader">
 		{$gBitThemes->displayLayoutColumn('t')}
 	</header>
 	{/if}
@@ -67,21 +67,21 @@
 
 				{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
 					{**** Theme Layout Modules : NAVIGATION ****}
-					<nav id="navigation" class="span3">
+					<nav id="navigation" class="col-md-3">
 						{$gBitThemes->displayLayoutColumn('l')}
 					</nav><!-- end #navigation -->{* needed by output filters. *}
 				{/if}
 
-				<section id="wrapper" class="span{math equation='12-x*3' x=$extraColumns}">
+				<main role="main" id="wrapper" class="col-md-{math equation='12-x*3' x=$extraColumns}">
 					{**** Theme Layout Modules : CENTER ****}
 					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
 					{include file="bitpackage:liberty/display_structure.tpl"}
 					{include file=$mid}
-				</section><!-- end #wrapper -->
+				</main><!-- end #wrapper -->
 
 				{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
 					{**** Theme Layout Modules : EXTRA ****}
-					<nav id="extra" class="span3">
+					<nav id="extra" class="col-md-3">
 						{$gBitThemes->displayLayoutColumn('r')}
 					</nav><!-- end #extra -->{* needed by output filters. *}
 				{/if}
@@ -89,7 +89,7 @@
 		</div>
 	</section>
 
-	<footer class="container{$gBitSystem->getConfig('layout-footer')} mainfooter">
+	<footer role="contentinfo" class="container{$gBitSystem->getConfig('layout-footer')} mainfooter">
 		<div class="row{$gBitSystem->getConfig('layout-footer')}">
 			{**** Theme Layout Modules : BOTTOM ****}
 			{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && !$gHideModules}

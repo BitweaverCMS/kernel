@@ -2,7 +2,7 @@
 <div class="display confirm">
 
 	<div class="body">
-		{form class="span6"}
+		{form class="col-md-6"}
 			{box class="box confirm" title=$msgFields.label|default:"Please Confirm"}
 				{foreach from=$hiddenFields item=value key=name}
 					<input type="hidden" name="{$name}" value="{$value}" />

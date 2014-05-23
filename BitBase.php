@@ -121,6 +121,16 @@ abstract class BitBase {
 		self::__construct( $pName );
 	}
 
+	/**
+	 * Delete content object and all related records
+	 *
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	protected function expunge() {
+		$this->clearFromCache();
+	}
+
 	public function clearFromCache( &$pParamHash=NULL ) {
 		$this->mCacheTime = BIT_QUERY_CACHE_DISABLE;
 		if( $this->isCacheableObject() && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
@@ -163,7 +173,7 @@ abstract class BitBase {
 
 	public static function getCacheUuidFromKey( $pCacheUuid = '' ) {
 		global $gBitDbName, $gBitDbHost;
-		$ret = $gBitDbName.'@'.$gBitDbHost.':'.get_called_class().'#'.$pCacheUuid;
+		$ret = $_SERVER['HTTP_HOST'].':'.$gBitDbName.'@'.$gBitDbHost.':'.get_called_class().'#'.$pCacheUuid;
 		return $ret;
 	}
 

@@ -57,36 +57,32 @@
 	</header>
 	{/if}
 
-	<section class="maincontent">
-		<div class="container{$gBitSystem->getConfig('layout-maincontent')}">
-			{if $gBitSystem->getConfig('site_notice')}
-			<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
-			{/if}
-			<div class="row{$gBitSystem->getConfig('layout-maincontent')}">
-				{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='row' serviceHash=$gContent->mInfo}
+	<section class="maincontent container{$gBitSystem->getConfig('layout-maincontent')}">
+		{if $gBitSystem->getConfig('site_notice')}
+		<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
+		{/if}
+		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='row' serviceHash=$gContent->mInfo}
 
-				{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
-					{**** Theme Layout Modules : NAVIGATION ****}
-					<nav id="navigation" class="col-md-3">
-						{$gBitThemes->displayLayoutColumn('l')}
-					</nav><!-- end #navigation -->{* needed by output filters. *}
-				{/if}
+		{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
+			{**** Theme Layout Modules : NAVIGATION ****}
+			<nav id="navigation" class="col-md-3 col-sm-6">
+				{$gBitThemes->displayLayoutColumn('l')}
+			</nav><!-- end #navigation -->{* needed by output filters. *}
+		{/if}
 
-				<main role="main" id="wrapper" class="col-md-{math equation='12-x*3' x=$extraColumns}">
-					{**** Theme Layout Modules : CENTER ****}
-					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
-					{include file="bitpackage:liberty/display_structure.tpl"}
-					{include file=$mid}
-				</main><!-- end #wrapper -->
+		<main role="main" id="wrapper" class="col-md-{math equation='12-x*3' x=$extraColumns} col-sm-12">
+			{**** Theme Layout Modules : CENTER ****}
+			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
+			{include file="bitpackage:liberty/display_structure.tpl"}
+			{include file=$mid}
+		</main><!-- end #wrapper -->
 
-				{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
-					{**** Theme Layout Modules : EXTRA ****}
-					<nav id="extra" class="col-md-3">
-						{$gBitThemes->displayLayoutColumn('r')}
-					</nav><!-- end #extra -->{* needed by output filters. *}
-				{/if}
-			</div>
-		</div>
+		{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
+			{**** Theme Layout Modules : EXTRA ****}
+			<nav id="extra" class="col-md-3 col-sm-6">
+				{$gBitThemes->displayLayoutColumn('r')}
+			</nav><!-- end #extra -->{* needed by output filters. *}
+		{/if}
 	</section>
 
 	<footer role="contentinfo" class="container{$gBitSystem->getConfig('layout-footer')} mainfooter">

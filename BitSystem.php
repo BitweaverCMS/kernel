@@ -141,6 +141,8 @@ class BitSystem extends BitSingleton {
 		if( $ret = parent::loadFromCache( $pCacheKey ) ) {
 			$ret->setHttpStatus( HttpStatusCodes::HTTP_OK );
 			$ret->mTimer->start();
+			$ret->mOnload = array();
+			$ret->mAppMenu = array();
 		}
 		return $ret;
 	}

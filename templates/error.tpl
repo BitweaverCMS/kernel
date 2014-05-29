@@ -6,7 +6,7 @@
 		{/if}
 	</div>
 
-	<div class="body">
+	<div class="body row">
 		{if $fatalTitle}
 			<h2>{tr}{$fatalTitle}{/tr}</h2>
 		{/if}

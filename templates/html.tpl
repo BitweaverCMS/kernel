@@ -12,6 +12,9 @@
 {strip}
 <head>
 	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="icon" href="{$gBitThemes->getStyleUrl()}favicon.png" type="image/png" />
 
 	{**** if the theme has a header, it goes first ****}
 	{if file_exists("`$smarty.const.CONFIG_THEME_PATH`theme_head_inc.tpl")}
@@ -65,7 +68,7 @@
 
 		{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
 			{**** Theme Layout Modules : NAVIGATION ****}
-			<nav id="navigation" class="col-md-3 col-sm-6">
+			<nav id="navigation" class="col-md-3 col-xs-12">
 				{$gBitThemes->displayLayoutColumn('l')}
 			</nav><!-- end #navigation -->{* needed by output filters. *}
 		{/if}
@@ -79,7 +82,7 @@
 
 		{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
 			{**** Theme Layout Modules : EXTRA ****}
-			<nav id="extra" class="col-md-3 col-sm-6">
+			<nav id="extra" class="col-md-3 col-xs-12">
 				{$gBitThemes->displayLayoutColumn('r')}
 			</nav><!-- end #extra -->{* needed by output filters. *}
 		{/if}

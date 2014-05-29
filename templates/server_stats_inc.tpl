@@ -1,6 +1,6 @@
 {if !$gBitSystem->isLive() || $gBitUser->hasPermission('p_stats_view')}
 <div class="server-stats">
-	<ul class="inline">
+	<ul class="list-inline">
 		{if !$gBitSystem->isLive()}<li><span class="alert alert-warning">{tr}Site is not live. Search engines will not index this site.{/tr}</span></li>{/if}
 		<li>{tr}Execution time:{/tr} {elapsed}s</li>
 		<li>{tr}Memory:{/tr} {memusage}</li>

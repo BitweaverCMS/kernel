@@ -7,24 +7,30 @@
 		</div>
 		{if $gBitSystem->mAppMenu}
 		<div class="collapse navbar-collapse" id="bit-top-menu">
+			{if $gBitSystem->mAppMenu.bar}
 			<ul class="nav navbar-nav">
-				{foreach key=key item=menu from=$gBitSystem->mAppMenu}
+				{foreach key=key item=menu from=$gBitSystem->mAppMenu.bar}
 					{if $menu.menu_title && $menu.index_url && $menu.menu_template && !$menu.is_disabled}
-						{if $menu.menu_type == 'form'}
+						{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}
+						<li class="dropdown m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} active{/if}">
+							{include file="`$menu.menu_template`" packageMenuClass="dropdown-menu" packageMenuTitle=$menu.menu_title}
+						</li>
 						{else}
-							{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}
-							<li class="dropdown m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} active{/if}">
-								{include file="`$menu.menu_template`" packageMenuClass="dropdown-menu" packageMenuTitle=$menu.menu_title}
-							</li>
-							{else}
-							<li class="m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} active{/if}">
-								<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} selected{/if}" href="{$menu.index_url}">{tr}{$menu.menu_title}{/tr}</a>
-							</li>
-							{/if}
+						<li class="m-{$key}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} active{/if}">
+							<a accesskey="{$key|truncate:1:""}" class="{if $gBitSystem->isFeatureActive( 'site_top_bar_dropdown' )}head{else}item{/if}{if $smarty.const.ACTIVE_PACKAGE eq $menu.package_name} selected{/if}" href="{$menu.index_url}">{tr}{$menu.menu_title}{/tr}</a>
+						</li>
 						{/if}
 					{/if}
 				{/foreach}
 			</ul>
+			{/if}
+			{if $gBitSystem->mAppMenu.form}
+			{foreach key=key item=menu from=$gBitSystem->mAppMenu.form}
+				{if $menu.menu_title && $menu.index_url && $menu.menu_template && !$menu.is_disabled}
+					{include file="`$menu.menu_template`" packageMenuClass="dropdown-menu" packageMenuTitle=$menu.menu_title}
+				{/if}
+			{/foreach}
+			{/if}
 
 			<ul class="nav navbar-nav navbar-right">
 				{if $gBitUser->isRegistered()}

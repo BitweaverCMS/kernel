@@ -2577,7 +2577,7 @@ function bit_system_menu_sort( $a, $b ) {
 	if( $pa == 0 && $pb == 0 ) {
 		return( strcmp( $pb['menu_title'], $pa['menu_title'] ));
 	}
-	return $pb - $pa;
+	return $pa - $pb;
 }
 
 /* vim: :set fdm=marker : */

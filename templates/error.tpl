@@ -12,7 +12,7 @@
 		{/if}
 
 		{if $msg}	
-		<div class="alert alert-error">{$msg}</div>
+		<div class="alert alert-danger">{$msg}</div>
 		{/if}
 
 		{if $template}

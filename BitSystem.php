@@ -434,7 +434,7 @@ class BitSystem extends BitSingleton {
 				$desc = $gContent->parseData( $summary );
 			}
 			if( !empty( $desc ) ) {
-				$desc = $gContent->getContentTypeName().': '.$desc;
+				$desc = preg_replace( '/\s+/', ' ', $desc);  // $gContent->getContentTypeName().': '.
 				$gBitSmarty->assign( 'metaDescription', substr( strip_tags( $desc ), 0, 256 ) );
 			}
 		}
@@ -442,6 +442,9 @@ class BitSystem extends BitSingleton {
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
 		//		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
+		if( defined(ROLE_MODEL) ) {
+			$gBitSmarty->assign( 'role_model', TRUE );
+		}
 		// Make sure that the gBitSystem symbol available to templates is correct and up-to-date.
 		print $gBitSmarty->fetch( 'bitpackage:kernel/html.tpl' );
 		$this->postDisplay( $pMid );

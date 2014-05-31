@@ -12,9 +12,6 @@
 {strip}
 <head>
 	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<link rel="icon" href="{$gBitThemes->getStyleUrl()}favicon.png" type="image/png" />
 
 	{**** if the theme has a header, it goes first ****}
 	{if file_exists("`$smarty.const.CONFIG_THEME_PATH`theme_head_inc.tpl")}
@@ -28,7 +25,7 @@
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="{$smarty.const.CONFIG_PKG_URL}js/html5shim/html5shiv.js"></script>
     <![endif]-->
 </head>
 <body
@@ -55,59 +52,57 @@
 		{assign var=extraColumns value=0}{/if}
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
-	<header role="banner" class="container{$gBitSystem->getConfig('layout-header')} mainheader">
+	<header class="container{$gBitSystem->getConfig('layout-header')} mainheader">
 		{$gBitThemes->displayLayoutColumn('t')}
 	</header>
 	{/if}
 
-	{if $gBitSystem->getConfig('site_notice')}
-		<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
-	{/if}
+	<section class="container{$gBitSystem->getConfig('layout-body')}">
+			{if $gBitSystem->getConfig('site_notice')}
+			<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
+			{/if}
+			<div class="ink-grid  {$gBitSystem->getConfig('layout-maincontent')}">
+				{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='row' serviceHash=$gContent->mInfo}
 
-	<section class="maincontent container{$gBitSystem->getConfig('layout-maincontent')}">
-		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='row' serviceHash=$gContent->mInfo}
+				{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
+					{**** Theme Layout Modules : NAVIGATION ****}
+					<nav id="navigation" class="large-20 medium-25 small-100">
+						{$gBitThemes->displayLayoutColumn('l')}
+					</nav><!-- end #navigation -->{* needed by output filters. *}
+				{/if}
 
-		{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
-			{**** Theme Layout Modules : NAVIGATION ****}
-			<nav id="navigation" class="col-md-3 col-xs-12">
-				<div class="row">
-					{$gBitThemes->displayLayoutColumn('l')}
-				</div>
-			</nav><!-- end #navigation -->{* needed by output filters. *}
-		{/if}
+				<section id="wrapper" class="large-{math equation="100-x*20" x=$extraColumns} medium-{math equation="100-x*25" x=$extraColumns} small-100" id="content">
+					{**** Theme Layout Modules : CENTER ****}
+					{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
+					{include file="bitpackage:liberty/display_structure.tpl"}
+					{include file=$mid}
+				</section><!-- end #wrapper -->
 
-		<main role="main" id="wrapper" class="col-md-{math equation='12-x*3' x=$extraColumns} col-sm-12">
-			{**** Theme Layout Modules : CENTER ****}
-			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
-			{include file="bitpackage:liberty/display_structure.tpl"}
-			{include file=$mid}
-		</main><!-- end #wrapper -->
-
-		{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
-			{**** Theme Layout Modules : EXTRA ****}
-			<nav id="extra" class="col-md-3 col-xs-12">
-				<div class="row">
-					{$gBitThemes->displayLayoutColumn('r')}
-				</div>
-			</nav><!-- end #extra -->{* needed by output filters. *}
-		{/if}
+				{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
+					{**** Theme Layout Modules : EXTRA ****}
+					<nav id="extra" class="large-20 medium-25 small-100">
+						{$gBitThemes->displayLayoutColumn('r')}
+					</nav><!-- end #extra -->{* needed by output filters. *}
+				{/if}
+			</div>
+			<div class="clear"></div>
 	</section>
-
-	<footer role="contentinfo" class="container{$gBitSystem->getConfig('layout-footer')} mainfooter">
-		<div class="row{$gBitSystem->getConfig('layout-footer')}">
+	
+	<footer class="container{$gBitSystem->getConfig('layout-footer')} mainfooter">
+		<div class="ink-grid">
 			{**** Theme Layout Modules : BOTTOM ****}
 			{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && !$gHideModules}
 				{$gBitThemes->displayLayoutColumn('b')}
 			{/if}
-			{* get custom footer files from individual packages *}
-			{foreach from=$gBitThemes->mAuxFiles.templates.footer_inc item=file}
-				{include file=$file}
-			{/foreach}
 		</div>
+		<div class="clear"></div>
 	</footer>
 
 	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}</div>{/if}
-	{include file="bitpackage:kernel/footer.tpl"}
-	</body>
+	{* get custom footer files from individual packages *}
+	{foreach from=$gBitThemes->mAuxFiles.templates.footer_inc item=file}
+		{include file=$file}
+	{/foreach}
+</body>
 </html>
 {/strip}

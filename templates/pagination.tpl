@@ -41,8 +41,8 @@
 	{assign var=pageUrl value="`$pgnUrl`?`$pageUrlVar`"}
 {/if}
 {if $listInfo.total_pages > 1 && $listInfo.page_records}
-<div class="paginator overflow-hidden clear">
-	<ul class="pagination pull-left">
+<div class="ink-navigation" style="overflow:hidden">
+	<ul class="large-60 pagination blue">
 		{if $listInfo.current_page > 1}
 			{assign var=blockStart value=1}
 			<li>{tr}<a href="{$pageUrl}&amp;page={$listInfo.current_page-1}&amp;max_records={$listInfo.max_records}&amp;sort_mode={$listInfo.sort_mode}">&laquo;</a>{/tr}</li>
@@ -63,7 +63,7 @@
 			{if $smarty.section.current_page.index != $listInfo.current_page}
 			<li><a href="{$pageUrl}&amp;page={$smarty.section.current_page.index}&amp;max_records={$listInfo.max_records}&amp;sort_mode={$listInfo.sort_mode}">{$smarty.section.current_page.index}</a></li>
 			{else}
-			<li class="active"><span>{$listInfo.current_page}</span></li>
+			<li class="active"><a href="#">{$listInfo.current_page}</a></li>
 			{/if}
 		{/if}
 		{/section}
@@ -76,7 +76,7 @@
 		<li><a href="{$pageUrl}&amp;page={$listInfo.current_page+1}&amp;max_records={$listInfo.max_records}&amp;sort_mode={$listInfo.sort_mode}">&raquo;</a></li>
 		{/if}
 	</ul>
-	<div class="pagination pull-right">
+	<div class="large-40 push-right">
 		{form action="$pageUrl" class="form-inline"}
 		{$listInfo.offset+1} {tr}to{/tr} {math equation="x + y" x=$listInfo.offset y=$listInfo.page_records} {tr}of{/tr} {$listInfo.total_records},&nbsp; 
 				<input type="hidden" name="find" value="{$find|default:$smarty.request.find}" />

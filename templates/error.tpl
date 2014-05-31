@@ -6,14 +6,13 @@
 		{/if}
 	</div>
 
-	<div class="body row">
+	<div class="body">
 		{if $fatalTitle}
 			<h2>{tr}{$fatalTitle}{/tr}</h2>
 		{/if}
 
-		{if $msg}	
-		<div class="alert alert-error">{$msg}</div>
-		{/if}
+	
+		<p class="highlight">{$msg}</p>
 
 		{if $template}
 			{include file=$template}

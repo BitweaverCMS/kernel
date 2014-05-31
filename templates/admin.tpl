@@ -36,7 +36,7 @@
 							{formfeedback warning="{tr}Seems you are using a test version.{/tr}"}
 						{/if}
 
-						<div class="control-group">
+						<div class="control-group column-group gutters">
 							{formlabel label="Your Version"}
 							{forminput}
 								<strong>bitweaver {$version_info.local}</strong>
@@ -44,7 +44,7 @@
 						</div>
 
 						{if $version_info.compare < 0}
-							<div class="control-group">
+							<div class="control-group column-group gutters">
 								{formlabel label="Upgrade"}
 								{forminput class=warning}
 									<strong>bitweaver {$version_info.upgrade}</strong>
@@ -52,7 +52,7 @@
 								{/forminput}
 							</div>
 						{elseif $version_info.compare > 0}
-							<div class="control-group">
+							<div class="control-group column-group gutters">
 								{formlabel label="Latest Version"}
 								{forminput}
 									<strong>bitweaver {$version_info.upgrade}</strong>
@@ -62,7 +62,7 @@
 						{/if}
 
 						{if $version_info.release}
-							<div class="control-group">
+							<div class="control-group column-group gutters">
 								{formlabel label="Latest Release"}
 								{forminput class=warning}
 									<strong>bitweaver {$version_info.release}</strong>
@@ -74,16 +74,21 @@
 				{/if}
 			{/if}
 
-			<div class="row">
+			<table width="100%" class="menutable">
+				<tr>
 					{assign var="i" value="1"}
 					{foreach key=key item=template from=$adminTemplates}
-						<div class="col-md-4">
-							{box class="`$key`menu menu box" ipackage=$key iname="pkg_`$key`" iexplain="$key" iclass="menuicon" title=$key|capitalize}
+						<td class="large-33 aligntop">
+							{box class="`$key`menu menu box vspace" ipackage=$key iname="pkg_`$key`" iexplain="$key" iclass="menuicon" title=$key|capitalize}
 								{include file="bitpackage:`$key`/menu_`$key`_admin.tpl" packageMenuClass="unstyled"}
 							{/box}
-						</div>
+						</td>
+						{if not ($i++ mod 3)}
+							</tr><tr>
+						{/if}
 					{/foreach}
-			</div>
+				</tr>
+			</table>
 		{/if}
 	</div><!-- end .body -->
 </div><!-- end .body -->

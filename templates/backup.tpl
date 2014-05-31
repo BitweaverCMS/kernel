@@ -18,14 +18,14 @@
 					<p><strong>Please note that there is no ecryption added to the backup file when you create a backup.</strong></p>
 
 					<div class="control-group submit">
-						<input type="submit" class="btn btn-default" name="generate" value="{tr}Create new Backup{/tr}" />
+						<input type="submit" class="ink-button" name="generate" value="{tr}Create new Backup{/tr}" />
 					</div>
 				{/form}
 			{/jstab}
 
 			{jstab title="Upload a Backup"}
 				{form enctype="multipart/form-data" legend="Upload a Backup"}
-					<div class="control-group">
+					<div class="control-group column-group gutters">
 						{formlabel label="Upload Backup"}
 						{forminput}
 							<input type="hidden" name="MAX_FILE_SIZE" value="10000000000" />
@@ -34,7 +34,7 @@
 					</div>
 					
 					<div class="control-group submit">
-						<input type="submit" class="btn btn-default" name="upload" value="{tr}upload{/tr}" />
+						<input type="submit" class="ink-button" name="upload" value="{tr}upload{/tr}" />
 					</div>
 				{/form}
 			{/jstab}

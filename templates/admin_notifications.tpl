@@ -11,7 +11,7 @@
 			<input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
 			<input type="hidden" name="offset" value="{$offset|escape}" />
 
-			<div class="control-group">
+			<div class="control-group column-group gutters">
 				{formlabel label="Event" for="event"}
 				{forminput}
 					<select name="event" id="event">
@@ -23,7 +23,7 @@
 				{/forminput}
 			</div>
 
-			<div class="control-group">
+			<div class="control-group column-group gutters">
 				{formlabel label="Email address" for="femail"}
 				{forminput}
 					<input type="text" id="femail" name="email" />
@@ -35,7 +35,7 @@
 			</div>
 
 			<div class="control-group submit">
-				<input type="submit" class="btn btn-default" name="add" value="{tr}Add{/tr}" />
+				<input type="submit" class="ink-button" name="add" value="{tr}Add{/tr}" />
 			</div>
 		{/form}
 

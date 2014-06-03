@@ -929,10 +929,10 @@ class BitSystem extends BitSingleton {
 				: NULL )
 			);
 
-			$this->mAppMenu[$menuType][$pkg] = $pMenuHash;
+			$this->mAppMenu[$pkg] = $pMenuHash;
 		} else {
 			deprecated( 'Please use a menu registration hash instead of individual parameters: $gBitSystem->registerAppMenu( $menuHash )' );
-			$this->mAppMenu[$menuType][strtolower( $pMenuHash )] = array(
+			$this->mAppMenu[strtolower( $pMenuHash )] = array(
 				'menu_title'    => $pMenuTitle,
 				'is_disabled'   => ( $this->getConfig( 'menu_'.$pMenuHash ) == 'n' ),
 				'index_url'     => $pTitleUrl,
@@ -941,7 +941,7 @@ class BitSystem extends BitSingleton {
 				'style'         => 'display:'.( empty( $pMenuTitle ) || ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' )
 			);
 		}
-		uasort( $this->mAppMenu[$menuType], 'bit_system_menu_sort' );
+		uasort( $this->mAppMenu, 'bit_system_menu_sort' );
 	}
 
 	/**

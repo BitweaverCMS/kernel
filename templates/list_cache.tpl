@@ -12,7 +12,7 @@
    <td>
    <form method="get" action="{$smarty.const.THEMES_PKG_URL}list_cache.php">
      <input type="text" name="find" value="{$find|escape}" />
-     <input type="submit" class="ink-button" value="{tr}find{/tr}" name="search" />
+     <input type="submit" class="btn btn-default" value="{tr}find{/tr}" name="search" />
      <input type="hidden" name="sort_mode" value="{$sort_mode|escape}" />
    </form>
    </td>

@@ -28,7 +28,7 @@
             {foreach key=k item=i from=$post}
             <input type="hidden" name="{$k}" value="{$i|escape}" />
             {/foreach}
-            <input type="submit" class="ink-button" name="ticket_action_button" value="{tr}Click here to confirm your action{/tr}" />
+            <input type="submit" class="btn btn-default" name="ticket_action_button" value="{tr}Click here to confirm your action{/tr}" />
             </form><br /><br />
             <a href="javascript:history.back()">{tr}Go back{/tr}</a><br /><br />
             <a href="{$bit_index}">{tr}Return to home page{/tr}</a>

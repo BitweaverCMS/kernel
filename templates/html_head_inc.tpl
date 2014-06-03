@@ -18,11 +18,8 @@
 <meta name="keywords" content="{$gContent->generateKeywords()|@implode:','|strip_tags|escape}"/>
 {/if}
 
-<link rel="shortcut icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
-<link rel="icon" href="{$smarty.const.BIT_ROOT_URL}favicon.ico" type="image/x-icon" />
-
 {if $canonicalLink}
-<link rel="canonical" href="{$canonicalLink}"/>
+<link rel="canonical" href="{$canonicalLink|escape}"/>
 {/if}
 {if !$gBitSystem->isLive()}
 <meta name="robots" content="noindex,nofollow">
@@ -63,59 +60,20 @@
 <script type="text/javascript">/* <![CDATA[ */
 	BitSystem = {ldelim}
 		"urls":{ldelim}
-		{foreach from=$gBitSystem->mPackages item=pkgInfo key=pkg}
-			{if $gBitSystem->isPackageActive( $pkg )}
-				"{$pkg}":"{$pkgInfo.url}",
-			{/if}
-		{/foreach}
 			"root":"{$smarty.const.BIT_ROOT_URL}",
 			"cookie":"{$smarty.const.BIT_ROOT_URL}",
-			"iconstyle":"{$smarty.const.CONFIG_PKG_URL}iconsets/{$smarty.const.DEFAULT_ICON_STYLE}/"
 		{rdelim}
 	{rdelim};
 	var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";
 	var bitCookieDomain = "";
-	var bitIconDir = "{$smarty.const.LIBERTY_PKG_URL}icons/";
 	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";
 	var bitTk = "{$gBitUser->mTicket}";
-/* ]]> */
-</script>
+/* ]]> */</script>
 
-{if $gBitThemes->mStyles.joined_javascript}
-	<script type="text/javascript" src="{$gBitThemes->mStyles.joined_javascript}"></script>
+{if $gBitSystem->isPackageActive('jscalendar') && $gBitSystem->isFeatureActive( 'site_use_jscalendar' )}
+	<link rel="stylesheet" title="{$style}" type="text/css" href="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar-system.css" media="all" />
+	<script async type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar.js"></script>
+	<script async type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/lang/calendar-en.js"></script>
+	<script async type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar-setup.js"></script>
 {/if}
-{foreach from=$gBitThemes->mRawFiles.js item=jsFile}
-	<script type="text/javascript" src="{$jsFile}"></script>
-{/foreach}
-
-<script type="text/javascript">/* <![CDATA[ */
-	BitSystem = 
-$(document).ready(
-	function(){ldelim}
-		$('ul#background').innerfade({ldelim}
-			speed: 1000,
-			timeout: 5000,
-			type: 'sequence',
-			animationtype: 'fade',
-			containerheight: '259px'
-		{rdelim});
-		
-		$('ul#specials').innerfade({ldelim}
-			speed: 1000,
-			timeout: 5000,
-			type: 'sequence',
-			containerheight: '220px'
-		{rdelim});
-	{rdelim}
-);
-
-$(function() {ldelim}
-	$( "#tabs" ).tabs();
-{rdelim});
-
- $(function() {ldelim}
-	$( "#menu" ).menu();
-{rdelim});
-/* ]]> */
-</script>
 {/strip}

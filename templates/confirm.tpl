@@ -2,12 +2,12 @@
 <div class="display confirm">
 
 	<div class="body">
-		{form class="span6"}
+		{form class="col-md-6"}
 			{box class="box confirm" title=$msgFields.label|default:"Please Confirm"}
 				{foreach from=$hiddenFields item=value key=name}
 					<input type="hidden" name="{$name}" value="{$value}" />
 				{/foreach}
-				<div class="control-group column-group gutters">
+				<div class="control-group">
 					<p class="highlight">{$msgFields.confirm_item}</p>
 					{if $inputFields}
 						<ul>
@@ -22,8 +22,8 @@
 				</div>
 
 				<div class="control-group submit">
-					<input type="button" class="ink-button" name="cancel" {$backJavascript} value="{tr}Cancel{/tr}" /> &nbsp;
-					<input type="submit" class="ink-button" name="confirm" value="{tr}Yes{/tr}" />
+					<input type="button" class="btn btn-default" name="cancel" {$backJavascript} value="{tr}Cancel{/tr}" /> &nbsp;
+					<input type="submit" class="btn btn-default" name="confirm" value="{tr}Yes{/tr}" />
 				</div>
 			{/box}
 		{/form}

@@ -1,0 +1,13 @@
+syntax: glob
+templates/top_banner.tpl
+templates/footer_inc.tpl
+templates/bot_news.tpl
+modules/mod_user_login.tpl
+modules/mod_top_banner.tpl
+modules/mod_site_title.php
+modules/mod_services_menu.tpl
+modules/mod_nav_menu.tpl
+modules/mod_facebook_like.tpl
+modules/mod_customer_login.tpl
+modules/mod_customer_bar.tpl
+modules/mod_bottom_news.tpl

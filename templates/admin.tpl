@@ -36,7 +36,7 @@
 							{formfeedback warning="{tr}Seems you are using a test version.{/tr}"}
 						{/if}
 
-						<div class="control-group">
+						<div class="form-group">
 							{formlabel label="Your Version"}
 							{forminput}
 								<strong>bitweaver {$version_info.local}</strong>
@@ -44,7 +44,7 @@
 						</div>
 
 						{if $version_info.compare < 0}
-							<div class="control-group">
+							<div class="form-group">
 								{formlabel label="Upgrade"}
 								{forminput class=warning}
 									<strong>bitweaver {$version_info.upgrade}</strong>
@@ -52,7 +52,7 @@
 								{/forminput}
 							</div>
 						{elseif $version_info.compare > 0}
-							<div class="control-group">
+							<div class="form-group">
 								{formlabel label="Latest Version"}
 								{forminput}
 									<strong>bitweaver {$version_info.upgrade}</strong>
@@ -62,7 +62,7 @@
 						{/if}
 
 						{if $version_info.release}
-							<div class="control-group">
+							<div class="form-group">
 								{formlabel label="Latest Release"}
 								{forminput class=warning}
 									<strong>bitweaver {$version_info.release}</strong>

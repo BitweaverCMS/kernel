@@ -55,7 +55,7 @@
 		{assign var=extraColumns value=0}{/if}
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
-	<header role="banner" class="container{$gBitSystem->getConfig('layout-header')} mainheader">
+	<header role="banner" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
 		{$gBitThemes->displayLayoutColumn('t')}
 	</header>
 	{/if}
@@ -64,13 +64,15 @@
 		<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
 	{/if}
 
-	<section class="maincontent container{$gBitSystem->getConfig('layout-maincontent')}">
+	<div id="bw-main-spacer-top"></div>
+
+	<section id="bw-main-content" class="container{$gBitSystem->getConfig('layout-maincontent')}"><div class="row">
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='row' serviceHash=$gContent->mInfo}
 
 		{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
 			{**** Theme Layout Modules : NAVIGATION ****}
 			<nav id="navigation" class="col-sm-3 col-xs-12">
-				<div class="row">
+				<div class="row panel-group">
 					{$gBitThemes->displayLayoutColumn('l')}
 				</div>
 			</nav><!-- end #navigation -->{* needed by output filters. *}
@@ -86,14 +88,16 @@
 		{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
 			{**** Theme Layout Modules : EXTRA ****}
 			<nav id="extra" class="col-sm-3 col-xs-12">
-				<div class="row">
+				<div class="row panel-group">
 					{$gBitThemes->displayLayoutColumn('r')}
 				</div>
 			</nav><!-- end #extra -->{* needed by output filters. *}
 		{/if}
-	</section>
+	</div></section>
 
-	<footer role="contentinfo" class="container{$gBitSystem->getConfig('layout-footer')} mainfooter">
+	<div id="bw-spacer-bottom"></div>
+
+	<footer id="bw-main-footer"role="contentinfo" class="container{$gBitSystem->getConfig('layout-footer')}">
 		<div class="row{$gBitSystem->getConfig('layout-footer')}">
 			{**** Theme Layout Modules : BOTTOM ****}
 			{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && !$gHideModules}

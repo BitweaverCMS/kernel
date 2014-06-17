@@ -89,10 +89,6 @@ if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
 	define( 'EVIL_EXTENSION_PATTERN', "#\.(htaccess|pl|php|php3|php4|phtml|py|cgi|asp|jsp|sh|shtml)$#i" );
 }
 
-// Uncomment to switch to role team model ...
-if( !defined( 'ROLE_MODEL' )) {
-	define( 'ROLE_MODEL', true );
-}
 if( !defined( 'ANONYMOUS_TEAM_ID' ) ) {
 	define( 'ANONYMOUS_TEAM_ID', -1 );
 }

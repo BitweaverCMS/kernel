@@ -25,7 +25,7 @@
 		</span>
 		<br />
 	{else}
-		<div class="control-group {if $errors.captcha}error{/if}" {if $params.id}id="{$params.id}"{/if} {if $params.style}style="{$params.style}"{/if}>
+		<div class="form-group {if $errors.captcha}error{/if}" {if $params.id}id="{$params.id}"{/if} {if $params.style}style="{$params.style}"{/if}>
 			{formlabel label="Verification Code" for="captcha"}
 			{forminput}
 				<img id='captcha_img' onclick="this.blur();reloadImage();return false;" src="{$params.source}" alt="{tr}Random Image{/tr}"/>
@@ -40,7 +40,7 @@
 {/if}
 
 {if $gBitSystem->isFeatureActive('users_register_recaptcha')}
-	<div class="control-group {if $errors.recaptcha}error{/if}">
+	<div class="form-group {if $errors.recaptcha}error{/if}">
 		{formlabel label="Are you human?" for="recaptcha"}
 		{forminput}
 			{recaptcha_get_html($gBitSystem->getConfig('users_register_recaptcha_public_key'),$errors.recaptcha,!empty($smarty.server.HTTPS))}
@@ -52,7 +52,7 @@
 
 
 {if $gBitSystem->isFeatureActive('users_register_smcaptcha')}
-	<div class="control-group {if $errors.smcaptcha}error{/if}">
+	<div class="form-group {if $errors.smcaptcha}error{/if}">
 		{formlabel label="Are you human?" for="smcaptcha"}
 		{forminput}
 			{solvemedia_get_html($gBitSystem->getConfig('users_register_smcaptcha_c_key'),null,!empty($smarty.server.HTTPS))}

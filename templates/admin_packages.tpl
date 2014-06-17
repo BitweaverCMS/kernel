@@ -21,7 +21,7 @@
 					</p>
 
 					{foreach from=$upgradable item=package key=name}
-						<div class="control-group">
+						<div class="form-group">
 							<div class="formlabel">
 								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
 							</div>
@@ -47,7 +47,7 @@
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && !$package.required}
-						<div class="control-group clear">
+						<div class="form-group clear">
 							<div class="formlabel">
 								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
 							</div>
@@ -89,7 +89,7 @@
 				</p>
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && $package.service && !$package.required}
-						<div class="control-group">
+						<div class="form-group">
 							<div class="formlabel">
 								{if !$package.required}<label for="package_{$name}">{/if}{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}{if !$package.required}</label>{/if}
 							</div>
@@ -125,7 +125,7 @@
 				{/foreach}
 			{/legend}
 
-			<div class="control-group submit">
+			<div class="form-group submit">
 				<input type="submit" class="btn btn-default" name="features" value="{tr}Modify Activation{/tr}"/>
 			</div>
 		{/jstab}
@@ -135,7 +135,7 @@
 			{legend legend="Required packages installed on your system"}
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && $package.required}
-						<div class="control-group">
+						<div class="form-group">
 							<div class="formlabel">
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>
@@ -150,7 +150,7 @@
 			{legend legend="Required services installed on your system"}
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && $package.service && $package.required}
-						<div class="control-group">
+						<div class="form-group">
 							<div class="formlabel">
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>
@@ -257,7 +257,7 @@
 		{jstab title="Not Installed"}
 			{legend legend="bitweaver packages available for installation"}
 
-				<div class="control-group">
+				<div class="form-group">
 					<div class="formlabel">
 						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
 					</div>
@@ -272,7 +272,7 @@
 
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if ((1 or $package.tables) && !$package.required && !$package.installed) }
-						<div class="control-group clear">
+						<div class="form-group clear">
 							<div class="formlabel">
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>

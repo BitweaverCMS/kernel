@@ -12,7 +12,7 @@
 				<input type="hidden" name="page" value="{$page}" />
 				<input type="hidden" name="option_id" value="{$option_id|escape}" />
 				<input type="hidden" name="menu_id" value="{$menu_id|escape}" />
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Name" for="menu_name"}
 					{forminput}
 						<input id="menu_name" type="text" name="name" value="{$name|escape}"size="34"  />
@@ -20,7 +20,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="URL" for="menu_url"}
 					{forminput}
 						<input id="menu_url" type="text" name="url" value="{$url|escape}" size="34" />
@@ -28,7 +28,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Package" for="menu_section"}
 					{forminput}
 						<input id="menu_section" type="text" name="section" value="{$section|escape}" size="34" />
@@ -36,7 +36,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Permissions" for="menu_perm"}
 					{forminput}
 						<input id="menu_perm" type="text" name="perm" value="{$perm|escape}" size="34" />
@@ -44,7 +44,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Group" for="menu_groupname"}
 					{forminput}
 						<input id="menu_groupname" type="text" name="groupname" value="{$groupname|escape}" size="34" />
@@ -52,7 +52,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Type" for="type"}
 					{forminput}
 						<select name="type" id="type">
@@ -63,7 +63,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group">
+				<div class="form-group">
 					{formlabel label="Position" for="position"}
 					{forminput}
 						<input type="text" name="position" id="position" value="{$position|escape}" size="5" />
@@ -71,7 +71,7 @@
 					{/forminput}
 				</div>
 
-				<div class="control-group submit">
+				<div class="form-group submit">
 					<input type="submit" class="btn btn-default" name="save" value="{tr}Save{/tr}" />
 				</div>
 			{/form}

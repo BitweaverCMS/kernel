@@ -434,7 +434,7 @@ class BitSystem extends BitSingleton {
 				$desc = $gContent->parseData( $summary );
 			}
 			if( !empty( $desc ) ) {
-				$desc = $gContent->getContentTypeName().': '.$desc;
+				$desc = preg_replace( '/\s+/', ' ', $desc);  // $gContent->getContentTypeName().': '.
 				$gBitSmarty->assign( 'metaDescription', substr( strip_tags( $desc ), 0, 256 ) );
 			}
 		}
@@ -442,6 +442,9 @@ class BitSystem extends BitSingleton {
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
 		//		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
+		if( defined(ROLE_MODEL) ) {
+			$gBitSmarty->assign( 'role_model', TRUE );
+		}
 		// Make sure that the gBitSystem symbol available to templates is correct and up-to-date.
 		print $gBitSmarty->fetch( 'bitpackage:kernel/html.tpl' );
 		$this->postDisplay( $pMid );
@@ -926,10 +929,10 @@ class BitSystem extends BitSingleton {
 				: NULL )
 			);
 
-			$this->mAppMenu[$menuType][$pkg] = $pMenuHash;
+			$this->mAppMenu[$pkg] = $pMenuHash;
 		} else {
 			deprecated( 'Please use a menu registration hash instead of individual parameters: $gBitSystem->registerAppMenu( $menuHash )' );
-			$this->mAppMenu[$menuType][strtolower( $pMenuHash )] = array(
+			$this->mAppMenu[strtolower( $pMenuHash )] = array(
 				'menu_title'    => $pMenuTitle,
 				'is_disabled'   => ( $this->getConfig( 'menu_'.$pMenuHash ) == 'n' ),
 				'index_url'     => $pTitleUrl,
@@ -938,7 +941,7 @@ class BitSystem extends BitSingleton {
 				'style'         => 'display:'.( empty( $pMenuTitle ) || ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' )
 			);
 		}
-		uasort( $this->mAppMenu[$menuType], 'bit_system_menu_sort' );
+		uasort( $this->mAppMenu, 'bit_system_menu_sort' );
 	}
 
 	/**

@@ -9,7 +9,7 @@
 	<div class="body">
 		{formfeedback hash=$feedback}
 		{legend legend="Exterminator"}
-			<div class="control-group">
+			<div class="form-group">
 				{formlabel label="Clear entire cache" for=""}
 				{forminput}
 					<a href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php?prune=all">{tr}Empty All{/tr}</a>

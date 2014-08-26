@@ -6,13 +6,13 @@
 		{/if}
 	</div>
 
-	<div class="body">
+	<div class="body row">
 		{if $fatalTitle}
 			<h2>{tr}{$fatalTitle}{/tr}</h2>
 		{/if}
 
 		{if $msg}	
-		<div class="alert alert-error">{$msg}</div>
+		<div class="alert alert-danger">{$msg}</div>
 		{/if}
 
 		{if $template}

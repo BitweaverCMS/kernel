@@ -1,5 +1,5 @@
 {strip}
-	<ul class="inline navbar">
+	<ul class="list-inline navbar">
 		{if $gBitSystem->isFeatureActive( 'themes_dropdown_navbar' )}
 			<li>{tr}Page Menu{/tr}
 				<ul>

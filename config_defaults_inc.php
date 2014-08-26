@@ -89,10 +89,6 @@ if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
 	define( 'EVIL_EXTENSION_PATTERN', "#\.(htaccess|pl|php|php3|php4|phtml|py|cgi|asp|jsp|sh|shtml)$#i" );
 }
 
-/* Uncomment to switch to role team model ...
-if( !defined( 'ROLE_MODEL' )) {
-	define( 'ROLE_MODEL', true );
-} */
 if( !defined( 'ANONYMOUS_TEAM_ID' ) ) {
 	define( 'ANONYMOUS_TEAM_ID', -1 );
 }
@@ -172,6 +168,7 @@ define( 'INSTALL_PKG_URL',    BIT_ROOT_URL.'install/' );
 define( 'KERNEL_PKG_DIR',     'kernel' );
 define( 'KERNEL_PKG_NAME',    'kernel' );
 define( 'KERNEL_PKG_PATH',    BIT_ROOT_PATH.'kernel/' );
+define( 'KERNEL_PKG_URL',    BIT_ROOT_URL.KERNEL_PKG_DIR.'/' );
 define( 'CONFIG_PKG_PATH',    BIT_ROOT_PATH.'config/' );
 define( 'LANGUAGES_PKG_PATH', BIT_ROOT_PATH.'languages/' );
 define( 'LIBERTY_PKG_DIR',    'liberty' );

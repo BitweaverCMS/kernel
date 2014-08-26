@@ -88,6 +88,9 @@ abstract class BitBase {
 	 **/
 	var $mLogs = array();
 
+	var $mPreventCache = FALSE;
+
+
 	const CACHE_STATE_NONE = 0;
 	const CACHE_STATE_DELETE = -1;
 	const CACHE_STATE_ADDED = 1;
@@ -118,6 +121,16 @@ abstract class BitBase {
 		self::__construct( $pName );
 	}
 
+	/**
+	 * Delete content object and all related records
+	 *
+	 * @access public
+	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
+	 */
+	protected function expunge() {
+		$this->clearFromCache();
+	}
+
 	public function clearFromCache( &$pParamHash=NULL ) {
 		$this->mCacheTime = BIT_QUERY_CACHE_DISABLE;
 		if( $this->isCacheableObject() && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
@@ -140,12 +153,15 @@ abstract class BitBase {
 		return $ret;
 	}
 
+	public function __wakeup() {
+		global $gBitDb;
+		$this->setDatabase( $gBitDb );
+	}
+
 	public static function loadFromCache( $pCacheKey ) {
 		$ret = NULL;
 		if( static::isCacheActive() && static::isCacheableClass() && !empty( $pCacheKey ) ) {
 			if( $ret = apc_fetch( static::getCacheUuidFromKey( $pCacheKey ) ) ) {
-				global $gBitDb;
-				$ret->setDatabase( $gBitDb );
 			}
 		}
 		return $ret;
@@ -157,7 +173,7 @@ abstract class BitBase {
 
 	public static function getCacheUuidFromKey( $pCacheUuid = '' ) {
 		global $gBitDbName, $gBitDbHost;
-		$ret = $gBitDbName.'@'.$gBitDbHost.':'.get_called_class().'#'.$pCacheUuid;
+		$ret = $_SERVER['HTTP_HOST'].':'.$gBitDbName.'@'.$gBitDbHost.':'.get_called_class().'#'.$pCacheUuid;
 		return $ret;
 	}
 
@@ -167,7 +183,7 @@ abstract class BitBase {
 	}
 
 	public function isCacheableObject() {
-		return method_exists( $this, 'getCacheKey' );
+		return method_exists( $this, 'getCacheKey' ) && empty( $this->mPreventCache );
 	}
 
 	public static function isCacheableClass() {
@@ -176,6 +192,10 @@ abstract class BitBase {
 
 	public function isCached() {
 		return apc_exists( $this->getCacheUuid() );
+	}
+
+	public function setCacheableObject( $pCacheState = TRUE ) {
+		$this->mPreventCache = !empty( $pCacheState );
 	}
 
     final public static function getClass() {

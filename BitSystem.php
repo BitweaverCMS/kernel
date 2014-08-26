@@ -141,6 +141,8 @@ class BitSystem extends BitSingleton {
 		if( $ret = parent::loadFromCache( $pCacheKey ) ) {
 			$ret->setHttpStatus( HttpStatusCodes::HTTP_OK );
 			$ret->mTimer->start();
+			$ret->mOnload = array();
+			$ret->mAppMenu = array();
 		}
 		return $ret;
 	}
@@ -432,14 +434,14 @@ class BitSystem extends BitSingleton {
 				$desc = $gContent->parseData( $summary );
 			}
 			if( !empty( $desc ) ) {
-				$desc = $gContent->getContentTypeName().': '.$desc;
+				$desc = preg_replace( '/\s+/', ' ', $desc);  // $gContent->getContentTypeName().': '.
 				$gBitSmarty->assign( 'metaDescription', substr( strip_tags( $desc ), 0, 256 ) );
 			}
 		}
 
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
-		//		$gBitSmarty->assign( 'page', !empty( $_REQUEST['page'] ) ? $_REQUEST['page'] : NULL );
+
 		// Make sure that the gBitSystem symbol available to templates is correct and up-to-date.
 		print $gBitSmarty->fetch( 'bitpackage:kernel/html.tpl' );
 		$this->postDisplay( $pMid );
@@ -905,6 +907,7 @@ class BitSystem extends BitSingleton {
 	 * @access public
 	 */
 	function registerAppMenu( $pMenuHash, $pMenuTitle = NULL, $pTitleUrl = NULL, $pMenuTemplate = NULL, $pAdminPanel = FALSE ) {
+		$menuType = (!empty( $pMenuHash['menu_type'] ) ? $pMenuHash['menu_type'] : 'bar');
 		if( is_array( $pMenuHash ) ) {
 			// shorthand
 			$pkg = $pMenuHash['package_name'];
@@ -923,10 +926,10 @@ class BitSystem extends BitSingleton {
 				: NULL )
 			);
 
-			$this->mAppMenu[$pkg] = $pMenuHash;
+			$this->mAppMenu[$menuType][$pkg] = $pMenuHash;
 		} else {
 			deprecated( 'Please use a menu registration hash instead of individual parameters: $gBitSystem->registerAppMenu( $menuHash )' );
-			$this->mAppMenu[strtolower( $pMenuHash )] = array(
+			$this->mAppMenu[$menuType][strtolower( $pMenuHash )] = array(
 				'menu_title'    => $pMenuTitle,
 				'is_disabled'   => ( $this->getConfig( 'menu_'.$pMenuHash ) == 'n' ),
 				'index_url'     => $pTitleUrl,
@@ -935,7 +938,7 @@ class BitSystem extends BitSingleton {
 				'style'         => 'display:'.( empty( $pMenuTitle ) || ( isset( $_COOKIE[$pMenuHash.'menu'] ) && ( $_COOKIE[$pMenuHash.'menu'] == 'o' ) ) ? 'block;' : 'none;' )
 			);
 		}
-		uasort( $this->mAppMenu, 'bit_system_menu_sort' );
+		uasort( $this->mAppMenu[$menuType], 'bit_system_menu_sort' );
 	}
 
 	/**
@@ -2574,7 +2577,7 @@ function bit_system_menu_sort( $a, $b ) {
 	if( $pa == 0 && $pb == 0 ) {
 		return( strcmp( $pb['menu_title'], $pa['menu_title'] ));
 	}
-	return $pb - $pa;
+	return $pa - $pb;
 }
 
 /* vim: :set fdm=marker : */

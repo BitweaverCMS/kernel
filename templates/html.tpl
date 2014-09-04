@@ -71,14 +71,14 @@
 
 		{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
 			{**** Theme Layout Modules : NAVIGATION ****}
-			<nav id="navigation" class="col-sm-3 col-xs-12">
+			<nav id="navigation" class="col-lg-3 col-sm-4 col-xs-12">
 				<div class="row">
 					{$gBitThemes->displayLayoutColumn('l')}
 				</div>
 			</nav><!-- end #navigation -->{* needed by output filters. *}
 		{/if}
 
-		<main role="main" id="wrapper" class="col-sm-{math equation='12-x*3' x=$extraColumns} col-xs-12">
+		<main role="main" id="wrapper" class="col-lg-{math equation='12-x*3' x=$extraColumns} col-sm-{math equation='12-x*4' x=$extraColumns} col-xs-12">
 			{**** Theme Layout Modules : CENTER ****}
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
 			{include file="bitpackage:liberty/display_structure.tpl"}
@@ -87,7 +87,7 @@
 
 		{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
 			{**** Theme Layout Modules : EXTRA ****}
-			<nav id="extra" class="col-sm-3 col-xs-12">
+			<nav id="extra" class="col-lg-3 col-sm-4 col-xs-12">
 				<div class="row">
 					{$gBitThemes->displayLayoutColumn('r')}
 				</div>

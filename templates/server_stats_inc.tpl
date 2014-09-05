@@ -5,5 +5,6 @@
 		{if $server_load}
 			, {tr}Load:{/tr} {$server_load|default:"&#8211;"}
 		{/if}
+		, Cache: {if BitBase::isCacheActive()}ON-APC{else}OFF{/if}
 </div>
 {/if}{/strip}

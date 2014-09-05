@@ -2,10 +2,7 @@
 {if $gBitSystem->isFeatureActive( 'messages_site_contact' )}
 	<a href="{$smarty.const.MESSAGES_PKG_URL}contact.php">{booticon iname="icon-envelope" ilocation=menu iexplain="Contact Us"}</a> 
 {/if}
-{if $gBitSystem->isFeatureActive( 'babelfish' )}
-	{include file="bitpackage:languages/babelfish.tpl"}
-{/if}
-	<a id="poweredby" class="external pull-right" href="http://www.bitweaver.org"><img src="/liberty/icons/bitweaver/bitweaver.gif" alt="Bitweaver" title="Bitweaver" class="icon"></a>
+	<a id="poweredby" class="external pull-right" href="http://www.bitweaver.org"><img src="/liberty/icons/bitweaver/bitweaver.gif" alt="Bitweaver" title="Bitweaver" class="icon"></a> {$version_info.local}
 	{if $gBitUser->isAdmin()} <strong>{$gBitSystem->getBitVersion()}</strong>
 		{assign var=version_info value=$gBitSystem->checkBitVersion()}
 		{if $version_info.compare lt 0}

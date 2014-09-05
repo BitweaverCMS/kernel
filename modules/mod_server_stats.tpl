@@ -1,6 +1,6 @@
 {strip}
 {bitmodule title="$moduleTitle" name="loadstats"}
-	<ul>
+	<ul class="list-inline">
 		<li>{tr}Execution time:&nbsp;{elapsed}s{/tr}</li>
 		<li>{tr}Memory usage:{/tr}&nbsp;{memusage}</li>
 		<li>{tr}Database queries:{/tr}&nbsp;{$gBitSystem->mDb->mNumQueries}</li>

@@ -141,6 +141,8 @@ class BitSystem extends BitSingleton {
 		if( $ret = parent::loadFromCache( $pCacheKey ) ) {
 			$ret->setHttpStatus( HttpStatusCodes::HTTP_OK );
 			$ret->mTimer->start();
+            $ret->mOnload = array();
+            $ret->mAppMenu = array();
 		}
 		return $ret;
 	}
@@ -701,7 +703,7 @@ class BitSystem extends BitSingleton {
 		}
 // bit_error_log( "PERMISSION DENIED: $pPermission $pMsg" );
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
-		$this->setHttpStatus( HttpStatusCodes::HTTP_UNAUTHORIZED );
+		$this->setHttpStatus( HttpStatusCodes::HTTP_NOT_FOUND );
 		$this->display( "error.tpl" );
 		die;
 	}

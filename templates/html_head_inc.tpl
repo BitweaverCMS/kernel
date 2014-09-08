@@ -10,10 +10,6 @@
 <meta name="description" content="{$gContent->generateDescription()|strip_tags|escape}"/>
 {/if}
 
-{if $metaNoIndex}
-<meta name="robots" content="noindex">
-{/if}
-
 {if $metaKeywords}
 <meta name="keywords" content="{$metaKeywords|escape}" />
 {elseif $smarty.server.REQUEST_URI==BIT_ROOT_URI}
@@ -27,6 +23,8 @@
 {/if}
 {if !$gBitSystem->isLive()}
 <meta name="robots" content="noindex,nofollow">
+{else}
+<meta name="robots" content="index,follow">
 {/if}
 
 {if $gBitSystem->isFeatureActive( 'site_header_extended_nav' )}
@@ -72,7 +70,7 @@
 	var bitTk = "{$gBitUser->mTicket}";
 /* ]]> */</script>
 
-{if $gBitSystem->isFeatureActive( 'site_use_jscalendar' )}
+{if $gBitSystem->isPackageActive('jscalendar') && $gBitSystem->isFeatureActive( 'site_use_jscalendar' )}
 	<link rel="stylesheet" title="{$style}" type="text/css" href="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar-system.css" media="all" />
 	<script async type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/calendar.js"></script>
 	<script async type="text/javascript" src="{$smarty.const.UTIL_PKG_URL}javascript/libs/dynarch/jscalendar/lang/calendar-en.js"></script>

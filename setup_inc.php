@@ -103,7 +103,7 @@ if( !defined( 'TEMP_PKG_PATH' ) ) {
 }
 
 BitSystem::prependIncludePath( UTIL_PKG_PATH.'/' );
-BitSystem::prependIncludePath( UTIL_PKG_PATH.'pear/' );
+BitSystem::prependIncludePath( CONFIG_PKG_PATH.'externals/pear/' );
 
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 BitLanguage::loadSingleton();

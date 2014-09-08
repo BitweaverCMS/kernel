@@ -10,7 +10,7 @@
 			&nbsp;&nbsp;{tr}{$key|capitalize}{/tr}</a>
 
 			<div id="{$key}admenu">
-				{include file=`$menu.tpl`}
+				{include file=$menu.tpl}
 			</div>
 
 			<script type="text/javascript">

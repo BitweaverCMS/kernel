@@ -93,7 +93,7 @@ if( !empty( $gBitSystem->mConfig ) && version_compare( MIN_BIT_VERSION, $gBitSys
 
 // allow for overridden TEMP_PKG_PATH
 if( !defined( 'TEMP_PKG_PATH' ) ) {
-	$tempDir = $gBitSystem->getConfig( 'site_temp_dir', sys_get_temp_dir().'/bitweaver/' );
+	$tempDir = $gBitSystem->getConfig( 'site_temp_dir', sys_get_temp_dir().'/bitweaver/'.$_SERVER['SERVER_NAME'] );
 	if( strrpos( $tempDir, '/' ) + 1 != strlen( $tempDir ) ) {
 		$tempDir .= '/';
 	}

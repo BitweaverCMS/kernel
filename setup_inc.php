@@ -93,13 +93,16 @@ if( !empty( $gBitSystem->mConfig ) && version_compare( MIN_BIT_VERSION, $gBitSys
 
 // allow for overridden TEMP_PKG_PATH
 if( !defined( 'TEMP_PKG_PATH' ) ) {
-	$tempDir = $gBitSystem->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
+	$tempDir = $gBitSystem->getConfig( 'site_temp_dir', sys_get_temp_dir().'/bitweaver/' );
 	if( strrpos( $tempDir, '/' ) + 1 != strlen( $tempDir ) ) {
 		$tempDir .= '/';
 	}
 
 	define( 'TEMP_PKG_PATH', $tempDir );
 	define( 'TEMP_PKG_URL', BIT_ROOT_URL.'temp/' );
+	if( !file_exists( $tempDir ) ) {
+		mkdir( $tempDir, 0777, TRUE );
+	}
 }
 
 BitSystem::prependIncludePath( UTIL_PKG_PATH.'/' );

@@ -135,6 +135,22 @@ class BitSystem extends BitSingleton {
 				}
 			}
 		}
+
+		// allow for overridden TEMP_PKG_PATH
+		if( !defined( 'TEMP_PKG_PATH' ) ) {
+			$tempDir = $this->getConfig( 'site_temp_dir', self::getDefaultTempDir() );
+			if( strrpos( $tempDir, '/' ) + 1 != strlen( $tempDir ) ) {
+				$tempDir .= '/';
+			}
+
+			define( 'TEMP_PKG_PATH', $tempDir );
+			define( 'TEMP_PKG_URL', BIT_ROOT_URL.'temp/' );
+			if( !file_exists( $tempDir ) ) {
+				mkdir( $tempDir, 0777, TRUE );
+			}
+		}
+
+
 	}
 
 	public static function loadFromCache( $pCacheKey ) {
@@ -703,7 +719,7 @@ class BitSystem extends BitSingleton {
 		}
 // bit_error_log( "PERMISSION DENIED: $pPermission $pMsg" );
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
-		$this->setHttpStatus( HttpStatusCodes::HTTP_UNAUTHORIZED );
+		$this->setHttpStatus( HttpStatusCodes::HTTP_NOT_FOUND );
 		$this->display( "error.tpl" );
 		die;
 	}
@@ -1512,6 +1528,10 @@ class BitSystem extends BitSingleton {
 		return set_include_path( $include_path );
 	}
 
+	public function getDefaultTempDir() {
+		return sys_get_temp_dir().'/bitweaver/'.$_SERVER['SERVER_NAME'].'/';
+	}
+
 	/* Check that everything is set up properly
 	 * \static
 	 */
@@ -1593,7 +1613,7 @@ class BitSystem extends BitSingleton {
 			$this->setConfig( 'site_temp_dir', TEMP_PKG_PATH );
 			$permFiles[] = TEMP_PKG_PATH;
 		} else {
-			$permFiles[] = $this->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
+			$permFiles[] = $this->getConfig( 'site_temp_dir', self::getDefaultTempDir() );
 		}
 		$permFiles[] = STORAGE_PKG_PATH;
 
@@ -1604,7 +1624,7 @@ class BitSystem extends BitSingleton {
 			if( preg_match( '/.*\/$/', $target ) ) {
 				// we have a directory
 				if( !is_dir( $target ) ) {
-					mkdir_p( $target, 02775 );
+					mkdir( $target, 02775, TRUE );
 				}
 				// Check again and report problems
 				if( !is_dir( $target ) ) {

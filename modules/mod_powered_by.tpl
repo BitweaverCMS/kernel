@@ -1,7 +1,7 @@
 {* $Header$ *}
 {strip}
 {bitmodule title="$moduleTitle" name="powered_by"}
-	<ul>
+	<ul class="list-unstyled">
 		<li><a href="http://www.bitweaver.org/">{biticon ipackage="liberty" iname="bitweaver" ipath="bitweaver$size/" iexplain="Bitweaver"}</a></li>
 		<li><a href="http://www.smarty.net/">{biticon ipackage="liberty" iname="smarty" ipath="bitweaver$size/" iexplain="Smarty"}</a></li>
 		<li>

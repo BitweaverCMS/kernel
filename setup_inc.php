@@ -91,17 +91,6 @@ if( !empty( $gBitSystem->mConfig ) && version_compare( MIN_BIT_VERSION, $gBitSys
 	define( 'INSTALLER_FORCE', TRUE );
 }
 
-// allow for overridden TEMP_PKG_PATH
-if( !defined( 'TEMP_PKG_PATH' ) ) {
-	$tempDir = $gBitSystem->getConfig( 'site_temp_dir', BIT_ROOT_PATH.'temp/' );
-	if( strrpos( $tempDir, '/' ) + 1 != strlen( $tempDir ) ) {
-		$tempDir .= '/';
-	}
-
-	define( 'TEMP_PKG_PATH', $tempDir );
-	define( 'TEMP_PKG_URL', BIT_ROOT_URL.'temp/' );
-}
-
 BitSystem::prependIncludePath( UTIL_PKG_PATH.'/' );
 BitSystem::prependIncludePath( CONFIG_PKG_PATH.'externals/pear/' );
 

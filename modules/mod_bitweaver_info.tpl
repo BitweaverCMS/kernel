@@ -1,5 +1,5 @@
 {bitmodule title=$moduleTitle|default:'Bitweaver' name="bit_info"}
-	<ul>
+	<ul class="list-unstyled">
 		<li>{tr}Version{/tr}: <strong>{$gBitSystem->getBitVersion()}</strong></li>
 		{if $gBitUser->isAdmin()}
 			{assign var=version_info value=$gBitSystem->checkBitVersion()}

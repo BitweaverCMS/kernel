@@ -302,6 +302,7 @@ class BitSystem extends BitSingleton {
 				$this->mDb->setCaching( FALSE );
 				$this->loadConfig();
 				$this->mDb->setCaching( $isCaching );
+				$this->clearFromCache();
 			}
 		}
 		$this->setConfig( $pName, $pValue );

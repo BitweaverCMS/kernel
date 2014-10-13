@@ -179,7 +179,7 @@ abstract class BitBase {
 
 	public static function isCacheActive() {
 		// only apc is supported for now.
-		return function_exists( 'apc_add' );
+		return (function_exists( 'apc_add' ) && defined( 'BIT_CACHE_OBJECTS' ) && BIT_CACHE_OBJECTS );
 	}
 
 	public function isCacheableObject() {

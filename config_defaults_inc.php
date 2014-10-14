@@ -57,6 +57,9 @@ if( file_exists( $config_file ) ) {
 if( !defined( 'BIT_DB_PREFIX' ) ) {
 	define( 'BIT_DB_PREFIX', '' );
 }
+if( !defined( 'BIT_CACHE_OBJECTS' ) ) {
+	define( 'BIT_CACHE_OBJECTS', TRUE );
+}
 if( !defined( 'BIT_QUERY_CACHE_TIME' ) ) {
 	define( 'BIT_QUERY_CACHE_TIME', 86400 );
 }

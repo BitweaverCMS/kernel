@@ -202,6 +202,16 @@ abstract class BitBase {
         return get_called_class();
     }
 
+	public function getConfig( $pName, $pDefault = NULL ) {
+		global $gBitSystem;
+		return $gBitSystem->getConfig( $pName, $pDefault );
+	}
+
+	public function isFeatureActive( $pFeatureName ) {
+		global $gBitSystem;
+		return $gBitSystem->isFeatureActive( $pFeatureName );
+	}
+
 	/**
 	 * Sets database mechanism for the instance
 	 * @param pDB the instance of the database mechanism

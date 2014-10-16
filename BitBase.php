@@ -236,18 +236,6 @@ abstract class BitBase {
 		return ( !empty( $this->mDb ) ? $this->mDb : NULL  );
 	}
 
-	/**
-	 * Switch debug level in database
-	 *
-	 **/
-	public function debug( $pLevel = 99 ) {
-		global $gDebug;
-		$gDebug = $pLevel;
-		if( is_object( $this->mDb ) ) {
-			$this->mDb->debug( $pLevel );
-		}
-	}
-
 	function debugMarkTime() {
 		$this->mDebugMicrotime = microtime(1);
 	}

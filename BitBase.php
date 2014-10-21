@@ -179,7 +179,7 @@ abstract class BitBase {
 
 	public static function isCacheActive() {
 		// only apc is supported for now.
-		return function_exists( 'apc_add' );
+		return (function_exists( 'apc_add' ) && defined( 'BIT_CACHE_OBJECTS' ) && BIT_CACHE_OBJECTS );
 	}
 
 	public function isCacheableObject() {
@@ -201,6 +201,16 @@ abstract class BitBase {
     final public static function getClass() {
         return get_called_class();
     }
+
+	public function getConfig( $pName, $pDefault = NULL ) {
+		global $gBitSystem;
+		return $gBitSystem->getConfig( $pName, $pDefault );
+	}
+
+	public function isFeatureActive( $pFeatureName ) {
+		global $gBitSystem;
+		return $gBitSystem->isFeatureActive( $pFeatureName );
+	}
 
 	/**
 	 * Sets database mechanism for the instance
@@ -224,18 +234,6 @@ abstract class BitBase {
 	 **/
 	public function getDb() {
 		return ( !empty( $this->mDb ) ? $this->mDb : NULL  );
-	}
-
-	/**
-	 * Switch debug level in database
-	 *
-	 **/
-	public function debug( $pLevel = 99 ) {
-		global $gDebug;
-		$gDebug = $pLevel;
-		if( is_object( $this->mDb ) ) {
-			$this->mDb->debug( $pLevel );
-		}
 	}
 
 	function debugMarkTime() {

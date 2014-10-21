@@ -670,7 +670,6 @@ function xmlentities( $string, $quote_style=ENT_QUOTES ) {
  * @param string The url to redirect to
  */
 function bit_redirect( $pUrl, $pStatusCode=HttpStatusCodes::HTTP_FOUND ) {
-
 	// Handle non-3xx codes separately
 	if( $pStatusCode && isset( $errors[$pStatusCode] ) ) {
 		header( HttpStatusCodes::httpHeaderFor( $pStatusCode ) );

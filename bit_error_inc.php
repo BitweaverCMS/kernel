@@ -22,6 +22,18 @@ if( !defined( 'BIT_INSTALL' ) &&  !defined( 'ADODB_ERROR_HANDLER' )  ) {
 	define( 'ADODB_ERROR_HANDLER', 'bitdb_error_handler' );
 }
 
+/**
+ * Switch debug level in database
+ *
+ **/
+function bit_db_debug( $pLevel = 99 ) {
+	global $gDebug, $gBitDb;
+	$gDebug = $pLevel;
+	if( is_object( $gBitDb) ) {
+		$gBitDb->debug( $pLevel );
+	}
+}
+
 function bit_error_log( $pLogMessage ) {
 	if( !empty( $_SERVER['SCRIPT_URI'] )) {
 		error_log( "OUTPUT in {$_SERVER['SCRIPT_URI']}" );

@@ -242,7 +242,14 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$site_http_port = isset( $_SERVER['SERVER_PORT'] ) ? $_SERVER['SERVER_PORT'] : 80;
 	}
 
-	$site_https_port = $gBitSystem->getConfig( 'site_https_port', $site_https_port );
+	if( !$site_https_port = $gBitSystem->getConfig( 'site_https_port', $site_https_port ) ) {
+		$gBitSystem->setConfig( 'site_https_port', $site_https_port );
+	}
+
+	if( defined( 'SECURE_BIT_BASE_URI' ) ) {
+		define( 'SECURE_BIT_BASE_URI', 'https://'.$host.($site_https_port!=443?$site_https_port:'') );
+	}
+
 	// we need this for backwards compatibility - use $gBitSystem->getPrerference( 'max_records' ) if you need it, or else the spanish inquisition will come and poke you with a soft cushion
 	$max_records = $gBitSystem->getConfig( "max_records", 10 );
 

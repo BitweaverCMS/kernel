@@ -136,20 +136,7 @@ class BitSystem extends BitSingleton {
 			}
 		}
 
-		// allow for overridden TEMP_PKG_PATH
-		if( !defined( 'TEMP_PKG_PATH' ) ) {
-			$tempDir = $this->getConfig( 'site_temp_dir', self::getDefaultTempDir() );
-			if( strrpos( $tempDir, '/' ) + 1 != strlen( $tempDir ) ) {
-				$tempDir .= '/';
-			}
-
-			define( 'TEMP_PKG_PATH', $tempDir );
-			define( 'TEMP_PKG_URL', BIT_ROOT_URL.'temp/' );
-			if( !file_exists( $tempDir ) ) {
-				mkdir( $tempDir, 0777, TRUE );
-			}
-		}
-
+		$this->defineTempDir();
 
 	}
 
@@ -159,9 +146,12 @@ class BitSystem extends BitSingleton {
 			$ret->mTimer->start();
 			$ret->mOnload = array();
 			$ret->mAppMenu = array();
+			$ret->defineTempDir();
 		}
 		return $ret;
 	}
+
+	
 
 	/**
 	 * Load all preferences and store them in $this->mConfig
@@ -302,6 +292,7 @@ class BitSystem extends BitSingleton {
 				$this->mDb->setCaching( FALSE );
 				$this->loadConfig();
 				$this->mDb->setCaching( $isCaching );
+				$this->clearFromCache();
 			}
 		}
 		$this->setConfig( $pName, $pValue );
@@ -1529,6 +1520,22 @@ class BitSystem extends BitSingleton {
 			$include_path = $pPath;
 		}
 		return set_include_path( $include_path );
+	}
+
+	private function defineTempDir() {
+		// allow for overridden TEMP_PKG_PATH
+		if( !defined( 'TEMP_PKG_PATH' ) ) {
+			$tempDir = $this->getConfig( 'site_temp_dir', self::getDefaultTempDir() );
+			if( strrpos( $tempDir, '/' ) + 1 != strlen( $tempDir ) ) {
+				$tempDir .= '/';
+			}
+
+			define( 'TEMP_PKG_PATH', $tempDir );
+			define( 'TEMP_PKG_URL', BIT_ROOT_URL.'temp/' );
+			if( !file_exists( $tempDir ) ) {
+				mkdir( $tempDir, 0777, TRUE );
+			}
+		}
 	}
 
 	public function getDefaultTempDir() {

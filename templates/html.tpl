@@ -66,7 +66,7 @@
 
 	<div id="bw-main-spacer-top"></div>
 
-	<section id="bw-main-content" class="container{$gBitSystem->getConfig('layout-maincontent')}"><div class="row">
+	<section id="bw-main-content" class="container{$gBitSystem->getConfig('layout-body')}"><div class="row">
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='row' serviceHash=$gContent->mInfo}
 
 		{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
@@ -97,7 +97,7 @@
 
 	<div id="bw-spacer-bottom"></div>
 
-	<footer id="bw-main-footer"role="contentinfo" class="container{$gBitSystem->getConfig('layout-footer')}">
+	<footer id="bw-main-footer" class="container{$gBitSystem->getConfig('layout-footer')}">
 		<div class="row{$gBitSystem->getConfig('layout-footer')}">
 			{**** Theme Layout Modules : BOTTOM ****}
 			{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && !$gHideModules}

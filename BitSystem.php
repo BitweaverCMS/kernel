@@ -457,7 +457,9 @@ class BitSystem extends BitSingleton {
 
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
-
+		if( defined(ROLE_MODEL) ) {
+			$gBitSmarty->assign( 'role_model', TRUE );
+		}
 		// Make sure that the gBitSystem symbol available to templates is correct and up-to-date.
 		print $gBitSmarty->fetch( 'bitpackage:kernel/html.tpl' );
 		$this->postDisplay( $pMid );
@@ -1442,6 +1444,7 @@ class BitSystem extends BitSingleton {
 					$mime = exec( trim( 'file -bi ' . escapeshellarg( $pFile )));
 				}
 			}
+
 			if( empty( $mime ) ) {
 				$mime = $this->lookupMimeType( substr( $pFile, strrpos( $pFile, '.' ) + 1 ) );
 			}

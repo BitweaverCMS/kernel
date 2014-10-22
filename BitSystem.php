@@ -448,7 +448,7 @@ class BitSystem extends BitSingleton {
 
 		$this->preDisplay( $pMid );
 		$gBitSmarty->assign( 'mid', $pMid );
-		if( defined(ROLE_MODEL) ) {
+		if( defined( 'ROLE_MODEL' ) ) {
 			$gBitSmarty->assign( 'role_model', TRUE );
 		}
 		// Make sure that the gBitSystem symbol available to templates is correct and up-to-date.

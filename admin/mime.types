@@ -95,7 +95,6 @@ application/relax-ng-compact-syntax		rnc
 application/resource-lists+xml			rl
 application/resource-lists-diff+xml		rld
 application/rls-services+xml			rs
-application/rpki-ghostbusters			gbr
 application/rpki-manifest			mft
 application/rpki-roa				roa
 application/rsd+xml				rsd
@@ -189,6 +188,7 @@ application/vnd.ds-keypoint			kpxx
 application/vnd.dvb.ait				ait
 application/vnd.dvb.service			svc
 application/vnd.dynageo				geo
+application/vnd.easypc		sch pcb drl 
 application/vnd.ecowin.chart			mag
 application/vnd.enliven				nml
 application/vnd.epson.esf			esf
@@ -205,6 +205,7 @@ application/vnd.fdsn.seed			seed dataless
 application/vnd.flographit			gph
 application/vnd.fluxtime.clip			ftc
 application/vnd.framemaker			fm frame maker book
+application/vnd.freecad				fcstd
 application/vnd.frogans.fnc			fnc
 application/vnd.frogans.ltf			ltf
 application/vnd.fsc.weblaunch			fsc
@@ -323,7 +324,6 @@ application/vnd.ms-ims				ims
 application/vnd.ms-lrm				lrm
 application/vnd.ms-officetheme			thmx
 application/vnd.ms-pki.seccat			cat
-application/vnd.ms-pki.stl			stl
 application/vnd.ms-powerpoint			ppt pps pot
 application/vnd.ms-powerpoint.addin.macroenabled.12		ppam
 application/vnd.ms-powerpoint.presentation.macroenabled.12	pptm
@@ -660,6 +660,7 @@ image/vnd.dxf					dxf
 image/vnd.fastbidsheet				fbs
 image/vnd.fpx					fpx
 image/vnd.fst					fst
+image/vnd.gbr					gbr
 image/vnd.fujixerox.edmics-mmr			mmr
 image/vnd.fujixerox.edmics-rlc			rlc
 image/vnd.ms-modi				mdi
@@ -687,6 +688,7 @@ image/x-xpixmap					xpm
 image/x-xwindowdump				xwd
 message/rfc822					eml mime
 model/iges					igs iges
+model/stl					stl
 model/mesh					msh mesh silo
 model/vnd.collada+xml				dae
 model/vnd.dwf					dwf

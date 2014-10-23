@@ -77,7 +77,7 @@
 			<div class="panel-group row">
 				{assign var="i" value="1"}
 				{foreach key=key item=template from=$adminTemplates name=adminTemplates}
-					<div class="col-md-3 col-sm-6 col-xs-12>
+					<div class="col-md-3 col-sm-6 col-xs-12">
 						<div class="panel panel-default">
 							<div class="panel-heading {$key}-menu">{biticon iname="pkg_`$key`" ipackage=$key class="menuicon" style="height:24px"} {$key|capitalize}</div>
 							<div class="panel-body">{include file="bitpackage:`$key`/menu_`$key`_admin.tpl" packageMenuClass="unstyled"}</div>
@@ -85,13 +85,12 @@
 					</div>
 					{if $smarty.foreach.adminTemplates.iteration%4==0}
 						{* Add the extra clearfix for only the required viewport *}
-						<div class="clearfix visible-sm"></div>
 						<div class="clearfix visible-md"></div>
 						<div class="clearfix visible-lg"></div>
 					{/if}
 					{if $smarty.foreach.adminTemplates.iteration%2==0}
 						{* Add the extra clearfix for only the required viewport *}
-						<div class="clearfix visible-xs"></div>
+						<div class="clearfix visible-sm"></div>
 					{/if}
 				{/foreach}
 			</div>

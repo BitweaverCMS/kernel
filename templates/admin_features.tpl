@@ -72,10 +72,10 @@
 		{jstab title="Miscellaneous"}
 			{legend legend="Date and Time Formats"}
 				<div class="form-group">
-					<label class="checkbox">
+					{forminput label="checkbox"}
 						<input type="checkbox" name="site_display_reltime" id="site_display_reltime" {if $gBitSystem->isFeatureActive('site_display_reltime')}checked="checked"{/if} />Relative Time Display
 						{formhelp note="If enabled, the date and time will be displayed relative to the time of posting (on occasion), e.g., 'Yesterday' instead of 'January 1, 1970'. "}
-					</label>
+					{/forminput}
 				</div>
 				
 				<div class="form-group">

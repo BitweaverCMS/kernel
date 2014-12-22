@@ -215,11 +215,11 @@ if( empty( $gPreScan ) ) {
 global $gThumbSizes;
 if( empty( $gThumbSizes )) {
 	$gThumbSizes = array(
-		'large'  => array( 'width' => 940, 'height' => 705 ),
-		'medium' => array( 'width' => 460, 'height' => 345 ),
-		'small'  => array( 'width' => 220, 'height' => 165 ),
-		'avatar' => array( 'width' => 100, 'height' => 100 ),
-		'icon'   => array( 'width' => 48,  'height' => 48 ),
+		'large'  => array( 'width' => 1200, 'height' => 900 ),
+		'medium' => array( 'width' => 800, 'height' => 600 ),
+		'small'  => array( 'width' => 400, 'height' => 300 ),
+		'avatar' => array( 'width' => 200, 'height' => 150 ),
+		'icon'   => array( 'width' => 100,  'height' => 100 ),
 	);
 }
 ?>

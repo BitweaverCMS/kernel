@@ -257,16 +257,9 @@
 		{jstab title="Not Installed"}
 			{legend legend="bitweaver packages available for installation"}
 
-				<div class="form-group">
-					<div class="formlabel">
-						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
-					</div>
-					{forminput}
-						<p><strong><a class="warning" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click here to install more Packages{/tr}&nbsp;&hellip;</a></strong></p>
+						<p><a class="btn btn-default" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Install Packages{/tr}</a></p>
 
 						{$install_unavailable}
-					{/forminput}
-				</div>
 
 				<hr style="clear:both" />
 

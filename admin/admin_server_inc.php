@@ -11,6 +11,7 @@ $processForm = set_tab();
 if( $processForm ) {
 
 	$pref_toggles = array(
+		"site_hidden",
 		"site_closed",
 		"site_use_load_threshold",
 		"site_use_proxy",

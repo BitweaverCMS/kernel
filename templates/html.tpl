@@ -31,7 +31,7 @@
     <script src="{$smarty.const.CONFIG_PKG_URL}js/html5shim/html5shiv.js"></script>
     <![endif]-->
 </head>
-<body
+<body itemscope itemtype="http://schema.org/WebPage"
 	{if $gBitSystem->mOnload} onload="{foreach from=$gBitSystem->mOnload item=loadString}{$loadString}{/foreach}" {/if}
 	{if $gBitSystem->mOnunload} onunload="{foreach from=$gBitSystem->mOnunload item=loadString}{$loadString}{/foreach}"	{/if} 
 	id="{$smarty.const.ACTIVE_PACKAGE}" class="{$displayClass}{$userClass}{$contentClass}">
@@ -55,7 +55,7 @@
 		{assign var=extraColumns value=0}{/if}
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
-	<header role="banner" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
+	<header itemscope itemtype="http://schema.org/WPHeader" role="banner" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
 		<div class="row">
 		{$gBitThemes->displayLayoutColumn('t')}
 		</div>

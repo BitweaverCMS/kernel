@@ -16,7 +16,7 @@
 
 	{if $params.variant == "condensed"}
 		<span class="captcha" {if $params.id}id="{$params.id}"{/if} {if $params.style}style="{$params.style}"{/if}>
-			{formhelp note=$errors.captcha}
+			{formfeedback error=$errors.captcha}
 			<img id='captcha_img' onclick="this.blur();reloadImage();return false;" class="alignmiddle" id="captcha_img" src="{$params.source}" alt="{tr}Random Image{/tr}"/>
 			<br />
 			<input type="text" name="captcha" id="captcha" size="{$params.size+3}"/>
@@ -33,7 +33,7 @@
 				<input type="text" name="captcha" id="captcha" size="{$params.size+3}"/>
 				{formhelp note="Please copy the code into the box. Reload the page or click the image if it is unreadable. Note that it is not case sensitive."}
 				{if empty($smarty.cookies)}<div class="error">You do not currently have any cookies from this site. You must accept cookies in order to pass the captcha. For information on enabling cookies in your browser see this: <a href="http://www.google.com/cookies.html">google page on cookies</a>.</div>{/if}
-				{formhelp note=$errors.captcha}
+				{formfeedback error=$errors.captcha}
 			{/forminput}
 		</div>
 	{/if}
@@ -43,8 +43,8 @@
 	<div class="form-group {if $errors.recaptcha}error{/if}">
 		{formlabel label="Are you human?" for="recaptcha"}
 		{forminput}
+			{formfeedback error=$errors.recaptcha}
 			{recaptcha_get_html($gBitSystem->getConfig('users_register_recaptcha_public_key'),$errors.recaptcha,!empty($smarty.server.HTTPS))}
-			{formhelp note=$errors.recaptcha}
 			{formhelp note="Sorry, we have to ask."}
 		{/forminput}
 	</div>
@@ -55,9 +55,9 @@
 	<div class="form-group {if $errors.smcaptcha}error{/if}">
 		{formlabel label="Are you human?" for="smcaptcha"}
 		{forminput}
+			{formfeedback error=$errors.smcaptcha}
 			{solvemedia_get_html($gBitSystem->getConfig('users_register_smcaptcha_c_key'),null,!empty($smarty.server.HTTPS))}
 			{formhelp note="Sorry, we have to ask."}
-			{formhelp note=$errors.smcaptcha}
 		{/forminput}
 	</div>
 {/if}

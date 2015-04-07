@@ -651,7 +651,7 @@ class BitSystem extends BitSingleton {
 	 */
 	function verifyPackage( $pPackageName ) {
 		if( !$this->isPackageActive( $pPackageName ) ) {
-			$this->fatalError( tra("This package is disabled").": package_$pPackageName" );
+			$this->fatalError( tra("This package is disabled").": $pPackageName", NULL, NULL, HttpStatusCodes::HTTP_NOT_FOUND );
 		}
 
 		return( TRUE );

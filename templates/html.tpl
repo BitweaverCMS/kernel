@@ -31,7 +31,7 @@
     <script src="{$smarty.const.CONFIG_PKG_URL}js/html5shim/html5shiv.js"></script>
     <![endif]-->
 </head>
-<body
+<body itemscope itemtype="http://schema.org/WebPage"
 	{if $gBitSystem->mOnload} onload="{foreach from=$gBitSystem->mOnload item=loadString}{$loadString}{/foreach}" {/if}
 	{if $gBitSystem->mOnunload} onunload="{foreach from=$gBitSystem->mOnunload item=loadString}{$loadString}{/foreach}"	{/if} 
 	id="{$smarty.const.ACTIVE_PACKAGE}" class="{$displayClass}{$userClass}{$contentClass}">
@@ -45,17 +45,27 @@
 
 	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}<div dir="rtl">{/if}
 
-	{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules and $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l') && $gBitThemes->hasColumnModules('r')}
+	{if $gBitThemes->mDisplayMode != 'edit'}
+		{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
+			{assign var=leftCol value=$gBitThemes->fetchLayoutColumn('l')}
+		{/if}
+
+		{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
+			{assign var=rightCol value=$gBitThemes->fetchLayoutColumn('r')}
+		{/if}
+	{/if}
+
+	{if $leftCol && $rightCol}
 		{assign var=extraColumns value=2}
-	{elseif $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
+	{elseif !empty($leftCol)}
 		{assign var=extraColumns value=1}
-	{elseif $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
+	{elseif !empty($rightCol)}
 		{assign var=extraColumns value=1}
 	{else}
 		{assign var=extraColumns value=0}{/if}
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
-	<header role="banner" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
+	<header itemscope itemtype="http://schema.org/WPHeader" role="banner" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
 		<div class="row">
 		{$gBitThemes->displayLayoutColumn('t')}
 		</div>
@@ -71,29 +81,29 @@
 	<section id="bw-main-content" class="container{$gBitSystem->getConfig('layout-body')}"><div class="row">
 		{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='row' serviceHash=$gContent->mInfo}
 
-		{if $gBitSystem->isFeatureActive( 'site_left_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('l')}
-			{**** Theme Layout Modules : NAVIGATION ****}
-			<nav id="navigation" class="col-lg-3 col-sm-4 col-xs-12">
-				<div class="row">
-					{$gBitThemes->displayLayoutColumn('l')}
-				</div>
-			</nav><!-- end #navigation -->{* needed by output filters. *}
+		{**** Theme Layout Modules : NAVIGATION ****}
+		{if $leftCol}
+		<nav id="navigation" class="col-md-3 col-sm-4 col-xs-12">
+			<div class="row">
+				{$leftCol}
+			</div>
+		</nav><!-- end #navigation -->{* needed by output filters. *}
 		{/if}
 
-		<main role="main" id="wrapper" class="col-lg-{math equation='12-x*3' x=$extraColumns} col-sm-{math equation='12-x*4' x=$extraColumns} col-xs-12">
+		<main role="main" id="wrapper" class="col-md-{math equation='12-x*3' x=$extraColumns} col-sm-{math equation='12-x*4' x=$extraColumns} col-xs-12">
 			{**** Theme Layout Modules : CENTER ****}
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
 			{include file="bitpackage:liberty/display_structure.tpl"}
 			{include file=$mid}
 		</main><!-- end #wrapper -->
 
-		{if $gBitSystem->isFeatureActive( 'site_right_column' ) && !$gHideModules && $gBitThemes->hasColumnModules('r')}
-			{**** Theme Layout Modules : EXTRA ****}
-			<nav id="extra" class="col-lg-3 col-sm-4 col-xs-12">
-				<div class="row">
-					{$gBitThemes->displayLayoutColumn('r')}
-				</div>
-			</nav><!-- end #extra -->{* needed by output filters. *}
+		{**** Theme Layout Modules : EXTRA ****}
+		{if $rightCol}
+		<nav id="extra" class="col-md-3 col-sm-4 col-xs-12">
+			<div class="row">
+				{$rightCol}
+			</div>
+		</nav><!-- end #extra -->{* needed by output filters. *}
 		{/if}
 	</div></section>
 

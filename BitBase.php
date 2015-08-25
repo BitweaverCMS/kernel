@@ -112,6 +112,10 @@ abstract class BitBase {
 		$this->storeInCache();
 	}
 
+	protected function load() {
+		return TRUE;
+	}
+
 	/**
 	 * During initialisation, we assign a name which is used by the class.
 	 * @param pName a unique identified used in caching and database
@@ -145,7 +149,7 @@ abstract class BitBase {
 	 * @access public
 	 * @return TRUE on success, FALSE on failure
 	 */
-	private function storeInCache() {
+	protected function storeInCache() {
 		$ret = FALSE;
 		if( $this->isCacheableObject() && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
 			$ret = apc_store( $cacheKey, $this, 3600 );
@@ -162,7 +166,17 @@ abstract class BitBase {
 		$ret = NULL;
 		if( static::isCacheActive() && static::isCacheableClass() && !empty( $pCacheKey ) ) {
 			if( $ret = apc_fetch( static::getCacheUuidFromKey( $pCacheKey ) ) ) {
+			} else {
 			}
+		}
+		return $ret;
+	}
+
+	static public function getObjectById( $pObjectId ) {
+		$className = get_called_class();
+		if( !($ret = $className::loadFromCache( $pObjectId ) ) ) {
+			$ret = new $className( $pObjectId );
+			$ret->load();
 		}
 		return $ret;
 	}
@@ -264,7 +278,7 @@ abstract class BitBase {
 	 * @access public
 	 * @return TRUE if the input was numeric, FALSE if it wasn't
 	 */
-	public static function verifyIdParamter( &$pParamHash, $pKey ) {
+	public static function verifyIdParameter( &$pParamHash, $pKey ) {
 		// check all possibilities as quickly as possible as this function is called frequently
 		return !empty( $pParamHash[$pKey] ) && (is_int( $pParamHash[$pKey] ) || ctype_digit( $pParamHash[$pKey] ) || (is_numeric($pParamHash[$pKey]) ? intval( $pParamHash[$pKey] ) == $pParamHash[$pKey] : false));
 	}

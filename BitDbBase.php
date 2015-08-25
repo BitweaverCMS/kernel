@@ -233,8 +233,11 @@ class BitDb {
 		$this->mQueryTime += $interval;
 		if( $this->getDebugLevel() ) {
 			$style = ( $interval > .5 ) ? 'color:red;' : (( $interval > .15 ) ? 'color:orange;' : '');
-			$querySpeed = ( $interval > .5 ) ? tra( 'VERY SLOW' ): (( $interval > .15 ) ? tra( 'SLOW' ) : '');
-			print '<p style="'.$style.'">### Query '.$querySpeed.': '.$gNumQueries.' Start time: '.$this->mQueryLap.' ### Query run time: '.$interval.'</p>';
+			$querySpeed = ( $interval > .5 ) ? tra( 'VERY SLOW' ): (( $interval > .15 ) ? tra( 'SLOW' ) : 'complete');
+			print '<p style="'.$style.'">
+					<span style="display:inline-block;width:30%">### Query: <strong>'.$gNumQueries.'</strong> '.$querySpeed.'</span>
+					<span style="display:inline-block;width:33%">Start time: '.round( $this->mQueryLap, 5 ).'</span> 
+					<span style="display:inline-block;width:33%">### Query run time: '.round( $interval, 5 ).'</span></p>';
 			flush();
 		}
 		$this->mQueryLap = 0;

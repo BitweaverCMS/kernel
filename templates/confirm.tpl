@@ -8,7 +8,7 @@
 					<input type="hidden" name="{$name}" value="{$value}" />
 				{/foreach}
 				<div class="form-group">
-					<p class="highlight">{$msgFields.confirm_item}</p>
+					<p>{$msgFields.confirm_item}</p>
 					{if $inputFields}
 						<ul>
 							{section name=ix loop=$inputFields}

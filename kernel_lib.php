@@ -498,7 +498,7 @@ function tra( $pString ) {
  * @return TRUE on success, FALSE on failure
  */
 function unlink_r( $pPath, $pFollowLinks = FALSE ) {
-	if( is_dir( $pPath ) ) {
+	if( !empty( $pPath ) && is_dir( $pPath ) ) {
 		if( $dir = opendir( $pPath ) ) {
 			while( FALSE !== ( $entry = readdir( $dir ) ) ) {
 				if( is_file( "$pPath/$entry" ) || ( !$pFollowLinks && is_link( "$pPath/$entry" ) ) ) {

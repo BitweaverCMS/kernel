@@ -651,7 +651,7 @@ class BitSystem extends BitSingleton {
 	 */
 	function verifyPackage( $pPackageName ) {
 		if( !$this->isPackageActive( $pPackageName ) ) {
-			$this->fatalError( tra("This package is disabled").": package_$pPackageName" );
+			$this->fatalError( tra("This package is disabled").": $pPackageName", NULL, NULL, HttpStatusCodes::HTTP_NOT_FOUND );
 		}
 
 		return( TRUE );
@@ -1727,7 +1727,7 @@ class BitSystem extends BitSingleton {
 	 * @return TRUE if IS_LIVE is defined and set to a non empty value, else FALSE
 	 */
 	function isLive() {
-		return( defined( 'IS_LIVE' ) && IS_LIVE );
+		return( (defined( 'IS_LIVE' ) && IS_LIVE) && !$this->isFeatureActive( 'site_hidden' ) );
 	}
 
 	// {{{=========================== Installer related methods ==============================

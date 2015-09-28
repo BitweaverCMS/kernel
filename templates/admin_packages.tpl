@@ -45,8 +45,11 @@
 
 				{$install_unavailable}
 
+				<div class="bit-columns">
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && !$package.required}
+					<div class="bit-column-cell">
+					<div class="well">
 						<div class="form-group clear">
 							<div class="formlabel">
 								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
@@ -77,8 +80,11 @@
 								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
+					</div>
+					</div>
 					{/if}
 				{/foreach}
+				</div>
 			{/legend}
 
 
@@ -87,8 +93,11 @@
 					{tr}A service package is a package that allows you to extend the way you display bitweaver content - such as <em>categorising your content</em>. Activating more than one of any service type might lead to conflicts.<br />
 					We therefore recommend that you <em>	enable only one of each</em> <strong>service type</strong>.{/tr}
 				</p>
+				<div class="bit-columns">
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && $package.service && !$package.required}
+					<div class="bit-column-cell">
+					<div class="well">
 						<div class="form-group">
 							<div class="formlabel">
 								{if !$package.required}<label for="package_{$name}">{/if}{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}{if !$package.required}</label>{/if}
@@ -121,8 +130,11 @@
 								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
+					</div>
+					</div>
 					{/if}
 				{/foreach}
+				</div>
 			{/legend}
 
 			<div class="form-group submit">
@@ -133,8 +145,11 @@
 
 		{jstab title="Required"}
 			{legend legend="Required packages installed on your system"}
+				<div class="bit-columns">
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && $package.required}
+					<div class="bit-column-cell">
+					<div class="well">
 						<div class="form-group">
 							<div class="formlabel">
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
@@ -144,12 +159,18 @@
 								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
+					</div>
+					</div>
 					{/if}
 				{/foreach}
+				</div>
 			{/legend}
 			{legend legend="Required services installed on your system"}
+				<div class="bit-columns">
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && $package.service && $package.required}
+					<div class="bit-column-cell">
+					<div class="well">
 						<div class="form-group">
 							<div class="formlabel">
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
@@ -161,8 +182,11 @@
 								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
+					</div>
+					</div>
 					{/if}
 				{/foreach}
+				</div>
 			{/legend}
 		{/jstab}
 
@@ -257,21 +281,17 @@
 		{jstab title="Not Installed"}
 			{legend legend="bitweaver packages available for installation"}
 
-				<div class="form-group">
-					<div class="formlabel">
-						{biticon ipackage=install iname="pkg_install" iexplain="install" iforce=icon}
-					</div>
-					{forminput}
-						<p><strong><a class="warning" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Click here to install more Packages{/tr}&nbsp;&hellip;</a></strong></p>
+						<p><a class="btn btn-default" href='{$smarty.const.INSTALL_PKG_URL}install.php?step=3'>{tr}Install Packages{/tr}</a></p>
 
 						{$install_unavailable}
-					{/forminput}
-				</div>
 
 				<hr style="clear:both" />
 
+				<div class="bit-columns">
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if ((1 or $package.tables) && !$package.required && !$package.installed) }
+					<div class="bit-column-cell">
+					<div class="well">
 						<div class="form-group clear">
 							<div class="formlabel">
 								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
@@ -281,6 +301,8 @@
 								{formhelp note=$package.info package=$name}
 							{/forminput}
 						</div>
+					</div>
+					</div>
 					{/if}
 				{/foreach}
 			{/legend}

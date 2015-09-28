@@ -133,10 +133,14 @@
 		{jstab title="Site Access"}
 			{legend legend="Site Access"}
 				<div class="form-group">
-					{formlabel label="Disallow access to the site" for="site_closed"}
-					{forminput}
-						{html_checkboxes name="site_closed" values="y" checked=$gBitSystem->getConfig('site_closed') labels=false id="site_closed"}
-						{formhelp note="Disallow access to the site (except for those with permission)"}
+					{forminput label="checkbox"}
+						{html_checkboxes name="site_closed" values="y" checked=$gBitSystem->getConfig('site_closed') labels=false id="site_closed"} {tr}Disallow access to the site (except for those with permission{/tr}
+					{/forminput}
+				</div>
+
+				<div class="form-group">
+					{forminput label="checkbox"}
+						{html_checkboxes name="site_hidden" values="y" checked=$gBitSystem->getConfig('site_hidden') labels=false id="site_public"} {tr}Site is hidden and will not be crawled by search engines.{/tr}
 					{/forminput}
 				</div>
 
@@ -148,9 +152,8 @@
 				</div>
 
 				<div class="form-group">
-					{formlabel label="Disallow access when load is above the threshold" for="site_load_threshold"}
-					{forminput}
-						{html_checkboxes name="site_load_threshold" values="y" checked=$BitSystemPrefs.site_load_threshold labels=false id="site_load_threshold"}
+					{forminput label="checkbox"}
+						{html_checkboxes name="site_load_threshold" values="y" checked=$BitSystemPrefs.site_load_threshold labels=false id="site_load_threshold"} {tr}Disallow access when load is above the threshold{/tr}
 						{formhelp note="Disallow access when load is above the threshold (except for those with permission)"}
 					{/forminput}
 				</div>

@@ -116,14 +116,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$gBitSmarty->assign( 'output_compression', 'gzip' );
 	}
 
-	// we need to allow up to 900 chars for this value in our 250 char table column
-	$gBitSystem->setConfig( 'site_keywords',
-		$gBitSystem->getConfig( 'site_keywords' ).
-		$gBitSystem->getConfig( 'site_keywords_1' ).
-		$gBitSystem->getConfig( 'site_keywords_2' ).
-		$gBitSystem->getConfig( 'site_keywords_3' )
-	);
-
 	$host = $gBitSystem->getConfig( 'kernel_server_name', $_SERVER['HTTP_HOST'] );
 	if( !defined('BIT_BASE_URI' ) ) {
 		// Added check for IIS $_SERVER['HTTPS'] uses 'off' value - wolff_borg

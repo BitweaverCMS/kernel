@@ -160,6 +160,7 @@ abstract class BitBase {
 	public function __wakeup() {
 		global $gBitDb;
 		$this->setDatabase( $gBitDb );
+		$this->mErrors = array();
 	}
 
 	public static function loadFromCache( $pCacheKey ) {

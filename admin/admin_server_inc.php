@@ -76,12 +76,12 @@ if( $processForm ) {
 	// Special handling for site_temp_dir, which has a default value
 	if( isset( $_REQUEST["site_temp_dir"] ) && $_REQUEST["site_temp_dir"] != TEMP_PKG_PATH ) {
 		$gBitSystem->storeConfig( "site_temp_dir", $_REQUEST["site_temp_dir"], KERNEL_PKG_NAME );
-		$gBitSmarty->assign_by_ref( "site_temp_dir", $_REQUEST["site_temp_dir"] );
+		$gBitSmarty->assignByRef( "site_temp_dir", $_REQUEST["site_temp_dir"] );
 	}
 
 	// Special handling for centralissed_upload_dir, which has a default value
 	$centralDir = ( !empty( $_REQUEST["site_upload_dir"] ) ? $_REQUEST["site_upload_dir"] : NULL );
 	$gBitSystem->storeConfig( "site_upload_dir", $centralDir , KERNEL_PKG_NAME );
-	$gBitSmarty->assign_by_ref( "site_upload_dir", $centralDir );
+	$gBitSmarty->assignByRef( "site_upload_dir", $centralDir );
 }
 ?>

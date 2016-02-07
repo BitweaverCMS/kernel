@@ -75,10 +75,10 @@ global $gBitSmarty, $gBitSystem;
 if( !is_object( $gBitSmarty ) ) {
 	$gBitSmarty = new BitSmarty();
 	// set the default handler
-	$gBitSmarty->load_filter( 'pre', 'tr' );
-	// $gBitSmarty->load_filter('output','trimwhitespace');
+	$gBitSmarty->loadFilter( 'pre', 'tr' );
+	// $gBitSmarty->loadFilter('output','trimwhitespace');
 	if( isset( $_REQUEST['highlight'] ) ) {
-		$gBitSmarty->load_filter( 'output', 'highlight' );
+		$gBitSmarty->loadFilter( 'output', 'highlight' );
 	}
 }
 
@@ -101,7 +101,7 @@ BitLanguage::loadSingleton();
 require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
 $gSniffer = new phpSniff;
-$gBitSmarty->assign_by_ref( 'gBrowserInfo', $gSniffer->_browser_info );
+$gBitSmarty->assignByRef( 'gBrowserInfo', $gSniffer->_browser_info );
 
 // set various classes global
 global $gBitUser, $gTicket, $userlib, $gBitDbType, $gLibertySystem;
@@ -147,7 +147,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	// some plugins check for active packages, so we do this *after* package scanning
-	$gBitSmarty->assign_by_ref( 'gBitSystem', $gBitSystem );
+	$gBitSmarty->assignByRef( 'gBitSystem', $gBitSystem );
 
 	// some liberty plugins might need to run some functions.
 	// it's necessary that we call them early on after scanPackages() has been completed.
@@ -184,12 +184,12 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$_REQUEST['page'] = strip_tags( $_REQUEST['page'] );
 	}
 	global $gHideModules;
-	$gBitSmarty->assign_by_ref( 'gHideModules', $gHideModules );
+	$gBitSmarty->assignByRef( 'gHideModules', $gHideModules );
 	$keywords = $gBitSystem->getConfig( 'site_keywords' );
-	$gBitSmarty->assign_by_ref( 'metaKeywords', $keywords );
+	$gBitSmarty->assignByRef( 'metaKeywords', $keywords );
 
 	// =================== Kernel ===================
-	//$gBitSmarty->assign_by_ref( "gBitSystemPackages", $gBitSystem->mPackages ); doesn't seem to be used - xing
+	//$gBitSmarty->assignByRef( "gBitSystemPackages", $gBitSystem->mPackages ); doesn't seem to be used - xing
 
 	// check to see if admin has closed the site
 	if(( isset( $_SERVER['SCRIPT_URL'] ) && $_SERVER['SCRIPT_URL'] == USERS_PKG_URL.'validate.php' )) {
@@ -219,7 +219,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// if we are interactively translating the website, we force template caching on every page load.
 	if( $gBitSystem->isFeatureActive( 'i18n_interactive_translation' ) && $gBitUser->hasPermission( 'p_languages_edit' ) ) {
-		$gBitSmarty->assign_by_ref( "gBitTranslationHash", $gBitTranslationHash );
+		$gBitSmarty->assignByRef( "gBitTranslationHash", $gBitTranslationHash );
 	} else {
 		// this has to be done since the permission can't be checked in BitLanguage::translate() as it's called too soon by prefilter.tr
 		$gBitSystem->setConfig( 'i18n_interactive_translation', 'n' );

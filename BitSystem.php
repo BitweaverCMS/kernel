@@ -474,7 +474,7 @@ class BitSystem extends BitSingleton {
 
 		// check to see if we are working with a dynamic center area
 		if( $pMid == 'bitpackage:kernel/dynamic.tpl' ) {
-			$gBitSmarty->assign_by_ref( 'gCenterPieces', $gCenterPieces );
+			$gBitSmarty->assignByRef( 'gCenterPieces', $gCenterPieces );
 		}
 
 		$gBitThemes->preLoadStyle();
@@ -749,7 +749,7 @@ class BitSystem extends BitSingleton {
 				unset( $pFormHash['input'] );
 			}
 			$gBitSmarty->assign( 'msgFields', $pMsg );
-			$gBitSmarty->assign_by_ref( 'hiddenFields', $pFormHash );
+			$gBitSmarty->assignByRef( 'hiddenFields', $pFormHash );
 			$this->display( 'bitpackage:kernel/confirm.tpl', $pageTitle, array( 'display_mode' => 'edit' ));
 			die;
 		}
@@ -845,7 +845,7 @@ class BitSystem extends BitSingleton {
 		// Define <PACKAGE>_PKG_PATH
 		$pkgDefine = $pkgName.'_PKG_PATH';
 		if( !defined( $pkgDefine )) {
-			define( $pkgDefine, $path );
+			define( $pkgDefine, BIT_ROOT_PATH . basename( $path ) . '/' );
 		}
 		$this->mPackages[$pkgNameKey]['url']  = BIT_ROOT_URL . basename( $path ) . '/';
 		$this->mPackages[$pkgNameKey]['path']  = BIT_ROOT_PATH . basename( $path ) . '/';

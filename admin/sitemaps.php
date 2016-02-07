@@ -26,7 +26,7 @@ foreach( $gBitSystem->mPackages as $packageName => $package ) {
 	}
 }
 
-$gBitSmarty->assign_by_ref( 'gSiteMapHash', $gSiteMapHash );
+$gBitSmarty->assignByRef( 'gSiteMapHash', $gSiteMapHash );
 
 // Display the template
 $gBitSystem->display( 'bitpackage:kernel/admin_sitemaps.tpl', NULL, array( 'display_mode' => 'admin' ));

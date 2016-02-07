@@ -111,12 +111,12 @@ function byref_set_value( $pFeature, $pPref = "", $pPackageName = NULL ) {
 		if( strlen( $pPref ) > 0 ) {
 			$gBitSystem->storeConfig( $pPref, $_REQUEST[$pFeature], $pPackageName );
 			// also assign the ref appareantly --gongo
-			$gBitSmarty->assign_by_ref( $pPref, $_REQUEST[$pFeature] );
+			$gBitSmarty->assignByRef( $pPref, $_REQUEST[$pFeature] );
 		} else {
 			$gBitSystem->storeConfig( $pFeature, $_REQUEST[$pFeature], $pPackageName );
 		}
 
-		$gBitSmarty->assign_by_ref( $pFeature, $_REQUEST[$pFeature] );
+		$gBitSmarty->assignByRef( $pFeature, $_REQUEST[$pFeature] );
 	}
 }
 

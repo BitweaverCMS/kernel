@@ -76,7 +76,7 @@ if( !empty( $_REQUEST["page"] )) {
 		if( $gBitUser->hasPermission( 'p_'.$package.'_admin' ) ) {
 			$lowerPackage = strtolower( $package );
 			$tpl = "bitpackage:$lowerPackage/menu_{$lowerPackage}_admin.tpl";
-			if(( $gBitSystem->isPackageActive( $package ) || $lowerPackage == 'kernel' ) && @$gBitSmarty->template_exists( $tpl )) {
+			if(( $gBitSystem->isPackageActive( $package ) || $lowerPackage == 'kernel' ) && @$gBitSmarty->templateExists( $tpl )) {
 				$adminTemplates[$package] = $tpl;
 			}
 		}
@@ -84,7 +84,7 @@ if( !empty( $_REQUEST["page"] )) {
 
 	if( !empty( $adminTemplates ) ) {
 		$gBitSystem->setBrowserTitle( 'Administration' );
-		$gBitSmarty->assign_by_ref( 'adminTemplates', $adminTemplates );
+		$gBitSmarty->assignByRef( 'adminTemplates', $adminTemplates );
 	} else {
 		$gBitSystem->verifyPermission( 'p_admin' );
 	}

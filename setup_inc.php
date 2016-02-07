@@ -92,7 +92,7 @@ if( !empty( $gBitSystem->mConfig ) && version_compare( MIN_BIT_VERSION, $gBitSys
 }
 
 BitSystem::prependIncludePath( UTIL_PKG_PATH.'/' );
-BitSystem::prependIncludePath( CONFIG_PKG_PATH.'externals/pear/' );
+BitSystem::prependIncludePath( EXTERNAL_LIBS_PATH.'pear/' );
 
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 BitLanguage::loadSingleton();

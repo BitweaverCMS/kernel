@@ -24,7 +24,7 @@ if( empty( $ADODB_CACHE_DIR )) {
 }
 mkdir_p( $ADODB_CACHE_DIR );
 
-require_once( CONFIG_PKG_PATH.'externals/adodb/adodb.inc.php' );
+require_once( EXTERNAL_LIBS_PATH.'adodb/adodb.inc.php' );
 require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
 
 /**

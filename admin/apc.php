@@ -706,10 +706,10 @@ input {
 </head>
 <body>
 <div class="head">
-	<h1 class="apc">
+	<div class="apc">
 		<div class="logo"><span class="logo"><a href="http://pecl.php.net/package/APCu">APCu</a></span></div>
 		<div class="nameinfo">User Cache</div>
-	</h1>
+	</div>
 	<div class="login">
 	<?php put_login_link(); ?>
 	</div>

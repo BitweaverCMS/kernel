@@ -850,6 +850,8 @@ class BitDb {
 						if ( $pSortMode == 'page_name_desc' )          $pSortMode = 'title_desc';
 						if ( $pSortMode == 'content_id_asc' )          $pSortMode = 'lc.content_id_asc';
 						if ( $pSortMode == 'content_id_desc' )         $pSortMode = 'lc.content_id_desc';
+						if ( $pSortMode == 'item_position_asc' )          $pSortMode = 'tfgim2.item_position_asc';
+						if ( $pSortMode == 'item_position_desc' )         $pSortMode = 'tfgim2.item_position_desc';
 						if ( $pSortMode == 'creator_user_asc' )        $pSortMode = 'uuc.login_asc';
 						if ( $pSortMode == 'creator_user_desc' )       $pSortMode = 'uuc.login_desc';
 						if ( $pSortMode == 'creator_real_name_asc' )   $pSortMode = 'uuc.real_name_asc';

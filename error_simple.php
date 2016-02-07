@@ -36,7 +36,7 @@
 		
 		<hr />
 			
-		<form name="loginbox" action="<?php echo USERS_PKG_URL ?>validate.php" method="post">
+		<form id="loginbox" action="<?php echo USERS_PKG_URL ?>validate.php" method="post">
 			<fieldset>
 				<legend>Login</legend>
 				<label for="user">User: <input id="user" name="user" size="20" type="text" /></label>

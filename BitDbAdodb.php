@@ -301,7 +301,7 @@ class BitDbAdodb extends BitDb {
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function getAll( $pQuery, $FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+	function getAll( $pQuery, $pValues = FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		if( empty( $this->mDb )) {
 			return FALSE;
 		}
@@ -327,7 +327,7 @@ class BitDbAdodb extends BitDb {
 	 * @return the associative array, or FALSE if an error occurs
 	 * @todo not currently used anywhere
 	 */
-	function getCol( $pQuery, $FALSE, $pTrim=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+	function getCol( $pQuery, $pValues = FALSE, $pTrim=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		if( empty( $this->mDb )) {
 			return FALSE;
 		}
@@ -352,7 +352,7 @@ class BitDbAdodb extends BitDb {
 	 * @param pFirst2Cols if set to TRUE, only returns the first two columns
 	 * @return the associative array, or FALSE if an error occurs
 	 */
-	function getArray( $pQuery, $FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+	function getArray( $pQuery, $pValues = FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		if( empty( $this->mDb )) {
 			return FALSE;
 		}
@@ -376,7 +376,7 @@ class BitDbAdodb extends BitDb {
 	 * @param pFirst2Cols if set to TRUE, only returns the first two columns
 	 * @return the associative array, or FALSE if an error occurs
 	 */
-	function getAssoc( $pQuery, $FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+	function getAssoc( $pQuery, $pValues = FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		if( empty( $this->mDb )) {
 			return FALSE;
 		}
@@ -398,7 +398,7 @@ class BitDbAdodb extends BitDb {
 	 * @param pValues an array of values used in a parameterised query
 	 * @return returns the first row as an array, or FALSE if an error occurs
 	 */
-	function getRow( $pQuery, $FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+	function getRow( $pQuery, $pValues = FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		if( empty( $this->mDb ) ) {
 			return FALSE;
 		}

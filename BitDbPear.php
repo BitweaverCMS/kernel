@@ -168,7 +168,7 @@ class BitDbPear extends BitDb
 	* compatibility function
 	*/
 	function Execute($pQuery, $pNumRows = false, $zf_cache = false, $pCacheTime=BIT_QUERY_DEFAULT) {
-		return $this->query( $pQuery, NULL, $pNumRows, BIT_QUERY_DEFAULT, $pCacheTime );
+		return $this->query( $pQuery, FALSE, $pNumRows, BIT_QUERY_DEFAULT, $pCacheTime );
 	}
 
 	/** Executes the SQL and returns all elements of the first column as a 1-dimensional array. The recordset is discarded for you automatically. If an error occurs, false is returned.

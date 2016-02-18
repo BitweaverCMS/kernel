@@ -344,7 +344,7 @@ class BitDb {
 			$pQuery = preg_replace("/ NOW/", " 'NOW'", $pQuery);
 			$pQuery = preg_replace("/now\(\)/", "'NOW'", $pQuery);
 		}
-		return $this->query( $pQuery, NULL, $pNumRows, NULL, $pCacheTime );
+		return $this->query( $pQuery, FALSE, $pNumRows, NULL, $pCacheTime );
 	}
 
 	/**

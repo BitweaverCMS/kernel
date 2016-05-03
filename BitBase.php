@@ -303,8 +303,8 @@ abstract class BitBase {
 			}
 			return TRUE;
 		}
-		return( !empty( $pId ) && (is_int( $pId ) || ctype_digit( $pId ) || (is_numeric( $pId ) ? intval( $pId ) == $pId : false)) );
-;
+		$ret = !empty( $pId ) && (is_int( $pId ) || ctype_digit( $pId ) || is_numeric( $pId )) && (($pId < 0xFFFFFFFF && intval( $pId ) == $pId));
+		return $ret;
 	}
 
 	/**

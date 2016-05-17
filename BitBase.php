@@ -281,7 +281,7 @@ abstract class BitBase {
 	 */
 	public static function verifyIdParameter( &$pParamHash, $pKey ) {
 		// check all possibilities as quickly as possible as this function is called frequently
-		return !empty( $pParamHash[$pKey] ) && (is_int( $pParamHash[$pKey] ) || ctype_digit( $pParamHash[$pKey] ) || (is_numeric($pParamHash[$pKey]) ? intval( $pParamHash[$pKey] ) == $pParamHash[$pKey] : false));
+		return !empty( $pParamHash[$pKey] ) && BitBase::verifyId( $pParamHash[$pKey] );
 	}
 
 	/**
@@ -303,7 +303,7 @@ abstract class BitBase {
 			}
 			return TRUE;
 		}
-		$ret = !empty( $pId ) && (is_int( $pId ) || ctype_digit( $pId ) || is_numeric( $pId )) && (($pId < 0xFFFFFFFF && intval( $pId ) == $pId));
+		$ret = !empty( $pId ) && (is_int( $pId ) || ctype_digit( $pId ) || is_numeric( $pId )) && ($pId < 0x1FFFFFFF) && (intval( $pId ) == $pId);
 		return $ret;
 	}
 

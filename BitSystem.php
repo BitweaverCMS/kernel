@@ -2454,7 +2454,7 @@ class BitSystem extends BitSingleton {
 		static $short_datetime_format = FALSE;
 
 		if( !$short_datetime_format ) {
-			$short_datetime_format = $this->getConfig( 'site_short_datetime_format', '%a %d of %b, %Y (%H:%M %Z)' );
+			$short_datetime_format = $this->getConfig( 'site_short_datetime_format', '%d %b %Y (%H:%M %Z)' );
 		}
 
 		return $short_datetime_format;

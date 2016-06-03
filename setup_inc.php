@@ -12,7 +12,6 @@
  * required setup
  */
 
-//ini_set( 'session.save_path', 'C:\somewhere\I\can\write' );
 $rootDir = dirname( dirname( __FILE__ ) );
 define( 'BIT_ROOT_PATH', empty( $_SERVER['VHOST_DIR'] ) ? $rootDir.'/' : $_SERVER['VHOST_DIR'].'/' );
 
@@ -28,9 +27,6 @@ require_once( KERNEL_PKG_PATH.'BitTimer.php' );
 
 // set error reporting
 error_reporting( BIT_PHP_ERROR_REPORTING );
-
-// this is evil stuff and causes hell for us
-ini_set( 'session.use_trans_sid', 'Off' );
 
 if( ini_get( 'safe_mode' ) && ini_get( 'safe_mode_gid' )) {
 	umask( 0007 );

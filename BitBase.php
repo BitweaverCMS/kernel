@@ -81,7 +81,7 @@ abstract class BitBase {
 	/**
 	 * Data hash that represents this classes row(s) in the db
 	 **/
-	var $mInfo = array();
+	public $mInfo = array();
 
 	/**
 	 * Data hash that contains logging information relevant to database operations

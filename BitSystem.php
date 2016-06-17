@@ -140,13 +140,20 @@ class BitSystem extends BitSingleton {
 
 	}
 
+	public function __sleep() {
+		return array_merge( parent::__sleep(), array( 'mPackages', 'mPackagesDirNameXref', 'mStyle', 'mAppMenu', 'mInstallModules', 'mOnload', 'mOnunload', 'mNotifyEvents', 'mConfig', 'mRegisterCalled', 'mPackageFileName', 'mContentClasses' ) );
+	}
+
 	public static function loadFromCache( $pCacheKey ) {
+		global $gBitTimer;
 		if( $ret = parent::loadFromCache( $pCacheKey ) ) {
 			$ret->setHttpStatus( HttpStatusCodes::HTTP_OK );
+			$ret->mTimer = $gBitTimer;
 			$ret->mTimer->start();
 			$ret->mOnload = array();
 			$ret->mAppMenu = array();
 			$ret->defineTempDir();
+			$ret->mServerTimestamp = new BitDate();
 		}
 		return $ret;
 	}

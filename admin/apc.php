@@ -974,7 +974,6 @@ EOB;
 		'<th>',sortheader('H','Hits',         "&OB=".$MYREQUEST['OB']),'</th>',
 		'<th>',sortheader('Z','Size',         "&OB=".$MYREQUEST['OB']),'</th>',
 		'<th>',sortheader('A','Last accessed',"&OB=".$MYREQUEST['OB']),'</th>',
-		'<th>',sortheader('M','Last modified',"&OB=".$MYREQUEST['OB']),'</th>',
 		'<th>',sortheader('C','Created at',   "&OB=".$MYREQUEST['OB']),'</th>';
 
 	if($fieldname=='info') {
@@ -1026,7 +1025,6 @@ EOB;
           '<td class="td-n center">',$entry['num_hits'],'</td>',
           '<td class="td-n right">',$entry['mem_size'],'</td>',
           '<td class="td-n center">',date(DATE_FORMAT,$entry['access_time']),'</td>',
-          '<td class="td-n center">',date(DATE_FORMAT,$entry['modification_time']),'</td>',
           '<td class="td-n center">',date(DATE_FORMAT,$entry['creation_time']),'</td>';
 
         if($fieldname=='info') {

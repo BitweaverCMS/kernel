@@ -73,6 +73,12 @@ abstract class BitBase {
 	var $dType;
 
 	/**
+	 * Was the object created from object caching mechanism like apcu
+	 * @private
+	 */
+	var $mCacheObject = FALSE;
+
+	/**
 	 * Standard Query Cache Time. Variable can be set to 0 to flush particular queries
 	 * @private
 	 */
@@ -152,9 +158,20 @@ abstract class BitBase {
 	protected function storeInCache() {
 		$ret = FALSE;
 		if( $this->isCacheableObject() && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
-			$ret = apc_store( $cacheKey, $this, 3600 );
+			if( empty( $this->mCacheObject ) ) {
+				// new to cache, or overwrite
+//var_dump( 'STORE '.get_called_class().' '.$cacheKey );
+				$ret = apc_store( $cacheKey, $this, 3600 );
+			} else {
+//var_dump( 'ADD '.get_called_class().' '.$cacheKey );
+				$ret = apc_add( $cacheKey, $this, 3600 );
+			}
 		}
 		return $ret;
+	}
+
+	public function __sleep() {
+		return array( 'mCacheTime', 'mCacheObject' );
 	}
 
 	public function __wakeup() {
@@ -163,13 +180,18 @@ abstract class BitBase {
 		$this->mErrors = array();
 	}
 
-	public static function loadFromCache( $pCacheKey ) {
+	public static function loadFromCache( $pCacheKey, $pContentTypeGuid = NULL ) {
 		$ret = NULL;
+//vd( 'LOAD '.get_called_class().' '.static::getCacheUuidFromKey( $pCacheKey, $pContentTypeGuid ) );
 		if( static::isCacheActive() && static::isCacheableClass() && !empty( $pCacheKey ) ) {
-			if( $ret = apc_fetch( static::getCacheUuidFromKey( $pCacheKey ) ) ) {
+			if( $ret = apc_fetch( static::getCacheUuidFromKey( $pCacheKey, $pContentTypeGuid ) ) ) {
+				$ret->mCacheObject = TRUE;
+//vd( 'LOAD SUCCESS '.get_class( $ret ).' ' .$ret->getField( 'content_id' ) );
 			} else {
+//vd( 'LOAD FAILED' );
 			}
 		}
+
 		return $ret;
 	}
 
@@ -182,13 +204,17 @@ abstract class BitBase {
 		return $ret;
 	}
 
+	public static function getCacheClass() {
+		return static::getClass();
+	}
+
 	public function getCacheUuid() {
 		return static::getCacheUuidFromKey( $this->getCacheKey() );
 	}
 
-	public static function getCacheUuidFromKey( $pCacheUuid = '' ) {
+	public static function getCacheUuidFromKey( $pCacheUuid = '', $pContentTypeGuid = NULL ) {
 		global $gBitDbName, $gBitDbHost;
-		$ret = $_SERVER['HTTP_HOST'].':'.$gBitDbName.'@'.$gBitDbHost.':'.get_called_class().'#'.$pCacheUuid;
+		$ret = $_SERVER['HTTP_HOST'].':'.$gBitDbName.'@'.$gBitDbHost.':'.($pContentTypeGuid ? $pContentTypeGuid : static::getCacheClass()).'#'.$pCacheUuid;
 		return $ret;
 	}
 

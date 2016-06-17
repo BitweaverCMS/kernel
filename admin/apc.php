@@ -1,4 +1,3 @@
-
 <?php
 /*
   +----------------------------------------------------------------------+
@@ -23,10 +22,16 @@
 
  */
 
+$VERSION='$Id$';
+
 require_once( '../../kernel/setup_inc.php' );
 
 global $gBitUser;
 $gBitUser->verifyPermission( 'p_admin' );
+
+////////// READ OPTIONAL CONFIGURATION FILE ////////////
+if (file_exists("apc.conf.php")) include("apc.conf.php");
+////////////////////////////////////////////////////////
 
 ////////// BEGIN OF DEFAULT CONFIG AREA ///////////////////////////////////////////////////////////
 
@@ -706,10 +711,10 @@ input {
 </head>
 <body>
 <div class="head">
-	<div class="apc">
+	<h1 class="apc">
 		<div class="logo"><span class="logo"><a href="http://pecl.php.net/package/APCu">APCu</a></span></div>
 		<div class="nameinfo">User Cache</div>
-	</div>
+	</h1>
 	<div class="login">
 	<?php put_login_link(); ?>
 	</div>
@@ -781,7 +786,6 @@ EOB;
 EOB;
 	echo   '<tr class=tr-1><td class=td-0>Start Time</td><td>',date(DATE_FORMAT,$cache['start_time']),'</td></tr>';
 	echo   '<tr class=tr-0><td class=td-0>Uptime</td><td>',duration($cache['start_time']),'</td></tr>';
-	echo   '<tr class=tr-1><td class=td-0>File Upload Support</td><td>',$cache['file_upload_progress'],'</td></tr>';
 	echo <<<EOB
 		</tbody></table>
 		</div>
@@ -796,7 +800,7 @@ EOB;
 			<tr class=tr-0><td class=td-0>Hit Rate</td><td>$hit_rate_user cache requests/second</td></tr>
 			<tr class=tr-1><td class=td-0>Miss Rate</td><td>$miss_rate_user cache requests/second</td></tr>
 			<tr class=tr-0><td class=td-0>Insert Rate</td><td>$insert_rate_user cache requests/second</td></tr>
-			<tr class=tr-1><td class=td-0>Cache full count</td><td>{$cache['num_expunges']}</td></tr>
+			<tr class=tr-1><td class=td-0>Cache full count</td><td>{$cache['expunges']}</td></tr>
 		</tbody>
 		</table>
 		</div>
@@ -974,6 +978,7 @@ EOB;
 		'<th>',sortheader('H','Hits',         "&OB=".$MYREQUEST['OB']),'</th>',
 		'<th>',sortheader('Z','Size',         "&OB=".$MYREQUEST['OB']),'</th>',
 		'<th>',sortheader('A','Last accessed',"&OB=".$MYREQUEST['OB']),'</th>',
+		'<th>',sortheader('M','Last modified',"&OB=".$MYREQUEST['OB']),'</th>',
 		'<th>',sortheader('C','Created at',   "&OB=".$MYREQUEST['OB']),'</th>';
 
 	if($fieldname=='info') {
@@ -991,7 +996,7 @@ EOB;
 			case 'A': $k=sprintf('%015d-',$entry['access_time']);  	     break;
 			case 'H': $k=sprintf('%015d-',$entry['num_hits']); 	     break;
 			case 'Z': $k=sprintf('%015d-',$entry['mem_size']); 	     break;
-			case 'M': $k=sprintf('%015d-',$entry['modification_time']);  break;
+			case 'M': $k=sprintf('%015d-',$entry['mtime']);  break;
 			case 'C': $k=sprintf('%015d-',$entry['creation_time']);      break;
 			case 'T': $k=sprintf('%015d-',$entry['ttl']);		     break;
 			case 'D': $k=sprintf('%015d-',$entry['deletion_time']);      break;
@@ -1020,11 +1025,12 @@ EOB;
 		$sh=md5($entry["info"]);
         $field_value = htmlentities(strip_tags($entry[$fieldname],''), ENT_QUOTES, 'UTF-8');
         echo
-          '<tr class=tr-',$i%2,'>',
-          "<td class=td-0><a href=\"$MY_SELF&OB=",$MYREQUEST['OB'],"&SH=",$sh,"\">",$field_value,'</a></td>',
+          '<tr id="key-'. $sh .'" class=tr-',$i%2,'>',
+          "<td class=td-0><a href=\"$MY_SELF&OB=",$MYREQUEST['OB'],"&SH=",$sh,"#key-". $sh ."\">",$field_value,'</a></td>',
           '<td class="td-n center">',$entry['num_hits'],'</td>',
           '<td class="td-n right">',$entry['mem_size'],'</td>',
           '<td class="td-n center">',date(DATE_FORMAT,$entry['access_time']),'</td>',
+          '<td class="td-n center">',date(DATE_FORMAT,$entry['mtime']),'</td>',
           '<td class="td-n center">',date(DATE_FORMAT,$entry['creation_time']),'</td>';
 
         if($fieldname=='info') {
@@ -1092,7 +1098,7 @@ EOB;
 	if (!$rss) {
 		echo '<tr class="td-last center"><td>Unable to fetch version information.</td></tr>';
 	} else {
-		$apcversion = phpversion('apc');
+		$apcversion = phpversion('apcu');
 
 		preg_match('!<title>APCu ([0-9.]+)</title>!', $rss, $match);
 		echo '<tr class="tr-0 center"><td>';
@@ -1139,6 +1145,6 @@ EOB;
 
 ?>
 
-<!-- <?php echo "\nBased on APCGUI By R.Becker\n"?> -->
+<!-- <?php echo "\nBased on APCGUI By R.Becker\n$VERSION\n"?> -->
 </body>
 </html>

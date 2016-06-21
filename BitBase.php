@@ -76,7 +76,7 @@ abstract class BitBase {
 	 * Was the object created from object caching mechanism like apcu
 	 * @private
 	 */
-	var $mCacheObject = FALSE;
+	var $mCacheObject;
 
 	/**
 	 * Standard Query Cache Time. Variable can be set to 0 to flush particular queries
@@ -171,6 +171,8 @@ abstract class BitBase {
 	}
 
 	public function __sleep() {
+		unset( $this->mDb );
+		$this->mCacheObject = TRUE;
 		return array( 'mCacheTime', 'mCacheObject' );
 	}
 

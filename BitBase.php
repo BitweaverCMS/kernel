@@ -143,7 +143,7 @@ abstract class BitBase {
 
 	public function clearFromCache( &$pParamHash=NULL ) {
 		$this->mCacheTime = BIT_QUERY_CACHE_DISABLE;
-		if( $this->isCacheableObject() && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
+		if( static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
 			$ret = apc_delete( $cacheKey );
 		}
 	}

@@ -909,6 +909,7 @@ class BitSystem extends BitSingleton {
 
 	function getActivePackage() {
 		if( empty( $this->mActivePackage ) ) {
+			$this->mActivePackage = 'kernel'; // default to kernel, which has the default layout
 			// Define the package we are currently in
 			// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
 			$scriptDir = ( basename( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );

@@ -279,6 +279,22 @@ abstract class BitBase {
 		return ( !empty( $this->mDb ) ? $this->mDb : NULL  );
 	}
 
+	/**
+	 * Begin transaction in database. Make sure to handle object caching here
+	 **/
+	function StartTrans() {
+		// Database transaction locking implies inherent data change. clear object in cache.
+		$this->clearFromCache();
+		$this->mDb->StartTrans();
+	}
+
+	/**
+	 * Finish transaction in database.
+	 **/
+	function CompleteTrans() {
+		$this->mDb->CompleteTrans();
+	}
+
 	function debugMarkTime() {
 		$this->mDebugMicrotime = microtime(1);
 	}

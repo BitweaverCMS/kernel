@@ -63,7 +63,7 @@ class BitSystem extends BitSingleton {
 	var $mAppMenu = array();
 
 	// The currently active page
-	var $mActivePackage;
+	private $mActivePackage;
 
 	// Modules that need to be inserted during installation
 	var $mInstallModules = array();
@@ -901,17 +901,25 @@ class BitSystem extends BitSingleton {
 			$_SERVER['SCRIPT_FILENAME'] =  str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED'] );
 		}
 
-		// Define the package we are currently in
-		// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
-		$scriptDir = ( basename( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );
-		if( !defined( 'ACTIVE_PACKAGE' ) && ( $scriptDir == constant( $pkgName.'_PKG_DIR' ) || isset( $_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '!/'.$this->mPackages[$pkgNameKey]['dir'].'/!', $_SERVER['SCRIPT_NAME'] ) || preg_match( '!/'.$pkgNameKey.'/!', $_SERVER['SCRIPT_NAME'] ))) {
-			if( isset( $_SERVER['ACTIVE_PACKAGE'] )) {
-				// perhaps the webserver told us the active package (probably because of mod_rewrites)
-				$pkgNameKey = $_SERVER['ACTIVE_PACKAGE'];
+	}
+
+	function setActivePackage( $pPkgName ) {
+		$this->mActivePackage = $pPkgName;
+	}
+
+	function getActivePackage() {
+		if( empty( $this->mActivePackage ) ) {
+			// Define the package we are currently in
+			// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
+			$scriptDir = ( basename( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );
+			foreach( array_keys( $this->mPackages ) as $pkgNameKey ) {
+				if( $scriptDir == $this->mPackages[$pkgNameKey]['dir'] ) {
+					$this->mActivePackage = $pkgNameKey;
+					break;
+				}
 			}
-			define( 'ACTIVE_PACKAGE', $pkgNameKey );
-			$this->mActivePackage = $pkgNameKey;
 		}
+		return $this->mActivePackage;
 	}
 
 	// === registerAppMenu

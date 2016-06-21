@@ -55,7 +55,7 @@ if( !empty( $_REQUEST["page"] )) {
 
 		$adminPage = constant( strtoupper( $package ).'_PKG_PATH' ).'/admin/admin_'.$adminFile.'_inc.php';
 		// gBitThemes->loadLayout uses this to determine the currently active package
-		$gBitSystem->mActivePackage = $package;
+		$gBitSystem->setActivePackage( $package );
 	}
 	$gBitSmarty->assign( 'package', $package );
 	$gBitSmarty->assign( 'adminFile', $adminFile );

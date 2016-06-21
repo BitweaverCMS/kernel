@@ -34,7 +34,7 @@
 <body itemscope itemtype="http://schema.org/WebPage"
 	{if $gBitSystem->mOnload} onload="{foreach from=$gBitSystem->mOnload item=loadString}{$loadString}{/foreach}" {/if}
 	{if $gBitSystem->mOnunload} onunload="{foreach from=$gBitSystem->mOnunload item=loadString}{$loadString}{/foreach}"	{/if} 
-	id="{$smarty.const.ACTIVE_PACKAGE}" class="{$displayClass}{$userClass}{$contentClass}">
+	id="{$gBitSystem->getActivePackage()}" class="{$displayClass}{$userClass}{$contentClass}">
 {if $gBitSystem->mDebugHtml}
 	<div id="bw_debughtml">
 		<a href="#postdebug" onclick="document.getElementById('bw_debughtml').style.display='none';">Go to content</a>

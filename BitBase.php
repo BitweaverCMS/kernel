@@ -295,6 +295,13 @@ abstract class BitBase {
 		$this->mDb->CompleteTrans();
 	}
 
+	/**
+	 * Rollback transaction in database.
+	 **/
+	function RollbackTrans() {
+		$this->mDb->RollbackTrans();
+	}
+
 	function debugMarkTime() {
 		$this->mDebugMicrotime = microtime(1);
 	}

@@ -283,7 +283,7 @@ class BitSystem extends BitSingleton {
 					$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `config_value`=? WHERE `multisite_id`=? AND `config_name`=?";
 					$result = $this->mDb->query( $query, array( empty( $pValue ) ? '' : $pValue, $gMultisites->mMultisiteId, $pName ) );
 				} else {
-					$this->mDb->StartTrans();
+					$this->StartTrans();
 					$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`=?";
 					$result = $this->mDb->query( $query, array( $pName ) );
 					// make sure only non-empty values get saved, including '0'
@@ -291,7 +291,7 @@ class BitSystem extends BitSingleton {
 						$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_config`(`config_name`,`config_value`,`package`) VALUES (?,?,?)";
 						$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage )));
 					}
-					$this->mDb->CompleteTrans();
+					$this->CompleteTrans();
 				}
 
 				// Force the ADODB cache to flush
@@ -916,6 +916,9 @@ class BitSystem extends BitSingleton {
 			foreach( array_keys( $this->mPackages ) as $pkgNameKey ) {
 				if( $scriptDir == $this->mPackages[$pkgNameKey]['dir'] ) {
 					$this->mActivePackage = $pkgNameKey;
+					if( !defined( 'ACTIVE_PACKAGE' ) ) {
+						define( 'ACTIVE_PACKAGE', $pkgNameKey );
+					}
 					break;
 				}
 			}

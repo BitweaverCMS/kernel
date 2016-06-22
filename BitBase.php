@@ -46,43 +46,43 @@ abstract class BitBase {
 	 * @todo not used yet
 	 * @private
 	 */
-	var $mErrors;
+	public $mErrors;
 
 	/**
 	 * Same idea as the error hash but this is for successful operations
 	 * @private
 	 */
-	var $mSuccess;
+	public $mSuccess;
 
 	/**
 	 * String used to refer to preference caching and database table
 	 * @private
 	 */
-	var $mName;
+	public $mName;
 
 	/**
 	 * Used to store database mechanism
 	 * @private
 	 */
-	var $mDb;
+	public $mDb;
 
 	/**
 	 * Used to store database type
 	 * @private
 	 */
-	var $dType;
+	public $dType;
 
 	/**
 	 * Was the object created from object caching mechanism like apcu
 	 * @private
 	 */
-	var $mCacheObject;
+	public $mCacheObject;
 
 	/**
 	 * Standard Query Cache Time. Variable can be set to 0 to flush particular queries
 	 * @private
 	 */
-	var $mCacheTime;
+	public $mCacheTime;
 
 	/**
 	 * Data hash that represents this classes row(s) in the db
@@ -92,9 +92,9 @@ abstract class BitBase {
 	/**
 	 * Data hash that contains logging information relevant to database operations
 	 **/
-	var $mLogs = array();
+	public $mLogs = array();
 
-	var $mPreventCache = FALSE;
+	public $mPreventCache = FALSE;
 
 
 	const CACHE_STATE_NONE = 0;

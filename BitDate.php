@@ -30,13 +30,13 @@ class BitDate {
 	 * UTC offset to use for display
 	 * @var int
 	 */
-	var $display_offset;
+	public $display_offset;
 
 	/**
 	 * Current UTC offset of server
 	 * @var int
 	 */
-	var $server_offset;
+	public $server_offset;
 
 	/**
 	 * Default constructor

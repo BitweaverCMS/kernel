@@ -14,7 +14,7 @@ class BitCache {
 	 * Used to store the directory used to store the cache files.
 	 * @private
 	 */
-	var $mFolder;
+	public $mFolder;
 	/**
 	 * Will check the temp cache folder for existence and create it if necessary.
 	 *

@@ -51,49 +51,49 @@ class BitSystem extends BitSingleton {
 	// Initiate class variables
 
 	// Essential information about packages
-	var $mPackages = array();
+	public $mPackages = array();
 
 	// Cross Reference Package Directory Name => Package Key used as index into $mPackages
-	var $mPackagesDirNameXref = array();
+	public $mPackagesDirNameXref = array();
 
 	// Contains site style information
-	var $mStyle = array();
+	public $mStyle = array();
 
 	// Information about package menus used in all menu modules and top bar
-	var $mAppMenu = array();
+	public $mAppMenu = array();
 
 	// The currently active page
 	private $mActivePackage;
 
 	// Modules that need to be inserted during installation
-	var $mInstallModules = array();
+	public $mInstallModules = array();
 
 	// Javascript to be added to the <body onload> attribute
-	var $mOnload = array();
+	public $mOnload = array();
 
 	// Javascript to be added to the <body onunload> attribute
-	var $mOnunload = array();
+	public $mOnunload = array();
 
 	// Used by packages to register notification events that can be subscribed to.
-	var $mNotifyEvents = array();
+	public $mNotifyEvents = array();
 
 	// Used to store contents of kernel_config
-	var $mConfig;
+	public $mConfig;
 
 	// Used to monitor if ::registerPackage() was called. This is used to determine whether to auto-register a package
-	var $mRegisterCalled;
+	public $mRegisterCalled;
 
 	// The name of the package that is currently being processed
-	var $mPackageFileName;
+	public $mPackageFileName;
 
 	// Content classes.
-	var $mContentClasses = array();
+	public $mContentClasses = array();
 
 	// Debug HTML to be displayed just after the HTML headers
-	var $mDebugHtml = "";
+	public $mDebugHtml = "";
 
 	// Output http status
-	var $mHttpStatus = HttpStatusCodes::HTTP_OK;
+	public $mHttpStatus = HttpStatusCodes::HTTP_OK;
 
     protected static $singleton = null;
 	protected static function getSingleInstance() {

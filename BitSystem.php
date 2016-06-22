@@ -144,7 +144,7 @@ class BitSystem extends BitSingleton {
 		return array_merge( parent::__sleep(), array( 'mPackages', 'mPackagesDirNameXref', 'mStyle', 'mAppMenu', 'mInstallModules', 'mOnload', 'mOnunload', 'mNotifyEvents', 'mConfig', 'mRegisterCalled', 'mPackageFileName', 'mContentClasses' ) );
 	}
 
-	public static function loadFromCache( $pCacheKey ) {
+	public static function loadFromCache( $pCacheKey, $pContentTypeGuid = NULL ) {
 		global $gBitTimer;
 		if( $ret = parent::loadFromCache( $pCacheKey ) ) {
 			$ret->setHttpStatus( HttpStatusCodes::HTTP_OK );

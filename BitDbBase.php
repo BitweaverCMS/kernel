@@ -93,7 +93,7 @@ class BitDb {
 	* During initialisation, database parameters are passed to the class.
 	* If these parameters are not valid, class will not be initialised.
 	*/
-	function BitDb() {
+	function __construct() {
 		global $gDebug;
 		$this->mDebug = $gDebug;
 		$this->mCacheFlag = TRUE;

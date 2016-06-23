@@ -23,7 +23,7 @@ class BitCache {
 	 * @access public
 	 * @return void
 	 */
-	function BitCache( $pSubdir = 'cache', $pUseStorage = FALSE ) {
+	function __construct( $pSubdir = 'cache', $pUseStorage = FALSE ) {
 		if( $pUseStorage and defined(STORAGE_PKG_PATH) ) {
 			$this->mFolder = STORAGE_PKG_PATH.$pSubdir;
 			$this->mUrl = STORAGE_PKG_URL.$pSubdir;

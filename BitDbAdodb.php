@@ -37,7 +37,7 @@ require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
  * @package kernel
  */
 class BitDbAdodb extends BitDb {
-	function BitDbAdodb( $pConnectionHash = NULL ) {
+	function __construct( $pConnectionHash = NULL ) {
 		global $ADODB_FETCH_MODE;
 		if( is_null( $pConnectionHash ) ) {
 			global $gBitDbType, $gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName;

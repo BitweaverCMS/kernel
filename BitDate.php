@@ -42,7 +42,7 @@ class BitDate {
 	 * Default constructor
 	 * @param int desired offset for date display, in minutes
 	 */
-	function BitDate($_display_offset = 0) {
+	function __construct($_display_offset = 0) {
 		if ( version_compare( phpversion(), "5.1.0", ">=" ) ) {
 			date_default_timezone_set( @date_default_timezone_get() );
 		}

@@ -96,7 +96,7 @@
 			</div>
 		{/if}
 	</div><!-- end .body -->
-	</div class="clear"></div>
+	<div class="clear"></div>
 </div><!-- end .body -->
 
 {/strip}

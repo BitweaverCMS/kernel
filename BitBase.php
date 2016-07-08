@@ -94,7 +94,7 @@ abstract class BitBase {
 	 **/
 	public $mLogs = array();
 
-	public $mPreventCache = FALSE;
+	protected $mPreventCache = FALSE;
 
 
 	const CACHE_STATE_NONE = 0;
@@ -119,6 +119,8 @@ abstract class BitBase {
 	}
 
 	protected function load() {
+		// load  implies to purge all existing cache data
+		$this->clearFromCache();
 		return TRUE;
 	}
 
@@ -242,8 +244,8 @@ abstract class BitBase {
 		return apc_exists( $this->getCacheUuid() );
 	}
 
-	public function setCacheableObject( $pCacheState = TRUE ) {
-		$this->mPreventCache = !empty( $pCacheState );
+	public function setCacheableObject( $pCacheable = TRUE ) {
+		$this->mPreventCache = empty( $pCacheable );
 	}
 
     final public static function getClass() {

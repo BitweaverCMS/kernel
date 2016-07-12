@@ -5,6 +5,6 @@
 		{if $server_load}
 			, {tr}Load:{/tr} {$server_load|default:"&#8211;"}
 		{/if}
-		, Cache: {if BitBase::isCacheActive()}<a href="{$smarty.const.KERNEL_PKG_URL}admin/apc.php">ON-APC</a>{else}OFF{/if}
+		, Cache: {if BitBase::isCacheActive()}<a href="{$smarty.const.KERNEL_PKG_URL}admin/apc.php">APCu Objects</a>{else}OFF{/if}
 </div>
 {/if}{/strip}

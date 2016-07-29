@@ -66,7 +66,9 @@
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
 	<header itemscope itemtype="http://schema.org/WPHeader" role="banner" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
-		{$gBitThemes->displayLayoutColumn('t')}
+		<div class="row">
+			{$gBitThemes->displayLayoutColumn('t')}
+		</div>
 	</header>
 	{/if}
 

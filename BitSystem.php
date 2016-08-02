@@ -395,6 +395,43 @@ class BitSystem extends BitSingleton {
 		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
 	}
 
+	function outputJson( $pOutput, $pStatusCode=200  ) {
+		global $gBitSmarty, $gBitThemes;
+
+		$gBitThemes->setFormatHeader( 'json' );
+
+		$this->setHttpStatus( $pStatusCode );
+
+		$this->outputHeader();
+
+		if( is_array( $pOutput ) ) {
+			$gBitSmarty->assign_by_ref( 'jsonHash', $pOutput );
+		}
+
+		print $gBitSmarty->fetch( 'bitpackage:kernel/json_output.tpl' );
+		die;
+	}
+
+	function outputRaw( $pOutput, $pStatusCode=200  ) {
+		global $gBitSmarty, $gBitThemes;
+
+		$gBitThemes->setFormatHeader( 'text' );
+
+		$this->setHttpStatus( $pStatusCode );
+
+		$this->outputHeader();
+
+		if( is_array( $pOutput ) ) {
+			foreach( $pOutput as $out ) {
+				print "$out\n";
+			}
+		} else {
+			print $out;
+		}
+
+		die;
+	}
+
 	/**
 	 * Display the main page template
 	 *

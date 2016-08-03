@@ -97,7 +97,12 @@ BitLanguage::loadSingleton();
 require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
 $gSniffer = new phpSniff;
-$gBitSmarty->assignByRef( 'gBrowserInfo', $gSniffer->_browser_info );
+if( file_exists( ini_get( 'browscap' ) ) ) {
+	$browserInfo = array_merge( $gSniffer->_browser_info, get_browser( null, true ) );
+	$gBitSmarty->assignByRef( 'gBrowserInfo', $browserInfo );
+} else {
+	$gBitSmarty->assignByRef( 'gBrowserInfo', $gSniffer->_browser_info );
+}
 
 // set various classes global
 global $gBitUser, $gTicket, $userlib, $gBitDbType, $gLibertySystem;

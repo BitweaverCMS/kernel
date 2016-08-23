@@ -426,7 +426,7 @@ class BitSystem extends BitSingleton {
 				print "$out\n";
 			}
 		} else {
-			print $out;
+			print $pOutput;
 		}
 
 		die;

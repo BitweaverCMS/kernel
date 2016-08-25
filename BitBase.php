@@ -385,6 +385,25 @@ abstract class BitBase {
 	}
 
 	/**
+	 * getIdParameter Gets an in-bounds, integer hash value it exists, or returns an optional default
+	 *
+	 * @param associativearray $pParamHash Hash of key=>value pairs
+	 * @param string $pHashKey Key used to search for value
+	 * @param string $pDefault Default value to return if not found. NULL if nothing is passed in.
+	 * @access public
+	 * @return TRUE if the input was numeric, FALSE if it wasn't
+	 */
+	public static function getIdParameter( &$pParamHash, $pKey, $pDefaultValue=NULL ) {
+		if( BitBase::verifyIdParameter( $pParamHash, $pKey ) ) {
+			$ret = $pParamHash[$pKey];
+		} else {
+			$ret = $pDefaultValue;
+		}
+
+		return $ret;
+	}
+
+	/**
 	 * This method should be THE method used to display a template. php files should not
 	 * access $gBitSmarty directly.
 	 *

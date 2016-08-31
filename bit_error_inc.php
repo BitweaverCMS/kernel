@@ -43,6 +43,31 @@ function bit_error_log( $pLogMessage ) {
 	foreach ($errlines as $txt) { error_log($txt); }
 }
 
+function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
+	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config/kernel/config_inc.php
+	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : (!empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL);
+
+	$separator = "\n";
+	$indent = "  ";
+	$parameters = '';
+	if( empty( $pGlobalParams ) ) {
+		$pGlobalParams = array(
+			'$_POST'   => $_POST,
+			'$_GET'    => $_GET,
+			'$_FILES'  => $_FILES,
+			'$_COOKIE' => $_COOKIE,
+		);
+	}
+	foreach( $pGlobalVars as $global => $hash ) {
+		if( !empty( $hash )) {
+			$parameters .= $separator.$global.': '.$separator.var_export( $hash, TRUE ).$separator;
+		}
+	}
+	$parameters = preg_replace( "/\n/", $separator.$indent, $parameters );
+
+	mail( $errorEmail, $pSubject, $pMessage.$parameters.$separator.$separator.'$_SERVER: '.var_export( $_SERVER, TRUE ) );
+}
+
 function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NULL ) {
     // error_reporting() === 0 if code was prepended with @
     if( ($errno == 1 || $reportingLevel = error_reporting()) && !strpos( $errfile, 'templates_c' ) ) {
@@ -68,9 +93,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
         }
         // Send an e-mail to the administrator
 		if( defined( 'IS_LIVE' ) && IS_LIVE && $errType && defined( 'ERROR_EMAIL' ) ) {
-			global $gBitDb;
-			$messageBody = $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) ).vc( $_SERVER, FALSE );
-			mail( ERROR_EMAIL, 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr, $messageBody );
+			bit_error_email( 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr, $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) ) );
 		}
     }
 
@@ -98,9 +121,6 @@ function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	if( $pFatal ) {
 		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR ) );
 	}
-
-	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config/kernel/config_inc.php
-	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : (!empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL);
 
 	error_log( $pLogMessage );
 
@@ -136,10 +156,9 @@ function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	}
 }
 
-function bit_error_string( $iDBParms ) {
+function bit_error_string( $iDBParms = array() ) {
 	global $gBitDb;
 	global $gBitUser;
-	global $_SERVER;
 	global $argv;
 
 	$separator = "\n";
@@ -197,22 +216,7 @@ function bit_error_string( $iDBParms ) {
 		$stackTrace = $match[1][0];
 	}
 
-	$globalVars = array(
-		'$_POST'   => $_POST,
-		'$_GET'    => $_GET,
-		'$_FILES'  => $_FILES,
-		'$_COOKIE' => $_COOKIE,
-	);
-
-	$parameters = '';
-	foreach( $globalVars as $global => $hash ) {
-		if( !empty( $hash )) {
-			$parameters .= $separator.$separator.$global.': '.$separator.var_export( $hash, TRUE );
-		}
-	}
-	$parameters = preg_replace( "/\n/", $separator.$indent, $parameters );
-
-	$ret = $info.$separator.$separator.$stackTrace.$parameters;
+	$ret = $info.$separator.$separator.$stackTrace.$separator.$separator;
 
 	return $ret;
 }
@@ -329,9 +333,10 @@ function vc( $iVar, $pHtml=TRUE ) {
 	// xdebug rocks!
 	if( extension_loaded( 'xdebug' ) ) {
 		if( empty( $pHtml ) ) {
-			ini_set( 'xdebug.overload_var_dump', FALSE );
+			print_r( $iVar );
+		} else {
+			var_dump( $iVar );
 		}
-		var_dump( $iVar );
 	} elseif( $pHtml && !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && ((is_object( $iVar ) && !empty( $iVar )) || is_array( $iVar )) ) {
 		include_once( UTIL_PKG_PATH.'dBug/dBug.php' );
 		new dBug( $iVar, "", FALSE );

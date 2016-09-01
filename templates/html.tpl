@@ -13,6 +13,7 @@
 <head>
 	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="always">
 
 	<link rel="icon" href="{$gBitThemes->getStyleUrl()}favicon.png" type="image/png" />
 

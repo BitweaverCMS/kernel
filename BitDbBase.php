@@ -1066,6 +1066,10 @@ class BitDb {
 		return $ret;
 	}
 
+	function sanitizeColumnString( $pColumn ) {
+		return preg_replace( "/[^a-z0-9_\.]+/i", "-", strtolower( $pColumn ) );
+	}
+
 	/**
 	 * Renamed a few functions - these are the temporary backward compatability calls with the deprecated note
 	 * These funcitons will be removed in due course

@@ -144,8 +144,8 @@ function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 		print "<pre>".$pLogMessage."</pre>";
 		print "<hr />";
 		print "</body></html>";
-	} elseif( $errorEmail ) {
-		mail( $errorEmail,  "$pSubject", $pLogMessage );
+	} else {
+		bit_error_email ( $pSubject, $pLogMessage );
 		if( defined( 'AUTO_BUG_SUBMIT' ) && AUTO_BUG_SUBMIT && !empty( $gBitSystem ) && $gBitSystem->isDatabaseValid() ) {
 			mail( 'bugs@bitweaver.org',"$pSubject",$pLogMessage );
 		}

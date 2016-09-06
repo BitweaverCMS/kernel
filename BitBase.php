@@ -223,7 +223,7 @@ abstract class BitBase {
 
 	public static function getCacheUuidFromKey( $pCacheUuid = '', $pContentTypeGuid = NULL ) {
 		global $gBitDbName, $gBitDbHost;
-		$ret = $_SERVER['HTTP_HOST'].':'.$gBitDbName.'@'.$gBitDbHost.':'.($pContentTypeGuid ? $pContentTypeGuid : static::getCacheClass()).'#'.$pCacheUuid;
+		$ret = BitBase::getParameter( $_SERVER, 'HTTP_HOST', 'unknown' ).':'.$gBitDbName.'@'.$gBitDbHost.':'.($pContentTypeGuid ? $pContentTypeGuid : static::getCacheClass()).'#'.$pCacheUuid;
 		return $ret;
 	}
 

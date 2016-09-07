@@ -66,10 +66,12 @@ abstract class BitSingleton extends BitBase implements BitCacheable {
 // I don't remember where I found this, but this is to allow php < 5.3 to use this method.
 if (! function_exists ( 'get_called_class' )) {
 	function get_called_class($bt = FALSE, $l = 1) {
-		if (! $bt)
+		if (! $bt) {
 			$bt = debug_backtrace ();
-		if (! isset ( $bt [$l] ))
+		}
+		if (! isset ( $bt [$l] )) {
 			throw new Exception ( "Cannot find called class -> stack level too deep." );
+		}
 		if (! isset ( $bt [$l] ['type'] )) {
 			throw new Exception ( 'type not set' );
 		} else {
@@ -99,8 +101,9 @@ if (! function_exists ( 'get_called_class' )) {
 					switch ($bt [$l] ['function']) {
 						case '__get' :
 							// edge case -> get class of calling object
-							if (! is_object ( $bt [$l] ['object'] ))
+							if (! is_object ( $bt [$l] ['object'] )) {
 								throw new Exception ( "Edge case fail. __get called on non object." );
+							}
 							return get_class ( $bt [$l] ['object'] );
 						default :
 							return $bt [$l] ['class'];

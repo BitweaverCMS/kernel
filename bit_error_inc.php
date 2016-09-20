@@ -50,8 +50,8 @@ function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
 	$separator = "\n";
 	$indent = "  ";
 	$parameters = '';
-	if( empty( $pGlobalParams ) ) {
-		$pGlobalParams = array(
+	if( empty( $pGlobalVars ) ) {
+		$pGlobalVars = array(
 			'$_POST'   => $_POST,
 			'$_GET'    => $_GET,
 			'$_FILES'  => $_FILES,

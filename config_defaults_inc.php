@@ -191,8 +191,14 @@ if( !defined( 'STORAGE_PKG_PATH' ) ) {
 define( 'THEMES_PKG_PATH',    BIT_ROOT_PATH.'themes/' );
 define( 'USERS_PKG_PATH',     BIT_ROOT_PATH.'users/' );
 define( 'UTIL_PKG_PATH',      BIT_ROOT_PATH.'util/' );
-define( 'EXTERNAL_LIBS_PATH',      BIT_ROOT_PATH.'externals/' );
+if( !defined( 'EXTERNAL_LIBS_PATH' ) ) {
+	define( 'EXTERNAL_LIBS_PATH',      BIT_ROOT_PATH.'externals/' );
+}
 
+if( !defined( 'TEMP_PKG_PATH' ) ) {
+	define( 'TEMP_PKG_PATH', sys_get_temp_dir().'/php/'.$_SERVER['HTTP_HOST'] ).'/';
+	mkdir( TEMP_PKG_PATH, TRUE );
+}
 
 // =================== Global Variables ===================
 // If for any reason this isn't set, nothing will work - nada, zilch...

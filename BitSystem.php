@@ -51,49 +51,49 @@ class BitSystem extends BitSingleton {
 	// Initiate class variables
 
 	// Essential information about packages
-	var $mPackages = array();
+	public $mPackages = array();
 
 	// Cross Reference Package Directory Name => Package Key used as index into $mPackages
-	var $mPackagesDirNameXref = array();
+	public $mPackagesDirNameXref = array();
 
 	// Contains site style information
-	var $mStyle = array();
+	public $mStyle = array();
 
 	// Information about package menus used in all menu modules and top bar
-	var $mAppMenu = array();
+	public $mAppMenu = array();
 
 	// The currently active page
-	var $mActivePackage;
+	private $mActivePackage;
 
 	// Modules that need to be inserted during installation
-	var $mInstallModules = array();
+	public $mInstallModules = array();
 
 	// Javascript to be added to the <body onload> attribute
-	var $mOnload = array();
+	public $mOnload = array();
 
 	// Javascript to be added to the <body onunload> attribute
-	var $mOnunload = array();
+	public $mOnunload = array();
 
 	// Used by packages to register notification events that can be subscribed to.
-	var $mNotifyEvents = array();
+	public $mNotifyEvents = array();
 
 	// Used to store contents of kernel_config
-	var $mConfig;
+	public $mConfig;
 
 	// Used to monitor if ::registerPackage() was called. This is used to determine whether to auto-register a package
-	var $mRegisterCalled;
+	public $mRegisterCalled;
 
 	// The name of the package that is currently being processed
-	var $mPackageFileName;
+	public $mPackageFileName;
 
 	// Content classes.
-	var $mContentClasses = array();
+	public $mContentClasses = array();
 
 	// Debug HTML to be displayed just after the HTML headers
-	var $mDebugHtml = "";
+	public $mDebugHtml = "";
 
 	// Output http status
-	var $mHttpStatus = HttpStatusCodes::HTTP_OK;
+	public $mHttpStatus = HttpStatusCodes::HTTP_OK;
 
     protected static $singleton = null;
 	protected static function getSingleInstance() {
@@ -140,13 +140,20 @@ class BitSystem extends BitSingleton {
 
 	}
 
-	public static function loadFromCache( $pCacheKey ) {
+	public function __sleep() {
+		return array_merge( parent::__sleep(), array( 'mPackages', 'mPackagesDirNameXref', 'mStyle', 'mAppMenu', 'mInstallModules', 'mOnload', 'mOnunload', 'mNotifyEvents', 'mConfig', 'mRegisterCalled', 'mPackageFileName', 'mContentClasses' ) );
+	}
+
+	public static function loadFromCache( $pCacheKey, $pContentTypeGuid = NULL ) {
+		global $gBitTimer;
 		if( $ret = parent::loadFromCache( $pCacheKey ) ) {
 			$ret->setHttpStatus( HttpStatusCodes::HTTP_OK );
+			$ret->mTimer = $gBitTimer;
 			$ret->mTimer->start();
 			$ret->mOnload = array();
 			$ret->mAppMenu = array();
 			$ret->defineTempDir();
+			$ret->mServerTimestamp = new BitDate();
 		}
 		return $ret;
 	}
@@ -276,7 +283,7 @@ class BitSystem extends BitSingleton {
 					$query = "UPDATE `".BIT_DB_PREFIX."multisite_preferences` SET `config_value`=? WHERE `multisite_id`=? AND `config_name`=?";
 					$result = $this->mDb->query( $query, array( empty( $pValue ) ? '' : $pValue, $gMultisites->mMultisiteId, $pName ) );
 				} else {
-					$this->mDb->StartTrans();
+					$this->StartTrans();
 					$query = "DELETE FROM `".BIT_DB_PREFIX."kernel_config` WHERE `config_name`=?";
 					$result = $this->mDb->query( $query, array( $pName ) );
 					// make sure only non-empty values get saved, including '0'
@@ -284,7 +291,7 @@ class BitSystem extends BitSingleton {
 						$query = "INSERT INTO `".BIT_DB_PREFIX."kernel_config`(`config_name`,`config_value`,`package`) VALUES (?,?,?)";
 						$result = $this->mDb->query( $query, array( $pName, $pValue, strtolower( $pPackage )));
 					}
-					$this->mDb->CompleteTrans();
+					$this->CompleteTrans();
 				}
 
 				// Force the ADODB cache to flush
@@ -388,6 +395,43 @@ class BitSystem extends BitSingleton {
 		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
 	}
 
+	function outputJson( $pOutput, $pStatusCode=200  ) {
+		global $gBitSmarty, $gBitThemes;
+
+		$gBitThemes->setFormatHeader( 'json' );
+
+		$this->setHttpStatus( $pStatusCode );
+
+		$this->outputHeader();
+
+		if( is_array( $pOutput ) ) {
+			$gBitSmarty->assign_by_ref( 'jsonHash', $pOutput );
+		}
+
+		print $gBitSmarty->fetch( 'bitpackage:kernel/json_output.tpl' );
+		die;
+	}
+
+	function outputRaw( $pOutput, $pStatusCode=200  ) {
+		global $gBitSmarty, $gBitThemes;
+
+		$gBitThemes->setFormatHeader( 'text' );
+
+		$this->setHttpStatus( $pStatusCode );
+
+		$this->outputHeader();
+
+		if( is_array( $pOutput ) ) {
+			foreach( $pOutput as $out ) {
+				print "$out\n";
+			}
+		} else {
+			print $pOutput;
+		}
+
+		die;
+	}
+
 	/**
 	 * Display the main page template
 	 *
@@ -474,7 +518,7 @@ class BitSystem extends BitSingleton {
 
 		// check to see if we are working with a dynamic center area
 		if( $pMid == 'bitpackage:kernel/dynamic.tpl' ) {
-			$gBitSmarty->assign_by_ref( 'gCenterPieces', $gCenterPieces );
+			$gBitSmarty->assignByRef( 'gCenterPieces', $gCenterPieces );
 		}
 
 		$gBitThemes->preLoadStyle();
@@ -651,7 +695,7 @@ class BitSystem extends BitSingleton {
 	 */
 	function verifyPackage( $pPackageName ) {
 		if( !$this->isPackageActive( $pPackageName ) ) {
-			$this->fatalError( tra("This package is disabled").": package_$pPackageName" );
+			$this->fatalError( tra("This package is disabled").": $pPackageName", NULL, NULL, HttpStatusCodes::HTTP_NOT_FOUND );
 		}
 
 		return( TRUE );
@@ -749,7 +793,7 @@ class BitSystem extends BitSingleton {
 				unset( $pFormHash['input'] );
 			}
 			$gBitSmarty->assign( 'msgFields', $pMsg );
-			$gBitSmarty->assign_by_ref( 'hiddenFields', $pFormHash );
+			$gBitSmarty->assignByRef( 'hiddenFields', $pFormHash );
 			$this->display( 'bitpackage:kernel/confirm.tpl', $pageTitle, array( 'display_mode' => 'edit' ));
 			die;
 		}
@@ -845,7 +889,7 @@ class BitSystem extends BitSingleton {
 		// Define <PACKAGE>_PKG_PATH
 		$pkgDefine = $pkgName.'_PKG_PATH';
 		if( !defined( $pkgDefine )) {
-			define( $pkgDefine, $path );
+			define( $pkgDefine, BIT_ROOT_PATH . basename( $path ) . '/' );
 		}
 		$this->mPackages[$pkgNameKey]['url']  = BIT_ROOT_URL . basename( $path ) . '/';
 		$this->mPackages[$pkgNameKey]['path']  = BIT_ROOT_PATH . basename( $path ) . '/';
@@ -894,17 +938,29 @@ class BitSystem extends BitSingleton {
 			$_SERVER['SCRIPT_FILENAME'] =  str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED'] );
 		}
 
-		// Define the package we are currently in
-		// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
-		$scriptDir = ( basename( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );
-		if( !defined( 'ACTIVE_PACKAGE' ) && ( $scriptDir == constant( $pkgName.'_PKG_DIR' ) || isset( $_SERVER['ACTIVE_PACKAGE'] ) || preg_match( '!/'.$this->mPackages[$pkgNameKey]['dir'].'/!', $_SERVER['SCRIPT_NAME'] ) || preg_match( '!/'.$pkgNameKey.'/!', $_SERVER['SCRIPT_NAME'] ))) {
-			if( isset( $_SERVER['ACTIVE_PACKAGE'] )) {
-				// perhaps the webserver told us the active package (probably because of mod_rewrites)
-				$pkgNameKey = $_SERVER['ACTIVE_PACKAGE'];
+	}
+
+	function setActivePackage( $pPkgName ) {
+		$this->mActivePackage = $pPkgName;
+	}
+
+	function getActivePackage() {
+		if( empty( $this->mActivePackage ) ) {
+			$this->mActivePackage = 'kernel'; // default to kernel, which has the default layout
+			// Define the package we are currently in
+			// I tried strpos instead of preg_match here, but it didn't like strings that begin with slash?! - spiderr
+			$scriptDir = ( basename( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );
+			foreach( array_keys( $this->mPackages ) as $pkgNameKey ) {
+				if( $scriptDir == $this->mPackages[$pkgNameKey]['dir'] ) {
+					$this->mActivePackage = $pkgNameKey;
+					if( !defined( 'ACTIVE_PACKAGE' ) ) {
+						define( 'ACTIVE_PACKAGE', $pkgNameKey );
+					}
+					break;
+				}
 			}
-			define( 'ACTIVE_PACKAGE', $pkgNameKey );
-			$this->mActivePackage = $pkgNameKey;
 		}
+		return $this->mActivePackage;
 	}
 
 	// === registerAppMenu
@@ -2454,7 +2510,7 @@ class BitSystem extends BitSingleton {
 		static $short_datetime_format = FALSE;
 
 		if( !$short_datetime_format ) {
-			$short_datetime_format = $this->getConfig( 'site_short_datetime_format', '%a %d of %b, %Y (%H:%M %Z)' );
+			$short_datetime_format = $this->getConfig( 'site_short_datetime_format', '%d %b %Y (%H:%M %Z)' );
 		}
 
 		return $short_datetime_format;

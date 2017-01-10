@@ -58,12 +58,12 @@
 {/if}
 
 <script type="text/javascript">/* <![CDATA[ */
-	BitSystem = {ldelim}
-		"urls":{ldelim}
+	BitSystem = {
+		"urls":{
 			"root":"{$smarty.const.BIT_ROOT_URL}",
 			"cookie":"{$smarty.const.BIT_ROOT_URL}",
-		{rdelim}
-	{rdelim};
+		}
+	} ;
 	var bitCookiePath = "{$smarty.const.BIT_ROOT_URL}";
 	var bitCookieDomain = "";
 	var bitRootUrl = "{$smarty.const.BIT_ROOT_URL}";

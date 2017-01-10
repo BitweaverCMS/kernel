@@ -46,49 +46,55 @@ abstract class BitBase {
 	 * @todo not used yet
 	 * @private
 	 */
-	var $mErrors;
+	public $mErrors;
 
 	/**
 	 * Same idea as the error hash but this is for successful operations
 	 * @private
 	 */
-	var $mSuccess;
+	public $mSuccess;
 
 	/**
 	 * String used to refer to preference caching and database table
 	 * @private
 	 */
-	var $mName;
+	public $mName;
 
 	/**
 	 * Used to store database mechanism
 	 * @private
 	 */
-	var $mDb;
+	public $mDb;
 
 	/**
 	 * Used to store database type
 	 * @private
 	 */
-	var $dType;
+	public $dType;
+
+	/**
+	 * Was the object created from object caching mechanism like apcu
+	 * @private
+	 */
+	public $mCacheObject;
 
 	/**
 	 * Standard Query Cache Time. Variable can be set to 0 to flush particular queries
 	 * @private
 	 */
-	var $mCacheTime;
+	public $mCacheTime;
 
 	/**
 	 * Data hash that represents this classes row(s) in the db
 	 **/
-	var $mInfo = array();
+	public $mInfo = array();
 
 	/**
 	 * Data hash that contains logging information relevant to database operations
 	 **/
-	var $mLogs = array();
+	public $mLogs = array();
 
-	var $mPreventCache = FALSE;
+	protected $mPreventCache = FALSE;
 
 
 	const CACHE_STATE_NONE = 0;
@@ -113,6 +119,8 @@ abstract class BitBase {
 	}
 
 	protected function load() {
+		// load  implies to purge all existing cache data
+		$this->clearFromCache();
 		return TRUE;
 	}
 
@@ -137,7 +145,7 @@ abstract class BitBase {
 
 	public function clearFromCache( &$pParamHash=NULL ) {
 		$this->mCacheTime = BIT_QUERY_CACHE_DISABLE;
-		if( $this->isCacheableObject() && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
+		if( static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
 			$ret = apc_delete( $cacheKey );
 		}
 	}
@@ -152,23 +160,42 @@ abstract class BitBase {
 	protected function storeInCache() {
 		$ret = FALSE;
 		if( $this->isCacheableObject() && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
-			$ret = apc_store( $cacheKey, $this, 3600 );
+			if( empty( $this->mCacheObject ) ) {
+				// new to cache, or overwrite
+//var_dump( 'STORE '.get_called_class().' '.$cacheKey );
+				$ret = apc_store( $cacheKey, $this, 3600 );
+			} else {
+//var_dump( 'ADD '.get_called_class().' '.$cacheKey );
+				$ret = apc_add( $cacheKey, $this, 3600 );
+			}
 		}
 		return $ret;
+	}
+
+	public function __sleep() {
+		unset( $this->mDb );
+		$this->mCacheObject = TRUE;
+		return array( 'mCacheTime', 'mCacheObject' );
 	}
 
 	public function __wakeup() {
 		global $gBitDb;
 		$this->setDatabase( $gBitDb );
+		$this->mErrors = array();
 	}
 
-	public static function loadFromCache( $pCacheKey ) {
+	public static function loadFromCache( $pCacheKey, $pContentTypeGuid = NULL ) {
 		$ret = NULL;
+//vd( 'LOAD '.get_called_class().' '.static::getCacheUuidFromKey( $pCacheKey, $pContentTypeGuid ) );
 		if( static::isCacheActive() && static::isCacheableClass() && !empty( $pCacheKey ) ) {
-			if( $ret = apc_fetch( static::getCacheUuidFromKey( $pCacheKey ) ) ) {
+			if( $ret = apc_fetch( static::getCacheUuidFromKey( $pCacheKey, $pContentTypeGuid ) ) ) {
+				$ret->mCacheObject = TRUE;
+//vd( 'LOAD SUCCESS '.get_class( $ret ).' ' .$ret->getField( 'content_id' ) );
 			} else {
+//vd( 'LOAD FAILED' );
 			}
 		}
+
 		return $ret;
 	}
 
@@ -181,13 +208,22 @@ abstract class BitBase {
 		return $ret;
 	}
 
+	public static function getCacheClass() {
+		return static::getClass();
+	}
+
 	public function getCacheUuid() {
 		return static::getCacheUuidFromKey( $this->getCacheKey() );
 	}
 
-	public static function getCacheUuidFromKey( $pCacheUuid = '' ) {
+	public function getCacheKey() {
+		// default returns no key
+		return NULL;
+	}
+
+	public static function getCacheUuidFromKey( $pCacheUuid = '', $pContentTypeGuid = NULL ) {
 		global $gBitDbName, $gBitDbHost;
-		$ret = $_SERVER['HTTP_HOST'].':'.$gBitDbName.'@'.$gBitDbHost.':'.get_called_class().'#'.$pCacheUuid;
+		$ret = BitBase::getParameter( $_SERVER, 'HTTP_HOST', 'unknown' ).':'.$gBitDbName.'@'.$gBitDbHost.':'.($pContentTypeGuid ? $pContentTypeGuid : static::getCacheClass()).'#'.$pCacheUuid;
 		return $ret;
 	}
 
@@ -208,8 +244,8 @@ abstract class BitBase {
 		return apc_exists( $this->getCacheUuid() );
 	}
 
-	public function setCacheableObject( $pCacheState = TRUE ) {
-		$this->mPreventCache = !empty( $pCacheState );
+	public function setCacheableObject( $pCacheable = TRUE ) {
+		$this->mPreventCache = empty( $pCacheable );
 	}
 
     final public static function getClass() {
@@ -250,6 +286,29 @@ abstract class BitBase {
 		return ( !empty( $this->mDb ) ? $this->mDb : NULL  );
 	}
 
+	/**
+	 * Begin transaction in database. Make sure to handle object caching here
+	 **/
+	function StartTrans() {
+		// Database transaction locking implies inherent data change. clear object in cache.
+		$this->clearFromCache();
+		$this->mDb->StartTrans();
+	}
+
+	/**
+	 * Finish transaction in database.
+	 **/
+	function CompleteTrans() {
+		$this->mDb->CompleteTrans();
+	}
+
+	/**
+	 * Rollback transaction in database.
+	 **/
+	function RollbackTrans() {
+		$this->mDb->RollbackTrans();
+	}
+
 	function debugMarkTime() {
 		$this->mDebugMicrotime = microtime(1);
 	}
@@ -280,7 +339,7 @@ abstract class BitBase {
 	 */
 	public static function verifyIdParameter( &$pParamHash, $pKey ) {
 		// check all possibilities as quickly as possible as this function is called frequently
-		return !empty( $pParamHash[$pKey] ) && (is_int( $pParamHash[$pKey] ) || ctype_digit( $pParamHash[$pKey] ) || (is_numeric($pParamHash[$pKey]) ? intval( $pParamHash[$pKey] ) == $pParamHash[$pKey] : false));
+		return !empty( $pParamHash[$pKey] ) && BitBase::verifyId( $pParamHash[$pKey] );
 	}
 
 	/**
@@ -302,8 +361,8 @@ abstract class BitBase {
 			}
 			return TRUE;
 		}
-		return( !empty( $pId ) && (is_int( $pId ) || ctype_digit( $pId ) || (is_numeric( $pId ) ? intval( $pId ) == $pId : false)) );
-;
+		$ret = !empty( $pId ) && (is_int( $pId ) || ctype_digit( $pId ) || is_numeric( $pId )) && ($pId < 0x1FFFFFFF) && (intval( $pId ) == $pId);
+		return $ret;
 	}
 
 	/**
@@ -317,6 +376,25 @@ abstract class BitBase {
 	 */
 	public static function getParameter( &$pParamHash, $pKey, $pDefaultValue=NULL ) {
 		if( isset( $pParamHash[$pKey] ) ) {
+			$ret = $pParamHash[$pKey];
+		} else {
+			$ret = $pDefaultValue;
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * getIdParameter Gets an in-bounds, integer hash value it exists, or returns an optional default
+	 *
+	 * @param associativearray $pParamHash Hash of key=>value pairs
+	 * @param string $pHashKey Key used to search for value
+	 * @param string $pDefault Default value to return if not found. NULL if nothing is passed in.
+	 * @access public
+	 * @return TRUE if the input was numeric, FALSE if it wasn't
+	 */
+	public static function getIdParameter( &$pParamHash, $pKey, $pDefaultValue=NULL ) {
+		if( BitBase::verifyIdParameter( $pParamHash, $pKey ) ) {
 			$ret = $pParamHash[$pKey];
 		} else {
 			$ret = $pDefaultValue;

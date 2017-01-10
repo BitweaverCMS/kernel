@@ -37,18 +37,18 @@ if( $gStructure and !empty($gStructure->mInfo['structure_path']) ) {
 	else $sidebox = 1;
 	if( $gStructure->mInfo['content_id'] != 4 ) {
 		$menu = $gStructure->buildTreeToc( $tree );
-		$gBitSmarty->assign_by_ref( 'menu', $menu[0]['sub'] );
+		$gBitSmarty->assignByRef( 'menu', $menu[0]['sub'] );
 		$gBitSmarty->assign( 'sidebox', $sidebox );
 		if ($secondbox) {
 			$secondmenu = $gStructure->buildTreeToc( $secondbox );
-			$gBitSmarty->assign_by_ref( 'secondmenu', $secondmenu[0]['sub'] );
+			$gBitSmarty->assignByRef( 'secondmenu', $secondmenu[0]['sub'] );
 		}
 	}	
 } else {
 	require_once( LIBERTY_PKG_PATH.'LibertyStructure.php' );
 	$gStructure = new LibertyStructure( 1 );
 	$menu = $gStructure->buildTreeToc( 1 );
-	$gBitSmarty->assign_by_ref( 'menu', $menu[0]['sub'] );
+	$gBitSmarty->assignByRef( 'menu', $menu[0]['sub'] );
 }
 
 ?>

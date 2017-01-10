@@ -29,7 +29,7 @@ if ( empty( $_REQUEST["sort_mode"] ) ) {
 	$sort_mode = $_REQUEST["sort_mode"];
 }
 
-$gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
+$gBitSmarty->assignByRef('sort_mode', $sort_mode);
 
 // If offset is set use it if not then use offset =0
 // use the max_records php variable to set the limit
@@ -40,7 +40,7 @@ if (!isset($_REQUEST["offset"])) {
 	$offset = $_REQUEST["offset"];
 }
 
-$gBitSmarty->assign_by_ref('offset', $offset);
+$gBitSmarty->assignByRef('offset', $offset);
 
 if (!isset($_REQUEST["find"])) {
 	$find = '';
@@ -55,7 +55,7 @@ $listpages = $gBitSystem->list_cache($offset, $max_records, $sort_mode, $find);
 
 // If there're more records then assign next_offset
 $cant_pages = ceil($listpages["cant"] / $max_records);
-$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
+$gBitSmarty->assignByRef('cant_pages', $cant_pages);
 $gBitSmarty->assign('actual_page', 1 + ($offset / $max_records));
 
 if ($listpages["cant"] > ($offset + $max_records)) {
@@ -71,7 +71,7 @@ if ($offset > 0) {
 	$gBitSmarty->assign('prev_offset', -1);
 }
 
-$gBitSmarty->assign_by_ref('listpages', $listpages["data"]);
+$gBitSmarty->assignByRef('listpages', $listpages["data"]);
 //print_r($listpages["data"]);
 
 

@@ -12,7 +12,6 @@
  * required setup
  */
 
-//ini_set( 'session.save_path', 'C:\somewhere\I\can\write' );
 $rootDir = dirname( dirname( __FILE__ ) );
 define( 'BIT_ROOT_PATH', empty( $_SERVER['VHOST_DIR'] ) ? $rootDir.'/' : $_SERVER['VHOST_DIR'].'/' );
 
@@ -28,9 +27,6 @@ require_once( KERNEL_PKG_PATH.'BitTimer.php' );
 
 // set error reporting
 error_reporting( BIT_PHP_ERROR_REPORTING );
-
-// this is evil stuff and causes hell for us
-ini_set( 'session.use_trans_sid', 'Off' );
 
 if( ini_get( 'safe_mode' ) && ini_get( 'safe_mode_gid' )) {
 	umask( 0007 );
@@ -75,10 +71,10 @@ global $gBitSmarty, $gBitSystem;
 if( !is_object( $gBitSmarty ) ) {
 	$gBitSmarty = new BitSmarty();
 	// set the default handler
-	$gBitSmarty->load_filter( 'pre', 'tr' );
-	// $gBitSmarty->load_filter('output','trimwhitespace');
+	$gBitSmarty->loadFilter( 'pre', 'tr' );
+	// $gBitSmarty->loadFilter('output','trimwhitespace');
 	if( isset( $_REQUEST['highlight'] ) ) {
-		$gBitSmarty->load_filter( 'output', 'highlight' );
+		$gBitSmarty->loadFilter( 'output', 'highlight' );
 	}
 }
 
@@ -92,7 +88,7 @@ if( !empty( $gBitSystem->mConfig ) && version_compare( MIN_BIT_VERSION, $gBitSys
 }
 
 BitSystem::prependIncludePath( UTIL_PKG_PATH.'/' );
-BitSystem::prependIncludePath( CONFIG_PKG_PATH.'externals/pear/' );
+BitSystem::prependIncludePath( EXTERNAL_LIBS_PATH.'pear/' );
 
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 BitLanguage::loadSingleton();
@@ -101,7 +97,12 @@ BitLanguage::loadSingleton();
 require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
 $gSniffer = new phpSniff;
-$gBitSmarty->assign_by_ref( 'gBrowserInfo', $gSniffer->_browser_info );
+if( file_exists( ini_get( 'browscap' ) ) ) {
+	$browserInfo = array_merge( $gSniffer->_browser_info, get_browser( null, true ) );
+	$gBitSmarty->assignByRef( 'gBrowserInfo', $browserInfo );
+} else {
+	$gBitSmarty->assignByRef( 'gBrowserInfo', $gSniffer->_browser_info );
+}
 
 // set various classes global
 global $gBitUser, $gTicket, $userlib, $gBitDbType, $gLibertySystem;
@@ -115,14 +116,6 @@ if( $gBitSystem->isDatabaseValid() ) {
 		ob_start( "ob_gzhandler" );
 		$gBitSmarty->assign( 'output_compression', 'gzip' );
 	}
-
-	// we need to allow up to 900 chars for this value in our 250 char table column
-	$gBitSystem->setConfig( 'site_keywords',
-		$gBitSystem->getConfig( 'site_keywords' ).
-		$gBitSystem->getConfig( 'site_keywords_1' ).
-		$gBitSystem->getConfig( 'site_keywords_2' ).
-		$gBitSystem->getConfig( 'site_keywords_3' )
-	);
 
 	$host = $gBitSystem->getConfig( 'kernel_server_name', $_SERVER['HTTP_HOST'] );
 	if( !defined('BIT_BASE_URI' ) ) {
@@ -155,7 +148,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	// some plugins check for active packages, so we do this *after* package scanning
-	$gBitSmarty->assign_by_ref( 'gBitSystem', $gBitSystem );
+	$gBitSmarty->assignByRef( 'gBitSystem', $gBitSystem );
 
 	// some liberty plugins might need to run some functions.
 	// it's necessary that we call them early on after scanPackages() has been completed.
@@ -192,12 +185,12 @@ if( $gBitSystem->isDatabaseValid() ) {
 		$_REQUEST['page'] = strip_tags( $_REQUEST['page'] );
 	}
 	global $gHideModules;
-	$gBitSmarty->assign_by_ref( 'gHideModules', $gHideModules );
+	$gBitSmarty->assignByRef( 'gHideModules', $gHideModules );
 	$keywords = $gBitSystem->getConfig( 'site_keywords' );
-	$gBitSmarty->assign_by_ref( 'metaKeywords', $keywords );
+	$gBitSmarty->assignByRef( 'metaKeywords', $keywords );
 
 	// =================== Kernel ===================
-	//$gBitSmarty->assign_by_ref( "gBitSystemPackages", $gBitSystem->mPackages ); doesn't seem to be used - xing
+	//$gBitSmarty->assignByRef( "gBitSystemPackages", $gBitSystem->mPackages ); doesn't seem to be used - xing
 
 	// check to see if admin has closed the site
 	if(( isset( $_SERVER['SCRIPT_URL'] ) && $_SERVER['SCRIPT_URL'] == USERS_PKG_URL.'validate.php' )) {
@@ -227,7 +220,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 
 	// if we are interactively translating the website, we force template caching on every page load.
 	if( $gBitSystem->isFeatureActive( 'i18n_interactive_translation' ) && $gBitUser->hasPermission( 'p_languages_edit' ) ) {
-		$gBitSmarty->assign_by_ref( "gBitTranslationHash", $gBitTranslationHash );
+		$gBitSmarty->assignByRef( "gBitTranslationHash", $gBitTranslationHash );
 	} else {
 		// this has to be done since the permission can't be checked in BitLanguage::translate() as it's called too soon by prefilter.tr
 		$gBitSystem->setConfig( 'i18n_interactive_translation', 'n' );

@@ -43,57 +43,57 @@ class BitDb {
 	* This limits database connections to just one per request.
 	* @private
 	*/
-	var $mDb;
+	public $mDb;
 	/**
 	* Used to identify the ADODB db object
 	* @private
 	*/
-	var $mName;
+	public $mName;
 	/**
 	* Used to store the ADODB db object type
 	* @private
 	*/
-	var $mType;
+	public $mType;
 	/**
 	* Used to store failed commands
 	* @private
 	*/
-	var $mFailed = array();
+	public $mFailed = array();
 	/**
 	* Used to store the number of queries executed.
 	* @private
 	*/
-	var $mNumQueries = 0;
+	public $mNumQueries = 0;
 	/**
 	* Used to store the total query time for this request.
 	* @private
 	*/
-	var $mQueryTime = 0;
+	public $mQueryTime = 0;
 	/**
 	* Case sensitivity flag used in convertQuery
 	* @private
 	*/
-	var $mCaseSensitive = TRUE;
+	public $mCaseSensitive = TRUE;
 	/**
 	* Used to enable AdoDB caching
 	* @private
 	*/
-	var $mCacheFlag;
+	public $mCacheFlag;
 	/**
 	* Used to determine SQL debug output. BitDbAdodb overrides associated methods to use the debugging mechanisms built into ADODB
 	* @private
 	*/
-	var $mDebug;
+	public $mDebug;
 	/**
 	* Determines if fatal query functions should terminate script execution. Defaults to TRUE. Can be deactived for things like expected duplicate inserts
 	* @private
 	*/
-	var $mFatalActive;
+	public $mFatalActive;
 	/**
 	* During initialisation, database parameters are passed to the class.
 	* If these parameters are not valid, class will not be initialised.
 	*/
-	function BitDb() {
+	function __construct() {
 		global $gDebug;
 		$this->mDebug = $gDebug;
 		$this->mCacheFlag = TRUE;
@@ -344,7 +344,7 @@ class BitDb {
 			$pQuery = preg_replace("/ NOW/", " 'NOW'", $pQuery);
 			$pQuery = preg_replace("/now\(\)/", "'NOW'", $pQuery);
 		}
-		return $this->query( $pQuery, NULL, $pNumRows, NULL, $pCacheTime );
+		return $this->query( $pQuery, FALSE, $pNumRows, NULL, $pCacheTime );
 	}
 
 	/**
@@ -850,6 +850,8 @@ class BitDb {
 						if ( $pSortMode == 'page_name_desc' )          $pSortMode = 'title_desc';
 						if ( $pSortMode == 'content_id_asc' )          $pSortMode = 'lc.content_id_asc';
 						if ( $pSortMode == 'content_id_desc' )         $pSortMode = 'lc.content_id_desc';
+						if ( $pSortMode == 'item_position_asc' )          $pSortMode = 'tfgim2.item_position_asc';
+						if ( $pSortMode == 'item_position_desc' )         $pSortMode = 'tfgim2.item_position_desc';
 						if ( $pSortMode == 'creator_user_asc' )        $pSortMode = 'uuc.login_asc';
 						if ( $pSortMode == 'creator_user_desc' )       $pSortMode = 'uuc.login_desc';
 						if ( $pSortMode == 'creator_real_name_asc' )   $pSortMode = 'uuc.real_name_asc';
@@ -1062,6 +1064,10 @@ class BitDb {
 				break;
 		}
 		return $ret;
+	}
+
+	function sanitizeColumnString( $pColumn ) {
+		return preg_replace( "/[^a-z0-9_\.]+/i", "-", strtolower( $pColumn ) );
 	}
 
 	/**

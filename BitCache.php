@@ -14,7 +14,7 @@ class BitCache {
 	 * Used to store the directory used to store the cache files.
 	 * @private
 	 */
-	var $mFolder;
+	public $mFolder;
 	/**
 	 * Will check the temp cache folder for existence and create it if necessary.
 	 *
@@ -23,7 +23,7 @@ class BitCache {
 	 * @access public
 	 * @return void
 	 */
-	function BitCache( $pSubdir = 'cache', $pUseStorage = FALSE ) {
+	function __construct( $pSubdir = 'cache', $pUseStorage = FALSE ) {
 		if( $pUseStorage and defined(STORAGE_PKG_PATH) ) {
 			$this->mFolder = STORAGE_PKG_PATH.$pSubdir;
 			$this->mUrl = STORAGE_PKG_URL.$pSubdir;

@@ -37,7 +37,7 @@ if (!isset($_REQUEST["offset"])) {
 	$offset = $_REQUEST["offset"];
 }
 
-$gBitSmarty->assign_by_ref('offset', $offset);
+$gBitSmarty->assignByRef('offset', $offset);
 
 if (isset($_REQUEST["find"])) {
 	$find = $_REQUEST["find"];
@@ -47,11 +47,11 @@ if (isset($_REQUEST["find"])) {
 
 $gBitSmarty->assign('find', $find);
 
-$gBitSmarty->assign_by_ref('sort_mode', $sort_mode);
+$gBitSmarty->assignByRef('sort_mode', $sort_mode);
 $channels = $notificationlib->list_mail_events($offset, $max_records, $sort_mode, $find);
 
 $cant_pages = ceil($channels["cant"] / $max_records);
-$gBitSmarty->assign_by_ref('cant_pages', $cant_pages);
+$gBitSmarty->assignByRef('cant_pages', $cant_pages);
 $gBitSmarty->assign('actual_page', 1 + ($offset / $max_records));
 
 if ($channels["cant"] > ($offset + $max_records)) {
@@ -67,9 +67,9 @@ if ($offset > 0) {
 	$gBitSmarty->assign('prev_offset', -1);
 }
 
-$gBitSmarty->assign_by_ref('channels', $channels["data"]);
+$gBitSmarty->assignByRef('channels', $channels["data"]);
 
-$gBitSmarty->assign_by_ref('events', $gBitSystem->mNotifyEvents);
+$gBitSmarty->assignByRef('events', $gBitSystem->mNotifyEvents);
 $admin_mail=$admin_mail=$gBitUser->mInfo['email'];
 $cuser_mail=$gBitUser->mInfo['email'];
 $gBitSmarty->assign('admin_mail', $admin_mail);

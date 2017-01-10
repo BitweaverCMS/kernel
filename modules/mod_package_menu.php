@@ -12,7 +12,7 @@ if( $gBitUser->isAdmin() ) {
 	$admin =  false;
 }
 
-$package = !empty($moduleParams['module_params']['package'])?$moduleParams['module_params']['package']:ACTIVE_PACKAGE;
+$package = !empty($moduleParams['module_params']['package'])?$moduleParams['module_params']['package']:$gBitSystem->getActivePackage();
 
 if( !empty( $gBitSystem->mAppMenu[$package]['menu_template'] ) && !$admin ) {
 	$_template->tpl_vars['packageMenu'] = new Smarty_variable(  $gBitSystem->mAppMenu[$package]  );

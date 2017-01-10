@@ -87,7 +87,7 @@ while ($file = readdir($h)) {
 }
 
 closedir ($h);
-$gBitSmarty->assign_by_ref('backups', $backups);
+$gBitSmarty->assignByRef('backups', $backups);
 $gBitSmarty->assign('bitdomain', $bitdomain);
 
 

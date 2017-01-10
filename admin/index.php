@@ -55,7 +55,7 @@ if( !empty( $_REQUEST["page"] )) {
 
 		$adminPage = constant( strtoupper( $package ).'_PKG_PATH' ).'/admin/admin_'.$adminFile.'_inc.php';
 		// gBitThemes->loadLayout uses this to determine the currently active package
-		$gBitSystem->mActivePackage = $package;
+		$gBitSystem->setActivePackage( $package );
 	}
 	$gBitSmarty->assign( 'package', $package );
 	$gBitSmarty->assign( 'adminFile', $adminFile );
@@ -76,7 +76,7 @@ if( !empty( $_REQUEST["page"] )) {
 		if( $gBitUser->hasPermission( 'p_'.$package.'_admin' ) ) {
 			$lowerPackage = strtolower( $package );
 			$tpl = "bitpackage:$lowerPackage/menu_{$lowerPackage}_admin.tpl";
-			if(( $gBitSystem->isPackageActive( $package ) || $lowerPackage == 'kernel' ) && @$gBitSmarty->template_exists( $tpl )) {
+			if(( $gBitSystem->isPackageActive( $package ) || $lowerPackage == 'kernel' ) && @$gBitSmarty->templateExists( $tpl )) {
 				$adminTemplates[$package] = $tpl;
 			}
 		}
@@ -84,7 +84,7 @@ if( !empty( $_REQUEST["page"] )) {
 
 	if( !empty( $adminTemplates ) ) {
 		$gBitSystem->setBrowserTitle( 'Administration' );
-		$gBitSmarty->assign_by_ref( 'adminTemplates', $adminTemplates );
+		$gBitSmarty->assignByRef( 'adminTemplates', $adminTemplates );
 	} else {
 		$gBitSystem->verifyPermission( 'p_admin' );
 	}

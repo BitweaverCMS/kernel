@@ -52,7 +52,7 @@ if (substr($info["url"], -4, 4) == ".txt") {
 }
 
 $gBitSmarty->assign('ggcacheurl', $ggcacheurl);
-$gBitSmarty->assign_by_ref('info', $info);
+$gBitSmarty->assignByRef('info', $info);
 $gBitSystem->display( 'bitpackage:kernel/view_cache.tpl', NULL, array( 'display_mode' => 'display' ));
 
 

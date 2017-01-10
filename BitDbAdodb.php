@@ -24,7 +24,7 @@ if( empty( $ADODB_CACHE_DIR )) {
 }
 mkdir_p( $ADODB_CACHE_DIR );
 
-require_once( CONFIG_PKG_PATH.'externals/adodb/adodb.inc.php' );
+require_once( EXTERNAL_LIBS_PATH.'adodb/adodb.inc.php' );
 require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
 
 /**
@@ -37,7 +37,7 @@ require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
  * @package kernel
  */
 class BitDbAdodb extends BitDb {
-	function BitDbAdodb( $pConnectionHash = NULL ) {
+	function __construct( $pConnectionHash = NULL ) {
 		global $ADODB_FETCH_MODE;
 		if( is_null( $pConnectionHash ) ) {
 			global $gBitDbType, $gBitDbHost, $gBitDbUser, $gBitDbPassword, $gBitDbName;
@@ -200,7 +200,7 @@ class BitDbAdodb extends BitDb {
 	 * conjunction with $pNumRows
 	 * @todo currently not used anywhere.
 	 */
-	function queryError( $pQuery, &$pError, $pValues = NULL, $pNumRows = -1, $pOffset = -1 ) {
+	function queryError( $pQuery, &$pError, $pValues = FALSE, $pNumRows = -1, $pOffset = -1 ) {
 		$this->convertQuery( $pQuery );
 		if( $pNumRows == -1 && $pOffset == -1 ) {
 			$result = $this->mDb->Execute($pQuery, $pValues);
@@ -301,14 +301,14 @@ class BitDbAdodb extends BitDb {
 	 * @access public
 	 * @return TRUE on success, FALSE on failure - mErrors will contain reason for failure
 	 */
-	function getAll( $pQuery, $pValues=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+	function getAll( $pQuery, $pValues = FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		if( empty( $this->mDb )) {
 			return FALSE;
 		}
 		$this->queryStart();
 		$this->convertQuery( $pQuery );
 		if( !$this->isCachingActive() || $pCacheTime == BIT_QUERY_DEFAULT ) {
-			$result = $this->mDb->getAll( $pQuery, $pValues );
+			$result = $this->mDb->GetAll( $pQuery, $pValues );
 		} else {
 			$result = $this->mDb->CacheGetAll($pCacheTime, $pQuery, $pValues );
 		}
@@ -327,14 +327,14 @@ class BitDbAdodb extends BitDb {
 	 * @return the associative array, or FALSE if an error occurs
 	 * @todo not currently used anywhere
 	 */
-	function getCol( $pQuery, $pValues=FALSE, $pTrim=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+	function getCol( $pQuery, $pValues = FALSE, $pTrim=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		if( empty( $this->mDb )) {
 			return FALSE;
 		}
 		$this->queryStart();
 		$this->convertQuery( $pQuery );
 		if( !$this->isCachingActive() || $pCacheTime == BIT_QUERY_DEFAULT ) {
-			$result = $this->mDb->getCol( $pQuery, $pValues, $pTrim );
+			$result = $this->mDb->GetCol( $pQuery, $pValues, $pTrim );
 		} else {
 			$result = $this->mDb->CacheGetCol( $pCacheTime, $pQuery, $pValues, $pTrim );
 		}
@@ -352,7 +352,7 @@ class BitDbAdodb extends BitDb {
 	 * @param pFirst2Cols if set to TRUE, only returns the first two columns
 	 * @return the associative array, or FALSE if an error occurs
 	 */
-	function getArray( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+	function getArray( $pQuery, $pValues = FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		if( empty( $this->mDb )) {
 			return FALSE;
 		}
@@ -376,7 +376,7 @@ class BitDbAdodb extends BitDb {
 	 * @param pFirst2Cols if set to TRUE, only returns the first two columns
 	 * @return the associative array, or FALSE if an error occurs
 	 */
-	function getAssoc( $pQuery, $pValues=FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+	function getAssoc( $pQuery, $pValues = FALSE, $pForceArray=FALSE, $pFirst2Cols=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		if( empty( $this->mDb )) {
 			return FALSE;
 		}
@@ -398,7 +398,7 @@ class BitDbAdodb extends BitDb {
 	 * @param pValues an array of values used in a parameterised query
 	 * @return returns the first row as an array, or FALSE if an error occurs
 	 */
-	function getRow( $pQuery, $pValues=FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
+	function getRow( $pQuery, $pValues = FALSE, $pCacheTime=BIT_QUERY_DEFAULT ) {
 		if( empty( $this->mDb ) ) {
 			return FALSE;
 		}
@@ -421,7 +421,7 @@ class BitDbAdodb extends BitDb {
 	 * @param pOffset the row number to begin returning rows from.
 	 * @return the associative array, or FALSE if an error occurs
 	 */
-	function getOne( $pQuery, $pValues=NULL, $pNumRows=NULL, $pOffset=NULL, $pCacheTime = BIT_QUERY_DEFAULT ) {
+	function getOne( $pQuery, $pValues = FALSE, $pNumRows=NULL, $pOffset=NULL, $pCacheTime = BIT_QUERY_DEFAULT ) {
 		$result = $this->query($pQuery, $pValues, 1, $pOffset, $pCacheTime );
 		$res = ( $result != NULL ) ? $result->fetchRow() : FALSE;
 		if( $res === FALSE ) {

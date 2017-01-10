@@ -13,6 +13,7 @@
 <head>
 	<title>{$browserTitle} - {$gBitSystem->getConfig('site_title')}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="referrer" content="always">
 
 	<link rel="icon" href="{$gBitThemes->getStyleUrl()}favicon.png" type="image/png" />
 
@@ -34,7 +35,7 @@
 <body itemscope itemtype="http://schema.org/WebPage"
 	{if $gBitSystem->mOnload} onload="{foreach from=$gBitSystem->mOnload item=loadString}{$loadString}{/foreach}" {/if}
 	{if $gBitSystem->mOnunload} onunload="{foreach from=$gBitSystem->mOnunload item=loadString}{$loadString}{/foreach}"	{/if} 
-	id="{$smarty.const.ACTIVE_PACKAGE}" class="{$displayClass}{$userClass}{$contentClass}">
+	id="{$gBitSystem->getActivePackage()}" class="{$displayClass}{$userClass}{$contentClass}">
 {if $gBitSystem->mDebugHtml}
 	<div id="bw_debughtml">
 		<a href="#postdebug" onclick="document.getElementById('bw_debughtml').style.display='none';">Go to content</a>
@@ -67,7 +68,7 @@
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
 	<header itemscope itemtype="http://schema.org/WPHeader" role="banner" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
 		<div class="row">
-		{$gBitThemes->displayLayoutColumn('t')}
+			{$gBitThemes->displayLayoutColumn('t')}
 		</div>
 	</header>
 	{/if}

@@ -405,7 +405,7 @@ class BitSystem extends BitSingleton {
 		$this->outputHeader();
 
 		if( is_array( $pOutput ) ) {
-			$gBitSmarty->assign_by_ref( 'jsonHash', $pOutput );
+			$gBitSmarty->assignByRef( 'jsonHash', $pOutput );
 		}
 
 		print $gBitSmarty->fetch( 'bitpackage:kernel/json_output.tpl' );

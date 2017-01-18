@@ -66,6 +66,8 @@ if( defined( 'QUERY_CACHE_ACTIVE' ) ) {
 
 require_once( KERNEL_PKG_PATH.'BitSystem.php' );
 global $gBitSmarty, $gBitSystem;
+// Per http://stackoverflow.com/a/14101767/268416 try to force gBitSystem to be among the last object to be destroyed, see BitSystem::__destruct() for details
+set_error_handler(function() use($gBitSystem) {});
 
 // make sure we only create one BitSmarty
 if( !is_object( $gBitSmarty ) ) {

@@ -53,6 +53,9 @@ class BitSystem extends BitSingleton {
 	// Essential information about packages
 	public $mPackages = array();
 
+	// An array of object keys to clear from cache on page destruction
+	private $mClearCacheKeys = array();
+
 	// Cross Reference Package Directory Name => Package Key used as index into $mPackages
 	public $mPackagesDirNameXref = array();
 
@@ -140,8 +143,20 @@ class BitSystem extends BitSingleton {
 
 	}
 
+	function __destruct() {
+		parent::__destruct();
+		// Hopefully gBitSystem is among the last objects destroyed and can force cache purging of any leftover objects that might be in an inconsistent state due to multiple object copies invoked in the same page load
+		foreach( array_keys( $this->mClearCacheKeys ) as $cacheKey ) {
+			$ret = apc_delete( $cacheKey );
+		}
+	}
+
 	public function __sleep() {
 		return array_merge( parent::__sleep(), array( 'mPackages', 'mPackagesDirNameXref', 'mStyle', 'mAppMenu', 'mInstallModules', 'mOnload', 'mOnunload', 'mNotifyEvents', 'mConfig', 'mRegisterCalled', 'mPackageFileName', 'mContentClasses' ) );
+	}
+
+	public function queueClearFromCache( $pCacheKey ) {
+		$this->mClearCacheKeys[$pCacheKey] = TRUE;
 	}
 
 	public static function loadFromCache( $pCacheKey, $pContentTypeGuid = NULL ) {

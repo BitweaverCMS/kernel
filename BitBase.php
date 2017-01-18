@@ -144,8 +144,13 @@ abstract class BitBase {
 	}
 
 	public function clearFromCache( &$pParamHash=NULL ) {
+		global $gBitSystem;
 		$this->mCacheTime = BIT_QUERY_CACHE_DISABLE;
+		$this->mPreventCache = TRUE;
 		if( static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
+			// if there are multiple instances of this object, there is a race condition since it's possible cleared cached objects remain by getting re-storeInCache because clear was not called on that instance. urgh.
+			// BitSystem keeps a master list of keys to purge on page destruction just in case this happens
+			$gBitSystem->queueClearFromCache( $cacheKey );
 			$ret = apc_delete( $cacheKey );
 		}
 	}
@@ -159,14 +164,18 @@ abstract class BitBase {
 	 */
 	protected function storeInCache() {
 		$ret = FALSE;
-		if( $this->isCacheableObject() && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
-			if( empty( $this->mCacheObject ) ) {
-				// new to cache, or overwrite
+		if( static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
+			if( $this->isCacheableObject() ) {
+				if( empty( $this->mCacheObject ) ) {
+					// new to cache, or overwrite
 //var_dump( 'STORE '.get_called_class().' '.$cacheKey );
-				$ret = apc_store( $cacheKey, $this, 3600 );
-			} else {
+					$ret = apc_store( $cacheKey, $this, 3600 );
+				} else {
 //var_dump( 'ADD '.get_called_class().' '.$cacheKey );
-				$ret = apc_add( $cacheKey, $this, 3600 );
+					$ret = apc_add( $cacheKey, $this, 3600 );
+				}
+			} else {
+				$this->clearFromCache();
 			}
 		}
 		return $ret;

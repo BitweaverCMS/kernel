@@ -67,9 +67,7 @@
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
 	<header itemscope itemtype="http://schema.org/WPHeader" role="banner" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
-		<div class="row">
-			{$gBitThemes->displayLayoutColumn('t')}
-		</div>
+		{$gBitThemes->displayLayoutColumn('t')}
 	</header>
 	{/if}
 
@@ -111,16 +109,14 @@
 	<div id="bw-spacer-bottom"></div>
 
 	<footer id="bw-main-footer" class="container{$gBitSystem->getConfig('layout-footer')}">
-		<div class="row{$gBitSystem->getConfig('layout-footer')}">
-			{**** Theme Layout Modules : BOTTOM ****}
-			{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && !$gHideModules}
-				{$gBitThemes->displayLayoutColumn('b')}
-			{/if}
-			{* get custom footer files from individual packages *}
-			{foreach from=$gBitThemes->mAuxFiles.templates.footer_inc item=file}
-				{include file=$file}
-			{/foreach}
-		</div>
+		{**** Theme Layout Modules : BOTTOM ****}
+		{if $gBitSystem->isFeatureActive( 'site_bottom_column' ) && !$gHideModules}
+			{$gBitThemes->displayLayoutColumn('b')}
+		{/if}
+		{* get custom footer files from individual packages *}
+		{foreach from=$gBitThemes->mAuxFiles.templates.footer_inc item=file}
+			{include file=$file}
+		{/foreach}
 	</footer>
 
 	{if $gBitSystem->isFeatureActive( 'bidirectional_text' )}</div>{/if}

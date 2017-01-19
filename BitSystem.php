@@ -155,6 +155,10 @@ class BitSystem extends BitSingleton {
 		return array_merge( parent::__sleep(), array( 'mPackages', 'mPackagesDirNameXref', 'mStyle', 'mAppMenu', 'mInstallModules', 'mOnload', 'mOnunload', 'mNotifyEvents', 'mConfig', 'mRegisterCalled', 'mPackageFileName', 'mContentClasses' ) );
 	}
 
+	public function isPurgedFromCache( $pCacheKey ) {
+		return !empty( $this->mClearCacheKeys[$pCacheKey] );
+	}
+
 	public function queueClearFromCache( $pCacheKey ) {
 		$this->mClearCacheKeys[$pCacheKey] = TRUE;
 	}

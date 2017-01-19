@@ -152,6 +152,7 @@ abstract class BitBase {
 			// BitSystem keeps a master list of keys to purge on page destruction just in case this happens
 			$gBitSystem->queueClearFromCache( $cacheKey );
 			$ret = apc_delete( $cacheKey );
+//var_dump( 'DELETE '.get_called_class().' '.$cacheKey );
 		}
 	}
 
@@ -165,7 +166,8 @@ abstract class BitBase {
 	protected function storeInCache() {
 		$ret = FALSE;
 		if( static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
-			if( $this->isCacheableObject() ) {
+			global $gBitSystem;
+			if( $this->isCacheableObject()  && !$gBitSystem->isPurgedFromCache( $cacheKey ) ) {
 				if( empty( $this->mCacheObject ) ) {
 					// new to cache, or overwrite
 //var_dump( 'STORE '.get_called_class().' '.$cacheKey );

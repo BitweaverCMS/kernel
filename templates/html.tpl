@@ -72,7 +72,9 @@
 	{/if}
 
 	{if $gBitSystem->getConfig('site_notice')}
+	<div class="container{$gBitSystem->getConfig('layout-header')}">
 		<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
+	</div>
 	{/if}
 
 	<div id="bw-main-spacer-top"></div>

@@ -167,7 +167,7 @@ abstract class BitBase {
 		$ret = FALSE;
 		if( static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
 			global $gBitSystem;
-			if( $this->isCacheableObject()  && !$gBitSystem->isPurgedFromCache( $cacheKey ) ) {
+			if( $this->isCacheableObject()  && $gBitSystem && !$gBitSystem->isPurgedFromCache( $cacheKey ) ) {
 				if( empty( $this->mCacheObject ) ) {
 					// new to cache, or overwrite
 //var_dump( 'STORE '.get_called_class().' '.$cacheKey );

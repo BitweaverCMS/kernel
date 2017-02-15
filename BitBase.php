@@ -147,7 +147,7 @@ abstract class BitBase {
 		global $gBitSystem;
 		$this->mCacheTime = BIT_QUERY_CACHE_DISABLE;
 		$this->mPreventCache = TRUE;
-		if( static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
+		if( $gBitSystem && static::isCacheActive() && ($cacheKey = $this->getCacheUuid()) ) {
 			// if there are multiple instances of this object, there is a race condition since it's possible cleared cached objects remain by getting re-storeInCache because clear was not called on that instance. urgh.
 			// BitSystem keeps a master list of keys to purge on page destruction just in case this happens
 			$gBitSystem->queueClearFromCache( $cacheKey );

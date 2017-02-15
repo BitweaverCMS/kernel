@@ -1554,16 +1554,6 @@ class BitSystem extends BitSingleton {
 	 * \static
 	 */
 	public static function prependIncludePath( $pPath ) {
-		if( !function_exists( "get_include_path" ) ) {
-			include_once( UTIL_PKG_PATH . "PHP_Compat/Compat/Function/get_include_path.php" );
-		}
-		if( !defined( "PATH_SEPARATOR" ) ) {
-			include_once( UTIL_PKG_PATH . "PHP_Compat/Compat/Constant/PATH_SEPARATOR.php" );
-		}
-		if( !function_exists( "set_include_path" ) ) {
-			include_once( UTIL_PKG_PATH . "PHP_Compat/Compat/Function/set_include_path.php" );
-		}
-
 		$include_path = get_include_path();
 		if( $include_path ) {
 			$include_path = $pPath . PATH_SEPARATOR . $include_path;
@@ -1578,16 +1568,6 @@ class BitSystem extends BitSingleton {
 	 * \static
 	 */
 	function appendIncludePath( $pPath ) {
-		if( !function_exists( "get_include_path" ) ) {
-			include_once(UTIL_PKG_PATH . "PHP_Compat/Compat/Function/get_include_path.php");
-		}
-		if( !defined("PATH_SEPARATOR" ) ) {
-			include_once(UTIL_PKG_PATH . "PHP_Compat/Compat/Constant/PATH_SEPARATOR.php");
-		}
-		if( !function_exists( "set_include_path" ) ) {
-			include_once(UTIL_PKG_PATH . "PHP_Compat/Compat/Function/set_include_path.php");
-		}
-
 		$include_path = get_include_path();
 		if( $include_path ) {
 			$include_path .= PATH_SEPARATOR . $pPath;

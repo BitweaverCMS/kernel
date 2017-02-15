@@ -5,17 +5,6 @@
  * @subpackage functions
  */
 
-/**
- * some PHP compatability issues need to be dealt with
- * array_fill
- */
-if( !function_exists( 'array_fill' )) {
-	require_once( KERNEL_PKG_PATH.'array_fill.func.php' );
-}
-
-// str_split
-include_once( UTIL_PKG_PATH.'PHP_Compat/Compat/Function/str_split.php' );
-
 /** \brief  substr with a utf8 string - works only with $start and $length positive or nuls
  * This function is the same as substr but works with multibyte
  * In a multybyte sequence, the first byte of a multibyte sequence that represents a non-ASCII character is always in the range 0xC0 to 0xFD

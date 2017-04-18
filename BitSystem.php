@@ -1187,6 +1187,16 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
+	 * getSiteTitle
+	 *
+	 * @access public
+	 * @return name of website
+	 */
+	function getSiteTitle() {
+		return $this->getConfig( 'site_title' );
+	}
+
+	/**
 	 * getDefaultPage
 	 *
 	 * @access public

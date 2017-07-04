@@ -37,7 +37,7 @@
 			&amp;find={$listInfo.find}
 		{/if}
 	{/capture}
-	{assign var=pageUrlVar value=$smarty.capture.string|regex_replace:"/^\&amp;/":""|regex_replace:'/"/':'%22':''}
+	{assign var=pageUrlVar value=$smarty.capture.string|regex_replace:"/^\&amp;/":""|regex_replace:'/"/':'%22'}
 	{assign var=pageUrl value="`$pgnUrl`?`$pageUrlVar`"}
 {/if}
 {if $listInfo.total_pages > 1 && $listInfo.page_records}

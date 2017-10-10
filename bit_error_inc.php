@@ -43,6 +43,14 @@ function bit_error_log( $pLogMessage ) {
 	foreach ($errlines as $txt) { error_log($txt); }
 }
 
+function emergency_break(  ) {
+	vd( 'EMERGENCY BREAK' );
+	foreach (func_get_args () as $arg){
+		vd( $arg );
+	}
+	bt(); die;
+}
+
 function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
 	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config/kernel/config_inc.php
 	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : (!empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL);

@@ -51,6 +51,12 @@ function emergency_break(  ) {
 	bt(); die;
 }
 
+if( !function_exists( 'eb' ) ) {
+	function eb() {
+		emergency_break( func_get_args() );
+	}
+}
+
 function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
 	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config/kernel/config_inc.php
 	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : (!empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL);

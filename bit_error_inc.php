@@ -44,6 +44,8 @@ function bit_error_log( $pLogMessage ) {
 }
 
 function emergency_break(  ) {
+	global $gBitSystem;
+	$gBitSystem->setHttpStatus( HttpStatusCodes::HTTP_BAD_REQUEST );
 	vd( 'EMERGENCY BREAK' );
 	foreach (func_get_args () as $arg){
 		vd( $arg );

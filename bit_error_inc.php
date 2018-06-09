@@ -238,8 +238,13 @@ function bit_error_string( $iDBParms = array() ) {
 }
 
 if (!function_exists('bt')) {	// Make sure another backtrace function does not exist
-function bt( $levels=9999, $iPrint=TRUE ) {
+function bt() {
 	$s = '';
+	$levels = 9999;
+	$iPrint = TRUE;
+
+	vvd( func_get_args() );
+
 	if (PHPVERSION() >= 4.3) {
 
 		$MAXSTRLEN = 64;

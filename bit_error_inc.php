@@ -225,7 +225,7 @@ function bit_error_string( $iDBParms = array() ) {
 		$info .= $indent."#### ERROR CODE: ".$errno."  Message: ".$iDBParms['db_msg'];
 	}
 
-	$stackTrace = bt( 9999, FALSE );
+	$stackTrace = bit_stack();
 
 	//multiline expressions matched
 	if( preg_match_all( "/.*adodb_error_handler\([^\}]*\)(.+\}.+)/ms", $stackTrace, $match )) {
@@ -241,9 +241,14 @@ if (!function_exists('bt')) {	// Make sure another backtrace function does not e
 function bt() {
 	$s = '';
 	$levels = 9999;
-	$iPrint = TRUE;
 
 	vvd( func_get_args() );
+	print '<pre>'.bit_stack()."</pre>\n";
+}
+}	// End if function_exists('bt')
+
+function bit_stack() {
+	$s = '';
 
 	if (PHPVERSION() >= 4.3) {
 
@@ -255,6 +260,7 @@ function bt() {
 		$indent = '';
 		$sClass = '';
 
+		$levels = 999;
 		foreach ($traceArr as $arr) {
 			$levels -= 1;
 			if ($levels < 0) break;
@@ -291,13 +297,9 @@ function bt() {
 			$indent = '';
 		}
 		$s .= "\n";
-		if( $iPrint ) {
-			print '<pre>'.$s."</pre>\n";
-		}
 	}
 	return $s;
 }
-}	// End if function_exists('bt')
 
 // variable argument var dump
 function vvd() {

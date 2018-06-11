@@ -1799,6 +1799,17 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 		return( (defined( 'IS_LIVE' ) && IS_LIVE) && !$this->isFeatureActive( 'site_hidden' ) );
 	}
 
+	/**
+	 * isTracking returns status of the IS_LIVE constant from config/kernel/config_inc.php
+	 *
+	 * @access public
+	 * @return TRUE if IS_LIVE is defined and set to a non empty value, else FALSE
+	 */
+	function isTracking() {
+		global $gBitUser;
+		return TRUE; //$this->isLive() && !$gBitUser->hasPermission( 'p_users_admin' );
+	}
+
 	// {{{=========================== Installer related methods ==============================
 	// Keep these methods in BitSystem that we can call verifyInstalledPackages() and other
 	// mthods without the need for an install/ package to be present.

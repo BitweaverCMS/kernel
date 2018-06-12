@@ -1807,7 +1807,7 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 	 */
 	function isTracking() {
 		global $gBitUser;
-		return TRUE; //$this->isLive() && !$gBitUser->hasPermission( 'p_users_admin' );
+		return $this->getConfig( 'p_tracking_debug' ) || ($this->isLive() && !$gBitUser->hasPermission( 'p_users_admin' ));
 	}
 
 	// {{{=========================== Installer related methods ==============================

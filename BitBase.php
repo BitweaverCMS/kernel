@@ -148,7 +148,7 @@ abstract class BitBase {
 	}
 
 	public static function cacheQueryDefaultTime() {
-		return self::isRefreshRequest() ? 0 : BIT_QUERY_CACHE_TIME;
+		return self::isRefreshRequest() ? BIT_QUERY_CACHE_TIME : 0;
 	}
 
 	public function clearFromCache( &$pParamHash=NULL ) {

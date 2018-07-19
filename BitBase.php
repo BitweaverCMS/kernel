@@ -105,7 +105,7 @@ abstract class BitBase {
 	function __construct( $pName = '' ) {
 		global $gBitDb;
 		$this->mName = $pName;
-		$this->mCacheTime = BIT_QUERY_CACHE_TIME;
+		$this->mCacheTime = self::cacheQueryDefaultTime();
 		if( is_object( $gBitDb ) ) {
 			$this->setDatabase($gBitDb);
 		}
@@ -145,6 +145,10 @@ abstract class BitBase {
 
 	protected function cacheQueryTime() {
 		return $this->mCacheTime;
+	}
+
+	public static function cacheQueryDefaultTime() {
+		return self::isRefreshRequest() ? 0 : BIT_QUERY_CACHE_TIME;
 	}
 
 	public function clearFromCache( &$pParamHash=NULL ) {

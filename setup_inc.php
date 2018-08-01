@@ -89,14 +89,14 @@ if( !empty( $gBitSystem->mConfig ) && version_compare( MIN_BIT_VERSION, $gBitSys
 	define( 'INSTALLER_FORCE', TRUE );
 }
 
-BitSystem::prependIncludePath( UTIL_PKG_PATH.'/' );
+BitSystem::prependIncludePath( UTIL_PKG_INC );
 BitSystem::prependIncludePath( EXTERNAL_LIBS_PATH.'pear/' );
 
 require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
 BitLanguage::loadSingleton();
 
 // collects information about the browser - needed for various browser specific theme settings
-require_once( UTIL_PKG_PATH.'phpsniff/phpSniff.class.php' );
+require_once( UTIL_PKG_INC.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
 $gSniffer = new phpSniff;
 if( file_exists( ini_get( 'browscap' ) ) ) {

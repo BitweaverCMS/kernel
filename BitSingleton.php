@@ -44,7 +44,9 @@ abstract class BitSingleton extends BitBase implements BitCacheable {
 		if(!isset(static::$singletons[$globalVarName])) {
 			static::$singletons[$globalVarName] = $$globalVarName;
 			global $gBitSmarty;
-			$gBitSmarty->assignByRef( $globalVarName, $$globalVarName );
+			if( $gBitSmarty ) {
+				$gBitSmarty->assignByRef( $globalVarName, $$globalVarName );
+			}
 		}
 		return static::$singletons[$globalVarName];
 	}

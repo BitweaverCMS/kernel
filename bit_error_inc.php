@@ -43,6 +43,22 @@ function bit_error_log( $pLogMessage ) {
 	foreach ($errlines as $txt) { error_log($txt); }
 }
 
+function emergency_break(  ) {
+	global $gBitSystem;
+	$gBitSystem->setHttpStatus( HttpStatusCodes::HTTP_BAD_REQUEST );
+	vd( 'EMERGENCY BREAK' );
+	foreach (func_get_args () as $arg){
+		vd( $arg );
+	}
+	bt(); die;
+}
+
+if( !function_exists( 'eb' ) ) {
+	function eb() {
+		emergency_break( func_get_args() );
+	}
+}
+
 function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
 	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config/kernel/config_inc.php
 	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : (!empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL);
@@ -209,7 +225,7 @@ function bit_error_string( $iDBParms = array() ) {
 		$info .= $indent."#### ERROR CODE: ".$errno."  Message: ".$iDBParms['db_msg'];
 	}
 
-	$stackTrace = bt( 9999, FALSE );
+	$stackTrace = bit_stack();
 
 	//multiline expressions matched
 	if( preg_match_all( "/.*adodb_error_handler\([^\}]*\)(.+\}.+)/ms", $stackTrace, $match )) {
@@ -222,8 +238,18 @@ function bit_error_string( $iDBParms = array() ) {
 }
 
 if (!function_exists('bt')) {	// Make sure another backtrace function does not exist
-function bt( $levels=9999, $iPrint=TRUE ) {
+function bt() {
 	$s = '';
+	$levels = 9999;
+
+	vvd( func_get_args() );
+	print '<pre>'.bit_stack()."</pre>\n";
+}
+}	// End if function_exists('bt')
+
+function bit_stack() {
+	$s = '';
+
 	if (PHPVERSION() >= 4.3) {
 
 		$MAXSTRLEN = 64;
@@ -234,6 +260,7 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 		$indent = '';
 		$sClass = '';
 
+		$levels = 999;
 		foreach ($traceArr as $arr) {
 			$levels -= 1;
 			if ($levels < 0) break;
@@ -270,13 +297,9 @@ function bt( $levels=9999, $iPrint=TRUE ) {
 			$indent = '';
 		}
 		$s .= "\n";
-		if( $iPrint ) {
-			print '<pre>'.$s."</pre>\n";
-		}
 	}
 	return $s;
 }
-}	// End if function_exists('bt')
 
 // variable argument var dump
 function vvd() {
@@ -338,7 +361,7 @@ function vc( $iVar, $pHtml=TRUE ) {
 			var_dump( $iVar );
 		}
 	} elseif( $pHtml && !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && ((is_object( $iVar ) && !empty( $iVar )) || is_array( $iVar )) ) {
-		include_once( UTIL_PKG_PATH.'dBug/dBug.php' );
+		include_once( UTIL_PKG_INC.'dBug/dBug.php' );
 		new dBug( $iVar, "", FALSE );
 	} else {
 		print '<pre>';

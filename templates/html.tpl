@@ -66,7 +66,7 @@
 		{assign var=extraColumns value=0}{/if}
 
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
-	<header itemscope itemtype="http://schema.org/WPHeader" role="banner" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
+	<header itemscope itemtype="http://schema.org/WPHeader" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
 		{$gBitThemes->displayLayoutColumn('t')}
 	</header>
 	{/if}
@@ -91,7 +91,7 @@
 		</nav><!-- end #navigation -->{* needed by output filters. *}
 		{/if}
 
-		<main role="main" id="wrapper" class="col-md-{math equation='12-x*3' x=$extraColumns} col-sm-{math equation='12-x*4' x=$extraColumns} col-xs-12">
+		<main id="wrapper" class="col-md-{math equation='12-x*3' x=$extraColumns} col-sm-{math equation='12-x*4' x=$extraColumns} col-xs-12">
 			{**** Theme Layout Modules : CENTER ****}
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
 			{include file="bitpackage:liberty/display_structure.tpl"}

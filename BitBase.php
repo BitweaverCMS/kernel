@@ -105,7 +105,7 @@ abstract class BitBase {
 	function __construct( $pName = '' ) {
 		global $gBitDb;
 		$this->mName = $pName;
-		$this->mCacheTime = BIT_QUERY_CACHE_TIME;
+		$this->mCacheTime = self::cacheQueryDefaultTime();
 		if( is_object( $gBitDb ) ) {
 			$this->setDatabase($gBitDb);
 		}
@@ -141,6 +141,14 @@ abstract class BitBase {
 	 */
 	protected function expunge() {
 		$this->clearFromCache();
+	}
+
+	protected function cacheQueryTime() {
+		return $this->mCacheTime;
+	}
+
+	public static function cacheQueryDefaultTime() {
+		return self::isRefreshRequest() ? BIT_QUERY_CACHE_TIME : 0;
 	}
 
 	public function clearFromCache( &$pParamHash=NULL ) {
@@ -240,7 +248,7 @@ abstract class BitBase {
 
 	public static function isCacheActive() {
 		// only apc is supported for now.
-		return (function_exists( 'apc_add' ) && defined( 'BIT_CACHE_OBJECTS' ) && BIT_CACHE_OBJECTS );
+		return (function_exists( 'apc_add' ) && defined( 'BIT_CACHE_OBJECTS' ) && BIT_CACHE_OBJECTS && !self::isRefreshRequest());
 	}
 
 	public function isCacheableObject() {
@@ -257,6 +265,16 @@ abstract class BitBase {
 
 	public function setCacheableObject( $pCacheable = TRUE ) {
 		$this->mPreventCache = empty( $pCacheable );
+	}
+
+	public static function isRefreshRequest() {
+		static $isRefresh = NULL;
+
+		if( $isRefresh === NULL ) {
+			$isRefresh = isset($_SERVER['HTTP_CACHE_CONTROL']) &&(/*$_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0' || */ $_SERVER['HTTP_CACHE_CONTROL'] == 'no-cache');
+		}
+
+		return $isRefresh;
 	}
 
     final public static function getClass() {

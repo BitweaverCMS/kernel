@@ -765,6 +765,10 @@ class BitSystem extends BitSingleton {
 	function fatalPermission( $pPermission, $pMsg=NULL ) {
 		global $gBitUser, $gBitSmarty, $gBitThemes;
 		if( !$gBitUser->isRegistered() ) {
+require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
+			BitHybridAuthManager::loadSingleton();
+			global $gBitHybridAuthManager;
+			$gBitSmarty->assign( 'hybridProviders', $gBitHybridAuthManager->getEnabledProviders() );
 			$gBitSmarty->assign( 'template', 'bitpackage:users/login_inc.tpl' );
 		} else {
 			$title = 'Oops!';
@@ -1184,6 +1188,16 @@ class BitSystem extends BitSingleton {
 		if( !defined( 'BIT_STYLES_URL' ) && defined( 'THEMES_PKG_URL' )) {
 			define( 'BIT_STYLES_URL', THEMES_PKG_URL.'styles/' );
 		}
+	}
+
+	/**
+	 * getSiteTitle
+	 *
+	 * @access public
+	 * @return name of website
+	 */
+	function getSiteTitle() {
+		return $this->getConfig( 'site_title' );
 	}
 
 	/**
@@ -1783,6 +1797,17 @@ class BitSystem extends BitSingleton {
 	 */
 	function isLive() {
 		return( (defined( 'IS_LIVE' ) && IS_LIVE) && !$this->isFeatureActive( 'site_hidden' ) );
+	}
+
+	/**
+	 * isTracking returns status of the IS_LIVE constant from config/kernel/config_inc.php
+	 *
+	 * @access public
+	 * @return TRUE if IS_LIVE is defined and set to a non empty value, else FALSE
+	 */
+	function isTracking() {
+		global $gBitUser;
+		return $this->getConfig( 'tracking_debug' ) || ($this->isLive() && !$gBitUser->hasPermission( 'p_users_admin' ));
 	}
 
 	// {{{=========================== Installer related methods ==============================

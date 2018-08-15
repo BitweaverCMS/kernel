@@ -1800,6 +1800,16 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 	}
 
 	/**
+	 * isIndexed returns if that page should be indexed by search engines
+	 *
+	 * @access public
+	 * @return TRUE if page should be indexed by search engines
+	 */
+	function isIndexed() {
+		return (!defined('SITE_NOINDEX') || !constant('SITE_NOINDEX')) && $this->isLive();
+	}
+
+	/**
 	 * isTracking returns status of the IS_LIVE constant from config/kernel/config_inc.php
 	 *
 	 * @access public

@@ -68,13 +68,13 @@
 	{if $gBitSystem->isFeatureActive( 'site_top_column' ) && !$gHideModules}
 	<header itemscope itemtype="http://schema.org/WPHeader" class="container{$gBitSystem->getConfig('layout-header')}" id="bw-main-header">
 		{$gBitThemes->displayLayoutColumn('t')}
-	</header>
-	{/if}
-
 	{if $gBitSystem->getConfig('site_notice')}
 	<div class="container{$gBitSystem->getConfig('layout-header')}">
 		<div class="sitenotice">{$gBitSystem->getConfig('site_notice')}</div>
 	</div>
+	{/if}
+
+	</header>
 	{/if}
 
 	<div id="bw-main-spacer-top"></div>

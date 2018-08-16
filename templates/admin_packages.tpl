@@ -17,13 +17,13 @@
 			{jstab title="Upgradable"}
 				{legend legend="Upgradable packages"}
 					<p class="warning">
-						{biticon iname="large/dialog-warning" iexplain="Warning"} {tr}You seem to have at least one package that can be upgraded.{/tr} <a href="{$smarty.const.INSTALL_PKG_URL}install.php?step=4">{tr}We recommend you visit the installer now{/tr}</a>.
+						{biticon class="img-responsive" iname="large/dialog-warning" iexplain="Warning"} {tr}You seem to have at least one package that can be upgraded.{/tr} <a href="{$smarty.const.INSTALL_PKG_URL}install.php?step=4">{tr}We recommend you visit the installer now{/tr}</a>.
 					</p>
 
 					{foreach from=$upgradable item=package key=name}
 						<div class="form-group">
 							<div class="formlabel">
-								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
+								<label for="package_{$name}">{biticon class="img-responsive" ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
 							</div>
 							{forminput}
 								<label>
@@ -52,7 +52,7 @@
 					<div class="well">
 						<div class="form-group clear">
 							<div class="formlabel">
-								<label for="package_{$name}">{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
+								<label for="package_{$name}">{biticon class="img-responsive" ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}</label>
 							</div>
 							{forminput}
 								<label>
@@ -100,7 +100,7 @@
 					<div class="well">
 						<div class="form-group">
 							<div class="formlabel">
-								{if !$package.required}<label for="package_{$name}">{/if}{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}{if !$package.required}</label>{/if}
+								{if !$package.required}<label for="package_{$name}">{/if}{biticon class="img-responsive" ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}{if !$package.required}</label>{/if}
 							</div>
 							{forminput}
 								<label>
@@ -152,7 +152,7 @@
 					<div class="well">
 						<div class="form-group">
 							<div class="formlabel">
-								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
+								{biticon class="img-responsive" ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>
 							{forminput}
 								<strong>{$name|capitalize}</strong>
@@ -173,7 +173,7 @@
 					<div class="well">
 						<div class="form-group">
 							<div class="formlabel">
-								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
+								{biticon class="img-responsive" ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>
 							{forminput}
 								<label>
@@ -294,7 +294,7 @@
 					<div class="well">
 						<div class="form-group clear">
 							<div class="formlabel">
-								{biticon ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
+								{biticon class="img-responsive" ipackage=$name iname="pkg_`$name`" iexplain="$name" iforce=icon}
 							</div>
 							{forminput}
 								{$name|capitalize}

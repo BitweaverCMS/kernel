@@ -21,6 +21,9 @@
 {if $canonicalLink}
 <link rel="canonical" href="{$canonicalLink|escape}"/>
 {/if}
+{if $relTags}
+{$relTags}
+{/if}
 {if $gBitSystem->isIndexed()}
 <meta name="robots" content="index,follow">
 {else}

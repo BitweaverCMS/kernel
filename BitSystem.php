@@ -1372,6 +1372,77 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 		$gBitSmarty->assign( 'gPageTitle', $pTitle );
 	}
 
+	// === setPagination
+	/**
+	 * set the canonical page title
+	 *
+	 * @param string $ pTitle title to be used
+	 * @return none
+	 * @access public
+	 */
+	function setPagination( $pListInfo ) {
+		global $gBitSmarty;
+		if( !empty( $pListInfo['total_pages'] ) && !empty( $pListInfo['page_records'] ) ) {
+			$relTags = "";
+			if ( isset( $pListInfo['url'] ) ) {
+				$baseUrl = $pListInfo['url'];
+			} else {
+				$baseUrl = $_SERVER['SCRIPT_URL'];
+			}
+
+			if( !empty( $pListInfo['query_string'] ) ) {
+				$pageUrl = $baseUrl.'?'.$pListInfo['query_string'];
+			} else {
+				$queryString = '';
+				foreach( array( 'parameters', 'ihash' ) as $paramKey ) {
+					if( !empty( $pListInfo[$paramKey] ) ) {
+						foreach( $pListInfo['parameters'] as $param=>$value ) {
+							if( is_array( $value ) ) {
+								foreach( $value as $v ) {
+									if( !empty( $v ) ) {
+										$queryString .= $param.'[]='.$v.'&amp;';
+									}
+								}
+							} elseif( !empty( $value ) ) {
+								$queryString .= $param.'='.$value.'&amp;';
+							}
+						}
+					}
+				}
+	/*
+				{foreach from=$pgnHidden key=param item=value}
+					{if $value|is_array}
+						{foreach from=$value item=v}{if $value ne ''}&amp;{$param}[]={$v}{/if}{/foreach}
+					{else}
+						{if $value ne ''}&amp;{$param}={$value}{/if}
+					{/if}
+				{/foreach}
+	*/
+				foreach( array( 'max_records', 'sort_mode', 'find' ) as $paramKey ) {
+					if( !empty( $pListInfo[$paramKey] ) ) {
+						if( is_array( $pListInfo[$paramKey] ) ) {
+							foreach( $pListInfop[$paramKey] as $v ) {
+								$queryString = $paramKey.'[]='.$v.'&amp;';
+							}
+						} else {
+							$queryString .= $paramKey.'='.$pListInfo[$paramKey].'&amp;';
+						}
+					}
+				}
+				$pageUrl = $baseUrl.'?'.preg_replace( '/"/', '%22', $queryString );
+			}
+			$currentPage = BitBase::getParameter( $pListInfo, 'current_page' );
+			if( $currentPage > 1 ) {
+				$relTags .= '<link rel="prev" href="'.$pageUrl.'page='.($currentPage-1).'">';
+			}
+			if( BitBase::getParameter( $pListInfo, 'next_offset' ) > 0 ) {
+				$relTags .= '<link rel="next" href="'.$pageUrl.'page='.($currentPage+1).'">';
+			}
+
+			$gBitSmarty->assign( 'relTags', $relTags );
+		}
+	}
+
 	// === setCanonicalLink
 	/**
 	 * set the canonical page title

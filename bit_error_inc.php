@@ -243,7 +243,7 @@ function bt() {
 	$levels = 9999;
 
 	vvd( func_get_args() );
-	print '<pre>'.bit_stack()."</pre>\n";
+	print '<pre>'."\t".date( "Y-m-d H:i:s" )."\n".bit_stack()."</pre>\n";
 }
 }	// End if function_exists('bt')
 

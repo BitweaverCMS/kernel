@@ -35,10 +35,7 @@ function bit_db_debug( $pLevel = 99 ) {
 }
 
 function bit_error_log( $pLogMessage ) {
-	if( !empty( $_SERVER['SCRIPT_URI'] )) {
-		error_log( "OUTPUT in {$_SERVER['SCRIPT_URI']}" );
-	}
-
+	error_log( 'SCRIPT_URI: '.BitBase::getParameter( $_SERVER, 'SCRIPT_URI', 'OUTPUT' )."\n".bit_stack( 1 ) );
 	$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
 	foreach ($errlines as $txt) { error_log($txt); }
 }
@@ -247,7 +244,7 @@ function bt() {
 }
 }	// End if function_exists('bt')
 
-function bit_stack() {
+function bit_stack( $pDepth = -1 ) {
 	$s = '';
 
 	if (PHPVERSION() >= 4.3) {
@@ -263,7 +260,9 @@ function bit_stack() {
 		$levels = 999;
 		foreach ($traceArr as $arr) {
 			$levels -= 1;
-			if ($levels < 0) break;
+			if ($levels < 0 || (999 - $levels > $pDepth) ) {
+				break;
+			}
 
 			$args = array();
 			for ($i=0; $i <= $tabs; $i++) {

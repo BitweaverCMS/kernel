@@ -135,8 +135,8 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 		$pTarget = preg_replace( '/^\/tmp/', $_SERVER['DOCUMENT_ROOT'].'/temp', $pTarget );
 	}
 
-	if( file_exists( $pTarget ) || is_dir( $pTarget )) {
-		return FALSE;
+	if( file_exists( $pTarget ) ) {
+		return is_dir( $pTarget );
 	}
 
 	if( !is_windows() ) {
@@ -152,10 +152,11 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 
 	$oldu = umask( 0 );
 	// make use of PHP5 recursive mkdir feature
-	if( version_compare( phpversion(), "5.0.0", ">=" )) {
-		@mkdir( $pTarget, $pPerms, TRUE );
+	// php5_+ only NOW! if( version_compare( phpversion(), "5.0.0", ">=" )) {
+		mkdir( $pTarget, $pPerms, TRUE );
 		umask( $oldu );
 		return TRUE;
+	/* PHP 5+ only now
 	} else {
 		if( @mkdir( $pTarget, $pPerms )) {
 			bitdebug( "mkdir_p() - creating $pTarget" );
@@ -176,6 +177,7 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 			}
 		}
 	}
+	*/
 }
 
 /**

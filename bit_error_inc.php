@@ -236,15 +236,12 @@ function bit_error_string( $iDBParms = array() ) {
 
 if (!function_exists('bt')) {	// Make sure another backtrace function does not exist
 function bt() {
-	$s = '';
-	$levels = 9999;
-
 	vvd( func_get_args() );
 	print '<pre>'."\t".date( "Y-m-d H:i:s" )."\n".bit_stack()."</pre>\n";
 }
 }	// End if function_exists('bt')
 
-function bit_stack( $pDepth = -1 ) {
+function bit_stack( $pDepth = 999 ) {
 	$s = '';
 
 	if (PHPVERSION() >= 4.3) {
@@ -257,10 +254,10 @@ function bit_stack( $pDepth = -1 ) {
 		$indent = '';
 		$sClass = '';
 
-		$levels = 999;
+		$levels = $pDepth;
 		foreach ($traceArr as $arr) {
 			$levels -= 1;
-			if ($levels < 0 || (999 - $levels > $pDepth) ) {
+			if( $levels < 0 ) {
 				break;
 			}
 

@@ -34,10 +34,16 @@ function bit_db_debug( $pLevel = 99 ) {
 	}
 }
 
-function bit_error_log( $pLogMessage ) {
-	error_log( 'SCRIPT_URI: '.BitBase::getParameter( $_SERVER, 'SCRIPT_URI', 'OUTPUT' )."\n".bit_stack( 1 ) );
-	$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
-	foreach ($errlines as $txt) { error_log($txt); }
+function bit_error_log() {
+	for( $i = 0; $i < func_num_args(); $i++ ) { 
+    	if( $pLogMessage = func_get_arg( $i ) ) {
+			$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
+			foreach ($errlines as $txt) { 
+				error_log($txt); 
+			}
+			error_log( 'SCRIPT_URI: '.BitBase::getParameter( $_SERVER, 'SCRIPT_URI', 'OUTPUT' )."\n".bit_stack( 2 ) );
+		}
+	} 
 }
 
 function emergency_break(  ) {

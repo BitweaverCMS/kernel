@@ -667,6 +667,11 @@ function bit_redirect( $pUrl, $pStatusCode=HttpStatusCodes::HTTP_FOUND ) {
 		$pStatusCode = NULL;
 	}
 
+	global $gBitUser;
+	if( is_object( $gBitUser ) ) {
+		apache_setenv( 'USERID', $gBitUser->isRegistered() ? $gBitUser->getField('login') : '-', true );
+	}
+
 	// clean up URL before executing it
 	while( strstr( $pUrl, '&&' ) ) {
 		$pUrl = str_replace( '&&', '&', $pUrl );

@@ -413,7 +413,9 @@ class BitSystem extends BitSingleton {
 		// Add the user to an apache ENV variable so it can be logged, like:
 		// LogFormat "%V %h %l %{USERID}e %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" \"%{Cookie}n\""  combinedcookie
 		global $gBitUser;
-		apache_setenv( 'USERID', $gBitUser->isRegistered() ? $gBitUser->getField('login') : '-', true );
+		if( is_object( $gBitUser ) ) {
+			apache_setenv( 'USERID', $gBitUser->isRegistered() ? $gBitUser->getField('login') : '-', true );
+		}
 
 		// see if we have a custom status other than 200 OK
 		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );

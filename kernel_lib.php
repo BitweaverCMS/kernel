@@ -669,7 +669,7 @@ function bit_redirect( $pUrl, $pStatusCode=HttpStatusCodes::HTTP_FOUND ) {
 
 	global $gBitUser;
 	if( is_object( $gBitUser ) ) {
-		apache_setenv( 'USERID', $gBitUser->isRegistered() ? $gBitUser->getField('login') : '-', true );
+		apache_setenv( 'USERID', $gBitUser->getField('login', '-'), true );
 	}
 
 	// clean up URL before executing it

@@ -414,7 +414,7 @@ class BitSystem extends BitSingleton {
 		// LogFormat "%V %h %l %{USERID}e %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" \"%{Cookie}n\""  combinedcookie
 		global $gBitUser;
 		if( is_object( $gBitUser ) ) {
-			apache_setenv( 'USERID', $gBitUser->isRegistered() ? $gBitUser->getField('login') : '-', true );
+			apache_setenv( 'USERID', $gBitUser->getField('login', '-'), true );
 		}
 
 		// see if we have a custom status other than 200 OK

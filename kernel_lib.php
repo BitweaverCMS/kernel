@@ -116,6 +116,17 @@ function is_windows() {
 }
 
 /**
+ * Determines if file exists and is non zero
+ *
+ * @param string $pFile target file
+ * @access public
+ * @return TRUE if file exists and is non zero, FALSE on failure
+ */
+function file_valid( $pFile ) {
+	return file_exists( $pFile ) && filesize( $pFile );
+}
+
+/**
  * Recursively create directories
  *
  * @param array $pTarget target directory

@@ -2557,7 +2557,7 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 		static $site_long_date_format = FALSE;
 
 		if( !$site_long_date_format ) {
-			$site_long_date_format = $this->getConfig( 'site_long_date_format', '%A %d of %B, %Y' );
+			$site_long_date_format = $this->getConfig( 'site_long_date_format', '%A, %B %d, %Y' );
 		}
 
 		return $site_long_date_format;

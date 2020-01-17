@@ -75,9 +75,6 @@ if( !is_object( $gBitSmarty ) ) {
 	// set the default handler
 	$gBitSmarty->loadFilter( 'pre', 'tr' );
 	// $gBitSmarty->loadFilter('output','trimwhitespace');
-	if( isset( $_REQUEST['highlight'] ) ) {
-		$gBitSmarty->loadFilter( 'output', 'highlight' );
-	}
 }
 
 BitSystem::loadSingleton();

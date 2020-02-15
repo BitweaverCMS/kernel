@@ -41,9 +41,9 @@ function bit_error_log() {
 			foreach ($errlines as $txt) { 
 				error_log($txt); 
 			}
-			error_log( 'SCRIPT_URI: '.BitBase::getParameter( $_SERVER, 'SCRIPT_URI', 'OUTPUT' )."\n".bit_stack( 5 ) );
 		}
 	} 
+	error_log( 'SCRIPT_URI: '.BitBase::getParameter( $_SERVER, 'SCRIPT_URI', 'OUTPUT' )."\n".bit_stack( 5 ) );
 }
 
 function emergency_break(  ) {

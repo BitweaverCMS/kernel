@@ -90,6 +90,7 @@ function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
 function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NULL ) {
     // error_reporting() === 0 if code was prepended with @
     if( ($errno == 1 || $reportingLevel = error_reporting()) && !strpos( $errfile, 'templates_c' ) ) {
+		$errType = FALSE;
         switch ($errno) {
 			case E_ERROR: $errType = 'FATAL ERROR'; break;
 			case E_WARNING: if( $reportingLevel & E_WARNING ) { $errType = 'WARNING'; } break;
@@ -110,7 +111,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 
         }
         // Send an e-mail to the administrator
-		if( defined( 'IS_LIVE' ) && IS_LIVE && $errType && defined( 'ERROR_EMAIL' ) ) {
+		if( TRUE || defined( 'IS_LIVE' ) && IS_LIVE && $errType && defined( 'ERROR_EMAIL' ) ) {
 			bit_error_email( 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr, $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) ) );
 		}
     }

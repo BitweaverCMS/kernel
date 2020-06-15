@@ -111,7 +111,7 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 
         }
         // Send an e-mail to the administrator
-		if( TRUE || defined( 'IS_LIVE' ) && IS_LIVE && $errType && defined( 'ERROR_EMAIL' ) ) {
+		if( defined( 'IS_LIVE' ) && IS_LIVE && $errType && defined( 'ERROR_EMAIL' ) ) {
 			bit_error_email( 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr, $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) ) );
 		}
     }

@@ -380,15 +380,15 @@ class BitSystem extends BitSingleton {
 	 * @access public
 	 */
 	function sendEmail( $pMailHash ) {
-		$extraHeaders = '';
+		$fromEmail = !empty( $pMailHash['from'] ) ? $pMailHash['from'] : $this->getConfig( 'site_sender_email' );
+
+		$extraHeaders = "Return-Path: $fromEmail\r\n";
 		if( $this->getConfig( 'bcc_email' ) ) {
 			$extraHeaders = "Bcc: ".$this->getConfig( 'bcc_email' )."\r\n";
 		}
 		if( !empty( $pMailHash['Reply-to'] ) ) {
 			$extraHeaders = "Reply-to: ".$pMailHash['Reply-to']."\r\n";
 		}
-
-		$fromEmail = !empty( $pMailHash['from'] ) ? $pMailHash['from'] : $this->getConfig( 'site_sender_email' );
 
 		mail($pMailHash['email'],
 			$pMailHash['subject'].' '.$_SERVER["SERVER_NAME"],

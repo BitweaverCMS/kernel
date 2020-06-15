@@ -384,10 +384,10 @@ class BitSystem extends BitSingleton {
 
 		$extraHeaders = "Return-Path: $fromEmail\r\n";
 		if( $this->getConfig( 'bcc_email' ) ) {
-			$extraHeaders = "Bcc: ".$this->getConfig( 'bcc_email' )."\r\n";
+			$extraHeaders .= "Bcc: ".$this->getConfig( 'bcc_email' )."\r\n";
 		}
 		if( !empty( $pMailHash['Reply-to'] ) ) {
-			$extraHeaders = "Reply-to: ".$pMailHash['Reply-to']."\r\n";
+			$extraHeaders .= "Reply-to: ".$pMailHash['Reply-to']."\r\n";
 		}
 
 		mail($pMailHash['email'],

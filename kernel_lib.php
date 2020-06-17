@@ -162,33 +162,9 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 	}
 
 	$oldu = umask( 0 );
-	// make use of PHP5 recursive mkdir feature
-	// php5_+ only NOW! if( version_compare( phpversion(), "5.0.0", ">=" )) {
-		mkdir( $pTarget, $pPerms, TRUE );
-		umask( $oldu );
-		return TRUE;
-	/* PHP 5+ only now
-	} else {
-		if( @mkdir( $pTarget, $pPerms )) {
-			bitdebug( "mkdir_p() - creating $pTarget" );
-			umask( $oldu );
-			return TRUE;
-		} else {
-			umask( $oldu );
-			$parent = substr( $pTarget, 0, ( strrpos( $pTarget, '/' )));
-
-			// recursively create parents
-			if( mkdir_p( $parent, $pPerms )) {
-				// make the actual target!
-				if( @mkdir( $pTarget, $pPerms )) {
-					return TRUE;
-				} elseif( !is_dir( $pTarget ) ) {
-					error_log( "mkdir() - could not create $pTarget" );
-				}
-			}
-		}
-	}
-	*/
+	@mkdir( $pTarget, $pPerms, TRUE );
+	umask( $oldu );
+	return TRUE;
 }
 
 /**

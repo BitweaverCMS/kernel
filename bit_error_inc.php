@@ -34,6 +34,36 @@ function bit_db_debug( $pLevel = 99 ) {
 	}
 }
 
+/**
+ * Output in a pseudo standard output format
+ *
+ *    LogFormat "%V %h %l %{USERID}e %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" \"%{Cookie}n\""  combinedcookie
+ *
+ **/
+function bit_print_log( $pLogParams, $pLogMessages ) {
+	global $gBitUser;
+	$virtualHost = BitBase::getParameter( $pLogParams, 'hostname', $_SERVER['HTTP_HOST'] );
+	$remoteAddr = BitBase::getParameter( $pLogParams, 'remote_addr', $_SERVER['REMOTE_ADDR'] );
+	$userAgent = BitBase::getParameter( $pLogParams, 'user_agent', $_SERVER['HTTP_USER_AGENT'] );
+	$statusCode = BitBase::getParameter( $pLogParams, 'status_code', 200 );
+	$scriptFilename = BitBase::getParameter( $pLogParams, 'script_uri', $_SERVER['SCRIPT_FILENAME'] );
+	$ident = BitBase::getParameter( $pLogParams, 'ident', '-' );
+	$userName = BitBase::getParameter( $pLogParams, 'username', $gBitUser->getField('username') );
+	$executionTime = BitBase::getParameter( $pLogParams, 'exectime', '-' );
+	$logTimestamp = BitBase::getParameter( $pLogParams, 'timestamp', date( '[d/M/Y:H:i:s O]' ) );
+
+	for( $i = 1; $i < func_num_args(); $i++ ) { 
+    	if( $pLogMessage = func_get_arg( $i ) ) {
+			$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
+			foreach ($errlines as $txt) { 
+				print "$virtualHost $remoteAddr $ident $userName $logTimestamp \"$scriptFilename\" $statusCode $executionTime \"$userAgent\" $pLogMessage\n";
+			}
+		} else {
+			print "$virtualHost $remoteAddr $ident $userName $logTimestamp \"$scriptFilename\" $statusCode $executionTime \"$userAgent\"\n";
+		}
+	} 
+}
+
 function bit_error_log() {
 	for( $i = 0; $i < func_num_args(); $i++ ) { 
     	if( $pLogMessage = func_get_arg( $i ) ) {
@@ -48,7 +78,10 @@ function bit_error_log() {
 
 function emergency_break(  ) {
 	global $gBitSystem;
-	$gBitSystem->setHttpStatus( HttpStatusCodes::HTTP_BAD_REQUEST );
+	if( is_object( $gBitSystem ) ) {
+		$gBitSystem->setHttpStatus( HttpStatusCodes::HTTP_BAD_REQUEST );
+	}
+
 	vd( 'EMERGENCY BREAK' );
 	foreach (func_get_args () as $arg){
 		vd( $arg );

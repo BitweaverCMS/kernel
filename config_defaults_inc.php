@@ -28,8 +28,8 @@ if( !empty( $gShellScript ) ) {
 		'REQUEST_METHOD' => 'GET',
 		'REQUEST_URI' => __FILE__,
 		'REQUEST_URI' => __FILE__,
-		'SCRIPT_URI' => __FILE__,
-		'SCRIPT_URL' => __FILE__,
+		'SCRIPT_URI' => $_SERVER['SCRIPT_FILENAME'],
+		'SCRIPT_URL' => $_SERVER['SCRIPT_NAME'],
 		'SERVER_ADDR' => $siteName,
 		'SERVER_ADMIN' => 'root@'.$siteName,
 		'SERVER_NAME' => '',
@@ -47,18 +47,22 @@ if( !empty( $gShellScript ) ) {
 	$gArgs = array();
 	if( $argv ) {
 		foreach( $argv AS $arg ) {
-			switch( $arg ) {
-				case '--debug':
-					$gDebug = TRUE;
-					break;
-				case strpos( $arg, '--' ) === 0:
-					if( strpos( $arg, '=' ) ) {
-						$gArgs[substr( $arg, 2, strpos( $arg, '=' )-2 )] = (int)substr( $arg, (strpos( $arg, '=' ) +1) );
-					} else {
-						$gArgs[substr( $arg, 2 )] = TRUE;
-					}
+			$argKey = $arg;
+			if( strpos( $arg, '--' ) === 0 ) {
+				$argKey = substr( $arg, 2 );
+			}
+			$argValue = TRUE;
+			if( strpos( $arg, '=' ) ) {
+				$argKey = substr( $arg, 2, strpos( $arg, '=' )-2 );
+				$argValue = substr( $arg, (strpos( $arg, '=' ) +1) );
+			}
+			switch( $argKey ) {
+				case 'debug':
+					$gDebug = $argValue;
 					break;
 			}
+			$gArgs[$argKey] = $argValue;
+			$_REQUEST[$argKey] = $argValue;
 		}
 	}
 }

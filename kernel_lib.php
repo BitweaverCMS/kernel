@@ -127,6 +127,17 @@ function file_valid( $pFile ) {
 }
 
 /**
+ * Return an integer with a signed 32 bit max value 
+ *
+ * @param int $pInt native PHP integer, may or may not be greater than 2^32
+ * @access public
+ * @return number less than 32
+ */
+function int32( $pInt ) {
+	return (int)$pInt & 0xFFFFFFFF;
+}
+
+/**
  * Recursively create directories
  *
  * @param array $pTarget target directory

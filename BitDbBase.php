@@ -233,11 +233,15 @@ class BitDb {
 		$this->mQueryTime += $interval;
 		if( $this->getDebugLevel() ) {
 			$style = ( $interval > .5 ) ? 'color:red;' : (( $interval > .15 ) ? 'color:orange;' : '');
-			$querySpeed = ( $interval > .5 ) ? tra( 'VERY SLOW' ): (( $interval > .15 ) ? tra( 'SLOW' ) : 'complete');
-			print '<p style="'.$style.'">
-					<span style="display:inline-block;width:30%">### Query: <strong>'.$gNumQueries.'</strong> '.$querySpeed.'</span>
-					<span style="display:inline-block;width:33%">Start time: '.round( $this->mQueryLap, 5 ).'</span> 
-					<span style="display:inline-block;width:33%">### Query run time: '.round( $interval, 5 ).'</span></p>';
+			$querySpeed = ( $interval > .5 ) ? tra( 'VERY SLOW' ): (( $interval > .15 ) ? tra( 'SLOW' ) : 'NORMAL');
+			if( ini_get( 'html_errors' ) ) {
+				print '<p style="'.$style.'">
+						<span style="display:inline-block;width:30%">### Query: <strong>'.$gNumQueries.'</strong> '.$querySpeed.'</span>
+						<span style="display:inline-block;width:33%">Start time: '.round( $this->mQueryLap, 5 ).'</span> 
+						<span style="display:inline-block;width:33%">### Query run time: '.round( $interval, 5 ).'</span></p>';
+			} else {
+				print '('.$this->mDb->databaseType."): #$gNumQueries >> Start: ".round( $this->mQueryLap, 5 )."s > $querySpeed ".round( $interval, 5 )."s\n";
+			}
 			flush();
 		}
 		$this->mQueryLap = 0;

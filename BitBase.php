@@ -346,8 +346,8 @@ abstract class BitBase {
 	}
 
 	function debugOutput( $pString ) {
-		global $gDebug;
-		if( $gDebug || !defined( 'IS_LIVE' ) || !IS_LIVE ) {
+		global $gDebug, $gArgs, $argv;
+		if( $gDebug || !defined( 'IS_LIVE' ) || !IS_LIVE || !empty( $gArgs['log'] ) ) {
 			if( empty(  $this->mLastOutputTime ) ) {
 				$elapsed = (float)0.000;
 			} else {

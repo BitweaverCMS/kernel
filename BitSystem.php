@@ -1588,7 +1588,7 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 	 */
 	function verifyMimeType( $pFile ) {
 		$mime = NULL;
-		if( file_exists( $pFile ) ) {
+		if( file_exists( $pFile ) && filesize( $pFile ) ) {
 			if( function_exists( 'finfo_open' ) ) {
 				if( is_windows() && defined( 'PHP_MAGIC_PATH' ) && is_readable( PHP_MAGIC_PATH )) {
 					$finfo = finfo_open( FILEINFO_MIME, PHP_MAGIC_PATH );

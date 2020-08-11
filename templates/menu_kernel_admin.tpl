@@ -6,7 +6,7 @@
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=server">{tr}Server{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php">{tr}File Caching{/tr}</a></li>
 	{if extension_loaded('apc')}
-	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/apc.php">{tr}APC Stats{/tr}</a></li>
+	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/apc.php">{tr}APCu Cache{/tr}</a></li>
 	{/if}
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_notifications.php">{tr}Notification{/tr}</a></li>
 		{if $smarty.const.DB_PERFORMANCE_STATS eq 'TRUE'}

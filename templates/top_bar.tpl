@@ -37,15 +37,18 @@
 					<a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#"><i class="icon-user"></i> {displayname hash=$gBitUser->mInfo nolink=1} <b class="caret"></b></a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 						<li><a href="{$gBitUser->getDisplayUrl()}">{tr}My Profile{/tr}</a></li>
-						<li><a href="{$smarty.const.USERS_PKG_URL}my.php">{tr}My Account{/tr}</a></li>
-						<li><a href="{$smarty.const.USERS_PKG_URL}logout.php">{tr}Logout{/tr}</a></li>
+						<li><a href="{$smarty.const.USERS_PKG_URL}my">{tr}Dashboard{/tr}</a></li>
+					{if $gBitSystem->isFeatureActive( 'users_preferences' )}
+						<li><a class="item" href="{$smarty.const.USERS_PKG_URL}preferences">{tr}Preferences{/tr}</a></li>
+					{/if}
+						<li><a href="{$smarty.const.USERS_PKG_URL}logout">{tr}Logout{/tr}</a></li>
 						{if $adminMenu}
 							<li class="dropdown-submenu menu-admin">{include file="bitpackage:kernel/menu_top_admin_inc.tpl"}</li>
 						{/if}
 					</ul>
 				</li>
 			{else}
-				<li><a href="{$smarty.const.USERS_PKG_URL}signin.php">{tr}Sign In{/tr}</a></li>
+				<li><a href="{$smarty.const.USERS_PKG_URL}signin">{tr}Sign In{/tr}</a></li>
 			{/if}
 		</ul>
 	</div>

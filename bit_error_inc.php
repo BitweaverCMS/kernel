@@ -34,18 +34,54 @@ function bit_db_debug( $pLevel = 99 ) {
 	}
 }
 
-function bit_error_log( $pLogMessage ) {
-	if( !empty( $_SERVER['SCRIPT_URI'] )) {
-		error_log( "OUTPUT in {$_SERVER['SCRIPT_URI']}" );
-	}
+/**
+ * Output in a pseudo standard output format
+ *
+ *    LogFormat "%V %h %l %{USERID}e %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" \"%{Cookie}n\""  combinedcookie
+ *
+ **/
+function bit_print_log( $pLogParams, $pLogMessages ) {
+	global $gBitUser;
+	$virtualHost = BitBase::getParameter( $pLogParams, 'hostname', $_SERVER['HTTP_HOST'] );
+	$remoteAddr = BitBase::getParameter( $pLogParams, 'remote_addr', $_SERVER['REMOTE_ADDR'] );
+	$userAgent = BitBase::getParameter( $pLogParams, 'user_agent', $_SERVER['HTTP_USER_AGENT'] );
+	$statusCode = BitBase::getParameter( $pLogParams, 'status_code', 200 );
+	$scriptFilename = BitBase::getParameter( $pLogParams, 'script_uri', $_SERVER['SCRIPT_FILENAME'] );
+	$ident = BitBase::getParameter( $pLogParams, 'ident', '-' );
+	$userName = BitBase::getParameter( $pLogParams, 'username', $gBitUser->getField('username') );
+	$executionTime = BitBase::getParameter( $pLogParams, 'exectime', '-' );
+	$logTimestamp = BitBase::getParameter( $pLogParams, 'timestamp', date( '[d/M/Y:H:i:s O]' ) );
 
-	$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
-	foreach ($errlines as $txt) { error_log($txt); }
+	for( $i = 1; $i < func_num_args(); $i++ ) { 
+    	if( $pLogMessage = func_get_arg( $i ) ) {
+			$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
+			foreach ($errlines as $txt) { 
+				print "$virtualHost $remoteAddr $ident $userName $logTimestamp \"$scriptFilename\" $statusCode $executionTime \"$userAgent\" $pLogMessage\n";
+			}
+		} else {
+			print "$virtualHost $remoteAddr $ident $userName $logTimestamp \"$scriptFilename\" $statusCode $executionTime \"$userAgent\"\n";
+		}
+	} 
+}
+
+function bit_error_log() {
+	for( $i = 0; $i < func_num_args(); $i++ ) { 
+    	if( $pLogMessage = func_get_arg( $i ) ) {
+			$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
+			foreach ($errlines as $txt) { 
+				error_log($txt); 
+			}
+		}
+	} 
+	error_log( 'SCRIPT_URI: '.BitBase::getParameter( $_SERVER, 'SCRIPT_URI', 'OUTPUT' )."\n".bit_stack( 5 ) );
 }
 
 function emergency_break(  ) {
 	global $gBitSystem;
-	$gBitSystem->setHttpStatus( HttpStatusCodes::HTTP_BAD_REQUEST );
+	if( is_object( $gBitSystem ) ) {
+		$gBitSystem->setHttpStatus( HttpStatusCodes::HTTP_BAD_REQUEST );
+	}
+
 	vd( 'EMERGENCY BREAK' );
 	foreach (func_get_args () as $arg){
 		vd( $arg );
@@ -239,15 +275,12 @@ function bit_error_string( $iDBParms = array() ) {
 
 if (!function_exists('bt')) {	// Make sure another backtrace function does not exist
 function bt() {
-	$s = '';
-	$levels = 9999;
-
 	vvd( func_get_args() );
-	print '<pre>'.bit_stack()."</pre>\n";
+	print '<pre>'."\t".date( "Y-m-d H:i:s" )."\n".bit_stack()."</pre>\n";
 }
 }	// End if function_exists('bt')
 
-function bit_stack() {
+function bit_stack( $pDepth = 999 ) {
 	$s = '';
 
 	if (PHPVERSION() >= 4.3) {
@@ -260,10 +293,12 @@ function bit_stack() {
 		$indent = '';
 		$sClass = '';
 
-		$levels = 999;
+		$levels = $pDepth;
 		foreach ($traceArr as $arr) {
 			$levels -= 1;
-			if ($levels < 0) break;
+			if( $levels < 0 ) {
+				break;
+			}
 
 			$args = array();
 			for ($i=0; $i <= $tabs; $i++) {
@@ -344,6 +379,15 @@ function vd( $pVar, $pGlobals=FALSE, $pDelay=FALSE ) {
 	flush();
 }
 
+// variable argument var dump
+function vvc() {
+	$ret = '';
+	for( $i = 0; $i < func_num_args(); $i++ ) { 
+    	$ret .= vc( func_get_arg( $i ), FALSE );
+	} 
+	return $ret;
+}
+
 // var capture variable in something nicely readable in web browser
 function vc( $iVar, $pHtml=TRUE ) {
 	ob_start();
@@ -376,7 +420,7 @@ function vc( $iVar, $pHtml=TRUE ) {
 	}
 	$ret = ob_get_contents();
 	ob_end_clean();
-	return $ret;
+	return $ret."\n";
 }
 
 

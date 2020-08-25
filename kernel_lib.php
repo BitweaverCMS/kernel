@@ -116,6 +116,28 @@ function is_windows() {
 }
 
 /**
+ * Determines if file exists and is non zero
+ *
+ * @param string $pFile target file
+ * @access public
+ * @return TRUE if file exists and is non zero, FALSE on failure
+ */
+function file_valid( $pFile ) {
+	return file_exists( $pFile ) && filesize( $pFile );
+}
+
+/**
+ * Return an integer with a signed 32 bit max value 
+ *
+ * @param int $pInt native PHP integer, may or may not be greater than 2^32
+ * @access public
+ * @return number less than 32
+ */
+function int32( $pInt ) {
+	return (int)$pInt & 0xFFFFFFFF;
+}
+
+/**
  * Recursively create directories
  *
  * @param array $pTarget target directory
@@ -135,8 +157,8 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 		$pTarget = preg_replace( '/^\/tmp/', $_SERVER['DOCUMENT_ROOT'].'/temp', $pTarget );
 	}
 
-	if( file_exists( $pTarget ) || is_dir( $pTarget )) {
-		return FALSE;
+	if( file_exists( $pTarget ) ) {
+		return is_dir( $pTarget );
 	}
 
 	if( !is_windows() ) {
@@ -151,31 +173,9 @@ function mkdir_p( $pTarget, $pPerms = 0755 ) {
 	}
 
 	$oldu = umask( 0 );
-	// make use of PHP5 recursive mkdir feature
-	if( version_compare( phpversion(), "5.0.0", ">=" )) {
-		@mkdir( $pTarget, $pPerms, TRUE );
-		umask( $oldu );
-		return TRUE;
-	} else {
-		if( @mkdir( $pTarget, $pPerms )) {
-			bitdebug( "mkdir_p() - creating $pTarget" );
-			umask( $oldu );
-			return TRUE;
-		} else {
-			umask( $oldu );
-			$parent = substr( $pTarget, 0, ( strrpos( $pTarget, '/' )));
-
-			// recursively create parents
-			if( mkdir_p( $parent, $pPerms )) {
-				// make the actual target!
-				if( @mkdir( $pTarget, $pPerms )) {
-					return TRUE;
-				} elseif( !is_dir( $pTarget ) ) {
-					error_log( "mkdir() - could not create $pTarget" );
-				}
-			}
-		}
-	}
+	@mkdir( $pTarget, $pPerms, TRUE );
+	umask( $oldu );
+	return TRUE;
 }
 
 /**
@@ -491,7 +491,7 @@ function unlink_r( $pPath, $pFollowLinks = FALSE ) {
 		if( $dir = opendir( $pPath ) ) {
 			while( FALSE !== ( $entry = readdir( $dir ) ) ) {
 				if( is_file( "$pPath/$entry" ) || ( !$pFollowLinks && is_link( "$pPath/$entry" ) ) ) {
-					unlink( "$pPath/$entry" );
+					@unlink( "$pPath/$entry" );
 				} elseif( is_dir( "$pPath/$entry" ) && $entry != '.' && $entry != '..' ) {
 					unlink_r( "$pPath/$entry" ) ;
 				}
@@ -663,6 +663,11 @@ function bit_redirect( $pUrl, $pStatusCode=HttpStatusCodes::HTTP_FOUND ) {
 	if( $pStatusCode && isset( $errors[$pStatusCode] ) ) {
 		header( HttpStatusCodes::httpHeaderFor( $pStatusCode ) );
 		$pStatusCode = NULL;
+	}
+
+	global $gBitUser;
+	if( is_object( $gBitUser ) ) {
+		apache_setenv( 'USERID', $gBitUser->getField('login', '-'), true );
 	}
 
 	// clean up URL before executing it

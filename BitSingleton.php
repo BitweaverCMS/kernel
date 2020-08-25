@@ -39,7 +39,7 @@ abstract class BitSingleton extends BitBase implements BitCacheable {
 		global $$globalVarName;
 
 		if( !($$globalVarName = static::loadFromCache( 'Singleton' )) ) {
-			$$globalVarName = new $class;
+			$$globalVarName = new $class();
 		}
 		if(!isset(static::$singletons[$globalVarName])) {
 			static::$singletons[$globalVarName] = $$globalVarName;

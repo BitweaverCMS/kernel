@@ -105,7 +105,8 @@ abstract class BitBase {
 	function __construct( $pName = '' ) {
 		global $gBitDb;
 		$this->mName = $pName;
-		$this->mCacheTime = self::cacheQueryDefaultTime();
+		// On construct we will set the cache time to none to force a reload of everything for this singleton
+		$this->mCacheTime = BIT_QUERY_CACHE_DISABLE;
 		if( is_object( $gBitDb ) ) {
 			$this->setDatabase($gBitDb);
 		}
@@ -116,6 +117,20 @@ abstract class BitBase {
 	function __destruct() {
 		unset( $this->mDb );
 		$this->storeInCache();
+	}
+
+	public function __sleep() {
+		unset( $this->mDb );
+		// On sleep we will set the cache time to default
+		$this->mCacheTime = self::cacheQueryDefaultTime();
+		$this->mCacheObject = TRUE;
+		return array( 'mCacheTime', 'mCacheObject' );
+	}
+
+	public function __wakeup() {
+		global $gBitDb;
+		$this->setDatabase( $gBitDb );
+		$this->mErrors = array();
 	}
 
 	protected function load() {
@@ -189,18 +204,6 @@ abstract class BitBase {
 			}
 		}
 		return $ret;
-	}
-
-	public function __sleep() {
-		unset( $this->mDb );
-		$this->mCacheObject = TRUE;
-		return array( 'mCacheTime', 'mCacheObject' );
-	}
-
-	public function __wakeup() {
-		global $gBitDb;
-		$this->setDatabase( $gBitDb );
-		$this->mErrors = array();
 	}
 
 	public static function loadFromCache( $pCacheKey, $pContentTypeGuid = NULL ) {
@@ -343,8 +346,8 @@ abstract class BitBase {
 	}
 
 	function debugOutput( $pString ) {
-		global $gDebug;
-		if( $gDebug || !defined( 'IS_LIVE' ) || !IS_LIVE ) {
+		global $gDebug, $gArgs, $argv;
+		if( $gDebug || !defined( 'IS_LIVE' ) || !IS_LIVE || !empty( $gArgs['log'] ) ) {
 			if( empty(  $this->mLastOutputTime ) ) {
 				$elapsed = (float)0.000;
 			} else {

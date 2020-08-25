@@ -21,10 +21,13 @@
 {if $canonicalLink}
 <link rel="canonical" href="{$canonicalLink|escape}"/>
 {/if}
-{if !$gBitSystem->isLive()}
-<meta name="robots" content="noindex,nofollow">
-{else}
+{if $relTags}
+{$relTags}
+{/if}
+{if $gBitSystem->isIndexed()}
 <meta name="robots" content="index,follow">
+{else}
+<meta name="robots" content="noindex,nofollow">
 {/if}
 
 {if $gBitSystem->isFeatureActive( 'site_header_extended_nav' )}

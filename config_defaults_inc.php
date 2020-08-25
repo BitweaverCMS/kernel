@@ -8,20 +8,38 @@
  * required setup
  */
 
+// include the bitweaver configuration file - this needs to happen first
+$config_file = empty( $_SERVER['CONFIG_INC'] ) ? BIT_ROOT_PATH.'config/kernel/config_inc.php' : $_SERVER['CONFIG_INC'];
+if( file_exists( $config_file ) ) {
+	include_once( $config_file );
+}
+
 // when running scripts
 global $gShellScript;
 if( !empty( $gShellScript ) ) {
+	$siteName = 'localhost';
 	// keep notices quiet
-	$_SERVER['SCRIPT_URL'] = '';
-	$_SERVER['HTTP_HOST'] = 'localhost';
-	$_SERVER['HTTP_USER_AGENT'] = 'cron';
-	$_SERVER['SERVER_NAME'] = '';
-	$_SERVER['HTTP_SERVER_VARS'] = '';
-	$_SERVER['REQUEST_URI'] = __FILE__;
-	$_SERVER['SERVER_ADDR'] = 'localhost';
-	$_SERVER['REMOTE_ADDR'] = 'localhost';
-	if( empty( $_SERVER['SERVER_ADMIN'] ) ) {
-		$_SERVER['SERVER_ADMIN'] = 'root@localhost';
+	$serverDefaults = array(
+		'DOCUMENT_ROOT' => dirname( dirname( dirname( __FILE__ ) ) ),
+		'HTTP_HOST' => $siteName,
+		'HTTP_SERVER_VARS' => '',
+		'HTTP_USER_AGENT' => 'cron',
+		'REMOTE_ADDR' => $siteName,
+		'REQUEST_METHOD' => 'GET',
+		'REQUEST_URI' => __FILE__,
+		'REQUEST_URI' => __FILE__,
+		'SCRIPT_URI' => $_SERVER['SCRIPT_FILENAME'],
+		'SCRIPT_URL' => $_SERVER['SCRIPT_NAME'],
+		'SERVER_ADDR' => $siteName,
+		'SERVER_ADMIN' => 'root@'.$siteName,
+		'SERVER_NAME' => '',
+		'SERVER_PROTOCOL' => 'http',
+	);
+
+	foreach( $serverDefaults as $key=>$value ) {
+		if( empty( $_SERVER[$key] ) ) {
+			$_SERVER[$key] = $value;
+		}
 	}
 
 	// Process some global arguments
@@ -29,26 +47,24 @@ if( !empty( $gShellScript ) ) {
 	$gArgs = array();
 	if( $argv ) {
 		foreach( $argv AS $arg ) {
-			switch( $arg ) {
-				case '--debug':
-					$gDebug = TRUE;
-					break;
-				case strpos( $arg, '--' ) === 0:
-					if( strpos( $arg, '=' ) ) {
-						$gArgs[substr( $arg, 2, strpos( $arg, '=' )-2 )] = (int)substr( $arg, (strpos( $arg, '=' ) +1) );
-					} else {
-						$gArgs[substr( $arg, 2 )] = TRUE;
-					}
+			$argKey = $arg;
+			if( strpos( $arg, '--' ) === 0 ) {
+				$argKey = substr( $arg, 2 );
+			}
+			$argValue = TRUE;
+			if( strpos( $arg, '=' ) ) {
+				$argKey = substr( $arg, 2, strpos( $arg, '=' )-2 );
+				$argValue = substr( $arg, (strpos( $arg, '=' ) +1) );
+			}
+			switch( $argKey ) {
+				case 'debug':
+					$gDebug = $argValue;
 					break;
 			}
+			$gArgs[$argKey] = $argValue;
+			$_REQUEST[$argKey] = $argValue;
 		}
 	}
-}
-
-// include the bitweaver configuration file - this needs to happen first
-$config_file = empty( $_SERVER['CONFIG_INC'] ) ? BIT_ROOT_PATH.'config/kernel/config_inc.php' : $_SERVER['CONFIG_INC'];
-if( file_exists( $config_file ) ) {
-	include_once( $config_file );
 }
 
 // =================== Essential Defines ===================

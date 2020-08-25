@@ -1,14 +1,13 @@
 <?php
 /**
  * @package kernel
- * @version $Header$
+ * @author spiderr <spiderr@bitweaver.org>
+ * Copyright (c) 2020 bitweaver.org, All Rights Reserved
+ * This source file is subject to the 2.0 GNU GENERAL PUBLIC LICENSE. 
+ *
+ * A basic library to handle caching of various data
  */
 
-/**
- * A basic library to handle caching of various data
- *
- * @package kernel
- */
 class BitCache {
 	/**
 	 * Used to store the directory used to store the cache files.

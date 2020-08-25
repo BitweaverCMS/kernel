@@ -1158,15 +1158,19 @@ class BitDate {
 			case 'UK':
 				$return[date( 'Y-m-d', strtotime("-1 week monday", strtotime("1 september $pYear")) + 43200)] = 'Bank Holiday';
 				break;
+			case 'CA':
+				$return[$pYear . '-12-26'] = 'Boxing Day';
+				$return[$pYear . '-07-01'] = 'Canada Day';
+
+				// Labor Day - first Monday in September
+				$return[date( 'Y-m-d', strtotime( 'monday', strtotime( "September 1, $pYear" ) ) + 43200 )] = 'Labor Day';
+
+				break;
 			case 'US':
-			default:
-				// First off, the simple ones
-				$return[$pYear . '-01-01'] = 'New Year`s Day';
 				//$return[$pYear . '-02-14'] = 'Valentine`s Day';
 				$return[$pYear . '-06-14'] = 'Flag Day';
 				$return[$pYear . '-07-04'] = 'Independence Day';
 				$return[$pYear . '-11-11'] = 'Veteran`s Day';
-				$return[$pYear . '-12-25'] = 'Christmas';
 
 				// Martin Luther King, Jr. Day - third Monday in January
 				$return[date( 'Y-m-d', strtotime( '2 weeks monday', strtotime( "January 1, $pYear" ) ) + 43200 )] = 'Martin Luther King, Jr. Day';
@@ -1194,9 +1198,13 @@ class BitDate {
 		}
 
 		// Common to all
+		// First off, the simple ones
+		$return[$pYear . '-01-01'] = 'New Year`s Day';
+		$return[$pYear . '-12-25'] = 'Christmas';
 
 		// Easter - the Sunday after the first full moon which falls on or after the Spring Equinox
-		// thank god PHP has a function for that...
+		// Thank God (ha!) PHP has a function for that...
+		$return[date( 'Y-m-d', easter_date( $pYear ) - (3 * 86400) + 43200 )] = 'Good Friday';
 		$return[date( 'Y-m-d', easter_date( $pYear ) + 43200 )] = 'Easter';
 
 		return $return;

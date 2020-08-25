@@ -380,15 +380,15 @@ class BitSystem extends BitSingleton {
 	 * @access public
 	 */
 	function sendEmail( $pMailHash ) {
-		$extraHeaders = '';
+		$fromEmail = !empty( $pMailHash['from'] ) ? $pMailHash['from'] : $this->getConfig( 'site_sender_email' );
+
+		$extraHeaders = "Return-Path: $fromEmail\r\n";
 		if( $this->getConfig( 'bcc_email' ) ) {
-			$extraHeaders = "Bcc: ".$this->getConfig( 'bcc_email' )."\r\n";
+			$extraHeaders .= "Bcc: ".$this->getConfig( 'bcc_email' )."\r\n";
 		}
 		if( !empty( $pMailHash['Reply-to'] ) ) {
-			$extraHeaders = "Reply-to: ".$pMailHash['Reply-to']."\r\n";
+			$extraHeaders .= "Reply-to: ".$pMailHash['Reply-to']."\r\n";
 		}
-
-		$fromEmail = !empty( $pMailHash['from'] ) ? $pMailHash['from'] : $this->getConfig( 'site_sender_email' );
 
 		mail($pMailHash['email'],
 			$pMailHash['subject'].' '.$_SERVER["SERVER_NAME"],
@@ -410,6 +410,13 @@ class BitSystem extends BitSingleton {
 
 
 	public function outputHeader() {
+		// Add the user to an apache ENV variable so it can be logged, like:
+		// LogFormat "%V %h %l %{USERID}e %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" \"%{Cookie}n\""  combinedcookie
+		global $gBitUser;
+		if( is_object( $gBitUser ) ) {
+			apache_setenv( 'USERID', $gBitUser->getField('login', '-'), true );
+		}
+
 		// see if we have a custom status other than 200 OK
 		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
 	}
@@ -1372,6 +1379,77 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 		$gBitSmarty->assign( 'gPageTitle', $pTitle );
 	}
 
+	// === setPagination
+	/**
+	 * set the canonical page title
+	 *
+	 * @param string $ pTitle title to be used
+	 * @return none
+	 * @access public
+	 */
+	function setPagination( $pListInfo ) {
+		global $gBitSmarty;
+		if( !empty( $pListInfo['total_pages'] ) && !empty( $pListInfo['page_records'] ) ) {
+			$relTags = "";
+			if ( isset( $pListInfo['url'] ) ) {
+				$baseUrl = $pListInfo['url'];
+			} else {
+				$baseUrl = $_SERVER['SCRIPT_URL'];
+			}
+
+			if( !empty( $pListInfo['query_string'] ) ) {
+				$pageUrl = $baseUrl.'?'.$pListInfo['query_string'];
+			} else {
+				$queryString = '';
+				foreach( array( 'parameters', 'ihash' ) as $paramKey ) {
+					if( !empty( $pListInfo[$paramKey] ) ) {
+						foreach( $pListInfo['parameters'] as $param=>$value ) {
+							if( is_array( $value ) ) {
+								foreach( $value as $v ) {
+									if( !empty( $v ) ) {
+										$queryString .= $param.'[]='.$v.'&amp;';
+									}
+								}
+							} elseif( !empty( $value ) ) {
+								$queryString .= $param.'='.$value.'&amp;';
+							}
+						}
+					}
+				}
+	/*
+				{foreach from=$pgnHidden key=param item=value}
+					{if $value|is_array}
+						{foreach from=$value item=v}{if $value ne ''}&amp;{$param}[]={$v}{/if}{/foreach}
+					{else}
+						{if $value ne ''}&amp;{$param}={$value}{/if}
+					{/if}
+				{/foreach}
+	*/
+				foreach( array( 'max_records', 'sort_mode', 'find' ) as $paramKey ) {
+					if( !empty( $pListInfo[$paramKey] ) ) {
+						if( is_array( $pListInfo[$paramKey] ) ) {
+							foreach( $pListInfop[$paramKey] as $v ) {
+								$queryString = $paramKey.'[]='.$v.'&amp;';
+							}
+						} else {
+							$queryString .= $paramKey.'='.$pListInfo[$paramKey].'&amp;';
+						}
+					}
+				}
+				$pageUrl = $baseUrl.'?'.preg_replace( '/"/', '%22', $queryString );
+			}
+			$currentPage = BitBase::getParameter( $pListInfo, 'current_page' );
+			if( $currentPage > 1 ) {
+				$relTags .= '<link rel="prev" href="'.$pageUrl.'page='.($currentPage-1).'">';
+			}
+			if( BitBase::getParameter( $pListInfo, 'next_offset' ) > 0 ) {
+				$relTags .= '<link rel="next" href="'.$pageUrl.'page='.($currentPage+1).'">';
+			}
+
+			$gBitSmarty->assign( 'relTags', $relTags );
+		}
+	}
+
 	// === setCanonicalLink
 	/**
 	 * set the canonical page title
@@ -1510,7 +1588,7 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 	 */
 	function verifyMimeType( $pFile ) {
 		$mime = NULL;
-		if( file_exists( $pFile ) ) {
+		if( file_exists( $pFile ) && filesize( $pFile ) ) {
 			if( function_exists( 'finfo_open' ) ) {
 				if( is_windows() && defined( 'PHP_MAGIC_PATH' ) && is_readable( PHP_MAGIC_PATH )) {
 					$finfo = finfo_open( FILEINFO_MIME, PHP_MAGIC_PATH );
@@ -1797,6 +1875,16 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 	 */
 	function isLive() {
 		return( (defined( 'IS_LIVE' ) && IS_LIVE) && !$this->isFeatureActive( 'site_hidden' ) );
+	}
+
+	/**
+	 * isIndexed returns if that page should be indexed by search engines
+	 *
+	 * @access public
+	 * @return TRUE if page should be indexed by search engines
+	 */
+	function isIndexed() {
+		return (!defined('SITE_NOINDEX') || !constant('SITE_NOINDEX')) && $this->isLive();
 	}
 
 	/**
@@ -2469,7 +2557,7 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 		static $site_long_date_format = FALSE;
 
 		if( !$site_long_date_format ) {
-			$site_long_date_format = $this->getConfig( 'site_long_date_format', '%A %d of %B, %Y' );
+			$site_long_date_format = $this->getConfig( 'site_long_date_format', '%A, %B %d, %Y' );
 		}
 
 		return $site_long_date_format;

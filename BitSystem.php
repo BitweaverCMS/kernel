@@ -2773,7 +2773,7 @@ function bit_system_menu_sort( $a, $b ) {
 	$pb = empty( $b['menu_position'] ) ? 0 : $b['menu_position'];
 
 	if( $pa == 0 && $pb == 0 ) {
-		return( strcmp( $pb['menu_title'], $pa['menu_title'] ));
+		return( strcmp( $b['menu_title'], $a['menu_title'] ));
 	}
 	return $pa - $pb;
 }

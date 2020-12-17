@@ -15,7 +15,7 @@
 		<div class="form-group">
 			{formlabel label="Object Caching"}
 			{forminput}
-				{if !function_exists('apc_store')}
+				{if !function_exists('apcu_store')}
 					<div class="alert alert-error">{tr}The APC-U PHP extension must also be installed.{/tr}</div>
 				{/if}
 				{if $gBitSystem->isCacheActive()}

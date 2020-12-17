@@ -147,7 +147,7 @@ class BitSystem extends BitSingleton {
 		parent::__destruct();
 		// Hopefully gBitSystem is among the last objects destroyed and can force cache purging of any leftover objects that might be in an inconsistent state due to multiple object copies invoked in the same page load
 		foreach( array_keys( $this->mClearCacheKeys ) as $cacheKey ) {
-			$ret = apc_delete( $cacheKey );
+			$ret = apcu_delete( $cacheKey );
 		}
 	}
 

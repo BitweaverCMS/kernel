@@ -122,30 +122,49 @@ function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
 
 function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NULL ) {
     // error_reporting() === 0 if code was prepended with @
-    if( ($errno == 1 || $reportingLevel = error_reporting()) && !strpos( $errfile, 'templates_c' ) ) {
-		$errType = FALSE;
+	$reportingLevel = error_reporting();
+    if( $reportingLevel !== 0 && !strpos( $errfile, 'templates_c' ) ) {
+		$errType = 'Error';
+		$isReported = TRUE;
         switch ($errno) {
 			case E_ERROR: $errType = 'FATAL ERROR'; break;
-			case E_WARNING: if( $reportingLevel & E_WARNING ) { $errType = 'WARNING'; } break;
-			case E_PARSE: if( $reportingLevel & E_PARSE ) { $errType = 'PARSE'; } break;
-			case E_NOTICE: if( $reportingLevel & E_NOTICE ) { $errType = 'NOTICE'; } break;
-			case E_CORE_ERROR: if( $reportingLevel & E_CORE_ERROR ) { $errType = 'CORE_ERROR'; } break;
-			case E_CORE_WARNING: if( $reportingLevel & E_CORE_WARNING ) { $errType = 'CORE_WARNING'; } break;
-			case E_COMPILE_ERROR: if( $reportingLevel & E_COMPILE_ERROR ) { $errType = 'COMPILE_ERROR'; } break;
-			case E_COMPILE_WARNING: if( $reportingLevel & E_COMPILE_WARNING ) { $errType = 'COMPILE_WARNING'; } break;
-			case E_USER_ERROR: if( $reportingLevel & E_USER_ERROR ) { $errType = 'USER_ERROR'; } break;
-			case E_USER_WARNING: if( $reportingLevel & E_USER_WARNING ) { $errType = 'USER_WARNING'; } break;
-			case E_USER_NOTICE: if( $reportingLevel & E_USER_NOTICE ) { $errType = 'USER_NOTICE'; } break;
-			case E_STRICT: if( $reportingLevel & E_STRICT ) { $errType = 'STRICT'; } break;
-			case E_RECOVERABLE_ERROR: if( $reportingLevel & E_RECOVERABLE_ERROR ) { $errType = 'RECOVERABLE_ERROR'; } break;
-			case E_DEPRECATED: if( $reportingLevel & E_DEPRECATED ) { $errType = 'DEPRECATED'; } break;
-			case E_USER_DEPRECATED: if( $reportingLevel & E_USER_DEPRECATED ) { $errType = 'USER_DEPRECATED'; } break;
+			case E_WARNING: $isReported = $reportingLevel & E_WARNING; $errType = 'WARNING'; break;
+			case E_PARSE: $isReported = $reportingLevel & E_PARSE; $errType = 'PARSE'; break;
+			case E_NOTICE: $isReported = $reportingLevel & E_NOTICE; $errType = 'NOTICE'; break;
+			case E_CORE_ERROR: $isReported = $reportingLevel & E_CORE_ERROR; $errType = 'CORE_ERROR'; break;
+			case E_CORE_WARNING: $isReported = $reportingLevel & E_CORE_WARNING; $errType = 'CORE_WARNING'; break;
+			case E_COMPILE_ERROR: $isReported = $reportingLevel & E_COMPILE_ERROR; $errType = 'COMPILE_ERROR'; break;
+			case E_COMPILE_WARNING: $isReported = $reportingLevel & E_COMPILE_WARNING; $errType = 'COMPILE_WARNING'; break;
+			case E_USER_ERROR: $isReported = $reportingLevel & E_USER_ERROR; $errType = 'USER_ERROR'; break;
+			case E_USER_WARNING: $isReported = $reportingLevel & E_USER_WARNING; $errType = 'USER_WARNING'; break;
+			case E_USER_NOTICE: $isReported = $reportingLevel & E_USER_NOTICE; $errType = 'USER_NOTICE'; break;
+			case E_STRICT: $isReported = $reportingLevel & E_STRICT; $errType = 'STRICT'; break;
+			case E_RECOVERABLE_ERROR: $isReported = $reportingLevel & E_RECOVERABLE_ERROR; $errType = 'RECOVERABLE_ERROR'; break;
+			case E_DEPRECATED: $isReported = $reportingLevel & E_DEPRECATED; $errType = 'DEPRECATED'; break;
+			case E_USER_DEPRECATED: $isReported = $reportingLevel & E_USER_DEPRECATED; $errType = 'USER_DEPRECATED'; break;
             default: $errType = 'Error '.$errno; break;
 
         }
-        // Send an e-mail to the administrator
-		if( defined( 'IS_LIVE' ) && IS_LIVE && $errType && defined( 'ERROR_EMAIL' ) ) {
-			bit_error_email( 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr, $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) ) );
+
+		$isReported = TRUE;
+		if( $isReported ) {
+//eb( $isReported, $errType, $errno, $reportingLevel, $errfile );
+			$errorSubject = 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr;
+			$errorString = $errType." [#$errno]: $errstr \n in $errfile on line $errline\n\n".bit_error_string( array( 'errno'=>$errno, 'db_msg'=>$errType ) );
+			if( defined( 'IS_LIVE' ) && IS_LIVE ) {
+				if( defined( 'ERROR_EMAIL' ) ) {
+        			// Send an e-mail to the administrator
+					bit_error_email( $errorSubject, $errorString );
+				} else {
+					error_log( $errorString );
+				}
+			} else {
+				if( $errType == E_ERROR ) {
+					eb( $errorSubject, $errorString );
+				} else {
+					bt( $errorSubject );
+				}
+			}
 		}
     }
 

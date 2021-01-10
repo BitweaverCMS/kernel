@@ -468,7 +468,7 @@ class BitDb {
 	* @return Error status of the insert
 	*/
 	function associateInsert( $insertTable, $insertData ) {
-		$setSql = ( '`'.implode( array_keys( $insertData ), '`, `' ).'`' );
+		$setSql = ( '`'.implode( '`, `', array_keys( $insertData ) ).'`' );
 		//stupid little loop to generate question marks. Start at one, and tack at the end to ease dealing with comma
 		$valueSql = '';
 		for( $i = 1; $i < count( $insertData ); $i++ ) {
@@ -511,7 +511,7 @@ class BitDb {
 			}
 		$setSql = 	substr($setSql,1);
 		$bindVars = array_values( $updateData );
-		$keyNames = ( '`'.implode( array_keys( $updateId ), '`=? AND `' ).'`=?' );
+		$keyNames = ( '`'.implode( '`=? AND `', array_keys( $updateId ) ).'`=?' );
 		$keyVars = array_values( $updateId );
 		$bindVars = array_merge( $bindVars, $keyVars );
 		if( $updateTable[0] != '`' ) {

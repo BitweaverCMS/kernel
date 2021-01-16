@@ -46,7 +46,7 @@ abstract class BitBase {
 	 * @todo not used yet
 	 * @private
 	 */
-	public $mErrors;
+	public $mErrors = array();
 
 	/**
 	 * Same idea as the error hash but this is for successful operations

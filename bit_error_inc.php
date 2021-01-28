@@ -304,7 +304,7 @@ function bit_stack( $pDepth = 999 ) {
 
 	if (PHPVERSION() >= 4.3) {
 
-		$MAXSTRLEN = 64;
+		$MAXSTRLEN = 128;
 
 		$traceArr = debug_backtrace();
 		array_shift($traceArr);

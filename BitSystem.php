@@ -913,7 +913,15 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 		// Define <PACKAGE>_PKG_PATH
 		$pkgDefine = $pkgName.'_PKG_PATH';
 		if( !defined( $pkgDefine )) {
-			define( $pkgDefine, BIT_ROOT_PATH . basename( $path ) . '/' );
+			$pkgPath = BIT_ROOT_PATH . basename( $path ) . '/';
+			define( $pkgDefine, $pkgPath );
+			$arrayHash = array( 
+				$pkgName.'_PKG_INCLUDE_PATH' => BIT_ROOT_PATH . basename( $path ) . '/includes/', 
+				$pkgName.'_PKG_CLASS_PATH' => BIT_ROOT_PATH . basename( $path ) . '/includes/classes/' 
+			);
+			foreach( $arrayHash as $defName => $defPath ) {
+				define( $defName, is_dir( $defPath ) ? $defPath : $pkgPath );
+			}
 		}
 		$this->mPackages[$pkgNameKey]['url']  = BIT_ROOT_URL . basename( $path ) . '/';
 		$this->mPackages[$pkgNameKey]['path']  = BIT_ROOT_PATH . basename( $path ) . '/';

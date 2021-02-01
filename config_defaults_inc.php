@@ -206,6 +206,8 @@ if( !defined( 'STORAGE_PKG_PATH' ) ) {
 }
 define( 'THEMES_PKG_PATH',    BIT_ROOT_PATH.'themes/' );
 define( 'USERS_PKG_PATH',     BIT_ROOT_PATH.'users/' );
+define( 'USERS_PKG_INCLUDE_PATH', USERS_PKG_PATH.'includes/' );
+define( 'USERS_PKG_CLASS_PATH', USERS_PKG_INCLUDE_PATH.'classes/' );
 define( 'UTIL_PKG_PATH',      BIT_ROOT_PATH.'util/' );
 define( 'UTIL_PKG_INC',      BIT_ROOT_PATH.'util/includes/' );
 if( !defined( 'EXTERNAL_LIBS_PATH' ) ) {

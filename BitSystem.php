@@ -503,16 +503,10 @@ class BitSystem extends BitSingleton {
 		}
 
 		// populate meta description with something useful so you are not penalized/ignored by web crawlers
-		if( is_object( $gContent ) && $gContent->isValid() ) {
-			if( $summary = $gContent->getField( 'summary' ) ) {
-				$desc = $gContent->parseData( $summary );
-			} elseif( $desc = $gContent->getField( 'parsed' ) ) {
-			} elseif( $summary = $gContent->getField( 'data' ) ) {
-				$desc = $gContent->parseData( $summary );
-			}
-			if( !empty( $desc ) ) {
-				$desc = preg_replace( '/\s+/', ' ', $desc);  // $gContent->getContentTypeName().': '.
-				$gBitSmarty->assign( 'metaDescription', substr( strip_tags( $desc ), 0, 256 ) );
+		if( is_object( $gContent ) && is_a( $gContent, 'LibertyContent' ) ) {
+			if( $desc = $gContent->generateDescription() ) {
+				$desc = preg_replace( '/\s+/', ' ', strip_tags( $desc ));  // $gContent->getContentTypeName().': '.
+				$gBitSmarty->assign( 'metaDescription', substr( $desc, 0, 256 ) );
 			}
 		}
 

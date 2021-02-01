@@ -237,7 +237,7 @@ function bit_error_string( $iDBParms = array() ) {
 
 	$date = date("D M d H:i:s Y"); // [Tue Sep 24 12:19:20 2002] [error]
 
-	if( isset( $gBitUser->mInfo ) ) {
+	if( is_a( $gBitUser, 'BitUser' ) ) {
 		$acctStr = "ID: ".$gBitUser->mInfo['user_id']." - Login: ".$gBitUser->mInfo['login']." - e-mail: ".$gBitUser->mInfo['email'];
 	} else {
 		$acctStr = "User unknown";

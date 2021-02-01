@@ -250,10 +250,13 @@ function bit_error_string( $iDBParms = array() ) {
 	$uri = '';
 	if( !empty( $_SERVER['SCRIPT_URI'] ) ) {
 		$uri = $_SERVER['SCRIPT_URI'].(!empty($_SERVER['QUERY_STRING'])?'?'.$_SERVER['QUERY_STRING']:'').$separator;
+	} elseif( !empty( $_SERVER['REQUEST_URI'] ) ) {
+		$uri =  $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	} elseif( !empty( $argv ) ) {
 		$uri = implode( ' ', $argv );
 	}
-	$info .= $indent."#### URL: ".$uri;
+
+	$info .= $indent."#### URL: ".$uri.$separator;
 	if( isset($_SERVER['HTTP_REFERER'] ) ) {
 		$info .= $indent."#### REFERRER: $_SERVER[HTTP_REFERER]".$separator;
 	}

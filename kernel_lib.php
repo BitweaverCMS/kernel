@@ -621,7 +621,7 @@ function parse_xml_attributes( $pString ) {
 	$parameters = array();
 	$regexp_str = "/([A-Za-z0-9_-]+)(?:\\s*=\\s*(?:(\"|\')((?:[\\\\].|[^\\\\]?)*?)(?:\\2)|([^=\\s]*)))?/";
 	preg_match_all( $regexp_str, $pString, $matches, PREG_SET_ORDER );
-	while( list( $key, $match ) = each( $matches ) ) {
+	foreach( $matches as $key => $match ) {
 		$attrib = $match[1];
 		$value = $match[sizeof( $match )-1];      // The value can be at different indexes because of optional quotes, but we know it's always at the end.
 		$value = preg_replace( "/\\\\(.)/","\\1",$value );

@@ -15,7 +15,7 @@
 {elseif $smarty.server.REQUEST_URI==BIT_ROOT_URI}
 <meta name="keywords" content="{$metaKeywords|default:$gBitSystem->getConfig('site_keywords')}" />
 {elseif !empty($gContent) && $gContent->isValid()}
-<meta name="keywords" content="{$gContent->generateKeywords()|@implode:','|strip_tags|escape}"/>
+<meta name="keywords" content="{','|implode:$gContent->generateKeywords()|strip_tags|escape}"/>
 {/if}
 
 {if $canonicalLink}

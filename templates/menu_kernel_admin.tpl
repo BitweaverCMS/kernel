@@ -5,7 +5,7 @@
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=packages">{tr}Packages{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page=server">{tr}Server{/tr}</a></li>
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_system.php">{tr}File Caching{/tr}</a></li>
-	{if extension_loaded('apc')}
+	{if extension_loaded('apcu')}
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/apc.php">{tr}APCu Cache{/tr}</a></li>
 	{/if}
 	<li><a class="item" href="{$smarty.const.KERNEL_PKG_URL}admin/admin_notifications.php">{tr}Notification{/tr}</a></li>

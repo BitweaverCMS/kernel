@@ -428,9 +428,9 @@ class BitDbAdodb extends BitDb {
 			//simulate pears behaviour
 			return NULL;
 		}
-		//$this->debugger_log($pQuery, $pValues);
-		list( $key, $value ) = each($res);
-		return $value;
+
+		$ret = current( $res );
+		return $ret;
 	}
 
 	/**

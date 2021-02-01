@@ -46,7 +46,7 @@ abstract class BitBase {
 	 * @todo not used yet
 	 * @private
 	 */
-	public $mErrors;
+	public $mErrors = array();
 
 	/**
 	 * Same idea as the error hash but this is for successful operations
@@ -174,7 +174,7 @@ abstract class BitBase {
 			// if there are multiple instances of this object, there is a race condition since it's possible cleared cached objects remain by getting re-storeInCache because clear was not called on that instance. urgh.
 			// BitSystem keeps a master list of keys to purge on page destruction just in case this happens
 			$gBitSystem->queueClearFromCache( $cacheKey );
-			$ret = apc_delete( $cacheKey );
+			$ret = apcu_delete( $cacheKey );
 //var_dump( 'DELETE '.get_called_class().' '.$cacheKey );
 		}
 	}
@@ -194,10 +194,10 @@ abstract class BitBase {
 				if( empty( $this->mCacheObject ) ) {
 					// new to cache, or overwrite
 //var_dump( 'STORE '.get_called_class().' '.$cacheKey );
-					$ret = apc_store( $cacheKey, $this, 3600 );
+					$ret = apcu_store( $cacheKey, $this, 3600 );
 				} else {
 //var_dump( 'ADD '.get_called_class().' '.$cacheKey );
-					$ret = apc_add( $cacheKey, $this, 3600 );
+					$ret = apcu_add( $cacheKey, $this, 3600 );
 				}
 			} else {
 				$this->clearFromCache();
@@ -210,7 +210,7 @@ abstract class BitBase {
 		$ret = NULL;
 //vd( 'LOAD '.get_called_class().' '.static::getCacheUuidFromKey( $pCacheKey, $pContentTypeGuid ) );
 		if( static::isCacheActive() && static::isCacheableClass() && !empty( $pCacheKey ) ) {
-			if( $ret = apc_fetch( static::getCacheUuidFromKey( $pCacheKey, $pContentTypeGuid ) ) ) {
+			if( $ret = apcu_fetch( static::getCacheUuidFromKey( $pCacheKey, $pContentTypeGuid ) ) ) {
 				$ret->mCacheObject = TRUE;
 //vd( 'LOAD SUCCESS '.get_class( $ret ).' ' .$ret->getField( 'content_id' ) );
 			} else {
@@ -251,7 +251,7 @@ abstract class BitBase {
 
 	public static function isCacheActive() {
 		// only apc is supported for now.
-		return (function_exists( 'apc_add' ) && defined( 'BIT_CACHE_OBJECTS' ) && BIT_CACHE_OBJECTS && !self::isRefreshRequest());
+		return (function_exists( 'apcu_add' ) && defined( 'BIT_CACHE_OBJECTS' ) && BIT_CACHE_OBJECTS && !self::isRefreshRequest());
 	}
 
 	public function isCacheableObject() {
@@ -263,7 +263,7 @@ abstract class BitBase {
 	}
 
 	public function isCached() {
-		return apc_exists( $this->getCacheUuid() );
+		return apcu_exists( $this->getCacheUuid() );
 	}
 
 	public function setCacheableObject( $pCacheable = TRUE ) {

@@ -45,7 +45,7 @@ if( $gStructure and !empty($gStructure->mInfo['structure_path']) ) {
 		}
 	}	
 } else {
-	require_once( LIBERTY_PKG_PATH.'LibertyStructure.php' );
+	require_once( LIBERTY_PKG_CLASS_PATH.'LibertyStructure.php' );
 	$gStructure = new LibertyStructure( 1 );
 	$menu = $gStructure->buildTreeToc( 1 );
 	$gBitSmarty->assignByRef( 'menu', $menu[0]['sub'] );

@@ -10,7 +10,7 @@
 global $gForceAdodb;
 $gForceAdodb = TRUE;
 require_once( '../../kernel/setup_inc.php' );
-require_once( KERNEL_PKG_PATH.'simple_form_functions_lib.php' );
+require_once( KERNEL_PKG_INCLUDE_PATH.'simple_form_functions_lib.php' );
 
 //make an alias in case anyone decides to verifyInstalledPackages
 $gBitInstaller = &$gBitSystem;

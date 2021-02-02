@@ -20,10 +20,10 @@
 /**
  * required setup
  */
-require_once( KERNEL_PKG_PATH . 'BitSingleton.php' );
-require_once( KERNEL_PKG_PATH . 'BitDate.php' );
-require_once( THEMES_PKG_PATH . 'BitSmarty.php' );
-require_once( KERNEL_PKG_PATH . 'HttpStatusCodes.php' );
+require_once( KERNEL_PKG_CLASS_PATH.'BitSingleton.php' );
+require_once( KERNEL_PKG_CLASS_PATH.'BitDate.php' );
+require_once( THEMES_PKG_CLASS_PATH.'BitSmarty.php' );
+require_once( KERNEL_PKG_CLASS_PATH.'HttpStatusCodes.php' );
 
 define( 'DEFAULT_PACKAGE', 'kernel' );
 define( 'CENTER_COLUMN', 'c' );
@@ -560,7 +560,7 @@ class BitSystem extends BitSingleton {
 		}
 
 		// process layout
-		// SMARTY3 require_once( THEMES_PKG_PATH.'modules_inc.php' );
+		// SMARTY3 require_once( THEMES_PKG_INCLUDE_PATH.'modules_inc.php' );
 
 		$gBitThemes->loadStyle();
 

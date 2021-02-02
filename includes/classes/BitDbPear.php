@@ -19,7 +19,7 @@
  */
 require_once 'DB.php';
 
-require_once( KERNEL_PKG_PATH.'BitDbBase.php' );
+require_once( KERNEL_PKG_CLASS_PATH.'BitDbBase.php' );
 
 /**
  * This class is used for database access and provides a number of functions to help

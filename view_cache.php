@@ -13,7 +13,7 @@
  * required setup
  */
 require_once( '../kernel/setup_inc.php' );
-require_once( WIKI_PKG_PATH.'BitPage.php' );
+require_once( WIKI_PKG_CLASS_PATH.'BitPage.php' );
 
 /*
 if($gBitSystem->getConfig('wiki_list_pages') != 'y') {

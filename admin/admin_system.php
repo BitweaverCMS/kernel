@@ -5,7 +5,7 @@
 // All Rights Reserved. See below for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
 
-require_once( '../../kernel/setup_inc.php' );
+require_once( '../../kernel/includes/setup_inc.php' );
 
 $gBitSystem->verifyPermission( 'p_admin' );
 $feedback = array();

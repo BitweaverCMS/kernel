@@ -7,7 +7,7 @@
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
 
 // Initialization
-require_once( '../../kernel/setup_inc.php' );
+require_once( '../../kernel/includes/setup_inc.php' );
 require_once ( KERNEL_PKG_PATH.'backups_lib.php' );
 
 // Check for admin permission

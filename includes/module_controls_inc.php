@@ -16,7 +16,7 @@
 /**
  * Initialization
  */
-include_once( '../kernel/setup_inc.php' );
+include_once( '../kernel/includes/setup_inc.php' );
 
 if (!$gBitUser->hasPermission( 'p_tidbits_configure_modules' )) {
 	$gBitSmarty->assign('msg', tra("You dont have permission to use this feature"));

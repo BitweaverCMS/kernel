@@ -766,7 +766,7 @@ class BitSystem extends BitSingleton {
 	function fatalPermission( $pPermission, $pMsg=NULL ) {
 		global $gBitUser, $gBitSmarty, $gBitThemes;
 		if( !$gBitUser->isRegistered() ) {
-require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
+			require_once( USERS_PKG_CLASS_PATH.'BitHybridAuthManager.php' );
 			BitHybridAuthManager::loadSingleton();
 			global $gBitHybridAuthManager;
 			$gBitSmarty->assign( 'hybridProviders', $gBitHybridAuthManager->getEnabledProviders() );

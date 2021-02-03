@@ -12,7 +12,7 @@
  * required setup
  */
 
-$rootDir = dirname( dirname( __FILE__ ) );
+$rootDir = dirname( dirname( dirname( __FILE__ ) ) );
 define( 'BIT_ROOT_PATH', empty( $_SERVER['VHOST_DIR'] ) ? $rootDir.'/' : $_SERVER['VHOST_DIR'].'/' );
 
 // immediately die on request to hack our database

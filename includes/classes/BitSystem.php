@@ -1515,7 +1515,7 @@ class BitSystem extends BitSingleton {
 			if( defined( 'MIME_TYPES' ) && is_file( MIME_TYPES )) {
 				$mimeFile = MIME_TYPES;
 			} else {
-				$mimeFile = KERNEL_PKG_PATH.'admin/mime.types';
+				$mimeFile = KERNEL_PKG_ADMIN_PATH.'mime.types';
 			}
 
 			$this->mMimeTypes = array();

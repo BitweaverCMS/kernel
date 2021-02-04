@@ -86,7 +86,7 @@ if( !empty( $_GET['prune'] ) ) {
 
 	// nexus needs to rewrite the cache right away to avoid errors
 	if( $gBitSystem->isPackageActive( 'nexus' ) && ( $_GET['prune'] == 'all' || $_GET['prune'] == 'nexus' )) {
-		require_once( NEXUS_PKG_PATH.'Nexus.php' );
+		require_once( NEXUS_PKG_CLASS_PATH.'Nexus.php' );
 		$nexus = new Nexus();
 		$nexus->rewriteMenuCache();
 	}

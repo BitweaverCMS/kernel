@@ -8,7 +8,7 @@
 
 // Initialization
 require_once( '../../kernel/includes/setup_inc.php' );
-require_once ( KERNEL_PKG_PATH.'backups_lib.php' );
+require_once ( KERNEL_PKG_INCLUDE_PATH.'backups_lib.php' );
 
 // Check for admin permission
 $gBitSystem->verifyPermission( 'p_admin' );

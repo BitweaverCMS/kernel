@@ -917,7 +917,8 @@ class BitSystem extends BitSingleton {
 			define( $pkgDefine, $pkgPath );
 			$arrayHash = array( 
 				$pkgName.'_PKG_INCLUDE_PATH' => BIT_ROOT_PATH . basename( $path ) . '/includes/', 
-				$pkgName.'_PKG_CLASS_PATH' => BIT_ROOT_PATH . basename( $path ) . '/includes/classes/' 
+				$pkgName.'_PKG_CLASS_PATH' => BIT_ROOT_PATH . basename( $path ) . '/includes/classes/',
+				$pkgName.'_PKG_ADMIN_PATH' => BIT_ROOT_PATH . basename( $path ) . '/admin/' 
 			);
 			foreach( $arrayHash as $defName => $defPath ) {
 				define( $defName, is_dir( $defPath ) ? $defPath : $pkgPath );

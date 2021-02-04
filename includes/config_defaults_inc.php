@@ -195,32 +195,47 @@ define( 'KERNEL_PKG_PATH',    BIT_ROOT_PATH.'kernel/' );
 define( 'KERNEL_PKG_URL',    BIT_ROOT_URL.KERNEL_PKG_DIR.'/' );
 define( 'KERNEL_PKG_INCLUDE_PATH', KERNEL_PKG_PATH.'includes/' );
 define( 'KERNEL_PKG_CLASS_PATH', KERNEL_PKG_INCLUDE_PATH.'classes/' );
+define( 'KERNEL_PKG_ADMIN_PATH', KERNEL_PKG_PATH.'admin/' );
+
 define( 'CONFIG_PKG_PATH',    BIT_ROOT_PATH.'config/' );
 define( 'CONFIG_PKG_INCLUDE_PATH', CONFIG_PKG_PATH.'includes/' );
 define( 'CONFIG_PKG_CLASS_PATH', CONFIG_PKG_INCLUDE_PATH.'classes/' );
+define( 'CONFIG_PKG_ADMIN_PATH', CONFIG_PKG_PATH.'admin/' );
+
 define( 'LANGUAGES_PKG_PATH', BIT_ROOT_PATH.'languages/' );
 define( 'LANGUAGES_PKG_INCLUDE_PATH', LANGUAGES_PKG_PATH.'includes/' );
 define( 'LANGUAGES_PKG_CLASS_PATH', LANGUAGES_PKG_INCLUDE_PATH.'classes/' );
+define( 'LANGUAGES_PKG_ADMIN_PATH', LANGUAGES_PKG_PATH.'admin/' );
+
 define( 'LIBERTY_PKG_DIR', 'liberty' );
 define( 'LIBERTY_PKG_NAME', 'liberty' );
 define( 'LIBERTY_PKG_PATH', BIT_ROOT_PATH.'liberty/' );
 define( 'LIBERTY_PKG_INCLUDE_PATH', LIBERTY_PKG_PATH.'includes/' );
 define( 'LIBERTY_PKG_CLASS_PATH', LIBERTY_PKG_INCLUDE_PATH.'classes/' );
+define( 'LIBERTY_PKG_ADMIN_PATH', LIBERTY_PKG_PATH.'admin/' );
+
 if( !defined( 'STORAGE_PKG_NAME' ) ) {
 	define( 'STORAGE_PKG_NAME',   'storage' );
 }
 if( !defined( 'STORAGE_PKG_PATH' ) ) {
 	define( 'STORAGE_PKG_PATH',   BIT_ROOT_PATH.'storage/' );
 }
+
 define( 'THEMES_PKG_PATH',    BIT_ROOT_PATH.'themes/' );
 define( 'THEMES_PKG_INCLUDE_PATH', THEMES_PKG_PATH.'includes/' );
 define( 'THEMES_PKG_CLASS_PATH', THEMES_PKG_INCLUDE_PATH.'classes/' );
+define( 'THEMES_PKG_ADMIN_PATH', THEMES_PKG_PATH.'admin/' );
+
 define( 'USERS_PKG_PATH',     BIT_ROOT_PATH.'users/' );
 define( 'USERS_PKG_INCLUDE_PATH', USERS_PKG_PATH.'includes/' );
 define( 'USERS_PKG_CLASS_PATH', USERS_PKG_INCLUDE_PATH.'classes/' );
+define( 'USERS_PKG_ADMIN_PATH', USERS_PKG_PATH.'admin/' );
+
 define( 'UTIL_PKG_PATH', BIT_ROOT_PATH.'util/' );
 define( 'UTIL_PKG_INCLUDE_PATH', BIT_ROOT_PATH.'util/includes/' );
 define( 'UTIL_PKG_CLASS_PATH', UTIL_PKG_INCLUDE_PATH.'classes/' );
+define( 'UTIL_PKG_ADMIN_PATH', UTIL_PKG_PATH.'admin/' );
+
 if( !defined( 'EXTERNAL_LIBS_PATH' ) ) {
 	define( 'EXTERNAL_LIBS_PATH',      BIT_ROOT_PATH.'externals/' );
 }

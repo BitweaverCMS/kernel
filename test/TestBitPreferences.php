@@ -1,5 +1,5 @@
 <?php
-require_once(KERNEL_PKG_PATH . 'BitPreferences.php');
+require_once(KERNEL_PKG_CLASS_PATH.'BitPreferences.php');
 
 class TestBitPreferences extends UnitTestCase {
 

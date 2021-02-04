@@ -12,7 +12,7 @@
 // Initialization
 require_once( '../../kernel/includes/setup_inc.php' );
 
-include_once( KERNEL_PKG_PATH.'notification_lib.php' );
+include_once( KERNEL_PKG_INCLUDE_PATH.'notification_lib.php' );
 
 // Check for admin permission
 $gBitSystem->verifyPermission( 'p_admin' );

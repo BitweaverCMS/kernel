@@ -53,7 +53,7 @@ if( !empty( $_REQUEST["page"] )) {
 				break;
 		}
 
-		$adminPage = constant( strtoupper( $package ).'_PKG_PATH' ).'/admin/admin_'.$adminFile.'_inc.php';
+		$adminPage = constant( strtoupper( $package ).'_PKG_ADMIN_PATH' ).'admin_'.$adminFile.'_inc.php';
 		// gBitThemes->loadLayout uses this to determine the currently active package
 		$gBitSystem->setActivePackage( $package );
 	}

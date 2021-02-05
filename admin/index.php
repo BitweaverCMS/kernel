@@ -9,8 +9,8 @@
 // Initialization
 global $gForceAdodb;
 $gForceAdodb = TRUE;
-require_once( '../../kernel/setup_inc.php' );
-require_once( KERNEL_PKG_PATH.'simple_form_functions_lib.php' );
+require_once( '../../kernel/includes/setup_inc.php' );
+require_once( KERNEL_PKG_INCLUDE_PATH.'simple_form_functions_lib.php' );
 
 //make an alias in case anyone decides to verifyInstalledPackages
 $gBitInstaller = &$gBitSystem;
@@ -53,7 +53,7 @@ if( !empty( $_REQUEST["page"] )) {
 				break;
 		}
 
-		$adminPage = constant( strtoupper( $package ).'_PKG_PATH' ).'/admin/admin_'.$adminFile.'_inc.php';
+		$adminPage = constant( strtoupper( $package ).'_PKG_ADMIN_PATH' ).'admin_'.$adminFile.'_inc.php';
 		// gBitThemes->loadLayout uses this to determine the currently active package
 		$gBitSystem->setActivePackage( $package );
 	}

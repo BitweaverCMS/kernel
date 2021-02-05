@@ -24,7 +24,7 @@
 
 $VERSION='$Id$';
 
-require_once( '../../kernel/setup_inc.php' );
+require_once( '../../kernel/includes/setup_inc.php' );
 
 global $gBitUser;
 $gBitUser->verifyPermission( 'p_admin' );

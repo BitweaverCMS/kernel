@@ -29,7 +29,7 @@
 /**
  * Initialization
  */
-require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
+require_once( LIBERTY_PKG_CLASS_PATH.'LibertyBase.php' );
 
 /**
  * BitMailer 
@@ -88,7 +88,7 @@ require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
 	function buildMailer($pMessage) {
 		global $gBitSystem, $gBitLanguage;
 
-		require_once( UTIL_PKG_INC.'phpmailer/class.phpmailer.php' );
+		require_once( UTIL_PKG_INCLUDE_PATH.'phpmailer/class.phpmailer.php' );
 
 		$mailer = new PHPMailer();
 		$mailer->From     = !empty( $pMessage['from'] ) ? $pMessage['from'] : $gBitSystem->getConfig( 'bitmailer_sender_email', $gBitSystem->getConfig( 'site_sender_email', $_SERVER['SERVER_ADMIN'] ) );
@@ -107,7 +107,7 @@ require_once( LIBERTY_PKG_PATH . 'LibertyBase.php' );
 			$mailer->Password = $gBitSystem->getConfig( 'bitmailer_smtp_password' );
 		}
 		$mailer->WordWrap = $gBitSystem->getConfig( 'bitmailer_word_wrap', 75 );
-		if( !$mailer->SetLanguage( $gBitLanguage->getLanguage(), UTIL_PKG_INC.'phpmailer/language/' ) ) {
+		if( !$mailer->SetLanguage( $gBitLanguage->getLanguage(), UTIL_PKG_INCLUDE_PATH.'phpmailer/language/' ) ) {
 			$mailer->SetLanguage( 'en' );
 		}
 

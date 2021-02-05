@@ -20,10 +20,10 @@
 /**
  * required setup
  */
-require_once( KERNEL_PKG_PATH . 'BitSingleton.php' );
-require_once( KERNEL_PKG_PATH . 'BitDate.php' );
-require_once( THEMES_PKG_PATH . 'BitSmarty.php' );
-require_once( KERNEL_PKG_PATH . 'HttpStatusCodes.php' );
+require_once( KERNEL_PKG_CLASS_PATH.'BitSingleton.php' );
+require_once( KERNEL_PKG_CLASS_PATH.'BitDate.php' );
+require_once( THEMES_PKG_CLASS_PATH.'BitSmarty.php' );
+require_once( KERNEL_PKG_CLASS_PATH.'HttpStatusCodes.php' );
 
 define( 'DEFAULT_PACKAGE', 'kernel' );
 define( 'CENTER_COLUMN', 'c' );
@@ -503,16 +503,10 @@ class BitSystem extends BitSingleton {
 		}
 
 		// populate meta description with something useful so you are not penalized/ignored by web crawlers
-		if( is_object( $gContent ) && $gContent->isValid() ) {
-			if( $summary = $gContent->getField( 'summary' ) ) {
-				$desc = $gContent->parseData( $summary );
-			} elseif( $desc = $gContent->getField( 'parsed' ) ) {
-			} elseif( $summary = $gContent->getField( 'data' ) ) {
-				$desc = $gContent->parseData( $summary );
-			}
-			if( !empty( $desc ) ) {
-				$desc = preg_replace( '/\s+/', ' ', $desc);  // $gContent->getContentTypeName().': '.
-				$gBitSmarty->assign( 'metaDescription', substr( strip_tags( $desc ), 0, 256 ) );
+		if( is_object( $gContent ) && is_a( $gContent, 'LibertyContent' ) ) {
+			if( $desc = $gContent->generateDescription() ) {
+				$desc = preg_replace( '/\s+/', ' ', strip_tags( $desc ));  // $gContent->getContentTypeName().': '.
+				$gBitSmarty->assign( 'metaDescription', substr( $desc, 0, 256 ) );
 			}
 		}
 
@@ -566,7 +560,7 @@ class BitSystem extends BitSingleton {
 		}
 
 		// process layout
-		// SMARTY3 require_once( THEMES_PKG_PATH.'modules_inc.php' );
+		// SMARTY3 require_once( THEMES_PKG_INCLUDE_PATH.'modules_inc.php' );
 
 		$gBitThemes->loadStyle();
 
@@ -772,7 +766,7 @@ class BitSystem extends BitSingleton {
 	function fatalPermission( $pPermission, $pMsg=NULL ) {
 		global $gBitUser, $gBitSmarty, $gBitThemes;
 		if( !$gBitUser->isRegistered() ) {
-require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
+			require_once( USERS_PKG_CLASS_PATH.'BitHybridAuthManager.php' );
 			BitHybridAuthManager::loadSingleton();
 			global $gBitHybridAuthManager;
 			$gBitSmarty->assign( 'hybridProviders', $gBitHybridAuthManager->getEnabledProviders() );
@@ -919,7 +913,16 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 		// Define <PACKAGE>_PKG_PATH
 		$pkgDefine = $pkgName.'_PKG_PATH';
 		if( !defined( $pkgDefine )) {
-			define( $pkgDefine, BIT_ROOT_PATH . basename( $path ) . '/' );
+			$pkgPath = BIT_ROOT_PATH . basename( $path ) . '/';
+			define( $pkgDefine, $pkgPath );
+			$arrayHash = array( 
+				$pkgName.'_PKG_INCLUDE_PATH' => BIT_ROOT_PATH . basename( $path ) . '/includes/', 
+				$pkgName.'_PKG_CLASS_PATH' => BIT_ROOT_PATH . basename( $path ) . '/includes/classes/',
+				$pkgName.'_PKG_ADMIN_PATH' => BIT_ROOT_PATH . basename( $path ) . '/admin/' 
+			);
+			foreach( $arrayHash as $defName => $defPath ) {
+				define( $defName, is_dir( $defPath ) ? $defPath : $pkgPath );
+			}
 		}
 		$this->mPackages[$pkgNameKey]['url']  = BIT_ROOT_URL . basename( $path ) . '/';
 		$this->mPackages[$pkgNameKey]['path']  = BIT_ROOT_PATH . basename( $path ) . '/';
@@ -1513,7 +1516,7 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 			if( defined( 'MIME_TYPES' ) && is_file( MIME_TYPES )) {
 				$mimeFile = MIME_TYPES;
 			} else {
-				$mimeFile = KERNEL_PKG_PATH.'admin/mime.types';
+				$mimeFile = KERNEL_PKG_ADMIN_PATH.'mime.types';
 			}
 
 			$this->mMimeTypes = array();
@@ -2749,8 +2752,8 @@ require_once( USERS_PKG_PATH.'includes/BitHybridAuthManager.php' );
 		foreach( $gBitSystem->mPackages as $package ) {
 			if( $gBitSystem->isPackageActive( $package['name'] )) {
 				if( !empty( $pPhpFile )) {
-					$php_file = $package['path'].$pPhpFile;
-					if( is_readable( $php_file ))  {
+					$php_file = constant( strtoupper( $package['name'] ).'_PKG_INCLUDE_PATH' ).$pPhpFile;
+					if( is_file( $php_file ))  {
 						$ret[$package['name']]['php'] = $php_file;
 					}
 				}

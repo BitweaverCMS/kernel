@@ -20,7 +20,7 @@
 /**
  * required setup
  */
-require_once ( KERNEL_PKG_PATH.'BitDbBase.php' );
+require_once ( KERNEL_PKG_CLASS_PATH.'BitDbBase.php' );
 
 define( 'STORAGE_BINARY', 1 );
 define( 'STORAGE_IMAGE', 2 );

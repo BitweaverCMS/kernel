@@ -5,7 +5,7 @@
 // All Rights Reserved. See below for details and a complete list of authors.
 // Licensed under the GNU LESSER GENERAL PUBLIC LICENSE. See http://www.gnu.org/copyleft/lesser.html for details.
 
-require_once( '../../kernel/setup_inc.php' );
+require_once( '../../kernel/includes/setup_inc.php' );
 
 $gBitSystem->verifyPermission( 'p_admin' );
 $feedback = array();
@@ -86,7 +86,7 @@ if( !empty( $_GET['prune'] ) ) {
 
 	// nexus needs to rewrite the cache right away to avoid errors
 	if( $gBitSystem->isPackageActive( 'nexus' ) && ( $_GET['prune'] == 'all' || $_GET['prune'] == 'nexus' )) {
-		require_once( NEXUS_PKG_PATH.'Nexus.php' );
+		require_once( NEXUS_PKG_CLASS_PATH.'Nexus.php' );
 		$nexus = new Nexus();
 		$nexus->rewriteMenuCache();
 	}

@@ -12,7 +12,7 @@
  * required setup
  */
 
-$rootDir = dirname( dirname( __FILE__ ) );
+$rootDir = dirname( dirname( dirname( __FILE__ ) ) );
 define( 'BIT_ROOT_PATH', empty( $_SERVER['VHOST_DIR'] ) ? $rootDir.'/' : $_SERVER['VHOST_DIR'].'/' );
 
 // immediately die on request to hack our database
@@ -20,10 +20,10 @@ if(( !empty( $_REQUEST['sort_mode'] ) && !is_array( $_REQUEST['sort_mode'] ) && 
 	die;
 }
 
-require_once( dirname( __FILE__ ).'/bit_error_inc.php' );
-require_once( BIT_ROOT_PATH.'kernel/config_defaults_inc.php' );
-require_once( KERNEL_PKG_PATH.'kernel_lib.php' );
-require_once( KERNEL_PKG_PATH.'BitTimer.php' );
+require_once( BIT_ROOT_PATH.'kernel/includes/config_defaults_inc.php' );
+require_once( KERNEL_PKG_INCLUDE_PATH.'bit_error_inc.php' );
+require_once( KERNEL_PKG_INCLUDE_PATH.'kernel_lib.php' );
+require_once( KERNEL_PKG_CLASS_PATH.'BitTimer.php' );
 
 // set error reporting
 error_reporting( BIT_PHP_ERROR_REPORTING );
@@ -55,7 +55,7 @@ global $gForceAdodb;
 if( !empty( $gForceAdodb )) {
 	$dbClass = 'BitDbAdodb';
 }
-require_once( KERNEL_PKG_PATH.$dbClass.'.php' );
+require_once( KERNEL_PKG_CLASS_PATH.$dbClass.'.php' );
 
 // =================== Global Classes ===================
 global $gBitDb;
@@ -64,7 +64,7 @@ if( defined( 'QUERY_CACHE_ACTIVE' ) ) {
 	$gBitDb->setCaching();
 }
 
-require_once( KERNEL_PKG_PATH.'BitSystem.php' );
+require_once( KERNEL_PKG_CLASS_PATH.'BitSystem.php' );
 global $gBitSmarty, $gBitSystem;
 // Per http://stackoverflow.com/a/14101767/268416 try to force gBitSystem to be among the last object to be destroyed, see BitSystem::__destruct() for details
 set_error_handler(function() use($gBitSystem) {});
@@ -86,14 +86,14 @@ if( !empty( $gBitSystem->mConfig ) && version_compare( MIN_BIT_VERSION, $gBitSys
 	define( 'INSTALLER_FORCE', TRUE );
 }
 
-BitSystem::prependIncludePath( UTIL_PKG_INC );
+BitSystem::prependIncludePath( UTIL_PKG_INCLUDE_PATH );
 BitSystem::prependIncludePath( EXTERNAL_LIBS_PATH.'pear/' );
 
-require_once( LANGUAGES_PKG_PATH.'BitLanguage.php' );
+require_once( LANGUAGES_PKG_CLASS_PATH.'BitLanguage.php' );
 BitLanguage::loadSingleton();
 
 // collects information about the browser - needed for various browser specific theme settings
-require_once( UTIL_PKG_INC.'phpsniff/phpSniff.class.php' );
+require_once( UTIL_PKG_INCLUDE_PATH.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
 $gSniffer = new phpSniff;
 if( file_exists( ini_get( 'browscap' ) ) ) {
@@ -141,7 +141,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	$gBitSystem->scanPackages( 'bit_setup_inc.php', TRUE, 'active', TRUE, TRUE );
 	$gBitSmarty->scanPackagePluginDirs();
 
-	if( file_exists( CONFIG_PKG_PATH.'kernel/override_inc.php' ) ) {
+	if( file_exists( CONFIG_PKG_INCLUDE_PATH.'kernel/override_inc.php' ) ) {
 		// possible install specific customizations for multi-sites, staging sites, etc.
 		require_once( CONFIG_PKG_PATH.'kernel/override_inc.php' );
 	}
@@ -162,7 +162,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	}
 
 	// this will register and set up the dropdown menus and the application menus in modules
-	require_once( THEMES_PKG_PATH.'menu_register_inc.php' );
+	require_once( THEMES_PKG_INCLUDE_PATH.'menu_register_inc.php' );
 
 	// added for virtual hosting suport
 	if( !isset( $bitdomain )) {

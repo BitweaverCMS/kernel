@@ -12,7 +12,7 @@
 // PLEASE UNCOMMENT THIS LINE TO ACTIVATE REMOTE BACKUPS (DISABLED IN THE DISTRIBUTION)
 die;
 
-require_once( '../../kernel/setup_inc.php' );
+require_once( '../../kernel/includes/setup_inc.php' );
 include_once('lib/backups/backupslib.php');
 if(isset($_REQUEST["generate"])) {
     if(isset($_REQUEST["my_word"]) &&

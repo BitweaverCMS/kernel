@@ -237,7 +237,7 @@ function bit_error_string( $iDBParms = array() ) {
 
 	$date = date("D M d H:i:s Y"); // [Tue Sep 24 12:19:20 2002] [error]
 
-	if( isset( $gBitUser->mInfo ) ) {
+	if( is_a( $gBitUser, 'BitUser' ) ) {
 		$acctStr = "ID: ".$gBitUser->mInfo['user_id']." - Login: ".$gBitUser->mInfo['login']." - e-mail: ".$gBitUser->mInfo['email'];
 	} else {
 		$acctStr = "User unknown";
@@ -250,10 +250,13 @@ function bit_error_string( $iDBParms = array() ) {
 	$uri = '';
 	if( !empty( $_SERVER['SCRIPT_URI'] ) ) {
 		$uri = $_SERVER['SCRIPT_URI'].(!empty($_SERVER['QUERY_STRING'])?'?'.$_SERVER['QUERY_STRING']:'').$separator;
+	} elseif( !empty( $_SERVER['REQUEST_URI'] ) ) {
+		$uri =  $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	} elseif( !empty( $argv ) ) {
 		$uri = implode( ' ', $argv );
 	}
-	$info .= $indent."#### URL: ".$uri;
+
+	$info .= $indent."#### URL: ".$uri.$separator;
 	if( isset($_SERVER['HTTP_REFERER'] ) ) {
 		$info .= $indent."#### REFERRER: $_SERVER[HTTP_REFERER]".$separator;
 	}
@@ -424,7 +427,7 @@ function vc( $iVar, $pHtml=TRUE ) {
 			var_dump( $iVar );
 		}
 	} elseif( $pHtml && !empty( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] != 'cron' && ((is_object( $iVar ) && !empty( $iVar )) || is_array( $iVar )) ) {
-		include_once( UTIL_PKG_INC.'dBug/dBug.php' );
+		include_once( UTIL_PKG_INCLUDE_PATH.'dBug/dBug.php' );
 		new dBug( $iVar, "", FALSE );
 	} else {
 		print '<pre>';

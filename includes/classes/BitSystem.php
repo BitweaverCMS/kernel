@@ -2752,8 +2752,8 @@ class BitSystem extends BitSingleton {
 		foreach( $gBitSystem->mPackages as $package ) {
 			if( $gBitSystem->isPackageActive( $package['name'] )) {
 				if( !empty( $pPhpFile )) {
-					$php_file = $package['path'].$pPhpFile;
-					if( is_readable( $php_file ))  {
+					$php_file = constant( strtoupper( $package['name'] ).'_PKG_INCLUDE_PATH' ).$pPhpFile;
+					if( is_file( $php_file ))  {
 						$ret[$package['name']]['php'] = $php_file;
 					}
 				}

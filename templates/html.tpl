@@ -94,7 +94,7 @@
 		<main id="wrapper" class="col-md-{math equation='12-x*3' x=$extraColumns} col-sm-{math equation='12-x*4' x=$extraColumns} col-xs-12">
 			{**** Theme Layout Modules : CENTER ****}
 			{include file="bitpackage:liberty/services_inc.tpl" serviceLocation='wrapper' serviceHash=$gContent->mInfo}
-			{include file="bitpackage:liberty/display_structure.tpl"}
+			{include file="bitpackage:liberty/structure_display.tpl"}
 			{include file=$mid}
 		</main><!-- end #wrapper -->
 

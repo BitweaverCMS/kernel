@@ -678,8 +678,8 @@ class BitSystem extends BitSingleton {
 
 		$ret = FALSE;
 		$pkgname_l = strtolower( $pPackageName );
-		if( is_file(BIT_ROOT_PATH.$pkgname_l.'/bit_setup_inc.php') ) {
-			require_once(BIT_ROOT_PATH.$pkgname_l.'/bit_setup_inc.php');
+		if( is_file(BIT_ROOT_PATH.$pkgname_l.'/includes/bit_setup_inc.php') ) {
+			require_once(BIT_ROOT_PATH.$pkgname_l.'/includes/bit_setup_inc.php');
 			$ret = $this->isPackageActive( $pPackageName );
 		} elseif( $pkgname_l == 'kernel' ) {
 			$ret = TRUE;
@@ -1167,7 +1167,7 @@ class BitSystem extends BitSingleton {
 	 *
 	 * @access public
 	 */
-	function scanPackages( $pScanFile = 'bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $pAutoRegister=TRUE ) {
+	function scanPackages( $pScanFile = 'includes/bit_setup_inc.php', $pOnce=TRUE, $pSelect='', $pAutoRegister=TRUE ) {
 		global $gPreScan;
 		if( !empty( $gPreScan ) && is_array( $gPreScan )) {
 			// gPreScan may hold a list of packages that must be loaded first

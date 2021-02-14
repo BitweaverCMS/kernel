@@ -138,7 +138,7 @@ if( $gBitSystem->isDatabaseValid() ) {
 	define( 'LIBERTY_PKG_URL', $root.'liberty/' );
 
 	// load only installed and active packages
-	$gBitSystem->scanPackages( 'bit_setup_inc.php', TRUE, 'active', TRUE, TRUE );
+	$gBitSystem->scanPackages( 'includes/bit_setup_inc.php', TRUE, 'active', TRUE, TRUE );
 	$gBitSmarty->scanPackagePluginDirs();
 
 	if( file_exists( CONFIG_PKG_INCLUDE_PATH.'kernel/override_inc.php' ) ) {

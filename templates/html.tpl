@@ -31,6 +31,9 @@
     <!--[if lt IE 9]>
     <script src="{$smarty.const.CONFIG_PKG_URL}js/html5shim/html5shiv.js"></script>
     <![endif]-->
+	{if $baseHref}
+	<base href="{$baseHref}">
+	{/if}
 </head>
 <body itemscope itemtype="http://schema.org/WebPage"
 	{if $gBitSystem->mOnload} onload="{foreach from=$gBitSystem->mOnload item=loadString}{$loadString}{/foreach}" {/if}

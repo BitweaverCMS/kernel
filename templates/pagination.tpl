@@ -38,7 +38,7 @@
 		{/if}
 	{/capture}
 	{assign var=pageUrlVar value=$smarty.capture.string|regex_replace:'/"/':'%22'}
-	{assign var=pageUrl value="`$pgnUrl`?`$pageUrlVar`"}
+	{assign var=pageUrl value="`$smarty.server.SCRIPT_URL``$pgnUrl`?`$pageUrlVar`"}
 {/if}
 {if $listInfo.total_pages > 1 && $listInfo.page_records}
 <div class="paginator overflow-hidden clear">

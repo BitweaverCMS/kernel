@@ -770,7 +770,7 @@ class BitSystem extends BitSingleton {
 			BitHybridAuthManager::loadSingleton();
 			global $gBitHybridAuthManager;
 			$gBitSmarty->assign( 'hybridProviders', $gBitHybridAuthManager->getEnabledProviders() );
-			$gBitSmarty->assign( 'template', 'bitpackage:users/login_inc.tpl' );
+			$gBitSmarty->assign( 'template', 'bitpackage:users/signin.tpl' );
 		} else {
 			$title = 'Oops!';
 			if( empty( $pMsg ) ) {

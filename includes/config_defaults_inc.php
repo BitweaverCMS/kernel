@@ -188,6 +188,8 @@ if( !defined( 'MIN_BIT_VERSION' ) ) {
 // These defines have to happen FIRST because core classes depend on them.
 // This means these packages *CANNOT* be renamed
 define( 'INSTALL_PKG_PATH',   BIT_ROOT_PATH.'install/' );
+define( 'INSTALL_PKG_INCLUDE_PATH',   INSTALL_PKG_PATH.'includes/' );
+define( 'INSTALL_PKG_CLASS_PATH',   INSTALL_PKG_INCLUDE_PATH.'classes/' );
 define( 'INSTALL_PKG_URL',    BIT_ROOT_URL.'install/' );
 define( 'KERNEL_PKG_DIR',     'kernel' );
 define( 'KERNEL_PKG_NAME',    'kernel' );

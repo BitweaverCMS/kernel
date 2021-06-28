@@ -648,7 +648,7 @@ class BitDb {
 			case "pgsql":
 			case "postgres":
 			case "postgres7":
-				$ret = $pColumn.'::abstime::integer';
+				$ret = 'EXTRACT(EPOCH FROM '.$pColumn.')';
 				break;
 			default:
 				$ret = $pColumn;
@@ -677,7 +677,7 @@ class BitDb {
 			case "pgsql":
 			case "postgres":
 			case "postgres7":
-				$ret = $pColumn.'::integer::abstime::timestamptz';
+				$ret = 'to_timestamp('.$pColumn.')';
 				break;
 			default:
 				$ret = $pColumn;

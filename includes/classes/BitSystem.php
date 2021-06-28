@@ -130,14 +130,6 @@ class BitSystem extends BitSingleton {
 		// Set the separator for PHP generated tags to be &amp; instead of &
 		// This is necessary for XHTML compliance
 		ini_set( "arg_separator.output", "&amp;" );
-		// Remove automatic quotes added to POST/COOKIE by PHP
-		if( get_magic_quotes_gpc() ) {
-			foreach( $_REQUEST as $k => $v ) {
-				if( !is_array( $_REQUEST[$k] ) ) {
-					$_REQUEST[$k] = stripslashes( $v );
-				}
-			}
-		}
 
 		$this->defineTempDir();
 

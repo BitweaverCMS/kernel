@@ -343,7 +343,7 @@ function verify_hex_color( $pColor ) {
  * @return encoded email address
  * $note email regex taken from: http://www.regular-expressions.info/regexbuddy/email.html
  */
-define( 'EMAIL_ADDRESS_REGEX', '[-a-zA-Z0-9._%+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}' );
+define( 'EMAIL_ADDRESS_REGEX', '[-a-zA-Z0-9._%+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,24}' );
 function encode_email_addresses( $pData ) {
 	$trans = array(
 		// Upper case

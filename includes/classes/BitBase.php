@@ -594,6 +594,8 @@ abstract class BitBase {
 	*/
 	public static function postGetList( &$pListHash ) {
 		global $gBitSystem;
+
+		$pListHash['listInfo'] = array();
 		$pListHash['listInfo']['page_records'] = (!empty( $pListHash['page_records'] ) ? $pListHash['page_records'] : $pListHash['max_records'] );
 		if( !isset( $pListHash['cant'] ) ) {
 			$pListHash['cant'] = $pListHash['max_records'];

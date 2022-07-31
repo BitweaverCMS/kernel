@@ -24,7 +24,7 @@
 				{else}
 					{if $menu.menu_title}
 						{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
-							<a class="head" href="javascript:BitBase.flipIcon('{$key}menu');">{booticon iname="icon-plus-sign"  ipackage="icons"  id="`$key`menuimg" iexplain="folder"}&nbsp;
+							<a class="head" href="javascript:BitBase.flipIcon('{$key}menu');">{booticon iname="fa-circle-plus" id="`$key`menuimg" iexplain="folder"}&nbsp;
 						{else}
 							<a class="head" href="javascript:BitBase.flipWithSign('{$key}menu',1);"><span style="font-family:monospace;" id="flipper{$key}menu">&nbsp;</span>
 						{/if}
@@ -65,7 +65,7 @@
 				{/if}
 			{else}
 				{if $gBitSystem->isFeatureActive( 'site_menu_flip_icon' )}
-					<a class="head" href="javascript:BitBase.flipIcon('usrmenu');">{booticon iname="icon-plus-sign"  ipackage="icons"  id="usrmenuimg" iexplain="folder"}&nbsp;
+					<a class="head" href="javascript:BitBase.flipIcon('usrmenu');">{booticon iname="fa-circle-plus" id="usrmenuimg" iexplain="folder"}&nbsp;
 				{else}
 					<a class="head" href="javascript:BitBase.flipWithSign('usrmenu',1);"><span style="font-family:monospace;" id="flipperusrmenu">&nbsp;</span>
 				{/if}

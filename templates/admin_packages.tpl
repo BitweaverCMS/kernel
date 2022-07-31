@@ -63,7 +63,7 @@
 										{/if}
 									{/foreach}
 									{if $is_requirement}
-										{booticon iname="icon-ok"   iexplain="Required"}
+										{booticon iname="fa-check" iexplain="Required"}
 										<input type="hidden" value="y" name="fPackage[{$name}]" id="package_{$name}" />
 									{else}
 										<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
@@ -72,7 +72,7 @@
 									{assign var=first_loop value=1}
 									{foreach from=$gBitSystem->mRequirements key=required_by item=reqs}
 										{if $reqs.$name}
-											{if $first_loop}<br />{booticon iname="icon-warning-sign"   iexplain="Requirement"} Required by {else}, {/if}{$required_by}
+											{if $first_loop}<br />{booticon iname="fa-triangle-exclamation" iexplain="Requirement"} Required by {else}, {/if}{$required_by}
 											{assign var=first_loop value=0}
 										{/if}
 									{/foreach}
@@ -111,7 +111,7 @@
 										{/if}
 									{/foreach}
 									{if $is_requirement}
-										{booticon iname="icon-ok"   iexplain="Required"}
+										{booticon iname="fa-check" iexplain="Required"}
 										<input type="hidden" value="y" name="fPackage[{$name}]" id="package_{$name}" />
 									{else}
 										<input type="checkbox" value="y" name="fPackage[{$name}]" id="package_{$name}" {if $package.active_switch eq 'y' }checked="checked"{/if} />
@@ -120,7 +120,7 @@
 									{assign var=first_loop value=1}
 									{foreach from=$gBitSystem->mRequirements key=required_by item=reqs}
 										{if $reqs.$name}
-											{if $first_loop}<br />{booticon iname="icon-warning-sign"   iexplain="Requirement"} Required by {else}, {/if}{$required_by}
+											{if $first_loop}<br />{booticon iname="fa-triangle-exclamation" iexplain="Requirement"} Required by {else}, {/if}{$required_by}
 											{assign var=first_loop value=0}
 										{/if}
 									{/foreach}

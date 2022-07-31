@@ -111,8 +111,8 @@
 			<td>{$admmoptions[user].perm}</td>
 			<td>{$admmoptions[user].groupname}</td>
 			<td class="alignright">
-				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$admmoptions[user].option_id}" onclick="return confirm('{tr}Are you sure you want to delete this menu item?{/tr}')" title="{tr}Delete this menu{/tr}">{booticon iname="icon-trash" ipackage="icons" iexplain="remove"}</a>
-				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;option_id={$admmoptions[user].option_id}" title="Edit this menu">{booticon iname="icon-edit" ipackage="icons" iexplain="edit"}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;remove={$admmoptions[user].option_id}" onclick="return confirm('{tr}Are you sure you want to delete this menu item?{/tr}')" title="{tr}Delete this menu{/tr}">{booticon iname="fa-trash" iexplain="remove"}</a>
+				<a href="{$smarty.const.KERNEL_PKG_URL}admin/index.php?page={$page}&amp;menu_id={$menu_id}&amp;offset={$offset}&amp;sort_mode={$sort_mode}&amp;option_id={$admmoptions[user].option_id}" title="Edit this menu">{booticon iname="fa-pen-to-square" iexplain="edit"}</a>
 			</td>
 		</tr>
 	{sectionelse}

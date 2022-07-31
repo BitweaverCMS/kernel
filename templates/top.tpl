@@ -5,7 +5,7 @@
 			{if $gBitUser->isRegistered()}
 			<ul class="nav nav-pills">
 				<li class="active dropdown">
-					<a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#"><i class="icon-user"></i> {displayname hash=$gBitUser->mInfo nolink=1} <b class="caret"></b></a>
+					<a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#">{booticon iname="fa-user"} {displayname hash=$gBitUser->mInfo nolink=1} <b class="caret"></b></a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 						<li><a href="{$gBitUser->getDisplayUrl()}">{tr}My Profile{/tr}</a></li>
 						<li><a href="{$smarty.const.USERS_PKG_URL}my.php">{tr}My Account{/tr}</a></li>

@@ -4,7 +4,7 @@
 	<h3>
 		{$title}
 		{if $closebutton}
-			<a class="closebutton" onclick='javascript:return cClick();'>{booticon iname="icon-remove"  ipackage="icons"  iexplain="close" iforce="icon"}</a>
+			<a class="closebutton" onclick='javascript:return cClick();'>{booticon iname="fa-circle-xmark" iexplain="close"}</a>
 		{/if}
 	</h3>
 

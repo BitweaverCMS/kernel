@@ -12,7 +12,7 @@ $tables = array(
 ",
 
 'kernel_config' => "
-	config_name C(40) PRIMARY,
+	config_name C(64) PRIMARY,
 	package C(100),
 	config_value C(250)
 ",

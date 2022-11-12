@@ -200,6 +200,7 @@ define( 'KERNEL_PKG_CLASS_PATH', KERNEL_PKG_INCLUDE_PATH.'classes/' );
 define( 'KERNEL_PKG_ADMIN_PATH', KERNEL_PKG_PATH.'admin/' );
 
 define( 'CONFIG_PKG_PATH',    BIT_ROOT_PATH.'config/' );
+define( 'CONFIG_PKG_URL',    BIT_ROOT_URL.'config/' );
 define( 'CONFIG_PKG_INCLUDE_PATH', CONFIG_PKG_PATH.'includes/' );
 define( 'CONFIG_PKG_CLASS_PATH', CONFIG_PKG_INCLUDE_PATH.'classes/' );
 define( 'CONFIG_PKG_ADMIN_PATH', CONFIG_PKG_PATH.'admin/' );
@@ -249,7 +250,7 @@ define( 'UTIL_PKG_CLASS_PATH', UTIL_PKG_INCLUDE_PATH.'classes/' );
 define( 'UTIL_PKG_ADMIN_PATH', UTIL_PKG_PATH.'admin/' );
 
 if( !defined( 'EXTERNAL_LIBS_PATH' ) ) {
-	define( 'EXTERNAL_LIBS_PATH',      BIT_ROOT_PATH.'externals/' );
+	define( 'EXTERNAL_LIBS_PATH',      BIT_ROOT_PATH.'config/externals/' );
 }
 
 if( !defined( 'TEMP_PKG_PATH' ) ) {

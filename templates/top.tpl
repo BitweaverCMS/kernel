@@ -17,7 +17,7 @@
 				</li>
 			</ul>
 			{else}
-				<a href="{$smarty.const.USERS_PKG_URL}login.php">{tr}login{/tr}</a>
+				<a href="{$smarty.const.USERS_PKG_URL}signin">{tr}login{/tr}</a>
 				{if $gBitSystem->isFeatureActive( 'users_allow_register' )}
 					{tr}or{/tr} <a href="{$smarty.const.USERS_PKG_URL}register.php">{tr}register{/tr}</a> 
 				{/if}

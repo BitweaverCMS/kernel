@@ -56,7 +56,7 @@
 </nav>
 
 {if $gBitSystem->isFeatureActive('site_top_bar_js') && $gBitSystem->isFeatureActive('site_top_bar_dropdown')}
-	<script type="text/javascript"> /*<![CDATA[*/
+	<script> /*<![CDATA[*/
 		var listMenu = new FSMenu('listMenu', true, 'left', 'auto', '-999');
 		{if $gBitSystem->isFeatureActive( 'site_top_bar_js_fade' )}
 			listMenu.animations[listMenu.animations.length] = FSMenu.animFade;

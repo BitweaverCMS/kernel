@@ -15,7 +15,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="referrer" content="always">
 
-	<link rel="icon" href="{$gBitThemes->getStyleUrl()}favicon.png" type="image/png" />
+	<link rel="icon" href="{$gBitThemes->getStyleUrl()}favicon.png" type="image/png">
 
 	{**** if the theme has a header, it goes first ****}
 	{if file_exists("`$smarty.const.CONFIG_THEME_PATH`theme_head_inc.tpl")}

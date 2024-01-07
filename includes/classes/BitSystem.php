@@ -1630,6 +1630,9 @@ class BitSystem extends BitSingleton {
 						$ret = 'jps'; break;
 					case 'image/x-freehand':
 						$ret = 'fh'; break;
+					default:
+						list( $class, $type ) = explode( '/', $pMimeType );
+						$ret = $type; break;
 				}
 			}
 		}

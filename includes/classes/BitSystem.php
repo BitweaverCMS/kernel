@@ -773,7 +773,12 @@ class BitSystem extends BitSingleton {
 // bit_error_log( "PERMISSION DENIED: $pPermission $pMsg" );
 		$gBitSmarty->assign( 'msg', tra( $pMsg ) );
 		$this->setHttpStatus( HttpStatusCodes::HTTP_NOT_FOUND );
-		$this->display( "error.tpl" );
+		if( $gBitThemes->isAjaxRequest() ) {
+			print json_encode( array( 'error' => $pMsg ) );
+		} else {
+			$gBitSmarty->assign( 'metaNoIndex', 1 );
+			$this->display( "error.tpl" );
+		}
 		die;
 	}
 

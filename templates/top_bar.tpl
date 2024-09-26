@@ -1,5 +1,5 @@
 {strip}
-<nav class="navbar navbar-default {if $gBitSystem->getConfig('layout-header')}navbar-static-top{/if}" id="bittopbar">
+<nav class="navbar navbar-default {if $gBitSystem->getConfig('layout-header')}navbar-static-top{/if}" id="bw-top-bar">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bit-top-menu">{booticon iname="fa-bars"}</button>
 		<a class="navbar-brand" href="{$smarty.const.BIT_ROOT_URL}" {if $gBitSystem->getConfig('site_slogan')} title="{$gBitSystem->getConfig('site_slogan')|escape}" {/if}>{$gBitSystem->getConfig('site_title')}</a>

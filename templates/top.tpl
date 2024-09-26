@@ -1,5 +1,5 @@
-<div id="bittop">
-	<div class="bittop-wrapper">
+<div id="bw-top">
+	<div class="bw-top-wrapper">
 		<a class="brand" href="{$smarty.const.BIT_ROOT_URL}" {if $gBitSystem->getConfig('site_slogan')} title="{$gBitSystem->getConfig('site_slogan')|escape}" {/if}>{$gBitSystem->getConfig('site_title')}</a>
 		<div class="pull-right">
 			{if $gBitUser->isRegistered()}

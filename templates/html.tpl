@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$bitlanguage|default:'en'}" lang="{$bitlanguage|default:'en'}" {$htmlTagAttributes} {if $gBitLanguage->isLanguageRTL()}dir="rtl"{/if}>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$bitlanguage|default:'en'}" lang="{$bitlanguage|default:'en'}" {if $gBitLanguage->isLanguageRTL()}dir="rtl"{/if}>
 {if $gBitThemes->mDisplayMode}
 	{assign var=displayClass value=$gBitThemes->mDisplayMode|cat:"mode"|cat:" "}
 {/if}
-{if $gQueryUser->mUserId}
+{if !empty($gQueryUser->mUserId)}
 	{assign var=userClass value="user"|cat:$gQueryUser->mUserId|cat:" "}
 {/if}
 {if $gContent->mContentId}

@@ -21,7 +21,7 @@
 {if $canonicalLink}
 <link rel="canonical" href="{$canonicalLink|escape}"/>
 {/if}
-{if $relTags}
+{if !empty($relTags)}
 {$relTags}
 {/if}
 {if $gBitSystem->isIndexed()}

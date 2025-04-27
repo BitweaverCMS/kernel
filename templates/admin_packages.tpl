@@ -45,10 +45,10 @@
 
 				{$install_unavailable}
 
-				<div class="bit-columns">
+				<div class="bw-columns">
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && !$package.required}
-					<div class="bit-column-cell">
+					<div class="bw-column-cell">
 					<div class="well">
 						<div class="form-group clear">
 							<div class="formlabel">
@@ -93,10 +93,10 @@
 					{tr}A service package is a package that allows you to extend the way you display bitweaver content - such as <em>categorising your content</em>. Activating more than one of any service type might lead to conflicts.<br />
 					We therefore recommend that you <em>	enable only one of each</em> <strong>service type</strong>.{/tr}
 				</p>
-				<div class="bit-columns">
+				<div class="bw-columns">
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && $package.service && !$package.required}
-					<div class="bit-column-cell">
+					<div class="bw-column-cell">
 					<div class="well">
 						<div class="form-group">
 							<div class="formlabel">
@@ -145,10 +145,10 @@
 
 		{jstab title="Required"}
 			{legend legend="Required packages installed on your system"}
-				<div class="bit-columns">
+				<div class="bw-columns">
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && !$package.service && $package.required}
-					<div class="bit-column-cell">
+					<div class="bw-column-cell">
 					<div class="well">
 						<div class="form-group">
 							<div class="formlabel">
@@ -166,10 +166,10 @@
 				</div>
 			{/legend}
 			{legend legend="Required services installed on your system"}
-				<div class="bit-columns">
+				<div class="bw-columns">
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if $package.installed && $package.service && $package.required}
-					<div class="bit-column-cell">
+					<div class="bw-column-cell">
 					<div class="well">
 						<div class="form-group">
 							<div class="formlabel">
@@ -287,10 +287,10 @@
 
 				<hr style="clear:both" />
 
-				<div class="bit-columns">
+				<div class="bw-columns">
 				{foreach key=name item=package from=$gBitSystem->mPackages}
 					{if ((1 or $package.tables) && !$package.required && !$package.installed) }
-					<div class="bit-column-cell">
+					<div class="bw-column-cell">
 					<div class="well">
 						<div class="form-group clear">
 							<div class="formlabel">

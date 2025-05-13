@@ -405,9 +405,11 @@ class BitSystem extends BitSingleton {
 		// Add the user to an apache ENV variable so it can be logged, like:
 		// LogFormat "%V %h %l %{USERID}e %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" \"%{Cookie}n\""  combinedcookie
 		global $gBitUser;
-		if( is_object( $gBitUser ) ) {
-			apache_setenv( 'USERID', $gBitUser->getField('login', '-'), true );
+		$loginId  = '-';
+		if( is_object( $gBitUser ) && $gBitUser->isRegistered() ) {
+			$loginId = $gBitUser->getField('login', '-');
 		}
+		$_SERVER['USERID'] = $loginId;
 
 		// see if we have a custom status other than 200 OK
 		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( $this->mHttpStatus ) );
@@ -1471,9 +1473,9 @@ class BitSystem extends BitSingleton {
 		$r = '';
 		for( $i = 0; $i < 8; $i++ ) {
 			if( $i % 2 ) {
-				$r .= $vocales{rand( 0, strlen( $vocales ) - 1 )};
+				$r .= $vocales[rand( 0, strlen( $vocales ) - 1 )];
 			} else {
-				$r .= $consonantes{rand( 0, strlen( $consonantes ) - 1 )};
+				$r .= $consonantes[rand( 0, strlen( $consonantes ) - 1 )];
 			}
 		}
 		return $r;

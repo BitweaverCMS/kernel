@@ -340,12 +340,15 @@ class BitDate {
 	 */
 	function getDate($d=false,$fast=false)
 	{
+		return getdate( $d );
+/* 2025-05-24 spiderr - REMOVED - this looks like early PHP madness
 		if ($d === false) return $this->getdate();
 		if ((abs($d) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
 			if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= 0) // if windows, must be +ve integer
 				return @$this->_getDate($d);
 		}
 		return $this->_getDate($d,$fast);
+*/
 	}
 
 	/*
@@ -378,6 +381,8 @@ class BitDate {
 	 * @param boolean Ignore timezone
 	 * @return array
 	 */
+/* 2025-05-24 spiderr - REMOVED - this code is as ancient as the dates it handles. use php getdate() function instead
+
 	function _getDate($origd=false,$fast=false,$is_gmt=false)
 	{
 		static $YRS;
@@ -552,6 +557,7 @@ class BitDate {
 			0 => $origd
 		);
 	}
+*/
 
 	/*
 	 * Accepts unix timestamp and iso date format
@@ -590,14 +596,18 @@ class BitDate {
 	function date($fmt,$d=false,$is_gmt=false)
 	{
 	static $daylight;
-		if ($d === false) return ($is_gmt)? @gmdate($fmt): @date($fmt);
-			if ((abs($d) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
-				if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= 0) // if windows, must be +ve integer
-					return ($is_gmt)? @gmdate($fmt,$d): @date($fmt,$d);
+		if ($d === false) {
+			return ($is_gmt)? @gmdate($fmt): @date($fmt);
+		}
+		if ((abs($d) <= 0x7FFFFFFF)) { // check if number in 32-bit signed range
+			if (!defined('ADODB_NO_NEGATIVE_TS') || $d >= 0) { // if windows, must be +ve integer
+				return ($is_gmt)? @gmdate($fmt,$d): @date($fmt,$d);
+			}
 		}
 		$_day_power = 86400;
 
-		$arr = $this->_getdate($d,true,$is_gmt);
+//		$arr = $this->_getDate($d,true,$is_gmt);
+		$arr = getdate( $d );
 
 //		if (!isset($daylight)) $daylight = function_exists('adodb_daylight_sv');
 //		if ($daylight) adodb_daylight_sv($arr, $is_gmt);

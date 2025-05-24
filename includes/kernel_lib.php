@@ -230,7 +230,7 @@ function detoxify( &$pParamHash, $pHtml = FALSE, $pUrldecode = TRUE) {
 				if( $pHtml ) {
 					$newValue = $pUrldecode ? urldecode( $value ) : $value;
 					$pParamHash[$key] = htmlspecialchars( ( $newValue ), ENT_NOQUOTES );
-				} elseif( preg_match( "/<script[^>]*>/i", urldecode( $value ) ) ) {
+				} elseif( preg_match( "/<script[^>]*>/i", urldecode( $value ?? '' ) ) ) {
 					unset( $pParamHash[$key] );
 				}
 			}
@@ -665,10 +665,8 @@ function bit_redirect( $pUrl, $pStatusCode=HttpStatusCodes::HTTP_FOUND ) {
 		$pStatusCode = NULL;
 	}
 
-	global $gBitUser;
-	if( is_object( $gBitUser ) ) {
-		apache_setenv( 'USERID', $gBitUser->getField('login', '-'), true );
-	}
+	global $gBitSystem;
+	$gBitSystem->outputHeader();
 
 	// clean up URL before executing it
 	while( strstr( $pUrl, '&&' ) ) {

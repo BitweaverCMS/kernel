@@ -387,7 +387,7 @@ abstract class BitBase {
 		}
 		if( is_array( $pId )) {
 			foreach( $pId as $id ) {
-				if( (is_int( $id ) || ctype_digit( $id ) || (is_numeric( $id ) ? intval( $id ) == $id : false)) ) {
+				if( empty( $id ) || is_bool( $id ) || (is_int( $id ) || ctype_digit( $id ) || (is_numeric( $id ) ? intval( $id ) == $id : false)) ) {
 					return FALSE;
 				}
 			}
@@ -521,7 +521,7 @@ abstract class BitBase {
 
 		if( !isset( $pListHash['offset'] ) || !is_numeric( $pListHash['offset'] ) ) {
 			$pListHash['offset'] = 0;
-			if( static::verifyId( $pListHash, 'page' )) {
+			if( static::verifyIdParameter( $pListHash, 'page' )) {
 				$pListHash['offset'] = ((int)$pListHash['page'] - 1) * $pListHash['max_records'];
 			} else {
 				if( !empty( $_REQUEST["offset"] )) {

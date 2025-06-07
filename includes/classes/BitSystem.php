@@ -1274,7 +1274,7 @@ class BitSystem extends BitSingleton {
 			// TODO: my_home is deprecated, but was the default for BWR1. remove in DILLINGER - spiderr
 			if( $gBitUser->isRegistered() ) {
 				if( !$gBitUser->isRegistered() ) {
-					$url = USERS_PKG_URL.'login.php';
+					$url = USERS_PKG_URL.'signin.php';
 				} else {
 					if( $pIndexType == 'my_page' ) {
 						$url = $gBitSystem->getConfig( 'users_login_homepage', USERS_PKG_URL.'my.php' );
@@ -1297,7 +1297,7 @@ class BitSystem extends BitSingleton {
 					}
 				}
 			} else {
-				$url = USERS_PKG_URL . 'login.php';
+				$url = USERS_PKG_URL . 'signin.php';
 			}
 		} elseif( in_array( $pIndexType, array_keys( $gBitSystem->mPackages ) ) ) {
 			$work = strtoupper( $pIndexType ).'_PKG_URL';
@@ -1320,7 +1320,7 @@ class BitSystem extends BitSingleton {
 			if( $this->isPackageActive( 'wiki' ) ) {
 				$url = WIKI_PKG_URL;
 			} elseif( !$gBitUser->isRegistered() ) {
-				$url = USERS_PKG_URL . 'login.php';
+				$url = USERS_PKG_URL . 'signin.php';
 			} else {
 				$url = USERS_PKG_URL . 'my.php';
 			}

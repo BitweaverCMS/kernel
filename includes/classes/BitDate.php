@@ -198,16 +198,16 @@ class BitDate {
 			if (preg_match(
 				"|^([0-9]{1,2})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{3,4}), ?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,8}))?|",
 				($iso_date), $rr)) {
-					if (!isset($rr[5])) $ret = $this->gmmktime(0,0,0,$rr[2],$rr[1],$rr[3]);
-					else $ret = @$this->gmmktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[1],$rr[3]);
+					if (!isset($rr[5])) $ret = $this->mktime(0,0,0,$rr[2],$rr[1],$rr[3]);
+					else $ret = @$this->mktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[1],$rr[3]);
 				}
 		} else {	
 				// Input y.m.d h:m:s
 				if (preg_match(
 					"|^([0-9]{3,4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|",
 					($iso_date), $rr)) {
-						if (!isset($rr[5])) $ret = $this->gmmktime(0,0,0,$rr[2],$rr[3],$rr[1]);
-						else $ret = @$this->gmmktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[3],$rr[1]);
+						if (!isset($rr[5])) $ret = $this->mktime(0,0,0,$rr[2],$rr[3],$rr[1]);
+						else $ret = @$this->mktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[3],$rr[1]);
 			}
 		}
 		return $ret;

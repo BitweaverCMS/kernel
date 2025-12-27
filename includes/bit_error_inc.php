@@ -111,9 +111,7 @@ function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
 		);
 	}
 	foreach( $pGlobalVars as $global => $hash ) {
-		if( !empty( $hash )) {
-			$parameters .= $separator.$global.': '.$separator.var_export( $hash, TRUE ).$separator;
-		}
+		$parameters .= $separator.$global.': '.$separator.var_export( $hash, TRUE ).$separator;
 	}
 	$parameters = preg_replace( "/\n/", $separator.$indent, $parameters );
 

@@ -176,6 +176,8 @@ EOB;
 
 // clear cache
 if ($AUTHENTICATED && isset($MYREQUEST['CC']) && $MYREQUEST['CC']) {
+	global $gBitSystem;
+	$gBitSystem->mDb->mDb->CacheFlush();
     apcu_clear_cache();
 }
 

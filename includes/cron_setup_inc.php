@@ -7,5 +7,6 @@ $_SERVER['SERVER_ADDR'] = '127.0.0.1';
 $_SERVER['REQUEST_URI'] = 'cron';
 $_SERVER['REMOTE_ADDR'] = 'cron';
 $_SERVER['HTTP_HOST'] = '';
+$_SERVER['HTTPS'] = 'on';
 
 

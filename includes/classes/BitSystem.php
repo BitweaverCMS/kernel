@@ -129,7 +129,8 @@ class BitSystem extends BitSingleton {
 
 		// Set the separator for PHP generated tags to be &amp; instead of &
 		// This is necessary for XHTML compliance
-		ini_set( "arg_separator.output", "&amp;" );
+// No longer needed in HTML5 world
+//		ini_set( "arg_separator.output", "&amp;" );
 
 		$this->defineTempDir();
 

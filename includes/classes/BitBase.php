@@ -208,7 +208,7 @@ abstract class BitBase {
 
 	public static function loadFromCache( $pCacheKey, $pContentTypeGuid = NULL ) {
 		$ret = NULL;
-//vd( 'LOAD '.get_called_class().' '.static::getCacheUuidFromKey( $pCacheKey, $pContentTypeGuid ) );
+//vd( 'LOAD '.get_called_class().' ACTIVE:'.(int)static::isCacheActive().' '.static::getCacheUuidFromKey( $pCacheKey, $pContentTypeGuid ) );
 		if( static::isCacheActive() && static::isCacheableClass() && !empty( $pCacheKey ) ) {
 			if( $ret = apcu_fetch( static::getCacheUuidFromKey( $pCacheKey, $pContentTypeGuid ) ) ) {
 				$ret->mCacheObject = TRUE;

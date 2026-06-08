@@ -20,7 +20,7 @@
  */
 global $ADODB_CACHE_DIR;
 if( empty( $ADODB_CACHE_DIR )) {
-	$ADODB_CACHE_DIR = sys_get_temp_dir().'/php/adodb/'.$_SERVER['HTTP_HOST'].'/';
+	$ADODB_CACHE_DIR = sys_get_temp_dir().'/php/'.$_SERVER['HTTP_HOST'].'/adodb/';
 }
 mkdir_p( $ADODB_CACHE_DIR );
 

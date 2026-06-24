@@ -318,7 +318,9 @@ function function_enabled ( $pName ) {
 
 function verify_hex_color( $pColor ) {
 	$ret = NULL;
-	
+	if( $pColor === NULL ) {
+		return $ret;
+	}
 	if( preg_match('/^#[a-f0-9]{6}$/i', $pColor) ) {
 		$ret = $pColor;
 	} elseif( preg_match('/^[a-f0-9]{6}$/i', $pColor)) {

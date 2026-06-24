@@ -98,6 +98,9 @@ class BitSystem extends BitSingleton {
 	// Output http status
 	public $mHttpStatus = HttpStatusCodes::HTTP_OK;
 
+	// Mime Types
+	public $mMimeTypes = array();
+
     protected static $singleton = null;
 	protected static function getSingleInstance() {
 		return static::$singleton;
@@ -629,7 +632,7 @@ class BitSystem extends BitSingleton {
 		// and $this->getConfig('package_'.$name) == 'y'
 
 		$ret = 'n';
-		if( defined( strtoupper( $pPackageName ).'_PKG_NAME' ) ) {
+		if( $pPackageName && defined( strtoupper( $pPackageName ).'_PKG_NAME' ) ) {
 			if( $name = strtolower( @constant(( strtoupper( $pPackageName ).'_PKG_NAME' )))) {
 				// kernel always active
 				if( $name == 'kernel' ) {
@@ -1591,7 +1594,7 @@ class BitSystem extends BitSingleton {
 	 */
 	function verifyMimeType( $pFile ) {
 		$mime = NULL;
-		if( file_exists( $pFile ) && filesize( $pFile ) ) {
+		if( $pFile && file_exists( $pFile ) && filesize( $pFile ) ) {
 			if( function_exists( 'finfo_open' ) ) {
 				if( is_windows() && defined( 'PHP_MAGIC_PATH' ) && is_readable( PHP_MAGIC_PATH )) {
 					$finfo = finfo_open( FILEINFO_MIME, PHP_MAGIC_PATH );

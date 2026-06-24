@@ -254,7 +254,7 @@ if( !defined( 'EXTERNAL_LIBS_PATH' ) ) {
 }
 
 if( !defined( 'TEMP_PKG_PATH' ) ) {
-	define( 'TEMP_PKG_PATH', sys_get_temp_dir().'/php/'.$_SERVER['HTTP_HOST'] ).'/';
+	define( 'TEMP_PKG_PATH', sys_get_temp_dir().'/php/'.$_SERVER['HTTP_HOST'].'/' );
 	if( !file_exists( TEMP_PKG_PATH ) ) {
 		mkdir( TEMP_PKG_PATH, 2775, TRUE );
 	}

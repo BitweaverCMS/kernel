@@ -694,5 +694,27 @@ abstract class BitBase {
 		}
 	}
 
+	// Smarty 4: helper for classes to register their own methods as Smarty modifiers.
+	// Call from __construct() so registration happens automatically on first instantiation.
+	public static function registerSmartyFunction( $name, $callable ) {
+		global $gBitSmarty;
+		if( is_object( $gBitSmarty ) ) {
+			try {
+				$gBitSmarty->registerPlugin( 'modifier', $name, $callable );
+			} catch( \SmartyException $e ) {}
+		}
+	}
+
+	// Smarty 4: register a class so templates can call static methods and constants via ClassName::member().
+	// Call from __construct() so registration happens on first instantiation.
+	public static function registerSmartyClass( $alias, $class ) {
+		global $gBitSmarty;
+		if( is_object( $gBitSmarty ) ) {
+			try {
+				$gBitSmarty->registerClass( $alias, $class );
+			} catch( \SmartyException $e ) {}
+		}
+	}
+
 }
 

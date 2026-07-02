@@ -144,7 +144,6 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 
         }
 
-		$isReported = TRUE;
 		if( $isReported ) {
 //eb( $isReported, $errType, $errno, $reportingLevel, $errfile );
 			$errorSubject = 'PHP '.$errType.' on '.php_uname( 'n' ).': '.$errstr;

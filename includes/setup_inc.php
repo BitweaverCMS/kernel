@@ -97,7 +97,8 @@ require_once( UTIL_PKG_INCLUDE_PATH.'phpsniff/phpSniff.class.php' );
 global $gSniffer;
 $gSniffer = new phpSniff;
 if( file_exists( ini_get( 'browscap' ) ) ) {
-	$browserInfo = array_merge( $gSniffer->_browser_info, get_browser( null, true ) );
+	$browserData = get_browser( null, true );
+	$browserInfo = array_merge( $gSniffer->_browser_info, is_array( $browserData ) ? $browserData : [] );
 	$gBitSmarty->assignByRef( 'gBrowserInfo', $browserInfo );
 } else {
 	$gBitSmarty->assignByRef( 'gBrowserInfo', $gSniffer->_browser_info );

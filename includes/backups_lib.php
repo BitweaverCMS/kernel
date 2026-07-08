@@ -32,7 +32,7 @@ class BackupLib extends BitBase {
 		$part = '';
 
 		while ($res = $result->fetchRow()) {
-			list($key, $val) = each($res);
+			reset($res); $key = key($res); $val = current($res);
 
 			if (!strstr($val, 'babl')) {
 				// Now delete the table contents
@@ -136,7 +136,7 @@ class BackupLib extends BitBase {
 		$part = '';
 
 		while ($res = $result->fetchRow()) {
-			list($key, $val) = each($res);
+			reset($res); $key = key($res); $val = current($res);
 
 			if (!strstr($val, 'babl')) {
 				// Now dump the table

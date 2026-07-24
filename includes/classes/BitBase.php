@@ -112,6 +112,8 @@ abstract class BitBase {
 		}
 		$this->mErrors = array();
 		$this->mInfo = array();
+		// Smarty 4: register leaf class for {ClassName::method()} (late static binding)
+		static::registerForSmarty();
 	}
 
 	function __destruct() {
@@ -694,8 +696,54 @@ abstract class BitBase {
 		}
 	}
 
-	// Smarty 4: helper for classes to register their own methods as Smarty modifiers.
-	// Call from __construct() so registration happens automatically on first instantiation.
+	/**
+	 * Classes successfully registered with Smarty for static template access.
+	 * Keyed by alias; prevents repeated registerClass calls after the first success.
+	 * @var array
+	 */
+	protected static $sSmartyRegistered = array();
+
+	/**
+	 * Register this class (or $pAlias) with Smarty so templates can use
+	 * {ClassName::staticMethod()} and ClassName::CONSTANT under Smarty 4.
+	 *
+	 * Preferred API for template-visible class methods. Prefer this over
+	 * registerSmartyFunction() for class statics; use registerSmartyFunction()
+	 * only for free-function pipe modifiers (e.g. {$x|abbreviate_gravity}).
+	 *
+	 * Call sites:
+	 *  1. Automatic — BitBase::__construct() calls static::registerForSmarty()
+	 *     so any constructed subclass is registered via late static binding.
+	 *  2. Explicit require-time — for abstract / static-helper classes that
+	 *     appear in templates without being instantiated:
+	 *       BasePrintProduct::registerForSmarty();
+	 *     Place after the class definition in the class file (runs on require).
+	 *
+	 * Idempotent. Safe when $gBitSmarty is not yet initialised (no-ops; a later
+	 * call succeeds). Does not mark registered until Smarty accepts the class.
+	 *
+	 * @param string|null $pAlias Template name; defaults to static::class
+	 */
+	public static function registerForSmarty( $pAlias = null ) {
+		$class = static::class;
+		$alias = ( $pAlias !== null && $pAlias !== '' ) ? $pAlias : $class;
+		if( !empty( self::$sSmartyRegistered[$alias] ) ) {
+			return;
+		}
+		global $gBitSmarty;
+		if( is_object( $gBitSmarty ) ) {
+			try {
+				$gBitSmarty->registerClass( $alias, $class );
+				self::$sSmartyRegistered[$alias] = true;
+			} catch( \SmartyException $e ) {
+				// Already registered by another path — treat as success
+				self::$sSmartyRegistered[$alias] = true;
+			}
+		}
+	}
+
+	// Smarty 4: helper to register free functions or callables as pipe modifiers.
+	// Prefer registerForSmarty() for class static methods used as {Class::method()}.
 	public static function registerSmartyFunction( $name, $callable ) {
 		global $gBitSmarty;
 		if( is_object( $gBitSmarty ) ) {
@@ -705,14 +753,17 @@ abstract class BitBase {
 		}
 	}
 
-	// Smarty 4: register a class so templates can call static methods and constants via ClassName::member().
-	// Call from __construct() so registration happens on first instantiation.
+	// Smarty 4: low-level class registration (alias → class string).
+	// Prefer registerForSmarty() so late static binding supplies the class name.
 	public static function registerSmartyClass( $alias, $class ) {
 		global $gBitSmarty;
 		if( is_object( $gBitSmarty ) ) {
 			try {
 				$gBitSmarty->registerClass( $alias, $class );
-			} catch( \SmartyException $e ) {}
+				self::$sSmartyRegistered[$alias] = true;
+			} catch( \SmartyException $e ) {
+				self::$sSmartyRegistered[$alias] = true;
+			}
 		}
 	}
 

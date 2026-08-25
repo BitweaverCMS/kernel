@@ -24,6 +24,8 @@ Does not own content semantics, users, or presentation-specific business rules.
 
 ## Documentation map
 
+- [Agent development guide](bitweaver.md) — generic deployment selection,
+  safety, planning, and package-documentation loading protocol.
 - [Architecture](architecture.md) — initialization, components, and request flow.
 - [Source reference](source-reference.md) — source-derived files, classes,
   controllers, schema artifacts, plugins, and templates.

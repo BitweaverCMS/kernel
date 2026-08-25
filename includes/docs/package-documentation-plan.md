@@ -62,6 +62,21 @@ Add focused files when the package warrants them:
 Do not add an empty standardized file merely for symmetry. Link every focused
 file from `README.md`.
 
+## Discovery and agent guidance
+
+`includes/docs/README.md` is the standard index for every documented package.
+Discover installed documentation with:
+
+```bash
+ls "$WORK_ROOT"/*/includes/docs/README.md
+```
+
+Kernel provides the generic agent development guide at
+`kernel/includes/docs/bitweaver.md`. An installation may add custom or private
+rules at `config/includes/docs/deployment.md`; loaders read Kernel first and the
+optional Config overlay second. Upstream packages must never reference the
+contents of a particular deployment overlay.
+
 ## Evidence hierarchy
 
 Use evidence in this order:

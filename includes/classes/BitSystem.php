@@ -1404,7 +1404,12 @@ class BitSystem extends BitSingleton {
 			}
 
 			if( !empty( $pListInfo['query_string'] ) ) {
-				$pageUrl = $baseUrl.'?'.$pListInfo['query_string'];
+				// Ensure trailing separator so 'page=N' joins correctly
+				$qs = $pListInfo['query_string'];
+				if( substr( $qs, -1 ) !== '&' && substr( $qs, -5 ) !== '&amp;' ) {
+					$qs .= '&';
+				}
+				$pageUrl = $baseUrl.'?'.$qs;
 			} else {
 				$queryString = '';
 				foreach( array( 'parameters', 'ihash' ) as $paramKey ) {

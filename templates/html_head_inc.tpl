@@ -24,7 +24,10 @@
 {if !empty($relTags)}
 {$relTags}
 {/if}
-{if $gBitSystem->isIndexed()}
+{if !empty($metaNoIndex)}
+{* Page-specific opt-out (e.g. non-default list sort/page-size); still follow links *}
+<meta name="robots" content="noindex,follow">
+{elseif $gBitSystem->isIndexed()}
 <meta name="robots" content="index,follow">
 {else}
 <meta name="robots" content="noindex,nofollow">

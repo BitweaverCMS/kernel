@@ -65,6 +65,14 @@ being asked.
 `getConfig()` reads with a default; `setConfig()` changes in-memory state;
 `storeConfig()` persists. Match helpers operate on groups of names.
 
+`BitSystem` is an APCu-cached singleton when `BIT_CACHE_OBJECTS` is enabled.
+`mConfig` is included in that cached object. For per-request presentation
+overrides (for example `layout-body=-fluid` on a designer or admin page), use
+`setRequestConfig()` so `getConfig()` sees the override without mutating the
+shared `mConfig` hash that can be written back to APCu. Changing an
+already-loaded key through `setConfig()` marks the singleton non-cacheable for
+the rest of the request. Do not assign `$gBitSystem->mConfig[...]` directly.
+
 Always pass the owning package when persisting a package preference. Avoid
 using configuration as transient request state. A missing key and a stored
 empty value can have different semantics, so preserve established defaults.

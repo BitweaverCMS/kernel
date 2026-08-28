@@ -38,6 +38,8 @@ Non-negotiable. Apply in every session.
 
 1. **No automatic changes.** The agent must never write, edit, delete, or rename
    any file without explicit user confirmation for that specific change.
+   Exception: **trivial PHP notice/warning one-liners** — apply immediately per
+   Planning Workflow, then report; do not wait for approval.
 
 2. **No automatic commits.** Run `git commit` only when the current prompt
    explicitly requests a commit or invokes Session Closeout. Never `git push`,
@@ -50,7 +52,9 @@ Non-negotiable. Apply in every session.
    - Wait for the user to say "implement" (or equivalent) before touching any file.
 
 4. **Show diffs before applying.** Display the exact diff and ask for final
-   confirmation before writing any change.
+   confirmation before writing any change. Exception: **trivial PHP
+   notice/warning one-liners** may be applied immediately — see Planning
+   Workflow — then report what changed. Do not ask for approval on those.
 
 5. **One change at a time.** Each logical change is confirmed individually
    unless the user explicitly approves a batch.
@@ -310,8 +314,28 @@ A named, active plan file must exist before any code is read or changed.
 > "Is this a standalone fix, part of a larger feature, or an ad-hoc change?
 > Should I create a plan, add to an existing one, or proceed without one?"
 
-Trivial one-liners may proceed without a plan file if the agent states this
-explicitly and the user agrees.
+### Trivial fixes (PHP notices / warnings / one-liners)
+
+Trivial one-liners may proceed without a plan file and **without waiting for
+approval**. When the user pastes a PHP `NOTICE` / `WARNING` / `ERROR` (or
+similar) whose fix is a small, local guard — undefined array key or variable,
+null check, wrong variable name, obvious arity/typo — use this fast path:
+
+1. State explicitly: **"Trivial fix, no plan."**
+2. Give a short root cause (file, line, why).
+3. Apply the one-line (or equivalently tiny) fix immediately.
+4. Report what changed (the exact edit is enough; no approval prompt).
+
+Do **not** add process overhead that the pasted warning does not need:
+
+- no plan-or-not multiple-choice menus
+- no deployment/package retarget quizzes when the stack trace already names the
+  file (note any `$WORK_ROOT` mismatch in one line and continue)
+- no "implement?" / "apply?" confirmation for the trivial edit itself
+
+Still required: no automatic commits, and analyse before editing. If the
+diagnosis shows the fix is broader than a local guard, leave the fast path and
+use the normal planning workflow (propose, confirm, then write).
 
 ---
 

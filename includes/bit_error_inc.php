@@ -165,9 +165,11 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 		}
     }
 
-    // Execute PHP's internal error handler
-    return FALSE;
+	// Do not fall through to PHP/Xdebug's default logger. With xdebug.mode=develop
+	// that dumps full call arguments into the error log (sessions, orders, card data).
+	return TRUE;
 }
+
 
 function bit_shutdown_handler() {
 	$isError = false;

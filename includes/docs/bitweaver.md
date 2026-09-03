@@ -91,6 +91,16 @@ Non-negotiable. Apply in every session.
     wait for the user to approve that specific invocation. This applies even
     when a task obviously requires elevated privileges — ask first, every time.
 
+12. **Do not start new work in a dirty package repository.** Before beginning a
+    new task, run `git status` on the **owning package submodule** (the
+    checkout under `$WORK_ROOT/<package>/`, not the deployment supermodule).
+    If that working tree has uncommitted changes — modified, staged, or
+    untracked files that are not part of the current approved task — **stop**.
+    Report the dirty paths and wait for explicit user confirmation before
+    writing any files. A clean working tree that is merely ahead of (or behind)
+    `origin` is not dirty. Dirty **supermodule submodule pointers** alone do
+    not block work in a clean package checkout.
+
 ---
 
 ## Project Overview
@@ -246,6 +256,9 @@ Confirm readiness:
 ```
 1.  Session startup completes (Steps 0–4b above).
 2.  The agent enters the planning workflow — confirm scope before any code work.
+    Before the first write of a new task, confirm the owning package submodule
+    working tree is clean (Critical Operating Rule 12). If it is dirty, stop
+    and wait for user confirmation; do not start work.
 3.  The agent reads only the source files necessary for the task.
 4.  The agent analyses and proposes a solution in plain language.
 5.  User approves or redirects.
@@ -288,6 +301,20 @@ commit verified session work. They do not authorize a push.
 Prefer committing verified work and documenting residual gaps over leaving
 verified session work dirty after closeout. Closeout is not permission to stage
 the entire worktree.
+
+### Wrap-up commits
+
+Closeout and any explicit “commit this” request still follow ownership checks:
+
+- **Commit only the code this agent changed** for the current task (including
+  plans and package docs written in this session).
+- **Do not commit the deployment supermodule**, submodule pointer updates, or
+  unrelated files in the same or another repository.
+- **If the dirty tree is mixed** (session paths plus foreign or unrelated
+  files, or mixed hunks in one file), stop and confirm with the user before
+  staging. Name the mixed paths and wait.
+- Stage explicit paths only. Never `git add -A`, `git add .`, `git commit -a`,
+  or an unscoped `git add -u`.
 
 ---
 
@@ -571,6 +598,8 @@ path belongs to the intended repository and session scope.
 - Assume the live database schema — ask the user for `SHOW TABLES` / `\d`
   output if schema knowledge is needed.
 - Skip error handling or ACL checks in proposed code.
+- Start new work in a dirty owning-package working tree without explicit
+  user confirmation (Critical Operating Rule 12).
 - Access or modify files outside `$WORK_ROOT` or `$DEV_ROOT`.
 - Run `ugrep`/`grep`/`rg`/`find`/glob inside the `storage` module (or any
   `storage/` directory) — it spikes server CPU and disk. Always exclude it.

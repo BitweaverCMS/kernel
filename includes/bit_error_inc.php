@@ -165,9 +165,14 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 		}
     }
 
-	// Do not fall through to PHP/Xdebug's default logger. With xdebug.mode=develop
-	// that dumps full call arguments into the error log (sessions, orders, card data).
-	return TRUE;
+	// On live: do not fall through to PHP/Xdebug. With xdebug.mode=develop that
+	// dumps full call arguments into the error log (sessions, orders, card data).
+	// On non-live: fall through so Xdebug develop can show the HTML error box
+	// staff use as a visible heads-up for warnings/deprecations.
+	if( defined( 'IS_LIVE' ) && IS_LIVE ) {
+		return TRUE;
+	}
+	return FALSE;
 }
 
 

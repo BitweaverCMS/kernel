@@ -155,6 +155,11 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 				} else {
 					error_log( $errorString );
 				}
+				// Admin consoles set display_errors=1; show a compact orange box
+				// without falling through to Xdebug 3 (which dumps huge arg trees).
+				if( bit_error_display_errors_enabled() ) {
+					bit_error_display_compact( $errType, $errno, $errstr, $errfile, $errline );
+				}
 			} else {
 				if( $errType == E_ERROR ) {
 					eb( $errorSubject, $errorString );
@@ -165,14 +170,66 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 		}
     }
 
-	// On live: do not fall through to PHP/Xdebug. With xdebug.mode=develop that
-	// dumps full call arguments into the error log (sessions, orders, card data).
-	// On non-live: fall through so Xdebug develop can show the HTML error box
-	// staff use as a visible heads-up for warnings/deprecations.
+	// On live: never fall through to PHP/Xdebug. Xdebug 3 develop dumps full
+	// call arguments into the error log (sessions, orders, card data). Compact
+	// on-page display is handled above when display_errors is on.
+	// On non-live: fall through so Xdebug develop can show its HTML error box.
 	if( defined( 'IS_LIVE' ) && IS_LIVE ) {
 		return TRUE;
 	}
 	return FALSE;
+}
+
+/**
+ * Whether PHP will display errors to the client (admin consoles often force this on).
+ */
+function bit_error_display_errors_enabled() {
+	$v = ini_get( 'display_errors' );
+	if( $v === false || $v === '' || $v === '0' ) {
+		return FALSE;
+	}
+	if( is_numeric( $v ) ) {
+		return ( (int) $v ) !== 0;
+	}
+	$v = strtolower( trim( (string) $v ) );
+	return ( $v === 'on' || $v === 'true' || $v === 'yes' || $v === 'stdout' || $v === 'stderr' );
+}
+
+/**
+ * Small classic-style orange error box (Xdebug 2 / RHEL7 era feel).
+ * Type, message, file:line, and a short compact stack — no arg dumps.
+ */
+function bit_error_display_compact( $pErrType, $pErrno, $pErrstr, $pErrfile, $pErrline ) {
+	static $stylePrinted = FALSE;
+
+	if( PHP_SAPI === 'cli' ) {
+		fwrite( STDERR, $pErrType.' [#'.$pErrno.']: '.$pErrstr.' in '.$pErrfile.' on line '.$pErrline."\n" );
+		return;
+	}
+
+	if( !$stylePrinted ) {
+		$stylePrinted = TRUE;
+		print '<style type="text/css">'
+			.'.bit-php-error{margin:8px 0;padding:8px 10px;border:1px solid #f0c040;border-left:6px solid #e68a00;'
+			.'background:#fff8e1;color:#333;font:13px/1.35 Menlo,Consolas,monospace;text-align:left;clear:both}'
+			.'.bit-php-error b{color:#a65c00}'
+			.'.bit-php-error .bit-php-file{color:#555;margin-top:4px}'
+			.'.bit-php-error pre{margin:6px 0 0;padding:0;white-space:pre-wrap;color:#444;font-size:12px}'
+			.'</style>';
+	}
+
+	$file = htmlspecialchars( (string) $pErrfile, ENT_QUOTES, 'UTF-8' );
+	$msg = htmlspecialchars( (string) $pErrstr, ENT_QUOTES, 'UTF-8' );
+	$type = htmlspecialchars( (string) $pErrType, ENT_QUOTES, 'UTF-8' );
+	$stack = htmlspecialchars( trim( bit_stack( 6 ) ), ENT_QUOTES, 'UTF-8' );
+
+	print '<div class="bit-php-error" role="alert">'
+		.'<b>'.$type.' [#'.(int) $pErrno.']</b>: '.$msg
+		.'<div class="bit-php-file">in '.$file.' on line '.(int) $pErrline.'</div>';
+	if( $stack !== '' ) {
+		print '<pre>'.$stack.'</pre>';
+	}
+	print '</div>';
 }
 
 

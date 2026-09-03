@@ -83,6 +83,16 @@ class BitSystem extends BitSingleton {
 	// Used to store contents of kernel_config
 	public $mConfig;
 
+	/**
+	 * Request-only config overrides. Read by getConfig(); never serialized into
+	 * the APCu-cached BitSystem singleton (not listed in __sleep).
+	 *
+	 * Use setRequestConfig() for per-request presentation overrides such as
+	 * layout-body=-fluid. Mutating mConfig via setConfig() for that purpose can
+	 * poison other requests on the same PHP-FPM worker when BIT_CACHE_OBJECTS is on.
+	 */
+	public $mRequestConfig = array();
+
 	// Used to monitor if ::registerPackage() was called. This is used to determine whether to auto-register a package
 	public $mRegisterCalled;
 
@@ -209,6 +219,10 @@ class BitSystem extends BitSingleton {
 	 * @access public
 	 **/
 	function getConfig( $pName, $pDefault = NULL ) {
+		if( array_key_exists( $pName, $this->mRequestConfig ) ) {
+			$value = $this->mRequestConfig[$pName];
+			return( empty( $value ) && !is_numeric( $value ) ? $pDefault : $value );
+		}
 		if( empty( $this->mConfig ) ) {
 			$this->loadConfig();
 		}
@@ -265,12 +279,37 @@ class BitSystem extends BitSingleton {
 	 * main point of this function is to limit direct accessing of the mConfig
 	 * hash. I will probably make mConfig private one day.
 	 *
+	 * Changing an already-loaded key marks the singleton non-cacheable so the
+	 * mutation cannot be written back to APCu. For per-request overrides that
+	 * must not affect mConfig (or other requests), use setRequestConfig().
+	 *
 	 * @param string Hash key for the mConfig value
 	 * @param string Value for the mConfig hash key
 	 */
 	function setConfig( $pName, $pValue ) {
+		$existed = is_array( $this->mConfig ) && array_key_exists( $pName, $this->mConfig );
+		$changed = !$existed || $this->mConfig[$pName] != $pValue;
 		$this->mConfig[$pName] = $pValue;
+		// Prevent APCu write-back when altering a preference already present in
+		// the cached singleton. New ephemeral keys from bootstrap (bitdomain,
+		// login URLs) still serialize on a cache-miss store, which is intended.
+		if( $existed && $changed ) {
+			$this->setCacheableObject( FALSE );
+		}
 		return( TRUE );
+	}
+
+	/**
+	 * Set a request-only config override. Visible to getConfig() for this
+	 * request only; never persisted to kernel_config or the APCu singleton.
+	 *
+	 * @param string $pName Hash key
+	 * @param mixed $pValue Override value
+	 * @return bool
+	 */
+	function setRequestConfig( $pName, $pValue ) {
+		$this->mRequestConfig[$pName] = $pValue;
+		return TRUE;
 	}
 
 	// <<< storeConfig

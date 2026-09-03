@@ -38,10 +38,13 @@ Non-negotiable. Apply in every session.
 
 1. **No automatic changes.** The agent must never write, edit, delete, or rename
    any file without explicit user confirmation for that specific change.
+   Exception: **trivial PHP notice/warning one-liners** — apply immediately per
+   Planning Workflow, then report; do not wait for approval.
 
-2. **No automatic commits.** The agent must never run `git commit`, `git push`,
-   `git merge`, `git rebase`, or any destructive git operation. Only the user
-   may commit.
+2. **No automatic commits.** Run `git commit` only when the current prompt
+   explicitly requests a commit or invokes Session Closeout. Never `git push`,
+   merge, rebase, or perform a destructive Git operation unless the user asks
+   for that exact operation.
 
 3. **Analyse first, act second.** For every problem:
    - Identify root cause and affected files/packages.
@@ -49,7 +52,9 @@ Non-negotiable. Apply in every session.
    - Wait for the user to say "implement" (or equivalent) before touching any file.
 
 4. **Show diffs before applying.** Display the exact diff and ask for final
-   confirmation before writing any change.
+   confirmation before writing any change. Exception: **trivial PHP
+   notice/warning one-liners** may be applied immediately — see Planning
+   Workflow — then report what changed. Do not ask for approval on those.
 
 5. **One change at a time.** Each logical change is confirmed individually
    unless the user explicitly approves a batch.
@@ -249,9 +254,40 @@ Confirm readiness:
 8.  The agent applies the change.
 9.  The agent updates the plan file in $DEV_ROOT/<package>/plans/.
 10. If the change surfaces a shared architectural fact, the agent proposes an
-    addition to $WORK_ROOT/<package>/includes/docs/README.md for the user to commit.
-11. User tests, then commits manually.
+    addition to $WORK_ROOT/<package>/includes/docs/README.md.
+11. The agent validates the change and reports any unverified behavior.
+12. The agent commits only on an explicit commit request or Session Closeout.
 ```
+
+---
+
+## Session Closeout
+
+The phrases **wrap up**, **session closeout**, **end session**, and equivalent
+end-of-work language invoke this procedure and count as an explicit request to
+commit verified session work. They do not authorize a push.
+
+1. Inventory every dirty owning repository with `git status` and `git diff`.
+2. Separate this session's paths and hunks from human or other-agent work.
+3. Finish plan, package documentation, and durable handoff updates first.
+   Apply any Session Closeout additions from the installation overlay
+   (`$WORK_ROOT/config/includes/docs/deployment.md`) when that file defines them.
+4. Run validation appropriate to the change: relevant package tests when
+   available, PHP lint for changed PHP, focused request/render checks for
+   controllers or Smarty changes, schema checks for migrations, and Markdown
+   link/security checks for documentation.
+5. State exactly what remains unverified. Do not describe unvalidated behavior
+   as complete. If a requested commit would include unverified work, stop and
+   let the user decide whether to commit it.
+6. Stage verified session paths explicitly, inspect `git diff --cached`, and
+   commit in each owning package repository with a focused message.
+7. Report commit hashes, validation performed, uncommitted foreign/residual
+   paths, dirty parent submodule pointers, and confirmation that nothing was
+   pushed.
+
+Prefer committing verified work and documenting residual gaps over leaving
+verified session work dirty after closeout. Closeout is not permission to stage
+the entire worktree.
 
 ---
 
@@ -278,8 +314,28 @@ A named, active plan file must exist before any code is read or changed.
 > "Is this a standalone fix, part of a larger feature, or an ad-hoc change?
 > Should I create a plan, add to an existing one, or proceed without one?"
 
-Trivial one-liners may proceed without a plan file if the agent states this
-explicitly and the user agrees.
+### Trivial fixes (PHP notices / warnings / one-liners)
+
+Trivial one-liners may proceed without a plan file and **without waiting for
+approval**. When the user pastes a PHP `NOTICE` / `WARNING` / `ERROR` (or
+similar) whose fix is a small, local guard — undefined array key or variable,
+null check, wrong variable name, obvious arity/typo — use this fast path:
+
+1. State explicitly: **"Trivial fix, no plan."**
+2. Give a short root cause (file, line, why).
+3. Apply the one-line (or equivalently tiny) fix immediately.
+4. Report what changed (the exact edit is enough; no approval prompt).
+
+Do **not** add process overhead that the pasted warning does not need:
+
+- no plan-or-not multiple-choice menus
+- no deployment/package retarget quizzes when the stack trace already names the
+  file (note any `$WORK_ROOT` mismatch in one line and continue)
+- no "implement?" / "apply?" confirmation for the trivial edit itself
+
+Still required: no automatic commits, and analyse before editing. If the
+diagnosis shows the fix is broader than a local guard, leave the fast path and
+use the normal planning workflow (propose, confirm, then write).
 
 ---
 
@@ -307,6 +363,10 @@ $DEV_ROOT/                     Personal workspace — never deployed
     files/                     Artefacts: SQL snippets, diffs, sample data
     memory/                    Local-only ephemeral context
 ```
+
+Installation overlays may define additional developer-workspace paths (for
+example a sessions index). Those belong in
+`$WORK_ROOT/config/includes/docs/deployment.md`, not in this generic guide.
 
 ### What goes where
 
@@ -413,11 +473,13 @@ Rules:
 
 ---
 
-## Git Safety Rules
+## Commit and Git Safety Policy
 
 ```bash
-# NEVER run automatically:
+# Run only on explicit request or Session Closeout:
 git commit
+
+# NEVER run automatically:
 git push
 git merge
 git rebase
@@ -433,17 +495,45 @@ git branch -a
 git submodule status
 ```
 
-### Staging: never use `git add -A` or `git add .`
+### Commit authorization
+
+- Never commit merely to checkpoint or save progress. Untested or unverified
+  history creates work for every later developer and agent.
+- A direct commit request or Session Closeout authorizes commits only after the
+  validation and ownership checks below. It never authorizes a push.
+- If validation is incomplete, identify the exact gap and ask before committing
+  the affected work. Verified independent work may still be committed.
+- After several coherent, verified changes accumulate mid-session, the agent may
+  suggest one focused commit message. A suggestion is not permission to commit.
+
+### Shared-worktree ownership
+
+Multiple humans and agents may share a deployment checkout. A commit request,
+including closeout, is not permission to stage the whole dirty tree.
+
+- Commit only paths and hunks created or intentionally edited by this agent for
+  the current task. Plans and durable documentation written by this agent count
+  as session work.
+- Before staging, inspect `git status`, relevant diffs, and submodule status.
+  Classify session-owned, foreign, and mixed paths.
+- If any dirty path is foreign, or a session file contains mixed foreign hunks,
+  stop and give the user a short path-and-reason inventory before staging.
+- When the user directs a split, stage only the approved paths or hunks. Leave
+  foreign work untouched and name it in the closeout handoff.
+- A package commit and a deployment-superproject pointer update are separate
+  commits. Do not stage a submodule pointer unless this session intentionally
+  updates that deployment pin and the user-authorized scope includes it.
+
+### Staging: explicit paths only
 
 Deployment repos contain **symlinks to proprietary code** in other submodules.
 `git add -A` and `git add .` will silently stage those symlinks and push
 proprietary partner names to public GitHub mirrors.
 
-**Always stage with `git add -u`** (modified tracked files only) or by naming
-specific files explicitly. Never use `-A` or `.` in a deployment repo.
-
-Commits are the user's sole responsibility. Provide a draft commit message
-only if the user explicitly asks for one.
+Never use `git add -A`, `git add .`, `git commit -a`, or an unscoped
+`git add -u`. Name every approved path explicitly; use patch staging only when
+the user has approved a hunk split. Before committing, verify that every cached
+path belongs to the intended repository and session scope.
 
 ---
 
@@ -474,7 +564,9 @@ only if the user explicitly asks for one.
 ## What Agents Will NOT Do
 
 - Modify any file without explicit per-change confirmation.
-- Run git commit, push, or any history-altering command.
+- Run `git commit` without a direct commit request or Session Closeout.
+- Run `git push` or another history-altering operation without an explicit
+  request for that operation.
 - Install or upgrade dependencies without confirmation.
 - Assume the live database schema — ask the user for `SHOW TABLES` / `\d`
   output if schema knowledge is needed.

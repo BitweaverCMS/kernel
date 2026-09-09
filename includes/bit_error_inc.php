@@ -167,6 +167,8 @@ function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NU
 					bt( $errorSubject );
 				}
 			}
+			// Vendor-agnostic reporters (optional packages register callbacks).
+			bit_error_notify( bit_error_build_report_hash( $errno, $errType, $errstr, $errfile, $errline, 'php_error' ) );
 		}
     }
 
@@ -230,6 +232,71 @@ function bit_error_display_compact( $pErrType, $pErrno, $pErrstr, $pErrfile, $pE
 		print '<pre>'.$stack.'</pre>';
 	}
 	print '</div>';
+}
+
+/**
+ * Register a callback for external error reporting (Sentry, GlitchTip, custom, …).
+ * Callbacks receive a scrubbed vendor-agnostic hash from bit_error_build_report_hash().
+ * Optional packages should call this from includes/bit_setup_inc.php.
+ *
+ * @param callable $pCallback
+ */
+function bit_error_register_reporter( $pCallback ) {
+	global $gBitErrorReporters;
+	if( !is_array( $gBitErrorReporters ) ) {
+		$gBitErrorReporters = array();
+	}
+	if( is_callable( $pCallback ) ) {
+		$gBitErrorReporters[] = $pCallback;
+	}
+}
+
+/**
+ * Build a product-agnostic error report hash (no raw POST/SESSION/payment dumps).
+ */
+function bit_error_build_report_hash( $pErrno, $pErrType, $pErrstr, $pErrfile, $pErrline, $pChannel = 'php_error' ) {
+	return array(
+		'errno'    => (int) $pErrno,
+		'errtype'  => (string) $pErrType,
+		'message'  => (string) $pErrstr,
+		'file'     => (string) $pErrfile,
+		'line'     => (int) $pErrline,
+		'stack'    => trim( bit_stack( 8 ) ),
+		'sapi'     => PHP_SAPI,
+		'host'     => BitBase::getParameter( $_SERVER, 'HTTP_HOST', php_uname( 'n' ) ),
+		'script'   => BitBase::getParameter( $_SERVER, 'SCRIPT_NAME', '' ),
+		'uri'      => BitBase::getParameter( $_SERVER, 'REQUEST_URI', '' ),
+		'is_live'  => ( defined( 'IS_LIVE' ) && IS_LIVE ),
+		'channel'  => (string) $pChannel,
+	);
+}
+
+/**
+ * Notify all registered error reporters. Never throws; guards against recursion.
+ *
+ * @param array $pHash from bit_error_build_report_hash()
+ */
+function bit_error_notify( $pHash ) {
+	global $gBitErrorReporters;
+	static $inNotify = FALSE;
+
+	if( $inNotify || empty( $gBitErrorReporters ) || !is_array( $gBitErrorReporters ) ) {
+		return;
+	}
+
+	$inNotify = TRUE;
+	foreach( $gBitErrorReporters as $callback ) {
+		try {
+			if( is_callable( $callback ) ) {
+				call_user_func( $callback, $pHash );
+			}
+		} catch( Exception $e ) {
+			error_log( 'bit_error_notify reporter failed: '.$e->getMessage() );
+		} catch( Throwable $e ) {
+			error_log( 'bit_error_notify reporter failed: '.$e->getMessage() );
+		}
+	}
+	$inNotify = FALSE;
 }
 
 

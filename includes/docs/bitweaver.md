@@ -36,28 +36,28 @@ Non-negotiable. Apply in every session.
    Startup protocol below. No source file may be read until `$WORK_ROOT` is
    confirmed and architecture docs are loaded.
 
-1. **No automatic changes.** The agent must never write, edit, delete, or rename
-   any file without explicit user confirmation for that specific change.
-   Exception: **trivial PHP notice/warning one-liners** — apply immediately per
-   Planning Workflow, then report; do not wait for approval.
+1. **No automatic large changes.** Do not start a multi-package feature, schema
+   change, or other large-scope work without confirmation. **Small** fixes and
+   enhancements are implemented immediately after a brief analysis — see
+   Planning Workflow. Do not wait for a plan file or an "implement?" prompt on
+   those. Deletion, `sudo`, commits, and pushes still require an explicit
+   request.
 
 2. **No automatic commits.** Run `git commit` only when the current prompt
    explicitly requests a commit or invokes Session Closeout. Never `git push`,
    merge, rebase, or perform a destructive Git operation unless the user asks
    for that exact operation.
 
-3. **Analyse first, act second.** For every problem:
-   - Identify root cause and affected files/packages.
-   - Propose a clearly described solution.
-   - Wait for the user to say "implement" (or equivalent) before touching any file.
+3. **Analyse first, act second.** Identify root cause and affected files.
+   For **small** work, apply the change and report. For **large** work, describe
+   the approach and ask whether to draft a plan before writing.
 
-4. **Show diffs before applying.** Display the exact diff and ask for final
-   confirmation before writing any change. Exception: **trivial PHP
-   notice/warning one-liners** may be applied immediately — see Planning
-   Workflow — then report what changed. Do not ask for approval on those.
+4. **Show what changed.** For small immediate work, the applied edit in the
+   report is enough; do not ask for approval first. For large or plan-driven
+   work, show the intended change and wait for confirmation before writing.
 
-5. **One change at a time.** Each logical change is confirmed individually
-   unless the user explicitly approves a batch.
+5. **One change at a time.** Each logical change is a separate edit unless the
+   user explicitly approves a batch.
 
 6. **No package manager side-effects.** Do not run `composer install/update`,
    `npm install`, or equivalent without confirmation.
@@ -245,18 +245,15 @@ Confirm readiness:
 
 ```
 1.  Session startup completes (Steps 0–4b above).
-2.  The agent enters the planning workflow — confirm scope before any code work.
+2.  The agent judges scope (Planning Workflow). Small work is implemented
+    immediately. Large work asks whether to draft a plan first.
 3.  The agent reads only the source files necessary for the task.
-4.  The agent analyses and proposes a solution in plain language.
-5.  User approves or redirects.
-6.  The agent shows the exact diff.
-7.  User confirms.
-8.  The agent applies the change.
-9.  The agent updates the plan file in $DEV_ROOT/<package>/plans/.
-10. If the change surfaces a shared architectural fact, the agent proposes an
+4.  The agent analyses, then either applies (small) or proposes (large).
+5.  If a plan file is active, update it after the change is applied.
+6.  If the change surfaces a shared architectural fact, the agent proposes an
     addition to $WORK_ROOT/<package>/includes/docs/README.md.
-11. The agent validates the change and reports any unverified behavior.
-12. The agent commits only on an explicit commit request or Session Closeout.
+7.  The agent validates the change and reports any unverified behavior.
+8.  The agent commits only on an explicit commit request or Session Closeout.
 ```
 
 ---
@@ -293,49 +290,49 @@ the entire worktree.
 
 ## Planning Workflow
 
-**The planning workflow must be active before beginning any feature work or bug fix.**
-A named, active plan file must exist before any code is read or changed.
+Do **not** start a plan file for every task. The agent decides from the prompt
+and a brief look at the code.
 
-### Starting a plan
+### Small work — implement immediately
 
-1. Check `$DEV_ROOT/<package>/plans/` for an existing matching plan.
-2. If found:
-   > "Found existing plan: `<filename>` — scope: <summary>.
-   > Is this the plan we are working from, or do you want a new one?"
-3. If not found:
-   > "No existing plan for this. Describe the full scope so I can draft
-   > one for your review before we begin."
-4. Draft presented; no code touched until user approves.
-5. On approval:
-   > "Plan active — working from: `<filename>`"
+Treat as small when the change is local, the intent is clear, and the blast
+radius is one concern: PHP notices/deprecations, null guards, typos, a tight
+bugfix or enhancement, or a short docs/protocol tweak.
 
-### Ambiguous scope
+1. State the scope in one line (for example **"Small fix, no plan."**).
+2. Analyse (root cause, files).
+3. Apply the change.
+4. Report what changed and what was not verified.
 
-> "Is this a standalone fix, part of a larger feature, or an ad-hoc change?
-> Should I create a plan, add to an existing one, or proceed without one?"
+No plan file, no plan-or-not menu, no "implement?" wait. Commits still wait
+for an explicit request or Session Closeout.
 
-### Trivial fixes (PHP notices / warnings / one-liners)
+If analysis shows the work is actually large, stop and use Large work below.
 
-Trivial one-liners may proceed without a plan file and **without waiting for
-approval**. When the user pastes a PHP `NOTICE` / `WARNING` / `ERROR` (or
-similar) whose fix is a small, local guard — undefined array key or variable,
-null check, wrong variable name, obvious arity/typo — use this fast path:
+When the user pastes a PHP `NOTICE` / `WARNING` / `ERROR` whose fix is a
+small local guard, also skip deployment/package retarget quizzes if the stack
+already names the file (note any `$WORK_ROOT` mismatch in one line).
 
-1. State explicitly: **"Trivial fix, no plan."**
-2. Give a short root cause (file, line, why).
-3. Apply the one-line (or equivalently tiny) fix immediately.
-4. Report what changed (the exact edit is enough; no approval prompt).
+### Large work — ask before drafting a plan
 
-Do **not** add process overhead that the pasted warning does not need:
+Treat as large when the prompt is a new feature, spans packages, needs schema
+or behavioral design, or the right approach is unclear.
 
-- no plan-or-not multiple-choice menus
-- no deployment/package retarget quizzes when the stack trace already names the
-  file (note any `$WORK_ROOT` mismatch in one line and continue)
-- no "implement?" / "apply?" confirmation for the trivial edit itself
+Check `$DEV_ROOT/<package>/plans/` for an existing matching plan and say so
+if one is found.
 
-Still required: no automatic commits, and analyse before editing. If the
-diagnosis shows the fix is broader than a local guard, leave the fast path and
-use the normal planning workflow (propose, confirm, then write).
+Then ask once:
+
+> "This looks like a larger piece of work. Should I draft a plan first, or
+> start implementing?"
+
+Do not draft a plan until the user asks for one. If they want a plan:
+
+1. Draft for review; no code until they approve the plan.
+2. On approval: `"Plan active — working from: <filename>"`
+3. Implement from the plan (show intended changes, then apply).
+
+If they want implementation without a plan, proceed without creating one.
 
 ---
 
@@ -563,7 +560,7 @@ path belongs to the intended repository and session scope.
 
 ## What Agents Will NOT Do
 
-- Modify any file without explicit per-change confirmation.
+- Start large-scope edits without asking whether to plan or implement.
 - Run `git commit` without a direct commit request or Session Closeout.
 - Run `git push` or another history-altering operation without an explicit
   request for that operation.

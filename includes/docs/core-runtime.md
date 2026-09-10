@@ -117,6 +117,13 @@ presentation. Avoid leaking SQL, paths, credentials, or protected object data.
 - `BitCliArgs` — command-line option parsing.
 - `HttpStatusCodes` — response code/message helpers.
 
+## External error reporters
+
+Optional packages may register callbacks with `bit_error_register_reporter()`.
+Kernel `bit_error_handler` / shutdown invoke `bit_error_notify()` with a scrubbed
+hash from `bit_error_build_report_hash()`. Kernel does not depend on Sentry or
+any vendor SDK; the `sentry` package is one optional implementation.
+
 ## Files that change together
 
 - Bootstrap changes: `setup_inc.php`, defaults, involved singleton classes, and

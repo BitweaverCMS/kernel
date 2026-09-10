@@ -253,21 +253,58 @@ function bit_error_register_reporter( $pCallback ) {
 
 /**
  * Build a product-agnostic error report hash (no raw POST/SESSION/payment dumps).
+ * Request/account fields mirror the #### headers from bit_error_string() used by
+ * bit_error_email(), so external reporters can attribute REMOTE_ADDR and login.
  */
 function bit_error_build_report_hash( $pErrno, $pErrType, $pErrstr, $pErrfile, $pErrline, $pChannel = 'php_error' ) {
+	global $gBitUser, $gBitDb, $argv;
+
+	$url = '';
+	if( !empty( $_SERVER['SCRIPT_URI'] ) ) {
+		$url = $_SERVER['SCRIPT_URI'].( !empty( $_SERVER['QUERY_STRING'] ) ? '?'.$_SERVER['QUERY_STRING'] : '' );
+	} elseif( !empty( $_SERVER['REQUEST_URI'] ) ) {
+		$url = ( !empty( $_SERVER['HTTP_HOST'] ) ? 'https://'.$_SERVER['HTTP_HOST'] : '' ).$_SERVER['REQUEST_URI'];
+	} elseif( !empty( $argv ) && is_array( $argv ) ) {
+		$url = implode( ' ', $argv );
+	}
+
+	$user = array(
+		'id'    => NULL,
+		'login' => NULL,
+		'email' => NULL,
+	);
+	if( is_object( $gBitUser ) && !empty( $gBitUser->mInfo ) && is_array( $gBitUser->mInfo ) ) {
+		$user['id'] = isset( $gBitUser->mInfo['user_id'] ) ? $gBitUser->mInfo['user_id'] : NULL;
+		$user['login'] = isset( $gBitUser->mInfo['login'] ) ? $gBitUser->mInfo['login'] : NULL;
+		$user['email'] = isset( $gBitUser->mInfo['email'] ) ? $gBitUser->mInfo['email'] : NULL;
+	}
+
+	$db = NULL;
+	if( is_object( $gBitDb ) && !empty( $gBitDb->mDb ) ) {
+		// Same shape as bit_error_string DB line, without a password.
+		$db = $gBitDb->mDb->databaseType.'://'.$gBitDb->mDb->user.'@'.$gBitDb->mDb->host.'/'.$gBitDb->mDb->database;
+	}
+
 	return array(
-		'errno'    => (int) $pErrno,
-		'errtype'  => (string) $pErrType,
-		'message'  => (string) $pErrstr,
-		'file'     => (string) $pErrfile,
-		'line'     => (int) $pErrline,
-		'stack'    => trim( bit_stack( 8 ) ),
-		'sapi'     => PHP_SAPI,
-		'host'     => BitBase::getParameter( $_SERVER, 'HTTP_HOST', php_uname( 'n' ) ),
-		'script'   => BitBase::getParameter( $_SERVER, 'SCRIPT_NAME', '' ),
-		'uri'      => BitBase::getParameter( $_SERVER, 'REQUEST_URI', '' ),
-		'is_live'  => ( defined( 'IS_LIVE' ) && IS_LIVE ),
-		'channel'  => (string) $pChannel,
+		'errno'      => (int) $pErrno,
+		'errtype'    => (string) $pErrType,
+		'message'    => (string) $pErrstr,
+		'file'       => (string) $pErrfile,
+		'line'       => (int) $pErrline,
+		'stack'      => trim( bit_stack( 8 ) ),
+		'sapi'       => PHP_SAPI,
+		'host'       => BitBase::getParameter( $_SERVER, 'HTTP_HOST', php_uname( 'n' ) ),
+		'script'     => BitBase::getParameter( $_SERVER, 'SCRIPT_NAME', '' ),
+		'uri'        => BitBase::getParameter( $_SERVER, 'REQUEST_URI', '' ),
+		'url'            => $url,
+		'referrer'       => BitBase::getParameter( $_SERVER, 'HTTP_REFERER', '' ),
+		'user_agent'     => BitBase::getParameter( $_SERVER, 'HTTP_USER_AGENT', '' ),
+		'ip'             => BitBase::getParameter( $_SERVER, 'REMOTE_ADDR', '' ),
+		'request_method' => BitBase::getParameter( $_SERVER, 'REQUEST_METHOD', '' ),
+		'user'           => $user,
+		'db'             => $db,
+		'is_live'    => ( defined( 'IS_LIVE' ) && IS_LIVE ),
+		'channel'    => (string) $pChannel,
 	);
 }
 

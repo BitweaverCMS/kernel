@@ -55,3 +55,8 @@ schema alone.
 Templates belong to the package but are resolved through Themes/Smarty.
 Controllers own request handling; templates should render assigned state rather
 than perform domain mutations.
+
+Installations extend Bitweaver **without forking** public packages: `config/`
+PHP, `config/themes/<package>/` template overlays, and private packages. If an
+install-only feature seems to require editing upstream Bitweaver source, the
+overlay is missing — do not customize the open-source tree.

@@ -62,10 +62,23 @@ Non-negotiable. Apply in every session.
 6. **No package manager side-effects.** Do not run `composer install/update`,
    `npm install`, or equivalent without confirmation.
 
-7. **Architectural discoveries follow the package.** When the agent confirms a
-   convention, data model detail, gotcha, or any fact that all developers
-   should know, it proposes an addition to `$WORK_ROOT/<package>/includes/docs/README.md`.
-   These belong in the shared repo, not in a developer-local `memory/` file.
+7. **Keep documentation current as you go.** When the agent confirms a
+   convention, data model detail, gotcha, or any fact other developers or
+   agents need — or finds an error, omission, or gap in existing docs
+   required for the work — **update the owning documentation in the same
+   turn**. Do not defer to closeout. Do not leave a “propose later” note
+   in place of an edit.
+
+   Place the fact in the right tree:
+
+   | Kind | Where |
+   |------|--------|
+   | Package architecture | `$WORK_ROOT/<package>/includes/docs/` (README and linked files) |
+   | Installation overlay (non-secret) | `$WORK_ROOT/config/includes/docs/deployment.md` |
+   | Credentials, API tokens, cookie values, host-private agent access | `$DEV_ROOT` only (workspace bootstrap). See Rule 13. |
+
+   Never put shared package facts only in `$DEV_ROOT/memory/`. Authentication
+   details are Rule 13 — they must not appear in any `includes/docs/` file.
 
 8. **Never search the `storage` module.** Do not run `ugrep`/`grep`/`rg`/
    `find`/glob (or any recursive scan) inside the **storage** package
@@ -90,6 +103,32 @@ Non-negotiable. Apply in every session.
     issuing any `sudo` command, state the exact command and its effect, and
     wait for the user to approve that specific invocation. This applies even
     when a task obviously requires elevated privileges — ask first, every time.
+
+12. **Do not start new work in a dirty package repository.** Before beginning a
+    new task, run `git status` on the **owning package submodule** (the
+    checkout under `$WORK_ROOT/<package>/`, not the deployment supermodule).
+    If that working tree has uncommitted changes — modified, staged, or
+    untracked files that are not part of the current approved task — **stop**.
+    Report the dirty paths and wait for explicit user confirmation before
+    writing any files. A clean working tree that is merely ahead of (or behind)
+    `origin` is not dirty. Dirty **supermodule submodule pointers** alone do
+    not block work in a clean package checkout.
+
+13. **Authentication details NEVER go in `includes/docs/`.** Hard rule.
+    **Never. Ever.** Do not write any of the following into any package
+    `includes/docs/` file, Kernel docs, or `config/includes/docs/`
+    (including `deployment.md`):
+
+    - actual secrets (tokens, passwords, DSNs with keys, cookie values)
+    - secret locations (paths to `.secrets` files, credential filenames,
+      vault keys, env-var names that hold secrets)
+    - named credential keys (for example a token key used by an agent)
+    - accounts, user ids, or logins used for authentication
+
+    Public service hostnames and generic DSN *shapes*
+    (`https://<key>@host/<project_id>`) are not secrets. HTTP denial of
+    `includes/` is **not** an exception. Agent-only auth belongs in
+    `$DEV_ROOT` (workspace bootstrap), never in a live document tree.
 
 ---
 
@@ -247,11 +286,15 @@ Confirm readiness:
 1.  Session startup completes (Steps 0–4b above).
 2.  The agent judges scope (Planning Workflow). Small work is implemented
     immediately. Large work asks whether to draft a plan first.
+    Before the first write of a new task, confirm the owning package submodule
+    working tree is clean (Critical Operating Rule 12). If it is dirty, stop
+    and wait for user confirmation; do not start work.
 3.  The agent reads only the source files necessary for the task.
 4.  The agent analyses, then either applies (small) or proposes (large).
 5.  If a plan file is active, update it after the change is applied.
-6.  If the change surfaces a shared architectural fact, the agent proposes an
-    addition to $WORK_ROOT/<package>/includes/docs/README.md.
+6.  If the change surfaces a shared fact, or the agent found a documentation
+    error or gap other agents need, update the owning docs immediately
+    (Critical Operating Rule 7). Do not wait for closeout.
 7.  The agent validates the change and reports any unverified behavior.
 8.  The agent commits only on an explicit commit request or Session Closeout.
 ```
@@ -285,6 +328,20 @@ commit verified session work. They do not authorize a push.
 Prefer committing verified work and documenting residual gaps over leaving
 verified session work dirty after closeout. Closeout is not permission to stage
 the entire worktree.
+
+### Wrap-up commits
+
+Closeout and any explicit “commit this” request still follow ownership checks:
+
+- **Commit only the code this agent changed** for the current task (including
+  plans and package docs written in this session).
+- **Do not commit the deployment supermodule**, submodule pointer updates, or
+  unrelated files in the same or another repository.
+- **If the dirty tree is mixed** (session paths plus foreign or unrelated
+  files, or mixed hunks in one file), stop and confirm with the user before
+  staging. Name the mixed paths and wait.
+- Stage explicit paths only. Never `git add -A`, `git add .`, `git commit -a`,
+  or an unscoped `git add -u`.
 
 ---
 
@@ -372,6 +429,7 @@ example a sessions index). Those belong in
 | `$WORK_ROOT/kernel/includes/docs/bitweaver.md` | Generic development protocol |
 | `$WORK_ROOT/config/includes/docs/deployment.md` | Optional installation-specific rules |
 | `$WORK_ROOT/<pkg>/includes/docs/README.md` | Package facts and documentation map |
+| `$DEV_ROOT` workspace bootstrap | Agent credentials and host-private access (Rule 13); never in `includes/docs/` |
 | `$DEV_ROOT/<pkg>/plans/` | This developer's active and archived plans |
 | `$DEV_ROOT/<pkg>/notes/` | Scratch research, error traces, ideas |
 | `$DEV_ROOT/<pkg>/files/` | SQL snippets, example data, diffs |
@@ -568,11 +626,19 @@ path belongs to the intended repository and session scope.
 - Assume the live database schema — ask the user for `SHOW TABLES` / `\d`
   output if schema knowledge is needed.
 - Skip error handling or ACL checks in proposed code.
+- Start new work in a dirty owning-package working tree without explicit
+  user confirmation (Critical Operating Rule 12).
 - Access or modify files outside `$WORK_ROOT` or `$DEV_ROOT`.
 - Run `ugrep`/`grep`/`rg`/`find`/glob inside the `storage` module (or any
   `storage/` directory) — it spikes server CPU and disk. Always exclude it.
-- Write shared architectural discoveries to `$DEV_ROOT/memory/` — these
-  belong in `$WORK_ROOT/<package>/includes/docs/README.md`.
+- Leave a confirmed documentation error or gap for other agents to
+  rediscover — fix the owning docs in the same turn (Critical Operating
+  Rule 7).
+- Write authentication details into any `includes/docs/` file (Critical
+  Operating Rule 13): actual secrets, secret locations, credential key
+  names, or auth users. `$DEV_ROOT` only.
+- Write shared architectural discoveries only to `$DEV_ROOT/memory/` —
+  package facts belong in `$WORK_ROOT/<package>/includes/docs/README.md`.
 
 ---
 

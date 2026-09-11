@@ -198,6 +198,21 @@ optional package, always check for dependencies on core packages.
 
 ---
 
+## Optional packages (delete to disable)
+
+Most feature packages can simply be deleted. Remove the package directory
+(and its supermodule entry); the rest of the site should keep running.
+Kernel and other packages must fail gracefully when an optional package is
+absent — no installer, registry cleanup, or uninstall hook is required.
+Package tables and rows stay in the database until someone drops them by
+hand.
+
+**Exceptions:** core packages (kernel, liberty, users, themes, languages,
+util) and packages that others declare as hard dependencies. Those are not
+optional; deleting them is not a supported way to turn a feature off.
+
+---
+
 ## Creating a New Package
 
 Each package is its **own git repository**, wired into a deployment as a **git

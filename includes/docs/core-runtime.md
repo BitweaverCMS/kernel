@@ -121,8 +121,12 @@ presentation. Avoid leaking SQL, paths, credentials, or protected object data.
 
 Optional packages may register callbacks with `bit_error_register_reporter()`.
 Kernel `bit_error_handler` / shutdown invoke `bit_error_notify()` with a scrubbed
-hash from `bit_error_build_report_hash()`. Kernel does not depend on Sentry or
-any vendor SDK; the `sentry` package is one optional implementation.
+hash from `bit_error_build_report_hash()`. `bit_error_log()` still writes the
+PHP error log; it also notifies reporters with channel `error_log` (message =
+first line, full text in `detail`) so CLI/tool failures that are not PHP
+errors (ImageMagick `exec` exits, mailer errors) reach Sentry when that
+package is installed. Kernel does not depend on Sentry or any vendor SDK; the
+`sentry` package is one optional implementation.
 
 ## Files that change together
 

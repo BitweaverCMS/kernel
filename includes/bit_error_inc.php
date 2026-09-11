@@ -65,15 +65,48 @@ function bit_print_log( $pLogParams, $pLogMessages ) {
 }
 
 function bit_error_log() {
+	$chunks = array();
 	for( $i = 0; $i < func_num_args(); $i++ ) { 
     	if( $pLogMessage = func_get_arg( $i ) ) {
 			$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
 			foreach ($errlines as $txt) { 
-				error_log($txt); 
+				error_log($txt);
+				$chunks[] = $txt;
 			}
 		}
 	} 
 	error_log( 'SCRIPT_URI: '.BitBase::getParameter( $_SERVER, 'SCRIPT_URI', 'OUTPUT' )."\n".bit_stack( 5 ) );
+
+	// Optional reporters (Sentry/GlitchTip) do not see PHP error_log. Magick
+	// CLI failures and similar operational errors only call bit_error_log().
+	if( $chunks ) {
+		$full = implode( "\n", $chunks );
+		$summary = $chunks[0];
+		$trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 8 );
+		$callerFile = '';
+		$callerLine = 0;
+		foreach( $trace as $frame ) {
+			$file = isset( $frame['file'] ) ? (string)$frame['file'] : '';
+			if( $file === '' || basename( $file ) === 'bit_error_inc.php' ) {
+				continue;
+			}
+			$callerFile = $file;
+			$callerLine = isset( $frame['line'] ) ? (int)$frame['line'] : 0;
+			break;
+		}
+		$hash = bit_error_build_report_hash(
+			0,
+			'ERROR_LOG',
+			$summary,
+			$callerFile,
+			$callerLine,
+			'error_log'
+		);
+		if( $full !== $summary ) {
+			$hash['detail'] = $full;
+		}
+		bit_error_notify( $hash );
+	}
 }
 
 function emergency_break(  ) {

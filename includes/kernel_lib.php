@@ -635,13 +635,14 @@ function parse_xml_attributes( $pString ) {
 /**
  * XML Entity Mandatory Escape Characters
  *
- * @param array $string
- * @param array $quote_style
+ * @param string $string
+ * @param int $quote_style
  * @access public
- * @return TRUE on success, FALSE on failure
+ * @return string
  */
 function xmlentities( $string, $quote_style=ENT_QUOTES ) {
 	static $trans;
+	$string = (string)( $string ?? '' );
 	if( !isset( $trans )) {
 		$trans = get_html_translation_table( HTML_ENTITIES, $quote_style );
 		foreach( $trans as $key => $value ) {

@@ -23,6 +23,8 @@
 - Reuse registered package paths and URLs instead of hard-coded deployment
   paths.
 - Treat request parameters as untrusted even when a controller is admin-only.
+- Coerce null to `''` in `xmlentities()` before `strtr()`. PHP 8.1 deprecates
+  a null subject.
 - For per-request config overrides on an APCu-cached `BitSystem` (especially
   `layout-body`), use `setRequestConfig()` — never leave a `setConfig()` /
   `$gBitSystem->mConfig` mutation that can be stored into the singleton. See

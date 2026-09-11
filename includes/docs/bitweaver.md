@@ -12,6 +12,28 @@
 
 ---
 
+## Open-source packages vs the install (do not fork)
+
+Bitweaver is designed so an installation can combine **public open-source
+packages** with **proprietary install code** without editing the public
+source. Packages under `github.com/bitweaver/*` are shared by every
+install. Site behavior lives in the deployment overlay (`config/`),
+install themes, and private packages — not in a fork of kernel, users,
+themes, liberty, or other public repos.
+
+If you need to change public package source to ship an install-only
+feature, **you are doing it wrong.** Add a `config/` include, a
+`config/themes/<package>/` template overlay, a theme, or a private
+package. Do not commit or push that work on a public `master`. A revert
+does not make the original commit belong there; it should never have been
+committed.
+
+Generic fixes that every Bitweaver install should have may go in the
+public package. Install-only CSS, groups, storage layout, and OEM
+product behavior may not.
+
+---
+
 ## Path Variables
 
 All path references in this file use these variables. They must be set by
@@ -173,6 +195,21 @@ themes      users       util        wiki
 
 Each lives in its own subdirectory and git submodule. When working on an
 optional package, always check for dependencies on core packages.
+
+---
+
+## Optional packages (delete to disable)
+
+Most feature packages can simply be deleted. Remove the package directory
+(and its supermodule entry); the rest of the site should keep running.
+Kernel and other packages must fail gracefully when an optional package is
+absent — no installer, registry cleanup, or uninstall hook is required.
+Package tables and rows stay in the database until someone drops them by
+hand.
+
+**Exceptions:** core packages (kernel, liberty, users, themes, languages,
+util) and packages that others declare as hard dependencies. Those are not
+optional; deleting them is not a supported way to turn a feature off.
 
 ---
 

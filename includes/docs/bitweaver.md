@@ -102,6 +102,14 @@ Non-negotiable. Apply in every session.
    Never put shared package facts only in `$DEV_ROOT/memory/`. Authentication
    details are Rule 13 — they must not appear in any `includes/docs/` file.
 
+   **Write these docs for the next agent's startup cost.** The package README
+   is read at the start of every session, so put the facts there that stop an
+   agent re-deriving them from source: the package's request/URL surface, which
+   file owns which concern, non-obvious constraints, and how to verify a change
+   without a browser session. Record the discovery, not the narrative of
+   finding it. A fact that saves a later agent a source crawl belongs in the
+   docs even when the code change itself was small.
+
 8. **Never search the `storage` module.** Do not run `ugrep`/`grep`/`rg`/
    `find`/glob (or any recursive scan) inside the **storage** package
    directory (`storage/`, e.g. `$WORK_ROOT/storage/`), or any directory named

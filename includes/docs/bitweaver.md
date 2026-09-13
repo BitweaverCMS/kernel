@@ -563,6 +563,19 @@ Rules:
 
 - **PHP style**: follow existing file conventions (procedural + OOP hybrid;
   classes in `<Package>Lib.php`).
+- **Library layout**: shared helpers live in
+  `includes/<functional-group>_lib.php` (for example `ads_setup_lib.php`,
+  `liberty_lib.php`). Use `includes/classes/<ClassName>.php` when the unit
+  needs instance state or inherits `BitBase`. Do not dump request-handling
+  utilities into `*_inc.php` unless the file is a controller include that
+  runs in page scope.
+- **No superglobals in libraries**: `$_GET`, `$_POST`, `$_REQUEST`, and
+  `$_SERVER` belong in the controller (or CLI entry script). Library
+  functions take a parameter hash, conventionally `$pParameters` /
+  `$pParamHash`. Read keys with `BitBase::getParameter( $pParameters, 'key', $default )`.
+  Call sites pass `$_POST` or `$_REQUEST` from the controller:
+  `stats_ads_save_posted_secrets( $_POST )`. Never read `$_POST` inside the
+  helper.
 - **Templates**: Smarty `.tpl` files in each package's `templates/`; never
   embed logic in templates.
 - **Database**: always use the ADOdb abstraction layer (`$gBitDb`); never

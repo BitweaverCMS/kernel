@@ -76,8 +76,8 @@ Kernel provides the generic agent development guide at
 rules at `config/includes/docs/deployment.md`; loaders read Kernel first and the
 optional Config overlay second. Upstream packages must never reference the
 contents of a particular deployment overlay. GitHub-hosted package docs
-and commits must not include installation issue-tracker ids or OEM names
-(Critical Operating Rule 14).
+and commits must not include installation brands, tracker ids, or
+proprietary package names (Critical Operating Rule 14).
 
 **Hard rule (Critical Operating Rule 13 in `bitweaver.md`):** authentication
 details must **never** appear in any `includes/docs/` file — not package

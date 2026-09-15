@@ -32,6 +32,11 @@ Generic fixes that every Bitweaver install should have may go in the
 public package. Install-only CSS, groups, storage layout, and OEM
 product behavior may not.
 
+Public GitHub source, comments, and commit messages must not mention
+an installation's brands, domains, tracker ids, or **private package
+names** (packages that are not published on `github.com/bitweaver/*`).
+See Critical Operating Rule 14 and Commit and Git Safety Policy.
+
 ---
 
 ## Path Variables
@@ -160,15 +165,21 @@ Non-negotiable. Apply in every session.
     `includes/` is **not** an exception. Agent-only auth belongs in
     `$DEV_ROOT` (workspace bootstrap), never in a live document tree.
 
-14. **GitHub-hosted packages stay vendor-neutral.** Commits, comments, and
-    `includes/docs/` in packages that push to `github.com/bitweaver/*`
-    (kernel, liberty, users, themes, sentry, and other public masters)
-    must not name an installation's issue tracker, error-tracker short
-    ids, OEM product names, or customer hostnames. Describe the defect
-    in generic terms (`xmlentities` null subject). Installation-specific
-    ids belong in `$DEV_ROOT` plans and in **private scm** package
-    commits only. If a local commit already has such a token, **rewrite
-    the message before `git push`** to GitHub.
+14. **GitHub-hosted packages stay vendor-neutral.** Anything that ships
+    to `github.com/bitweaver/*` (commits, comments, `includes/docs/`,
+    identifiers in source) must not leak an installation. That includes:
+
+    - installation brand names, site names, and customer hostnames
+    - installation issue-tracker or error-tracker short ids
+    - **names of proprietary packages** that live only on a private
+      remote (not published on `github.com/bitweaver/*`)
+
+    Describe the defect in generic terms (`xmlentities` null subject).
+    Installation-specific names belong in `$DEV_ROOT` plans, the
+    optional `config/includes/docs/deployment.md` overlay, and
+    **private-package** commits only. If a local public-package commit
+    already has such a token, **rewrite the message before `git push`**
+    to GitHub.
 
 ---
 
@@ -657,6 +668,20 @@ Never use `git add -A`, `git add .`, `git commit -a`, or an unscoped
 `git add -u`. Name every approved path explicitly; use patch staging only when
 the user has approved a hunk split. Before committing, verify that every cached
 path belongs to the intended repository and session scope.
+
+### Public GitHub vs proprietary names
+
+Packages that push to `github.com/bitweaver/*` are shared open source.
+Do not mention in those commits, comments, or docs:
+
+- an installation's brand, product line, or public site hostname
+- an installation's issue-tracker / error-tracker ids
+- any package that is **not** a public `bitweaver/*` repo (proprietary
+  packages hosted only on a private remote)
+
+Those names belong in the install overlay, `$DEV_ROOT`, and private
+package history. Rewrite a public-package commit message that already
+contains them **before** push (Critical Operating Rule 14).
 
 ---
 

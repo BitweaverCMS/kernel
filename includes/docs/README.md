@@ -54,5 +54,7 @@ Details: [core-runtime.md](core-runtime.md) (Configuration).
 - [Security](security.md) — trust boundaries and direct-HTTP access requirements.
 - [Package documentation plan](package-documentation-plan.md) — standard,
   review checklist, and continuation procedure for packages on other hosts.
+- [Package structure](package_structure.md) — on-disk layout, admin-menu
+  discovery, permissions, schema packs (session dump; expand in place).
 - [Core runtime reference](core-runtime.md) — bootstrap phases, global objects,
   package discovery, configuration, database abstraction, and rendering.

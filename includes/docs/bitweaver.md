@@ -102,6 +102,14 @@ Non-negotiable. Apply in every session.
    Never put shared package facts only in `$DEV_ROOT/memory/`. Authentication
    details are Rule 13 — they must not appear in any `includes/docs/` file.
 
+   **Write these docs for the next agent's startup cost.** The package README
+   is read at the start of every session, so put the facts there that stop an
+   agent re-deriving them from source: the package's request/URL surface, which
+   file owns which concern, non-obvious constraints, and how to verify a change
+   without a browser session. Record the discovery, not the narrative of
+   finding it. A fact that saves a later agent a source crawl belongs in the
+   docs even when the code change itself was small.
+
 8. **Never search the `storage` module.** Do not run `ugrep`/`grep`/`rg`/
    `find`/glob (or any recursive scan) inside the **storage** package
    directory (`storage/`, e.g. `$WORK_ROOT/storage/`), or any directory named
@@ -555,6 +563,19 @@ Rules:
 
 - **PHP style**: follow existing file conventions (procedural + OOP hybrid;
   classes in `<Package>Lib.php`).
+- **Library layout**: shared helpers live in
+  `includes/<functional-group>_lib.php` (for example `ads_setup_lib.php`,
+  `liberty_lib.php`). Use `includes/classes/<ClassName>.php` when the unit
+  needs instance state or inherits `BitBase`. Do not dump request-handling
+  utilities into `*_inc.php` unless the file is a controller include that
+  runs in page scope.
+- **No superglobals in libraries**: `$_GET`, `$_POST`, `$_REQUEST`, and
+  `$_SERVER` belong in the controller (or CLI entry script). Library
+  functions take a parameter hash, conventionally `$pParameters` /
+  `$pParamHash`. Read keys with `BitBase::getParameter( $pParameters, 'key', $default )`.
+  Call sites pass `$_POST` or `$_REQUEST` from the controller:
+  `stats_ads_save_posted_secrets( $_POST )`. Never read `$_POST` inside the
+  helper.
 - **Templates**: Smarty `.tpl` files in each package's `templates/`; never
   embed logic in templates.
 - **Database**: always use the ADOdb abstraction layer (`$gBitDb`); never

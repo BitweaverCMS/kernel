@@ -160,6 +160,16 @@ Non-negotiable. Apply in every session.
     `includes/` is **not** an exception. Agent-only auth belongs in
     `$DEV_ROOT` (workspace bootstrap), never in a live document tree.
 
+14. **GitHub-hosted packages stay vendor-neutral.** Commits, comments, and
+    `includes/docs/` in packages that push to `github.com/bitweaver/*`
+    (kernel, liberty, users, themes, sentry, and other public masters)
+    must not name an installation's issue tracker, error-tracker short
+    ids, OEM product names, or customer hostnames. Describe the defect
+    in generic terms (`xmlentities` null subject). Installation-specific
+    ids belong in `$DEV_ROOT` plans and in **private scm** package
+    commits only. If a local commit already has such a token, **rewrite
+    the message before `git push`** to GitHub.
+
 ---
 
 ## Project Overview

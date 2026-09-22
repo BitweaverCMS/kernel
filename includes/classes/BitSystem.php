@@ -1638,7 +1638,8 @@ class BitSystem extends BitSingleton {
 	 */
 	function verifyMimeType( $pFile ) {
 		$mime = NULL;
-		if( $pFile && file_exists( $pFile ) && filesize( $pFile ) ) {
+		clearstatcache( TRUE, $pFile );
+		if( $pFile && is_file( $pFile ) && filesize( $pFile ) ) {
 			if( function_exists( 'finfo_open' ) ) {
 				if( is_windows() && defined( 'PHP_MAGIC_PATH' ) && is_readable( PHP_MAGIC_PATH )) {
 					$finfo = finfo_open( FILEINFO_MIME, PHP_MAGIC_PATH );
@@ -1686,8 +1687,9 @@ class BitSystem extends BitSingleton {
 					case 'image/x-freehand':
 						$ret = 'fh'; break;
 					default:
-						list( $class, $type ) = explode( '/', $pMimeType );
-						$ret = $type; break;
+						$parts = explode( '/', (string)$pMimeType );
+						$ret = isset( $parts[1] ) ? $parts[1] : $parts[0];
+						break;
 				}
 			}
 		}

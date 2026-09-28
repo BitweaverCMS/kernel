@@ -125,7 +125,10 @@ hash from `bit_error_build_report_hash()`. `bit_error_log()` still writes the
 PHP error log; it also notifies reporters with channel `error_log` (message =
 first line, full text in `detail`) so CLI/tool failures that are not PHP
 errors (ImageMagick `exec` exits, mailer errors) reach Sentry when that
-package is installed. `bit_debug_log()` writes lines to the PHP error log
+package is installed. ADODB failures go through `bitdb_error_handler()`, which
+still writes `bit_error_string()` to the PHP error log and then notifies
+reporters with channel `db_error` (database message, caller file outside
+ADODB, SQL text in `detail`, no bind values). `bit_debug_log()` writes lines to the PHP error log
 only, with no stack and no reporter notification; `BitBase::debugOutput()`
 (timing / progress output on non-live and `--log` CLI runs) uses it, so
 informational lines never become reporter events. `bit_error_send_500_header()`

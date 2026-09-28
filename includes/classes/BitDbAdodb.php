@@ -682,6 +682,45 @@ function bitdb_error_handler( $dbms, $fn, $errno, $errmsg, $p1, $p2, &$thisConne
 		$fatal = TRUE;
 	}
 
+	// PHP error_log is not visible to Sentry. Notify with channel db_error
+	// (always delivered when a DSN is set, same as bit_error_log).
+	$callerFile = '';
+	$callerLine = 0;
+	foreach( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ) as $frame ) {
+		$file = isset( $frame['file'] ) ? (string)$frame['file'] : '';
+		if( $file === '' ) {
+			continue;
+		}
+		$base = basename( $file );
+		if( $base === 'BitDbAdodb.php' || $base === 'bit_error_inc.php' || strpos( $file, '/adodb/' ) !== FALSE ) {
+			continue;
+		}
+		$callerFile = $file;
+		$callerLine = isset( $frame['line'] ) ? (int)$frame['line'] : 0;
+		break;
+	}
+	$dbMessage = trim( preg_replace( '/\s+/', ' ', (string)$errmsg ) );
+	if( strlen( $dbMessage ) > 500 ) {
+		$dbMessage = substr( $dbMessage, 0, 500 );
+	}
+	$report = bit_error_build_report_hash(
+		0,
+		$fatal ? 'FATAL DATABASE' : 'DATABASE',
+		$dbMessage,
+		$callerFile,
+		$callerLine,
+		'db_error'
+	);
+	$sqlDetail = 'db_errno: '.(string)$errno;
+	if( !empty( $p1 ) ) {
+		$sqlDetail .= "\n".trim( preg_replace( '/\s+/', ' ', (string)$p1 ) );
+	}
+	if( strlen( $sqlDetail ) > 4000 ) {
+		$sqlDetail = substr( $sqlDetail, 0, 4000 );
+	}
+	$report['detail'] = $sqlDetail;
+	bit_error_notify( $report );
+
 	bit_display_error( $logString, $dbParams['db_msg'], $fatal );
 }
 ?>

@@ -358,7 +358,8 @@ abstract class BitBase {
 			if( !empty( $this->mDebugMicrotime ) ) {
 				$pString = "ELAPSED TIME: ".round( (float)((microtime(1) - $this->mDebugMicrotime)), 3).' sec, +'.round( $elapsed, 3 ).' '.$pString;
 			}
-			bit_error_log( $pString );
+			// Debug output is informational: log only, never notify error reporters.
+			bit_debug_log( $pString );
 			$this->mLastOutputTime = microtime(1);
 		}
 	}

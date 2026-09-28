@@ -64,6 +64,36 @@ function bit_print_log( $pLogParams, $pLogMessages ) {
 	} 
 }
 
+/**
+ * Write informational / debug lines to the PHP error log only. Unlike
+ * bit_error_log() this does not append a stack and does not notify optional
+ * error reporters (Sentry/GlitchTip). Use it for timing and progress output
+ * such as BitBase::debugOutput(); use bit_error_log() for operational errors.
+ */
+function bit_debug_log() {
+	for( $i = 0; $i < func_num_args(); $i++ ) {
+		if( $pLogMessage = func_get_arg( $i ) ) {
+			$errlines = explode( "\n", (is_array( $pLogMessage ) || is_object( $pLogMessage ) ? vc( $pLogMessage, FALSE ) : $pLogMessage) );
+			foreach( $errlines as $txt ) {
+				error_log( $txt );
+			}
+		}
+	}
+}
+
+/**
+ * Send a 500 status header when a header can still be sent. CLI has no
+ * SERVER_PROTOCOL and no response headers; a shutdown after output already
+ * started must not raise "headers already sent" inside the error handler.
+ */
+function bit_error_send_500_header() {
+	if( PHP_SAPI === 'cli' || headers_sent() ) {
+		return;
+	}
+	$protocol = !empty( $_SERVER['SERVER_PROTOCOL'] ) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
+	header( $protocol.' 500 Internal Server Error' );
+}
+
 function bit_error_log() {
 	$chunks = array();
 	for( $i = 0; $i < func_num_args(); $i++ ) { 
@@ -375,7 +405,7 @@ function bit_shutdown_handler() {
 	$error = error_get_last();
 
 	if( $error && $error['type'] & (E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_USER_ERROR) ){
-		header( "HTTP/1.0 500 Internal Server Error" );
+		bit_error_send_500_header();
 		print "Internal Server Error";
 		bit_error_handler( $error['type'], $error['message'], $error['file'], $error['line'] );
 	}
@@ -388,7 +418,7 @@ function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	global $gBitSystem;
 
 	if( $pFatal ) {
-		header( $_SERVER["SERVER_PROTOCOL"].' '.HttpStatusCodes::getMessageForCode( HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR ) );
+		bit_error_send_500_header();
 	}
 
 	error_log( $pLogMessage );

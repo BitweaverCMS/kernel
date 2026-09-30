@@ -39,7 +39,8 @@ Every package receives:
 
 | File | Purpose |
 |---|---|
-| `README.md` | Purpose, ownership, dependencies, boundaries, and doc index |
+| `README.md` | Purpose, ownership, dependencies, and boundaries. About a screen. No procedures and no formulas. |
+| `toc.md` | Index. One line per document: path, the concern it owns, when to open it. No steps, history, or examples. |
 | `architecture.md` | Bootstrap, components, request flow, persistence, rendering |
 | `source-reference.md` | Source-derived classes, controllers, schema, plugins, templates |
 | `development.md` | Safe change workflow, conventions, testing, doc maintenance |
@@ -60,15 +61,17 @@ Add focused files when the package warrants them:
 - `migration.md`
 
 Do not add an empty standardized file merely for symmetry. Link every focused
-file from `README.md`.
+file from `toc.md`. A line that grows past one clause moves into the linked
+file, and the line goes back to one clause.
 
 ## Discovery and agent guidance
 
-`includes/docs/README.md` is the standard index for every documented package.
-Discover installed documentation with:
+`includes/docs/README.md` is the package boundary. `includes/docs/toc.md` is
+the index. Startup reads both and does not open a linked page until the task
+is that concern. Discover installed documentation with:
 
 ```bash
-ls "$WORK_ROOT"/*/includes/docs/README.md
+ls "$WORK_ROOT"/*/includes/docs/toc.md
 ```
 
 Kernel provides the generic agent development guide at

@@ -30,7 +30,7 @@
 - For per-request config overrides on an APCu-cached `BitSystem` (especially
   `layout-body`), use `setRequestConfig()` — never leave a `setConfig()` /
   `$gBitSystem->mConfig` mutation that can be stored into the singleton. See
-  [README.md](README.md) and [core-runtime.md](core-runtime.md).
+  [core-runtime.md](core-runtime.md) (Configuration).
 
 ## Schema changes
 

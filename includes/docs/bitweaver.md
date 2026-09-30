@@ -100,20 +100,22 @@ Non-negotiable. Apply in every session.
 
    | Kind | Where |
    |------|--------|
-   | Package architecture | `$WORK_ROOT/<package>/includes/docs/` (README and linked files) |
+   | Package architecture | `$WORK_ROOT/<package>/includes/docs/` (README boundary, `toc.md` index, procedures in the linked file) |
    | Installation overlay (non-secret) | `$WORK_ROOT/config/includes/docs/deployment.md` |
    | Credentials, API tokens, cookie values, host-private agent access | `$DEV_ROOT` only (workspace bootstrap). See Rule 13. |
 
    Never put shared package facts only in `$DEV_ROOT/memory/`. Authentication
    details are Rule 13 — they must not appear in any `includes/docs/` file.
 
-   **Write these docs for the next agent's startup cost.** The package README
-   is read at the start of every session, so put the facts there that stop an
-   agent re-deriving them from source: the package's request/URL surface, which
-   file owns which concern, non-obvious constraints, and how to verify a change
-   without a browser session. Record the discovery, not the narrative of
-   finding it. A fact that saves a later agent a source crawl belongs in the
-   docs even when the code change itself was small.
+   **Write these docs for the next agent's startup cost.** Startup reads the
+   package README (purpose, responsibility, dependencies, boundary — about a
+   screen, no procedures) and `includes/docs/toc.md` (one line per document:
+   path, the concern it owns, when to open it). It does not open a linked page
+   until the task is that concern. Procedures, formulas, and examples go in
+   the linked file. A toc line that grows past one clause moves into that
+   file. Record the discovery, not the narrative of finding it. A fact that
+   saves a later agent a source crawl belongs in the linked file even when
+   the code change itself was small.
 
 8. **Never search the `storage` module.** Do not run `ugrep`/`grep`/`rg`/
    `find`/glob (or any recursive scan) inside the **storage** package
@@ -321,11 +323,11 @@ Set `$WORK_ROOT` = `$DEPLOY_BASE/<chosen>/` and echo:
 
 Do not read or modify files outside `$WORK_ROOT` or `$DEV_ROOT`.
 
-### Step 4 — Load core architecture
+### Step 4 — Core architecture
 
-Read `$WORK_ROOT/kernel/includes/docs/core-runtime.md`. This documents the framework globals,
-inheritance chain, LibertyContent polymorphism, BitPermUser, BitSystem,
-and template resolution. Required every session regardless of package.
+Do not read `core-runtime.md` at startup. The selected package's
+`includes/docs/toc.md` names it when that package is kernel. Open it when
+the task is bootstrap, globals, configuration, database access, or rendering.
 
 ### Step 4b — Select package and load package architecture
 
@@ -335,8 +337,8 @@ Ask: *"Which package will we be focusing on this session?"*
 Once confirmed:
 
 1. Resolve package identity to its checkout directory when they differ.
-2. Read `$WORK_ROOT/<directory>/includes/docs/README.md` if it exists.
-3. Follow the README links needed for the task.
+2. Read `$WORK_ROOT/<directory>/includes/docs/README.md` if it exists (purpose, responsibility, dependencies, boundary).
+3. Read `$WORK_ROOT/<directory>/includes/docs/toc.md` if it exists. Do not open a linked page until the task is that concern.
 4. Check `$DEV_ROOT/<directory>/plans/` for active plans and report what's found.
 
 Confirm readiness:
@@ -423,9 +425,19 @@ radius is one concern: PHP notices/deprecations, null guards, typos, a tight
 bugfix or enhancement, or a short docs/protocol tweak.
 
 1. State the scope in one line (for example **"Small fix, no plan."**).
-2. Analyse (root cause, files).
+2. Analyse the files that set the reported behavior. One pass.
 3. Apply the change.
 4. Report what changed and what was not verified.
+
+When the user is on the page and has already named the element and the size,
+those files are the analysis. Do not read the library that paints the widget,
+its history, or neighboring features unless that pass does not explain the
+symptom. Do not rebuild the page in a browser to re-measure a value they
+already reported.
+
+Startup already loaded this guide, the deployment overlay when present, the
+package README, and `toc.md`. Do not re-read them for a small fix. Do not
+open a `toc.md` link unless the task is that concern.
 
 No plan file, no plan-or-not menu, no "implement?" wait. Commits still wait
 for an explicit request or Session Closeout.
@@ -467,7 +479,8 @@ If they want implementation without a plan, proceed without creating one.
 $WORK_ROOT/
   kernel/includes/docs/bitweaver.md       Generic instructions (this file)
   config/includes/docs/deployment.md      Optional installation overlay
-  <package>/includes/docs/README.md        Package documentation index
+  <package>/includes/docs/README.md       Package purpose and boundary
+  <package>/includes/docs/toc.md          One line per package document
 ```
 
 ### Developer workspace
@@ -494,7 +507,8 @@ example a sessions index). Those belong in
 |----------|---------|
 | `$WORK_ROOT/kernel/includes/docs/bitweaver.md` | Generic development protocol |
 | `$WORK_ROOT/config/includes/docs/deployment.md` | Optional installation-specific rules |
-| `$WORK_ROOT/<pkg>/includes/docs/README.md` | Package facts and documentation map |
+| `$WORK_ROOT/<pkg>/includes/docs/README.md` | Purpose, responsibility, dependencies, and boundary |
+| `$WORK_ROOT/<pkg>/includes/docs/toc.md` | One line per document: path, concern, when to open it |
 | `$DEV_ROOT` workspace bootstrap | Agent credentials and host-private access (Rule 13); never in `includes/docs/` |
 | `$DEV_ROOT/<pkg>/plans/` | This developer's active and archived plans |
 | `$DEV_ROOT/<pkg>/notes/` | Scratch research, error traces, ideas |
@@ -731,7 +745,8 @@ contains them **before** push (Critical Operating Rule 14).
   Operating Rule 13): actual secrets, secret locations, credential key
   names, or auth users. `$DEV_ROOT` only.
 - Write shared architectural discoveries only to `$DEV_ROOT/memory/` —
-  package facts belong in `$WORK_ROOT/<package>/includes/docs/README.md`.
+  package facts belong in the linked file named by
+  `$WORK_ROOT/<package>/includes/docs/toc.md`.
 
 ---
 

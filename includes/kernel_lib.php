@@ -318,20 +318,29 @@ function function_enabled ( $pName ) {
 
 function verify_hex_color( $pColor ) {
 	$ret = NULL;
-	if( $pColor === NULL ) {
+	if( $pColor === NULL || is_array( $pColor ) ) {
 		return $ret;
 	}
-	if( preg_match('/^#[a-f0-9]{6}$/i', $pColor) ) {
-		$ret = $pColor;
-	} elseif( preg_match('/^[a-f0-9]{6}$/i', $pColor)) {
-		//Check for a hex color string without hash 'c1c2b4'
-		$ret = '#' . $pColor;
-	} elseif( preg_match('/^#[a-f0-9]{3}$/i', $pColor) ) {
-		$ret = $pColor;
-	} elseif( preg_match('/^[a-f0-9]{3}$/i', $pColor)) {
-		//Check for a hex color string without hash 'fff'
-		$ret = '#' . $pColor;
-	} 
+	// 8 and 4 digit forms carry alpha (#RRGGBBAA / #RGBA). The app posts
+	// spine_text_color as #ffffffff. 6 and 3 digit checks stay exact so a
+	// longer string is not truncated.
+	if( preg_match('/^#([a-f0-9]{8})$/i', $pColor, $m ) ) {
+		$ret = '#'.$m[1];
+	} elseif( preg_match('/^([a-f0-9]{8})$/i', $pColor, $m ) ) {
+		$ret = '#'.$m[1];
+	} elseif( preg_match('/^#([a-f0-9]{6})$/i', $pColor, $m ) ) {
+		$ret = '#'.$m[1];
+	} elseif( preg_match('/^([a-f0-9]{6})$/i', $pColor, $m ) ) {
+		$ret = '#'.$m[1];
+	} elseif( preg_match('/^#([a-f0-9]{4})$/i', $pColor, $m ) ) {
+		$ret = '#'.$m[1];
+	} elseif( preg_match('/^([a-f0-9]{4})$/i', $pColor, $m ) ) {
+		$ret = '#'.$m[1];
+	} elseif( preg_match('/^#([a-f0-9]{3})$/i', $pColor, $m ) ) {
+		$ret = '#'.$m[1];
+	} elseif( preg_match('/^([a-f0-9]{3})$/i', $pColor, $m ) ) {
+		$ret = '#'.$m[1];
+	}
 	return $ret;
 }
 

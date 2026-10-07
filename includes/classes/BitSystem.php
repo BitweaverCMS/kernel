@@ -1943,14 +1943,19 @@ class BitSystem extends BitSingleton {
 	}
 
 	/**
-	 * isTracking returns status of the IS_LIVE constant from config/kernel/config_inc.php
+	 * Whether this request should emit third-party tracking tags.
+	 * Live requests are tracked, and tracking_debug forces tags on.
+	 * p_users_admin and p_commerce_admin never receive tags.
 	 *
 	 * @access public
-	 * @return TRUE if IS_LIVE is defined and set to a non empty value, else FALSE
+	 * @return bool
 	 */
 	function isTracking() {
 		global $gBitUser;
-		return $this->getConfig( 'tracking_debug' ) || ($this->isLive() && !$gBitUser->hasPermission( 'p_users_admin' ));
+		if( $gBitUser->hasPermission( 'p_users_admin' ) || $gBitUser->hasPermission( 'p_commerce_admin' ) ) {
+			return FALSE;
+		}
+		return $this->getConfig( 'tracking_debug' ) || $this->isLive();
 	}
 
 	// {{{=========================== Installer related methods ==============================

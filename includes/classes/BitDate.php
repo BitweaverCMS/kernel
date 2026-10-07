@@ -941,7 +941,10 @@ class BitDate {
 // EASY WAY - USING SHELL TO GET DATE TEXT
 
         if (is_callable('shell_exec') && (stripos(ini_get('disable_functions'), 'shell_exec') === false)) {
-            $cmd = 'export LC_TIME=' . escapeshellarg($locale) . '; date --date @' . escapeshellarg($timestamp) . ' +' . escapeshellarg($format);
+            // $is_gmt timestamps are already shifted by the viewer offset.
+            // date -u prints those UTC digits as the wall clock.
+            $utcFlag = $is_gmt ? ' -u' : '';
+            $cmd = 'export LC_TIME=' . escapeshellarg($locale) . '; date' . $utcFlag . ' --date @' . escapeshellarg($timestamp) . ' +' . escapeshellarg($format);
             return preg_replace('/\r?\n$/', '', shell_exec($cmd));
         }
 
@@ -1018,7 +1021,7 @@ class BitDate {
             '%%' => []          // %
         ];
 
-        $timezone = date_default_timezone_get();
+        $timezone = $is_gmt ? 'UTC' : date_default_timezone_get();
 
         $return = '';
 

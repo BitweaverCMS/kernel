@@ -105,7 +105,7 @@ if( !defined( 'ANONYMOUS_GROUP_ID' ) ) {
 	define( 'ANONYMOUS_GROUP_ID', -1 );
 }
 if( !defined( 'EVIL_EXTENSION_PATTERN' )) {
-	define( 'EVIL_EXTENSION_PATTERN', "#\.(htaccess|pl|php|php3|php4|phtml|py|cgi|asp|jsp|sh|shtml)$#i" );
+	define( 'EVIL_EXTENSION_PATTERN', "#\.(htaccess|pl|php|php3|php4|php5|php7|php8|phtml|pht|phps|phar|py|cgi|asp|jsp|sh|shtml)$#i" );
 }
 
 /* Uncomment to switch to role team model ...

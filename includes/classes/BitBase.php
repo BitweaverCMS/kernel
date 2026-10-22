@@ -39,6 +39,9 @@ interface BitCacheable  {
  * @package kernel
  */
 abstract class BitBase {
+	/** Hard cap for interactive list size (All, and 10x page size). */
+	const LIST_MAX_RECORDS = 1000;
+
 	/**
 	 * Error hash that will contain an error codes we encounter along
 	 * the way this hash can be used by presentation layer ti give feedback
@@ -521,6 +524,32 @@ abstract class BitBase {
 			$pListHash['max_records'] = $gBitSystem->getConfig( "max_records", 10 );
 		}
 		$pListHash['max_records'] = (int)$pListHash['max_records'];
+		if( $pListHash['max_records'] > 0 ) {
+			if( empty( $pListHash['page_size'] ) || (int)$pListHash['page_size'] < 1 ) {
+				$pListHash['page_size'] = $pListHash['max_records'];
+			}
+			$siteMax = (int)$gBitSystem->getConfig( 'max_records', 10 );
+			if( $siteMax < 1 ) {
+				$siteMax = 10;
+			}
+			// Request override only for page lists (native size >= site default),
+			// not side modules that share $_REQUEST (gallery of 5, etc.).
+			if( isset( $_REQUEST['max_records'] ) && $_REQUEST['max_records'] !== ''
+				&& (int)$pListHash['page_size'] >= $siteMax ) {
+				$allowed = self::listSizeChoices( (int)$pListHash['page_size'], 1 );
+				$req = $_REQUEST['max_records'];
+				if( $req === 'all' && isset( $allowed['all'] ) ) {
+					$pListHash['max_records'] = self::LIST_MAX_RECORDS;
+					$pListHash['max_records_sel'] = 'all';
+				} elseif( isset( $allowed[(int)$req] ) && (int)$req > 0 ) {
+					$pListHash['max_records'] = min( self::LIST_MAX_RECORDS, (int)$req );
+					$pListHash['max_records_sel'] = $pListHash['max_records'];
+				}
+			}
+			if( $pListHash['max_records'] > self::LIST_MAX_RECORDS ) {
+				$pListHash['max_records'] = self::LIST_MAX_RECORDS;
+			}
+		}
 
 		if( !isset( $pListHash['offset'] ) || !is_numeric( $pListHash['offset'] ) ) {
 			$pListHash['offset'] = 0;
@@ -631,6 +660,13 @@ abstract class BitBase {
 			$pListHash['listInfo']['sort_mode'] = $pListHash['sort_mode'];
 		}
 		$pListHash['listInfo']['max_records'] = $pListHash['max_records'];
+		if( !empty( $pListHash['page_size'] ) && (int)$pListHash['page_size'] > 0 ) {
+			$pListHash['listInfo']['page_size'] = (int)$pListHash['page_size'];
+			$pListHash['listInfo']['size_choices'] = self::listSizeChoices( (int)$pListHash['page_size'], (int)$pListHash['cant'] );
+			$pListHash['listInfo']['max_records_sel'] = !empty( $pListHash['max_records_sel'] )
+				? $pListHash['max_records_sel']
+				: $pListHash['max_records'];
+		}
 
 		$pListHash['listInfo']['block_pages'] = 3;
 		$pListHash['listInfo']['start_block'] = floor( $pListHash['offset'] / $pListHash['max_records'] ) * $pListHash['max_records'] + 1;
@@ -695,6 +731,38 @@ abstract class BitBase {
 				$pListHash['listInfo']['block']['next'][$pListHash['listInfo']['total_pages']] = $pListHash['listInfo']['total_pages'];
 			}
 		}
+	}
+
+	/**
+	 * Page-size menu: 1x, 2x, 5x, 10x of the list's native size, capped at
+	 * LIST_MAX_RECORDS. All when the result set is smaller than the cap.
+	 */
+	public static function listSizeChoices( $pPageSize, $pCant ) {
+		$cap = self::LIST_MAX_RECORDS;
+		$base = (int)$pPageSize;
+		if( $base < 1 ) {
+			return array();
+		}
+		$choices = array();
+		foreach( array( 1, 2, 5, 10 ) as $mult ) {
+			$n = $base * $mult;
+			if( $n > $cap ) {
+				$n = $cap;
+			}
+			if( !isset( $choices[$n] ) ) {
+				$choices[$n] = (string)$n;
+			}
+			if( $n >= $cap ) {
+				break;
+			}
+		}
+		if( (int)$pCant > 0 && (int)$pCant < $cap ) {
+			unset( $choices[$cap] );
+			$choices['all'] = tra( 'All' );
+		} elseif( !isset( $choices[$cap] ) ) {
+			$choices[$cap] = (string)$cap;
+		}
+		return $choices;
 	}
 
 	/**

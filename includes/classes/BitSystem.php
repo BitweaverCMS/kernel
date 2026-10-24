@@ -1821,65 +1821,39 @@ class BitSystem extends BitSingleton {
 			$wwwgroup = 'nobody (or the group account the web server is running under)';
 		}
 
+		$permFiles = array();
 		if( defined( 'TEMP_PKG_PATH' ) ) {
 			$this->setConfig( 'site_temp_dir', TEMP_PKG_PATH );
 			$permFiles[] = TEMP_PKG_PATH;
 		} else {
 			$permFiles[] = $this->getConfig( 'site_temp_dir', self::getDefaultTempDir() );
 		}
-		$permFiles[] = STORAGE_PKG_PATH;
 
 		foreach( $permFiles as $file ) {
 			$present = FALSE;
-			// Create directories as needed
 			$target = $file;
 			if( preg_match( '/.*\/$/', $target ) ) {
-				// we have a directory
 				if( !is_dir( $target ) ) {
 					mkdir( $target, 02775, TRUE );
 				}
-				// Check again and report problems
 				if( !is_dir( $target ) ) {
-					if( !is_windows() ) {
-						$errors .= "
-							<p>The directory <strong style='color:red;'>$target</strong> does not exist. To create the directory, execute a command such as:</p>
-							<pre>\$ mkdir -m 777 $target</pre>
-							";
-					} else {
-						$errors .= "<p>The directory <strong style='color:red;'>$target</strong> does not exist. Create the directory $target before proceeding</p>";
-					}
+					$errors .= "<p>The directory <strong style='color:red;'>$target</strong> does not exist.</p>";
 				} else {
 					$present = TRUE;
 				}
 			} elseif( !file_exists( $target ) ) {
-				if( !is_windows() ) {
-					$errors .= "<p>The file <b style='color:red;'>$target</b> does not exist. To create the file, execute a command such as:</p>
-						<pre>
-						\$ touch $target
-						\$ chmod 777 $target
-						</pre>
-						";
-				} else {
-					$errors .= "<p>The file <b style='color:red;'>$target</b> does not exist. Create a blank file $target before proceeding</p>";
-				}
+				$errors .= "<p>The file <b style='color:red;'>$target</b> does not exist.</p>";
 			} else {
 				$present = TRUE;
 			}
 
-			// chmod( $target, 02775 );
 			if( $present && ( !bw_is_writeable( $target ))) {
-				if( !is_windows() ) {
-					$errors .= "<p><strong style='color:red;'>$target</strong> is not writeable by $wwwuser. To give $wwwuser write permission, execute a command such as:</p>
-					<pre>\$ chmod 777 $target</pre>";
-				} else {
-					$errors .= "<p><b style='color:red;'>$target</b> is not writeable by $wwwuser. Check the security of the file $target before proceeding</p>";
-				}
+				$errors .= "<p><strong style='color:red;'>$target</strong> is not writeable by $wwwuser.</p>";
 			}
-			//if (!is_dir("$docroot/$dir")) {
-			//	$errors .= "The directory '$docroot$dir' does not exist.\n";
-			//} else if (!bw_is_writeable("$docroot/$dir")) {
-			//	$errors .= "The directory '$docroot$dir' is not writeable by $wwwuser.\n";
-			//}
+		}
+
+		if( defined( 'STORAGE_PKG_PATH' ) && STORAGE_PKG_PATH ) {
+			$errors .= $this->checkStorageWritePath( $wwwuser );
 		}
 
 		if( $errors ) {
@@ -1920,6 +1894,39 @@ class BitSystem extends BitSingleton {
 		}
 
 		$checked = TRUE;
+	}
+
+	/**
+	 * Liberty mkdir_p chain is STORAGE_PKG_PATH/users/<user_id % 1000>/<user_id>/.
+	 * The anonymous shard is users/-1 (PHP (-1 % 1000) === -1); skip it when
+	 * counting buckets. Require the parent of the next mkdir to be writable.
+	 */
+	private function checkStorageWritePath( $wwwuser ) {
+		$root = STORAGE_PKG_PATH;
+		if( substr( $root, -1 ) != '/' ) {
+			$root .= '/';
+		}
+		if( !is_dir( $root ) ) {
+			return "<p>The directory <strong style='color:red;'>".htmlspecialchars( $root )."</strong> does not exist.</p>";
+		}
+
+		$users = $root.'users/';
+		if( !is_dir( $users ) ) {
+			$check = $root;
+		} else {
+			$bucketDirs = glob( $users.'[0-9]*', GLOB_ONLYDIR );
+			$buckets = $bucketDirs ? count( $bucketDirs ) : 0;
+			if( $buckets >= 1000 && is_dir( $users.'0' ) ) {
+				$check = $users.'0/';
+			} else {
+				$check = $users;
+			}
+		}
+
+		if( !bw_is_writeable( $check ) ) {
+			return "<p><strong style='color:red;'>".htmlspecialchars( $check )."</strong> is not writeable by $wwwuser. Apache must be able to create user storage under users/&lt;bucket&gt;/&lt;user_id&gt;/.</p>";
+		}
+		return '';
 	}
 
 	/**

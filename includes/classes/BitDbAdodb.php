@@ -70,10 +70,20 @@ class BitDbAdodb extends BitDb {
 			}
 			$this->preDBConnection();
 			$this->mDb = ADONewConnection( $pConnectionHash['db_type'] );
-			$this->mDb->Connect( $pConnectionHash['db_host'], $pConnectionHash['db_user'], $pConnectionHash['db_password'], $pConnectionHash['db_name'] );
-
-			if( !$this->mDb ) {
-				die( "Unable to login to the database $pConnectionHash[db_type] on $pConnectionHash[db_host] as `user` $pConnectionHash[db_user]<p>".$this->mDb->ErrorMsg() );
+			$optional = !empty( $pConnectionHash['db_optional'] );
+			if( $optional && is_object( $this->mDb ) ) {
+				$this->mDb->raiseErrorFn = false;
+				$this->setFatalActive( false );
+			}
+			$connected = is_object( $this->mDb ) && $this->mDb->Connect( $pConnectionHash['db_host'], $pConnectionHash['db_user'], $pConnectionHash['db_password'], $pConnectionHash['db_name'] );
+			if( !$connected ) {
+				$connectError = is_object( $this->mDb ) ? $this->mDb->ErrorMsg() : 'ADONewConnection failed';
+				$this->mDb = NULL;
+				if( $optional ) {
+					error_log( 'Optional database connection failed: '.$connectError );
+					return;
+				}
+				die( "Unable to login to the database $pConnectionHash[db_type] on $pConnectionHash[db_host] as `user` $pConnectionHash[db_user]<p>".$connectError );
 			}
 			$this->postDBConnection();
 			unset( $pDSN );

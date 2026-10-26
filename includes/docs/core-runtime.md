@@ -94,6 +94,11 @@ empty value can have different semantics, so preserve established defaults.
 Use `query()`, `getRow()`, `getOne()`, `getAll()`, `getAssoc()`, and `getCol()`
 with bind arrays. `GenID()` abstracts sequence allocation.
 
+A connection hash may include `db_optional` => TRUE. A failed connect then
+leaves the adapter invalid (`isValid()` false, `mDb` empty) instead of
+raising the ADODB error handler or dying. Use this for secondary databases
+that a page can omit.
+
 Transaction methods are `StartTrans()`, `CompleteTrans()`, and
 `RollbackTrans()`. Confirm nested/failed transaction behavior before composing
 operations across packages.

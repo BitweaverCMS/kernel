@@ -10,3 +10,4 @@ One line per document. Open a file only when the task is that concern.
 - [package-documentation-plan.md](package-documentation-plan.md) — how to document a package, including this index. Open when adding package docs.
 - [package-structure.md](package-structure.md) — on-disk layout, admin menu, permissions, and schema packs. Open for layout or schema-pack questions.
 - [core-runtime.md](core-runtime.md) — bootstrap, globals, configuration, database, rendering, and APCu `layout-body`. Open for runtime or layout-body questions.
+- [outbound-mail.md](outbound-mail.md) — non-live outbound mail gate (`p_admin`) and send hubs. Open when changing email sending.

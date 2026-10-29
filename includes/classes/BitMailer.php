@@ -56,6 +56,12 @@ require_once( LIBERTY_PKG_CLASS_PATH.'LibertyBase.php' );
         }elseif( is_array( $pBody ) ){
             $message = array_merge( $message, $pBody );
         }
+		if( !bit_outbound_mail_allowed() ) {
+			$toLog = is_string( $pRecipients ) ? $pRecipients : 'recipients';
+			error_log( 'Outbound mail skipped (non-live, no p_admin): to='.$toLog.' subject='.$pSubject );
+			return FALSE;
+		}
+
 		$mailer = $this->buildMailer($message);
 
 		if( is_string( $pRecipients ) ) {

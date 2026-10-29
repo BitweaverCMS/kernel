@@ -31,6 +31,9 @@
   `layout-body`), use `setRequestConfig()` — never leave a `setConfig()` /
   `$gBitSystem->mConfig` mutation that can be stored into the singleton. See
   [core-runtime.md](core-runtime.md) (Configuration).
+- Send outbound email with `bit_mail()` or `BitMailer::sendEmail()`, not PHP
+  `mail()`. Non-live sites send only when the current user has `p_admin`. See
+  [outbound-mail.md](outbound-mail.md).
 
 ## Schema changes
 

@@ -158,6 +158,44 @@ if( !function_exists( 'eb' ) ) {
 	}
 }
 
+/**
+ * Whether this request may send outbound email.
+ * Live sites always may. Non-live sites only when the current user has p_admin.
+ * Missing $gBitUser (CLI, early bootstrap) is deny on a non-live site.
+ */
+function bit_outbound_mail_allowed() {
+	global $gBitSystem, $gBitUser;
+	if( defined( 'BIT_INSTALL' ) && BIT_INSTALL ) {
+		return TRUE;
+	}
+	if( is_object( $gBitSystem ) && method_exists( $gBitSystem, 'isLive' ) ) {
+		if( $gBitSystem->isLive() ) {
+			return TRUE;
+		}
+	} elseif( defined( 'IS_LIVE' ) && IS_LIVE ) {
+		return TRUE;
+	}
+	return( is_object( $gBitUser ) && method_exists( $gBitUser, 'hasPermission' ) && $gBitUser->hasPermission( 'p_admin' ) );
+}
+
+/**
+ * Drop-in for mail(). No-op on non-live sites unless the current user has p_admin.
+ */
+function bit_mail( $to, $subject, $message, $additional_headers = '', $additional_params = '' ) {
+	if( !bit_outbound_mail_allowed() ) {
+		error_log( 'Outbound mail skipped (non-live, no p_admin): to='.$to.' subject='.$subject );
+		return FALSE;
+	}
+	$argc = func_num_args();
+	if( $argc >= 5 ) {
+		return mail( $to, $subject, $message, $additional_headers, $additional_params );
+	}
+	if( $argc >= 4 ) {
+		return mail( $to, $subject, $message, $additional_headers );
+	}
+	return mail( $to, $subject, $message );
+}
+
 function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
 	// You can prevent sending of error emails by adding define('ERROR_EMAIL', ''); in your config/kernel/config_inc.php
 	$errorEmail = defined( 'ERROR_EMAIL' ) ? ERROR_EMAIL : (!empty( $_SERVER['SERVER_ADMIN'] ) ? $_SERVER['SERVER_ADMIN'] : NULL);
@@ -178,7 +216,7 @@ function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
 	}
 	$parameters = preg_replace( "/\n/", $separator.$indent, $parameters );
 
-	mail( $errorEmail, $pSubject, $pMessage.$parameters.$separator.$separator.'$_SERVER: '.var_export( $_SERVER, TRUE ) );
+	bit_mail( $errorEmail, $pSubject, $pMessage.$parameters.$separator.$separator.'$_SERVER: '.var_export( $_SERVER, TRUE ) );
 }
 
 function bit_error_handler ( $errno, $errstr, $errfile, $errline, $errcontext=NULL ) {
@@ -446,7 +484,7 @@ function bit_display_error( $pLogMessage, $pSubject, $pFatal = TRUE ) {
 	} else {
 		bit_error_email ( $pSubject, $pLogMessage );
 		if( defined( 'AUTO_BUG_SUBMIT' ) && AUTO_BUG_SUBMIT && !empty( $gBitSystem ) && $gBitSystem->isDatabaseValid() ) {
-			mail( 'bugs@bitweaver.org',"$pSubject",$pLogMessage );
+			bit_mail( 'bugs@bitweaver.org',"$pSubject",$pLogMessage );
 		}
 	}
 

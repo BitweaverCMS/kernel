@@ -425,7 +425,7 @@ class BitSystem extends BitSingleton {
 			$extraHeaders .= "Reply-to: ".$pMailHash['Reply-to']."\r\n";
 		}
 
-		mail($pMailHash['email'],
+		bit_mail($pMailHash['email'],
 			$pMailHash['subject'].' '.$_SERVER["SERVER_NAME"],
 			$pMailHash['body'],
 			"From: ".$fromEmail."\r\nContent-type: text/plain;charset=utf-8\r\n$extraHeaders"

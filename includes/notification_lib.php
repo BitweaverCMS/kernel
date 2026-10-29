@@ -134,7 +134,7 @@ class NotificationLib extends BitBase
 			$gBitSmarty->assign('mail_pagedata', $data );
 			$mail_data = $gBitSmarty->fetch('bitpackage:'.$package.'/'.$package.'_change_notification.tpl');
 
-			@mail($email, $package . tra(' page'). ' ' . $name . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getConfig( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n" );
+			@bit_mail($email, $package . tra(' page'). ' ' . $name . ' ' . tra('changed'), $mail_data, "From: ".$gBitSystem->getConfig( 'site_sender_email' )."\r\nContent-type: text/plain;charset=utf-8\r\n" );
 		}
 	}
 
@@ -151,7 +151,7 @@ class NotificationLib extends BitBase
 			$gBitSmarty->assign('mail_site',$_SERVER["SERVER_NAME"]);
 			$mail_data = $gBitSmarty->fetch('bitpackage:users/new_user_notification.tpl');
 
-			mail( $email, tra('New user registration'),$mail_data,"From: ".$gBitSystem->getConfig('site_sender_email')."\r\nContent-type: text/plain;charset=utf-8\r\n");
+			bit_mail( $email, tra('New user registration'),$mail_data,"From: ".$gBitSystem->getConfig('site_sender_email')."\r\nContent-type: text/plain;charset=utf-8\r\n");
 		}
 	}
 

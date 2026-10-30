@@ -218,6 +218,23 @@ Rules:
 ---
 ---
 
+## Public packages versus the install
+
+Bitweaver is designed so an installation can combine public open-source
+packages with proprietary install code without editing the public source.
+Site behaviour lives in the deployment overlay (`config/`), install themes,
+and private packages, not in a fork of kernel, users, themes, liberty, or
+another public repo. If shipping an install-only feature seems to need a
+change to public package source, the design is wrong: add a `config/`
+include, a `config/themes/<package>/` template overlay, a theme, or a
+private package. A revert does not make the original commit belong there;
+it should never have been committed. Generic fixes every install should
+have may go in the public package; install-only CSS, groups, storage layout,
+and OEM product behaviour may not. See bitweaver.md rule 12 and
+[closeout.md](closeout.md) for the commit-message rule.
+
+---
+
 ## Useful References
 
 - Bitweaver Overview: https://www.bitweaver.org/wiki/Bitweaver+Overview

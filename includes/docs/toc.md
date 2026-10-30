@@ -3,6 +3,7 @@
 One line per document. Open a file only when the task is that concern.
 
 - [bitweaver.md](bitweaver.md) — agent protocol for startup, safety, planning, and commits. Open for session rules.
+- [closeout.md](closeout.md) — closeout procedure, commit authorisation, shared-worktree ownership, and explicit-path staging. Open at wrap-up or on a commit request.
 - [agent-reference.md](agent-reference.md) — interactive deployment discovery, package list, new-package and workspace scaffolding, admin mode, plan and analysis formats, links. Open when the task is one of those; not at startup.
 - [architecture.md](architecture.md) — initialization, components, and request flow. Open for a bootstrap or component question.
 - [source-reference.md](source-reference.md) — files, classes, controllers, schema, and templates. Open to find a source file.

@@ -80,9 +80,9 @@ rules at `config/includes/docs/deployment.md`; loaders read Kernel first and the
 optional Config overlay second. Upstream packages must never reference the
 contents of a particular deployment overlay. GitHub-hosted package docs
 and commits must not include installation brands, tracker ids, or
-proprietary package names (Critical Operating Rule 14).
+proprietary package names (Critical Operating Rule 12).
 
-**Hard rule (Critical Operating Rule 13 in `bitweaver.md`):** authentication
+**Hard rule (Critical Operating Rule 11 in `bitweaver.md`):** authentication
 details must **never** appear in any `includes/docs/` file — not package
 docs, not Kernel docs, not `config/includes/docs/`. That means actual
 secrets, secret file locations, credential key names, and auth users.

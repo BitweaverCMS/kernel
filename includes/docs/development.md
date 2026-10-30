@@ -26,7 +26,7 @@
 - Coerce null to `''` in `xmlentities()` before `strtr()`. PHP 8.1 deprecates
   a null subject.
 - Do not put installation brands, tracker ids, or proprietary package
-  names in GitHub package commits or docs (Critical Operating Rule 14).
+  names in GitHub package commits or docs (Critical Operating Rule 12).
 - For per-request config overrides on an APCu-cached `BitSystem` (especially
   `layout-body`), use `setRequestConfig()` — never leave a `setConfig()` /
   `$gBitSystem->mConfig` mutation that can be stored into the singleton. See

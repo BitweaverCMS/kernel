@@ -1,578 +1,86 @@
 # Bitweaver agent development guide
 
-> Generic session instructions for developing on [Bitweaver CMS](https://www.bitweaver.org/wiki/Bitweaver+Overview).
-> This is the generic instruction layer shipped with Kernel. A launcher or
-> developer workspace sets the deployment paths before this file is read.
+> Generic session protocol shipped with Kernel for developing on
+> [Bitweaver CMS](https://www.bitweaver.org/wiki/Bitweaver+Overview) with a
+> coding agent. A launcher or developer workspace sets the path variables
+> before this file is read; an installation overlay at
+> `$WORK_ROOT/config/includes/docs/deployment.md` loads after it. Suitable
+> for publication as a starting point for any team using agents on Bitweaver.
 >
-> This file is suitable for publication and is intended to be shared as a
-> starting point for any team developing on Bitweaver with coding agents.
->
-> Installation-specific overlays belong in
-> `$WORK_ROOT/config/includes/docs/deployment.md` and load after this file.
+> Situational material (interactive deployment discovery, the package list,
+> workspace scaffolding, admin mode, plan and analysis formats) is in
+> [agent-reference.md](agent-reference.md). Closeout and commit procedure is
+> in [closeout.md](closeout.md). Open either only when the task is that concern.
 
----
-
-## Open-source packages vs the install (do not fork)
-
-Bitweaver is designed so an installation can combine **public open-source
-packages** with **proprietary install code** without editing the public
-source. Packages under `github.com/bitweaver/*` are shared by every
-install. Site behavior lives in the deployment overlay (`config/`),
-install themes, and private packages — not in a fork of kernel, users,
-themes, liberty, or other public repos.
-
-If you need to change public package source to ship an install-only
-feature, **you are doing it wrong.** Add a `config/` include, a
-`config/themes/<package>/` template overlay, a theme, or a private
-package. Do not commit or push that work on a public `master`. A revert
-does not make the original commit belong there; it should never have been
-committed.
-
-Generic fixes that every Bitweaver install should have may go in the
-public package. Install-only CSS, groups, storage layout, and OEM
-product behavior may not.
-
-Public GitHub source, comments, and commit messages must not mention
-an installation's brands, domains, tracker ids, or **private package
-names** (packages that are not published on `github.com/bitweaver/*`).
-See Critical Operating Rule 14 and Commit and Git Safety Policy.
-
----
-
-## Path Variables
-
-All path references in this file use these variables. They must be set by
-the developer bootstrap before this file is read.
+## Path variables
 
 | Variable | Purpose |
-|----------|---------|
-| `$WORK_ROOT` | Selected Bitweaver deployment/document root |
-| `$DEV_ROOT` | This developer's personal workspace (plans, notes, files) |
+|---|---|
+| `$WORK_ROOT` | Selected deployment / document root |
+| `$DEV_ROOT` | This developer's workspace (plans, notes, files). Unset means admin mode (agent-reference.md) |
 | `$DEPLOY_BASE` | Parent directory of all deployment clones |
 
-If `$DEV_ROOT` is not set, the agent is in **admin mode** — see Admin Mode in
-[agent-reference.md](agent-reference.md).
+## Critical operating rules
 
----
+Non-negotiable, every session.
 
-## ⚠️ CRITICAL OPERATING RULES
+1. **Startup first.** Complete Session Startup before responding to any first message, whatever it says. No source file is read before `$WORK_ROOT` is confirmed and the documentation chain is loaded.
+2. **Judge scope.** Small work (local, clear intent, one concern: a notice or deprecation, a null guard, a typo, a tight bugfix or enhancement, a short docs tweak) gets one analysis pass and is applied; no plan file, no "implement?" prompt. Large work (new feature, multi-package, schema or behavioural design, unclear approach) is never started unasked: ask once whether to draft a plan first or start implementing.
+3. **Commits only on request.** `git commit` only when the prompt asks for it or invokes Session Closeout. Never `git push`, merge, rebase, `reset --hard`, or `clean` unless the user asks for that exact operation. Never commit to checkpoint.
+4. **One logical change per edit, shown.** Small work is applied and reported. Large or plan-driven work shows the intended change and waits before writing.
+5. **No package-manager side effects** (`composer`, `npm`, equivalents) without confirmation.
+6. **Keep documentation current in the same turn.** A confirmed convention, data-model fact, gotcha, or documentation gap goes into the owning tree now, not at closeout and not as a "propose later" note. Package facts: `$WORK_ROOT/<package>/includes/docs/` (README is purpose and boundary, about a screen; `toc.md` is one line per document; procedures, formulas, and examples go in the linked file). Installation facts: `config/includes/docs/deployment.md` or a file it links. Credentials and agent access: `$DEV_ROOT` only. Write for the next agent's startup cost: record the discovery, not the search; a toc line that grows past one clause moves into its file; never leave a shared fact only in `$DEV_ROOT/memory/`.
+7. **Never search `storage`.** No `grep`, `rg`, `ugrep`, `find`, glob, or recursive scan inside any `storage/` directory: it holds millions of generated and user files and a crawl spikes server CPU and I/O. Exclude it always (`--exclude-dir=storage`, `-g '!storage'`, `-not -path '*/storage/*'`). Derive a generated file's path from the storage-branch convention instead.
+8. **Never delete in `storage/`.** Never delete any other file without explicit approval: propose the exact `rm`, wait.
+9. **No `sudo` without per-command confirmation.** State the exact command and its effect, wait, every time, even when the task obviously needs it.
+10. **No new work in a dirty package tree.** `git status` the owning package submodule (not the deployment supermodule) before the first write. Modified, staged, or untracked files that are not this task: stop, report the paths, wait. Ahead of or behind `origin` is not dirty; dirty supermodule pointers alone do not block a clean package.
+11. **Authentication details never go in `includes/docs/`** (any package, Kernel, or `config/`, HTTP denial notwithstanding): no secrets, secret file paths, credential key or env-var names, auth accounts or logins. Public hostnames and DSN shapes (`https://<key>@host/<id>`) are fine. Agent auth lives in `$DEV_ROOT`.
+12. **Public packages stay unforked and vendor-neutral.** `github.com/bitweaver/*` packages are shared by every install. Install behaviour goes in a `config/` include, a `config/themes/<package>/` overlay, a theme, or a private package, never in a public package tree, not even committed locally. Only generic fixes every install should have land in a public package. Public source, comments, docs, and commit messages name no installation brand, hostname, tracker id, or private (unpublished) package; rewrite such a message before `git push`. Detail: agent-reference.md.
+13. **Never assume the live schema;** ask for `\d` or `SHOW TABLES` output. Never skip error handling or ACL checks in proposed code.
+14. **Stay inside `$WORK_ROOT` and `$DEV_ROOT`.**
 
-Non-negotiable. Apply in every session.
+## Project overview
 
-0. **Session startup runs first, always.** Before responding to any first
-   message — regardless of what it says — the agent must complete the Session
-   Startup protocol below. No source file may be read until `$WORK_ROOT` is
-   confirmed and architecture docs are loaded.
+Bitweaver is a modular, object-oriented PHP CMS using Smarty templates and ADOdb (MySQL, PostgreSQL, SQLite, Firebird, Oracle, MS SQL Server, Sybase). Upstream `https://github.com/BitweaverCMS/bitweaver` is a git supermodule; each package is a submodule at `https://github.com/bitweaver/<package>`. Core packages always in scope: **kernel** (database init, package configuration, bootstrap), **liberty** (base content classes: ACL, history, formatting, wiki parsing, HTML scrubbing), **users**, **themes**, **languages**, **util**. Other packages, delete-to-disable, and the new-package checklist: agent-reference.md and `package-documentation-plan.md`.
 
-1. **No automatic large changes.** Do not start a multi-package feature, schema
-   change, or other large-scope work without confirmation. **Small** fixes and
-   enhancements are implemented immediately after a brief analysis — see
-   Planning Workflow. Do not wait for a plan file or an "implement?" prompt on
-   those. Deletion, `sudo`, commits, and pushes still require an explicit
-   request.
+## Session startup
 
-2. **No automatic commits.** Run `git commit` only when the current prompt
-   explicitly requests a commit or invokes Session Closeout. Never `git push`,
-   merge, rebase, or perform a destructive Git operation unless the user asks
-   for that exact operation.
+Complete before responding to the first message.
 
-3. **Analyse first, act second.** Identify root cause and affected files.
-   For **small** work, apply the change and report. For **large** work, describe
-   the approach and ask whether to draft a plan before writing.
+1. **Pre-fill.** A launcher message carries `source=<name>` and usually `package=`, `work_root=`, and the documentation paths. Without `source=`, run interactive deployment discovery (agent-reference.md). Without `$DEV_ROOT`, enter admin mode (agent-reference.md) and skip the rest.
+2. **Validate.** `ls $DEPLOY_BASE/<name>/kernel/includes/setup_inc.php`; if absent, report and re-prompt. Apply any deployment confirmation rule the installation overlay defines before setting `$WORK_ROOT`.
+3. **Confirm.** Set `$WORK_ROOT` = `$DEPLOY_BASE/<name>/` and say: `Working root confirmed: <path>`.
+4. **Package.** Ask which package when none was pre-filled. Resolve the package name to its checkout directory when they differ, read `$WORK_ROOT/<dir>/includes/docs/README.md` and `toc.md`, and list the file names in `$DEV_ROOT/<dir>/plans/` without opening them. Do not open a toc link, `core-runtime.md`, or any source file until the task is that concern.
+5. **Ready.** `Ready. Loaded: $WORK_ROOT | package: <package> | arch: [files loaded] | plans: [N found]`, then ask what to work on.
 
-4. **Show what changed.** For small immediate work, the applied edit in the
-   report is enough; do not ask for approval first. For large or plan-driven
-   work, show the intended change and wait for confirmation before writing.
+## Session workflow
 
-5. **One change at a time.** Each logical change is a separate edit unless the
-   user explicitly approves a batch.
+Judge scope (rule 2) and check the owning package tree (rule 10) before the first write. Read only the source the task needs.
 
-6. **No package manager side-effects.** Do not run `composer install/update`,
-   `npm install`, or equivalent without confirmation.
+**Small work:** say the scope in one line (`Small fix, no plan.`), analyse the files that set the reported behaviour in one pass, apply, report what changed and what was not verified. When the user is on the page and has named the element and the value, those files are the analysis: do not read the library that paints the widget, its history, or neighbouring features unless that pass fails to explain the symptom, and do not re-measure a value they reported. A pasted PHP notice whose stack names the file skips deployment or package retarget questions (note a `$WORK_ROOT` mismatch in one line). Startup already loaded the guides; do not re-read them. If analysis shows the work is large, switch.
 
-7. **Keep documentation current as you go.** When the agent confirms a
-   convention, data model detail, gotcha, or any fact other developers or
-   agents need — or finds an error, omission, or gap in existing docs
-   required for the work — **update the owning documentation in the same
-   turn**. Do not defer to closeout. Do not leave a “propose later” note
-   in place of an edit.
+**Large work:** check `$DEV_ROOT/<package>/plans/` for a matching plan and say so. Ask once: "This looks like a larger piece of work. Should I draft a plan first, or start implementing?" Draft only if asked, for review, no code until approved; on approval say `Plan active — working from: <filename>` and implement from it, showing each intended change first. Update a plan only after a change is applied and confirmed, never speculatively. Plan file format and the analysis layout (Problem / Root Cause / Affected Packages / Proposed Fix / Files to Change / Diff Preview) are in agent-reference.md.
 
-   Place the fact in the right tree:
+Update the owning docs as facts surface (rule 6). Report unverified behaviour as unverified. **Wrap up**, **session closeout**, **end session**, or equivalent invokes [closeout.md](closeout.md): it authorises commits of verified session paths, staged explicitly, and never a push.
 
-   | Kind | Where |
-   |------|--------|
-   | Package architecture | `$WORK_ROOT/<package>/includes/docs/` (README boundary, `toc.md` index, procedures in the linked file) |
-   | Installation overlay (non-secret) | `$WORK_ROOT/config/includes/docs/deployment.md` |
-   | Credentials, API tokens, cookie values, host-private agent access | `$DEV_ROOT` only (workspace bootstrap). See Rule 13. |
-
-   Never put shared package facts only in `$DEV_ROOT/memory/`. Authentication
-   details are Rule 13 — they must not appear in any `includes/docs/` file.
-
-   **Write these docs for the next agent's startup cost.** Startup reads the
-   package README (purpose, responsibility, dependencies, boundary — about a
-   screen, no procedures) and `includes/docs/toc.md` (one line per document:
-   path, the concern it owns, when to open it). It does not open a linked page
-   until the task is that concern. Procedures, formulas, and examples go in
-   the linked file. A toc line that grows past one clause moves into that
-   file. Record the discovery, not the narrative of finding it. A fact that
-   saves a later agent a source crawl belongs in the linked file even when
-   the code change itself was small.
-
-8. **Never search the `storage` module.** Do not run `ugrep`/`grep`/`rg`/
-   `find`/glob (or any recursive scan) inside the **storage** package
-   directory (`storage/`, e.g. `$WORK_ROOT/storage/`), or any directory named
-   `storage`. It holds millions of generated/user files (rendered pages,
-   thumbnails, uploads, caches); `storage/users/` and `storage/*/users/`
-   specifically contain large volumes of user-uploaded assets. Crawling it
-   causes **severe CPU and disk-I/O spikes** on the server. Always exclude it: use `--exclude-dir=storage`
-   (grep), `-g '!storage'`/`--ignore-dir=storage` (rg/ugrep), or
-   `-not -path '*/storage/*'` (find). To reach a specific generated file,
-   **derive its path** from the storage-branch convention instead of scanning.
-
-9. **Never delete files in `storage/`.** Files under any `storage/` directory
-   must never be deleted by the agent under any circumstances. The user must
-   delete storage files manually.
-
-10. **Never delete any file without explicit user approval.** Propose the
-    deletion and wait for the user to confirm before running any `rm` or
-    equivalent command.
-
-11. **Never run `sudo` without explicit per-command user confirmation.** Before
-    issuing any `sudo` command, state the exact command and its effect, and
-    wait for the user to approve that specific invocation. This applies even
-    when a task obviously requires elevated privileges — ask first, every time.
-
-12. **Do not start new work in a dirty package repository.** Before beginning a
-    new task, run `git status` on the **owning package submodule** (the
-    checkout under `$WORK_ROOT/<package>/`, not the deployment supermodule).
-    If that working tree has uncommitted changes — modified, staged, or
-    untracked files that are not part of the current approved task — **stop**.
-    Report the dirty paths and wait for explicit user confirmation before
-    writing any files. A clean working tree that is merely ahead of (or behind)
-    `origin` is not dirty. Dirty **supermodule submodule pointers** alone do
-    not block work in a clean package checkout.
-
-13. **Authentication details NEVER go in `includes/docs/`.** Hard rule.
-    **Never. Ever.** Do not write any of the following into any package
-    `includes/docs/` file, Kernel docs, or `config/includes/docs/`
-    (including `deployment.md`):
-
-    - actual secrets (tokens, passwords, DSNs with keys, cookie values)
-    - secret locations (paths to `.secrets` files, credential filenames,
-      vault keys, env-var names that hold secrets)
-    - named credential keys (for example a token key used by an agent)
-    - accounts, user ids, or logins used for authentication
-
-    Public service hostnames and generic DSN *shapes*
-    (`https://<key>@host/<project_id>`) are not secrets. HTTP denial of
-    `includes/` is **not** an exception. Agent-only auth belongs in
-    `$DEV_ROOT` (workspace bootstrap), never in a live document tree.
-
-14. **GitHub-hosted packages stay vendor-neutral.** Anything that ships
-    to `github.com/bitweaver/*` (commits, comments, `includes/docs/`,
-    identifiers in source) must not leak an installation. That includes:
-
-    - installation brand names, site names, and customer hostnames
-    - installation issue-tracker or error-tracker short ids
-    - **names of proprietary packages** that live only on a private
-      remote (not published on `github.com/bitweaver/*`)
-
-    Describe the defect in generic terms (`xmlentities` null subject).
-    Installation-specific names belong in `$DEV_ROOT` plans, the
-    optional `config/includes/docs/deployment.md` overlay, and
-    **private-package** commits only. If a local public-package commit
-    already has such a token, **rewrite the message before `git push`**
-    to GitHub.
-
----
-
-## Project Overview
-
-Bitweaver is a modular, object-oriented PHP CMS using **Smarty templates** and
-**ADOdb** for database abstraction. It supports MySQL, PostgreSQL, SQLite,
-Firebird, Oracle, MS SQL Server, and Sybase.
-
-The upstream repository at `https://github.com/BitweaverCMS/bitweaver` is a
-**git supermodule**; each package is a git submodule tracked independently
-under `https://github.com/bitweaver/<package>`.
-
----
-
-## Core Packages (always in scope)
-
-| Package | Role |
-|---------|------|
-| **kernel** | Database initialisation, package configuration, bootstrap |
-| **liberty** | Base content classes — access control, history, formatting, wiki parsing, HTML scrubbing |
-| **users** | User data, authentication, session management |
-| **themes** | Site theming, Smarty template resolution |
-| **languages** | Internationalisation (i18n) |
-| **util** | Shared utility functions used across packages |
-
-Reference: https://www.bitweaver.org/wiki/Bitweaver+Framework
-
----
-
-## Other packages, new packages
-
-The upstream package list, the delete-to-disable rule for optional packages,
-and the checklist for creating a new package are in
-[agent-reference.md](agent-reference.md) and
-`package-documentation-plan.md`. Open them when the task is one of those.
-
----
-
-## Session Startup
-
-**Complete this protocol before responding to any first message.**
-
-### Step 0 — Pre-fill detection
-
-Check whether the first user message is in launcher format (sent by the
-`bwdev` shell function):
-
-- **`source=<name>`** — treat `<name>` as the pre-selected deployment; skip
-If neither pattern is present, run the interactive deployment discovery in
-[agent-reference.md](agent-reference.md), then continue at Step 2b.
-
-### Step 0b — Admin mode detection
-
-If `$DEV_ROOT` is not set (no developer bootstrap was loaded), enter
-**admin mode**. Skip Steps 1–4. See Admin Mode in [agent-reference.md](agent-reference.md).
-
-### Step 2b — Validate
-
-```bash
-ls $DEPLOY_BASE/<name>/kernel/includes/setup_inc.php
-```
-
-If absent, report the error and re-prompt. Do not proceed with an invalid
-deployment.
-
-If the site-specific overlay (`$WORK_ROOT/config/includes/docs/deployment.md`) defines any
-environment-specific confirmation rules for the selected deployment (e.g.
-requiring explicit confirmation for a production environment), apply them
-now before setting `$WORK_ROOT`.
-
-### Step 3 — Confirm working root
-
-Set `$WORK_ROOT` = `$DEPLOY_BASE/<chosen>/` and echo:
-
-> "Working root confirmed: `$DEPLOY_BASE/<chosen>/`"
-
-Do not read or modify files outside `$WORK_ROOT` or `$DEV_ROOT`.
-
-### Step 4 — Core architecture
-
-Do not read `core-runtime.md` at startup. The selected package's
-`includes/docs/toc.md` names it when that package is kernel. Open it when
-the task is bootstrap, globals, configuration, database access, or rendering.
-
-### Step 4b — Select package and load package architecture
-
-Ask: *"Which package will we be focusing on this session?"*
-(Skip if package was pre-filled in Step 0.)
-
-Once confirmed:
-
-1. Resolve package identity to its checkout directory when they differ.
-2. Read `$WORK_ROOT/<directory>/includes/docs/README.md` if it exists (purpose, responsibility, dependencies, boundary).
-3. Read `$WORK_ROOT/<directory>/includes/docs/toc.md` if it exists. Do not open a linked page until the task is that concern.
-4. Check `$DEV_ROOT/<directory>/plans/` for active plans and report what's found.
-
-Confirm readiness:
-
-> "Ready. Loaded: `$WORK_ROOT` | package: `<package>` | arch: [files loaded] | plans: [N found]
-> What are we working on?"
-
----
-
-## Session Workflow
-
-```
-1.  Session startup completes (Steps 0–4b above).
-2.  The agent judges scope (Planning Workflow). Small work is implemented
-    immediately. Large work asks whether to draft a plan first.
-    Before the first write of a new task, confirm the owning package submodule
-    working tree is clean (Critical Operating Rule 12). If it is dirty, stop
-    and wait for user confirmation; do not start work.
-3.  The agent reads only the source files necessary for the task.
-4.  The agent analyses, then either applies (small) or proposes (large).
-5.  If a plan file is active, update it after the change is applied.
-6.  If the change surfaces a shared fact, or the agent found a documentation
-    error or gap other agents need, update the owning docs immediately
-    (Critical Operating Rule 7). Do not wait for closeout.
-7.  The agent validates the change and reports any unverified behavior.
-8.  The agent commits only on an explicit commit request or Session Closeout.
-```
-
----
-
-## Session Closeout
-
-The phrases **wrap up**, **session closeout**, **end session**, and equivalent
-end-of-work language invoke this procedure and count as an explicit request to
-commit verified session work. They do not authorize a push.
-
-1. Inventory every dirty owning repository with `git status` and `git diff`.
-2. Separate this session's paths and hunks from human or other-agent work.
-3. Finish plan, package documentation, and durable handoff updates first.
-   Apply any Session Closeout additions from the installation overlay
-   (`$WORK_ROOT/config/includes/docs/deployment.md`) when that file defines them.
-4. Run validation appropriate to the change: relevant package tests when
-   available, PHP lint for changed PHP, focused request/render checks for
-   controllers or Smarty changes, schema checks for migrations, and Markdown
-   link/security checks for documentation.
-5. State exactly what remains unverified. Do not describe unvalidated behavior
-   as complete. If a requested commit would include unverified work, stop and
-   let the user decide whether to commit it.
-6. Stage verified session paths explicitly, inspect `git diff --cached`, and
-   commit in each owning package repository with a focused message.
-7. Report commit hashes, validation performed, uncommitted foreign/residual
-   paths, dirty parent submodule pointers, and confirmation that nothing was
-   pushed.
-
-Prefer committing verified work and documenting residual gaps over leaving
-verified session work dirty after closeout. Closeout is not permission to stage
-the entire worktree.
-
-### Wrap-up commits
-
-Closeout and any explicit “commit this” request still follow ownership checks:
-
-- **Commit only the code this agent changed** for the current task (including
-  plans and package docs written in this session).
-- **Do not commit the deployment supermodule**, submodule pointer updates, or
-  unrelated files in the same or another repository.
-- **If the dirty tree is mixed** (session paths plus foreign or unrelated
-  files, or mixed hunks in one file), stop and confirm with the user before
-  staging. Name the mixed paths and wait.
-- Stage explicit paths only. Never `git add -A`, `git add .`, `git commit -a`,
-  or an unscoped `git add -u`.
-
----
-
-## Planning Workflow
-
-Do **not** start a plan file for every task. The agent decides from the prompt
-and a brief look at the code.
-
-### Small work — implement immediately
-
-Treat as small when the change is local, the intent is clear, and the blast
-radius is one concern: PHP notices/deprecations, null guards, typos, a tight
-bugfix or enhancement, or a short docs/protocol tweak.
-
-1. State the scope in one line (for example **"Small fix, no plan."**).
-2. Analyse the files that set the reported behavior. One pass.
-3. Apply the change.
-4. Report what changed and what was not verified.
-
-When the user is on the page and has already named the element and the size,
-those files are the analysis. Do not read the library that paints the widget,
-its history, or neighboring features unless that pass does not explain the
-symptom. Do not rebuild the page in a browser to re-measure a value they
-already reported.
-
-Startup already loaded this guide, the deployment overlay when present, the
-package README, and `toc.md`. Do not re-read them for a small fix. Do not
-open a `toc.md` link unless the task is that concern.
-
-No plan file, no plan-or-not menu, no "implement?" wait. Commits still wait
-for an explicit request or Session Closeout.
-
-If analysis shows the work is actually large, stop and use Large work below.
-
-When the user pastes a PHP `NOTICE` / `WARNING` / `ERROR` whose fix is a
-small local guard, also skip deployment/package retarget quizzes if the stack
-already names the file (note any `$WORK_ROOT` mismatch in one line).
-
-### Large work — ask before drafting a plan
-
-Treat as large when the prompt is a new feature, spans packages, needs schema
-or behavioral design, or the right approach is unclear.
-
-Check `$DEV_ROOT/<package>/plans/` for an existing matching plan and say so
-if one is found.
-
-Then ask once:
-
-> "This looks like a larger piece of work. Should I draft a plan first, or
-> start implementing?"
-
-Do not draft a plan until the user asks for one. If they want a plan:
-
-1. Draft for review; no code until they approve the plan.
-2. On approval: `"Plan active — working from: <filename>"`
-3. Implement from the plan (show intended changes, then apply).
-
-If they want implementation without a plan, proceed without creating one.
-
----
-
-## Directory Structure
-
-The deployment documentation and developer-workspace trees, and how to
-initialise a workspace for an existing package, are drawn in
-[agent-reference.md](agent-reference.md).
-
-### What goes where
+## Directory structure
 
 | Location | Purpose |
-|----------|---------|
-| `$WORK_ROOT/kernel/includes/docs/bitweaver.md` | Generic development protocol |
-| `$WORK_ROOT/config/includes/docs/deployment.md` | Optional installation-specific rules |
-| `$WORK_ROOT/<pkg>/includes/docs/README.md` | Purpose, responsibility, dependencies, and boundary |
-| `$WORK_ROOT/<pkg>/includes/docs/toc.md` | One line per document: path, concern, when to open it |
-| `$DEV_ROOT` workspace bootstrap | Agent credentials and host-private access (Rule 13); never in `includes/docs/` |
-| `$DEV_ROOT/<pkg>/plans/` | This developer's active and archived plans |
-| `$DEV_ROOT/<pkg>/notes/` | Scratch research, error traces, ideas |
-| `$DEV_ROOT/<pkg>/files/` | SQL snippets, example data, diffs |
-| `$DEV_ROOT/<pkg>/memory/` | Developer-local context only — not shared |
+|---|---|
+| `$WORK_ROOT/kernel/includes/docs/bitweaver.md` | This protocol |
+| `$WORK_ROOT/config/includes/docs/deployment.md` | Optional installation overlay |
+| `$WORK_ROOT/<pkg>/includes/docs/README.md`, `toc.md` | Package boundary; one line per document |
+| `$DEV_ROOT/<pkg>/plans/`, `notes/`, `files/`, `memory/` | Developer plans, scratch research, artefacts, local-only context |
 
-Plan files follow the format in [agent-reference.md](agent-reference.md)
-(status, scope, approach, decisions log, change history). Update a plan only
-after a change is applied and confirmed; never speculatively.
+Workspace scaffolding and the full tree: agent-reference.md.
 
----
+## Code conventions
 
-## Code Conventions
+- Follow the file's existing style (procedural + OOP hybrid; classes in `<Package>Lib.php`). Shared helpers in `includes/<group>_lib.php`; `includes/classes/<ClassName>.php` when the unit needs instance state or inherits `BitBase`; request-handling utilities stay out of `*_inc.php` unless it is a controller include that runs in page scope.
+- No superglobals in libraries. The controller (or CLI entry script) passes `$_POST` / `$_REQUEST` in; helpers take a parameter hash (`$pParamHash`) and read keys with `BitBase::getParameter( $pParamHash, 'key', $default )`.
+- Smarty `.tpl` files in each package's `templates/`, no logic in templates, valid HTML5. All user-facing strings through `tra()`.
+- Database through `$gBitDb` (ADOdb) only; never raw PDO or mysqli. Permissions through the Liberty / kernel ACL API only.
 
-- **PHP style**: follow existing file conventions (procedural + OOP hybrid;
-  classes in `<Package>Lib.php`).
-- **Library layout**: shared helpers live in
-  `includes/<functional-group>_lib.php` (for example `ads_setup_lib.php`,
-  `liberty_lib.php`). Use `includes/classes/<ClassName>.php` when the unit
-  needs instance state or inherits `BitBase`. Do not dump request-handling
-  utilities into `*_inc.php` unless the file is a controller include that
-  runs in page scope.
-- **No superglobals in libraries**: `$_GET`, `$_POST`, `$_REQUEST`, and
-  `$_SERVER` belong in the controller (or CLI entry script). Library
-  functions take a parameter hash, conventionally `$pParameters` /
-  `$pParamHash`. Read keys with `BitBase::getParameter( $pParameters, 'key', $default )`.
-  Call sites pass `$_POST` or `$_REQUEST` from the controller:
-  `stats_ads_save_posted_secrets( $_POST )`. Never read `$_POST` inside the
-  helper.
-- **Templates**: Smarty `.tpl` files in each package's `templates/`; never
-  embed logic in templates.
-- **Database**: always use the ADOdb abstraction layer (`$gBitDb`); never
-  write raw PDO or mysqli calls.
-- **Permissions**: use the Liberty/kernel permission API; never bypass ACL.
-- **i18n**: all user-facing strings wrapped in `tra()`.
-- **HTML**: templates must be valid HTML5.
+## Git safety
 
----
-
-## Commit and Git Safety Policy
-
-```bash
-# Run only on explicit request or Session Closeout:
-git commit
-
-# NEVER run automatically:
-git push
-git merge
-git rebase
-git reset --hard
-git clean -fd
-
-# Safe read-only operations:
-git status
-git diff
-git log --oneline -n 20
-git show <sha>
-git branch -a
-git submodule status
-```
-
-### Commit authorization
-
-- Never commit merely to checkpoint or save progress. Untested or unverified
-  history creates work for every later developer and agent.
-- A direct commit request or Session Closeout authorizes commits only after the
-  validation and ownership checks below. It never authorizes a push.
-- If validation is incomplete, identify the exact gap and ask before committing
-  the affected work. Verified independent work may still be committed.
-- After several coherent, verified changes accumulate mid-session, the agent may
-  suggest one focused commit message. A suggestion is not permission to commit.
-
-### Shared-worktree ownership
-
-Multiple humans and agents may share a deployment checkout. A commit request,
-including closeout, is not permission to stage the whole dirty tree.
-
-- Commit only paths and hunks created or intentionally edited by this agent for
-  the current task. Plans and durable documentation written by this agent count
-  as session work.
-- Before staging, inspect `git status`, relevant diffs, and submodule status.
-  Classify session-owned, foreign, and mixed paths.
-- If any dirty path is foreign, or a session file contains mixed foreign hunks,
-  stop and give the user a short path-and-reason inventory before staging.
-- When the user directs a split, stage only the approved paths or hunks. Leave
-  foreign work untouched and name it in the closeout handoff.
-- A package commit and a deployment-superproject pointer update are separate
-  commits. Do not stage a submodule pointer unless this session intentionally
-  updates that deployment pin and the user-authorized scope includes it.
-
-### Staging: explicit paths only
-
-Deployment repos contain **symlinks to proprietary code** in other submodules.
-`git add -A` and `git add .` will silently stage those symlinks and push
-proprietary partner names to public GitHub mirrors.
-
-Never use `git add -A`, `git add .`, `git commit -a`, or an unscoped
-`git add -u`. Name every approved path explicitly; use patch staging only when
-the user has approved a hunk split. Before committing, verify that every cached
-path belongs to the intended repository and session scope.
-
-### Public GitHub vs proprietary names
-
-Packages that push to `github.com/bitweaver/*` are shared open source.
-Do not mention in those commits, comments, or docs:
-
-- an installation's brand, product line, or public site hostname
-- an installation's issue-tracker / error-tracker ids
-- any package that is **not** a public `bitweaver/*` repo (proprietary
-  packages hosted only on a private remote)
-
-Those names belong in the install overlay, `$DEV_ROOT`, and private
-package history. Rewrite a public-package commit message that already
-contains them **before** push (Critical Operating Rule 14).
-
----
-
-## Analysis Output Format
-
-A large-work analysis uses the Problem / Root Cause / Affected Packages /
-Proposed Fix / Files to Change / Diff Preview layout in
-[agent-reference.md](agent-reference.md).
-
----
-
-## What Agents Will NOT Do
-
-- Start large-scope edits without asking whether to plan or implement.
-- Run `git commit` without a direct commit request or Session Closeout.
-- Run `git push` or another history-altering operation without an explicit
-  request for that operation.
-- Install or upgrade dependencies without confirmation.
-- Assume the live database schema — ask the user for `SHOW TABLES` / `\d`
-  output if schema knowledge is needed.
-- Skip error handling or ACL checks in proposed code.
-- Start new work in a dirty owning-package working tree without explicit
-  user confirmation (Critical Operating Rule 12).
-- Access or modify files outside `$WORK_ROOT` or `$DEV_ROOT`.
-- Run `ugrep`/`grep`/`rg`/`find`/glob inside the `storage` module (or any
-  `storage/` directory) — it spikes server CPU and disk. Always exclude it.
-- Leave a confirmed documentation error or gap for other agents to
-  rediscover — fix the owning docs in the same turn (Critical Operating
-  Rule 7).
-- Write authentication details into any `includes/docs/` file (Critical
-  Operating Rule 13): actual secrets, secret locations, credential key
-  names, or auth users. `$DEV_ROOT` only.
-- Write shared architectural discoveries only to `$DEV_ROOT/memory/` —
-  package facts belong in the linked file named by
-  `$WORK_ROOT/<package>/includes/docs/toc.md`.
-
----
-Reference links: [agent-reference.md](agent-reference.md).
+Read-only at any time: `git status`, `git diff`, `git log`, `git show`, `git branch -a`, `git submodule status`. `git commit` only per rule 3. Never `git push`, `git merge`, `git rebase`, `git reset --hard`, or `git clean -fd` unasked. Stage explicit paths only: never `git add -A`, `git add .`, `git commit -a`, or an unscoped `git add -u`, because deployment trees hold symlinks to proprietary code. Ownership checks and staging detail: closeout.md.

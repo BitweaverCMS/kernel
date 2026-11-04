@@ -1,9 +1,10 @@
-# Session closeout and commits
+# Session closeout
 
 > Companion to [bitweaver.md](bitweaver.md). Open when the user says
 > **wrap up**, **session closeout**, **end session**, or equivalent, or asks
-> for a commit. Those phrases are an explicit request to commit verified
-> session work. They never authorise a push.
+> for a commit. Those phrases request the inventory and staging procedure
+> below. **Commit policy is in bitweaver.md** (startup). They never
+> authorise a push.
 
 ## Procedure
 
@@ -26,18 +27,8 @@
 
 Prefer committing verified work and documenting residual gaps over leaving
 verified session work dirty. Closeout is not permission to stage the whole
-worktree.
-
-## Commit authorisation
-
-- Never commit merely to checkpoint. Unverified history creates work for
-  every later developer and agent.
-- A direct commit request or closeout authorises commits only after the
-  validation and ownership checks here. It never authorises a push.
-- If validation is incomplete, name the exact gap and ask before committing
-  the affected work. Verified independent work may still be committed.
-- After several coherent, verified changes accumulate mid-session, the agent
-  may suggest one focused commit message. A suggestion is not permission.
+worktree. Commit policy (never unverified, never checkpoint, ask if
+validation is incomplete): [bitweaver.md](bitweaver.md).
 
 ## Shared-worktree ownership
 

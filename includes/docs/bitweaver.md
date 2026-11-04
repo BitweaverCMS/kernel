@@ -9,8 +9,9 @@
 >
 > Situational material (interactive deployment discovery, the package list,
 > workspace scaffolding, admin mode, plan and analysis formats) is in
-> [agent-reference.md](agent-reference.md). Closeout and commit procedure is
-> in [closeout.md](closeout.md). Open either only when the task is that concern.
+> [agent-reference.md](agent-reference.md). Wrap-up inventory and staging
+> procedure is in [closeout.md](closeout.md); open it at wrap-up. Commit
+> policy is in this file and applies from the first message.
 
 ## Path variables
 
@@ -26,7 +27,7 @@ Non-negotiable, every session.
 
 1. **Startup first.** Complete Session Startup before responding to any first message, whatever it says. No source file is read before `$WORK_ROOT` is confirmed and the documentation chain is loaded.
 2. **Judge scope.** Small work (local, clear intent, one concern: a notice or deprecation, a null guard, a typo, a tight bugfix or enhancement, a short docs tweak) gets one analysis pass and is applied; no plan file, no "implement?" prompt. Large work (new feature, multi-package, schema or behavioural design, unclear approach) is never started unasked: ask once whether to draft a plan first or start implementing.
-3. **Commits only on request.** `git commit` only when the prompt asks for it or invokes Session Closeout. Never `git push`, merge, rebase, `reset --hard`, or `clean` unless the user asks for that exact operation. Never commit to checkpoint.
+3. **Commits only on request, and only of verified work.** `git commit` only when the prompt asks for it or invokes Session Closeout. Never `git push`, merge, rebase, `reset --hard`, or `clean` unless the user asks for that exact operation. Never commit to checkpoint. Never commit untested or unverified work. `php -l` is syntax only; it is not a fix check. If validation is incomplete, name the gap and ask before committing that work. Detail: Commit policy below.
 4. **One logical change per edit, shown.** Small work is applied and reported. Large or plan-driven work shows the intended change and waits before writing.
 5. **No package-manager side effects** (`composer`, `npm`, equivalents) without confirmation.
 6. **Keep documentation current in the same turn.** A confirmed convention, data-model fact, gotcha, or documentation gap goes into the owning tree now, not at closeout and not as a "propose later" note. Package facts: `$WORK_ROOT/<package>/includes/docs/` (README is purpose and boundary, about a screen; `toc.md` is one line per document; procedures, formulas, and examples go in the linked file). Installation facts: `config/includes/docs/deployment.md` or a file it links. Credentials and agent access: `$DEV_ROOT` only. Write for the next agent's startup cost: record the discovery, not the search; a toc line that grows past one clause moves into its file; never leave a shared fact only in `$DEV_ROOT/memory/`.
@@ -38,6 +39,22 @@ Non-negotiable, every session.
 12. **Public packages stay unforked and vendor-neutral.** `github.com/bitweaver/*` packages are shared by every install. Install behaviour goes in a `config/` include, a `config/themes/<package>/` overlay, a theme, or a private package, never in a public package tree, not even committed locally. Only generic fixes every install should have land in a public package. Public source, comments, docs, and commit messages name no installation brand, hostname, tracker id, or private (unpublished) package; rewrite such a message before `git push`. Detail: agent-reference.md.
 13. **Never assume the live schema;** ask for `\d` or `SHOW TABLES` output. Never skip error handling or ACL checks in proposed code.
 14. **Stay inside `$WORK_ROOT` and `$DEV_ROOT`.**
+
+## Commit policy
+
+Read at startup. A later plan file or "commit each slice" line does not
+override this.
+
+- Never commit merely to checkpoint. Unverified history creates work for
+  every later developer and agent.
+- A direct commit request or closeout authorises commits of **verified**
+  session paths after the checks in [closeout.md](closeout.md). It never
+  authorises a push.
+- If validation is incomplete, name the exact gap and ask before committing
+  the affected work. Verified independent work may still be committed.
+- After several coherent, verified changes accumulate mid-session, the agent
+  may suggest one focused commit message. A suggestion is not permission.
+- Public `github.com/bitweaver/*` commit messages follow rule 12.
 
 ## Project overview
 
@@ -61,7 +78,7 @@ Judge scope (rule 2) and check the owning package tree (rule 10) before the firs
 
 **Large work:** check `$DEV_ROOT/<package>/plans/` for a matching plan and say so. Ask once: "This looks like a larger piece of work. Should I draft a plan first, or start implementing?" Draft only if asked, for review, no code until approved; on approval say `Plan active — working from: <filename>` and implement from it, showing each intended change first. Update a plan only after a change is applied and confirmed, never speculatively. Plan file format and the analysis layout (Problem / Root Cause / Affected Packages / Proposed Fix / Files to Change / Diff Preview) are in agent-reference.md.
 
-Update the owning docs as facts surface (rule 6). Report unverified behaviour as unverified. **Wrap up**, **session closeout**, **end session**, or equivalent invokes [closeout.md](closeout.md): it authorises commits of verified session paths, staged explicitly, and never a push.
+Update the owning docs as facts surface (rule 6). Report unverified behaviour as unverified. **Wrap up**, **session closeout**, **end session**, or equivalent invokes [closeout.md](closeout.md) for inventory and explicit-path staging. That procedure still obeys the Commit policy above and never authorises a push.
 
 ## Directory structure
 
@@ -83,4 +100,4 @@ Workspace scaffolding and the full tree: agent-reference.md.
 
 ## Git safety
 
-Read-only at any time: `git status`, `git diff`, `git log`, `git show`, `git branch -a`, `git submodule status`. `git commit` only per rule 3. Never `git push`, `git merge`, `git rebase`, `git reset --hard`, or `git clean -fd` unasked. Stage explicit paths only: never `git add -A`, `git add .`, `git commit -a`, or an unscoped `git add -u`, because deployment trees hold symlinks to proprietary code. Ownership checks and staging detail: closeout.md.
+Read-only at any time: `git status`, `git diff`, `git log`, `git show`, `git branch -a`, `git submodule status`. `git commit` only per rule 3 and Commit policy. Never `git push`, `git merge`, `git rebase`, `git reset --hard`, or `git clean -fd` unasked. Stage explicit paths only: never `git add -A`, `git add .`, `git commit -a`, or an unscoped `git add -u`, because deployment trees hold symlinks to proprietary code. Wrap-up ownership and staging: closeout.md.

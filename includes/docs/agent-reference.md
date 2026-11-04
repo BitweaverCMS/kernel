@@ -230,8 +230,8 @@ include, a `config/themes/<package>/` template overlay, a theme, or a
 private package. A revert does not make the original commit belong there;
 it should never have been committed. Generic fixes every install should
 have may go in the public package; install-only CSS, groups, storage layout,
-and OEM product behaviour may not. See bitweaver.md rule 12 and
-[closeout.md](closeout.md) for the commit-message rule.
+and OEM product behaviour may not. See bitweaver.md rule 12 and Commit
+policy for the commit-message rule.
 
 ---
 

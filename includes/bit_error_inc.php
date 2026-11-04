@@ -216,6 +216,14 @@ function bit_error_email ( $pSubject, $pMessage, $pGlobalVars=array() ) {
 	}
 	$parameters = preg_replace( "/\n/", $separator.$indent, $parameters );
 
+	if( is_array( $pMessage ) ) {
+		$pMessage = implode( "\n", array_map( function( $v ) {
+			return is_scalar( $v ) ? (string)$v : var_export( $v, TRUE );
+		}, $pMessage ) );
+	} elseif( !is_string( $pMessage ) ) {
+		$pMessage = var_export( $pMessage, TRUE );
+	}
+
 	bit_mail( $errorEmail, $pSubject, $pMessage.$parameters.$separator.$separator.'$_SERVER: '.var_export( $_SERVER, TRUE ) );
 }
 

@@ -536,11 +536,13 @@ function copy_r( $pSource, $pTarget ) {
 				copy_r( $source, $pTarget.'/'.$entry );
 				continue;
 			}
-			copy( $source, $pTarget.'/'.$entry );
+			if( is_file( $source ) ) {
+				copy( $source, $pTarget.'/'.$entry );
+			}
 		}
 
 		$d->close();
-	} else {
+	} elseif( is_file( $pSource ) ) {
 		copy( $pSource, $pTarget );
 	}
 }

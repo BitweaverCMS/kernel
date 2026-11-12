@@ -14,11 +14,6 @@
 	<link rel="shortcut icon" href="{$smarty.const.INSTALL_PKG_URL}favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="{$smarty.const.INSTALL_PKG_URL}favicon.ico" type="image/x-icon" />
 
-	{* if $gBrowserInfo.browser eq 'ie'}
-		<!--[if lt IE 7]>
-			<script type="text/javascript" src="{$smarty.const.BIT_ROOT_URL}util/javascript/fixes/ie7/IE8.js"></script>
-		<![endif]-->
-	{/if *}
 </head>
 <body id="step{$smarty.request.step}">
 	<div id="container">

@@ -20,6 +20,15 @@ if(( !empty( $_REQUEST['sort_mode'] ) && !is_array( $_REQUEST['sort_mode'] ) && 
 	die;
 }
 
+// Internal store keys. Controllers pass $_REQUEST to store(), so a posted
+// _files_override or upload_store names a server path that Liberty moves into
+// the poster's storage, and no_perm_check skips the attachment permission.
+// No form posts these; code sets them after this point.
+foreach( array( '_files_override', 'upload_store', 'no_perm_check', 'skip_content_store' ) as $internalKey ) {
+	unset( $_GET[$internalKey], $_POST[$internalKey], $_REQUEST[$internalKey], $_COOKIE[$internalKey] );
+}
+unset( $internalKey );
+
 require_once( BIT_ROOT_PATH.'kernel/includes/config_defaults_inc.php' );
 require_once( KERNEL_PKG_INCLUDE_PATH.'bit_error_inc.php' );
 require_once( KERNEL_PKG_INCLUDE_PATH.'kernel_lib.php' );

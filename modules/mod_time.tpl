@@ -1,8 +1,6 @@
 {bitmodule title="$moduleTitle" name="clock"}
 	<div style="text-align:center;">
-		{if $modParams.src eq 'text'}
-			{$smarty.now|bit_short_time}
-		{elseif $modParams.src eq 'javascript'}
+		{if $modParams.src eq 'javascript'}
 			{literal}
 			<div id="js_clock" style="height:2.4em;font-family:monospace;">
 				<script type="text/javascript">
@@ -50,7 +48,7 @@
 			</div>
 			{/literal}
 		{else}
-			<embed style="width:{$modParams.width|default:"120"}px;height:{$modParams.height|default:"120"}px;" src="{$modParams.src|default:"http://www.internettime.com/Learning/relog.swf"}" quality="high" wmode="transparent" bgcolor="{$modParams.color|default:"#ffffff"}" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+			{$smarty.now|bit_short_time}
 		{/if}
 	</div>
 {/bitmodule}

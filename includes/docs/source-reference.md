@@ -7,9 +7,9 @@
 
 | Artifact | Count |
 |---|---:|
-| PHP files | 60 |
+| PHP files | 59 |
 | Smarty templates | 61 |
-| JavaScript files | 1 |
+| JavaScript files | 0 |
 | CSS files | 0 |
 
 ## Bootstrap and schema artifacts
@@ -124,7 +124,6 @@
 - `templates/admin_server.tpl`
 - `templates/admin_sitemaps.tpl`
 - `templates/admin_system.tpl`
-- `templates/ajax_file_browser_inc.tpl`
 - `templates/backup.tpl`
 - `templates/bit_left.tpl`
 - `templates/bit_right.tpl`

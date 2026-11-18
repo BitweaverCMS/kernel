@@ -567,9 +567,6 @@ class BitSystem extends BitSingleton {
 	 */
 	function preDisplay( $pMid ) {
 		global $gCenterPieces, $gBitSmarty, $gBitThemes, $gDefaultCenter;
-		if( !defined( 'JSCALENDAR_PKG_URL' ) ) {
-			define( 'JSCALENDAR_PKG_URL', UTIL_PKG_URL.'javascript/libs/dynarch/jscalendar/' );
-		}
 
 		$gBitThemes->loadLayout();
 

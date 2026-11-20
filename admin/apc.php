@@ -179,6 +179,8 @@ if ($AUTHENTICATED && isset($MYREQUEST['CC']) && $MYREQUEST['CC']) {
 	global $gBitSystem;
 	$gBitSystem->mDb->mDb->CacheFlush();
     apcu_clear_cache();
+	// This request loaded the cached $gBitSystem; mark it purged so its destructor doesn't re-add the stale copy
+	$gBitSystem->clearFromCache();
 }
 
 if ($AUTHENTICATED && !empty($MYREQUEST['DU'])) {

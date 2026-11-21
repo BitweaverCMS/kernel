@@ -17,46 +17,51 @@ $gBitInstaller = &$gBitSystem;
 
 if( !empty( $_REQUEST["page"] )) {
 	$page = $_REQUEST["page"];
+	// page names an admin_<page>_inc.php in a package admin directory; nothing
+	// else may be included
+	if( !is_string( $page ) || !preg_match( '/^[A-Za-z0-9_]+$/', $page )) {
+		$gBitSystem->fatalError( tra( 'Unknown administration page.' ), NULL, NULL, 404 );
+	}
 
 	// only admins may use this page
 	$gBitSystem->verifyPermission( 'p_'.$page.'_admin' );
 
-	if( preg_match( '/\.php/', $page )) {
-		$adminPage = $page;
-	} else {
-		$adminFile = $page; // Default file name
-		switch( $page ) {
-			// handle a few special cases for page requests
-			case 'features':
-			case 'packages':
-			case 'general':
-			case 'server':
-				$package = 'kernel';
-				break;
-			case 'layout':
-			case 'layout_overview':
-			case 'columns':
-			case 'modules':
-			case 'custom_modules':
-				$package = 'themes';
-				break;
-			case 'menus':
-			case 'menu_options':
-				$package = 'tidbits';
-				break;
-			case 'login':
-			case 'userfiles':
-				$package = 'users';
-				break;
-			default:
-				$package = $page;
-				break;
-		}
-
-		$adminPage = constant( strtoupper( $package ).'_PKG_ADMIN_PATH' ).'admin_'.$adminFile.'_inc.php';
-		// gBitThemes->loadLayout uses this to determine the currently active package
-		$gBitSystem->setActivePackage( $package );
+	$adminFile = $page; // Default file name
+	switch( $page ) {
+		// handle a few special cases for page requests
+		case 'features':
+		case 'packages':
+		case 'general':
+		case 'server':
+			$package = 'kernel';
+			break;
+		case 'layout':
+		case 'layout_overview':
+		case 'columns':
+		case 'modules':
+		case 'custom_modules':
+			$package = 'themes';
+			break;
+		case 'menus':
+		case 'menu_options':
+			$package = 'tidbits';
+			break;
+		case 'login':
+		case 'userfiles':
+			$package = 'users';
+			break;
+		default:
+			$package = $page;
+			break;
 	}
+
+	$adminPathConstant = strtoupper( $package ).'_PKG_ADMIN_PATH';
+	$adminPage = defined( $adminPathConstant ) ? constant( $adminPathConstant ).'admin_'.$adminFile.'_inc.php' : NULL;
+	if( empty( $adminPage ) || !is_file( $adminPage )) {
+		$gBitSystem->fatalError( tra( 'Unknown administration page.' ), NULL, NULL, 404 );
+	}
+	// gBitThemes->loadLayout uses this to determine the currently active package
+	$gBitSystem->setActivePackage( $package );
 	$gBitSmarty->assign( 'package', $package );
 	$gBitSmarty->assign( 'adminFile', $adminFile );
 	$gBitSmarty->assign( 'page', $page );

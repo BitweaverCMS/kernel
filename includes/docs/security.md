@@ -40,6 +40,7 @@ it proves that the server executed a directly requested implementation file.
 - Secrets and credentials must remain in protected configuration, never in
   templates, responses, logs, or these documents.
 - File operations must use validated storage helpers and must prevent traversal.
+- `admin/index.php?page=<page>` accepts only `[A-Za-z0-9_]` names and includes `<package>/admin/admin_<page>_inc.php` when that file exists; anything else is a 404. A package settings page is added as that file, never as a path in `page`.
 
 ## Package boundary
 

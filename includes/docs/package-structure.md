@@ -76,6 +76,27 @@ That is **not** the Administration menu (below).
 - Business logic stays in classes under `includes/classes/`. Templates do not
   own it. User-facing strings: `tra()`.
 
+### Only entry points are addressable
+
+Every PHP file outside `includes/` can be requested over HTTP. A file there
+must be a real page (it loads `setup_inc.php` and checks permissions) or it
+belongs under `includes/`.
+
+- Library code (classes, `_lib.php`, `_inc.php` helpers, vendored libraries)
+  goes in `includes/`, which ships a deny-all `.htaccess` and `web.config`.
+- Directories that must stay outside `includes/` for discovery (`modules/`,
+  `liberty_plugins/`, `smartyplugins/`, Liberty `plugins/`, settings includes
+  such as `admin/plugins/*_inc.php`) hold no entry points; deny PHP there in
+  the web server.
+- When importing a third-party library, remove its tests, demos, samples and
+  example scripts. They are web-reachable code nobody maintains.
+- One-off migration or maintenance scripts are CLI tools: refuse non-CLI
+  requests (`php_sapi_name() !== 'cli'`) and delete them once run. Never
+  leave them in `admin/` reachable over HTTP.
+- Never include or open a path built from request input. Map the input to a
+  known name (`^[A-Za-z0-9_]+$`, a lookup table) and check the file exists
+  inside the expected directory.
+
 ---
 
 ## Administration menu (easy to miss)
@@ -117,6 +138,8 @@ If `?page=example` is used:
 - Permission: `p_example_admin`.
 - Include file: `<EXAMPLE_PKG_ADMIN_PATH>admin_example_inc.php`
   (special cases remap `page` → package in `kernel/admin/index.php`).
+- `page` must be `[A-Za-z0-9_]` and the include file must exist; anything
+  else is a 404. Add a settings page as that file, never as a path in `page`.
 
 Packages that only have a custom `admin/settings.php` do **not** need
 `admin_<pkg>_inc.php` unless they want the Kernel settings include. The

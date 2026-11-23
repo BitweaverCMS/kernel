@@ -556,7 +556,7 @@ abstract class BitBase {
 			if( static::verifyIdParameter( $pListHash, 'page' )) {
 				$pListHash['offset'] = ((int)$pListHash['page'] - 1) * $pListHash['max_records'];
 			} else {
-				if( !empty( $_REQUEST["offset"] )) {
+				if( !empty( $_REQUEST['offset'] ) && is_numeric( $_REQUEST['offset'] ) ) {
 					$pListHash['offset'] = $_REQUEST['offset'];
 				} elseif( isset( $_REQUEST['page'] ) && is_numeric( $_REQUEST['page'] ) && $_REQUEST['page'] > 0 ) {
 					$pListHash['offset'] = ($_REQUEST['page'] - 1) * $pListHash['max_records'];
@@ -565,6 +565,7 @@ abstract class BitBase {
 				}
 			}
 		}
+		$pListHash['offset'] = max( 0, (int)$pListHash['offset'] );
 
 		// migrate towards a safer hash key
 		if( empty( $pListHash['user_id'] ) && !empty( $pListHash['lookup_user_id'] ) ) {

@@ -1635,8 +1635,11 @@ class BitSystem extends BitSingleton {
 	 */
 	function verifyMimeType( $pFile ) {
 		$mime = NULL;
+		if( !is_string( $pFile ) || $pFile === '' ) {
+			return $mime;
+		}
 		clearstatcache( TRUE, $pFile );
-		if( $pFile && is_file( $pFile ) && filesize( $pFile ) ) {
+		if( is_file( $pFile ) && filesize( $pFile ) ) {
 			if( function_exists( 'finfo_open' ) ) {
 				if( is_windows() && defined( 'PHP_MAGIC_PATH' ) && is_readable( PHP_MAGIC_PATH )) {
 					$finfo = finfo_open( FILEINFO_MIME, PHP_MAGIC_PATH );

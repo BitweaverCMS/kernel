@@ -34,6 +34,8 @@
 - Send outbound email with `bit_mail()` or `BitMailer::sendEmail()`, not PHP
   `mail()`. Non-live sites send only when the current user has `p_admin`. See
   [outbound-mail.md](outbound-mail.md).
+- `BitSystem::verifyMimeType()` returns null when the path is not a
+  non-empty string. `clearstatcache()` requires a string filename.
 
 ## Schema changes
 
